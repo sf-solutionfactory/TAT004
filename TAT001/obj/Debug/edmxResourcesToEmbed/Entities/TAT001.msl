@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TAT001ModelStoreContainer" CdmEntityContainer="TAT001Entities">
+    <EntitySetMapping Name="ACCIONs">
+      <EntityTypeMapping TypeName="TAT001Model.ACCION">
+        <MappingFragment StoreEntitySet="ACCION">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCCRIPCION" ColumnName="DESCCRIPCION" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CARPETAs">
+      <EntityTypeMapping TypeName="TAT001Model.CARPETA">
+        <MappingFragment StoreEntitySet="CARPETA">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="ICON" ColumnName="ICON" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CARPETATs">
+      <EntityTypeMapping TypeName="TAT001Model.CARPETAT">
+        <MappingFragment StoreEntitySet="CARPETAT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GALLs">
+      <EntityTypeMapping TypeName="TAT001Model.GALL">
+        <MappingFragment StoreEntitySet="GALL">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GALLTs">
+      <EntityTypeMapping TypeName="TAT001Model.GALLT">
+        <MappingFragment StoreEntitySet="GALLT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MIEMBROS">
+      <EntityTypeMapping TypeName="TAT001Model.MIEMBRO">
+        <MappingFragment StoreEntitySet="MIEMBROS">
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAGINAs">
+      <EntityTypeMapping TypeName="TAT001Model.PAGINA">
+        <MappingFragment StoreEntitySet="PAGINA">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+          <ScalarProperty Name="CARPETA_ID" ColumnName="CARPETA_ID" />
+          <ScalarProperty Name="ICON" ColumnName="ICON" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAGINATs">
+      <EntityTypeMapping TypeName="TAT001Model.PAGINAT">
+        <MappingFragment StoreEntitySet="PAGINAT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERMISO_PAGINA">
+      <EntityTypeMapping TypeName="TAT001Model.PERMISO_PAGINA">
+        <MappingFragment StoreEntitySet="PERMISO_PAGINA">
+          <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
+          <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+          <ScalarProperty Name="PERMISO" ColumnName="PERMISO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PRESUPUESTOHs">
+      <EntityTypeMapping TypeName="TAT001Model.PRESUPUESTOH">
+        <MappingFragment StoreEntitySet="PRESUPUESTOH">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ANIO" ColumnName="ANIO" />
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PRESUPUESTOPs">
+      <EntityTypeMapping TypeName="TAT001Model.PRESUPUESTOP">
+        <MappingFragment StoreEntitySet="PRESUPUESTOP">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ANIO" ColumnName="ANIO" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="MES" ColumnName="MES" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="PAIS" ColumnName="PAIS" />
+          <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="MATERIAL" ColumnName="MATERIAL" />
+          <ScalarProperty Name="BANNER" ColumnName="BANNER" />
+          <ScalarProperty Name="CONCEPTO" ColumnName="CONCEPTO" />
+          <ScalarProperty Name="DATA" ColumnName="DATA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROLs">
+      <EntityTypeMapping TypeName="TAT001Model.ROL">
+        <MappingFragment StoreEntitySet="ROL">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SPRAS">
+      <EntityTypeMapping TypeName="TAT001Model.SPRA">
+        <MappingFragment StoreEntitySet="SPRAS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TALLs">
+      <EntityTypeMapping TypeName="TAT001Model.TALL">
+        <MappingFragment StoreEntitySet="TALL">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+          <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+          <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TALLTs">
+      <EntityTypeMapping TypeName="TAT001Model.TALLT">
+        <MappingFragment StoreEntitySet="TALLT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSOLs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOL">
+        <MappingFragment StoreEntitySet="TSOL">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
+          <ScalarProperty Name="RANGO_ID" ColumnName="RANGO_ID" />
+          <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSOLTs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOLT">
+        <MappingFragment StoreEntitySet="TSOLT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+          <ScalarProperty Name="TXT020" ColumnName="TXT020" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIOs">
+      <EntityTypeMapping TypeName="TAT001Model.USUARIO">
+        <MappingFragment StoreEntitySet="USUARIO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PASS" ColumnName="PASS" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="APELLIDO_P" ColumnName="APELLIDO_P" />
+          <ScalarProperty Name="APELLIDO_M" ColumnName="APELLIDO_M" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WORKFHs">
+      <EntityTypeMapping TypeName="TAT001Model.WORKFH">
+        <MappingFragment StoreEntitySet="WORKFH">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+          <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WORKFPs">
+      <EntityTypeMapping TypeName="TAT001Model.WORKFP">
+        <MappingFragment StoreEntitySet="WORKFP">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="AGENTE_ID" ColumnName="AGENTE_ID" />
+          <ScalarProperty Name="ACCION_ID" ColumnName="ACCION_ID" />
+          <ScalarProperty Name="NEXT_STEP" ColumnName="NEXT_STEP" />
+          <ScalarProperty Name="NS_ACCEPT" ColumnName="NS_ACCEPT" />
+          <ScalarProperty Name="NS_REJECT" ColumnName="NS_REJECT" />
+          <ScalarProperty Name="LOOPS" ColumnName="LOOPS" />
+          <ScalarProperty Name="CONDICION_ID" ColumnName="CONDICION_ID" />
+          <ScalarProperty Name="NS_CN_ACCEPT" ColumnName="NS_CN_ACCEPT" />
+          <ScalarProperty Name="NS_CN_REJECT" ColumnName="NS_CN_REJECT" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="EMAIL_TXT_ID" ColumnName="EMAIL_TXT_ID" />
+          <ScalarProperty Name="EMAIL_INN_ID" ColumnName="EMAIL_INN_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WORKFTs">
+      <EntityTypeMapping TypeName="TAT001Model.WORKFT">
+        <MappingFragment StoreEntitySet="WORKFT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="WF_ID" ColumnName="WF_ID" />
+          <ScalarProperty Name="WF_VERSION" ColumnName="WF_VERSION" />
+          <ScalarProperty Name="TXT20" ColumnName="TXT20" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WORKFVs">
+      <EntityTypeMapping TypeName="TAT001Model.WORKFV">
+        <MappingFragment StoreEntitySet="WORKFV">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+          <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+          <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CARPETAVs">
+      <EntityTypeMapping TypeName="TAT001Model.CARPETAV">
+        <MappingFragment StoreEntitySet="CARPETAV">
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="ICON" ColumnName="ICON" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAGINAVs">
+      <EntityTypeMapping TypeName="TAT001Model.PAGINAV">
+        <MappingFragment StoreEntitySet="PAGINAV">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
+          <ScalarProperty Name="PAGINA_URL" ColumnName="PAGINA_URL" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="CARPETA_ID" ColumnName="CARPETA_ID" />
+          <ScalarProperty Name="CARPETA_URL" ColumnName="CARPETA_URL" />
+          <ScalarProperty Name="ICON" ColumnName="ICON" />
+          <ScalarProperty Name="PERMISO" ColumnName="PERMISO" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="USUARIO_SPRAS" ColumnName="USUARIO_SPRAS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

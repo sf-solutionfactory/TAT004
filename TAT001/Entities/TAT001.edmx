@@ -1,0 +1,1789 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACCION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCCRIPCION" Type="nvarchar" MaxLength="50" />
+          <Property Name="TIPO" Type="nchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CARPETA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TITULO" Type="nvarchar" MaxLength="50" />
+          <Property Name="ICON" Type="nvarchar" MaxLength="20" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="CARPETAT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="GALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="GALLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="GALL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MIEMBROS">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="ROL_ID" Type="int" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PAGINA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="255" />
+          <Property Name="TITULO" Type="nvarchar" MaxLength="50" />
+          <Property Name="CARPETA_ID" Type="int" />
+          <Property Name="ICON" Type="nvarchar" MaxLength="20" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PAGINAT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PERMISO_PAGINA">
+          <Key>
+            <PropertyRef Name="PAGINA_ID" />
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="PAGINA_ID" Type="int" Nullable="false" />
+          <Property Name="ROL_ID" Type="int" Nullable="false" />
+          <Property Name="PERMISO" Type="bit" />
+        </EntityType>
+        <EntityType Name="PRESUPUESTOH">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ANIO" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAC" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PRESUPUESTOP">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ANIO" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="MES" Type="nchar" MaxLength="2" />
+          <Property Name="VERSION" Type="nvarchar" MaxLength="50" />
+          <Property Name="PAIS" Type="nvarchar" MaxLength="15" />
+          <Property Name="MONEDA" Type="nchar" MaxLength="2" />
+          <Property Name="MATERIAL" Type="nvarchar" MaxLength="18" />
+          <Property Name="BANNER" Type="nchar" MaxLength="6" />
+          <Property Name="CONCEPTO" Type="nvarchar" MaxLength="10" />
+          <Property Name="DATA" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CLAVE" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="SPRAS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+          <Property Name="FECHAI" Type="date" />
+          <Property Name="FECHAF" Type="date" />
+          <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="TALLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="TALL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TSOL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+          <Property Name="TSOLR" Type="nvarchar" MaxLength="10" />
+          <Property Name="RANGO_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ESTATUS" Type="nchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TSOLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="TSOL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TXT020" Type="nvarchar" MaxLength="20" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="PASS" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="APELLIDO_P" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="APELLIDO_M" Type="nvarchar" MaxLength="50" />
+          <Property Name="EMAIL" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" />
+        </EntityType>
+        <EntityType Name="WORKFH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+          <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" />
+          <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAC" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WORKFP">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="VERSION" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="AGENTE_ID" Type="int" />
+          <Property Name="ACCION_ID" Type="int" />
+          <Property Name="NEXT_STEP" Type="int" />
+          <Property Name="NS_ACCEPT" Type="int" />
+          <Property Name="NS_REJECT" Type="int" />
+          <Property Name="LOOPS" Type="int" />
+          <Property Name="CONDICION_ID" Type="int" />
+          <Property Name="NS_CN_ACCEPT" Type="int" />
+          <Property Name="NS_CN_REJECT" Type="int" />
+          <Property Name="EMAIL" Type="nchar" MaxLength="1" />
+          <Property Name="EMAIL_TXT_ID" Type="int" />
+          <Property Name="EMAIL_INN_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="WORKFT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="WF_ID" />
+            <PropertyRef Name="WF_VERSION" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="WF_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="WF_VERSION" Type="int" Nullable="false" />
+          <Property Name="TXT20" Type="nvarchar" MaxLength="20" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WORKFV">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
+          <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
+          <Property Name="FECHAI" Type="date" />
+          <Property Name="FECHAF" Type="date" />
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAC" Type="datetime" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="CARPETAV">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="nvarchar" MaxLength="50" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+          <Property Name="ICON" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="PAGINAV">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PAGINA_ID" />
+            <PropertyRef Name="CARPETA_ID" />
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="USUARIO_SPRAS" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="PAGINA_ID" Type="int" Nullable="false" />
+          <Property Name="PAGINA_URL" Type="nvarchar" MaxLength="255" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+          <Property Name="CARPETA_ID" Type="int" Nullable="false" />
+          <Property Name="CARPETA_URL" Type="nvarchar" MaxLength="50" />
+          <Property Name="ICON" Type="nvarchar" MaxLength="20" />
+          <Property Name="PERMISO" Type="bit" />
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CARPETAT_CARPETA">
+          <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="1" />
+          <End Role="CARPETAT" Type="Self.CARPETAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARPETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CARPETAT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CARPETAT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="CARPETAT" Type="Self.CARPETAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CARPETAT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GALLT_GALL">
+          <End Role="GALL" Type="Self.GALL" Multiplicity="1" />
+          <End Role="GALLT" Type="Self.GALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GALLT">
+              <PropertyRef Name="GALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GALLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="GALLT" Type="Self.GALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GALLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MIEMBROS_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+          <End Role="MIEMBROS" Type="Self.MIEMBROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MIEMBROS">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MIEMBROS_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="MIEMBROS" Type="Self.MIEMBROS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MIEMBROS">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINA_CARPETA">
+          <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="0..1" />
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARPETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINA">
+              <PropertyRef Name="CARPETA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINAT_PAGINA">
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
+          <End Role="PAGINAT" Type="Self.PAGINAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAGINA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINAT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINAT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="PAGINAT" Type="Self.PAGINAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINAT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERMISO_PAGINA_PAGINA">
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
+          <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAGINA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERMISO_PAGINA">
+              <PropertyRef Name="PAGINA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERMISO_PAGINA_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+          <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERMISO_PAGINA">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRESUPUESTOH_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="PRESUPUESTOH" Type="Self.PRESUPUESTOH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRESUPUESTOH">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRESUPUESTOP_PRESUPUESTOH">
+          <End Role="PRESUPUESTOH" Type="Self.PRESUPUESTOH" Multiplicity="1" />
+          <End Role="PRESUPUESTOP" Type="Self.PRESUPUESTOP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRESUPUESTOH">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="ANIO" />
+            </Principal>
+            <Dependent Role="PRESUPUESTOP">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="ANIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALL_GALL">
+          <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
+          <End Role="TALL" Type="Self.TALL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALL">
+              <PropertyRef Name="GALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="TALLT" Type="Self.TALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALLT_TALL">
+          <End Role="TALL" Type="Self.TALL" Multiplicity="1" />
+          <End Role="TALLT" Type="Self.TALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALLT">
+              <PropertyRef Name="TALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOL_TSOL">
+          <End Role="TSOL" Type="Self.TSOL" Multiplicity="0..1" />
+          <End Role="TSOL1" Type="Self.TSOL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOL1">
+              <PropertyRef Name="TSOLR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="TSOLT" Type="Self.TSOLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOLT_TSOL">
+          <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
+          <End Role="TSOLT" Type="Self.TSOLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOLT">
+              <PropertyRef Name="TSOL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIO_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFP_ACCION">
+          <End Role="ACCION" Type="Self.ACCION" Multiplicity="0..1" />
+          <End Role="WORKFP" Type="Self.WORKFP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFP">
+              <PropertyRef Name="ACCION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFP_WORKFV">
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="1" />
+          <End Role="WORKFP" Type="Self.WORKFP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFV">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Principal>
+            <Dependent Role="WORKFP">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="WORKFT" Type="Self.WORKFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFT_WORKFV">
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="1" />
+          <End Role="WORKFT" Type="Self.WORKFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFV">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Principal>
+            <Dependent Role="WORKFT">
+              <PropertyRef Name="WF_ID" />
+              <PropertyRef Name="WF_VERSION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKV_WORKFH">
+          <End Role="WORKFH" Type="Self.WORKFH" Multiplicity="1" />
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFH">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFV">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TAT001ModelStoreContainer">
+          <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CARPETA" EntityType="Self.CARPETA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CARPETAT" EntityType="Self.CARPETAT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRESUPUESTOH" EntityType="Self.PRESUPUESTOH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRESUPUESTOP" EntityType="Self.PRESUPUESTOP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSOL" EntityType="Self.TSOL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TSOLT" EntityType="Self.TSOLT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WORKFH" EntityType="Self.WORKFH" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WORKFP" EntityType="Self.WORKFP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WORKFT" EntityType="Self.WORKFT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WORKFV" EntityType="Self.WORKFV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CARPETAV" EntityType="Self.CARPETAV" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CARPETAV].[USUARIO_ID] AS [USUARIO_ID], 
+    [CARPETAV].[ID] AS [ID], 
+    [CARPETAV].[URL] AS [URL], 
+    [CARPETAV].[TXT50] AS [TXT50], 
+    [CARPETAV].[ICON] AS [ICON]
+    FROM [dbo].[CARPETAV] AS [CARPETAV]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PAGINAV" EntityType="Self.PAGINAV" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PAGINAV].[ID] AS [ID], 
+    [PAGINAV].[PAGINA_ID] AS [PAGINA_ID], 
+    [PAGINAV].[PAGINA_URL] AS [PAGINA_URL], 
+    [PAGINAV].[TXT50] AS [TXT50], 
+    [PAGINAV].[CARPETA_ID] AS [CARPETA_ID], 
+    [PAGINAV].[CARPETA_URL] AS [CARPETA_URL], 
+    [PAGINAV].[ICON] AS [ICON], 
+    [PAGINAV].[PERMISO] AS [PERMISO], 
+    [PAGINAV].[SPRAS_ID] AS [SPRAS_ID], 
+    [PAGINAV].[USUARIO_SPRAS] AS [USUARIO_SPRAS]
+    FROM [dbo].[PAGINAV] AS [PAGINAV]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CARPETAT_CARPETA" Association="Self.FK_CARPETAT_CARPETA">
+            <End Role="CARPETA" EntitySet="CARPETA" />
+            <End Role="CARPETAT" EntitySet="CARPETAT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CARPETAT_SPRAS" Association="Self.FK_CARPETAT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="CARPETAT" EntitySet="CARPETAT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GALLT_GALL" Association="Self.FK_GALLT_GALL">
+            <End Role="GALL" EntitySet="GALL" />
+            <End Role="GALLT" EntitySet="GALLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GALLT_SPRAS" Association="Self.FK_GALLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="GALLT" EntitySet="GALLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MIEMBROS_ROL" Association="Self.FK_MIEMBROS_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MIEMBROS_USUARIO" Association="Self.FK_MIEMBROS_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINA_CARPETA" Association="Self.FK_PAGINA_CARPETA">
+            <End Role="CARPETA" EntitySet="CARPETA" />
+            <End Role="PAGINA" EntitySet="PAGINA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINAT_PAGINA" Association="Self.FK_PAGINAT_PAGINA">
+            <End Role="PAGINA" EntitySet="PAGINA" />
+            <End Role="PAGINAT" EntitySet="PAGINAT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINAT_SPRAS" Association="Self.FK_PAGINAT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="PAGINAT" EntitySet="PAGINAT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERMISO_PAGINA_PAGINA" Association="Self.FK_PERMISO_PAGINA_PAGINA">
+            <End Role="PAGINA" EntitySet="PAGINA" />
+            <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERMISO_PAGINA_ROL" Association="Self.FK_PERMISO_PAGINA_ROL">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRESUPUESTOH_USUARIO" Association="Self.FK_PRESUPUESTOH_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRESUPUESTOP_PRESUPUESTOH" Association="Self.FK_PRESUPUESTOP_PRESUPUESTOH">
+            <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOH" />
+            <End Role="PRESUPUESTOP" EntitySet="PRESUPUESTOP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALL_GALL" Association="Self.FK_TALL_GALL">
+            <End Role="GALL" EntitySet="GALL" />
+            <End Role="TALL" EntitySet="TALL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALLT_SPRAS" Association="Self.FK_TALLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TALLT" EntitySet="TALLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALLT_TALL" Association="Self.FK_TALLT_TALL">
+            <End Role="TALL" EntitySet="TALL" />
+            <End Role="TALLT" EntitySet="TALLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOL_TSOL" Association="Self.FK_TSOL_TSOL">
+            <End Role="TSOL" EntitySet="TSOL" />
+            <End Role="TSOL1" EntitySet="TSOL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOLT_SPRAS" Association="Self.FK_TSOLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TSOLT" EntitySet="TSOLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
+            <End Role="TSOL" EntitySet="TSOL" />
+            <End Role="TSOLT" EntitySet="TSOLT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIO_SPRAS" Association="Self.FK_USUARIO_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="USUARIO" EntitySet="USUARIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFP_ACCION" Association="Self.FK_WORKFP_ACCION">
+            <End Role="ACCION" EntitySet="ACCION" />
+            <End Role="WORKFP" EntitySet="WORKFP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFP_WORKFV" Association="Self.FK_WORKFP_WORKFV">
+            <End Role="WORKFV" EntitySet="WORKFV" />
+            <End Role="WORKFP" EntitySet="WORKFP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFT_SPRAS" Association="Self.FK_WORKFT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="WORKFT" EntitySet="WORKFT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFT_WORKFV" Association="Self.FK_WORKFT_WORKFV">
+            <End Role="WORKFV" EntitySet="WORKFV" />
+            <End Role="WORKFT" EntitySet="WORKFT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKV_WORKFH" Association="Self.FK_WORKV_WORKFH">
+            <End Role="WORKFH" EntitySet="WORKFH" />
+            <End Role="WORKFV" EntitySet="WORKFV" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACCION">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TIPO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_ACCION" FromRole="ACCION" ToRole="WORKFP" />
+        </EntityType>
+        <EntityType Name="CARPETA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ICON" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="CARPETATs" Relationship="Self.FK_CARPETAT_CARPETA" FromRole="CARPETA" ToRole="CARPETAT" />
+          <NavigationProperty Name="PAGINAs" Relationship="Self.FK_PAGINA_CARPETA" FromRole="CARPETA" ToRole="PAGINA" />
+        </EntityType>
+        <EntityType Name="CARPETAT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CARPETA" Relationship="Self.FK_CARPETAT_CARPETA" FromRole="CARPETAT" ToRole="CARPETA" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_CARPETAT_SPRAS" FromRole="CARPETAT" ToRole="SPRAS" />
+        </EntityType>
+        <EntityType Name="GALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_GALL" FromRole="GALL" ToRole="GALLT" />
+          <NavigationProperty Name="TALLs" Relationship="Self.FK_TALL_GALL" FromRole="GALL" ToRole="TALL" />
+        </EntityType>
+        <EntityType Name="GALLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="GALL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="GALL_ID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="GALL" Relationship="Self.FK_GALLT_GALL" FromRole="GALLT" ToRole="GALL" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_GALLT_SPRAS" FromRole="GALLT" ToRole="SPRAS" />
+        </EntityType>
+        <EntityType Name="MIEMBRO">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ROL_ID" Type="Int32" Nullable="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="ROL" Relationship="Self.FK_MIEMBROS_ROL" FromRole="MIEMBROS" ToRole="ROL" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_MIEMBROS_USUARIO" FromRole="MIEMBROS" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="PAGINA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TITULO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CARPETA_ID" Type="Int32" />
+          <Property Name="ICON" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="CARPETA" Relationship="Self.FK_PAGINA_CARPETA" FromRole="PAGINA" ToRole="CARPETA" />
+          <NavigationProperty Name="PAGINATs" Relationship="Self.FK_PAGINAT_PAGINA" FromRole="PAGINA" ToRole="PAGINAT" />
+          <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PAGINA" FromRole="PAGINA" ToRole="PERMISO_PAGINA" />
+        </EntityType>
+        <EntityType Name="PAGINAT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PAGINA" Relationship="Self.FK_PAGINAT_PAGINA" FromRole="PAGINAT" ToRole="PAGINA" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_PAGINAT_SPRAS" FromRole="PAGINAT" ToRole="SPRAS" />
+        </EntityType>
+        <EntityType Name="PERMISO_PAGINA">
+          <Key>
+            <PropertyRef Name="PAGINA_ID" />
+            <PropertyRef Name="ROL_ID" />
+          </Key>
+          <Property Name="PAGINA_ID" Type="Int32" Nullable="false" />
+          <Property Name="ROL_ID" Type="Int32" Nullable="false" />
+          <Property Name="PERMISO" Type="Boolean" />
+          <NavigationProperty Name="PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PAGINA" FromRole="PERMISO_PAGINA" ToRole="PAGINA" />
+          <NavigationProperty Name="ROL" Relationship="Self.FK_PERMISO_PAGINA_ROL" FromRole="PERMISO_PAGINA" ToRole="ROL" />
+        </EntityType>
+        <EntityType Name="PRESUPUESTOH">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ANIO" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ANIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_PRESUPUESTOH_USUARIO" FromRole="PRESUPUESTOH" ToRole="USUARIO" />
+          <NavigationProperty Name="PRESUPUESTOPs" Relationship="Self.FK_PRESUPUESTOP_PRESUPUESTOH" FromRole="PRESUPUESTOH" ToRole="PRESUPUESTOP" />
+        </EntityType>
+        <EntityType Name="PRESUPUESTOP">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ANIO" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ANIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="MES" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="VERSION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PAIS" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="MONEDA" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="MATERIAL" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="BANNER" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
+          <Property Name="CONCEPTO" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DATA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRESUPUESTOH" Relationship="Self.FK_PRESUPUESTOP_PRESUPUESTOH" FromRole="PRESUPUESTOP" ToRole="PRESUPUESTOH" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CLAVE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="MIEMBROS" Relationship="Self.FK_MIEMBROS_ROL" FromRole="ROL" ToRole="MIEMBROS" />
+          <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_ROL" FromRole="ROL" ToRole="PERMISO_PAGINA" />
+        </EntityType>
+        <EntityType Name="SPRA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CARPETATs" Relationship="Self.FK_CARPETAT_SPRAS" FromRole="SPRAS" ToRole="CARPETAT" />
+          <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_SPRAS" FromRole="SPRAS" ToRole="GALLT" />
+          <NavigationProperty Name="PAGINATs" Relationship="Self.FK_PAGINAT_SPRAS" FromRole="SPRAS" ToRole="PAGINAT" />
+          <NavigationProperty Name="TALLTs" Relationship="Self.FK_TALLT_SPRAS" FromRole="SPRAS" ToRole="TALLT" />
+          <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_SPRAS" FromRole="SPRAS" ToRole="TSOLT" />
+          <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
+          <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+        </EntityType>
+        <EntityType Name="TALL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAI" Type="DateTime" Precision="0" />
+          <Property Name="FECHAF" Type="DateTime" Precision="0" />
+          <Property Name="GALL_ID" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="GALL" Relationship="Self.FK_TALL_GALL" FromRole="TALL" ToRole="GALL" />
+          <NavigationProperty Name="TALLTs" Relationship="Self.FK_TALLT_TALL" FromRole="TALL" ToRole="TALLT" />
+        </EntityType>
+        <EntityType Name="TALLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="TALL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TALL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_TALLT_SPRAS" FromRole="TALLT" ToRole="SPRAS" />
+          <NavigationProperty Name="TALL" Relationship="Self.FK_TALLT_TALL" FromRole="TALLT" ToRole="TALL" />
+        </EntityType>
+        <EntityType Name="TSOL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="TSOLR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RANGO_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
+          <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
+          <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+        </EntityType>
+        <EntityType Name="TSOLT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="TSOL_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TXT020" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOLT_SPRAS" FromRole="TSOLT" ToRole="SPRAS" />
+          <NavigationProperty Name="TSOL" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOLT" ToRole="TSOL" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="APELLIDO_P" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="APELLIDO_M" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="MIEMBROS" Relationship="Self.FK_MIEMBROS_USUARIO" FromRole="USUARIO" ToRole="MIEMBROS" />
+          <NavigationProperty Name="PRESUPUESTOHs" Relationship="Self.FK_PRESUPUESTOH_USUARIO" FromRole="USUARIO" ToRole="PRESUPUESTOH" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
+        </EntityType>
+        <EntityType Name="WORKFH">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WORKFVs" Relationship="Self.FK_WORKV_WORKFH" FromRole="WORKFH" ToRole="WORKFV" />
+        </EntityType>
+        <EntityType Name="WORKFP">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="VERSION" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="AGENTE_ID" Type="Int32" />
+          <Property Name="ACCION_ID" Type="Int32" />
+          <Property Name="NEXT_STEP" Type="Int32" />
+          <Property Name="NS_ACCEPT" Type="Int32" />
+          <Property Name="NS_REJECT" Type="Int32" />
+          <Property Name="LOOPS" Type="Int32" />
+          <Property Name="CONDICION_ID" Type="Int32" />
+          <Property Name="NS_CN_ACCEPT" Type="Int32" />
+          <Property Name="NS_CN_REJECT" Type="Int32" />
+          <Property Name="EMAIL" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="EMAIL_TXT_ID" Type="Int32" />
+          <Property Name="EMAIL_INN_ID" Type="Int32" />
+          <NavigationProperty Name="ACCION" Relationship="Self.FK_WORKFP_ACCION" FromRole="WORKFP" ToRole="ACCION" />
+          <NavigationProperty Name="WORKFV" Relationship="Self.FK_WORKFP_WORKFV" FromRole="WORKFP" ToRole="WORKFV" />
+        </EntityType>
+        <EntityType Name="WORKFT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="WF_ID" />
+            <PropertyRef Name="WF_VERSION" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="WF_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WF_VERSION" Type="Int32" Nullable="false" />
+          <Property Name="TXT20" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_WORKFT_SPRAS" FromRole="WORKFT" ToRole="SPRAS" />
+          <NavigationProperty Name="WORKFV" Relationship="Self.FK_WORKFT_WORKFV" FromRole="WORKFT" ToRole="WORKFV" />
+        </EntityType>
+        <EntityType Name="WORKFV">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="FECHAI" Type="DateTime" Precision="0" />
+          <Property Name="FECHAF" Type="DateTime" Precision="0" />
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WORKFH" Relationship="Self.FK_WORKV_WORKFH" FromRole="WORKFV" ToRole="WORKFH" />
+          <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_WORKFV" FromRole="WORKFV" ToRole="WORKFP" />
+          <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_WORKFV" FromRole="WORKFV" ToRole="WORKFT" />
+        </EntityType>
+        <EntityType Name="CARPETAV">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ICON" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PAGINAV">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="PAGINA_ID" />
+            <PropertyRef Name="CARPETA_ID" />
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="USUARIO_SPRAS" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PAGINA_ID" Type="Int32" Nullable="false" />
+          <Property Name="PAGINA_URL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CARPETA_ID" Type="Int32" Nullable="false" />
+          <Property Name="CARPETA_URL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ICON" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="PERMISO" Type="Boolean" />
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USUARIO_SPRAS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_WORKFP_ACCION">
+          <End Role="ACCION" Type="Self.ACCION" Multiplicity="0..1" />
+          <End Role="WORKFP" Type="Self.WORKFP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFP">
+              <PropertyRef Name="ACCION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CARPETAT_CARPETA">
+          <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="1" />
+          <End Role="CARPETAT" Type="Self.CARPETAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARPETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CARPETAT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINA_CARPETA">
+          <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="0..1" />
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARPETA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINA">
+              <PropertyRef Name="CARPETA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CARPETAT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="CARPETAT" Type="Self.CARPETAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CARPETAT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GALLT_GALL">
+          <End Role="GALL" Type="Self.GALL" Multiplicity="1" />
+          <End Role="GALLT" Type="Self.GALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GALLT">
+              <PropertyRef Name="GALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALL_GALL">
+          <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
+          <End Role="TALL" Type="Self.TALL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALL">
+              <PropertyRef Name="GALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GALLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="GALLT" Type="Self.GALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GALLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MIEMBROS_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+          <End Role="MIEMBROS" Type="Self.MIEMBRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MIEMBROS">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MIEMBROS_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="MIEMBROS" Type="Self.MIEMBRO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MIEMBROS">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINAT_PAGINA">
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
+          <End Role="PAGINAT" Type="Self.PAGINAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAGINA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINAT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERMISO_PAGINA_PAGINA">
+          <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
+          <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAGINA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERMISO_PAGINA">
+              <PropertyRef Name="PAGINA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PAGINAT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="PAGINAT" Type="Self.PAGINAT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PAGINAT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERMISO_PAGINA_ROL">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+          <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERMISO_PAGINA">
+              <PropertyRef Name="ROL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRESUPUESTOH_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="PRESUPUESTOH" Type="Self.PRESUPUESTOH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PRESUPUESTOH">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRESUPUESTOP_PRESUPUESTOH">
+          <End Role="PRESUPUESTOH" Type="Self.PRESUPUESTOH" Multiplicity="1" />
+          <End Role="PRESUPUESTOP" Type="Self.PRESUPUESTOP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRESUPUESTOH">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="ANIO" />
+            </Principal>
+            <Dependent Role="PRESUPUESTOP">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="ANIO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="TALLT" Type="Self.TALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOLT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="TSOLT" Type="Self.TSOLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOLT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIO_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USUARIO">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="WORKFT" Type="Self.WORKFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TALLT_TALL">
+          <End Role="TALL" Type="Self.TALL" Multiplicity="1" />
+          <End Role="TALLT" Type="Self.TALLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TALL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TALLT">
+              <PropertyRef Name="TALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOL_TSOL">
+          <End Role="TSOL" Type="Self.TSOL" Multiplicity="0..1" />
+          <End Role="TSOL1" Type="Self.TSOL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOL1">
+              <PropertyRef Name="TSOLR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TSOLT_TSOL">
+          <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
+          <End Role="TSOLT" Type="Self.TSOLT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOLT">
+              <PropertyRef Name="TSOL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKV_WORKFH">
+          <End Role="WORKFH" Type="Self.WORKFH" Multiplicity="1" />
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFH">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WORKFV">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFP_WORKFV">
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="1" />
+          <End Role="WORKFP" Type="Self.WORKFP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFV">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Principal>
+            <Dependent Role="WORKFP">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WORKFT_WORKFV">
+          <End Role="WORKFV" Type="Self.WORKFV" Multiplicity="1" />
+          <End Role="WORKFT" Type="Self.WORKFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WORKFV">
+              <PropertyRef Name="ID" />
+              <PropertyRef Name="VERSION" />
+            </Principal>
+            <Dependent Role="WORKFT">
+              <PropertyRef Name="WF_ID" />
+              <PropertyRef Name="WF_VERSION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TAT001Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACCIONs" EntityType="Self.ACCION" />
+          <EntitySet Name="CARPETAs" EntityType="Self.CARPETA" />
+          <EntitySet Name="CARPETATs" EntityType="Self.CARPETAT" />
+          <EntitySet Name="GALLs" EntityType="Self.GALL" />
+          <EntitySet Name="GALLTs" EntityType="Self.GALLT" />
+          <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBRO" />
+          <EntitySet Name="PAGINAs" EntityType="Self.PAGINA" />
+          <EntitySet Name="PAGINATs" EntityType="Self.PAGINAT" />
+          <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" />
+          <EntitySet Name="PRESUPUESTOHs" EntityType="Self.PRESUPUESTOH" />
+          <EntitySet Name="PRESUPUESTOPs" EntityType="Self.PRESUPUESTOP" />
+          <EntitySet Name="ROLs" EntityType="Self.ROL" />
+          <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
+          <EntitySet Name="TALLs" EntityType="Self.TALL" />
+          <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
+          <EntitySet Name="TSOLs" EntityType="Self.TSOL" />
+          <EntitySet Name="TSOLTs" EntityType="Self.TSOLT" />
+          <EntitySet Name="USUARIOs" EntityType="Self.USUARIO" />
+          <EntitySet Name="WORKFHs" EntityType="Self.WORKFH" />
+          <EntitySet Name="WORKFPs" EntityType="Self.WORKFP" />
+          <EntitySet Name="WORKFTs" EntityType="Self.WORKFT" />
+          <EntitySet Name="WORKFVs" EntityType="Self.WORKFV" />
+          <EntitySet Name="CARPETAVs" EntityType="Self.CARPETAV" />
+          <EntitySet Name="PAGINAVs" EntityType="Self.PAGINAV" />
+          <AssociationSet Name="FK_WORKFP_ACCION" Association="Self.FK_WORKFP_ACCION">
+            <End Role="ACCION" EntitySet="ACCIONs" />
+            <End Role="WORKFP" EntitySet="WORKFPs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CARPETAT_CARPETA" Association="Self.FK_CARPETAT_CARPETA">
+            <End Role="CARPETA" EntitySet="CARPETAs" />
+            <End Role="CARPETAT" EntitySet="CARPETATs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINA_CARPETA" Association="Self.FK_PAGINA_CARPETA">
+            <End Role="CARPETA" EntitySet="CARPETAs" />
+            <End Role="PAGINA" EntitySet="PAGINAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CARPETAT_SPRAS" Association="Self.FK_CARPETAT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="CARPETAT" EntitySet="CARPETATs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GALLT_GALL" Association="Self.FK_GALLT_GALL">
+            <End Role="GALL" EntitySet="GALLs" />
+            <End Role="GALLT" EntitySet="GALLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALL_GALL" Association="Self.FK_TALL_GALL">
+            <End Role="GALL" EntitySet="GALLs" />
+            <End Role="TALL" EntitySet="TALLs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GALLT_SPRAS" Association="Self.FK_GALLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="GALLT" EntitySet="GALLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MIEMBROS_ROL" Association="Self.FK_MIEMBROS_ROL">
+            <End Role="ROL" EntitySet="ROLs" />
+            <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MIEMBROS_USUARIO" Association="Self.FK_MIEMBROS_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINAT_PAGINA" Association="Self.FK_PAGINAT_PAGINA">
+            <End Role="PAGINA" EntitySet="PAGINAs" />
+            <End Role="PAGINAT" EntitySet="PAGINATs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERMISO_PAGINA_PAGINA" Association="Self.FK_PERMISO_PAGINA_PAGINA">
+            <End Role="PAGINA" EntitySet="PAGINAs" />
+            <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PAGINAT_SPRAS" Association="Self.FK_PAGINAT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="PAGINAT" EntitySet="PAGINATs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERMISO_PAGINA_ROL" Association="Self.FK_PERMISO_PAGINA_ROL">
+            <End Role="ROL" EntitySet="ROLs" />
+            <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRESUPUESTOH_USUARIO" Association="Self.FK_PRESUPUESTOH_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOHs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRESUPUESTOP_PRESUPUESTOH" Association="Self.FK_PRESUPUESTOP_PRESUPUESTOH">
+            <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOHs" />
+            <End Role="PRESUPUESTOP" EntitySet="PRESUPUESTOPs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALLT_SPRAS" Association="Self.FK_TALLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TALLT" EntitySet="TALLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOLT_SPRAS" Association="Self.FK_TSOLT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TSOLT" EntitySet="TSOLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIO_SPRAS" Association="Self.FK_USUARIO_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFT_SPRAS" Association="Self.FK_WORKFT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="WORKFT" EntitySet="WORKFTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TALLT_TALL" Association="Self.FK_TALLT_TALL">
+            <End Role="TALL" EntitySet="TALLs" />
+            <End Role="TALLT" EntitySet="TALLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOL_TSOL" Association="Self.FK_TSOL_TSOL">
+            <End Role="TSOL" EntitySet="TSOLs" />
+            <End Role="TSOL1" EntitySet="TSOLs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
+            <End Role="TSOL" EntitySet="TSOLs" />
+            <End Role="TSOLT" EntitySet="TSOLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKV_WORKFH" Association="Self.FK_WORKV_WORKFH">
+            <End Role="WORKFH" EntitySet="WORKFHs" />
+            <End Role="WORKFV" EntitySet="WORKFVs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFP_WORKFV" Association="Self.FK_WORKFP_WORKFV">
+            <End Role="WORKFV" EntitySet="WORKFVs" />
+            <End Role="WORKFP" EntitySet="WORKFPs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WORKFT_WORKFV" Association="Self.FK_WORKFT_WORKFV">
+            <End Role="WORKFV" EntitySet="WORKFVs" />
+            <End Role="WORKFT" EntitySet="WORKFTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TAT001ModelStoreContainer" CdmEntityContainer="TAT001Entities">
+          <EntitySetMapping Name="ACCIONs">
+            <EntityTypeMapping TypeName="TAT001Model.ACCION">
+              <MappingFragment StoreEntitySet="ACCION">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCCRIPCION" ColumnName="DESCCRIPCION" />
+                <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CARPETAs">
+            <EntityTypeMapping TypeName="TAT001Model.CARPETA">
+              <MappingFragment StoreEntitySet="CARPETA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="ICON" ColumnName="ICON" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CARPETATs">
+            <EntityTypeMapping TypeName="TAT001Model.CARPETAT">
+              <MappingFragment StoreEntitySet="CARPETAT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GALLs">
+            <EntityTypeMapping TypeName="TAT001Model.GALL">
+              <MappingFragment StoreEntitySet="GALL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GALLTs">
+            <EntityTypeMapping TypeName="TAT001Model.GALLT">
+              <MappingFragment StoreEntitySet="GALLT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MIEMBROS">
+            <EntityTypeMapping TypeName="TAT001Model.MIEMBRO">
+              <MappingFragment StoreEntitySet="MIEMBROS">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAGINAs">
+            <EntityTypeMapping TypeName="TAT001Model.PAGINA">
+              <MappingFragment StoreEntitySet="PAGINA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="CARPETA_ID" ColumnName="CARPETA_ID" />
+                <ScalarProperty Name="ICON" ColumnName="ICON" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAGINATs">
+            <EntityTypeMapping TypeName="TAT001Model.PAGINAT">
+              <MappingFragment StoreEntitySet="PAGINAT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERMISO_PAGINA">
+            <EntityTypeMapping TypeName="TAT001Model.PERMISO_PAGINA">
+              <MappingFragment StoreEntitySet="PERMISO_PAGINA">
+                <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
+                <ScalarProperty Name="ROL_ID" ColumnName="ROL_ID" />
+                <ScalarProperty Name="PERMISO" ColumnName="PERMISO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRESUPUESTOHs">
+            <EntityTypeMapping TypeName="TAT001Model.PRESUPUESTOH">
+              <MappingFragment StoreEntitySet="PRESUPUESTOH">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ANIO" ColumnName="ANIO" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRESUPUESTOPs">
+            <EntityTypeMapping TypeName="TAT001Model.PRESUPUESTOP">
+              <MappingFragment StoreEntitySet="PRESUPUESTOP">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ANIO" ColumnName="ANIO" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="MES" ColumnName="MES" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="PAIS" ColumnName="PAIS" />
+                <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+                <ScalarProperty Name="MATERIAL" ColumnName="MATERIAL" />
+                <ScalarProperty Name="BANNER" ColumnName="BANNER" />
+                <ScalarProperty Name="CONCEPTO" ColumnName="CONCEPTO" />
+                <ScalarProperty Name="DATA" ColumnName="DATA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROLs">
+            <EntityTypeMapping TypeName="TAT001Model.ROL">
+              <MappingFragment StoreEntitySet="ROL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SPRAS">
+            <EntityTypeMapping TypeName="TAT001Model.SPRA">
+              <MappingFragment StoreEntitySet="SPRAS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TALLs">
+            <EntityTypeMapping TypeName="TAT001Model.TALL">
+              <MappingFragment StoreEntitySet="TALL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+                <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+                <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TALLTs">
+            <EntityTypeMapping TypeName="TAT001Model.TALLT">
+              <MappingFragment StoreEntitySet="TALLT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSOLs">
+            <EntityTypeMapping TypeName="TAT001Model.TSOL">
+              <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
+                <ScalarProperty Name="RANGO_ID" ColumnName="RANGO_ID" />
+                <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSOLTs">
+            <EntityTypeMapping TypeName="TAT001Model.TSOLT">
+              <MappingFragment StoreEntitySet="TSOLT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+                <ScalarProperty Name="TXT020" ColumnName="TXT020" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOs">
+            <EntityTypeMapping TypeName="TAT001Model.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PASS" ColumnName="PASS" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="APELLIDO_P" ColumnName="APELLIDO_P" />
+                <ScalarProperty Name="APELLIDO_M" ColumnName="APELLIDO_M" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WORKFHs">
+            <EntityTypeMapping TypeName="TAT001Model.WORKFH">
+              <MappingFragment StoreEntitySet="WORKFH">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+                <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WORKFPs">
+            <EntityTypeMapping TypeName="TAT001Model.WORKFP">
+              <MappingFragment StoreEntitySet="WORKFP">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="AGENTE_ID" ColumnName="AGENTE_ID" />
+                <ScalarProperty Name="ACCION_ID" ColumnName="ACCION_ID" />
+                <ScalarProperty Name="NEXT_STEP" ColumnName="NEXT_STEP" />
+                <ScalarProperty Name="NS_ACCEPT" ColumnName="NS_ACCEPT" />
+                <ScalarProperty Name="NS_REJECT" ColumnName="NS_REJECT" />
+                <ScalarProperty Name="LOOPS" ColumnName="LOOPS" />
+                <ScalarProperty Name="CONDICION_ID" ColumnName="CONDICION_ID" />
+                <ScalarProperty Name="NS_CN_ACCEPT" ColumnName="NS_CN_ACCEPT" />
+                <ScalarProperty Name="NS_CN_REJECT" ColumnName="NS_CN_REJECT" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="EMAIL_TXT_ID" ColumnName="EMAIL_TXT_ID" />
+                <ScalarProperty Name="EMAIL_INN_ID" ColumnName="EMAIL_INN_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WORKFTs">
+            <EntityTypeMapping TypeName="TAT001Model.WORKFT">
+              <MappingFragment StoreEntitySet="WORKFT">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="WF_ID" ColumnName="WF_ID" />
+                <ScalarProperty Name="WF_VERSION" ColumnName="WF_VERSION" />
+                <ScalarProperty Name="TXT20" ColumnName="TXT20" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WORKFVs">
+            <EntityTypeMapping TypeName="TAT001Model.WORKFV">
+              <MappingFragment StoreEntitySet="WORKFV">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+                <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+                <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CARPETAVs">
+            <EntityTypeMapping TypeName="TAT001Model.CARPETAV">
+              <MappingFragment StoreEntitySet="CARPETAV">
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+                <ScalarProperty Name="ICON" ColumnName="ICON" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAGINAVs">
+            <EntityTypeMapping TypeName="TAT001Model.PAGINAV">
+              <MappingFragment StoreEntitySet="PAGINAV">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
+                <ScalarProperty Name="PAGINA_URL" ColumnName="PAGINA_URL" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+                <ScalarProperty Name="CARPETA_ID" ColumnName="CARPETA_ID" />
+                <ScalarProperty Name="CARPETA_URL" ColumnName="CARPETA_URL" />
+                <ScalarProperty Name="ICON" ColumnName="ICON" />
+                <ScalarProperty Name="PERMISO" ColumnName="PERMISO" />
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="USUARIO_SPRAS" ColumnName="USUARIO_SPRAS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

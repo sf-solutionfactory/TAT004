@@ -16,16 +16,31 @@ namespace TAT001
 
             // Utilice la versión de desarrollo de Modernizr para desarrollar y obtener información. De este modo, estará
             // preparado para la producción y podrá utilizar la herramienta de compilación disponible en http://modernizr.com para seleccionar solo las pruebas que necesite.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+            //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+            //            "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            //          "~/Scripts/bootstrap.js",
+            //          "~/Scripts/respond.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+            //bundles.Add(new StyleBundle("~/Content/css").Include(
+            //          "~/Content/bootstrap.css",
+            //          "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/materialize").Include(
+                      "~/Scripts/materialize.min.js",
+                      "~/Scripts/materialize.js"));
+
+            bundles.Add(new StyleBundle("~/Content/materialize").Include(
+            //"~/Content/g-materialize.css",
+            //"~/Content/materialize.min.css",
+            "~/Content/materialize.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/menu").Include(
+                      "~/Scripts/menu.js",
+                      "~/Scripts/sideMenu.js"));
+            bundles.Add(new StyleBundle("~/Content/menu").Include(
+                      "~/Content/sideMenu.css"));
         }
     }
 }
