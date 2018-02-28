@@ -54,6 +54,7 @@
         <AssociationConnector Association="TAT001Model.FK_WORKV_WORKFH" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.WARNINGV" Width="1.5" PointX="8.375" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

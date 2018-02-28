@@ -18,30 +18,23 @@
                 <a href="@Url.Action("Index", "Home")" class="brand-logo">
                     <img src="~/images/logo_kellogg.png" style="padding-top: 8px; padding-left: 8px;" />
                 </a>
-                <ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
-                    <li>
-                        <a href="#" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
-                            <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home")';return false;" />
-                        </a>
-                    </li>
-                    <li>
-                        <a href="Logout">Salir</a>
-                    </li>
-                </ul>
-                <script>
-                    var elem = document.querySelector('.dropdown-trigger');
-                    var options = [];
-                    var instance = M.Dropdown.init(elem, options);
-
-                    //var image = "/images/flags/4x3/" + sessionStorage["pais"] + ".svg"
-                    //document.getElementById('menu_imgPais').src = image;
-
-                    //function cambiaPais(id) {
-                    //    var pais = id.split('-')[1];
-                    //    sessionStorage["pais"] = pais;
-                    //    document.getElementById('menu_imgPais').src = "/images/flags/4x3/" + pais + ".svg";
-                    //}
-                </script>
+                @if (ViewBag.flag != true)
+                {
+                    <ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
+                        <li>
+                            <a href="#" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home")';return false;" />
+                            </a>
+                        </li>
+                        <li>
+                            @using Microsoft.AspNet.Identity
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()<a href="javascript:document.getElementById('logoutForm').submit()">Salir</a>
+                            }
+                        </li>
+                    </ul>
+                }
             </div>
         </nav>
     </div>
@@ -49,9 +42,6 @@
         <li>
             <div class="navbar-fixed">
                 <div class="nav-wrapper pink darken-1" style="height: 68px;">
-                    @*<a href="@Url.Action("Index", "Home")" class="brand-logo">
-                            <img src="../images/logo_kellogg.png" />
-                        </a>*@
                 </div>
             </div>
         </li>
@@ -159,6 +149,23 @@
             <p>&copy; @DateTime.Now.Year - TAT 2.0</p>
         </footer>
     </div>
+    @using TAT001.Entities;
+    @if (ViewBag.warnings != null)
+    {
+        foreach (WARNINGV w in ViewBag.warnings)
+        {
+            <script>
+            var elem = document.getElementById("@w.ID");
+            if (elem != undefined) {
+                var options = {
+                    html: "@w.WARNING",
+                    position: "@w.POSICION"
+                };
+                var instance = M.Tooltip.init(elem, options);
+            }
+            </script>
+        }
+    }
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)*@

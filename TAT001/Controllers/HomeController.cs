@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -9,25 +10,30 @@ using TAT001.Models;
 
 namespace TAT001.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index(string pais)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
-                string u = Session["UserID"].ToString();
+                int pagina = 1; //ID EN BASE DE DATOS
+                string u = User.Identity.Name;
                 if (pais != null)
                     Session["pais"] = pais;
-                ViewBag.pais = pais + ".svg";
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.nombre = user.NOMBRE + " " + user.APELLIDO_P + " " + user.APELLIDO_M;
                 ViewBag.email = user.EMAIL;
                 ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).First().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).First().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => a.PAGINA_ID.Equals(pagina) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 try
                 {
                     string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
@@ -44,57 +50,24 @@ namespace TAT001.Controllers
             return View();
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(USUARIO objUser, string ReturnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (objUser.PASS != null)
-                {
-                    using (TAT001Entities db = new TAT001Entities())
-                    {
-                        Cryptography c = new Cryptography();
-                        string pass = c.Encrypt(objUser.PASS);
-
-                        var obj = db.USUARIOs.Where(a => a.ID.Equals(objUser.ID) && a.PASS.Equals(pass)).FirstOrDefault();
-                        if (obj != null)
-                        {
-                            Session["UserID"] = obj.ID.ToString();
-                            Session["UserName"] = obj.NOMBRE.ToString();
-                            FormsAuthentication.SetAuthCookie(obj.ID.ToString(), false);
-                            if (ReturnUrl == null)
-                                return RedirectToAction("Index", "Home");
-                            if (ReturnUrl.Equals("/"))
-                                return RedirectToAction("Index", "Home");
-                            string[] ret = ReturnUrl.Split('/');
-                            FormsAuthentication.RedirectFromLoginPage(obj.ID.ToString(), true);
-                            return RedirectToAction(ret[ret.Length - 1], ret[ret.Length - 2]);
-                        }
-                        else
-                            ViewBag.Message = "Usuario o contraseña incorrecta";
-                    }
-                }
-            }
-            return View(objUser);
-        }
+        [Authorize]
         public ActionResult Pais()
         {
             using (TAT001Entities db = new TAT001Entities())
             {
-                string u = Session["UserID"].ToString();
+                int pagina = 1009; //ID EN BASE DE DATOS
+                string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.nombre = user.NOMBRE + " " + user.APELLIDO_P + " " + user.APELLIDO_M;
                 ViewBag.email = user.EMAIL;
                 ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.flag = true;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).First().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).First().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => a.PAGINA_ID.Equals(pagina) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
             }
+            //ViewBag.Title = "Seleccionar país";
             return View();
         }
     }

@@ -27,6 +27,7 @@ namespace TAT001.Entities
         public Nullable<int> CARPETA_ID { get; set; }
         public string ICON { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
+        public Nullable<bool> MOSTRAR { get; set; }
     
         public virtual CARPETA CARPETA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

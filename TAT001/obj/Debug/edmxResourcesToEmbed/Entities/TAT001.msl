@@ -60,6 +60,7 @@
     <EntitySetMapping Name="PAGINAs">
       <EntityTypeMapping TypeName="TAT001Model.PAGINA">
         <MappingFragment StoreEntitySet="PAGINA">
+          <ScalarProperty Name="MOSTRAR" ColumnName="MOSTRAR" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="URL" ColumnName="URL" />
           <ScalarProperty Name="TITULO" ColumnName="TITULO" />
@@ -270,6 +271,20 @@
           <ScalarProperty Name="PERMISO" ColumnName="PERMISO" />
           <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
           <ScalarProperty Name="USUARIO_SPRAS" ColumnName="USUARIO_SPRAS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WARNINGVs">
+      <EntityTypeMapping TypeName="TAT001Model.WARNINGV">
+        <MappingFragment StoreEntitySet="WARNINGV">
+          <ScalarProperty Name="POSICION" ColumnName="POSICION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="WARNING" ColumnName="WARNING" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

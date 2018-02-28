@@ -48,10 +48,9 @@ namespace TAT001.Models
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Correo electrónico")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Required(ErrorMessage="uno")]
+        [Display(Name = "Usuario")]
+        public string ID { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

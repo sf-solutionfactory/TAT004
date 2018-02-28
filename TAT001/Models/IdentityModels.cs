@@ -21,7 +21,8 @@ namespace TAT001.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            //: base("DefaultConnection", throwIfV1Schema: false)
+            : base("TAT001Entities", throwIfV1Schema: false)
         {
         }
 

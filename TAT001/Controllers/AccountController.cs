@@ -5,9 +5,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using TAT001.Entities;
 using TAT001.Models;
 
 namespace TAT001.Controllers
@@ -22,7 +25,7 @@ namespace TAT001.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -32,11 +35,12 @@ namespace TAT001.Controllers
         {
             get
             {
+                ApplicationSignInManager A = HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -68,27 +72,75 @@ namespace TAT001.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
+
+            //// No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
+            //// Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            ////CookieAuthenticationProvider
+            //switch (result)
+            //{
+            //    case SignInStatus.Success:
+            //        return RedirectToLocal(returnUrl);
+            //    case SignInStatus.LockedOut:
+            //        return View("Lockout");
+            //    case SignInStatus.RequiresVerification:
+            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+            //    case SignInStatus.Failure:
+            //    default:
+            //        ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
+            //        return View(model);
+            //}
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // No cuenta los errores de inicio de sesión para el bloqueo de la cuenta
-            // Para permitir que los errores de contraseña desencadenen el bloqueo de la cuenta, cambie a shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            USUARIO user = new USUARIO();
+            user.ID = model.ID;
+            user.PASS = model.Password;
+
+            Cryptography c = new Cryptography();
+            string pass = c.Encrypt(user.PASS);
+
+            using (TAT001Entities db = new TAT001Entities())
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Intento de inicio de sesión no válido.");
-                    return View(model);
+                user = db.USUARIOs.Where(a => a.ID.Equals(user.ID) && a.PASS.Equals(pass)).FirstOrDefault();
             }
+                //user =  Repository.GetUserDetails(user);
+
+            if (user != null)
+            {
+                FormsAuthentication.SetAuthCookie(model.ID, false);
+
+                //var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, user.MIEMBROS.First().ROL.NOMBRE);
+                var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, "Administrador");
+                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                HttpContext.Response.Cookies.Add(authCookie);
+                return RedirectToAction("Index", "Home");
+            }
+
+            else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(model);
+            }
+        }
+
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session["pais"] = null;
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -120,7 +172,7 @@ namespace TAT001.Controllers
             // Si un usuario introduce códigos incorrectos durante un intervalo especificado de tiempo, la cuenta del usuario 
             // se bloqueará durante un período de tiempo especificado. 
             // Puede configurar el bloqueo de la cuenta en IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,8 +207,8 @@ namespace TAT001.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // Para obtener más información sobre cómo habilitar la confirmación de cuenta y el restablecimiento de contraseña, visite http://go.microsoft.com/fwlink/?LinkID=320771
                     // Enviar correo electrónico con este vínculo
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -383,16 +435,6 @@ namespace TAT001.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
-        }
-
-        //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
         }
 
         //

@@ -77,6 +77,7 @@
     <NavigationProperty Name="CARPETA" Relationship="Self.FK_PAGINA_CARPETA" FromRole="PAGINA" ToRole="CARPETA" />
     <NavigationProperty Name="PAGINATs" Relationship="Self.FK_PAGINAT_PAGINA" FromRole="PAGINA" ToRole="PAGINAT" />
     <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PAGINA" FromRole="PAGINA" ToRole="PERMISO_PAGINA" />
+    <Property Name="MOSTRAR" Type="Boolean" />
   </EntityType>
   <EntityType Name="PAGINAT">
     <Key>
@@ -749,5 +750,21 @@
       <End Role="WORKFV" EntitySet="WORKFVs" />
       <End Role="WORKFT" EntitySet="WORKFTs" />
     </AssociationSet>
+    <EntitySet Name="WARNINGVs" EntityType="TAT001Model.WARNINGV" />
   </EntityContainer>
+  <EntityType Name="WARNINGV">
+    <Key>
+      <PropertyRef Name="PAGINA_ID" />
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="SPRAS_ID" />
+    </Key>
+    <Property Name="PAGINA_ID" Type="Int32" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TIPO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="WARNING" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <Property Name="POSICION" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "WorkPlace";
+    //ViewBag.Title = "WorkPlace";
 }
 
 <div class="row">
@@ -38,7 +38,9 @@
                 <li class="active">
                     <div class="collapsible-header">
                         <i class="material-icons">filter_drama</i>Provisiones
-                        <span class="badge"><a class="waves-effect waves-light btn-floating btn-small" href="Provision/Nuevo"><i class="material-icons">add</i></a></span>
+                        <span class="badge">
+                            <a id="btn_pro" class="waves-effect waves-light btn-floating btn-small" href="@Url.Action("Index", "Provision")"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a>
+                        </span>
                     </div>
                     <div class="collapsible-body">
                         <table>
@@ -78,7 +80,7 @@
                 <li class="active">
                     <div class="collapsible-header">
                         <i class="material-icons">place</i>Notas de crédito
-                        <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i class="material-icons">add</i></a></span>
+                        <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a></span>
                     </div>
                     <div class="collapsible-body">
                         <table>
@@ -118,7 +120,7 @@
                 <li class="active">
                     <div class="collapsible-header">
                         <i class="material-icons">whatshot</i>Ordenes de pago
-                        <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i class="material-icons">add</i></a></span>
+                        <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a></span>
                     </div>
                     <div class="collapsible-body">
                         <table>
@@ -153,19 +155,19 @@
             </ul>
         </div>
         <script>
-                var elem = document.getElementById('coll_1');
-                var options = {
-                    accordion: false
-                }
-                var instance = M.Collapsible.init(elem, options);
-                var elem2 = document.getElementById('coll_2');
-                var options = [];
-                var instance2 = M.Collapsible.init(elem2, options);
-                var elem3 = document.getElementById('coll_3');
-                var options = {
-                    accordion: false
-                }
-                var instance3 = M.Collapsible.init(elem3, options);
+            var elem = document.getElementById('coll_1');
+            var options = {
+                accordion: false
+            }
+            var instance = M.Collapsible.init(elem, options);
+            var elem2 = document.getElementById('coll_2');
+            var options = [];
+            var instance2 = M.Collapsible.init(elem2, options);
+            var elem3 = document.getElementById('coll_3');
+            var options = {
+                accordion: false
+            }
+            var instance3 = M.Collapsible.init(elem3, options);
         </script>
     </form>
 </div>
