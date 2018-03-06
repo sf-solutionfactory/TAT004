@@ -24,6 +24,8 @@ namespace TAT001.Entities
             this.TSOLTs = new HashSet<TSOLT>();
             this.USUARIOs = new HashSet<USUARIO>();
             this.WORKFTs = new HashSet<WORKFT>();
+            this.TEXTOes = new HashSet<TEXTO>();
+            this.WARNINGs = new HashSet<WARNING>();
         }
     
         public string ID { get; set; }
@@ -43,5 +45,9 @@ namespace TAT001.Entities
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEXTO> TEXTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WARNING> WARNINGs { get; set; }
     }
 }

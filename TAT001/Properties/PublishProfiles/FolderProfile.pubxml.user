@@ -16,10 +16,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>02/28/2018 13:03:49</publishTime>
+      <publishTime>03/06/2018 14:25:33</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>02/28/2018 13:03:49</publishTime>
+      <publishTime>03/06/2018 14:25:33</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>02/27/2018 09:43:09</publishTime>
@@ -190,13 +190,16 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/TAT001.dll">
-      <publishTime>02/28/2018 13:03:39</publishTime>
+      <publishTime>03/06/2018 14:25:22</publishTime>
     </File>
     <File Include="bin/TAT001.pdb">
-      <publishTime>02/28/2018 13:03:39</publishTime>
+      <publishTime>03/06/2018 14:25:22</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>02/27/2018 09:43:11</publishTime>
+    </File>
+    <File Include="Content/autocomplete.css">
+      <publishTime>03/06/2018 13:36:16</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>02/27/2018 09:43:04</publishTime>
@@ -205,19 +208,19 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:04</publishTime>
     </File>
     <File Include="Content/g-materialize.css">
-      <publishTime>02/27/2018 09:54:33</publishTime>
+      <publishTime>03/06/2018 14:19:44</publishTime>
     </File>
     <File Include="Content/materialize.css">
-      <publishTime>02/27/2018 09:53:51</publishTime>
+      <publishTime>03/06/2018 14:19:18</publishTime>
     </File>
     <File Include="Content/sideMenu.css">
-      <publishTime>02/27/2018 09:54:33</publishTime>
+      <publishTime>02/28/2018 15:40:10</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>02/27/2018 09:43:04</publishTime>
     </File>
     <File Include="Entities/TAT001.edmx.diagram">
-      <publishTime>02/28/2018 12:36:22</publishTime>
+      <publishTime>03/02/2018 16:57:44</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>02/27/2018 09:43:09</publishTime>
@@ -264,11 +267,14 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <File Include="fonts/roboto/Roboto-Thin.woff2">
       <publishTime>02/27/2018 09:57:57</publishTime>
     </File>
+    <File Include="Global.asax">
+      <publishTime>02/27/2018 09:43:05</publishTime>
+    </File>
     <File Include="images/flags/1x1/ec.svg">
-      <publishTime>02/27/2018 10:22:04</publishTime>
+      <publishTime>02/28/2018 15:40:40</publishTime>
     </File>
     <File Include="images/flags/1x1/mx.svg">
-      <publishTime>02/27/2018 10:22:04</publishTime>
+      <publishTime>02/28/2018 16:36:24</publishTime>
     </File>
     <File Include="images/flags/1x1/pr.svg">
       <publishTime>02/27/2018 10:22:04</publishTime>
@@ -295,19 +301,28 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>02/28/2018 13:03:41</publishTime>
+      <publishTime>03/06/2018 14:25:25</publishTime>
+    </File>
+    <File Include="Scripts/autocomplete1.10.2.js">
+      <publishTime>03/06/2018 12:53:38</publishTime>
+    </File>
+    <File Include="Scripts/autocomplete1.11.4.js">
+      <publishTime>03/06/2018 14:17:39</publishTime>
     </File>
     <File Include="Scripts/materialize.js">
       <publishTime>02/27/2018 10:00:05</publishTime>
     </File>
     <File Include="Scripts/materialize.min.js">
-      <publishTime>02/27/2018 10:00:40</publishTime>
+      <publishTime>03/05/2018 18:41:02</publishTime>
     </File>
     <File Include="Scripts/menu.js">
       <publishTime>02/27/2018 10:01:20</publishTime>
     </File>
     <File Include="Scripts/sideMenu.js">
       <publishTime>02/27/2018 10:01:20</publishTime>
+    </File>
+    <File Include="Services/catalogo.asmx">
+      <publishTime>03/06/2018 09:56:36</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>02/27/2018 09:43:06</publishTime>
@@ -346,13 +361,16 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:07</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>02/28/2018 13:00:23</publishTime>
+      <publishTime>03/06/2018 14:25:17</publishTime>
     </File>
     <File Include="Views/Home/Login.cshtml">
       <publishTime>02/27/2018 10:25:09</publishTime>
     </File>
     <File Include="Views/Home/Pais.cshtml">
-      <publishTime>02/28/2018 13:00:23</publishTime>
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Listas/Clientes.cshtml">
+      <publishTime>03/06/2018 11:15:02</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
       <publishTime>02/27/2018 09:43:07</publishTime>
@@ -372,6 +390,21 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
     <File Include="Views/Manage/VerifyPhoneNumber.cshtml">
       <publishTime>02/27/2018 09:43:07</publishTime>
     </File>
+    <File Include="Views/Paginas/Create.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Paginas/Delete.cshtml">
+      <publishTime>03/05/2018 13:00:39</publishTime>
+    </File>
+    <File Include="Views/Paginas/Details.cshtml">
+      <publishTime>03/05/2018 14:39:24</publishTime>
+    </File>
+    <File Include="Views/Paginas/Edit.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Paginas/Index.cshtml">
+      <publishTime>03/05/2018 14:39:24</publishTime>
+    </File>
     <File Include="Views/Presupuesto/Carga.cshtml">
       <publishTime>02/27/2018 10:21:07</publishTime>
     </File>
@@ -388,13 +421,43 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:07</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/28/2018 13:03:33</publishTime>
+      <publishTime>03/05/2018 14:46:53</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutLogin.cshtml">
       <publishTime>02/27/2018 10:25:56</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/27/2018 09:43:07</publishTime>
+    </File>
+    <File Include="Views/Textos/Create.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Textos/Delete.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Textos/Details.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Textos/Edit.cshtml">
+      <publishTime>03/05/2018 14:48:29</publishTime>
+    </File>
+    <File Include="Views/Textos/Index.cshtml">
+      <publishTime>03/05/2018 17:00:48</publishTime>
+    </File>
+    <File Include="Views/Warnings/Create.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Warnings/Delete.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Warnings/Details.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
+    </File>
+    <File Include="Views/Warnings/Edit.cshtml">
+      <publishTime>03/05/2018 14:44:30</publishTime>
+    </File>
+    <File Include="Views/Warnings/Index.cshtml">
+      <publishTime>03/05/2018 14:39:23</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>02/27/2018 09:43:07</publishTime>
@@ -403,7 +466,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:07</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>02/27/2018 17:25:27</publishTime>
+      <publishTime>03/06/2018 11:40:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -23,8 +23,24 @@ namespace TAT001.Entities
         public string MONEDA { get; set; }
         public string MATERIAL { get; set; }
         public string BANNER { get; set; }
-        public string CONCEPTO { get; set; }
-        public string DATA { get; set; }
+        public string ADVER { get; set; }
+        public string CONPR { get; set; }
+        public string CSHDC { get; set; }
+        public string DIRLB { get; set; }
+        public string DSTRB { get; set; }
+        public string FREEG { get; set; }
+        public string GRSLS { get; set; }
+        public string NETLB { get; set; }
+        public string OVHDF { get; set; }
+        public string OVHDV { get; set; }
+        public string PKGMT { get; set; }
+        public string PMVAR { get; set; }
+        public string POP { get; set; }
+        public string PURCH { get; set; }
+        public string RAWMT { get; set; }
+        public string RECUN { get; set; }
+        public string RSRDV { get; set; }
+        public string TOTCS { get; set; }
     
         public virtual PRESUPUESTOH PRESUPUESTOH { get; set; }
     }

@@ -172,10 +172,17 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PaginasController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
+    <Compile Include="Controllers\TextosController.cs" />
+    <Compile Include="Controllers\WarningsController.cs" />
     <Compile Include="Entities\ACCION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CAMPOS.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CARPETA.cs">
@@ -185,6 +192,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CARPETAV.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\GALL.cs">
@@ -206,6 +216,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PERMISO_PAGINA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\POSICION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PRESUPUESTOH.cs">
@@ -241,6 +254,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TEXTO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TSOL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -248,6 +264,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\USUARIO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WARNING.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WARNINGV.cs">
@@ -269,6 +288,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\City.cs" />
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -276,6 +296,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\autocomplete.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\g-materialize.css" />
@@ -321,10 +342,13 @@
     <Content Include="images\header-transient.png" />
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
+    <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\materialize.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\sideMenu.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -359,6 +383,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -373,11 +398,23 @@
     <Content Include="Views\Provision\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Views\PRESUPUESTOHs\Create.cshtml" />
-    <Content Include="Views\PRESUPUESTOHs\Delete.cshtml" />
-    <Content Include="Views\PRESUPUESTOHs\Details.cshtml" />
-    <Content Include="Views\PRESUPUESTOHs\Edit.cshtml" />
-    <Content Include="Views\PRESUPUESTOHs\Index.cshtml" />
+    <Content Include="Views\Warnings\Create.cshtml" />
+    <Content Include="Views\Warnings\Delete.cshtml" />
+    <Content Include="Views\Warnings\Details.cshtml" />
+    <Content Include="Views\Warnings\Edit.cshtml" />
+    <Content Include="Views\Warnings\Index.cshtml" />
+    <Content Include="Views\Paginas\Create.cshtml" />
+    <Content Include="Views\Paginas\Delete.cshtml" />
+    <Content Include="Views\Paginas\Details.cshtml" />
+    <Content Include="Views\Paginas\Edit.cshtml" />
+    <Content Include="Views\Paginas\Index.cshtml" />
+    <Content Include="Views\Textos\Create.cshtml" />
+    <Content Include="Views\Textos\Delete.cshtml" />
+    <Content Include="Views\Textos\Details.cshtml" />
+    <Content Include="Views\Textos\Edit.cshtml" />
+    <Content Include="Views\Textos\Index.cshtml" />
+    <Content Include="Views\Listas\Clientes.cshtml" />
+    <Content Include="Scripts\autocomplete1.10.2.js" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

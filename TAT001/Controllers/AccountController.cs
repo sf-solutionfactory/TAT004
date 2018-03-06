@@ -61,8 +61,11 @@ namespace TAT001.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            LoginViewModel m = new LoginViewModel();
+            m.ID = "admin";
+            m.Password = "admin";
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(m);
         }
 
         //
@@ -116,7 +119,7 @@ namespace TAT001.Controllers
             {
                 FormsAuthentication.SetAuthCookie(model.ID, false);
 
-                //var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, user.MIEMBROS.First().ROL.NOMBRE);
+                //var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, user.MIEMBROS.FirstOrDefault().ROL.NOMBRE);
                 var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, "Administrador");
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);

@@ -21,3 +21,13 @@
         padding-left: 0;
     }
 }
+
+
+/*.ie9 input[src$=".svg"] {
+    width: 100%;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    input[src$=".svg"] {
+        width: 100%;
+    }
+}*/

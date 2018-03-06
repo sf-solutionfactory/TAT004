@@ -18,6 +18,7 @@ namespace TAT001.Entities
         public TALL()
         {
             this.TALLTs = new HashSet<TALLT>();
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
         }
     
         public string ID { get; set; }
@@ -30,5 +31,7 @@ namespace TAT001.Entities
         public virtual GALL GALL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALLT> TALLTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<TAT001.Entities.TEXTO>
+
+@{
+    //ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 502;
+    ViewBag.carpeta_r = 500;
+}
+
+<div class="row">
+    @*@Html.ActionLink("Create New", "Create")*@
+    <a href="@Url.Action("Create", "Textos", new { id = TempData["id"].ToString()})" class="btn-floating right">
+        <i class="material-icons">add</i>
+    </a>
+</div>
+<table class="table">
+    <tr>
+        <th id="lbl_url">
+            @Html.DisplayNameFor(model => model.CAMPOS.PAGINA.URL)
+        </th>
+        <th id="lbl_campo">
+            @Html.DisplayNameFor(model => model.CAMPOS.ID)
+        </th>
+        <th id="lbl_texto">
+            @Html.DisplayNameFor(model => model.TEXTOS)
+        </th>
+        <th id="lbl_spras">
+            @Html.DisplayNameFor(model => model.SPRAS_ID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CAMPOS.PAGINA.URL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CAMPOS.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TEXTOS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SPRAS_ID)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            <a href="@Url.Action("Edit", "Textos", new { SPRAS_ID = item.SPRAS_ID, PAGINA_ID = item.PAGINA_ID, CAMPO_ID = item.CAMPO_ID })">
+                <i class="material-icons grey-text">edit</i>
+            </a>
+            <a href="@Url.Action("Details", "Textos", new { SPRAS_ID = item.SPRAS_ID, PAGINA_ID = item.PAGINA_ID, CAMPO_ID = item.CAMPO_ID })">
+                <i class="material-icons grey-text">description</i>
+            </a>
+            <a href="@Url.Action("Delete", "Textos", new { SPRAS_ID = item.SPRAS_ID, PAGINA_ID = item.PAGINA_ID, CAMPO_ID = item.CAMPO_ID })">
+                <i class="material-icons grey-text">delete</i>
+            </a>
+        </td>
+    </tr>
+    }
+
+</table>

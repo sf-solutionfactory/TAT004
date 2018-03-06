@@ -19,6 +19,7 @@ namespace TAT001.Entities
         {
             this.MIEMBROS = new HashSet<MIEMBRO>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
         }
     
         public string ID { get; set; }
@@ -35,5 +36,7 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual SPRA SPRA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }

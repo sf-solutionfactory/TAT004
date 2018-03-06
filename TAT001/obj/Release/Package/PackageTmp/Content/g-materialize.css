@@ -2838,7 +2838,7 @@ td, th {
 }
 
     .collection .collection-item {
-        background-color: #fff;
+        /*background-color: #fff;*/
         line-height: 1.5rem;
         padding: 10px 20px;
         margin: 0;

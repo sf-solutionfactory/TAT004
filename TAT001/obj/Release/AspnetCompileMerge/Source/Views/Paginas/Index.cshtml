@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TAT001.Entities.PAGINA>
+
+@{
+    //ViewBag.Title = "Páginas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 502;
+    ViewBag.carpeta_r = 500;
+}
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<table class="table">
+    <tr>
+        <th>
+            <div id="lbl_url">@Html.DisplayNameFor(model => model.URL)</div>
+        </th>
+        <th>
+            <div id="lbl_title">@Html.DisplayNameFor(model => model.TITULO)</div>
+        </th>
+        <th>
+            <div id="lbl_icon">@Html.DisplayNameFor(model => model.ICON)</div>
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.ACTIVO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MOSTRAR)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CARPETA.URL)
+            </th>*@
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.URL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PAGINATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ICON)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.ACTIVO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MOSTRAR)
+                </td>
+                <td>
+
+                </td>*@
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |*@
+                <a href="@Url.Action("Details", "Paginas",new { id = item.ID })">
+                    <i class='material-icons green-text'>description</i>
+                </a>
+                @*@Html.ActionLink("Warnings", "Index", "Warnings", new { id = item.ID }, htmlAttributes: new { @id = "btn-" + item.ID })*@
+                <a href="@Url.Action("Index", "Warnings",new { id = item.ID })">
+                    <i class='material-icons red-text'>warning</i>
+                </a>
+                <a href="@Url.Action("Index", "Textos",new { id = item.ID })">
+                    <i class='material-icons grey-text'>text_fields</i>
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
