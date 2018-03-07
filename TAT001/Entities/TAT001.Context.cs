@@ -49,5 +49,11 @@ namespace TAT001.Entities
         public virtual DbSet<WORKFV> WORKFVs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
+        public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
+        public virtual DbSet<WARNING> WARNINGs { get; set; }
+        public virtual DbSet<CAMPOS> CAMPOS { get; set; }
+        public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
+        public virtual DbSet<POSICION> POSICIONs { get; set; }
+        public virtual DbSet<TEXTO> TEXTOes { get; set; }
     }
 }
