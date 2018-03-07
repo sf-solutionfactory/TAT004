@@ -5,6 +5,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@*<div class="row">
+    @using (Html.BeginForm("Index", "Paginas"))
+    {
+        <label>
+            <input type="radio" name="uno" value="Uno"/>
+        </label>
+        <label>
+            <input type="radio" name="uno" value="Dos" checked="checked"  />
+        </label>
+        <input type="submit" value="nviar" class="btn" />
+    }
+</div>*@
 <div class="row">
     <form id="form1" runat="server">
         <div class="row">
@@ -45,7 +57,7 @@
                                 url: "../Listas/Clientes",
                                 type: "GET",
                                 dataType: "json",
-                                data: { Prefix: request.term},
+                                data: { Prefix: request.term },
                                 success: function (data) {
                                     response($.map(data, function (item) {
                                         return { label: item.CityName, value: item.CityName };

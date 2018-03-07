@@ -176,3 +176,6 @@ C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\obj\Release\TAT001.csprojResol
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\obj\Release\TAT001.csproj.CoreCompileInputs.cache
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\obj\Release\TAT001.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\obj\Release\TAT001.pdb
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.BulkInsert.dll
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.dll
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.pdb
