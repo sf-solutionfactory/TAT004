@@ -14,6 +14,12 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTO
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DOCUMENTO()
+        {
+            this.DOCUMENTOPs = new HashSet<DOCUMENTOP>();
+        }
+    
         public decimal NUM_DOC { get; set; }
         public string TSOL_ID { get; set; }
         public string TALL_ID { get; set; }
@@ -66,5 +72,7 @@ namespace TAT001.Entities
         public virtual TALL TALL { get; set; }
         public virtual TSOL TSOL { get; set; }
         public virtual USUARIO USUARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOP> DOCUMENTOPs { get; set; }
     }
 }

@@ -399,5 +399,95 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CLIENTEs">
+      <EntityTypeMapping TypeName="TAT001Model.CLIENTE">
+        <MappingFragment StoreEntitySet="CLIENTE">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
+          <ScalarProperty Name="GRUPO" ColumnName="GRUPO" />
+          <ScalarProperty Name="PAYER" ColumnName="PAYER" />
+          <ScalarProperty Name="PARVW" ColumnName="PARVW" />
+          <ScalarProperty Name="CONT_EMAIL" ColumnName="CONT_EMAIL" />
+          <ScalarProperty Name="CONTAC" ColumnName="CONTAC" />
+          <ScalarProperty Name="PSTLZ" ColumnName="PSTLZ" />
+          <ScalarProperty Name="STRAS_GP" ColumnName="STRAS_GP" />
+          <ScalarProperty Name="ORT01" ColumnName="ORT01" />
+          <ScalarProperty Name="REGIO" ColumnName="REGIO" />
+          <ScalarProperty Name="LAND" ColumnName="LAND" />
+          <ScalarProperty Name="STCD2" ColumnName="STCD2" />
+          <ScalarProperty Name="STCD1" ColumnName="STCD1" />
+          <ScalarProperty Name="NAME1" ColumnName="NAME1" />
+          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+          <ScalarProperty Name="SPART" ColumnName="SPART" />
+          <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+          <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CLIENTEIs">
+      <EntityTypeMapping TypeName="TAT001Model.CLIENTEI">
+        <MappingFragment StoreEntitySet="CLIENTEI">
+          <ScalarProperty Name="MWSKZ" ColumnName="MWSKZ" />
+          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+          <ScalarProperty Name="SPART" ColumnName="SPART" />
+          <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+          <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOPs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOP">
+        <MappingFragment StoreEntitySet="DOCUMENTOP">
+          <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+          <ScalarProperty Name="VOLUMEN_REAL" ColumnName="VOLUMEN_REAL" />
+          <ScalarProperty Name="VOLUMEN_EST" ColumnName="VOLUMEN_EST" />
+          <ScalarProperty Name="PRECIO_SUG" ColumnName="PRECIO_SUG" />
+          <ScalarProperty Name="MONTO_APOYO" ColumnName="MONTO_APOYO" />
+          <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MONEDAs">
+      <EntityTypeMapping TypeName="TAT001Model.MONEDA">
+        <MappingFragment StoreEntitySet="MONEDA">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="KTEXT" ColumnName="KTEXT" />
+          <ScalarProperty Name="LTEXT" ColumnName="LTEXT" />
+          <ScalarProperty Name="ALTWR" ColumnName="ALTWR" />
+          <ScalarProperty Name="ISOCD" ColumnName="ISOCD" />
+          <ScalarProperty Name="WAERS" ColumnName="WAERS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PAIS">
+      <EntityTypeMapping TypeName="TAT001Model.PAI">
+        <MappingFragment StoreEntitySet="PAIS">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="LANDX" ColumnName="LANDX" />
+          <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
+          <ScalarProperty Name="LAND" ColumnName="LAND" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SOCIEDADs">
+      <EntityTypeMapping TypeName="TAT001Model.SOCIEDAD">
+        <MappingFragment StoreEntitySet="SOCIEDAD">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="KTOPL" ColumnName="KTOPL" />
+          <ScalarProperty Name="NAME1" ColumnName="NAME1" />
+          <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
+          <ScalarProperty Name="WAERS" ColumnName="WAERS" />
+          <ScalarProperty Name="LAND" ColumnName="LAND" />
+          <ScalarProperty Name="ORT01" ColumnName="ORT01" />
+          <ScalarProperty Name="BUTXT" ColumnName="BUTXT" />
+          <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

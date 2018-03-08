@@ -16,10 +16,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>03/07/2018 16:28:44</publishTime>
+      <publishTime>03/07/2018 18:05:53</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>03/07/2018 16:28:44</publishTime>
+      <publishTime>03/07/2018 18:05:53</publishTime>
     </File>
     <File Include="bin/EntityFramework.BulkInsert.dll">
       <publishTime>08/01/2016 21:59:32</publishTime>
@@ -313,7 +313,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>03/07/2018 13:41:01</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>03/07/2018 16:28:35</publishTime>
+      <publishTime>03/07/2018 18:05:46</publishTime>
     </File>
     <File Include="Scripts/autocomplete1.10.2.js">
       <publishTime>03/06/2018 12:53:38</publishTime>

@@ -60,7 +60,7 @@
                                 data: { Prefix: request.term },
                                 success: function (data) {
                                     response($.map(data, function (item) {
-                                        return { label: item.CityName, value: item.CityName };
+                                        return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
                                     }))
                                 }
                             })
