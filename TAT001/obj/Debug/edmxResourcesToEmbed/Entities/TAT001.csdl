@@ -814,6 +814,28 @@
       <End Role="SPRA" EntitySet="SPRAS" />
       <End Role="WARNING" EntitySet="WARNINGs" />
     </AssociationSet>
+    <EntitySet Name="CLIENTEs" EntityType="TAT001Model.CLIENTE" />
+    <EntitySet Name="CLIENTEIs" EntityType="TAT001Model.CLIENTEI" />
+    <EntitySet Name="DOCUMENTOPs" EntityType="TAT001Model.DOCUMENTOP" />
+    <EntitySet Name="MONEDAs" EntityType="TAT001Model.MONEDA" />
+    <EntitySet Name="PAIS" EntityType="TAT001Model.PAI" />
+    <EntitySet Name="SOCIEDADs" EntityType="TAT001Model.SOCIEDAD" />
+    <AssociationSet Name="FK_CLIENTE_PAIS" Association="TAT001Model.FK_CLIENTE_PAIS">
+      <End Role="PAI" EntitySet="PAIS" />
+      <End Role="CLIENTE" EntitySet="CLIENTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CLIENTEI_CLIENTE" Association="TAT001Model.FK_CLIENTEI_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTEs" />
+      <End Role="CLIENTEI" EntitySet="CLIENTEIs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOP_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOP_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOP" EntitySet="DOCUMENTOPs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SOCIEDAD_MONEDA" Association="TAT001Model.FK_SOCIEDAD_MONEDA">
+      <End Role="MONEDA" EntitySet="MONEDAs" />
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="WARNINGV">
     <Key>
@@ -940,6 +962,7 @@
     <NavigationProperty Name="TALL" Relationship="TAT001Model.FK_DOCUMENTO_TALL" FromRole="DOCUMENTO" ToRole="TALL" />
     <NavigationProperty Name="TSOL" Relationship="TAT001Model.FK_DOCUMENTO_TSOL" FromRole="DOCUMENTO" ToRole="TSOL" />
     <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DOCUMENTO_USUARIO" FromRole="DOCUMENTO" ToRole="USUARIO" />
+    <NavigationProperty Name="DOCUMENTOPs" Relationship="TAT001Model.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOP" />
   </EntityType>
   <Association Name="FK_DOCUMENTO_TALL">
     <End Type="TAT001Model.TALL" Role="TALL" Multiplicity="0..1" />
@@ -1046,6 +1069,159 @@
       </Principal>
       <Dependent Role="WARNING">
         <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CLIENTE">
+    <Key>
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+    </Key>
+    <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="NAME1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="REGIO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ORT01" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="STRAS_GP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PSTLZ" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="CONTAC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CONT_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PARVW" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="GRUPO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="SPRAS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PAI" Relationship="TAT001Model.FK_CLIENTE_PAIS" FromRole="CLIENTE" ToRole="PAI" />
+    <NavigationProperty Name="CLIENTEIs" Relationship="TAT001Model.FK_CLIENTEI_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTEI" />
+  </EntityType>
+  <EntityType Name="CLIENTEI">
+    <Key>
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="MWSKZ" />
+    </Key>
+    <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="MWSKZ" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_CLIENTEI_CLIENTE" FromRole="CLIENTEI" ToRole="CLIENTE" />
+  </EntityType>
+  <EntityType Name="DOCUMENTOP">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="POS" Type="Decimal" Nullable="false" Precision="5" Scale="0" />
+    <Property Name="MATNR" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="CANTIDAD" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="MONTO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="PORC_APOYO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="MONTO_APOYO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="PRECIO_SUG" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="VOLUMEN_EST" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="VOLUMEN_REAL" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
+  </EntityType>
+  <EntityType Name="MONEDA">
+    <Key>
+      <PropertyRef Name="WAERS" />
+    </Key>
+    <Property Name="WAERS" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="ISOCD" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="ALTWR" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="LTEXT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KTEXT" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="SOCIEDADs" Relationship="TAT001Model.FK_SOCIEDAD_MONEDA" FromRole="MONEDA" ToRole="SOCIEDAD" />
+  </EntityType>
+  <EntityType Name="PAI">
+    <Key>
+      <PropertyRef Name="LAND" />
+    </Key>
+    <Property Name="LAND" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="SPRAS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="LANDX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CLIENTEs" Relationship="TAT001Model.FK_CLIENTE_PAIS" FromRole="PAI" ToRole="CLIENTE" />
+  </EntityType>
+  <EntityType Name="SOCIEDAD">
+    <Key>
+      <PropertyRef Name="BUKRS" />
+    </Key>
+    <Property Name="BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="BUTXT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ORT01" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="WAERS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="SPRAS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KTOPL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="MONEDA" Relationship="TAT001Model.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
+  </EntityType>
+  <Association Name="FK_CLIENTE_PAIS">
+    <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="0..1" />
+    <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAI">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="CLIENTE">
+        <PropertyRef Name="LAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CLIENTEI_CLIENTE">
+    <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+    <End Type="TAT001Model.CLIENTEI" Role="CLIENTEI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="CLIENTEI">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOP_DOCUMENTO">
+    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOP" Role="DOCUMENTOP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOP">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SOCIEDAD_MONEDA">
+    <End Type="TAT001Model.MONEDA" Role="MONEDA" Multiplicity="0..1" />
+    <End Type="TAT001Model.SOCIEDAD" Role="SOCIEDAD" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MONEDA">
+        <PropertyRef Name="WAERS" />
+      </Principal>
+      <Dependent Role="SOCIEDAD">
+        <PropertyRef Name="WAERS" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

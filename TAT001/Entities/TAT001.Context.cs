@@ -55,5 +55,11 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<POSICION> POSICIONs { get; set; }
         public virtual DbSet<TEXTO> TEXTOes { get; set; }
+        public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
+        public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
+        public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
+        public virtual DbSet<MONEDA> MONEDAs { get; set; }
+        public virtual DbSet<PAI> PAIS { get; set; }
+        public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
     }
 }

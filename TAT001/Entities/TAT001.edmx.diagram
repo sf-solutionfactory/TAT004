@@ -69,6 +69,16 @@
         <AssociationConnector Association="TAT001Model.FK_TEXTO_CAMPOS" />
         <AssociationConnector Association="TAT001Model.FK_TEXTO_SPRAS" />
         <AssociationConnector Association="TAT001Model.FK_WARNING_SPRAS" />
+        <EntityTypeShape EntityType="TAT001Model.CLIENTE" Width="1.5" PointX="13.625" PointY="9.125" />
+        <EntityTypeShape EntityType="TAT001Model.CLIENTEI" Width="1.5" PointX="15.875" PointY="10.5" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOP" Width="1.5" PointX="11.25" PointY="17" />
+        <EntityTypeShape EntityType="TAT001Model.MONEDA" Width="1.5" PointX="11.375" PointY="1.25" />
+        <EntityTypeShape EntityType="TAT001Model.PAI" Width="1.5" PointX="11.375" PointY="10.625" />
+        <EntityTypeShape EntityType="TAT001Model.SOCIEDAD" Width="1.5" PointX="13.625" PointY="1" />
+        <AssociationConnector Association="TAT001Model.FK_CLIENTE_PAIS" />
+        <AssociationConnector Association="TAT001Model.FK_CLIENTEI_CLIENTE" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOP_DOCUMENTO" />
+        <AssociationConnector Association="TAT001Model.FK_SOCIEDAD_MONEDA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

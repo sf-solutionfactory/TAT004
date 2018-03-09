@@ -266,3 +266,4 @@ C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.pdb
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.BulkInsert.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.pdb
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csprojResolveAssemblyReference.cache
