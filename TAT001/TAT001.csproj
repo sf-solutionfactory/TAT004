@@ -177,6 +177,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -312,7 +313,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\CartaV.cs" />
+    <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -440,6 +442,8 @@
     <Content Include="Views\Textos\Index.cshtml" />
     <Content Include="Views\Listas\Clientes.cshtml" />
     <Content Include="Scripts\autocomplete1.10.2.js" />
+    <Content Include="Views\CartaF\Details.cshtml" />
+    <Content Include="Views\CartaF\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
