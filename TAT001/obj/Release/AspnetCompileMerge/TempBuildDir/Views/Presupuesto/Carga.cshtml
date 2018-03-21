@@ -1,7 +1,20 @@
 ﻿
 @{
-    ViewBag.Title = "Carga";
+    ViewBag.pagina_r = 101;
+    ViewBag.carpeta_r = 100;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+@using (Html.BeginForm("Carga", "Presupuesto", FormMethod.Post, new { @enctype = "multipart/form-data", @class = "form-horizontal", role = "form" }))
+{
+    <div class="file-field input-field">
+        <div class="btn">
+            <span>File</span>
+            <input type="file" name="file" id=" file">
+        </div>
+        <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+        </div>
+        <input type="submit" class="btn" value="Enviar" />
+    </div>
+}

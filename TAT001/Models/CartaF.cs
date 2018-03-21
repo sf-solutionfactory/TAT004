@@ -7,6 +7,8 @@ namespace TAT001.Models
 {
     public class CartaF
     {
+        public decimal num_doc { get; set; }
+
         public string company { get; set; }
         public bool company_x { get; set; }
 

@@ -17,9 +17,9 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PAGINA()
         {
+            this.CAMPOS = new HashSet<CAMPOS>();
             this.PAGINATs = new HashSet<PAGINAT>();
             this.PERMISO_PAGINA = new HashSet<PERMISO_PAGINA>();
-            this.CAMPOS = new HashSet<CAMPOS>();
         }
     
         public int ID { get; set; }
@@ -27,15 +27,15 @@ namespace TAT001.Entities
         public string TITULO { get; set; }
         public Nullable<int> CARPETA_ID { get; set; }
         public string ICON { get; set; }
-        public bool ACTIVO { get; set; }
         public bool MOSTRAR { get; set; }
+        public bool ACTIVO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CAMPOS> CAMPOS { get; set; }
         public virtual CARPETA CARPETA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGINAT> PAGINATs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CAMPOS> CAMPOS { get; set; }
     }
 }

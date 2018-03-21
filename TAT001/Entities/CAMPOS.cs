@@ -17,8 +17,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CAMPOS()
         {
-            this.WARNINGs = new HashSet<WARNING>();
             this.TEXTOes = new HashSet<TEXTO>();
+            this.WARNINGs = new HashSet<WARNING>();
         }
     
         public int PAGINA_ID { get; set; }
@@ -28,8 +28,8 @@ namespace TAT001.Entities
     
         public virtual PAGINA PAGINA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WARNING> WARNINGs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEXTO> TEXTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WARNING> WARNINGs { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace TAT001.Entities
     
     public partial class WORKFP
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public WORKFP()
+        {
+            this.FLUJOes = new HashSet<FLUJO>();
+        }
+    
         public string ID { get; set; }
         public int VERSION { get; set; }
         public int POS { get; set; }
@@ -32,5 +38,7 @@ namespace TAT001.Entities
     
         public virtual ACCION ACCION { get; set; }
         public virtual WORKFV WORKFV { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FLUJO> FLUJOes { get; set; }
     }
 }

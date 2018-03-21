@@ -23,7 +23,17 @@
             <div class="input-field col s6 m2 l2">
                 <input id="documento" type="text" class="validate" />
                 <label id="lbl_doc" for="documento">No. documento</label>
+                <div class="tap-target" data-target="documento">
+                    <div class="tap-target-content">
+                        <h5>Title</h5>
+                        <p>A bunch of text</p>
+                    </div>
+                </div>
                 <script>
+                    var elem = document.querySelector('.tap-target');
+                    var options = [];
+                    var instance = M.FeatureDiscovery.init(elem, options);
+
                     document.getElementById('lbl_doc').innerHTML = "@ViewBag.Title";
                 </script>
             </div>
@@ -60,7 +70,7 @@
                                 data: { Prefix: request.term },
                                 success: function (data) {
                                     response($.map(data, function (item) {
-                                        return { label: item.CityName, value: item.CityName };
+                                        return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
                                     }))
                                 }
                             })

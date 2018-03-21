@@ -1,0 +1,80 @@
+﻿@model TAT001.Entities.FLUJO
+
+@{
+    //ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 103;
+    ViewBag.carpeta_r = 100;
+}
+
+@*<h2>Create</h2>*@
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="row">
+    @*<h4>FLUJO</h4>*@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="input-field col s6">
+        @Html.DropDownList("WORKF_ID", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.WORKF_ID, "WORKF_ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.WORKF_ID, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.DropDownList("WF_VERSION", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.WF_VERSION, "WF_VERSION", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.WF_VERSION, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.DropDownList("WF_POS", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.WF_POS, "WF_POS", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.WF_POS, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.DropDownList("NUM_DOC", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.NUM_DOC, "NUM_DOC", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.NUM_DOC, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.EditorFor(model => model.POS, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.LabelFor(model => model.POS)
+        @Html.ValidationMessageFor(model => model.POS, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.EditorFor(model => model.LOOP, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.LabelFor(model => model.LOOP)
+        @Html.ValidationMessageFor(model => model.LOOP, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.DropDownList("USUARIOA_ID", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.USUARIOA_ID, "USUARIOA_ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.USUARIOA_ID, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.DropDownList("USUARIOD_ID", null, htmlAttributes: new { @class = "form-control" })
+        @Html.LabelFor(model => model.USUARIOD_ID, "USUARIOD_ID", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.ValidationMessageFor(model => model.USUARIOD_ID, "", new { @class = "text-danger" })
+    </div>
+    <div class="input-field col s6">
+        @Html.EditorFor(model => model.ESTATUS, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.LabelFor(model => model.ESTATUS)
+        @Html.ValidationMessageFor(model => model.ESTATUS, "", new { @class = "text-danger" })
+    </div>
+    <script>
+        var elem = document.querySelectorAll('select');
+        var options = [];
+        var instance = M.Select.init(elem, options);
+    </script>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

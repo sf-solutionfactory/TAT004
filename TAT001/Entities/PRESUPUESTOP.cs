@@ -20,27 +20,28 @@ namespace TAT001.Entities
         public string MES { get; set; }
         public string VERSION { get; set; }
         public string PAIS { get; set; }
+        public string REGION { get; set; }
         public string MONEDA { get; set; }
         public string MATERIAL { get; set; }
         public string BANNER { get; set; }
-        public string ADVER { get; set; }
-        public string CONPR { get; set; }
-        public string CSHDC { get; set; }
-        public string DIRLB { get; set; }
-        public string DSTRB { get; set; }
-        public string FREEG { get; set; }
-        public string GRSLS { get; set; }
-        public string NETLB { get; set; }
-        public string OVHDF { get; set; }
-        public string OVHDV { get; set; }
-        public string PKGMT { get; set; }
-        public string PMVAR { get; set; }
-        public string POP { get; set; }
-        public string PURCH { get; set; }
-        public string RAWMT { get; set; }
-        public string RECUN { get; set; }
-        public string RSRDV { get; set; }
-        public string TOTCS { get; set; }
+        public Nullable<double> ADVER { get; set; }
+        public Nullable<double> CONPR { get; set; }
+        public Nullable<double> CSHDC { get; set; }
+        public Nullable<double> DIRLB { get; set; }
+        public Nullable<double> DSTRB { get; set; }
+        public Nullable<double> FREEG { get; set; }
+        public Nullable<double> GRSLS { get; set; }
+        public Nullable<double> NETLB { get; set; }
+        public Nullable<double> OVHDF { get; set; }
+        public Nullable<double> OVHDV { get; set; }
+        public Nullable<double> PKGMT { get; set; }
+        public Nullable<double> PMVAR { get; set; }
+        public Nullable<double> POP { get; set; }
+        public Nullable<double> PURCH { get; set; }
+        public Nullable<double> RAWMT { get; set; }
+        public Nullable<double> RECUN { get; set; }
+        public Nullable<double> RSRDV { get; set; }
+        public Nullable<double> TOTCS { get; set; }
     
         public virtual PRESUPUESTOH PRESUPUESTOH { get; set; }
     }

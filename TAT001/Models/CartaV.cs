@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,6 +9,11 @@ namespace TAT001.Models
 {
     public class CartaV
     {
+        [Key, Column(Order = 0)]
+        public decimal num_doc { get; set; }
+        [Key, Column(Order = 1)]
+        public int pos { get; set; }
+
         public string company { get; set; }
         public bool company_x { get; set; }
 

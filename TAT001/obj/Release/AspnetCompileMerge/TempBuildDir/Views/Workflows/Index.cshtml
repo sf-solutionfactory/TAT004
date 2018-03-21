@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TAT001.Entities.WORKFH>
+
+@{
+    //ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 103;
+    ViewBag.carpeta_r = 100;
+}
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th id="lbl_id">
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            @*<th id="lbl_version">
+                    @Html.DisplayNameFor(model => model.WORKFVs)
+                </th>*@
+            <th id="lbl_tipo">
+                @Html.DisplayNameFor(model => model.TSOL_ID)
+            </th>
+            <th id="lbl_desc">
+                @Html.DisplayNameFor(model => model.DESCRIPCION)
+            </th>
+            <th id="lbl_user">
+                @Html.DisplayNameFor(model => model.USUARIO_ID)
+            </th>
+            @*<th></th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr onclick="document.location = '@Url.Action("Details", new { id = item.ID })'" style="cursor:pointer">
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.WORKFVs.FirstOrDefault().VERSION)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSOL_ID)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.WORKFVs.OrderByDescending(a => a.ID).FirstOrDefault().WORKFTs.Where(a => a.SPRAS_ID.Equals(Session["spras"]) && a.WF_ID.Equals(item.ID) && a.WF_VERSION.Equals(item.WORKFVs.LastOrDefault().VERSION)).FirstOrDefault().TXT50)*@
+                    @Html.DisplayFor(modelItem => item.WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault().WORKFTs.Where(b => b.SPRAS_ID.Equals(Session["spras"]) && b.WF_ID.Equals(item.ID)).FirstOrDefault().TXT50)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.USUARIO_ID)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

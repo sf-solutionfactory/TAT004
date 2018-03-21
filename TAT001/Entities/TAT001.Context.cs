@@ -26,23 +26,47 @@ namespace TAT001.Entities
         }
     
         public virtual DbSet<ACCION> ACCIONs { get; set; }
+        public virtual DbSet<CAMPOS> CAMPOS { get; set; }
         public virtual DbSet<CARPETA> CARPETAs { get; set; }
         public virtual DbSet<CARPETAT> CARPETATs { get; set; }
+        public virtual DbSet<CARTA> CARTAs { get; set; }
+        public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
+        public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
+        public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
+        public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
+        public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
         public virtual DbSet<GALLT> GALLTs { get; set; }
+        public virtual DbSet<IIMPUESTO> IIMPUESTOes { get; set; }
+        public virtual DbSet<IMPUESTO> IMPUESTOes { get; set; }
+        public virtual DbSet<LEYENDA> LEYENDAs { get; set; }
         public virtual DbSet<MIEMBRO> MIEMBROS { get; set; }
+        public virtual DbSet<MONEDA> MONEDAs { get; set; }
         public virtual DbSet<PAGINA> PAGINAs { get; set; }
         public virtual DbSet<PAGINAT> PAGINATs { get; set; }
+        public virtual DbSet<PAI> PAIS { get; set; }
         public virtual DbSet<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
+        public virtual DbSet<POSICION> POSICIONs { get; set; }
+        public virtual DbSet<PRESUPSAPH> PRESUPSAPHs { get; set; }
+        public virtual DbSet<PRESUPSAPP> PRESUPSAPPs { get; set; }
         public virtual DbSet<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual DbSet<PRESUPUESTOP> PRESUPUESTOPs { get; set; }
+        public virtual DbSet<PUESTO> PUESTOes { get; set; }
+        public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
         public virtual DbSet<ROL> ROLs { get; set; }
+        public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
+        public virtual DbSet<TCAMBIO> TCAMBIOs { get; set; }
+        public virtual DbSet<TEXTO> TEXTOes { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
         public virtual DbSet<TSOLT> TSOLTs { get; set; }
+        public virtual DbSet<UMEDIDA> UMEDIDAs { get; set; }
+        public virtual DbSet<UMEDIDAT> UMEDIDATs { get; set; }
         public virtual DbSet<USUARIO> USUARIOs { get; set; }
+        public virtual DbSet<WARNING> WARNINGs { get; set; }
         public virtual DbSet<WORKFH> WORKFHs { get; set; }
         public virtual DbSet<WORKFP> WORKFPs { get; set; }
         public virtual DbSet<WORKFT> WORKFTs { get; set; }
@@ -50,16 +74,9 @@ namespace TAT001.Entities
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<WARNING> WARNINGs { get; set; }
-        public virtual DbSet<CAMPOS> CAMPOS { get; set; }
-        public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
-        public virtual DbSet<POSICION> POSICIONs { get; set; }
-        public virtual DbSet<TEXTO> TEXTOes { get; set; }
-        public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
-        public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
-        public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
-        public virtual DbSet<MONEDA> MONEDAs { get; set; }
-        public virtual DbSet<PAI> PAIS { get; set; }
-        public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
+        public virtual DbSet<FLUJO> FLUJOes { get; set; }
+        public virtual DbSet<CITy> CITIES { get; set; }
+        public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
+        public virtual DbSet<STATE> STATES { get; set; }
     }
 }

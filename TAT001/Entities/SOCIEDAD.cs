@@ -14,16 +14,25 @@ namespace TAT001.Entities
     
     public partial class SOCIEDAD
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SOCIEDAD()
+        {
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
+        }
+    
         public string BUKRS { get; set; }
         public string BUTXT { get; set; }
         public string ORT01 { get; set; }
         public string LAND { get; set; }
+        public string SUBREGIO { get; set; }
         public string WAERS { get; set; }
         public string SPRAS { get; set; }
         public string NAME1 { get; set; }
         public string KTOPL { get; set; }
         public bool ACTIVO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual MONEDA MONEDA { get; set; }
     }
 }

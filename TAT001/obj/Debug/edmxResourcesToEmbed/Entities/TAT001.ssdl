@@ -22,7 +22,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="URL" Type="nvarchar" MaxLength="50" />
     <Property Name="TITULO" Type="nvarchar" MaxLength="50" />
     <Property Name="ICON" Type="nvarchar" MaxLength="20" />
@@ -36,6 +36,63 @@
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CARTA">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FECHAC" Type="datetime" />
+    <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="TIPO" Type="nchar" MaxLength="1" />
+    <Property Name="COMPANY" Type="nvarchar" MaxLength="100" />
+    <Property Name="COMPANYX" Type="bit" />
+    <Property Name="TAXID" Type="nvarchar" MaxLength="100" />
+    <Property Name="TAXIDX" Type="bit" />
+    <Property Name="CONCEPTO" Type="nvarchar" MaxLength="100" />
+    <Property Name="CONCEPTOX" Type="bit" />
+    <Property Name="CLIENTE" Type="nvarchar" MaxLength="100" />
+    <Property Name="CLIENTEX" Type="bit" />
+    <Property Name="PUESTO" Type="nvarchar" MaxLength="100" />
+    <Property Name="PUESTOX" Type="bit" />
+    <Property Name="DIRECCION" Type="nvarchar" MaxLength="100" />
+    <Property Name="DIRECCIONX" Type="bit" />
+    <Property Name="FOLIO" Type="nvarchar" MaxLength="10" />
+    <Property Name="FOLIOX" Type="bit" />
+    <Property Name="LUGAR" Type="nvarchar" MaxLength="100" />
+    <Property Name="LUGARX" Type="bit" />
+    <Property Name="PAYER" Type="nvarchar" MaxLength="100" />
+    <Property Name="PAYERX" Type="bit" />
+    <Property Name="ESTIMADO" Type="nvarchar" MaxLength="100" />
+    <Property Name="ESTIMADOX" Type="bit" />
+    <Property Name="MECANICA" Type="nvarchar" MaxLength="100" />
+    <Property Name="MECANICAX" Type="bit" />
+    <Property Name="NOMBREE" Type="nvarchar" MaxLength="100" />
+    <Property Name="NOMBREEX" Type="bit" />
+    <Property Name="PUESTOE" Type="nvarchar" MaxLength="100" />
+    <Property Name="PUESTOEX" Type="bit" />
+    <Property Name="COMPANYC" Type="nvarchar" MaxLength="100" />
+    <Property Name="COMPANYCX" Type="bit" />
+    <Property Name="NOMBREC" Type="nvarchar" MaxLength="100" />
+    <Property Name="NOMBRECX" Type="bit" />
+    <Property Name="PUESTOC" Type="nvarchar" MaxLength="100" />
+    <Property Name="PUESTOCX" Type="bit" />
+    <Property Name="COMPANYCC" Type="nvarchar" MaxLength="100" />
+    <Property Name="COMPANYCCX" Type="bit" />
+    <Property Name="LEGAL" Type="nvarchar" MaxLength="100" />
+    <Property Name="LEGALX" Type="bit" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+    <Property Name="MAILX" Type="bit" />
+  </EntityType>
+  <EntityType Name="CITIES">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" Nullable="false" />
+    <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="STATE_ID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CLIENTE">
     <Key>
@@ -77,6 +134,31 @@
     <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CONTACTOC">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRE" Type="nvarchar" MaxLength="150" />
+    <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+    <Property Name="ACTIVO" Type="bit" />
+    <Property Name="DEFECTO" Type="bit" />
+  </EntityType>
+  <EntityType Name="COUNTRIES">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="SORTNAME" Type="varchar" MaxLength="3" Nullable="false" />
+    <Property Name="NAME" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="PHONECODE" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -87,19 +169,26 @@
     <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" />
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
+    <Property Name="ESTADO" Type="nchar" MaxLength="10" />
+    <Property Name="CIUDAD" Type="nchar" MaxLength="10" />
     <Property Name="PERIODO" Type="nchar" MaxLength="2" />
     <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
     <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
     <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
-    <Property Name="CANTIDAD_EV" Type="numeric" Precision="3" Scale="0" />
+    <Property Name="CANTIDAD_EV" Type="decimal" Precision="3" Scale="0" />
     <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
-    <Property Name="FECHAD" Type="date" />
-    <Property Name="FECHAC" Type="date" />
+    <Property Name="FECHAD" Type="datetime" />
+    <Property Name="FECHAC" Type="datetime" />
+    <Property Name="HORAC" Type="time" Precision="7" />
+    <Property Name="FECHAC_PLAN" Type="date" />
+    <Property Name="FECHAC_USER" Type="date" />
+    <Property Name="HORAC_USER" Type="time" Precision="7" />
     <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
     <Property Name="ESTATUS_C" Type="nchar" MaxLength="1" />
     <Property Name="ESTATUS_SAP" Type="nchar" MaxLength="1" />
     <Property Name="ESTATUS_WF" Type="nchar" MaxLength="1" />
-    <Property Name="DOCUMENTO_REF" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="DOCUMENTO_REF" Type="decimal" Precision="10" Scale="0" />
+    <Property Name="CONCEPTO" Type="nvarchar" MaxLength="100" />
     <Property Name="NOTAS" Type="nvarchar" MaxLength="255" />
     <Property Name="MONTO_DOC_MD" Type="decimal" Precision="13" Scale="2" />
     <Property Name="MONTO_FIJO_MD" Type="decimal" Precision="13" Scale="2" />
@@ -113,23 +202,33 @@
     <Property Name="MONTO_FIJO_ML2" Type="decimal" Precision="13" Scale="2" />
     <Property Name="MONTO_BASE_GS_PCT_ML2" Type="decimal" Precision="13" Scale="2" />
     <Property Name="MONTO_BASE_NS_PCT_ML2" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PORC_ADICIONAL" Type="decimal" Precision="13" Scale="2" />
     <Property Name="IMPUESTO" Type="nchar" MaxLength="2" />
     <Property Name="FECHAI_VIG" Type="date" />
     <Property Name="FECHAF_VIG" Type="date" />
     <Property Name="ESTATUS_EXT" Type="nchar" MaxLength="1" />
     <Property Name="SOLD_TO_ID" Type="nchar" MaxLength="10" />
     <Property Name="PAYER_ID" Type="nchar" MaxLength="10" />
+    <Property Name="PAYER_NOMBRE" Type="nvarchar" MaxLength="50" />
+    <Property Name="PAYER_EMAIL" Type="nvarchar" MaxLength="255" />
     <Property Name="GRUPO_CTE_ID" Type="nchar" MaxLength="10" />
     <Property Name="CANAL_ID" Type="nchar" MaxLength="2" />
     <Property Name="MONEDA_ID" Type="nchar" MaxLength="3" />
+    <Property Name="MONEDAL_ID" Type="nchar" MaxLength="10" />
+    <Property Name="MONEDAL2_ID" Type="nchar" MaxLength="10" />
     <Property Name="TIPO_CAMBIO" Type="decimal" Precision="10" Scale="6" />
+    <Property Name="TIPO_CAMBIOL" Type="decimal" Precision="10" Scale="6" />
+    <Property Name="TIPO_CAMBIOL2" Type="decimal" Precision="10" Scale="6" />
     <Property Name="NO_FACTURA" Type="nvarchar" MaxLength="30" />
-    <Property Name="FECHAD_SOPORTE" Type="date" />
+    <Property Name="FECHAD_SOPORTE" Type="datetime" />
     <Property Name="METODO_PAGO" Type="nchar" MaxLength="10" />
     <Property Name="NO_PROVEEDOR" Type="nchar" MaxLength="10" />
     <Property Name="PASO_ACTUAL" Type="int" />
     <Property Name="AGENTE_ACTUAL" Type="nvarchar" MaxLength="16" />
-    <Property Name="FECHA_PASO_ACTUAL" Type="date" />
+    <Property Name="FECHA_PASO_ACTUAL" Type="datetime" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" />
   </EntityType>
   <EntityType Name="DOCUMENTOP">
     <Key>
@@ -148,6 +247,27 @@
     <Property Name="VOLUMEN_REAL" Type="decimal" Precision="13" Scale="5" />
     <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
+  <EntityType Name="FLUJO">
+    <Key>
+      <PropertyRef Name="WORKF_ID" />
+      <PropertyRef Name="WF_VERSION" />
+      <PropertyRef Name="WF_POS" />
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="WORKF_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="WF_VERSION" Type="int" Nullable="false" />
+    <Property Name="WF_POS" Type="int" Nullable="false" />
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="LOOP" Type="int" />
+    <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="USUARIOD_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
+    <Property Name="FECHAC" Type="datetime" />
+    <Property Name="FECHAM" Type="datetime" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="GALL">
     <Key>
       <PropertyRef Name="ID" />
@@ -164,6 +284,35 @@
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="IIMPUESTO">
+    <Key>
+      <PropertyRef Name="LAND" />
+      <PropertyRef Name="MWSKZ" />
+    </Key>
+    <Property Name="LAND" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="KSCHL" Type="nchar" MaxLength="4" />
+    <Property Name="KBETR" Type="decimal" Precision="11" Scale="2" />
+  </EntityType>
+  <EntityType Name="IMPUESTO">
+    <Key>
+      <PropertyRef Name="MWSKZ" />
+    </Key>
+    <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LEYENDA">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PAIS_ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="LEYENDA" Type="nvarchar" MaxLength="500" />
+    <Property Name="ACTIVO" Type="bit" />
+    <Property Name="EDITABLE" Type="bit" Nullable="false" />
+    <Property Name="OBLIGATORIA" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="MIEMBROS">
     <Key>
@@ -189,7 +338,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="URL" Type="nvarchar" MaxLength="255" />
     <Property Name="TITULO" Type="nvarchar" MaxLength="50" />
     <Property Name="CARPETA_ID" Type="int" />
@@ -213,6 +362,7 @@
     <Property Name="LAND" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="SPRAS" Type="nchar" MaxLength="2" />
     <Property Name="LANDX" Type="nvarchar" MaxLength="50" />
+    <Property Name="IMAGE" Type="nchar" MaxLength="6" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PERMISO_PAGINA">
@@ -230,6 +380,61 @@
     </Key>
     <Property Name="ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="PRESUPSAPH">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ANIO" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="FECHAC" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PRESUPSAPP">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="ANIO" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="PERIOD" Type="char" MaxLength="2" />
+    <Property Name="TYPE" Type="nchar" MaxLength="1" />
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" />
+    <Property Name="VKORG" Type="nchar" MaxLength="4" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" />
+    <Property Name="VKBUR" Type="nchar" MaxLength="4" />
+    <Property Name="VKGRP" Type="nchar" MaxLength="3" />
+    <Property Name="BZIRK" Type="nchar" MaxLength="4" />
+    <Property Name="MATNR" Type="nvarchar" MaxLength="18" />
+    <Property Name="PRDHA" Type="nvarchar" MaxLength="18" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+    <Property Name="KUNNR_P" Type="nchar" MaxLength="10" />
+    <Property Name="BANNER" Type="nchar" MaxLength="10" />
+    <Property Name="BANNER_CALC" Type="nchar" MaxLength="10" />
+    <Property Name="KUNNR_PAY" Type="nchar" MaxLength="10" />
+    <Property Name="FECHAP" Type="nchar" MaxLength="10" />
+    <Property Name="UNAME" Type="nvarchar" MaxLength="16" />
+    <Property Name="XBLNR" Type="nvarchar" MaxLength="16" />
+    <Property Name="GRSLS" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="CSHDC" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="RECUN" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="DSTRB" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="OTHTA" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="ADVER" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PKGDS" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="CORPM" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="POP" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PMVAR" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="CONPR" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="ILVAR" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="RSRDV" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="BILBK" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="SPA" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="FREEG" Type="decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="PRESUPUESTOH">
     <Key>
@@ -253,27 +458,44 @@
     <Property Name="MES" Type="nchar" MaxLength="3" />
     <Property Name="VERSION" Type="nvarchar" MaxLength="50" />
     <Property Name="PAIS" Type="nvarchar" MaxLength="15" />
+    <Property Name="REGION" Type="nvarchar" MaxLength="15" />
     <Property Name="MONEDA" Type="nchar" MaxLength="2" />
     <Property Name="MATERIAL" Type="nvarchar" MaxLength="18" />
-    <Property Name="BANNER" Type="nchar" MaxLength="6" />
-    <Property Name="ADVER" Type="nvarchar" MaxLength="25" />
-    <Property Name="CONPR" Type="nvarchar" MaxLength="25" />
-    <Property Name="CSHDC" Type="nvarchar" MaxLength="25" />
-    <Property Name="DIRLB" Type="nvarchar" MaxLength="25" />
-    <Property Name="DSTRB" Type="nvarchar" MaxLength="25" />
-    <Property Name="FREEG" Type="nvarchar" MaxLength="25" />
-    <Property Name="GRSLS" Type="nvarchar" MaxLength="25" />
-    <Property Name="NETLB" Type="nvarchar" MaxLength="25" />
-    <Property Name="OVHDF" Type="nvarchar" MaxLength="25" />
-    <Property Name="OVHDV" Type="nvarchar" MaxLength="25" />
-    <Property Name="PKGMT" Type="nvarchar" MaxLength="25" />
-    <Property Name="PMVAR" Type="nvarchar" MaxLength="25" />
-    <Property Name="POP" Type="nvarchar" MaxLength="25" />
-    <Property Name="PURCH" Type="nvarchar" MaxLength="25" />
-    <Property Name="RAWMT" Type="nvarchar" MaxLength="25" />
-    <Property Name="RECUN" Type="nvarchar" MaxLength="25" />
-    <Property Name="RSRDV" Type="nvarchar" MaxLength="25" />
-    <Property Name="TOTCS" Type="nvarchar" MaxLength="25" />
+    <Property Name="BANNER" Type="nvarchar" MaxLength="8" />
+    <Property Name="ADVER" Type="float" />
+    <Property Name="CONPR" Type="float" />
+    <Property Name="CSHDC" Type="float" />
+    <Property Name="DIRLB" Type="float" />
+    <Property Name="DSTRB" Type="float" />
+    <Property Name="FREEG" Type="float" />
+    <Property Name="GRSLS" Type="float" />
+    <Property Name="NETLB" Type="float" />
+    <Property Name="OVHDF" Type="float" />
+    <Property Name="OVHDV" Type="float" />
+    <Property Name="PKGMT" Type="float" />
+    <Property Name="PMVAR" Type="float" />
+    <Property Name="POP" Type="float" />
+    <Property Name="PURCH" Type="float" />
+    <Property Name="RAWMT" Type="float" />
+    <Property Name="RECUN" Type="float" />
+    <Property Name="RSRDV" Type="float" />
+    <Property Name="TOTCS" Type="float" />
+  </EntityType>
+  <EntityType Name="PUESTO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ACTIVO" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="PUESTOT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="PUESTO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="PUESTO_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="ROL">
     <Key>
@@ -292,6 +514,7 @@
     <Property Name="BUTXT" Type="nvarchar" MaxLength="50" />
     <Property Name="ORT01" Type="nvarchar" MaxLength="50" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
+    <Property Name="SUBREGIO" Type="nchar" MaxLength="6" />
     <Property Name="WAERS" Type="nchar" MaxLength="3" />
     <Property Name="SPRAS" Type="nchar" MaxLength="2" />
     <Property Name="NAME1" Type="nvarchar" MaxLength="50" />
@@ -304,6 +527,24 @@
     </Key>
     <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="STATES">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -324,6 +565,19 @@
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TCAMBIO">
+    <Key>
+      <PropertyRef Name="KURST" />
+      <PropertyRef Name="FCURR" />
+      <PropertyRef Name="TCURR" />
+      <PropertyRef Name="GDATU" />
+    </Key>
+    <Property Name="KURST" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="FCURR" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="TCURR" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="GDATU" Type="date" Nullable="false" />
+    <Property Name="UKURS" Type="decimal" Precision="9" Scale="5" />
   </EntityType>
   <EntityType Name="TEXTO">
     <Key>
@@ -357,6 +611,25 @@
     <Property Name="TXT020" Type="nvarchar" MaxLength="20" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="UMEDIDA">
+    <Key>
+      <PropertyRef Name="MSEHI" />
+    </Key>
+    <Property Name="MSEHI" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="UMEDIDAT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="MSEHI" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="MSEHI" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="MSEH3" Type="nchar" MaxLength="3" />
+    <Property Name="MSEH6" Type="nchar" MaxLength="6" />
+    <Property Name="MSEHT" Type="nvarchar" MaxLength="10" />
+    <Property Name="MSEHL" Type="nvarchar" MaxLength="30" />
+  </EntityType>
   <EntityType Name="USUARIO">
     <Key>
       <PropertyRef Name="ID" />
@@ -369,6 +642,10 @@
     <Property Name="EMAIL" Type="nvarchar" MaxLength="256" Nullable="false" />
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" />
+    <Property Name="PUESTO_ID" Type="int" />
+    <Property Name="MANAGER" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="BACKUP_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="BUNIT" Type="nchar" MaxLength="4" Nullable="false" />
   </EntityType>
   <EntityType Name="WARNING">
     <Key>
@@ -529,6 +806,42 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CARTA_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="CARTA" Type="Self.CARTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="CARTA">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CARTA_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="CARTA" Type="Self.CARTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CARTA">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CITIES_STATES">
+    <End Role="STATES" Type="Self.STATES" Multiplicity="1" />
+    <End Role="CITIES" Type="Self.CITIES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STATES">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CITIES">
+        <PropertyRef Name="STATE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CLIENTE_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="0..1" />
     <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
@@ -556,6 +869,78 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
         <PropertyRef Name="VTWEG" />
         <PropertyRef Name="SPART" />
         <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CLIENTEI_IMPUESTO">
+    <End Role="IMPUESTO" Type="Self.IMPUESTO" Multiplicity="1" />
+    <End Role="CLIENTEI" Type="Self.CLIENTEI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMPUESTO">
+        <PropertyRef Name="MWSKZ" />
+      </Principal>
+      <Dependent Role="CLIENTEI">
+        <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONTACTOC_CLIENTE">
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="0..1" />
+    <End Role="CONTACTOC" Type="Self.CONTACTOC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="CONTACTOC">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_CLIENTE">
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="PAYER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_PAIS">
+    <End Role="PAIS" Type="Self.PAIS" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAIS">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="SOCIEDAD_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -607,6 +992,58 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_FLUJO_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="FLUJO">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FLUJO_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="FLUJO">
+        <PropertyRef Name="USUARIOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FLUJO_USUARIO1">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="FLUJO">
+        <PropertyRef Name="USUARIOD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FLUJO_WORKFP">
+    <End Role="WORKFP" Type="Self.WORKFP" Multiplicity="1" />
+    <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WORKFP">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="VERSION" />
+        <PropertyRef Name="POS" />
+      </Principal>
+      <Dependent Role="FLUJO">
+        <PropertyRef Name="WORKF_ID" />
+        <PropertyRef Name="WF_VERSION" />
+        <PropertyRef Name="WF_POS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_GALLT_GALL">
     <End Role="GALL" Type="Self.GALL" Multiplicity="1" />
     <End Role="GALLT" Type="Self.GALLT" Multiplicity="*" />
@@ -628,6 +1065,42 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="GALLT">
         <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IIMPUESTO_IMPUESTO">
+    <End Role="IMPUESTO" Type="Self.IMPUESTO" Multiplicity="1" />
+    <End Role="IIMPUESTO" Type="Self.IIMPUESTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="IMPUESTO">
+        <PropertyRef Name="MWSKZ" />
+      </Principal>
+      <Dependent Role="IIMPUESTO">
+        <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IIMPUESTO_PAIS">
+    <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
+    <End Role="IIMPUESTO" Type="Self.IIMPUESTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAIS">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="IIMPUESTO">
+        <PropertyRef Name="LAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LEYENDA_PAIS">
+    <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
+    <End Role="LEYENDA" Type="Self.LEYENDA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAIS">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="LEYENDA">
+        <PropertyRef Name="PAIS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -715,6 +1188,32 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PRESUPSAPH_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="PRESUPSAPH" Type="Self.PRESUPSAPH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PRESUPSAPH">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PRESUPSAPP_PRESUPSAPH">
+    <End Role="PRESUPSAPH" Type="Self.PRESUPSAPH" Multiplicity="1" />
+    <End Role="PRESUPSAPP" Type="Self.PRESUPSAPP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRESUPSAPH">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="ANIO" />
+      </Principal>
+      <Dependent Role="PRESUPSAPP">
+        <PropertyRef Name="ID" />
+        <PropertyRef Name="ANIO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PRESUPUESTOH_USUARIO">
     <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
     <End Role="PRESUPUESTOH" Type="Self.PRESUPUESTOH" Multiplicity="*" />
@@ -741,6 +1240,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PUESTOT_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="PUESTOT" Type="Self.PUESTOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PUESTOT">
+        <PropertyRef Name="PUESTO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PUESTOT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="PUESTOT" Type="Self.PUESTOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PUESTOT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SOCIEDAD_MONEDA">
     <End Role="MONEDA" Type="Self.MONEDA" Multiplicity="0..1" />
     <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="*" />
@@ -750,6 +1273,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="SOCIEDAD">
         <PropertyRef Name="WAERS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_STATES_COUNTRIES">
+    <End Role="COUNTRIES" Type="Self.COUNTRIES" Multiplicity="1" />
+    <End Role="STATES" Type="Self.STATES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COUNTRIES">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="STATES">
+        <PropertyRef Name="COUNTRY_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -786,6 +1321,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="TALLT">
         <PropertyRef Name="TALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TCAMBIO_MONEDA">
+    <End Role="MONEDA" Type="Self.MONEDA" Multiplicity="1" />
+    <End Role="TCAMBIO" Type="Self.TCAMBIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MONEDA">
+        <PropertyRef Name="WAERS" />
+      </Principal>
+      <Dependent Role="TCAMBIO">
+        <PropertyRef Name="TCURR" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -848,6 +1395,42 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="TSOLT">
         <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UMEDIDAT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="UMEDIDAT" Type="Self.UMEDIDAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="UMEDIDAT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UMEDIDAT_UMEDIDA">
+    <End Role="UMEDIDA" Type="Self.UMEDIDA" Multiplicity="1" />
+    <End Role="UMEDIDAT" Type="Self.UMEDIDAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UMEDIDA">
+        <PropertyRef Name="MSEHI" />
+      </Principal>
+      <Dependent Role="UMEDIDAT">
+        <PropertyRef Name="MSEHI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIO_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="0..1" />
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="USUARIO">
+        <PropertyRef Name="PUESTO_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -970,12 +1553,20 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETA" EntityType="Self.CARPETA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETAT" EntityType="Self.CARPETAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CARTA" EntityType="Self.CARTA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CITIES" EntityType="Self.CITIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONTACTOC" EntityType="Self.CONTACTOC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IIMPUESTO" EntityType="Self.IIMPUESTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IMPUESTO" EntityType="Self.IMPUESTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LEYENDA" EntityType="Self.LEYENDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
@@ -983,16 +1574,25 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="POSICION" EntityType="Self.POSICION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRESUPSAPH" EntityType="Self.PRESUPSAPH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PRESUPSAPP" EntityType="Self.PRESUPSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PRESUPUESTOH" EntityType="Self.PRESUPUESTOH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PRESUPUESTOP" EntityType="Self.PRESUPUESTOP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PUESTO" EntityType="Self.PUESTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PUESTOT" EntityType="Self.PUESTOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TEXTO" EntityType="Self.TEXTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TSOL" EntityType="Self.TSOL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TSOLT" EntityType="Self.TSOLT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UMEDIDA" EntityType="Self.UMEDIDA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UMEDIDAT" EntityType="Self.UMEDIDAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WARNING" EntityType="Self.WARNING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WORKFH" EntityType="Self.WORKFH" Schema="dbo" store:Type="Tables" />
@@ -1046,6 +1646,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="CARPETAT" EntitySet="CARPETAT" />
     </AssociationSet>
+    <AssociationSet Name="FK_CARTA_DOCUMENTO" Association="Self.FK_CARTA_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="CARTA" EntitySet="CARTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CARTA_USUARIO" Association="Self.FK_CARTA_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="CARTA" EntitySet="CARTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CITIES_STATES" Association="Self.FK_CITIES_STATES">
+      <End Role="STATES" EntitySet="STATES" />
+      <End Role="CITIES" EntitySet="CITIES" />
+    </AssociationSet>
     <AssociationSet Name="FK_CLIENTE_PAIS" Association="Self.FK_CLIENTE_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="CLIENTE" EntitySet="CLIENTE" />
@@ -1053,6 +1665,26 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CLIENTEI_CLIENTE" Association="Self.FK_CLIENTEI_CLIENTE">
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CLIENTEI_IMPUESTO" Association="Self.FK_CLIENTEI_IMPUESTO">
+      <End Role="IMPUESTO" EntitySet="IMPUESTO" />
+      <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONTACTOC_CLIENTE" Association="Self.FK_CONTACTOC_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="CONTACTOC" EntitySet="CONTACTOC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_CLIENTE" Association="Self.FK_DOCUMENTO_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
+      <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_SOCIEDAD" Association="Self.FK_DOCUMENTO_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_TALL" Association="Self.FK_DOCUMENTO_TALL">
       <End Role="TALL" EntitySet="TALL" />
@@ -1070,6 +1702,22 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />
     </AssociationSet>
+    <AssociationSet Name="FK_FLUJO_DOCUMENTO" Association="Self.FK_FLUJO_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="FLUJO" EntitySet="FLUJO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FLUJO_USUARIO" Association="Self.FK_FLUJO_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="FLUJO" EntitySet="FLUJO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FLUJO_USUARIO1" Association="Self.FK_FLUJO_USUARIO1">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="FLUJO" EntitySet="FLUJO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FLUJO_WORKFP" Association="Self.FK_FLUJO_WORKFP">
+      <End Role="WORKFP" EntitySet="WORKFP" />
+      <End Role="FLUJO" EntitySet="FLUJO" />
+    </AssociationSet>
     <AssociationSet Name="FK_GALLT_GALL" Association="Self.FK_GALLT_GALL">
       <End Role="GALL" EntitySet="GALL" />
       <End Role="GALLT" EntitySet="GALLT" />
@@ -1077,6 +1725,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_GALLT_SPRAS" Association="Self.FK_GALLT_SPRAS">
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="GALLT" EntitySet="GALLT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IIMPUESTO_IMPUESTO" Association="Self.FK_IIMPUESTO_IMPUESTO">
+      <End Role="IMPUESTO" EntitySet="IMPUESTO" />
+      <End Role="IIMPUESTO" EntitySet="IIMPUESTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IIMPUESTO_PAIS" Association="Self.FK_IIMPUESTO_PAIS">
+      <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="IIMPUESTO" EntitySet="IIMPUESTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LEYENDA_PAIS" Association="Self.FK_LEYENDA_PAIS">
+      <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="LEYENDA" EntitySet="LEYENDA" />
     </AssociationSet>
     <AssociationSet Name="FK_MIEMBROS_ROL" Association="Self.FK_MIEMBROS_ROL">
       <End Role="ROL" EntitySet="ROL" />
@@ -1106,6 +1766,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="ROL" EntitySet="ROL" />
       <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
     </AssociationSet>
+    <AssociationSet Name="FK_PRESUPSAPH_USUARIO" Association="Self.FK_PRESUPSAPH_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="PRESUPSAPH" EntitySet="PRESUPSAPH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PRESUPSAPP_PRESUPSAPH" Association="Self.FK_PRESUPSAPP_PRESUPSAPH">
+      <End Role="PRESUPSAPH" EntitySet="PRESUPSAPH" />
+      <End Role="PRESUPSAPP" EntitySet="PRESUPSAPP" />
+    </AssociationSet>
     <AssociationSet Name="FK_PRESUPUESTOH_USUARIO" Association="Self.FK_PRESUPUESTOH_USUARIO">
       <End Role="USUARIO" EntitySet="USUARIO" />
       <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOH" />
@@ -1114,9 +1782,21 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="PRESUPUESTOH" EntitySet="PRESUPUESTOH" />
       <End Role="PRESUPUESTOP" EntitySet="PRESUPUESTOP" />
     </AssociationSet>
+    <AssociationSet Name="FK_PUESTOT_PUESTO" Association="Self.FK_PUESTOT_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="PUESTOT" EntitySet="PUESTOT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PUESTOT_SPRAS" Association="Self.FK_PUESTOT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="PUESTOT" EntitySet="PUESTOT" />
+    </AssociationSet>
     <AssociationSet Name="FK_SOCIEDAD_MONEDA" Association="Self.FK_SOCIEDAD_MONEDA">
       <End Role="MONEDA" EntitySet="MONEDA" />
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+    </AssociationSet>
+    <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
+      <End Role="COUNTRIES" EntitySet="COUNTRIES" />
+      <End Role="STATES" EntitySet="STATES" />
     </AssociationSet>
     <AssociationSet Name="FK_TALL_GALL" Association="Self.FK_TALL_GALL">
       <End Role="GALL" EntitySet="GALL" />
@@ -1129,6 +1809,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_TALLT_TALL" Association="Self.FK_TALLT_TALL">
       <End Role="TALL" EntitySet="TALL" />
       <End Role="TALLT" EntitySet="TALLT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TCAMBIO_MONEDA" Association="Self.FK_TCAMBIO_MONEDA">
+      <End Role="MONEDA" EntitySet="MONEDA" />
+      <End Role="TCAMBIO" EntitySet="TCAMBIO" />
     </AssociationSet>
     <AssociationSet Name="FK_TEXTO_CAMPOS" Association="Self.FK_TEXTO_CAMPOS">
       <End Role="CAMPOS" EntitySet="CAMPOS" />
@@ -1149,6 +1833,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
       <End Role="TSOL" EntitySet="TSOL" />
       <End Role="TSOLT" EntitySet="TSOLT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UMEDIDAT_SPRAS" Association="Self.FK_UMEDIDAT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="UMEDIDAT" EntitySet="UMEDIDAT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UMEDIDAT_UMEDIDA" Association="Self.FK_UMEDIDAT_UMEDIDA">
+      <End Role="UMEDIDA" EntitySet="UMEDIDA" />
+      <End Role="UMEDIDAT" EntitySet="UMEDIDAT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_PUESTO" Association="Self.FK_USUARIO_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="USUARIO" EntitySet="USUARIO" />
     </AssociationSet>
     <AssociationSet Name="FK_USUARIO_SPRAS" Association="Self.FK_USUARIO_SPRAS">
       <End Role="SPRAS" EntitySet="SPRAS" />
