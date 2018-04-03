@@ -36,12 +36,14 @@ namespace TAT001.Controllers
                     return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                TempData["id"] = id;
+                var lista = db.CARTAs.Where(a => a.NUM_DOC.Equals(id)).ToList();
+                return View(lista);
             }
-            return View();
         }
 
         // GET: CartaF/Details/5
-        public ActionResult Details()
+        public ActionResult Details(string ruta)
         {
             int pagina = 232; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -68,46 +70,9 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
-            CartaF cf = new CartaF();
-            cf.company = "Kellogs";
-            cf.company_x = true;
-            cf.taxid = "ASD7806B67";
-            cf.taxid_x = true;
-            cf.concepto = "Julio Regalado";
-            cf.concepto_x = true;
-            cf.cliente = "Oscar Ramírez";
-            cf.cliente_x = true;
-            cf.puesto = "Gerente de compras";
-            cf.puesto_x = true;
-            cf.direccion = "Km 1.1 San Francisco, MX";
-            cf.direccion_x = true;
-            cf.folio = "100011";
-            cf.folio_x = true;
-            cf.lugar = "Qro, Qro. 14/02/2018";
-            cf.lugar_x = true;
-            cf.payer = "Walmart México";
-            cf.payer_x = true;
-            cf.estimado = "Julio Rosales";
-            cf.estimado_x = true;
-            cf.mecanica = "Detalle de la mecánica con cálculo, objetivo, %. \r\nVarias líneas";
-            cf.mecanica_x = true;
-            cf.nombreE = "Jorge Escamilla M";
-            cf.nombreE_x = true;
-            cf.puestoE = "Gerente de ventas comercial";
-            cf.puestoE_x = true;
-            cf.companyC = "Kelloggs MX SA de CV";
-            cf.companyC_x = true;
-            cf.nombreC = "Brenda Arrieta";
-            cf.nombreC_x = true;
-            cf.puestoC = "Gerente de compras";
-            cf.puestoC_x = true;
-            cf.companyCC = "Walmart MX";
-            cf.companyCC_x = true;
-            cf.legal = "“Toda la información comercial y/o publicitaria contenida en el presente comunicado, es de aplicación y/o referencia exclusiva para la República Mexicana y para surtir efectos en las cadenas de autoservicio del destinatario del mismo y/o establecidas expresamente por Kellogg Company México, S. de R. L. de C.V.”";
-            cf.legal_x = true;
-            cf.mail = "El contenido del presente Acuerdo será enviado electrónicamente al correo:";
-            cf.mail_x = true;
-            return View(cf);
+
+            ViewBag.url = ruta;
+            return View();
         }
 
         // GET: CartaF/Details/5
@@ -116,6 +81,81 @@ namespace TAT001.Controllers
         {
             CartaF carta = c;
             return RedirectToAction("Index");
+        }
+        // GET: CartaF/Create
+        public ActionResult Detailss(decimal id, int pos)
+        {
+            int pagina = 231; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string pa = Session["pais"].ToString();
+                    ViewBag.pais = pa + ".svg";
+                }
+                catch
+                {
+                    ViewBag.pais = "mx.svg";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            CARTA c = new CARTA();
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                c = db.CARTAs.Where(a => a.NUM_DOC.Equals(id) & a.POS.Equals(pos)).First();
+            }
+            CartaF cf = new CartaF();
+            cf.num_doc = id;
+            cf.company = c.COMPANY;
+            cf.company_x = (bool)c.COMPANYX;
+            cf.taxid = c.TAXID;
+            cf.taxid_x = (bool)c.TAXIDX;
+            cf.concepto = c.CONCEPTO;
+            cf.concepto_x = (bool)c.CONCEPTOX;
+            cf.cliente = c.CLIENTE;
+            cf.cliente_x = (bool)c.CLIENTEX;
+            cf.puesto = c.PUESTO;
+            cf.puesto_x = (bool)c.PUESTOX;
+            cf.direccion = c.DIRECCION;
+            cf.direccion_x = (bool)c.DIRECCIONX;
+            cf.folio = c.FOLIO;
+            cf.folio_x = (bool)c.FOLIOX;
+            cf.lugar = c.LUGAR;
+            cf.lugar_x = (bool)c.LUGARX;
+            cf.payer = c.PAYER;
+            cf.payer_x = (bool)c.PAYERX;
+            cf.estimado = c.ESTIMADO;
+            cf.estimado_x = (bool)c.ESTIMADOX;
+            cf.mecanica = c.MECANICA;
+            cf.mecanica_x = (bool)c.MECANICAX;
+            cf.nombreE = c.NOMBREE;
+            cf.nombreE_x = (bool)c.NOMBREEX;
+            cf.puestoE = c.PUESTOE;
+            cf.puestoE_x = (bool)c.PUESTOEX;
+            cf.companyC = c.COMPANYC;
+            cf.companyC_x = (bool)c.COMPANYCX;
+            cf.nombreC = c.NOMBREC;
+            cf.nombreC_x = (bool)c.NOMBRECX;
+            cf.puestoC = c.PUESTOC;
+            cf.puestoC_x = (bool)c.PUESTOCX;
+            cf.companyCC = c.COMPANYCC;
+            cf.companyCC_x = (bool)c.COMPANYCCX;
+            cf.legal = c.LEGAL;
+            cf.legal_x = (bool)c.LEGALX;
+            cf.mail = c.MAIL;
+            cf.mail_x = (bool)c.MAILX;
+            return View(cf);
         }
         // GET: CartaF/Create
         public ActionResult Create(decimal id)
@@ -146,11 +186,10 @@ namespace TAT001.Controllers
                 Session["spras"] = user.SPRAS_ID;
             }
             DOCUMENTO d = new DOCUMENTO();
-            LEYENDA l = new LEYENDA();
             PUESTOT p = new PUESTOT();
             using (TAT001Entities db = new TAT001Entities())
             {
-                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
+                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Include("CITY").Where(a => a.NUM_DOC.Equals(id)).First();
                 //var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(doa => doa.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
                 if (d != null)
                 {
@@ -161,8 +200,9 @@ namespace TAT001.Controllers
                                                             & a.KUNNR.Equals(d.PAYER_ID)).First();
                     string sp = Session["spras"].ToString();
                     p = db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(sp) && a.PUESTO_ID == d.USUARIO.PUESTO_ID).FirstOrDefault();
+                    d.CITy.STATE.NAME = db.STATES.Where(a => a.ID.Equals(d.CITy.STATE_ID)).FirstOrDefault().NAME;
                 }
-                l = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).First();
+                ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
             }
             CartaF cf = new CartaF();
             cf.num_doc = id;
@@ -181,7 +221,8 @@ namespace TAT001.Controllers
             cf.folio = d.NUM_DOC.ToString();
             cf.folio_x = true;
             //cf.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
-            cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
+            //cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
+            cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
             cf.lugar_x = true;
             cf.payer = d.CLIENTE.NAME1;
             cf.payer_x = true;
@@ -191,7 +232,8 @@ namespace TAT001.Controllers
             cf.mecanica_x = true;
             cf.nombreE = d.USUARIO.NOMBRE + " " + d.USUARIO.APELLIDO_P + " " + d.USUARIO.APELLIDO_M;
             cf.nombreE_x = true;
-            cf.puestoE = p.TXT50;
+            if (p != null)
+                cf.puestoE = p.TXT50;
             cf.puestoE_x = true;
             cf.companyC = cf.company;
             cf.companyC_x = true;
@@ -201,7 +243,8 @@ namespace TAT001.Controllers
             cf.puestoC_x = false;
             cf.companyCC = d.CLIENTE.NAME1;
             cf.companyCC_x = true;
-            cf.legal = l.LEYENDA1;
+            if (ViewBag.legal != null)
+                cf.legal = ViewBag.legal.LEYENDA1;
             cf.legal_x = true;
             cf.mail = "El contenido del presente Acuerdo será enviado electrónicamente al correo: " + d.PAYER_EMAIL;
             cf.mail_x = true;
@@ -260,10 +303,25 @@ namespace TAT001.Controllers
                 //ca.TIPO = c.TIPO;
                 //ca.USUARIO = c.USUARIO;
                 //ca.USUARIO_ID = c.USUARIO_ID;
+                ca.USUARIO_ID = User.Identity.Name;
+                ca.FECHAC = DateTime.Now;
 
-                return RedirectToAction("Index");
+                CartaFEsqueleto cfe = new CartaFEsqueleto();
+                cfe.crearPDF(c);
+                string recibeRuta = Convert.ToString(Session["rutaCompleta"]);
+                using (TAT001Entities db = new TAT001Entities())
+                {
+                    var cartas = db.CARTAs.Where(a => a.NUM_DOC.Equals(ca.NUM_DOC)).ToList();
+                    int pos = 0;
+                    if (cartas.Count > 0)
+                        pos = cartas.OrderByDescending(a => a.POS).First().POS;
+                    ca.POS = pos + 1;
+                    db.CARTAs.Add(ca);
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", new { ruta = recibeRuta });
             }
-            catch
+            catch (Exception e)
             {
                 return View();
             }

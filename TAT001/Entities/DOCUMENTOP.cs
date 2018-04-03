@@ -25,6 +25,9 @@ namespace TAT001.Entities
         public decimal VOLUMEN_EST { get; set; }
         public Nullable<decimal> VOLUMEN_REAL { get; set; }
         public Nullable<decimal> APOYO_REAL { get; set; }
+        public Nullable<System.DateTime> VIGENCIA_DE { get; set; }
+        public Nullable<System.DateTime> VIGENCIA_AL { get; set; }
+        public string MATKL { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

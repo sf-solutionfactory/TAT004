@@ -12,6 +12,8 @@ namespace TAT001.Entities
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class TAT001Entities : DbContext
     {
@@ -30,16 +32,22 @@ namespace TAT001.Entities
         public virtual DbSet<CARPETA> CARPETAs { get; set; }
         public virtual DbSet<CARPETAT> CARPETATs { get; set; }
         public virtual DbSet<CARTA> CARTAs { get; set; }
+        public virtual DbSet<CATEGORIA> CATEGORIAs { get; set; }
+        public virtual DbSet<CATEGORIAT> CATEGORIATs { get; set; }
+        public virtual DbSet<CITy> CITIES { get; set; }
         public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
+        public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
+        public virtual DbSet<FLUJO> FLUJOes { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
         public virtual DbSet<GALLT> GALLTs { get; set; }
         public virtual DbSet<IIMPUESTO> IIMPUESTOes { get; set; }
         public virtual DbSet<IMPUESTO> IMPUESTOes { get; set; }
         public virtual DbSet<LEYENDA> LEYENDAs { get; set; }
+        public virtual DbSet<MATERIAL> MATERIALs { get; set; }
         public virtual DbSet<MIEMBRO> MIEMBROS { get; set; }
         public virtual DbSet<MONEDA> MONEDAs { get; set; }
         public virtual DbSet<PAGINA> PAGINAs { get; set; }
@@ -53,9 +61,11 @@ namespace TAT001.Entities
         public virtual DbSet<PRESUPUESTOP> PRESUPUESTOPs { get; set; }
         public virtual DbSet<PUESTO> PUESTOes { get; set; }
         public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
+        public virtual DbSet<RANGO> RANGOes { get; set; }
         public virtual DbSet<ROL> ROLs { get; set; }
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
+        public virtual DbSet<STATE> STATES { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
@@ -72,11 +82,115 @@ namespace TAT001.Entities
         public virtual DbSet<WORKFT> WORKFTs { get; set; }
         public virtual DbSet<WORKFV> WORKFVs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
+        public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<FLUJO> FLUJOes { get; set; }
-        public virtual DbSet<CITy> CITIES { get; set; }
-        public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
-        public virtual DbSet<STATE> STATES { get; set; }
+        public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
+    
+        public virtual ObjectResult<CSP_CAMBIO_Result> CSP_CAMBIO(string sociedad)
+        {
+            var sociedadParameter = sociedad != null ?
+                new ObjectParameter("sociedad", sociedad) :
+                new ObjectParameter("sociedad", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CAMBIO_Result>("CSP_CAMBIO", sociedadParameter);
+        }
+    
+        public virtual ObjectResult<CSP_CARPETA_Result> CSP_CARPETA(string iD, Nullable<int> aCCION)
+        {
+            var iDParameter = iD != null ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(string));
+    
+            var aCCIONParameter = aCCION.HasValue ?
+                new ObjectParameter("ACCION", aCCION) :
+                new ObjectParameter("ACCION", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CARPETA_Result>("CSP_CARPETA", iDParameter, aCCIONParameter);
+        }
+    
+        public virtual ObjectResult<CSP_CONSULTARPRESUPUESTO_Result> CSP_CONSULTARPRESUPUESTO(string sOCIEDAD, string aNIOC, string aNIOS, string pERIODOC, string pERIODOS, string mONEDAD, string mONEDAA)
+        {
+            var sOCIEDADParameter = sOCIEDAD != null ?
+                new ObjectParameter("SOCIEDAD", sOCIEDAD) :
+                new ObjectParameter("SOCIEDAD", typeof(string));
+    
+            var aNIOCParameter = aNIOC != null ?
+                new ObjectParameter("ANIOC", aNIOC) :
+                new ObjectParameter("ANIOC", typeof(string));
+    
+            var aNIOSParameter = aNIOS != null ?
+                new ObjectParameter("ANIOS", aNIOS) :
+                new ObjectParameter("ANIOS", typeof(string));
+    
+            var pERIODOCParameter = pERIODOC != null ?
+                new ObjectParameter("PERIODOC", pERIODOC) :
+                new ObjectParameter("PERIODOC", typeof(string));
+    
+            var pERIODOSParameter = pERIODOS != null ?
+                new ObjectParameter("PERIODOS", pERIODOS) :
+                new ObjectParameter("PERIODOS", typeof(string));
+    
+            var mONEDADParameter = mONEDAD != null ?
+                new ObjectParameter("MONEDAD", mONEDAD) :
+                new ObjectParameter("MONEDAD", typeof(string));
+    
+            var mONEDAAParameter = mONEDAA != null ?
+                new ObjectParameter("MONEDAA", mONEDAA) :
+                new ObjectParameter("MONEDAA", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CONSULTARPRESUPUESTO_Result>("CSP_CONSULTARPRESUPUESTO", sOCIEDADParameter, aNIOCParameter, aNIOSParameter, pERIODOCParameter, pERIODOSParameter, mONEDADParameter, mONEDAAParameter);
+        }
+    
+        public virtual ObjectResult<CSP_PERMISO_Result> CSP_PERMISO(string iD, Nullable<int> aCCION)
+        {
+            var iDParameter = iD != null ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(string));
+    
+            var aCCIONParameter = aCCION.HasValue ?
+                new ObjectParameter("ACCION", aCCION) :
+                new ObjectParameter("ACCION", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PERMISO_Result>("CSP_PERMISO", iDParameter, aCCIONParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(string anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
+        {
+            var anioParameter = anio != null ?
+                new ObjectParameter("anio", anio) :
+                new ObjectParameter("anio", typeof(string));
+    
+            var sociedadParameter = sociedad != null ?
+                new ObjectParameter("sociedad", sociedad) :
+                new ObjectParameter("sociedad", typeof(string));
+    
+            var periodoParameter = periodo != null ?
+                new ObjectParameter("periodo", periodo) :
+                new ObjectParameter("periodo", typeof(string));
+    
+            var usuario_idParameter = usuario_id != null ?
+                new ObjectParameter("usuario_id", usuario_id) :
+                new ObjectParameter("usuario_id", typeof(string));
+    
+            var autoParameter = auto != null ?
+                new ObjectParameter("auto", auto) :
+                new ObjectParameter("auto", typeof(string));
+    
+            var casoParameter = caso.HasValue ?
+                new ObjectParameter("caso", caso) :
+                new ObjectParameter("caso", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("CSP_PRESUPUESTO_ADD", anioParameter, sociedadParameter, periodoParameter, usuario_idParameter, autoParameter, casoParameter);
+        }
+    
+        public virtual ObjectResult<CSP_PRESUPUESTO_ADDP_Result> CSP_PRESUPUESTO_ADDP(string path)
+        {
+            var pathParameter = path != null ?
+                new ObjectParameter("path", path) :
+                new ObjectParameter("path", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESUPUESTO_ADDP_Result>("CSP_PRESUPUESTO_ADDP", pathParameter);
+        }
     }
 }

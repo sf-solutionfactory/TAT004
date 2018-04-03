@@ -51,6 +51,9 @@
     <Reference Include="EntityFramework.MappingAPI, Version=6.1.0.9, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.MappingAPI.6.1.0.9\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -181,12 +184,14 @@
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
+    <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaginasController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\TextosController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\WarningsController.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Entities\ACCION.cs">
@@ -207,6 +212,12 @@
     <Compile Include="Entities\CARTA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CATEGORIA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CATEGORIAT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CITy.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -222,10 +233,31 @@
     <Compile Include="Entities\COUNTRy.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CSP_CAMBIO_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_CARPETA_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_CONSULTARPRESUPUESTO_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_PERMISO_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_PRESUPUESTO_ADDP_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTOP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FLUJO.cs">
@@ -244,6 +276,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\LEYENDA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\MATERIAL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MIEMBRO.cs">
@@ -286,6 +321,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PUESTOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RANGO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ROL.cs">
@@ -367,11 +405,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CargarModel.cs" />
+    <Compile Include="Models\CartaFEsqueleto.cs" />
     <Compile Include="Models\CartaV.cs" />
     <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\Cryptography.cs" />
+    <Compile Include="Models\DocumentoComparer.cs" />
+    <Compile Include="Models\HeaderFooter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Pass.cs" />
+    <Compile Include="Models\PresupuestoModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
     <Compile Include="Startup.cs" />
@@ -381,7 +425,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTable.css" />
+    <Content Include="Content\dataTables.material.min.css" />
     <Content Include="Content\g-materialize.css" />
+    <Content Include="Content\material.min.css" />
     <Content Include="Content\materialize.css" />
     <Content Include="Content\sideMenu.css" />
     <Content Include="Entities\TAT001.Context.tt">
@@ -925,9 +971,26 @@
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
+    <Content Include="Scripts\CargaPresupuesto.js" />
+    <Content Include="Scripts\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\dataTables.material.min.js" />
+    <EntityDeploy Include="Entities\TAT001.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TAT001.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Entities\TAT001.edmx.diagram">
+      <DependentUpon>TAT001.edmx</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.0.0.js" />
+    <Content Include="Scripts\jquery-3.0.0.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\materialize.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\sideMenu.js" />
+    <Content Include="Scripts\tableHeadFixer.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -962,22 +1025,18 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\CartaF\Index.cshtml" />
+    <Content Include="Views\CartaF\Detailss.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="PdfTemp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <EntityDeploy Include="Entities\TAT001.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TAT001.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Entities\TAT001.edmx.diagram">
-      <DependentUpon>TAT001.edmx</DependentUpon>
-    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\materialize.min.js" />
     <Content Include="Views\Home\Pais.cshtml" />
@@ -1004,7 +1063,6 @@
     <Content Include="Views\Listas\Clientes.cshtml" />
     <Content Include="Scripts\autocomplete1.10.2.js" />
     <Content Include="Views\CartaF\Details.cshtml" />
-    <Content Include="Views\CartaF\Index.cshtml" />
     <Content Include="Views\Solicitudes\Create.cshtml" />
     <Content Include="Views\Solicitudes\Delete.cshtml" />
     <Content Include="Views\Solicitudes\Details.cshtml" />
@@ -1022,6 +1080,17 @@
     <Content Include="Views\Flujos\Edit.cshtml" />
     <Content Include="Views\Flujos\Index.cshtml" />
     <Content Include="Views\Flujos\Procesa.cshtml" />
+    <Content Include="Views\Usuarios\Create.cshtml" />
+    <Content Include="Views\Usuarios\Delete.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+    <Content Include="Views\Usuarios\Edit.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\Pass.cshtml" />
+    <Content Include="Views\Mails\Solicitud.cshtml" />
+    <Content Include="Views\Shared\_LayoutMail.cshtml" />
+    <Content Include="Views\Mails\Enviar.cshtml" />
+    <Content Include="Scripts\jquery-3.0.0.min.map" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -18,12 +18,12 @@ namespace TAT001.Entities
         public USUARIO()
         {
             this.CARTAs = new HashSet<CARTA>();
-            this.MIEMBROS = new HashSet<MIEMBRO>();
-            this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
-            this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.FLUJOes = new HashSet<FLUJO>();
             this.FLUJOes1 = new HashSet<FLUJO>();
+            this.MIEMBROS = new HashSet<MIEMBRO>();
+            this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
+            this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
         }
     
         public string ID { get; set; }
@@ -42,6 +42,12 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FLUJO> FLUJOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FLUJO> FLUJOes1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MIEMBRO> MIEMBROS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESUPSAPH> PRESUPSAPHs { get; set; }
@@ -49,11 +55,5 @@ namespace TAT001.Entities
         public virtual ICollection<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual PUESTO PUESTO { get; set; }
         public virtual SPRA SPRA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FLUJO> FLUJOes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FLUJO> FLUJOes1 { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace TAT001.Entities
             this.CARTAs = new HashSet<CARTA>();
             this.DOCUMENTOPs = new HashSet<DOCUMENTOP>();
             this.FLUJOes = new HashSet<FLUJO>();
+            this.DOCUMENTOAs = new HashSet<DOCUMENTOA>();
         }
     
         public decimal NUM_DOC { get; set; }
@@ -28,7 +29,7 @@ namespace TAT001.Entities
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
         public string ESTADO { get; set; }
-        public string CIUDAD { get; set; }
+        public Nullable<long> CIUDAD { get; set; }
         public string PERIODO { get; set; }
         public string EJERCICIO { get; set; }
         public string TIPO_TECNICO { get; set; }
@@ -90,15 +91,18 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
+        public virtual CITy CITy { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }
+        public virtual PAI PAI { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TALL TALL { get; set; }
         public virtual TSOL TSOL { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOP> DOCUMENTOPs { get; set; }
-        public virtual USUARIO USUARIO { get; set; }
-        public virtual PAI PAI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLUJO> FLUJOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOA> DOCUMENTOAs { get; set; }
     }
 }

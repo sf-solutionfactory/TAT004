@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col l12 m12 right-align">
                 @*<input type="submit" value="Imprimir" class="btn btn-default" />*@
-                <button class="btn waves-effect" type="submit" name="action" id="lbl_print">
+                <button class="btn waves-effect" type="submit" name="action" id="lbl_print" onclick="timer()">
                     Imprimir
                     <i class="material-icons right">print</i>
                 </button>
@@ -287,7 +287,15 @@
                             </label>
                         </div>
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
-                            @Html.TextAreaFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;" })
+                            @if (ViewBag.legal.EDITABLE == true)
+                            {
+                                @Html.TextAreaFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;" })
+                            }
+                            else
+                            {
+                                @Html.TextAreaFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;", @disabled = "disabled" })
+                                @Html.HiddenFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;" })
+                            }
                             @Html.LabelFor(model => model.legal, htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
+using TAT001.Models;
 
 namespace TAT001.Controllers
 {
@@ -44,8 +45,34 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
-            var dOCUMENTOes = db.DOCUMENTOes.Where(a=>a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
-            return View(dOCUMENTOes.ToList());
+            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
+            var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(User.Identity.Name)).ToList();
+            var tsol = db.TSOLs.ToList();
+            var tall = db.TALLs.ToList();
+            foreach (DOCUMENTOV v in dOCUMENTOVs)
+            {
+                DOCUMENTO d = new DOCUMENTO();
+                var ppd = d.GetType().GetProperties();
+                var ppv = v.GetType().GetProperties();
+                foreach (var pv in ppv)
+                {
+                    foreach (var pd in ppd)
+                    {
+                        if(pd.Name == pv.Name)
+                        {
+                                pd.SetValue(d, pv.GetValue(v));
+                                break;
+                        }
+                    }
+                }
+                d.TSOL = tsol.Where(a => a.ID.Equals(d.TSOL_ID)).FirstOrDefault();
+                d.TALL = tall.Where(a => a.ID.Equals(d.TALL_ID)).FirstOrDefault();
+                //d.ESTADO = db.STATES.Where(a => a.ID.Equals(v.ESTADO)).FirstOrDefault().NAME;
+                //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
+                dOCUMENTOes.Add(d);
+            }
+            dOCUMENTOes = dOCUMENTOes.Distinct( new DocumentoComparer()).ToList();
+            return View(dOCUMENTOes);
         }
 
         // GET: Solicitudes/Details/5
@@ -90,7 +117,7 @@ namespace TAT001.Controllers
                                                     & a.VTWEG.Equals(dOCUMENTO.VTWEG)
                                                     & a.SPART.Equals(dOCUMENTO.SPART)
                                                     & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
-            ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).ToList();
+            ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a=>a.POS).ToList();
             ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
             return View(dOCUMENTO);
         }
@@ -120,6 +147,38 @@ namespace TAT001.Controllers
             if (ModelState.IsValid)
             {
                 db.DOCUMENTOes.Add(dOCUMENTO);
+                db.SaveChanges();
+
+                WORKFV wf = db.WORKFHs.Where(a => a.TSOL_ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+                WORKFP wp = wf.WORKFPs.OrderBy(a => a.POS).FirstOrDefault();
+                FLUJO f = new FLUJO();
+                f.WORKF_ID = wf.ID;
+                f.WF_VERSION = wf.VERSION;
+                f.WF_POS = wp.POS;
+                f.NUM_DOC = dOCUMENTO.NUM_DOC;
+                f.POS = 1;
+                f.LOOP = 1;
+                f.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
+                f.ESTATUS = "A";
+                f.FECHAC = DateTime.Now;
+                f.FECHAM = DateTime.Now;
+
+                WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
+                FLUJO fn = new FLUJO();
+                fn.WORKF_ID = wf.ID;
+                fn.WF_VERSION = wf.VERSION;
+                fn.WF_POS = next.POS;
+                fn.NUM_DOC = dOCUMENTO.NUM_DOC;
+                fn.POS = 2;
+                fn.LOOP = 1;
+                fn.ESTATUS = "P";
+                fn.FECHAC = DateTime.Now;
+                fn.FECHAM = DateTime.Now;
+                fn.USUARIOA_ID = db.USUARIOs.Where(a=>a.ID.Equals(dOCUMENTO.USUARIOC_ID)).FirstOrDefault().MANAGER;
+
+                db.FLUJOes.Add(f);
+                db.FLUJOes.Add(fn);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

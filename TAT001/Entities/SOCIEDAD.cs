@@ -30,6 +30,7 @@ namespace TAT001.Entities
         public string NAME1 { get; set; }
         public string KTOPL { get; set; }
         public bool ACTIVO { get; set; }
+        public string REGION { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }

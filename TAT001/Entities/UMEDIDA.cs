@@ -17,12 +17,15 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public UMEDIDA()
         {
+            this.MATERIALs = new HashSet<MATERIAL>();
             this.UMEDIDATs = new HashSet<UMEDIDAT>();
         }
     
         public string MSEHI { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIAL> MATERIALs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UMEDIDAT> UMEDIDATs { get; set; }
     }

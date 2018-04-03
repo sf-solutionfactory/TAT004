@@ -8228,7 +8228,7 @@ $jscomp.polyfill = function (e, r, p, m) {
                 var windowWidth = window.innerWidth;
                 var windowHeight = window.innerHeight;
                 var backdrop = this.$el.find('.fab-backdrop');
-                var fabColor = anchor.css('background-color');
+                var fabColor = this.$anchor.css('background-color');
 
                 this.offsetX = this.btnLeft - windowWidth / 2 + this.btnWidth / 2;
                 this.offsetY = windowHeight - this.btnBottom;

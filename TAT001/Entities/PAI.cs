@@ -18,9 +18,9 @@ namespace TAT001.Entities
         public PAI()
         {
             this.CLIENTEs = new HashSet<CLIENTE>();
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.IIMPUESTOes = new HashSet<IIMPUESTO>();
             this.LEYENDAs = new HashSet<LEYENDA>();
-            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
         }
     
         public string LAND { get; set; }
@@ -32,10 +32,10 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTEs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IIMPUESTO> IIMPUESTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LEYENDA> LEYENDAs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }

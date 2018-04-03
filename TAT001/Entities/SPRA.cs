@@ -18,6 +18,7 @@ namespace TAT001.Entities
         public SPRA()
         {
             this.CARPETATs = new HashSet<CARPETAT>();
+            this.CATEGORIATs = new HashSet<CATEGORIAT>();
             this.GALLTs = new HashSet<GALLT>();
             this.PAGINATs = new HashSet<PAGINAT>();
             this.PUESTOTs = new HashSet<PUESTOT>();
@@ -35,6 +36,8 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARPETAT> CARPETATs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CATEGORIAT> CATEGORIATs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GALLT> GALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -64,7 +64,7 @@ namespace TAT001.Controllers
         }
 
         // GET: Flujos/Create
-        public ActionResult Create()
+        public ActionResult Create(decimal id)
         {
             int pagina = 103; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -91,13 +91,43 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
-            ViewBag.NUM_DOC = new SelectList(db.DOCUMENTOes, "NUM_DOC", "NUM_DOC");
-            ViewBag.USUARIOA_ID = new SelectList(db.USUARIOs, "ID", "NOMBRE");
-            ViewBag.USUARIOD_ID = new SelectList(db.USUARIOs, "ID", "NOMBRE");
-            ViewBag.WORKF_ID = new SelectList(db.WORKFPs, "ID", "ID");
-            ViewBag.WF_VERSION = new SelectList(db.WORKFPs, "ID", "VERSION");
-            ViewBag.WF_POS = new SelectList(db.WORKFPs, "ID", "POS");
-            return View();
+
+            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
+            //db.DOCUMENTOes.Add(dOCUMENTO);
+            //db.SaveChanges();
+
+            WORKFV wf = db.WORKFHs.Where(a => a.TSOL_ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+            WORKFP wp = wf.WORKFPs.OrderBy(a => a.POS).FirstOrDefault();
+            FLUJO f = new FLUJO();
+            f.WORKF_ID = wf.ID;
+            f.WF_VERSION = wf.VERSION;
+            f.WF_POS = wp.POS;
+            f.NUM_DOC = dOCUMENTO.NUM_DOC;
+            f.POS = 1;
+            f.LOOP = 1;
+            f.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
+            f.ESTATUS = "A";
+            f.FECHAC = DateTime.Now;
+            f.FECHAM = DateTime.Now;
+
+            WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
+            FLUJO fn = new FLUJO();
+            fn.WORKF_ID = wf.ID;
+            fn.WF_VERSION = wf.VERSION;
+            fn.WF_POS = next.POS;
+            fn.NUM_DOC = dOCUMENTO.NUM_DOC;
+            fn.POS = 2;
+            fn.LOOP = 1;
+            fn.ESTATUS = "P";
+            fn.FECHAC = DateTime.Now;
+            fn.FECHAM = DateTime.Now;
+            fn.USUARIOA_ID = db.USUARIOs.Where(a => a.ID.Equals(dOCUMENTO.USUARIOC_ID)).FirstOrDefault().MANAGER;
+
+            db.FLUJOes.Add(f);
+            db.FLUJOes.Add(fn);
+
+            db.SaveChanges();
+            return RedirectToAction("Details", "Solicitudes", new { id = id });
         }
 
         // POST: Flujos/Create
@@ -229,7 +259,21 @@ namespace TAT001.Controllers
         [HttpPost]
         public ActionResult Procesa(FLUJO f)
         {
-            FLUJO flujo = f;
+            FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+            FLUJO flujo = actual;
+            flujo.ESTATUS = f.ESTATUS;
+            flujo.FECHAM = DateTime.Now;
+            flujo.COMENTARIO = f.COMENTARIO;
+
+            ProcesaFlujo pf = new ProcesaFlujo();
+            if (ModelState.IsValid)
+            {
+                int res = pf.procesa(flujo);
+                if (res.Equals(0))
+                {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+            }
 
             int pagina = 103; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
