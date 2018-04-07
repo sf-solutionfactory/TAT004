@@ -7,53 +7,43 @@
 
 <div class="container" style="width:1000px">
     <h4 style="font-family: -apple-system, BlinkMacSystemFont,Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
-               font-size:20px;">
-        @ViewBag.Title
+               font-size:25px;">
+        @ViewBag.Title @Model.NUM_DOC
     </h4>
     <table>
         <tr>
             <td>
                 @Html.LabelFor(model => model.USUARIOC_ID, new
                 {
-                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                "font-size:10px;" +
-                                                                                                                                                "",
+                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                     @id = "lbl_userid"
                 })
             </td>
             <td>
                 @Html.LabelFor(model => model.USUARIO.MANAGER, new
                 {
-                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                         "font-size:10px;" +
-                                                                                                                                         "",
+                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                     @id = "lbl_manager"
                 })
             </td>
             <td>
                 @Html.LabelFor(model => model.USUARIO.BACKUP_ID, new
                 {
-                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                         "font-size:10px;" +
-                                                                                                                                         "",
+                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                     @id = "lbl_backup"
                 })
             </td>
             <td>
                 @Html.LabelFor(model => model.USUARIO.BUNIT, new
                 {
-                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                         "font-size:10px;" +
-                                                                                                                                         "",
+                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                     @id = "lbl_bunit"
                 })
             </td>
             <td>
                 @Html.LabelFor(model => model.ESTATUS, new
                 {
-                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                         "font-size:10px;" +
-                                                                                                                                         "",
+                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                     @id = "lbl_status"
                 })
             </td>
@@ -67,19 +57,7 @@
                         htmlAttributes = new
                         {
                             @disabled = "disabled",
-                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                                "background-color: transparent;" +
-                                                                                                                                                               "border: none; " +
-                                                                                                                                                               "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                               // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                                                               "border-radius: 0; " +
-                                                                                                                                                              " outline: none; " +
-                                                                                                                                                              " height: 50px; " +
-                                                                                                                                                              " width: 120px; " +
-                                                                                                                                                              " font-size: 16px; " +
-                                                                                                                                                              " margin: 0 0 8px 0; " +
-                                                                                                                                                              " padding: 0; " +
-                                                                                                                                                              ""
+                            @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 120px;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                         }
                     })
                 </div>
@@ -91,19 +69,7 @@
                         htmlAttributes = new
                         {
                             @disabled = "disabled",
-                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                         "background-color: transparent;" +
-                                                                                                                                                        "border: none; " +
-                                                                                                                                                        "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                        // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                                                        "border-radius: 0; " +
-                                                                                                                                                       " outline: none; " +
-                                                                                                                                                       " height: 50px; " +
-                                                                                                                                                       " width: 120px; " +
-                                                                                                                                                       " font-size: 16px; " +
-                                                                                                                                                       " margin: 0 0 8px 0; " +
-                                                                                                                                                       " padding: 0; " +
-                                                                                                                                                       ""
+                            @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 120px;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                         }
                     })
                 </div>
@@ -115,19 +81,7 @@
                         htmlAttributes = new
                         {
                             @disabled = "disabled",
-                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                         "background-color: transparent;" +
-                                                                                                                                                        "border: none; " +
-                                                                                                                                                        "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                        // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                                                        "border-radius: 0; " +
-                                                                                                                                                       " outline: none; " +
-                                                                                                                                                       " height: 50px; " +
-                                                                                                                                                       " width: 120px; " +
-                                                                                                                                                       " font-size: 16px; " +
-                                                                                                                                                       " margin: 0 0 8px 0; " +
-                                                                                                                                                       " padding: 0; " +
-                                                                                                                                                       ""
+                            @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 120px;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                         }
                     })
                 </div>
@@ -139,19 +93,7 @@
                         htmlAttributes = new
                         {
                             @disabled = "disabled",
-                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                         "background-color: transparent;" +
-                                                                                                                                                        "border: none; " +
-                                                                                                                                                        "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                                                        // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                                                        "border-radius: 0; " +
-                                                                                                                                                       " outline: none; " +
-                                                                                                                                                       " height: 50px; " +
-                                                                                                                                                       " width: 60px; " +
-                                                                                                                                                       " font-size: 16px; " +
-                                                                                                                                                       " margin: 0 0 8px 0; " +
-                                                                                                                                                       " padding: 0; " +
-                                                                                                                                                       ""
+                            @style = "color: rgba(0, 0, 0, 1.0); background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 120px;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                         }
                     })
                 </div>
@@ -160,7 +102,7 @@
                 <div class="input-field col s6">
                     @if (Model.ESTATUS == "N")
                     {
-                        <input type="text" id="txt_status" value="Nuevo" disabled="disabled" style="color: rgba(0, 0, 0, 0.42);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 0.42);border-radius: 0;outline: none;height: 50px;width: 60px;font-size: 16px;margin: 0 0 8px 0;padding: 0;" />
+                        <input type="text" id="txt_status" value="Nuevo" disabled="disabled" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 60px;font-size: 16px;margin: 0 0 8px 0;padding: 0;" />
                     }
                 </div>
             </td>
@@ -168,8 +110,8 @@
             <td style="width:30px"></td>
             <td style="width:30px"></td>
             <td>
-                <button type="button" class="btn-small" id="btn_cancel"
-                        style="height: 32.4px;line-height: 32.4px;
+                <a type="button" class="btn-small" id="btn_cancel"
+                   style="height: 32.4px;line-height: 32.4px;
                         font-size: 13px;
                         text-decoration: none;
                         color: #fff;
@@ -187,9 +129,10 @@
                         padding: 0 2rem;
                         text-transform: uppercase;
                         vertical-align: middle;
-                        -webkit-tap-highlight-color: transparent;">
+                        -webkit-tap-highlight-color: transparent;"
+                   href="@ViewBag.url@Url.Action("Details", "Solicitudes", new {id= Model.NUM_DOC, pais=Model.PAIS_ID })">
                     Ver
-                </button>
+                </a>
             </td>
         </tr>
     </table>
@@ -211,9 +154,7 @@
                                 <td>
                                     @Html.LabelFor(model => model.TSOL_ID, new
                                     {
-                                        @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                         @id = "lbl_userid"
                                     })
                                 </td>
@@ -226,19 +167,7 @@
                                             htmlAttributes = new
                                             {
                                                 @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 0.42);" +
-"background-color: transparent;" +
-"border: none; " +
-"border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-// "border-bottom: 1px solid #9e9e9e;" +
-"border-radius: 0; " +
-" outline: none; " +
-" height: 50px; " +
-" width: 100%; " +
-" font-size: 16px; " +
-" margin: 0 0 8px 0; " +
-" padding: 0; " +
-""
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                             }
                                         })
                                     </div>
@@ -248,9 +177,7 @@
                                 <td>
                                     @Html.LabelFor(model => model.TALL_ID, new
                                     {
-                                        @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                         @id = "lbl_userid"
                                     })
                                 </td>
@@ -263,19 +190,7 @@
                                             htmlAttributes = new
                                             {
                                                 @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                        "background-color: transparent;" +
-                                                        "border: none; " +
-                                                        "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                        // "border-bottom: 1px solid #9e9e9e;" +
-                                                        "border-radius: 0; " +
-                                                        " outline: none; " +
-                                                        " height: 50px; " +
-                                                        " width: 100%; " +
-                                                        " font-size: 16px; " +
-                                                        " margin: 0 0 8px 0; " +
-                                                        " padding: 0; " +
-                                                        ""
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                             }
                                         })
                                     </div>
@@ -292,18 +207,14 @@
                             <td>
                                 @Html.LabelFor(model => model.SOCIEDAD_ID, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                              "font-size:10px;" +
-                                                                                                                              "",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
                             <td>
                                 @Html.LabelFor(model => model.PAIS_ID, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
@@ -316,19 +227,7 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                    "background-color: transparent;" +
-                                    "border: none; " +
-                                    "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                    // "border-bottom: 1px solid #9e9e9e;" +
-                                    "border-radius: 0; " +
-                                " outline: none; " +
-                                " height: 50px; " +
-                                " width: 100%; " +
-                                " font-size: 16px; " +
-                                " margin: 0 0 8px 0; " +
-                                " padding: 0; " +
-                                                                                                                                                        ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
@@ -340,19 +239,7 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                        "background-color: transparent;" +
-                                        "border: none; " +
-                                        "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                        // "border-bottom: 1px solid #9e9e9e;" +
-                                        "border-radius: 0; " +
-                                    " outline: none; " +
-                                    " height: 50px; " +
-                                    " width: 100%; " +
-                                    " font-size: 16px; " +
-                                    " margin: 0 0 8px 0; " +
-                                    " padding: 0; " +
-                                                                                                                                                        ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
@@ -369,9 +256,7 @@
                             <td>
                                 @Html.LabelFor(model => model.FECHAC, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-                                                                           "font-size:10px;" +
-                                                                           "",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
@@ -384,19 +269,7 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                          "background-color: transparent;" +
-                                                                                         "border: none; " +
-                                                                                         "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                         // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                         "border-radius: 0; " +
-                                                                                        " outline: none; " +
-                                                                                        " height: 50px; " +
-                                                                                        " width: 100%; " +
-                                                                                        " font-size: 16px; " +
-                                                                                        " margin: 0 0 8px 0; " +
-                                                                                        " padding: 0; " +
-                                                                                        ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
@@ -406,18 +279,14 @@
                             <td>
                                 @Html.LabelFor(model => model.PERIODO, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
                             <td>
                                 @Html.LabelFor(model => model.EJERCICIO, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
@@ -430,19 +299,7 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                          "background-color: transparent;" +
-                                                                                         "border: none; " +
-                                                                                         "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                         // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                         "border-radius: 0; " +
-                                                                                        " outline: none; " +
-                                                                                        " height: 50px; " +
-                                                                                        " width: 100%; " +
-                                                                                        " font-size: 16px; " +
-                                                                                        " margin: 0 0 8px 0; " +
-                                                                                        " padding: 0; " +
-                                                                                        ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
@@ -454,19 +311,7 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                          "background-color: transparent;" +
-                                                                                         "border: none; " +
-                                                                                         "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                         // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                         "border-radius: 0; " +
-                                                                                        " outline: none; " +
-                                                                                        " height: 50px; " +
-                                                                                        " width: 100%; " +
-                                                                                        " font-size: 16px; " +
-                                                                                        " margin: 0 0 8px 0; " +
-                                                                                        " padding: 0; " +
-                                                                                        ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
@@ -476,9 +321,7 @@
                             <td>
                                 @Html.LabelFor(model => model.CONCEPTO, new
                                 {
-                                    @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                    @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
                             </td>
@@ -493,25 +336,74 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                 "background-color: transparent;" +
-                                                                                                                "border: none; " +
-                                                                                                                "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                "border-radius: 0; " +
-                                                                                                               " outline: none; " +
-                                                                                                               " height: 50px; " +
-                                                                                                               " width: 100%; " +
-                                                                                                               " font-size: 16px; " +
-                                                                                                               " margin: 0 0 8px 0; " +
-                                                                                                               " padding: 0; " +
-                                                                                                               ""
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                         }
                                     })
                                 </div>
                             </td>
                         </tr>
                     </table>
+                </div>
+
+                <div class="card-panel"
+                     style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;
+                                margin: 0.5rem 0 1rem 0;
+                                border-radius: 2px;
+                                background-color: #fff;
+                                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                                ">
+                    <h5 style="font-size:20px;margin:5px;">Cliente @Model.CLIENTE.KUNNR</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <table style="width:100%">
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.CLIENTE.NAME1, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.CLIENTE.NAME1, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.CLIENTE.STCD1, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.CLIENTE.STCD1, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </td>
         </tr>
@@ -534,9 +426,7 @@
                                 <td>
                                     @Html.LabelFor(model => model.FECHAI_VIG, new
                                     {
-                                        @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                         @id = "lbl_userid"
                                     })
                                 </td>
@@ -549,19 +439,7 @@
                                             htmlAttributes = new
                                             {
                                                 @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 0.42);" +
-"background-color: transparent;" +
-"border: none; " +
-"border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-// "border-bottom: 1px solid #9e9e9e;" +
-"border-radius: 0; " +
-" outline: none; " +
-" height: 50px; " +
-" width: 100%; " +
-" font-size: 16px; " +
-" margin: 0 0 8px 0; " +
-" padding: 0; " +
-""
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                             }
                                         })
                                     </div>
@@ -571,9 +449,7 @@
                                 <td>
                                     @Html.LabelFor(model => model.FECHAF_VIG, new
                                     {
-                                        @style = "    color: rgba(0, 0, 0, 0.42);" +
-"font-size:10px;" +
-"",
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                         @id = "lbl_userid"
                                     })
                                 </td>
@@ -586,19 +462,130 @@
                                             htmlAttributes = new
                                             {
                                                 @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 0.42);" +
-                                                                                                                                          "background-color: transparent;" +
-                                                                                                                                          "border: none; " +
-                                                                                                                                          "border-bottom: 1px dotted rgba(0, 0, 0, 0.42);" +
-                                                                                                                                          // "border-bottom: 1px solid #9e9e9e;" +
-                                                                                                                                          "border-radius: 0; " +
-                                                                                                                                          " outline: none; " +
-                                                                                                                                          " height: 50px; " +
-                                                                                                                                          " width: 100%; " +
-                                                                                                                                          " font-size: 16px; " +
-                                                                                                                                          " margin: 0 0 8px 0; " +
-                                                                                                                                          " padding: 0; " +
-                                                                                                                                          ""
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+            <td style="width:50%;padding:5px;vertical-align:baseline;">
+                <div class="card-panel"
+                     style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;
+                                margin: 0.5rem 0 1rem 0;
+                                border-radius: 2px;
+                                background-color: #fff;
+                                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+                                ">
+                    <h5 style="font-size:20px;margin:5px;">Finanzas</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <table style="width:100%">
+                            <tr>
+                                <td colspan="2">
+                                    @Html.LabelFor(model => model.MONTO_DOC_MD, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.MONEDA_ID, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;" colspan="2">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.MONTO_DOC_MD, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                                <td style="padding:5px;">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.MONEDA_ID, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.TIPO_CAMBIO, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                                <td>
+                                    @Html.LabelFor(model => model.MONTO_DOC_ML, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                                <td style="padding:5px;">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.MONTO_DOC_ML, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            }
+                                        })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    @Html.LabelFor(model => model.NOTAS, new
+                                    {
+                                        @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:5px;" colspan="3">
+                                    <div class="input-field col s4">
+                                        @Html.EditorFor(model => model.NOTAS, new
+                                        {
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
                                             }
                                         })
                                     </div>
@@ -610,120 +597,34 @@
             </td>
         </tr>
     </table>
-    <div class="row">
-        <div id="info" class="col s12" style="font-size:12px;">
-            <div class="row">
-                <div class="col s6 m6 l6">
-
-                    <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;background-color: #fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-                        <div class="row" style="margin-bottom:0">
-                            <h5>Temporalidad</h5>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                @Html.LabelFor(model => model.FECHAI_VIG, new { @class = "active" })
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                @Html.LabelFor(model => model.FECHAF_VIG, new { @class = "active" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6 m6 l6">
-
-                    <div class="row" style="margin-bottom:0">
-                        <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;background-color: #fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-                            <h5>Cliente @Html.DisplayFor(model => model.CLIENTE.KUNNR)</h5>
-                            <div class="row" style="margin-bottom:0">
-                                @*<div class="input-field col s12">
-                                        @Html.EditorFor(model => model.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.CLIENTE.KUNNR)
-                                    </div>*@
-                                <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.CLIENTE.NAME1, new { @class = "active" })
-                                </div>
-                                <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.CLIENTE.STCD1, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.CLIENTE.STCD1, new { @class = "active" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="fina" class="col s12">
-            <div class="row">
-                <div class="col s6 m6 l6">
-                    <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;background-color: #fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-                        <h5>Finanzas</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="input-field col s8">
-                                @Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.MONTO_DOC_MD, new { @class = "active" })
-                            </div>
-                            <div class="input-field col s4">
-                                @Html.EditorFor(model => model.MONEDA_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.MONEDA_ID, new { @class = "active" })
-                            </div>
-                            <div class="input-field col s6">
-                                @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.TIPO_CAMBIO, new { @class = "active" })
-                            </div>
-                            <div class="input-field col s6">
-                                @Html.EditorFor(model => model.MONTO_DOC_ML, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.MONTO_DOC_ML, new { @class = "active" })
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.TextAreaFor(model => model.NOTAS, new { @disabled = "disabled", @class = "materialize-textarea" })
-                                @Html.LabelFor(model => model.NOTAS, new { @class = "active" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s6 m6 l6">
-                    <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;background-color: #fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-                        <div class="row" style="margin-bottom:0">
-                            <h5>Análisis presupuesto</h5>
-                            <p>Presupuesto canal: 25,000.00</p>
-                            <h5>Análisis solicitud</h5>
-                            <p>importe Solicitud</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @if (ViewBag.workflow.Count != 0)
     {
         <div class="row" style="font-size:12px;">
             <div class="col s12">
                 <div class="row" style="margin-bottom:0">
                     <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;background-color: #fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-                        <h5>Workflow</h5>
-                        <table class="table highlight" id="table">
+                        <h5 style="font-size:20px;margin:5px;">Workflow</h5>
+                        <table class="table highlight" id="table" style="border-collapse:collapse;width:100%;display:table;border-spacing:0">
                             <thead>
-                                <tr>
-                                    <th width="">Usuario</th>
-                                    <th width="">Evento</th>
-                                    <th width="">Fecha</th>
-                                    <th width="">Fecha Procesada</th>
-                                    <th width="">Estatus</th>
-                                    <th width="30%">Comentario</th>
+                                <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                                    <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Usuario</th>
+                                    <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Evento</th>
+                                    <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Fecha</th>
+                                    <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Fecha Procesada</th>
+                                    <th style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Estatus</th>
+                                    <th width="30%" style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">Comentario</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (TAT001.Entities.FLUJO f in ViewBag.workflow)
                                 {
-                                    <tr>
-                                        <td width="">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
-                                        <td width="">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
-                                        <td width="">@Html.DisplayFor(modelItem => f.FECHAC)</td>
-                                        <td width="">@Html.DisplayFor(modelItem => f.FECHAM)</td>
-                                        <td width="">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
-                                        <td width="30%">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
+                                    <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.FECHAC)</td>
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.FECHAM)</td>
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
+                                        <td width="30%" style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
                                     </tr>
                                 }
                             </tbody>

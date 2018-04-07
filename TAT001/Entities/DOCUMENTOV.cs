@@ -20,8 +20,6 @@ namespace TAT001.Entities
         public string TALL_ID { get; set; }
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
-        public string ESTADO { get; set; }
-        public Nullable<long> CIUDAD { get; set; }
         public string PERIODO { get; set; }
         public string EJERCICIO { get; set; }
         public string TIPO_TECNICO { get; set; }
@@ -82,5 +80,7 @@ namespace TAT001.Entities
         public string SPART { get; set; }
         public string USUARIOA_ID { get; set; }
         public string EXPR2 { get; set; }
+        public string CIUDAD { get; set; }
+        public string ESTADO { get; set; }
     }
 }

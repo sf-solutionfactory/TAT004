@@ -180,7 +180,7 @@ namespace TAT001.Controllers
                         }
                         if (fileSAP != null)
                         {
-                            pRESUPUESTOP.presupuestoSAP = carga.cargarPresupuestoSAP(fileCPT, sociedadcpt, periodocpt, aniocpt, ref mensajeC);
+                            pRESUPUESTOP.presupuestoSAP = carga.cargarPresupuestoSAP(fileSAP, sociedadsap, periodosap, aniosap, ref mensajeS);
                             Session["Presupuesto"] = pRESUPUESTOP;
                             Session["Sociedadsap"] = sociedadsap;
                             Session["Aniosap"] = aniosap;
@@ -188,9 +188,10 @@ namespace TAT001.Controllers
                             ViewBag.sociedadsap = 1;
                         }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         ViewBag.MensajeG = "Error en la carga de archivo";
+                        ViewBag.MensajeG = e.Message;
                     }
                     ViewBag.MensajeC = mensajeC;
                     ViewBag.MensajeS = mensajeS;
@@ -205,16 +206,17 @@ namespace TAT001.Controllers
                             pRESUPUESTOP = Session["Presupuesto"] as DatosPresupuesto;
                             if (pRESUPUESTOP.presupuestoCPT.Count > 0 || pRESUPUESTOP.presupuestoSAP.Count > 0)
                             {
-                                ViewBag.MensajeC = carga.guardarPresupuesto(pRESUPUESTOP, Session["Sociedadcpt"] as string[], Session["Periodocpt"] as string[], Session["Sociedadsap"] as string[], Session["Periodosap"] as string[], Session["UserID"].ToString());
+                                ViewBag.MensajeC = carga.guardarPresupuesto(pRESUPUESTOP, Session["Sociedadcpt"] as string[], Session["Periodocpt"] as string[], Session["Sociedadsap"] as string[], Session["Periodosap"] as string[], User.Identity.Name);
                             }
                             else
                             {
                                 ViewBag.MensajeG = "Ocurrio algo intente de nuevo cargar el/los archivo/s";
                             }
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            ViewBag.MensajeG = "Ocurrio algo intente de nuevo cargar el/los archivo/s";
+                            ViewBag.MensajeG = "Ocurrio algo, intenté de nuevo cargar el/los archivo/s";
+                            ViewBag.MensajeG = e.InnerException.Message;
                         }
                     }
                     else

@@ -3,7 +3,7 @@ var acept = false;
 $(document).ready(function () {
     $('select').select();
     var elem = document.querySelector('.modal');
-    var instance = M.Modal.init(elem, []);   
+    var instance = M.Modal.init(elem, []);
     try {
         var table = $('#table').DataTable({
             //scrollY: "70vh",
@@ -116,7 +116,7 @@ $(document).ready(function () {
                     }
                     if (mostrar) {
                         $('#footer').html('<a id="acept" class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>' +
-                                         ' <a id="cance" class="modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>');
+                            ' <a id="cance" class="modal-action modal-close waves-effect waves-red btn-flat">Cancelar</a>');
                         $('#dialogo').trigger('click');
                         e.preventDefault();
                     }
@@ -150,7 +150,11 @@ $(document).ready(function () {
             }
             else {
                 acept = false;
-            }            
+                document.getElementById("loader").style.display = "initial";
+            }
+        }
+        else {
+            document.getElementById("loader").style.display = "initial";
         }
     });
 });

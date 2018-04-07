@@ -85,7 +85,7 @@ namespace TAT001.Models
                 tabla.AddCell(celdaColor3);
                 tabla.AddCell(celdaColor4);
                 tabla.AddCell(celdaColor5);
-                tabla.SetWidthPercentage(new float[] { 400, 50, 80, 25, 110}, PageSize.A4);
+                tabla.SetWidthPercentage(new float[] { 400, 50, 80, 25, 110 }, PageSize.A4);
                 for (int i = 0; i < tabla.Rows.Count; i++)
                 {
                     if (i <= 4)
@@ -94,7 +94,7 @@ namespace TAT001.Models
                     }
                 }
                 pdfDoc.Add(tabla);
-                
+
                 //AQUI EMPIEZA APARTADO DE DATOS
                 pdfDoc.Add(new Chunk(""));
                 tablaDatos1.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -106,9 +106,12 @@ namespace TAT001.Models
                 { PdfPCell celda1 = new PdfPCell(new Paragraph("", negritaPeque)); celda1.Border = 0; tablaDatos1.AddCell(celda1); }
 
                 if (c.folio_x == true)
-                {PdfPCell celda2 = new PdfPCell(new Paragraph("Folio:" + c.folio, negritaPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+                { PdfPCell celda2 = new PdfPCell(new Paragraph("Folio:" + c.folio, negritaPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
                 else
-                {PdfPCell celda2 = new PdfPCell(new Paragraph("", normalPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+                { PdfPCell celda2 = new PdfPCell(new Paragraph("", normalPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+
+                PdfPCell celdaB1 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB1.Border = 0; tablaDatos1.AddCell(celdaB1);
+                PdfPCell celdaB2 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB2.Border = 0; tablaDatos1.AddCell(celdaB2);
 
                 if (c.cliente_x == true)
                 { PdfPCell celda3 = new PdfPCell(new Paragraph(c.cliente, negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
@@ -125,26 +128,20 @@ namespace TAT001.Models
                 else
                 { PdfPCell celda5 = new PdfPCell(new Paragraph("", normalPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
 
-                PdfPCell celda6 = new PdfPCell(new Paragraph("Para control interno Kellogg´s", negritaPeque));
-                celda6.BackgroundColor = new BaseColor(204, 204, 204);
-                tablaDatos1.AddCell(celda6);
+                if (c.payer_x == true)
+                { PdfPCell celda6 = new PdfPCell(new Paragraph("Para control interno Kellogg´s", negritaPeque)); celda6.BackgroundColor = new BaseColor(204, 204, 204); tablaDatos1.AddCell(celda6); }
+                else
+                { PdfPCell celda6 = new PdfPCell(new Paragraph("", negritaPeque)); celda6.Border = 0; tablaDatos1.AddCell(celda6); }
 
                 if (c.direccion_x == true)
                 { PdfPCell celda7 = new PdfPCell(new Paragraph(c.direccion, normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
                 else
                 { PdfPCell celda7 = new PdfPCell(new Paragraph("", normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
 
-                PdfPCell celda8 = new PdfPCell(new Paragraph("Sold To: 3549521, 2453876, 3549521, 2453876, 3549521, 2453876, 3549521", normalPeque));
-                tablaDatos1.AddCell(celda8);
-
-                PdfPCell celda9 = new PdfPCell(new Paragraph("", normalPeque));
-                celda9.Border = 0;
-                tablaDatos1.AddCell(celda9);
-
                 if (c.payer_x == true)
-                { PdfPCell celda10 = new PdfPCell(new Paragraph("Payer: 354952, 245387, 354952, 245387, 354952, 245387" + c.payer, normalPeque));  tablaDatos1.AddCell(celda10); }
+                { PdfPCell celda8 = new PdfPCell(new Paragraph("Payer: 354952, 245387, 354952, 245387, 354952, 245387" + c.payer, normalPeque)); tablaDatos1.AddCell(celda8); }
                 else
-                { PdfPCell celda10 = new PdfPCell(new Paragraph("", normalPeque));  tablaDatos1.AddCell(celda10); }
+                { PdfPCell celda8 = new PdfPCell(new Paragraph("", normalPeque)); celda8.Border = 0; tablaDatos1.AddCell(celda8); }
 
                 float var = tablaDatos1.TotalHeight;
                 pdfDoc.Add(tablaDatos1);
@@ -184,9 +181,9 @@ namespace TAT001.Models
                 PdfPTable tabFirma1 = new PdfPTable(1);
                 PdfPCell celFirmita1 = new PdfPCell();
                 if (c.nombreE_x == true | c.puestoE_x == true | c.companyC_x == true)
-                {celFirmita1.AddElement(new Paragraph("\n", normalPeque)); celFirmita1.Border = 2; }
+                { celFirmita1.AddElement(new Paragraph("\n", normalPeque)); celFirmita1.Border = 2; }
                 else
-                { celFirmita1.AddElement(new Paragraph("", normalPeque)); celFirmita1.Border = 0; }   
+                { celFirmita1.AddElement(new Paragraph("", normalPeque)); celFirmita1.Border = 0; }
                 tabFirma1.AddCell(celFirmita1);
                 tabFirma1.SetWidthPercentage(new float[] { 450 }, PageSize.A4);
 
@@ -208,7 +205,7 @@ namespace TAT001.Models
                 tablaDatos2.AddCell(celFirma1);
                 tablaDatos2.AddCell(celFirma2);
                 tablaDatos2.SetWidthPercentage(new float[] { 300, 300 }, PageSize.A4);
-                
+
                 pdfDoc.Add(tablaDatos2);
 
                 //pdfDoc.Add(new Chunk("\n"));

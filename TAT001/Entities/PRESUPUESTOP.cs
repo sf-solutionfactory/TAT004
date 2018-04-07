@@ -42,6 +42,10 @@ namespace TAT001.Entities
         public Nullable<double> RECUN { get; set; }
         public Nullable<double> RSRDV { get; set; }
         public Nullable<double> TOTCS { get; set; }
+        public Nullable<double> VVX17 { get; set; }
+        public Nullable<double> OTHTA { get; set; }
+        public Nullable<double> CORPM { get; set; }
+        public Nullable<double> SPA { get; set; }
     
         public virtual PRESUPUESTOH PRESUPUESTOH { get; set; }
     }

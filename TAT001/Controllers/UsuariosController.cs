@@ -129,11 +129,34 @@ namespace TAT001.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,PASS,NOMBRE,APELLIDO_P,APELLIDO_M,EMAIL,SPRAS_ID,ACTIVO,PUESTO_ID,MANAGER,BACKUP_ID,BUNIT")] USUARIO uSUARIO)
+        public ActionResult Create([Bind(Include = "ID,PASS,NOMBRE,APELLIDO_P,APELLIDO_M,EMAIL,SPRAS_ID,ACTIVO,PUESTO_ID,MANAGER,BACKUP_ID,BUNIT,ROL")] Usuario uSUARIO)
         {
             if (ModelState.IsValid)
             {
-                db.USUARIOs.Add(uSUARIO);
+                Cryptography c = new Cryptography();
+                uSUARIO.PASS = c.Encrypt(uSUARIO.PASS);
+                USUARIO u = new USUARIO();
+                var ppd = u.GetType().GetProperties();
+                var ppv = uSUARIO.GetType().GetProperties();
+                foreach (var pv in ppv)
+                {
+                    foreach (var pd in ppd)
+                    {
+                        if (pd.Name == pv.Name)
+                        {
+                            pd.SetValue(u, pv.GetValue(uSUARIO));
+                            break;
+                        }
+                    }
+                }
+                db.USUARIOs.Add(u);
+
+                MIEMBRO m = new MIEMBRO();
+                m.ROL_ID = uSUARIO.ROL;
+                m.USUARIO_ID = uSUARIO.ID;
+                m.ACTIVO = true;
+                db.MIEMBROS.Add(m);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

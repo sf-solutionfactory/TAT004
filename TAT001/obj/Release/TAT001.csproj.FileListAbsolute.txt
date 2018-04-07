@@ -181,3 +181,7 @@ C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.d
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\EntityFramework.MappingAPI.pdb
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\itextsharp.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\itextsharp.xml
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.DataSet.dll
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.dll
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.xml
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.DataSet.xml

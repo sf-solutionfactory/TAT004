@@ -13,39 +13,24 @@ namespace TAT001.Entities
     
     public partial class CSP_CONSULTARPRESUPUESTO_Result
     {
+        public string CANAL { get; set; }
+        public double PPTOC { get; set; }
         public string BANNER { get; set; }
         public double PPTO { get; set; }
-        public double GRSLS { get; set; }
-        public double RECSL { get; set; }
-        public double INDLB { get; set; }
-        public double FRGHT { get; set; }
-        public double PURCH { get; set; }
-        public double RAWMT { get; set; }
-        public double PKGMT { get; set; }
-        public double OVHDV { get; set; }
-        public double OVHDF { get; set; }
-        public double DIRLB { get; set; }
         public double CSHDC { get; set; }
         public double RECUN { get; set; }
         public double OTHTA { get; set; }
         public double SPA { get; set; }
         public double FREEG { get; set; }
-        public double PKGDS { get; set; }
         public double CONPR { get; set; }
         public double RSRDV { get; set; }
         public double CORPM { get; set; }
         public double POP { get; set; }
         public double PMVAR { get; set; }
         public double ADVER { get; set; }
-        public double NETLB { get; set; }
-        public double SLLBS { get; set; }
-        public double SLCAS { get; set; }
-        public double PRCAS { get; set; }
-        public double NPCAS { get; set; }
         public double DSTRB { get; set; }
-        public double ILVAR { get; set; }
-        public double BILBK { get; set; }
-        public double OVHVV { get; set; }
+        public double VVX17 { get; set; }
+        public double OHV { get; set; }
         public double CONSU { get; set; }
         public double TOTAL { get; set; }
     }

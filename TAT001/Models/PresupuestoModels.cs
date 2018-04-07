@@ -43,7 +43,6 @@ namespace TAT001.Models
             {
                 sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "").ToList();
             }
-            sociedades.cambio = db.CSP_CAMBIO(sociedad).ToList();
             return sociedades;
         }
         public string consultarUCarga()

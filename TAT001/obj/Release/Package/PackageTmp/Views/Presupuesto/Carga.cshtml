@@ -92,11 +92,11 @@
             width: 100%;
         }
     </style>
-    <button id="dialogo" data-target="modal1" class="btn modal-trigger" hidden="hidden"></button>
+    <button id="dialogo" data-target="modal1" class="btn modal-trigger" style="display:none;"></button>
 
     <div class=" row right-align">
         <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
-        <input id="Button1" class="btn-small blue-grey" type="submit" value="Cargar" name="enviar" />
+        <input id="Button2" class="btn-small blue-grey" type="submit" value="Cargar" name="enviar" />
         <hr />
     </div>
 
@@ -115,7 +115,7 @@
                             <span>Seleccionar todas las sociedades</span>
                         </label>
                         <label class="col s5 offset-s3 right-align">
-                            <input id="chkperiodo" type="checkbox" @*checked="checked"*@ />
+                            <input id="chkperiodo" type="checkbox" checked="checked" />
                             <span>Seleccionar todos los periodos</span>
                         </label>
                         <div class="input-field col s4">
@@ -164,7 +164,7 @@
                             <label>Sociedad</label>
                         </div>
                         <div class="input-field col s3">
-                            <select multiple name="aniocpt">
+                            <select name="aniocpt">
                                 @if (Session["Aniocpt"] != null)
                                 {
                                     j = 0;
@@ -173,7 +173,7 @@
                                     {
                                         if (anio.Year.ToString() == arranio[j])
                                         {
-                                            <option value="@anio.Year" selected>@anio.Year</option>
+                                            <option value="@anio.Year">@anio.Year</option>
                                         }
                                         anio = anio.AddYears(1);
                                         if (j < (arranio.Length - 1))
@@ -186,7 +186,14 @@
                                 {
                                     for (int i = 0; i < 2; i++)
                                     {
-                                        <option value="@anio.Year" selected>@anio.Year</option>
+                                        if (i == 0)
+                                        {
+                                            <option value="@anio.Year" selected>@anio.Year</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@anio.Year">@anio.Year</option>
+                                        }
                                         anio = anio.AddYears(1);
                                     }
                                 }
@@ -223,18 +230,18 @@
                             <div class="input-field col s5">
                                 <select multiple name="periodocpt">
                                     <option value="" disabled selected></option>
-                                    <option value="1">Enero</option>
-                                    <option value="2">Febrero</option>
-                                    <option value="3">Marzo</option>
-                                    <option value="4">Abril</option>
-                                    <option value="5">Mayo</option>
-                                    <option value="6">Junio</option>
-                                    <option value="7">Julio</option>
-                                    <option value="8">Agosto</option>
-                                    <option value="9">Septiembre</option>
-                                    <option value="10">Octubre</option>
-                                    <option value="11">Noviembre</option>
-                                    <option value="12">Diciembre</option>
+                                    <option value="1" selected>Enero</option>
+                                    <option value="2" selected>Febrero</option>
+                                    <option value="3" selected>Marzo</option>
+                                    <option value="4" selected>Abril</option>
+                                    <option value="5" selected>Mayo</option>
+                                    <option value="6" selected>Junio</option>
+                                    <option value="7" selected>Julio</option>
+                                    <option value="8" selected>Agosto</option>
+                                    <option value="9" selected>Septiembre</option>
+                                    <option value="10" selected>Octubre</option>
+                                    <option value="11" selected>Noviembre</option>
+                                    <option value="12" selected>Diciembre</option>
                                 </select>
                                 <label>Periodo</label>
                             </div>
@@ -243,7 +250,7 @@
                             <div class="file-field input-field">
                                 <div class="btn blue-grey">
                                     <span>Carga archivo CPT</span>
-                                    <input type="file" name="fileCPT" accept=".txt">
+                                    <input id="CPT" type="file" name="fileCPT" accept=".txt">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -258,7 +265,7 @@
                     <h5>SAP</h5>
                     <div class="row">
                         <div class="input-field col s4">
-                            <select multiple name="sociedadsap" id="selec">
+                            <select name="sociedadsap" id="selec">
                                 @try
                                 {
                                     defaul = Session["Sociedadsap"] as string[];
@@ -273,22 +280,37 @@
                                     if (defaul == null)
                                     {
                                         defaul = new string[1];
-                                        <option value="" disabled selected></option>
+                                        @*<option value="" disabled selected></option>*@
                                     }
                                     for (int i = 0; i < Model.sociedad.Count; i++)
                                     {
-                                        if (defaul[j] == Model.sociedad[i].BUKRS)
+                                        if (defaul[0] == "")
                                         {
-                                            <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
-                                            if (j < (defaul.Length - 1))
+                                            if (i == 0)
                                             {
-                                                j++;
+                                                <option selected value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
                                             }
                                         }
                                         else
                                         {
-                                            <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
+                                            if (defaul[j] == Model.sociedad[i].BUKRS)
+                                            {
+                                                <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
+                                                if (j < (defaul.Length - 1))
+                                                {
+                                                    j++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
+                                            }
                                         }
+
                                     }
                                 }
                                 catch (Exception)
@@ -308,7 +330,7 @@
                                     string[] arranio = Session["Aniosap"] as string[];
                                     for (int i = 0; i < 2; i++)
                                     {
-                                        <option value="@anio.Year" selected>@anio.Year</option>
+                                        <option value="@anio.Year">@anio.Year</option>
                                         anio = anio.AddYears(1);
                                         if (j < (arranio.Length - 1))
                                         {
@@ -319,7 +341,7 @@
                                 else
                                 {
                                     anio = DateTime.Today;
-                                    <option value="@anio.Year" selected>@anio.Year</option>
+                                    <option value="@anio.Year">@anio.Year</option>
                                     <option value="@anio.AddYears(1).Year">@anio.AddYears(1).Year</option>
                                 }
                             </select>
@@ -353,9 +375,8 @@
                         else
                         {
                             <div class="input-field col s5">
-                                <select multiple name="periodosap">
-                                    <option value="" disabled selected></option>
-                                    <option value="1">Enero</option>
+                                <select name="periodosap">
+                                    <option value="1" selected>Enero</option>
                                     <option value="2">Febrero</option>
                                     <option value="3">Marzo</option>
                                     <option value="4">Abril</option>
@@ -375,7 +396,7 @@
                             <div class="file-field input-field">
                                 <div class="btn btn blue-grey">
                                     <span>Carga archivo SAP</span>
-                                    <input type="file" name="fileSAP" accept=".csv">
+                                    <input id="SAP" type="file" name="fileSAP" accept=".csv">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -392,11 +413,14 @@
 {
     if (Model.presupuestoCPT.Count > 0)
     {
+        <script>
+            M.toast({ html: 'Carga correcta', classes: 'green' });
+        </script>
         <div class="row">
             @using (Html.BeginForm())
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" />
+                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -503,7 +527,7 @@
 catch (Exception)
 {
 }
-<div class="center-align"><h5>@ViewBag.MensajeC</h5> </div>
+@*<div class="center-align"><h5>@ViewBag.MensajeC</h5> </div>*@
 
 
 @try
@@ -514,7 +538,7 @@ catch (Exception)
             @using (Html.BeginForm())
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" />
+                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -567,43 +591,25 @@ catch (Exception)
                         <th>Posting date</th>
                         <th>Created by</th>
                         <th>Reference document</th>
-                        <th>GRSLS</th>
-                        <th>RECSL</th>
-                        <th>INDLB</th>
-                        <th>FRGHT</th>
-                        <th>PURCH</th>
-                        <th>RAWMT</th>
-                        <th>PKGMT</th>
-                        <th>OVHDV</th>
-                        <th>OVHDF</th>
-                        <th>DIRLB</th>
+                        <th>VVX17</th>
                         <th>CSHDC</th>
                         <th>RECUN</th>
+                        <th>DSTRB</th>
                         <th>OTHTA</th>
-                        <th>SPA  </th>
-                        <th>FREEG</th>
-                        <th>PKGDS</th>
-                        <th>CONPR</th>
-                        <th>RSRDV</th>
+                        <th>ADVER</th>
                         <th>CORPM</th>
                         <th>POP  </th>
                         <th>PMVAR</th>
-                        <th>ADVER</th>
-                        <th>NETLB</th>
-                        <th>SLLBS</th>
-                        <th>SLCAS</th>
-                        <th>PRCAS</th>
-                        <th>NPCAS</th>
-                        <th>DSTRB</th>
-                        <th>ILVAR</th>
-                        <th>BILBK</th>
-                        <th>OVHVV</th>
+                        <th>CONPR</th>
+                        <th>RSRDV</th>
+                        <th>SPA  </th>
+                        <th>FREEG</th>
                     </tr>
                 </thead>
 
                 @for (int i = 0; i < 50; i++)
                 {
-                    if (i <= Model.presupuestoSAP.Count)
+                    if (i < Model.presupuestoSAP.Count)
                     {
                         <tr>
                             <td>@Model.presupuestoSAP[i].ANIO</td>
@@ -626,42 +632,44 @@ catch (Exception)
                             <td>@Model.presupuestoSAP[i].FECHAP</td>
                             <td>@Model.presupuestoSAP[i].UNAME</td>
                             <td>@Model.presupuestoSAP[i].XBLNR</td>
-                            <td>@Model.presupuestoSAP[i].GRSLS</td>
-                            <td>@Model.presupuestoSAP[i].RECSL</td>
-                            <td>@Model.presupuestoSAP[i].INDLB</td>
-                            <td>@Model.presupuestoSAP[i].FRGHT</td>
-                            <td>@Model.presupuestoSAP[i].PURCH</td>
-                            <td>@Model.presupuestoSAP[i].RAWMT</td>
-                            <td>@Model.presupuestoSAP[i].PKGMT</td>
-                            <td>@Model.presupuestoSAP[i].OVHDV</td>
-                            <td>@Model.presupuestoSAP[i].OVHDF</td>
-                            <td>@Model.presupuestoSAP[i].DIRLB</td>
+                            @*<td>@Model.presupuestoSAP[i].GRSLS</td>
+                                <td>@Model.presupuestoSAP[i].RECSL</td>
+                                <td>@Model.presupuestoSAP[i].INDLB</td>
+                                <td>@Model.presupuestoSAP[i].FRGHT</td>
+                                <td>@Model.presupuestoSAP[i].PURCH</td>
+                                <td>@Model.presupuestoSAP[i].RAWMT</td>
+                                <td>@Model.presupuestoSAP[i].PKGMT</td>
+                                <td>@Model.presupuestoSAP[i].OVHDV</td>
+                                <td>@Model.presupuestoSAP[i].OVHDF</td>
+                                <td>@Model.presupuestoSAP[i].DIRLB</td>*@
+                            <td>@Model.presupuestoSAP[i].VVX17</td>
                             <td>@Model.presupuestoSAP[i].CSHDC</td>
                             <td>@Model.presupuestoSAP[i].RECUN</td>
+                            <td>@Model.presupuestoSAP[i].DSTRB</td>
                             <td>@Model.presupuestoSAP[i].OTHTA</td>
-                            <td>@Model.presupuestoSAP[i].SPA  </td>
-                            <td>@Model.presupuestoSAP[i].FREEG</td>
-                            <td>@Model.presupuestoSAP[i].PKGDS</td>
-                            <td>@Model.presupuestoSAP[i].CONPR</td>
-                            <td>@Model.presupuestoSAP[i].RSRDV</td>
+                            <td>@Model.presupuestoSAP[i].ADVER</td>
                             <td>@Model.presupuestoSAP[i].CORPM</td>
                             <td>@Model.presupuestoSAP[i].POP  </td>
                             <td>@Model.presupuestoSAP[i].PMVAR</td>
-                            <td>@Model.presupuestoSAP[i].ADVER</td>
-                            <td>@Model.presupuestoSAP[i].NETLB</td>
-                            <td>@Model.presupuestoSAP[i].SLLBS</td>
-                            <td>@Model.presupuestoSAP[i].SLCAS</td>
-                            <td>@Model.presupuestoSAP[i].PRCAS</td>
-                            <td>@Model.presupuestoSAP[i].NPCAS</td>
-                            <td>@Model.presupuestoSAP[i].DSTRB</td>
-                            <td>@Model.presupuestoSAP[i].ILVAR</td>
-                            <td>@Model.presupuestoSAP[i].BILBK</td>
-                            <td>@Model.presupuestoSAP[i].OVHVV</td>
+                            <td>@Model.presupuestoSAP[i].CONPR</td>
+                            <td>@Model.presupuestoSAP[i].RSRDV</td>
+                            <td>@Model.presupuestoSAP[i].SPA  </td>
+                            <td>@Model.presupuestoSAP[i].FREEG</td>
+                            @*<td>@Model.presupuestoSAP[i].PKGDS</td>*@
+                            @*<td>@Model.presupuestoSAP[i].NETLB</td>
+                                <td>@Model.presupuestoSAP[i].SLLBS</td>
+                                <td>@Model.presupuestoSAP[i].SLCAS</td>
+                                <td>@Model.presupuestoSAP[i].PRCAS</td>
+                                <td>@Model.presupuestoSAP[i].NPCAS</td>*@
+
+                            @*<td>@Model.presupuestoSAP[i].ILVAR</td>
+                                <td>@Model.presupuestoSAP[i].BILBK</td>
+                                <td>@Model.presupuestoSAP[i].OVHVV</td>*@
                         </tr>
                     }
                     else
                     {
-                        i = Model.presupuestoSAP.Count;
+                        i = 50;
                     }
                 }
             </table>
@@ -692,11 +700,22 @@ catch (Exception)
 }
 @if (@ViewBag.MensajeG != null)
 {
-    if (@ViewBag.MensajeS != "")
+    if (@ViewBag.MensajeG != "")
     {
         <script>
     /**/
-    M.toast({ html: '@ViewBag.MensajeG', classes: 'red' });
+    M.toast({ html: '@ViewBag.MensajeG' });
+/**/
+        </script>
+    }
+}
+@if (@ViewBag.MensajeC != null)
+{
+    if (@ViewBag.MensajeC != "")
+    {
+        <script>
+    /**/
+    M.toast({ html: '@ViewBag.MensajeC' });
 /**/
         </script>
     }

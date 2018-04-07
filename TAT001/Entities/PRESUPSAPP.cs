@@ -36,37 +36,21 @@ namespace TAT001.Entities
         public string FECHAP { get; set; }
         public string UNAME { get; set; }
         public string XBLNR { get; set; }
-        public Nullable<decimal> GRSLS { get; set; }
-        public Nullable<decimal> RECSL { get; set; }
-        public Nullable<decimal> INDLB { get; set; }
-        public Nullable<decimal> FRGHT { get; set; }
-        public Nullable<decimal> PURCH { get; set; }
-        public Nullable<decimal> RAWMT { get; set; }
-        public Nullable<decimal> PKGMT { get; set; }
-        public Nullable<decimal> OVHDV { get; set; }
-        public Nullable<decimal> OVHDF { get; set; }
-        public Nullable<decimal> DIRLB { get; set; }
+        public Nullable<decimal> VVX17 { get; set; }
         public Nullable<decimal> CSHDC { get; set; }
         public Nullable<decimal> RECUN { get; set; }
+        public Nullable<decimal> DSTRB { get; set; }
         public Nullable<decimal> OTHTA { get; set; }
-        public Nullable<decimal> SPA { get; set; }
-        public Nullable<decimal> FREEG { get; set; }
-        public Nullable<decimal> PKGDS { get; set; }
-        public Nullable<decimal> CONPR { get; set; }
-        public Nullable<decimal> RSRDV { get; set; }
+        public Nullable<decimal> ADVER { get; set; }
         public Nullable<decimal> CORPM { get; set; }
         public Nullable<decimal> POP { get; set; }
+        public Nullable<decimal> OTHER { get; set; }
+        public Nullable<decimal> CONPR { get; set; }
+        public Nullable<decimal> OHV { get; set; }
+        public Nullable<decimal> FREEG { get; set; }
+        public Nullable<decimal> RSRDV { get; set; }
+        public Nullable<decimal> SPA { get; set; }
         public Nullable<decimal> PMVAR { get; set; }
-        public Nullable<decimal> ADVER { get; set; }
-        public Nullable<decimal> NETLB { get; set; }
-        public Nullable<decimal> SLLBS { get; set; }
-        public Nullable<decimal> SLCAS { get; set; }
-        public Nullable<decimal> PRCAS { get; set; }
-        public Nullable<decimal> NPCAS { get; set; }
-        public Nullable<decimal> DSTRB { get; set; }
-        public Nullable<decimal> ILVAR { get; set; }
-        public Nullable<decimal> BILBK { get; set; }
-        public Nullable<decimal> OVHVV { get; set; }
     
         public virtual PRESUPSAPH PRESUPSAPH { get; set; }
     }

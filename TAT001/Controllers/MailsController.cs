@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
@@ -39,6 +40,32 @@ namespace TAT001.Controllers
                                                     & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
             ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
             ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
+            ViewBag.url = "http://localhost:64497";
+            return View(dOCUMENTO);
+        }
+
+        public ActionResult Solicitudes(decimal id, string spras)
+        {
+
+            //int pagina = 203; //ID EN BASE DE DATOS
+            ViewBag.Title = "Solicitud";
+
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
+            if (dOCUMENTO == null)
+            {
+                return HttpNotFound();
+            }
+            dOCUMENTO.CLIENTE = db.CLIENTEs.Where(a => a.VKORG.Equals(dOCUMENTO.VKORG)
+                                                    & a.VTWEG.Equals(dOCUMENTO.VTWEG)
+                                                    & a.SPART.Equals(dOCUMENTO.SPART)
+                                                    & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
+            ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
+            ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
+            ViewBag.url = "http://localhost:64497";
             return View(dOCUMENTO);
         }
 
@@ -77,7 +104,7 @@ namespace TAT001.Controllers
             mail.IsBodyHtml = true;
             string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
             //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
-            UrlDirectory = UrlDirectory.Replace("Enviar", "Solicitud");
+            UrlDirectory = UrlDirectory.Replace("Enviar", "Solicitudes");
             HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
             myRequest.Method = "GET";
             WebResponse myResponse = myRequest.GetResponse();
@@ -88,11 +115,9 @@ namespace TAT001.Controllers
 
             mail.Body = result;
 
-
             client.Send(mail);
 
-
-            return RedirectToAction("Solicitud", new { id = id, spras = spras });
+            return RedirectToAction("Details", "Solicitudes", new { id = id, spras = spras });
 
             //return View(dOCUMENTO);
         }

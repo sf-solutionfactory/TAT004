@@ -51,7 +51,7 @@ namespace TAT001.Controllers
         }
 
         [Authorize]
-        public ActionResult Pais()
+        public ActionResult Pais(string pais)
         {
             using (TAT001Entities db = new TAT001Entities())
             {

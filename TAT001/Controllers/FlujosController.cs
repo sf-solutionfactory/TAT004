@@ -127,6 +127,9 @@ namespace TAT001.Controllers
             db.FLUJOes.Add(fn);
 
             db.SaveChanges();
+            if(wp.EMAIL.Equals("X"))
+                return RedirectToAction("Enviar", "Mails", new { id = id });
+
             return RedirectToAction("Details", "Solicitudes", new { id = id });
         }
 
@@ -269,7 +272,20 @@ namespace TAT001.Controllers
             if (ModelState.IsValid)
             {
                 int res = pf.procesa(flujo);
-                if (res.Equals(0))
+                if (res.Equals(0))//Aprobado
+                {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+                else if (res.Equals(1))//CORREO
+                {
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC });
+
+                }
+                else if (res.Equals(2))//CORREO DE FIN DE WORKFLOW
+                {
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC });
+                }
+                else if (res.Equals(3))//Rechazado
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }

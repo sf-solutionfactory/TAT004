@@ -20,6 +20,7 @@ namespace TAT001.Entities
         public string MAKTX { get; set; }
         public string MAKTG { get; set; }
         public string MEINS { get; set; }
+        public Nullable<decimal> PUNIT { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
     
         public virtual CATEGORIA CATEGORIA { get; set; }

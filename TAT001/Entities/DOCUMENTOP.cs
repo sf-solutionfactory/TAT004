@@ -17,6 +17,7 @@ namespace TAT001.Entities
         public decimal NUM_DOC { get; set; }
         public decimal POS { get; set; }
         public string MATNR { get; set; }
+        public string MATKL { get; set; }
         public decimal CANTIDAD { get; set; }
         public decimal MONTO { get; set; }
         public decimal PORC_APOYO { get; set; }
@@ -27,7 +28,6 @@ namespace TAT001.Entities
         public Nullable<decimal> APOYO_REAL { get; set; }
         public Nullable<System.DateTime> VIGENCIA_DE { get; set; }
         public Nullable<System.DateTime> VIGENCIA_AL { get; set; }
-        public string MATKL { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

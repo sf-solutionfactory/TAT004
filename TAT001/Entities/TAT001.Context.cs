@@ -40,6 +40,8 @@ namespace TAT001.Entities
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
+        public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
+        public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
@@ -70,6 +72,8 @@ namespace TAT001.Entities
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
         public virtual DbSet<TCAMBIO> TCAMBIOs { get; set; }
+        public virtual DbSet<TCLIENTE> TCLIENTEs { get; set; }
+        public virtual DbSet<TCLIENTET> TCLIENTETs { get; set; }
         public virtual DbSet<TEXTO> TEXTOes { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
         public virtual DbSet<TSOLT> TSOLTs { get; set; }
@@ -85,7 +89,20 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
+    
+        [DbFunction("TAT001Entities", "split")]
+        public virtual IQueryable<split_Result> split(string delimited, string delimiter)
+        {
+            var delimitedParameter = delimited != null ?
+                new ObjectParameter("delimited", delimited) :
+                new ObjectParameter("delimited", typeof(string));
+    
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("delimiter", delimiter) :
+                new ObjectParameter("delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<split_Result>("[TAT001Entities].[split](@delimited, @delimiter)", delimitedParameter, delimiterParameter);
+        }
     
         public virtual ObjectResult<CSP_CAMBIO_Result> CSP_CAMBIO(string sociedad)
         {
@@ -155,6 +172,15 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PERMISO_Result>("CSP_PERMISO", iDParameter, aCCIONParameter);
         }
     
+        public virtual ObjectResult<CSP_PRESU_CLIENT_Result> CSP_PRESU_CLIENT(string cLIENTE)
+        {
+            var cLIENTEParameter = cLIENTE != null ?
+                new ObjectParameter("CLIENTE", cLIENTE) :
+                new ObjectParameter("CLIENTE", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESU_CLIENT_Result>("CSP_PRESU_CLIENT", cLIENTEParameter);
+        }
+    
         public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(string anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
         {
             var anioParameter = anio != null ?
@@ -191,6 +217,47 @@ namespace TAT001.Entities
                 new ObjectParameter("path", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESUPUESTO_ADDP_Result>("CSP_PRESUPUESTO_ADDP", pathParameter);
+        }
+    
+        public virtual ObjectResult<CSP_USUARIO_Result> CSP_USUARIO(string iD, string pASS, string nOMBRE, string aPELLIDO_P, string aPELLIDO_M, string eMAIL, string sPRAS_ID, Nullable<bool> aCTIVO, Nullable<int> aCCION)
+        {
+            var iDParameter = iD != null ?
+                new ObjectParameter("ID", iD) :
+                new ObjectParameter("ID", typeof(string));
+    
+            var pASSParameter = pASS != null ?
+                new ObjectParameter("PASS", pASS) :
+                new ObjectParameter("PASS", typeof(string));
+    
+            var nOMBREParameter = nOMBRE != null ?
+                new ObjectParameter("NOMBRE", nOMBRE) :
+                new ObjectParameter("NOMBRE", typeof(string));
+    
+            var aPELLIDO_PParameter = aPELLIDO_P != null ?
+                new ObjectParameter("APELLIDO_P", aPELLIDO_P) :
+                new ObjectParameter("APELLIDO_P", typeof(string));
+    
+            var aPELLIDO_MParameter = aPELLIDO_M != null ?
+                new ObjectParameter("APELLIDO_M", aPELLIDO_M) :
+                new ObjectParameter("APELLIDO_M", typeof(string));
+    
+            var eMAILParameter = eMAIL != null ?
+                new ObjectParameter("EMAIL", eMAIL) :
+                new ObjectParameter("EMAIL", typeof(string));
+    
+            var sPRAS_IDParameter = sPRAS_ID != null ?
+                new ObjectParameter("SPRAS_ID", sPRAS_ID) :
+                new ObjectParameter("SPRAS_ID", typeof(string));
+    
+            var aCTIVOParameter = aCTIVO.HasValue ?
+                new ObjectParameter("ACTIVO", aCTIVO) :
+                new ObjectParameter("ACTIVO", typeof(bool));
+    
+            var aCCIONParameter = aCCION.HasValue ?
+                new ObjectParameter("ACCION", aCCION) :
+                new ObjectParameter("ACCION", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_USUARIO_Result>("CSP_USUARIO", iDParameter, pASSParameter, nOMBREParameter, aPELLIDO_PParameter, aPELLIDO_MParameter, eMAILParameter, sPRAS_IDParameter, aCTIVOParameter, aCCIONParameter);
         }
     }
 }

@@ -85,7 +85,11 @@ namespace TAT001.Models
                                     PMVAR = pRESUPUESTOP.PMVAR,
                                     PURCH = pRESUPUESTOP.PURCH,
                                     RECUN = pRESUPUESTOP.RECUN,
-                                    RSRDV = pRESUPUESTOP.RSRDV
+                                    RSRDV = pRESUPUESTOP.RSRDV,
+                                    VVX17 = pRESUPUESTOP.VVX17,
+                                    OTHTA = pRESUPUESTOP.OTHTA,
+                                    CORPM = pRESUPUESTOP.CORPM,
+                                    SPA = pRESUPUESTOP.SPA
                                 });
                             }
                             pRESUPUESTOP = new PRESUPUESTOP();
@@ -139,7 +143,11 @@ namespace TAT001.Models
                         PMVAR = pRESUPUESTOP.PMVAR,
                         PURCH = pRESUPUESTOP.PURCH,
                         RECUN = pRESUPUESTOP.RECUN,
-                        RSRDV = pRESUPUESTOP.RSRDV
+                        RSRDV = pRESUPUESTOP.RSRDV,
+                        VVX17 = pRESUPUESTOP.VVX17,
+                        OTHTA = pRESUPUESTOP.OTHTA,
+                        CORPM = pRESUPUESTOP.CORPM,
+                        SPA = pRESUPUESTOP.SPA
                     });
                 }
                 pRESUPUESTOP = new PRESUPUESTOP();
@@ -198,38 +206,39 @@ namespace TAT001.Models
                         pRESUPUESTOP.FECHAP = lines[20].Substring(4, 2) + "-" + lines[20].Substring(6, 2) + "-" + lines[20].Substring(0, 4);
                         pRESUPUESTOP.UNAME = lines[21];
                         pRESUPUESTOP.XBLNR = lines[22];
-                        pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[23]);
-                        pRESUPUESTOP.RECSL = Convert.ToDecimal(lines[24]);
-                        pRESUPUESTOP.INDLB = Convert.ToDecimal(lines[25]);
-                        pRESUPUESTOP.FRGHT = Convert.ToDecimal(lines[26]);
-                        pRESUPUESTOP.PURCH = Convert.ToDecimal(lines[27]);
-                        pRESUPUESTOP.RAWMT = Convert.ToDecimal(lines[28]);
-                        pRESUPUESTOP.PKGMT = Convert.ToDecimal(lines[29]);
-                        pRESUPUESTOP.OVHDV = Convert.ToDecimal(lines[30]);
-                        pRESUPUESTOP.OVHDF = Convert.ToDecimal(lines[31]);
-                        pRESUPUESTOP.DIRLB = Convert.ToDecimal(lines[32]);
-                        pRESUPUESTOP.CSHDC = Convert.ToDecimal(lines[33]);
-                        pRESUPUESTOP.RECUN = Convert.ToDecimal(lines[34]);
-                        pRESUPUESTOP.OTHTA = Convert.ToDecimal(lines[35]);
-                        pRESUPUESTOP.SPA = Convert.ToDecimal(lines[36]);
-                        pRESUPUESTOP.FREEG = Convert.ToDecimal(lines[37]);
-                        pRESUPUESTOP.PKGDS = Convert.ToDecimal(lines[38]);
-                        pRESUPUESTOP.CONPR = Convert.ToDecimal(lines[39]);
-                        pRESUPUESTOP.RSRDV = Convert.ToDecimal(lines[40]);
-                        pRESUPUESTOP.CORPM = Convert.ToDecimal(lines[41]);
-                        pRESUPUESTOP.POP = Convert.ToDecimal(lines[42]);
-                        pRESUPUESTOP.PMVAR = Convert.ToDecimal(lines[43]);
-                        pRESUPUESTOP.ADVER = Convert.ToDecimal(lines[44]);
-                        pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[45]);
-                        pRESUPUESTOP.SLLBS = Convert.ToDecimal(lines[46]);
-                        pRESUPUESTOP.SLCAS = Convert.ToDecimal(lines[47]);
-                        pRESUPUESTOP.PRCAS = Convert.ToDecimal(lines[48]);
-                        pRESUPUESTOP.NPCAS = Convert.ToDecimal(lines[49]);
-                        pRESUPUESTOP.DSTRB = Convert.ToDecimal(lines[50]);
-                        pRESUPUESTOP.ILVAR = Convert.ToDecimal(lines[51]);
-                        pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
-                        pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
-
+                        //pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[23]);
+                        //pRESUPUESTOP.RECSL = Convert.ToDecimal(lines[24]);
+                        //pRESUPUESTOP.INDLB = Convert.ToDecimal(lines[25]);
+                        //pRESUPUESTOP.FRGHT = Convert.ToDecimal(lines[26]);
+                        //pRESUPUESTOP.PURCH = Convert.ToDecimal(lines[27]);
+                        //pRESUPUESTOP.RAWMT = Convert.ToDecimal(lines[28]);
+                        //pRESUPUESTOP.PKGMT = Convert.ToDecimal(lines[29]);
+                        //pRESUPUESTOP.OVHDV = Convert.ToDecimal(lines[30]);
+                        //pRESUPUESTOP.OVHDF = Convert.ToDecimal(lines[31]);
+                        //pRESUPUESTOP.DIRLB = Convert.ToDecimal(lines[32]);
+                        pRESUPUESTOP.VVX17 = Convert.ToDecimal(lines[23]);
+                        pRESUPUESTOP.CSHDC = Convert.ToDecimal(lines[24]);
+                        pRESUPUESTOP.RECUN = Convert.ToDecimal(lines[25]);
+                        pRESUPUESTOP.DSTRB = Convert.ToDecimal(lines[26]);
+                        pRESUPUESTOP.OTHTA = Convert.ToDecimal(lines[27]);
+                        pRESUPUESTOP.ADVER = Convert.ToDecimal(lines[28]);
+                        pRESUPUESTOP.CORPM = Convert.ToDecimal(lines[29]);
+                        pRESUPUESTOP.POP = Convert.ToDecimal(lines[30]);
+                        pRESUPUESTOP.PMVAR = Convert.ToDecimal(lines[31]);
+                        pRESUPUESTOP.CONPR = Convert.ToDecimal(lines[32]);
+                        pRESUPUESTOP.RSRDV = Convert.ToDecimal(lines[33]);
+                        pRESUPUESTOP.SPA = Convert.ToDecimal(lines[34]);
+                        pRESUPUESTOP.FREEG = Convert.ToDecimal(lines[35]);
+                        //pRESUPUESTOP.PKGDS = Convert.ToDecimal(lines[38]);
+                        //pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[45]);
+                        //pRESUPUESTOP.SLLBS = Convert.ToDecimal(lines[46]);
+                        //pRESUPUESTOP.SLCAS = Convert.ToDecimal(lines[47]);
+                        //pRESUPUESTOP.PRCAS = Convert.ToDecimal(lines[48]);
+                        //pRESUPUESTOP.NPCAS = Convert.ToDecimal(lines[49]); 
+                        //pRESUPUESTOP.ILVAR = Convert.ToDecimal(lines[51]);
+                        //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
+                        //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
+                        //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
                         if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, pRESUPUESTOP.PERIOD, sociedad, periodo, anio, false))
                         {
                             pRESUPUESTOPS.Add(new PRESUPSAPP
@@ -255,37 +264,39 @@ namespace TAT001.Models
                                 FECHAP = pRESUPUESTOP.FECHAP,
                                 UNAME = pRESUPUESTOP.UNAME,
                                 XBLNR = pRESUPUESTOP.XBLNR,
-                                GRSLS = pRESUPUESTOP.GRSLS,
-                                RECSL = pRESUPUESTOP.RECSL,
-                                INDLB = pRESUPUESTOP.INDLB,
-                                FRGHT = pRESUPUESTOP.FRGHT,
-                                PURCH = pRESUPUESTOP.PURCH,
-                                RAWMT = pRESUPUESTOP.RAWMT,
-                                PKGMT = pRESUPUESTOP.PKGMT,
-                                OVHDV = pRESUPUESTOP.OVHDV,
-                                OVHDF = pRESUPUESTOP.OVHDF,
-                                DIRLB = pRESUPUESTOP.DIRLB,
+                                //GRSLS = pRESUPUESTOP.GRSLS,
+                                //RECSL = pRESUPUESTOP.RECSL,
+                                //INDLB = pRESUPUESTOP.INDLB,
+                                //FRGHT = pRESUPUESTOP.FRGHT,
+                                //PURCH = pRESUPUESTOP.PURCH,
+                                //RAWMT = pRESUPUESTOP.RAWMT,
+                                //PKGMT = pRESUPUESTOP.PKGMT,
+                                //OVHDV = pRESUPUESTOP.OVHDV,
+                                //OVHDF = pRESUPUESTOP.OVHDF,
+                                //DIRLB = pRESUPUESTOP.DIRLB,
                                 CSHDC = pRESUPUESTOP.CSHDC,
                                 RECUN = pRESUPUESTOP.RECUN,
                                 OTHTA = pRESUPUESTOP.OTHTA,
                                 SPA = pRESUPUESTOP.SPA,
                                 FREEG = pRESUPUESTOP.FREEG,
-                                PKGDS = pRESUPUESTOP.PKGDS,
+                                //PKGDS = pRESUPUESTOP.PKGDS,
                                 CONPR = pRESUPUESTOP.CONPR,
                                 RSRDV = pRESUPUESTOP.RSRDV,
                                 CORPM = pRESUPUESTOP.CORPM,
                                 POP = pRESUPUESTOP.POP,
                                 PMVAR = pRESUPUESTOP.PMVAR,
                                 ADVER = pRESUPUESTOP.ADVER,
-                                NETLB = pRESUPUESTOP.NETLB,
-                                SLLBS = pRESUPUESTOP.SLLBS,
-                                SLCAS = pRESUPUESTOP.SLCAS,
-                                PRCAS = pRESUPUESTOP.PRCAS,
-                                NPCAS = pRESUPUESTOP.NPCAS,
+                                //NETLB = pRESUPUESTOP.NETLB,
+                                //SLLBS = pRESUPUESTOP.SLLBS,
+                                //SLCAS = pRESUPUESTOP.SLCAS,
+                                //PRCAS = pRESUPUESTOP.PRCAS,
+                                //NPCAS = pRESUPUESTOP.NPCAS,
                                 DSTRB = pRESUPUESTOP.DSTRB,
-                                ILVAR = pRESUPUESTOP.ILVAR,
-                                BILBK = pRESUPUESTOP.BILBK,
-                                OVHVV = pRESUPUESTOP.OVHVV
+                                //ILVAR = pRESUPUESTOP.ILVAR,
+                                //BILBK = pRESUPUESTOP.BILBK,
+                                //OVHVV = pRESUPUESTOP.OVHVV
+                                VVX17 = pRESUPUESTOP.VVX17,
+                                OHV = pRESUPUESTOP.OHV
                             });
                         }
                         //sw.WriteLine(pRESUPUESTOP.ID + "," + pRESUPUESTOP.ANIO + "," + pRESUPUESTOP.POS + "," + pRESUPUESTOP.MES + "," + pRESUPUESTOP.VERSION + "," + pRESUPUESTOP.PAIS + "," + pRESUPUESTOP.MONEDA + "," + pRESUPUESTOP.MATERIAL + "," + pRESUPUESTOP.BANNER + "," + pRESUPUESTOP.ADVER + "," + pRESUPUESTOP.CONPR + "," + pRESUPUESTOP.CSHDC + "," + pRESUPUESTOP.DIRLB + "," + pRESUPUESTOP.DSTRB + "," + pRESUPUESTOP.FREEG + "," + pRESUPUESTOP.GRSLS + "," + pRESUPUESTOP.NETLB + "," + pRESUPUESTOP.OVHDF + "," + pRESUPUESTOP.OVHDV + "," + pRESUPUESTOP.PKGMT + "," + pRESUPUESTOP.PMVAR + "," + pRESUPUESTOP.POP + "," + pRESUPUESTOP.PURCH + "," + pRESUPUESTOP.RAWMT + "," + pRESUPUESTOP.RECUN + "," + pRESUPUESTOP.RSRDV + "," + pRESUPUESTOP.TOTCS);
@@ -422,6 +433,18 @@ namespace TAT001.Models
                     break;
                 case "RSRDV":
                     presu.RSRDV = data;
+                    break;
+                case "VVX17":
+                    presu.VVX17 = data;
+                    break;
+                case "OTHTA":
+                    presu.OTHTA = data;
+                    break;
+                case "CORPM":
+                    presu.CORPM = data;
+                    break;
+                case "SPA":
+                    presu.SPA = data;
                     break;
                 default:
                     break;

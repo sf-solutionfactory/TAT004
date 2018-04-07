@@ -189,7 +189,7 @@ namespace TAT001.Controllers
             PUESTOT p = new PUESTOT();
             using (TAT001Entities db = new TAT001Entities())
             {
-                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Include("CITY").Where(a => a.NUM_DOC.Equals(id)).First();
+                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
                 //var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(doa => doa.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
                 if (d != null)
                 {
@@ -200,7 +200,7 @@ namespace TAT001.Controllers
                                                             & a.KUNNR.Equals(d.PAYER_ID)).First();
                     string sp = Session["spras"].ToString();
                     p = db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(sp) && a.PUESTO_ID == d.USUARIO.PUESTO_ID).FirstOrDefault();
-                    d.CITy.STATE.NAME = db.STATES.Where(a => a.ID.Equals(d.CITy.STATE_ID)).FirstOrDefault().NAME;
+                    ////d.CITy.STATE.NAME = db.STATES.Where(a => a.ID.Equals(d.CITy.STATE_ID)).FirstOrDefault().NAME;
                 }
                 ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
             }
@@ -222,7 +222,7 @@ namespace TAT001.Controllers
             cf.folio_x = true;
             //cf.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
             //cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
-            cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
+            ////cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
             cf.lugar_x = true;
             cf.payer = d.CLIENTE.NAME1;
             cf.payer_x = true;
@@ -323,9 +323,38 @@ namespace TAT001.Controllers
             }
             catch (Exception e)
             {
-                return View();
+
+                int pagina = 231; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string pa = Session["pais"].ToString();
+                    ViewBag.pais = pa + ".svg";
+                }
+                catch
+                {
+                    ViewBag.pais = "mx.svg";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+                DOCUMENTO d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(c.num_doc)).First();
+                ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
             }
+            ViewBag.error = e.Message;
+            return View(c);
         }
+    }
 
         // GET: CartaF/Edit/5
         public ActionResult Edit(int id)

@@ -113,17 +113,20 @@ namespace TAT001.Controllers
             {
                 user = db.USUARIOs.Where(a => a.ID.Equals(user.ID) && a.PASS.Equals(pass)).FirstOrDefault();
             }
-                //user =  Repository.GetUserDetails(user);
+            //user =  Repository.GetUserDetails(user);
 
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(model.ID, false);
 
                 //var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, user.MIEMBROS.FirstOrDefault().ROL.NOMBRE);
-                var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, "Administrador");
+                var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddDays(1), false, "Administrador");
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);
+                //return RedirectToAction("Index", "Home");
+                if (returnUrl != null)
+                    return Redirect(returnUrl);
                 return RedirectToAction("Index", "Home");
             }
 

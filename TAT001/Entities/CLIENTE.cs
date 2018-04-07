@@ -41,8 +41,11 @@ namespace TAT001.Entities
         public string GRUPO { get; set; }
         public string SPRAS { get; set; }
         public bool ACTIVO { get; set; }
+        public string BANNER { get; set; }
+        public string CANAL { get; set; }
     
         public virtual PAI PAI { get; set; }
+        public virtual TCLIENTE TCLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTEI> CLIENTEIs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -32,7 +32,7 @@
                 },
                 fixedColumns: true,
                 fixedColumns: {
-                    leftColumns: 2
+                    leftColumns: 4
                 },
                 columnDefs: [
                     {
@@ -61,7 +61,7 @@
     }
 </script>
 <style>
-    .dataTables_length {
+    dataTables_length {
         display: none;
     }
 
@@ -72,14 +72,22 @@
     .dataTables_scrollHeadInner, .mdl-data-table {
         width: 100%;
     }
-
+    /*.
     #fechUlt {
-        text-align: right;
+        text-align: left;
     }
 
     th {
         text-align: center;
     }
+
+    #selection, #selec {
+        margin-left: 2%;
+    }
+
+    #Button1 {
+        margin-left: 2%;
+    }*/
 </style>
 
 <div>
@@ -131,7 +139,7 @@
                 {
                     anio = Convert.ToDateTime("01/01/" + ViewBag.anio);
                 }
-                <div class="input-field col s2" id="selection">
+                <div class="input-field col s1" id="selection">
                     <select name="anioconsu">
                         @if (Session["anioconsu"] != null)
                         {
@@ -249,7 +257,7 @@
                 </select>
                 <label id="lbl_waers">Moneda</label>
             </div>
-            <div class="col s4 right-align">
+            <div class="col s5 right-align">
                 <button id="lbl_cargar" class="btn-small blue-grey" type="submit">
                     Cargar
                 </button>
@@ -260,34 +268,37 @@
 </div>
 @if (Model.presupuesto.Count > 0)
 {
-    <div>
-        <div class="row" style="margin-bottom:0;">
-            <div class="input-field col s3 m3 l3">
-                <select id="selecc">
-                    <option value="10" selected>10</option>
-                    <option value="20">20</option>
-                    <option value="25">25</option>
-                    <option value="30">30</option>
-                </select>
-                <label>Ver por página</label>
-            </div>
-            <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
-                <input type="text" class="global_filter" id="global_filter">
-                <label for="global_filter">Buscar</label>
-            </div>
+<div>
+    <div class="row" style="margin-bottom:0;">
+        <div class="input-field col s3 m3 l3">
+            <select id="selecc">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+            <label>Ver por página</label>
         </div>
-        <script>
-            var elem = document.querySelector('#selecc');
-            var options = [];
-            var instance = M.Select.init(elem, options);
-        </script>
+        <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
+            <input type="text" class="global_filter" id="global_filter">
+            <label for="global_filter">Buscar</label>
+        </div>
+    </div>
+    <script>
+        var elem = document.querySelector('#selecc');
+        var options = [];
+        var instance = M.Select.init(elem, options);
+    </script>
 
-        <table class="table mdl-data-table table-striped centered" id="table">
-            <thead>
-                <tr>
-                    <th>Banner</th>
-                    <th>PPTO Banner</th>
-                    <th>GRSLS</th>
+
+    <table class="table mdl-data-table table-striped centered" id="table">
+        <thead>
+            <tr>
+                <th>Canal</th>
+                <th>Total Canal</th>
+                <th>Banner</th>
+                <th>PPTO Banner</th>
+                @*<th>GRSLS</th>
                     <th>RECSL</th>
                     <th>INDLB</th>
                     <th>FRGHT</th>
@@ -296,83 +307,92 @@
                     <th>PKGMT</th>
                     <th>OVHDV</th>
                     <th>OVHDF</th>
-                    <th>DIRLB</th>
-                    <th>CSHDC</th>
-                    <th>RECUN</th>
-                    <th>OTHTA</th>
-                    <th>SPA</th>
-                    <th>FREEG</th>
-                    <th>PKGDS</th>
-                    <th>CONPR</th>
-                    <th>RSRDV</th>
-                    <th>CORPM</th>
-                    <th>POP</th>
-                    <th>PMVAR</th>
-                    <th>ADVER</th>
+                    <th>DIRLB</th>*@
+                <th>VVX17</th>
+                <th>CSHDC</th>
+                <th>RECUN</th>
+                <th>DSTRB</th>
+                <th>OTHTA</th>
+                <th>ADVER</th>
+                <th>CORPM</th>
+                <th>POP</th>
+                <th>PMVAR</th>
+                <th>CONPR</th>
+                <th>RSRDV</th>
+                <th>SPA</th>
+                <th>FREEG</th>
+                @*<th>PKGDS</th>
                     <th>NETLB</th>
-                    <th>SLLBS</th>
+                    <th>SLLBS</th
                     <th>SLCAS</th>
                     <th>PRCAS</th>
                     <th>NPCAS</th>
-                    <th>DSTRB</th>
                     <th>ILVAR</th>
                     <th>BILBK</th>
                     <th>OVHVV</th>
-                    <th>Consumido</th>
-                    <th>PPTO Disponible</th>
-                </tr>
-            </thead>
+                    <th>OHV  </th>*@
+                <th>Consumido</th>
+                <th>PPTO Disponible</th>
+            </tr>
+        </thead>
 
-            @for (int i = 0; i < Model.presupuesto.Count; i++)
-            {
-                <tr>
-                    <td> @String.Format("{0:0,0.000}", Model.presupuesto[i].BANNER)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PPTO)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECSL)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].INDLB)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FRGHT)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PURCH)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RAWMT)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGMT)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDV)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDF)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DIRLB)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CSHDC)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECUN)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OTHTA)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SPA)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FREEG)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGDS)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CONPR)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RSRDV)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CORPM)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].POP)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PMVAR)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].ADVER)</td>
+        @for (int i = 0; i < Model.presupuesto.Count; i++)
+        {
+            <tr>
+                <td>@Model.presupuesto[i].CANAL</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PPTOC)</td>
+                <td>@Model.presupuesto[i].BANNER</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PPTO)</td>
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECSL)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].INDLB)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FRGHT)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PURCH)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RAWMT)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGMT)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDV)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDF)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DIRLB)</td>*@
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].VVX17)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CSHDC)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECUN)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DSTRB)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OTHTA)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].ADVER)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CORPM)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].POP)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PMVAR)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CONPR)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RSRDV)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SPA)</td>
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FREEG)</td>
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGDS)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NETLB)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLLBS)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLCAS)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PRCAS)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NPCAS)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DSTRB)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].ILVAR)</td>
                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].BILBK)</td>
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHVV)</td>
-                    @if (Model.presupuesto[i].CONSU != 0)
-                    {
-                        <td>$-@String.Format("{0:0,0.000}", Model.presupuesto[i].CONSU)</td>
-                    }
-                    else
-                    {
-                        <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CONSU)</td>
-                    }
-
-                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].TOTAL)</td>
-                </tr>
-            }
-        </table>
-    </div>
+                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHVV)</td>*@
+                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OHV)</td>*@
+                @if (Model.presupuesto[i].CONSU > 0)
+                {
+                    <td>$-@String.Format("{0:0,0.000}", Model.presupuesto[i].CONSU)</td>
+                }
+                else if (Model.presupuesto[i].CONSU == 0)
+                {
+                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CONSU)</td>
+                }
+                else
+                {
+                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].CONSU)</td>
+                }
+                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].TOTAL)</td>
+            </tr>
+        }
+    </table>
+</div>
 }
 
 

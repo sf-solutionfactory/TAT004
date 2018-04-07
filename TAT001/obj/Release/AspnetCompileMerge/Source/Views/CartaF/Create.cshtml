@@ -330,3 +330,10 @@
     </div>
 
 }
+
+@if (ViewBag.error != null)
+{
+<script>
+    M.toast({ html: '@ViewBag.error', classes: 'red' });
+</script>
+}

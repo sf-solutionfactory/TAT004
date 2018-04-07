@@ -14,18 +14,10 @@ namespace TAT001.Entities
     
     public partial class CITy
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CITy()
-        {
-            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
-        }
-    
         public long ID { get; set; }
         public string NAME { get; set; }
         public int STATE_ID { get; set; }
     
         public virtual STATE STATE { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }
