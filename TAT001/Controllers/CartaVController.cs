@@ -1,0 +1,352 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using TAT001.Entities;
+using TAT001.Models;
+
+namespace TAT001.Controllers
+{
+    [Authorize]
+    public class CartaVController : Controller
+    {
+        // GET: CartaV
+        public ActionResult Index(string ruta)
+        {
+            int pagina = 230; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    return RedirectToAction("Pais", "Home");
+                }
+            }
+            ViewBag.url = ruta;
+            return View();
+        }
+
+        // GET: CartaV/Details/5
+        public ActionResult Details(string ruta)
+        {
+            int pagina = 230; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    return RedirectToAction("Pais", "Home");
+                }
+            }
+            ViewBag.url = ruta;
+            return View();
+        }
+
+        // GET: CartaV/Details/5
+        public ActionResult Create(decimal id)
+        {
+            int pagina = 232; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    //ViewBag.pais = "mx.svg";
+                    return RedirectToAction("Pais", "Home");
+                }
+
+                List<string> lista = new List<string>();
+                List<string> armadoCuerpoTab = new List<string>();
+                List<int> numfilasTabla = new List<int>();
+
+                int contadorTabla = 0;
+
+                var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+
+                foreach (var item in con)
+                {
+                    lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                }
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    contadorTabla = 0;
+                    DateTime a1 = DateTime.Parse(lista[i].Remove(25));
+                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, 25));
+
+                    var con2 = db.DOCUMENTOPs
+                                          .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
+                                          .ToList();
+
+                    //DateTime a1 = (DateTime)item.Key.VIGENCIA_DE;
+                    //DateTime a2 = (DateTime)item.Key.VIGENCIA_DE;
+                    //var con2 = db.DOCUMENTOPs
+                    //                  .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
+                    //                  .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
+                    //                  .ToList();
+
+
+                    //.Select(x => new { x.MATNR, x.MATKL, x.PORC_APOYO, x.MONTO_APOYO, x.APOYO_REAL, x.PRECIO_SUG })
+                    foreach (var item2 in con2)
+                    {
+                        armadoCuerpoTab.Add(item2.MATNR);
+                        armadoCuerpoTab.Add(item2.MATKL);
+                        armadoCuerpoTab.Add(item2.MAKTX);
+                        armadoCuerpoTab.Add(item2.PUNIT.ToString());
+                        armadoCuerpoTab.Add(item2.PORC_APOYO.ToString());
+                        armadoCuerpoTab.Add(item2.MONTO_APOYO.ToString());
+                        armadoCuerpoTab.Add(item2.resta.ToString());
+                        armadoCuerpoTab.Add(item2.PRECIO_SUG.ToString());
+                        contadorTabla++;
+                    }
+                    numfilasTabla.Add(contadorTabla);
+                }
+
+
+                HeaderFooter hfc = new HeaderFooter();
+                hfc.eliminaArchivos();
+
+                EncabezadoMateriales em = new EncabezadoMateriales();
+                CartaV cv = new CartaV();
+
+                //ENCABEZADO TABLA
+                var encabezado = new List<string>();
+                encabezado.Add(em.material = "Material");
+                encabezado.Add(em.categoria = "Categoria");
+                encabezado.Add(em.descripcion = "Descripcion");
+                encabezado.Add(em.costoun = "Costo unitario");
+                encabezado.Add(em.apoyo = "% Apoyo");
+                encabezado.Add(em.apoyop = "Apoyo por pieza");
+                encabezado.Add(em.costoap = "Costo con apoyo");
+                encabezado.Add(em.precio = "Precio sugerido");
+
+                DOCUMENTO d = new DOCUMENTO();
+                PUESTOT pp = new PUESTOT();
+                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
+                //var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(doa => doa.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
+                if (d != null)
+                {
+                    //var aa = db.CLIENTEs.Where(a => a.VKORG.Equals(d.VKORG)
+                    d.CLIENTE = db.CLIENTEs.Where(a => a.VKORG.Equals(d.VKORG)
+                                                              & a.VTWEG.Equals(d.VTWEG)
+                                                            & a.SPART.Equals(d.SPART)
+                                                            & a.KUNNR.Equals(d.PAYER_ID)).First();
+                    string sp = Session["spras"].ToString();
+                    pp = db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(sp) && a.PUESTO_ID == d.USUARIO.PUESTO_ID).FirstOrDefault();
+                    ////d.CITy.STATE.NAME = db.STATES.Where(a => a.ID.Equals(d.CITy.STATE_ID)).FirstOrDefault().NAME;
+                }
+                ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
+
+
+
+                //CUERPO DE LA CARTA
+                cv.listaFechas = lista;
+                cv.numfilasTabla = numfilasTabla;
+                cv.listaEncabezado = encabezado;
+                cv.listaCuerpo = armadoCuerpoTab;
+                cv.num_doc = id;
+                cv.company = d.SOCIEDAD.BUTXT;
+                cv.company_x = true;
+                cv.taxid = d.SOCIEDAD.LAND;
+                cv.taxid_x = true;
+                cv.concepto = d.CONCEPTO;
+                cv.concepto_x = true;
+                cv.cliente = d.PAYER_NOMBRE;
+                cv.cliente_x = true;
+                cv.puesto = " ";
+                cv.puesto_x = false;
+                cv.direccion = d.CLIENTE.STRAS_GP;
+                cv.direccion_x = true;
+                cv.folio = d.NUM_DOC.ToString();
+                cv.folio_x = true;
+                //cv.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
+                cv.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
+                ////cv.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
+                cv.lugar_x = true;
+                cv.payer = d.CLIENTE.NAME1;
+                cv.payer_x = true;
+                cv.estimado = d.PAYER_NOMBRE;
+                cv.estimado_x = true;
+                cv.mecanica = d.NOTAS;
+                cv.mecanica_x = true;
+                cv.nombreE = d.USUARIO.NOMBRE + " " + d.USUARIO.APELLIDO_P + " " + d.USUARIO.APELLIDO_M;
+                cv.nombreE_x = true;
+                if (pp != null)
+                    cv.puestoE = pp.TXT50;
+                cv.puestoE_x = true;
+                cv.companyC = cv.company;
+                cv.companyC_x = true;
+                cv.nombreC = d.PAYER_NOMBRE;
+                cv.nombreC_x = true;
+                cv.puestoC = " ";
+                cv.puestoC_x = false;
+                cv.companyCC = d.CLIENTE.NAME1;
+                cv.companyCC_x = true;
+                if (ViewBag.legal != null)
+                    cv.legal = ViewBag.legal.LEYENDA1;
+                cv.legal_x = true;
+                cv.mail = "El contenido del presente Acuerdo será enviado electrónicamente al correo: " + d.PAYER_EMAIL;
+                cv.mail_x = true;
+                cv.comentarios = "";
+                cv.comentarios_x = true;
+                cv.compromisoK = "";
+                cv.compromisoK_x = true;
+                cv.compromisoC = "";
+                cv.compromisoC_x = true;
+                return View(cv);
+            }
+        }
+
+        // POST: CartaV/Details/5
+        [HttpPost]
+        public ActionResult Create(CartaV v)
+        {
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                EncabezadoMateriales em = new EncabezadoMateriales();
+                var encabezadoTab = new List<string>();
+                encabezadoTab.Add(em.material = "Material");
+                encabezadoTab.Add(em.categoria = "Categoria");
+                encabezadoTab.Add(em.descripcion = "Descripcion");
+                encabezadoTab.Add(em.costoun = "Costo unitario");
+                encabezadoTab.Add(em.apoyo = "% Apoyo");
+                encabezadoTab.Add(em.apoyop = "Apoyo por pieza");
+                encabezadoTab.Add(em.costoap = "Costo con apoyo");
+                encabezadoTab.Add(em.precio = "Precio sugerido");
+
+                List<string> encabezadoFech = new List<string>();
+                List<string> armadoCuerpoTab = new List<string>();
+                List<int> numfilasTab = new List<int>();
+
+                int contadorTabla = 0;
+
+                var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+
+                foreach (var item in con)
+                {
+                    encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                }
+
+                for (int i = 0; i < encabezadoFech.Count; i++)
+                {
+                    contadorTabla = 0;
+                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(25));
+                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, 25));
+
+                    var con2 = db.DOCUMENTOPs
+                                      .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
+                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
+                                      .ToList();
+
+                    foreach (var item in con2)
+                    {
+                        armadoCuerpoTab.Add(item.MATNR);
+                        armadoCuerpoTab.Add(item.MATKL);
+                        armadoCuerpoTab.Add(item.MAKTX);
+                        armadoCuerpoTab.Add(item.PUNIT.ToString());
+                        armadoCuerpoTab.Add(item.PORC_APOYO.ToString());
+                        armadoCuerpoTab.Add(item.MONTO_APOYO.ToString());
+                        armadoCuerpoTab.Add(item.resta.ToString());
+                        armadoCuerpoTab.Add(item.PRECIO_SUG.ToString());
+                        contadorTabla++;
+                    }
+                    numfilasTab.Add(contadorTabla);
+                }
+
+                CartaV carta = v;
+                CartaVEsqueleto cve = new CartaVEsqueleto();
+                cve.crearPDF(carta, encabezadoFech, encabezadoTab, numfilasTab, armadoCuerpoTab);
+                string recibeRuta = Convert.ToString(Session["rutaCompletaV"]);
+                return RedirectToAction("Index", new { ruta = recibeRuta });
+            }
+        }
+
+        // GET: CartaV/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: CartaV/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: CartaV/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: CartaV/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}

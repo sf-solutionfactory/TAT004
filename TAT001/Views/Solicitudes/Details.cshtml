@@ -75,6 +75,10 @@
                 {
                     <li><a href="@Url.Action("Create", "CartaF", new { id = Model.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
                 }
+                else
+                {
+                    <li><a href="@Url.Action("Create", "CartaV", new { id = Model.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                }
             </ul>
             <script>
                 var elem = document.getElementById('btn_carta');
@@ -168,9 +172,9 @@
                         <h5>Cliente @*@Html.DisplayFor(model => model.CLIENTE.KUNNR)*@</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.CLIENTE.KUNNR)
-                                </div>
+                                @Html.EditorFor(model => model.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.CLIENTE.KUNNR)
+                            </div>
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
                                 @Html.LabelFor(model => model.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })

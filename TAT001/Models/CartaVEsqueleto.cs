@@ -1,0 +1,357 @@
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Web;
+using TAT001.Models;
+
+namespace TAT001.Models
+{
+    public class CartaVEsqueleto
+    {
+        iTextSharp.text.Font letraTabNegrita = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 7);
+        iTextSharp.text.Font letraTab = FontFactory.GetFont(FontFactory.HELVETICA, 7);
+        iTextSharp.text.Font negritaPeque = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
+        iTextSharp.text.Font normalPeque = FontFactory.GetFont(FontFactory.HELVETICA, 11);
+        iTextSharp.text.Font normalMasPeque = FontFactory.GetFont(FontFactory.HELVETICA, 8);
+        PdfPTable tablaDatos = new PdfPTable(1);
+        PdfPTable tablaDatos1 = new PdfPTable(2);
+        PdfPTable tablaDatos2 = new PdfPTable(2);
+        PdfPTable tablaDatos3 = new PdfPTable(2);
+        PdfPTable tabComentarios = new PdfPTable(2);
+        public int a, b, r;
+        private int pos = 0;
+
+        public void crearPDF(CartaV v, List<string> encabezadoFech, List<string> encabezadoTab, List<int> numFilasTab, List<string> armadoCuerpoTab)
+        {
+            HeaderFooter hfClass = new HeaderFooter(v);
+            DateTime fechaCreacion = DateTime.Now;
+            string nombreArchivo = string.Format("{0}.pdf", fechaCreacion.ToString(@"yyyyMMdd") + "_" + fechaCreacion.ToString(@"HHmmss"));
+            string rutaCompleta = HttpContext.Current.Server.MapPath("~/PdfTemp/" + nombreArchivo);
+            FileStream fsDocumento = new FileStream(rutaCompleta, FileMode.Create);
+            //PASO UNO DEMINIMOS EL TIPO DOCUMENTO CON LOS RESPECTIVOS MARGENES (A4,IZQ,DER,TOP,BOT)
+            Document pdfDoc = new Document(PageSize.A4, 30f, 30f, 40f, 100f);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, fsDocumento);
+            pdfWriter.PageEvent = new HeaderFooter();
+
+            try
+            {
+                pdfDoc.Open();
+                Paragraph frase1, frase2;
+
+                if (v.company_x == true)
+                {
+                    frase1 = new Paragraph(v.company, negritaPeque);
+                    a = 18;
+                }
+                else
+                {
+                    frase1 = new Paragraph("", negritaPeque);
+                    a = 0;
+                }
+                frase1.Alignment = Element.ALIGN_RIGHT;
+                pdfDoc.Add(frase1);
+                pdfDoc.Add(new Chunk(""));
+
+                if (v.taxid_x == true)
+                {
+                    frase2 = new Paragraph(v.taxid, negritaPeque);
+                    b = 18;
+                }
+                else
+                {
+                    frase2 = new Paragraph("", negritaPeque);
+                    b = 0;
+                }
+                frase2.Alignment = Element.ALIGN_RIGHT;
+                pdfDoc.Add(frase2);
+                r = a + b;
+
+                //AQUI VA LA LINEA 2
+                pdfDoc.Add(new Chunk(""));
+                PdfPTable tabColor = new PdfPTable(5);
+                PdfPCell celdaColor = new PdfPCell(new Paragraph(""));
+                PdfPCell celdaColor2 = new PdfPCell(new Paragraph(""));
+                PdfPCell celdaColor3 = new PdfPCell(new Paragraph(""));
+                PdfPCell celdaColor4 = new PdfPCell(new Paragraph(""));
+                PdfPCell celdaColor5 = new PdfPCell(new Paragraph(""));
+                celdaColor.BackgroundColor = new BaseColor(181, 25, 70);
+                celdaColor2.BackgroundColor = new BaseColor(150, 23, 46);
+                celdaColor3.BackgroundColor = new BaseColor(238, 175, 48);
+                celdaColor4.BackgroundColor = new BaseColor(224, 0, 52);
+                celdaColor5.BackgroundColor = new BaseColor(252, 217, 0);
+                celdaColor.FixedHeight = 10f;
+                tabColor.AddCell(celdaColor);
+                tabColor.AddCell(celdaColor2);
+                tabColor.AddCell(celdaColor3);
+                tabColor.AddCell(celdaColor4);
+                tabColor.AddCell(celdaColor5);
+                tabColor.SetWidthPercentage(new float[] { 400, 50, 80, 25, 110 }, PageSize.A4);
+                for (int i = 0; i < tabColor.Rows.Count; i++)
+                {
+                    if (i <= 4)
+                    {
+                        hfClass.quitaBordes(i, tabColor);
+                    }
+                }
+                pdfDoc.Add(tabColor);
+
+                //AQUI EMPIEZA APARTADO DE DATOS
+                //AQUI EMPIEZA APARTADO DE DATOS
+                pdfDoc.Add(new Chunk(""));
+                tablaDatos1.HorizontalAlignment = Element.ALIGN_LEFT;
+                tablaDatos1.SetWidthPercentage(new float[] { 298, 298 }, PageSize.A4);
+
+                if (v.concepto_x == true)
+                { PdfPCell celda1 = new PdfPCell(new Paragraph(v.concepto, negritaPeque)); celda1.Border = 0; tablaDatos1.AddCell(celda1); }
+                else
+                { PdfPCell celda1 = new PdfPCell(new Paragraph("", negritaPeque)); celda1.Border = 0; tablaDatos1.AddCell(celda1); }
+
+                if (v.folio_x == true)
+                { PdfPCell celda2 = new PdfPCell(new Paragraph("Folio:" + v.folio, negritaPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+                else
+                { PdfPCell celda2 = new PdfPCell(new Paragraph("", normalPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+
+                PdfPCell celdaB1 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB1.Border = 0; tablaDatos1.AddCell(celdaB1);
+                PdfPCell celdaB2 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB2.Border = 0; tablaDatos1.AddCell(celdaB2);
+
+                if (v.cliente_x == true)
+                { PdfPCell celda3 = new PdfPCell(new Paragraph(v.cliente, negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
+                else
+                { PdfPCell celda3 = new PdfPCell(new Paragraph("", negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
+
+                if (v.lugar_x == true)
+                { PdfPCell celda4 = new PdfPCell(new Paragraph(v.lugar, negritaPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+                else
+                { PdfPCell celda4 = new PdfPCell(new Paragraph("", negritaPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+
+                if (v.puesto_x == true)
+                { PdfPCell celda5 = new PdfPCell(new Paragraph(v.puesto, normalPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
+                else
+                { PdfPCell celda5 = new PdfPCell(new Paragraph("", normalPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
+
+                if (v.payer_x == true)
+                { PdfPCell celda6 = new PdfPCell(new Paragraph("Para control interno Kellogg´s", negritaPeque)); celda6.BackgroundColor = new BaseColor(204, 204, 204); tablaDatos1.AddCell(celda6); }
+                else
+                { PdfPCell celda6 = new PdfPCell(new Paragraph("", negritaPeque)); celda6.Border = 0; tablaDatos1.AddCell(celda6); }
+
+                if (v.direccion_x == true)
+                { PdfPCell celda7 = new PdfPCell(new Paragraph(v.direccion, normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
+                else
+                { PdfPCell celda7 = new PdfPCell(new Paragraph("", normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
+
+                if (v.payer_x == true)
+                { PdfPCell celda8 = new PdfPCell(new Paragraph("Payer: 354952, 245387, 354952, 245387, 354952, 245387" + v.payer, normalPeque)); tablaDatos1.AddCell(celda8); }
+                else
+                { PdfPCell celda8 = new PdfPCell(new Paragraph("", normalPeque)); celda8.Border = 0; tablaDatos1.AddCell(celda8); }
+
+                float var = tablaDatos1.TotalHeight;
+                pdfDoc.Add(tablaDatos1);
+
+                //APARTIR DE AQUI VA EL ESTIMADO
+                pdfDoc.Add(new Chunk("\n"));
+                Phrase fraseEstimado = new Phrase();
+
+                if (v.estimado_x == true)
+                {
+                    fraseEstimado.Add(new Paragraph("Estimado " + v.estimado, negritaPeque));
+                }
+                else
+                {
+                    fraseEstimado.Add("");
+                }
+                pdfDoc.Add(fraseEstimado);
+
+                //APARTIR DE AQUI VA LA MECANICA
+                pdfDoc.Add(new Chunk("\n"));
+                Phrase miFrase = new Phrase();
+
+                if (v.mecanica_x == true)
+                {
+                    miFrase.Add(new Paragraph(v.mecanica, normalPeque));
+                }
+                else
+                {
+                    miFrase.Add("");
+                }
+                pdfDoc.Add(miFrase);
+
+                //AQUI COMIENZAN LAS TABLAS
+                int tablas = encabezadoFech.Count; //SE RECIBE LA N CANTIDAD DE TABLAS A GENERAR
+                int cols = encabezadoTab.Count; // SE RECIBE LA CANTIDAD DE COLUMNAS A CONTENER LA TABLA
+                int tamaño = 0;
+                tamaño = 600 / cols;
+
+                for (int a = 0; a < tablas; a++)
+                {
+                    PdfPTable tablasN = new PdfPTable(cols);
+
+                    if (cols == 1)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño }, PageSize.A4); }
+                    else if (cols == 2)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 3)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 4)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 5)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 6)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 7)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 8)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 9)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+
+                    PdfPCell rangoFecha = new PdfPCell(new Paragraph("De " + encabezadoFech[a].Remove(10) + " Al " + (encabezadoFech[a].Remove(0, 24)).Remove(10)));
+                    rangoFecha.Border = 0;
+                    rangoFecha.Colspan = cols;
+                    tablasN.AddCell(rangoFecha);
+
+                    foreach (var celCabecera in encabezadoTab)
+                    {
+                        PdfPCell celdaCabeza = new PdfPCell();
+                        celdaCabeza.AddElement(new Paragraph(celCabecera, letraTabNegrita));
+                        celdaCabeza.BackgroundColor = new BaseColor(204, 204, 204);
+                        tablasN.AddCell(celdaCabeza);
+                    }
+
+                    int columnas = 0;
+                    int filas = 0;
+                    columnas = cols;
+                    filas = numFilasTab[a];
+
+                    for (int i = 0; i < filas; i++)
+                    {
+
+                        for (int j = 0; j < columnas; j++)
+                        {
+                            tablasN.AddCell(new Paragraph(armadoCuerpoTab[pos], letraTab));
+                            pos++;
+                        }
+                    }
+
+                    pdfDoc.Add(tablasN);
+                    pdfDoc.Add(new Chunk("\n"));
+                }
+
+                //APARTIR DE AQUI VAN LAS FIRMAS
+                //LINEAS PARA LA FIRMA EN UNA TABLA
+                //pdfDoc.Add(new Chunk("\n"));
+                PdfPCell celFirma1 = new PdfPCell();
+                PdfPCell celFirma2 = new PdfPCell();
+
+                PdfPTable tabFirma1 = new PdfPTable(1);
+                PdfPCell celFirmita1 = new PdfPCell();
+                if (v.nombreE_x == true | v.puestoE_x == true | v.companyC_x == true)
+                { celFirmita1.AddElement(new Paragraph("\n", normalPeque)); celFirmita1.Border = 2; }
+                else
+                { celFirmita1.AddElement(new Paragraph("", normalPeque)); celFirmita1.Border = 0; }
+                tabFirma1.AddCell(celFirmita1);
+                tabFirma1.SetWidthPercentage(new float[] { 450 }, PageSize.A4);
+
+                PdfPTable tabFirma2 = new PdfPTable(1);
+                PdfPCell celFirmita2 = new PdfPCell();
+                if (v.nombreC_x == true | v.puestoC_x == true | v.companyCC_x == true)
+                { celFirmita2.AddElement(new Paragraph("\n", normalPeque)); celFirmita2.Border = 2; }
+                else
+                { celFirmita2.AddElement(new Paragraph("", normalPeque)); celFirmita2.Border = 0; }
+                tabFirma2.AddCell(celFirmita2);
+                tabFirma2.SetWidthPercentage(new float[] { 450 }, PageSize.A4);
+
+                celFirma1.AddElement(tabFirma1);
+                celFirma1.Border = 0;
+
+                celFirma2.AddElement(tabFirma2);
+                celFirma2.Border = 0;
+
+                tablaDatos2.AddCell(celFirma1);
+                tablaDatos2.AddCell(celFirma2);
+                tablaDatos2.SetWidthPercentage(new float[] { 300, 300 }, PageSize.A4);
+
+                pdfDoc.Add(tablaDatos2);
+
+                //DATOS PARA LAS FIRMAS
+                tablaDatos3.HorizontalAlignment = Element.ALIGN_LEFT;
+                tablaDatos3.SetWidthPercentage(new float[] { 298, 298 }, PageSize.A4);
+
+                if (v.nombreE_x == true)
+                { PdfPCell celda1Dat3 = new PdfPCell(new Paragraph(v.nombreE, negritaPeque)); celda1Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda1Dat3); }
+                else
+                { PdfPCell celda1Dat3 = new PdfPCell(new Paragraph("", negritaPeque)); celda1Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda1Dat3); }
+
+                if (v.nombreC_x == true)
+                { PdfPCell celda2Dat3 = new PdfPCell(new Paragraph(v.nombreC, negritaPeque)); celda2Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda2Dat3); }
+                else
+                { PdfPCell celda2Dat3 = new PdfPCell(new Paragraph("", negritaPeque)); celda2Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda2Dat3); }
+
+                if (v.puestoE_x == true)
+                { PdfPCell celda3Dat3 = new PdfPCell(new Paragraph(v.puestoE, normalPeque)); celda3Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda3Dat3); }
+                else
+                { PdfPCell celda3Dat3 = new PdfPCell(new Paragraph("", normalPeque)); celda3Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda3Dat3); }
+
+                if (v.puestoC_x == true)
+                { PdfPCell celda4Dat3 = new PdfPCell(new Paragraph(v.puestoC, normalPeque)); celda4Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda4Dat3); }
+                else
+                { PdfPCell celda4Dat3 = new PdfPCell(new Paragraph("", normalPeque)); celda4Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda4Dat3); }
+
+                if (v.companyC_x == true)
+                { PdfPCell celda5Dat3 = new PdfPCell(new Paragraph(v.companyC, negritaPeque)); celda5Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda5Dat3); }
+                else
+                { PdfPCell celda5Dat3 = new PdfPCell(new Paragraph("", negritaPeque)); celda5Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda5Dat3); }
+
+                if (v.companyCC_x == true)
+                { PdfPCell celda6Dat3 = new PdfPCell(new Paragraph(v.companyCC, negritaPeque)); celda6Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda6Dat3); }
+                else
+                { PdfPCell celda6Dat3 = new PdfPCell(new Paragraph("", negritaPeque)); celda6Dat3.HorizontalAlignment = Element.ALIGN_CENTER; tablaDatos3.AddCell(celda6Dat3); }
+
+                for (int i = 0; i < tablaDatos3.Rows.Count; i++)
+                {
+                    if (i <= 4)
+                    {
+                        hfClass.quitaBordes(i, tablaDatos3);
+                    }
+                }
+                pdfDoc.Add(tablaDatos3);
+
+
+                //TABLA PARA LOS COMENTARIOS
+                pdfDoc.Add(new Chunk("\n"));
+                tabComentarios.HorizontalAlignment = Element.ALIGN_LEFT;
+                tabComentarios.SetWidthPercentage(new float[] { 300, 300 }, PageSize.A4);
+
+                if (v.comentarios_x == true)
+                { PdfPCell celda1 = new PdfPCell(new Paragraph(v.comentarios, normalPeque)); celda1.Border = 0; tabComentarios.AddCell(celda1); }
+                else
+                { PdfPCell celda1 = new PdfPCell(new Paragraph("", normalPeque)); celda1.Border = 0; tabComentarios.AddCell(celda1); }
+
+                if (v.compromisoK_x == true)
+                { PdfPCell celda2 = new PdfPCell(new Paragraph(v.compromisoK, normalPeque)); celda2.Border = 0; tabComentarios.AddCell(celda2); }
+                else
+                { PdfPCell celda2 = new PdfPCell(new Paragraph("", normalPeque)); celda2.Border = 0; tabComentarios.AddCell(celda2); }
+
+                if (v.compromisoC_x == true)
+                { PdfPCell celda3 = new PdfPCell(new Paragraph("\n" + v.compromisoC, normalPeque)); celda3.Border = 0; tabComentarios.AddCell(celda3); }
+                else
+                { PdfPCell celda3 = new PdfPCell(new Paragraph("", normalPeque)); celda3.Border = 0; tabComentarios.AddCell(celda3); }
+
+                PdfPCell celVacia = new PdfPCell(new Paragraph("", normalPeque));
+                celVacia.Border = 0;
+                tabComentarios.AddCell(celVacia);
+
+                pdfDoc.Add(tabComentarios);
+                pdfDoc.Close();
+                HttpContext.Current.Session["rutaCompletaV"] = "../PdfTemp/" + nombreArchivo;
+            }
+            catch (Exception ex)
+            {
+                ex.Message.ToString();
+            }
+        }
+    }
+}

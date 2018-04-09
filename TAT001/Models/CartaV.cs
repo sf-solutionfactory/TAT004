@@ -13,7 +13,6 @@ namespace TAT001.Models
         public decimal num_doc { get; set; }
         [Key, Column(Order = 1)]
         public int pos { get; set; }
-
         public string company { get; set; }
         public bool company_x { get; set; }
 
@@ -81,6 +80,13 @@ namespace TAT001.Models
         public bool compromisoC_x { get; set; }
 
         //TABLA DE MATERIALES O CATEGORÍAS
+        [Key, Column(Order = 2)]
 
+        //ARMADO DE LA CABECERA DE CADA TABLA INDIVIDUAL
+        public List<string> listaFechas { get; set; }
+        public List<string> listaEncabezado { get; set; }
+        //ARMADO DEL CUERPO CADA TABLA INDIVIDUAL
+        public List<int> numfilasTabla { get; set; }
+        public List<string> listaCuerpo { get; set; }
     }
 }
