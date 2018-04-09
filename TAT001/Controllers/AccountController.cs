@@ -132,7 +132,7 @@ namespace TAT001.Controllers
 
             else
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                ModelState.AddModelError("", "Usuario/contraseña incorrecta.");
                 return View(model);
             }
         }

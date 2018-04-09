@@ -41,7 +41,7 @@
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.HiddenFor(model => model.num_doc)
                             @Html.EditorFor(model => model.company, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                            @Html.LabelFor(model => model.company, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_company" })
+                            @Html.LabelFor(model => model.company, "Compañía", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_company" })
                         </div>
                     </div>
                     <div class="col l3 m3 s6 offset-l9">
@@ -53,7 +53,7 @@
                         </div>
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.EditorFor(model => model.taxid, new { htmlAttributes = new { @class = "form-control", @style = "height:auto; " } })
-                            @Html.LabelFor(model => model.taxid, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.taxid, "TaxID", htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                                 </div>
                                 <div class="input-field col l10 m10" style="margin-bottom:0;">
                                     @Html.EditorFor(model => model.concepto, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                    @Html.LabelFor(model => model.concepto, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.concepto, "Concepto", htmlAttributes: new { @class = "control-label col-md-2" })
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="input-field col l10 m10" style="margin-bottom:0;">
                                     @Html.EditorFor(model => model.cliente, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                    @Html.LabelFor(model => model.cliente, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.cliente, "Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
                                 </div>
                                 <div class="col l2 s2">
                                     <label>
@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="input-field col l10 m10" style="margin-bottom:0;">
                                     @Html.EditorFor(model => model.puesto, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                    @Html.LabelFor(model => model.puesto, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.puesto, "Puesto", htmlAttributes: new { @class = "control-label col-md-2" })
                                 </div>
                                 <div class="col l2 s2">
                                     <label>
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="input-field col l10 m10" style="margin-bottom:0;">
                                     @Html.EditorFor(model => model.direccion, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                    @Html.LabelFor(model => model.direccion, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.direccion, "Dirección", htmlAttributes: new { @class = "control-label col-md-2" })
                                 </div>
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                             </div>
                             <div class="input-field col l8 m8" style="margin-bottom:0;">
                                 @Html.EditorFor(model => model.folio, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                @Html.LabelFor(model => model.folio, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.folio, "Folio", htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                             <div class="col l2 s2">
                                 <label>
@@ -138,7 +138,7 @@
                             </div>
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
                                 @Html.EditorFor(model => model.lugar, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                @Html.LabelFor(model => model.lugar, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.lugar, "Lugar", htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
 
                             <div class="col l2 s2">
@@ -149,7 +149,7 @@
                             </div>
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
                                 @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                @Html.LabelFor(model => model.payer, htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.payer, "Payer", htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                         </div>
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.EditorFor(model => model.estimado, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                            @Html.LabelFor(model => model.estimado, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.estimado, "Estimado", htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.TextAreaFor(model => model.mecanica, new { @class = "materialize-textarea" })
                             @*@Html.EditorFor(model => model.mecanica, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })*@
-                            @Html.LabelFor(model => model.mecanica, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.mecanica, "Mecánica", htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.nombreE, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.nombreE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.nombreE, "Nombre emisor", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +210,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.puestoE, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.puestoE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.puestoE, "Puesto", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.companyC, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.companyC, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.companyC, "Compañía", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +242,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.nombreC, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.nombreC, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.nombreC, "Contacto", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -256,7 +256,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.puestoC, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.puestoC, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.puestoC, "Puesto", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                                     </div>
                                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                                         @Html.EditorFor(model => model.companyCC, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                        @Html.LabelFor(model => model.companyCC, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.companyCC, "Compañía", htmlAttributes: new { @class = "control-label col-md-2" })
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +296,7 @@
                                 @Html.TextAreaFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;", @disabled = "disabled" })
                                 @Html.HiddenFor(model => model.legal, new { @class = "materialize-textarea", @style = "height:auto;" })
                             }
-                            @Html.LabelFor(model => model.legal, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.legal, "Legal", htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>
                     <div class="col l12 m12 s12">
@@ -308,7 +308,7 @@
                         </div>
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.EditorFor(model => model.mail, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                            @Html.LabelFor(model => model.mail, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.mail, "Email", htmlAttributes: new { @class = "control-label col-md-2" })
                         </div>
                     </div>
                 </div>
@@ -333,7 +333,7 @@
 
 @if (ViewBag.error != null)
 {
-<script>
+    <script>
     M.toast({ html: '@ViewBag.error', classes: 'red' });
-</script>
+    </script>
 }

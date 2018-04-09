@@ -68,7 +68,6 @@ namespace TAT001.Entities
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
         public virtual DbSet<STATE> STATES { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
         public virtual DbSet<TCAMBIO> TCAMBIOs { get; set; }

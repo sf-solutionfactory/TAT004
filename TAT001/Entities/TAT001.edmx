@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -23,15 +23,6 @@
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
           <Property Name="TIPO" Type="nchar" MaxLength="10" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="CANAL">
-          <Property Name="CANAL" Type="nvarchar" MaxLength="10" />
-          <Property Name="CDESCRIPCION" Type="nvarchar" MaxLength="50" />
-          <Property Name="BANNER" Type="nvarchar" MaxLength="10" />
-          <Property Name="BDESCRIPCION" Type="nvarchar" MaxLength="50" />
-          <Property Name="KUNNR" Type="nvarchar" MaxLength="10" />
-        </EntityType>-->
         <EntityType Name="CARPETA">
           <Key>
             <PropertyRef Name="ID" />
@@ -81,7 +72,7 @@ advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clav
           <Property Name="PAYERX" Type="bit" />
           <Property Name="ESTIMADO" Type="nvarchar" MaxLength="100" />
           <Property Name="ESTIMADOX" Type="bit" />
-          <Property Name="MECANICA" Type="nvarchar" MaxLength="100" />
+          <Property Name="MECANICA" Type="nvarchar(max)" />
           <Property Name="MECANICAX" Type="bit" />
           <Property Name="NOMBREE" Type="nvarchar" MaxLength="100" />
           <Property Name="NOMBREEX" Type="bit" />
@@ -97,7 +88,7 @@ advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clav
           <Property Name="COMPANYCCX" Type="bit" />
           <Property Name="LEGAL" Type="nvarchar" MaxLength="500" />
           <Property Name="LEGALX" Type="bit" />
-          <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="200" />
           <Property Name="MAILX" Type="bit" />
         </EntityType>
         <EntityType Name="CATEGORIA">
@@ -140,7 +131,7 @@ advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clav
           <Property Name="STCD1" Type="nvarchar" MaxLength="13" />
           <Property Name="STCD2" Type="nvarchar" MaxLength="20" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
-          <Property Name="REGIO" Type="nchar" MaxLength="2" />
+          <Property Name="REGIO" Type="nvarchar" MaxLength="50" />
           <Property Name="ORT01" Type="nvarchar" MaxLength="50" />
           <Property Name="STRAS_GP" Type="nvarchar" MaxLength="100" />
           <Property Name="PSTLZ" Type="nvarchar" MaxLength="15" />
@@ -173,7 +164,7 @@ advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clav
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="NOMBRE" Type="nvarchar" MaxLength="150" />
           <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
           <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
@@ -622,16 +613,6 @@ advertencia 6013: La tabla o vista 'TAT001.dbo.CANAL' no tiene definida una clav
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TALL">
           <Key>
@@ -1946,7 +1927,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />
@@ -2359,8 +2339,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -2443,7 +2422,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PAYERX" Type="Boolean" />
           <Property Name="ESTIMADO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ESTIMADOX" Type="Boolean" />
-          <Property Name="MECANICA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MECANICA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MECANICAX" Type="Boolean" />
           <Property Name="NOMBREE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="NOMBREEX" Type="Boolean" />
@@ -2459,7 +2438,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="COMPANYCCX" Type="Boolean" />
           <Property Name="LEGAL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="LEGALX" Type="Boolean" />
-          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MAIL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="MAILX" Type="Boolean" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
@@ -2509,7 +2488,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
           <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="REGIO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="REGIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ORT01" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="STRAS_GP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PSTLZ" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
@@ -3076,16 +3055,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
           <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TALL">
           <Key>
@@ -4379,7 +4348,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
           <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
           <EntitySet Name="STATES" EntityType="Self.STATE" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TALLs" EntityType="Self.TALL" />
           <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
           <EntitySet Name="TCAMBIOs" EntityType="Self.TCAMBIO" />
@@ -4693,7 +4661,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="delimiter" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
-            <Parameter Name="sociedad" Mode="In" Type="String" />
+          <Parameter Name="sociedad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -4713,7 +4681,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="ACCION" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESU_CLIENT" ReturnType="Collection(TAT001Model.CSP_PRESU_CLIENT_Result)">
-            <Parameter Name="CLIENTE" Mode="In" Type="String" />
+          <Parameter Name="CLIENTE" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADD" ReturnType="Collection(Int32)">
             <Parameter Name="anio" Mode="In" Type="String" />
@@ -4724,7 +4692,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="caso" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
-            <Parameter Name="path" Mode="In" Type="String" />
+          <Parameter Name="path" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -5451,17 +5419,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
                 <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="TAT001Model.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

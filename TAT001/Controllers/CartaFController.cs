@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -221,14 +222,14 @@ namespace TAT001.Controllers
             cf.folio = d.NUM_DOC.ToString();
             cf.folio_x = true;
             //cf.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
-            //cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
+            cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
             ////cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
             cf.lugar_x = true;
             cf.payer = d.CLIENTE.NAME1;
             cf.payer_x = true;
             cf.estimado = d.PAYER_NOMBRE;
             cf.estimado_x = true;
-            cf.mecanica = "";
+            cf.mecanica = d.NOTAS;
             cf.mecanica_x = true;
             cf.nombreE = d.USUARIO.NOMBRE + " " + d.USUARIO.APELLIDO_P + " " + d.USUARIO.APELLIDO_M;
             cf.nombreE_x = true;
@@ -321,7 +322,7 @@ namespace TAT001.Controllers
                 }
                 return RedirectToAction("Details", new { ruta = recibeRuta });
             }
-            catch (Exception e)
+            catch (DbEntityValidationException e)
             {
 
                 int pagina = 231; //ID EN BASE DE DATOS
@@ -351,7 +352,14 @@ namespace TAT001.Controllers
                 DOCUMENTO d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(c.num_doc)).First();
                 ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
             }
-            ViewBag.error = e.Message;
+                try
+                {
+                    ViewBag.error = e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage;
+                }
+                catch
+                {
+                    ViewBag.error = e.Message;
+                }
             return View(c);
         }
     }

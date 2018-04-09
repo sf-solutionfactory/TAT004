@@ -86,7 +86,6 @@ C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.M
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Release\TAT001.csproj.CoreCompileInputs.cache
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Release\TAT001.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Release\TAT001.pdb
-C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Release\TAT001.csprojResolveAssemblyReference.cache
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\bin\roslyn\csc.exe
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004_1\TAT001\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll

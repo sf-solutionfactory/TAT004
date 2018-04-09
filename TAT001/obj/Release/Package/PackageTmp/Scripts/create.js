@@ -1,9 +1,9 @@
 ﻿$(document).ready(function () {
 
     $('#cargar_xls').click(function () {
-        
+
         var filenum = $('#file_dis').get(0).files.length;
-        if (filenum > 0) { 
+        if (filenum > 0) {
             var file = document.getElementById("file_dis").files[0];
             var filename = file.name;
             if (evaluarExt(filename)) {
@@ -39,17 +39,17 @@
 
         //if (file_carta > 0)//&& file_contratos > 0 && file_factura > 0 && file_jbp > 0) {
         //{
-            //var f_carta = document.getElementById("file_carta").files[0];
-            //var f_contratos = document.getElementById("file_contratos").files[0];
-            //var f_factura = document.getElementById("file_factura").files[0];
-            //var f_jbp = document.getElementById("file_jbp").files[0];
+        //var f_carta = document.getElementById("file_carta").files[0];
+        //var f_contratos = document.getElementById("file_contratos").files[0];
+        //var f_factura = document.getElementById("file_factura").files[0];
+        //var f_jbp = document.getElementById("file_jbp").files[0];
 
-            //var filename = f_carta.name;            
-                //M.toast({ html: 'Uploading' + filename });
-                //loadFile(f_carta)//, f_contratos, f_factura, f_jbp);   
-            
+        //var filename = f_carta.name;            
+        //M.toast({ html: 'Uploading' + filename });
+        //loadFile(f_carta)//, f_contratos, f_factura, f_jbp);   
+
         //} else {
-            //M.toast({ html: 'Seleccione un archivo' });
+        //M.toast({ html: 'Seleccione un archivo' });
         //}        
         //var files = $('.file_soporte');
         //var message = "";
@@ -82,7 +82,6 @@
 
     $('#tabs').tabs();
 
-    //$('select').Select();
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
@@ -103,14 +102,151 @@
 
     });
 
-        //$('#cargar').click(function () {
-        //    M.toast({ html: 'Load' })
-        //    loadExcel();
-        //});
-    //Enter en el monto
-    $('#monto_doc_md').keypress(keypressHandler);
+    //Financiera   
+    $('#monto_doc_md').focusout(function (e) {
 
-    $('#btn_guardarh').on("click", function (e) {        
+        //e.preventDefault(); //stops default action: submitting form
+        //var msg = 'Enter';
+        //M.toast({ html: msg })
+
+        var monto_doc_md = $('#monto_doc_md').val();
+        var is_num = $.isNumeric(monto_doc_md);
+        var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        if (mt > 0 & is_num == true) {
+            //Obtener la moneda en la lista
+            //var MONEDA_ID = $('#moneda_id').val();
+            $('#monto_doc_md').val(mt);
+            //selectTcambio(MONEDA_ID, mt);
+            var tipo_cambio = $('#tipo_cambio').val();
+            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //Validar el monto en tipo de cambio
+            var is_num2 = $.isNumeric(tipo_cambio);
+            if (tc > 0 & is_num2 == true) {
+                $('#tipo_cambio').val(tc);
+                var monto = mt / tc;
+                monto = parseFloat(monto).toFixed(2);
+                $('#monto_doc_ml2').val(monto);
+                $('#montos_doc_ml2').val(monto);
+                $("label[for='montos_doc_ml2']").addClass("active");
+            } else {
+                $('#monto_doc_ml2').val(monto);
+                $('#montos_doc_ml2').val(monto);
+                $("label[for='montos_doc_ml2']").addClass("active");
+                var msg = 'Tipo de cambio incorrecto';
+                M.toast({ html: msg });
+                e.preventDefault();
+            }
+
+        } else {
+            $('#monto_doc_ml2').val(monto_doc_md);
+            $('#montos_doc_ml2').val(monto_doc_md);
+            $("label[for='montos_doc_ml2']").addClass("active");
+            var msg = 'Monto incorrecto';
+            M.toast({ html: msg });
+            e.preventDefault();
+        }
+
+    });
+    $('#tipo_cambio').focusout(function (e) {
+        var tipo_cambio = $('#tipo_cambio').val();
+        var is_num = $.isNumeric(tipo_cambio);
+        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+        //Validar el monto en tipo de cambio
+        if (tc > 0 & is_num == true) {
+            //Validar el monto
+            $('#tipo_cambio').val(tc)
+            var monto_doc_md = $('#monto_doc_md').val();
+            var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+            var is_num2 = $.isNumeric(monto_doc_md);
+            if (mt > 0 & is_num2 == true) {
+                $('#monto_doc_md').val(mt);
+                //Validar la moneda                    
+                var moneda_id = $('#moneda_id').val();
+                if (moneda_id != null && moneda_id != "") {
+                    $('#monto_doc_ml2').val();
+                    $('#montos_doc_ml2').val();
+
+                    //Los valores son correctos, proceso para generar nuevo monto
+                    var monto = mt / tc;
+                    monto = parseFloat(monto).toFixed(2);
+                    $('#monto_doc_ml2').val(monto);
+                    $('#montos_doc_ml2').val(monto);
+                    $("label[for='montos_doc_ml2']").addClass("active");
+
+                } else {
+                    $('#monto_doc_md').val();
+                    $('#monto_doc_ml2').val(monto);
+                    $('#montos_doc_ml2').val(monto);
+                    var msg = 'Moneda incorrecta';
+                    M.toast({ html: msg })
+                }
+
+            } else {
+                $('#monto_doc_md').val();
+                $('#tipo_cambio').val("");
+                $('#monto_doc_ml2').val(monto);
+                $('#montos_doc_ml2').val(monto);
+                $("label[for='montos_doc_ml2']").addClass("active");
+                var msg = 'Monto incorrecto';
+                M.toast({ html: msg });
+                e.preventDefault();
+            }
+
+        } else {
+            $('#monto_doc_ml2').val(monto);
+            $('#montos_doc_ml2').val(monto);
+            $("label[for='montos_doc_ml2']").addClass("active");
+            var msg = 'Tipo de cambio incorrecto';
+            M.toast({ html: msg });
+            e.preventDefault();
+        }
+    });
+
+    var monto_doc_md = $('#monto_doc_md').val();
+    var is_num = $.isNumeric(monto_doc_md);
+    var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+    if (mt > 0 & is_num == true) {
+        //Obtener la moneda en la lista
+        //var MONEDA_ID = $('#moneda_id').val();
+        $('#monto_doc_md').val(mt);
+        //selectTcambio(MONEDA_ID, mt);
+        var tipo_cambio = $('#tipo_cambio').val();
+        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+        //Validar el monto en tipo de cambio
+        var is_num2 = $.isNumeric(tipo_cambio);
+        if (tc > 0 & is_num2 == true) {
+            $('#tipo_cambio').val(tc);
+            var monto = mt / tc;
+            monto = parseFloat(monto).toFixed(2);
+            $('#monto_doc_ml2').val(monto);
+            $('#montos_doc_ml2').val(monto);
+            $("label[for='montos_doc_ml2']").addClass("active");
+        } else {
+            $('#monto_doc_ml2').val(monto);
+            $('#montos_doc_ml2').val(monto);
+            $("label[for='montos_doc_ml2']").addClass("active");
+        }
+
+    } else {
+        $('#monto_doc_ml2').val(monto_doc_md);
+        $('#montos_doc_ml2').val(monto_doc_md);
+        $("label[for='montos_doc_ml2']").addClass("active");
+        //var msg = 'Monto incorrecto';
+        //M.toast({ html: msg });
+        //e.preventDefault();
+    }
+
+
+    //Termina financiera
+
+    //$('#cargar').click(function () {
+    //    M.toast({ html: 'Load' })
+    //    loadExcel();
+    //});
+    //Enter en el monto
+    //$('#monto_doc_md').keypress(keypressHandler);
+
+    $('#btn_guardarh').on("click", function (e) {
         var msg = 'Verificar valores en los campos de ';
         var res = true;
         //Evaluar TabInfo values
@@ -144,36 +280,39 @@
             //loadFilesf();
             //Provisional
             var tipo_cambio = $('#tipo_cambio').val();
-            var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            
+            //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+
             if (iNum > 0) {
-                var num = "" + iNum;
-                num = num.replace('.', ',');
-                var numexp = num;//* 60000000000;
+                //var num = "" + iNum;
+                //num = num.replace('.', ',');
+                //var numexp = num;//* 60000000000;
                 //$('#tipo_cambio').val(numexp);
             } else {
                 $('#tipo_cambio').val(0);
             }
             var tipo_cambio = $('#monto_doc_ml2').val();
-            var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+            //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+            var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
             //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
             if (iNum2 > 0) {
-                var nums = "" + iNum2;
-                nums = nums.replace('.', ',');
-                var numexp2 = nums;// * 60000000000;
-                $('#monto_doc_ml2').val(numexp2);
+                //var nums = "" + iNum2;
+                //nums = nums.replace('.', ',');
+                //var numexp2 = nums;// * 60000000000;
+                //$('#monto_doc_ml2').val(numexp2);
             } else {
                 $('#monto_doc_ml2').val(0);
             }
 
             //Monto
             var monto = $('#monto_doc_md').val();
-            var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+            //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+            var numm = parseFloat(monto.replace(',', ''));
             if (numm > 0) {
-                var numsm = "" + numm;
-                numsm = numsm.replace('.', ',');
-                var numexp2m = numsm;// * 60000000000;
-                $('#monto_doc_md').val(numexp2m);
+                //var numsm = "" + numm;
+                //numsm = numsm.replace('.', ',');
+                //var numexp2m = numsm;// * 60000000000;
+                //$('#monto_doc_md').val(numexp2m);
             } else {
                 $('#monto_doc_md').val(0);
             }
@@ -182,33 +321,34 @@
         } else {
             M.toast({ html: msg })
         }
-        
+
     });
-    
+
 });
 
 function keypressHandler(e) {
-    
-    if (e.which == 13) {
-        e.preventDefault(); //stops default action: submitting form
-        //var msg = 'Enter';
-        //M.toast({ html: msg })
 
-        var monto_doc_md = $('#monto_doc_md').val()
+    //if (e.which == 13) {
+    //    e.preventDefault(); //stops default action: submitting form
+    //    //var msg = 'Enter';
+    //    //M.toast({ html: msg })
 
-        if (monto_doc_md > 0){
-            //Obtener la moneda en la lista
-            var MONEDA_ID = $('#moneda_id').val();
+    //    var monto_doc_md = $('#monto_doc_md').val()
 
-            selectTcambio(MONEDA_ID, monto_doc_md);
-            
-        }
+    //    if (monto_doc_md > 0){
+    //        //Obtener la moneda en la lista
+    //        var MONEDA_ID = $('#moneda_id').val();
 
-    }
+    //        selectTcambio(MONEDA_ID, monto_doc_md);
+
+    //    }
+
+    //}
+    alert("ddd");
 }
 
 function evaluarExt(filename) {
-    
+
     var exts = ['xls', 'xlsx'];
     // split file name at dot
     var get_ext = filename.split('.');
@@ -219,7 +359,7 @@ function evaluarExt(filename) {
         return true;
     } else {
         return false;
-    }  
+    }
 }
 
 function loadFilesf() {
@@ -261,7 +401,7 @@ function loadExcel(file) {
     //for (var i = 0; i < totalFiles; i++) {
     //    var file = document.getElementById("file_dis").files[i];
     //    var filename = file.name;
-        formData.append("FileUpload", file);        
+    formData.append("FileUpload", file);
     //}
 
     var table = $('#table_dis').DataTable();
@@ -278,17 +418,17 @@ function loadExcel(file) {
 
             if (data !== null || data !== "") {
                 //alert("success" + data);
-                $.each(data, function (i, dataj) {   
+                $.each(data, function (i, dataj) {
 
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
                     table.row.add([
                         date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear(),
-                        date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear(),     
+                        date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear(),
                         dataj.MATNR,
                         "Cereales",
                         "Corn Flakes 200gr"
-                        ]).draw(false);
+                    ]).draw(false);
                 });
             }
         },
@@ -315,7 +455,7 @@ function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
 
     $.ajax({
         type: "POST",
-        url: 'saveFiles',        
+        url: 'saveFiles',
         data: formData,
         //dataType: "json",
         cache: false,
@@ -325,7 +465,7 @@ function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
 
             if (data !== null || data !== "") {
                 alert("success" + data);
-                
+
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -356,7 +496,7 @@ function loadFiles(files) {//, f_contratos, f_factura, f_jbp) {
             formData.append(file.files[0].name, file.files[0]);
             count++;
         }
-    } 
+    }
 
     $.ajax({
         type: "POST",
@@ -390,6 +530,13 @@ function evalInfoTab(ret, e) {
     } else {
         msg = 'Verificar valores en los campos de Información!';
         res = false;
+    }
+    //Email
+    var payer_email = $('#payer_email').val();
+    
+    if (!validateEmail(payer_email)) {
+        msg = 'Introduzca un email válido!';
+        res=  false;
     }
 
     if (ret == true) {
@@ -447,7 +594,7 @@ function evalSoporteTab(ret, e) {
         msg = 'siguiente pestaña!';
     } else {
         msg = 'Verificar valores en los campos de Soporte!';
-        res = false;              
+        res = false;
     }
 
     if (ret == true) {
@@ -613,7 +760,10 @@ function evaluarInfoTab() {
 
     return res;
 }
-
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 //Evaluar los elementos de tab_temp
 function evaluarTempTab() {
 
@@ -631,6 +781,10 @@ function evaluarTempTab() {
 
     if (!evaluarVal(fechaf_vig)) {
         return false;
+    }
+
+    if (res) {
+        var res = validar_fechas(fechai_vig, fechaf_vig);
     }
 
     return res;
@@ -670,6 +824,13 @@ function evaluarFinancieraTab() {
 
     //Obtener el tipo de cambio
     var tipo_cambio = $('#tipo_cambio').val();
+
+    if (!evaluarValInt(tipo_cambio)) {
+        return false;
+    }
+
+    //Monto en dolares
+    var tipo_cambio = $('#montos_doc_ml2').val();
 
     if (!evaluarValInt(tipo_cambio)) {
         return false;
@@ -739,8 +900,9 @@ function evaluarVal(v) {
 function evaluarValInt(v) {
 
     if (v != null && v != "") {
+        var is_num = $.isNumeric(v);
         var iNum = parseFloat(v.replace(',', '.'))
-        if (iNum > 0) {
+        if (iNum > 0 & is_num == true) {
             return true;
         } else {
             return false;
@@ -760,18 +922,19 @@ function selectTall(valu) {
             success: function (data) {
 
                 if (data !== null || data !== "") {
-                    $('<option>', {
-                        text: "--Seleccione--"
-                    }).html("--Seleccione--").appendTo($("#tall_id"));
-                    $.each(data, function (i, optiondata) {
-                        $('<option>', {
-                            value: optiondata.ID,
-                            text: optiondata.TEXT
-                        }).html(optiondata.NAME).appendTo($("#tall_id"));
-                    });
-                    
-                    var elem = document.getElementById('tall_id');
-                    var instance = M.Select.init(elem, []);
+                    //$('<option>', {
+                    //    text: "--Seleccione--"
+                    //}).html("--Seleccione--").appendTo($("#tall_id"));
+                    //$.each(data, function (i, optiondata) {
+                    //    $('<option>', {
+                    //        value: optiondata.ID,
+                    //        text: optiondata.TEXT
+                    //    }).html(optiondata.NAME).appendTo($("#tall_id"));
+                    //});
+
+                    //var elem = document.getElementById('tall_id');
+                    //var instance = M.Select.init(elem, []);
+                    $("#tall_id").val(data[0].ID);
                 }
             },
             error: function (data) {
@@ -830,22 +993,23 @@ function selectCliente(valu) {
             success: function (data) {
 
                 if (data !== null || data !== "") {
+                    $('#cli_name').val(data.NAME1);
+                    $("label[for='cli_name']").addClass("active");
                     $('#vkorg').val(data.VKORG).focus();
+                    $("label[for='vkorg']").addClass("active");
                     $('#stcd1').val(data.STCD1);
                     $("label[for='stcd1']").addClass("active");
                     $('#vtweg').val(data.VTWEG);
+                    $("label[for='vtweg']").addClass("active");
                     $('#payer_nombre').val(data.PAYER_NOMBRE);
+                    $("label[for='payer_nombre']").addClass("active");
                     $('#payer_email').val(data.PAYER_EMAIL);
+                    $("label[for='payer_email']").addClass("active");
                 }
 
             },
             error: function (data) {
-                $('#vkorg').val("").focus();
-                $('#stcd1').val("");
-                $("label[for='stcd1']").addClass("active");
-                $('#vtweg').val("");
-                $('#payer_nombre').val("");
-                $('#payer_email').val("");
+                alert("Request couldn't be processed. Please try again later. the reason        " + data);
             }
         });
     }
@@ -901,7 +1065,7 @@ function selectMoneda(valu) {
             M.toast({ html: msg })
         }
     }
- 
+
 }
 
 function selectTcambio(MONEDA_ID, monto_doc_md) {
@@ -909,15 +1073,15 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
     $('#montos_doc_ml2').val();
 
     if (MONEDA_ID != "") {
-        
+
         $.ajax({
             type: "POST",
             url: 'SelectVcambio',
-            data: { "moneda_id": MONEDA_ID, "monto_doc_md": monto_doc_md},
+            data: { "moneda_id": MONEDA_ID, "monto_doc_md": monto_doc_md },
 
             success: function (data) {
 
-                if (data !== null || data !== "") {    
+                if (data !== null || data !== "") {
                     var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
                     if (iNum > 0) {
                         $('#monto_doc_ml2').val(iNum);
@@ -926,7 +1090,7 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
 
                     } else {
                         M.toast({ html: data });
-                    }                                       
+                    }
                 }
 
             },
@@ -936,6 +1100,23 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
         });
     }
 
+}
+
+function validar_fechas(ini_date, fin_date) {
+
+    var DateToValue = new Date();
+    var DateFromValue = new Date();
+
+    var idate = ini_date.split('-');
+    DateFromValue.setFullYear(idate[0], idate[1], idate[2], 0, 0, 0, 0);
+
+    var fdate = fin_date.split('-');
+    DateToValue.setFullYear(fdate[0], fdate[1], fdate[2], 0, 0, 0, 0);
+
+    if (Date.parse(DateFromValue) <= Date.parse(DateToValue)) {
+        return true;
+    }
+    return false;
 }
 
     //function loadExcel() {

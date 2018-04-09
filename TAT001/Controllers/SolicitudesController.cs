@@ -47,6 +47,20 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
+
+            try//Mensaje de documento creado
+            {
+                string p = Session["NUM_DOC"].ToString();
+                ViewBag.NUM_DOC = p;
+                Session["NUM_DOC"] = null;
+            }
+            catch
+            {
+                ViewBag.NUM_DOC = "";
+            }
+
+
+
             var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
             var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(User.Identity.Name)).ToList();
             var tsol = db.TSOLs.ToList();
@@ -263,6 +277,11 @@ namespace TAT001.Controllers
                 try
                 {
                     tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();
+                    if (tcambio == null)
+                    {
+                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);
+                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();
+                    }
                     decimal con = Convert.ToDecimal(tcambio.UKURS);
                     var cons = con.ToString("0.##");
 
@@ -290,7 +309,7 @@ namespace TAT001.Controllers
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
             ViewBag.FECHAD = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.STCD1 = "";
-
+            ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
 
             return View(d);
@@ -415,11 +434,17 @@ namespace TAT001.Controllers
                     updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
                     //Redireccionar al inicio
+                    Session["NUM_DOC"] = dOCUMENTO.NUM_DOC;
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
                 {
+                    if (errorString == "")
+                    {
+                        errorString = e.Message.ToString();
+                    }
                     ViewBag.error = errorString;
+
                 }
             }
 
@@ -542,19 +567,35 @@ namespace TAT001.Controllers
                 dOCUMENTO.SPART = payer.SPART;
                 ViewBag.STCD1 = payer.STCD1;
 
-                var fecha = dOCUMENTO.FECHAD.ToString();
+                try
+                {
+                    //Obtener y dar formato a fecha
+                    var fecha = dOCUMENTO.FECHAD.ToString();
+                    string[] words = fecha.Split(' ');
 
-                DateTime theTime = DateTime.ParseExact(fecha, //"05/04/2018 0:00:00"
-                                        "dd/MM/yyyy h:mm:ss",
-                                        System.Globalization.CultureInfo.InvariantCulture,
-                                        System.Globalization.DateTimeStyles.None);
+                    //DateTime theTime = DateTime.ParseExact(fecha, //"06/04/2018 12:00:00 a.m."
+                    //                        "dd/MM/yyyy hh:mm:ss t.t.",
+                    //                        System.Globalization.CultureInfo.InvariantCulture,
+                    //                        System.Globalization.DateTimeStyles.None);
 
-                ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                    DateTime theTime = DateTime.ParseExact(words[0], //"06/04/2018 12:00:00 a.m."
+                                            "dd/MM/yyyy",
+                                            System.Globalization.CultureInfo.InvariantCulture,
+                                            System.Globalization.DateTimeStyles.None);
+                    ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                }
+                catch (Exception e)
+                {
+                    ViewBag.FECHAD = "";
+                }
+
+
 
                 ViewBag.PAYER_ID = new SelectList(id_clientes, "KUNNR", dataTextField: "NAME1", selectedValue: dOCUMENTO.PAYER_ID);
             }
 
-
+            ViewBag.tcambio = dOCUMENTO.TIPO_CAMBIO;
+            ViewBag.MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
 
             return View(dOCUMENTO);
         }
@@ -591,9 +632,14 @@ namespace TAT001.Controllers
                 {
                     //Siempre la conversión va a la sociedad    
                     var date = DateTime.Now.Date;
-                    var UKURS = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(date)).FirstOrDefault();
+                    if (tcambio == null)
+                    {
+                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers)).Max(a => a.GDATU);
+                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(max)).FirstOrDefault();
+                    }
 
-                    ukurs = Convert.ToDecimal(UKURS);
+                    ukurs = Convert.ToDecimal(tcambio.UKURS);
 
                 }
                 catch (Exception e)
@@ -614,11 +660,15 @@ namespace TAT001.Controllers
             {
                 try
                 {
-                    //Siempre la conversión va a la sociedad    
                     var date = DateTime.Now.Date;
-                    var UKURS = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(date)).FirstOrDefault();
+                    if (tcambio == null)
+                    {
+                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd)).Max(a => a.GDATU);
+                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(max)).FirstOrDefault();
+                    }
 
-                    ukurs = Convert.ToDecimal(UKURS);
+                    ukurs = Convert.ToDecimal(tcambio.UKURS);
                 }
                 catch (Exception e)
                 {
@@ -946,9 +996,15 @@ namespace TAT001.Controllers
             {
                 id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
                 var date = DateTime.Now.Date;
-                var uk = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                //var tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                var tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault();
+                if (tc == null)
+                {
+                    var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr)).Max(a => a.GDATU);
+                    tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(max)).FirstOrDefault();
+                }
 
-                tcambio = Convert.ToDecimal(uk);
+                tcambio = Convert.ToDecimal(tc.UKURS);
 
             }
             catch (Exception e)
@@ -963,7 +1019,7 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public string SelectVcambio(string moneda_id, int monto_doc_md)
+        public string SelectVcambio(string moneda_id, decimal monto_doc_md)
         {
             string p = "";
             string tcurr = "USD";
@@ -983,11 +1039,17 @@ namespace TAT001.Controllers
             try
             {
                 var date = DateTime.Now.Date;
-                var UKURS = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                //var UKURS = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                var tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault();
+                if (tc == null)
+                {
+                    var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr)).Max(a => a.GDATU);
+                    tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(max)).FirstOrDefault();
+                }
 
-                decimal uk = Convert.ToDecimal(UKURS);
+                decimal uk = Convert.ToDecimal(tc.UKURS);
 
-                if (UKURS > 0)
+                if (tc.UKURS > 0)
                 {
                     monto = Convert.ToDecimal(monto_doc_md) / uk;
                 }

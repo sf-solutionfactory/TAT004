@@ -32,7 +32,7 @@
             @*<input type="text" id="txt_user" value="PRGA" disabled="disabled" />
                 <label for="txt_user">BU</label>*@
             @Html.EditorFor(model => model.USUARIO.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
-            @Html.LabelFor(model => model.USUARIO.BUNIT, new { @id = "lbl_bu" })
+            @Html.LabelFor(model => model.USUARIO.BUNIT, "Sociedad", new { @id = "lbl_bu" })
         </div>
         <div class="input-field col s6">
             @if (Model.ESTATUS == "N")
@@ -129,12 +129,12 @@
                             @Html.LabelFor(model => model.PAIS_ID, "País", new { @id = "lbl_land" })
                         </div>
                         <div class="input-field col s6">
-                            @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.CIUDAD, "Ciudad", new { @id = "lbl_city" })
-                        </div>
-                        <div class="input-field col s6">
                             @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @disabled = "disabled" } })
                             @Html.LabelFor(model => model.ESTADO, "Estado", new { @id = "lbl_state" })
+                        </div>
+                        <div class="input-field col s6">
+                            @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @disabled = "disabled" } })
+                            @Html.LabelFor(model => model.CIUDAD, "Ciudad", new { @id = "lbl_city" })
                         </div>
                     </div>
                 </div>
@@ -165,12 +165,12 @@
                 </div>
                 <div class="row" style="margin-bottom:0">
                     <div class="card-panel">
-                        <h5>Cliente @Html.DisplayFor(model => model.CLIENTE.KUNNR)</h5>
+                        <h5>Cliente @*@Html.DisplayFor(model => model.CLIENTE.KUNNR)*@</h5>
                         <div class="row" style="margin-bottom:0">
-                            @*<div class="input-field col s12">
+                            <div class="input-field col s12">
                                     @Html.EditorFor(model => model.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled" } })
                                     @Html.LabelFor(model => model.CLIENTE.KUNNR)
-                                </div>*@
+                                </div>
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
                                 @Html.LabelFor(model => model.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })

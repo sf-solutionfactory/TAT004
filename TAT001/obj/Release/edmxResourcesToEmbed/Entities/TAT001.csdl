@@ -79,7 +79,7 @@
     <Property Name="PAYERX" Type="Boolean" />
     <Property Name="ESTIMADO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="ESTIMADOX" Type="Boolean" />
-    <Property Name="MECANICA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MECANICA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="MECANICAX" Type="Boolean" />
     <Property Name="NOMBREE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="NOMBREEX" Type="Boolean" />
@@ -95,7 +95,7 @@
     <Property Name="COMPANYCCX" Type="Boolean" />
     <Property Name="LEGAL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="LEGALX" Type="Boolean" />
-    <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MAIL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="MAILX" Type="Boolean" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
@@ -145,7 +145,7 @@
     <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
     <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-    <Property Name="REGIO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="REGIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ORT01" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="STRAS_GP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="PSTLZ" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
@@ -712,16 +712,6 @@
     <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
     <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -2015,7 +2005,6 @@
     <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
     <EntitySet Name="STATES" EntityType="Self.STATE" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TALLs" EntityType="Self.TALL" />
     <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
     <EntitySet Name="TCAMBIOs" EntityType="Self.TCAMBIO" />
