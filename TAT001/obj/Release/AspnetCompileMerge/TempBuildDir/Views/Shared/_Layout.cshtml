@@ -238,7 +238,7 @@
     <script>
         function EnterKeyFilter() {
             var enter = window.event.target.id;
-            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
+            if (event.target.className != 'materialize-textarea') {
                 if (window.event.keyCode == 13) {
                     event.returnValue = false;
                     event.cancel = true;

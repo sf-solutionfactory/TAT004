@@ -1,5 +1,37 @@
 ﻿$(document).ready(function () {
 
+    //Validar que los labels esten activos
+    //Información
+    //Nombre    
+    if ($('#cli_name').val() != "") {
+        $("label[for='cli_name']").addClass("active");
+    }
+    //Razón social
+    if ($('#vkorg').val() != "") {
+        $("label[for='vkorg']").addClass("active");
+    }
+    //Tax ID
+    if ($('#stcd1').val() != "") {
+        $("label[for='stcd1']").addClass("active");
+    }
+    //Canal
+    if ($('#vtweg').val() != "") {
+        $("label[for='vtweg']").addClass("active");
+    }
+    //Payer nombre
+    if ($('#payer_nombre').val() != "") {
+        $("label[for='payer_nombre']").addClass("active");
+    }
+    //Email nombre
+    if ($('#payer_email').val() != "") {
+        $("label[for='payer_email']").addClass("active");
+    }
+    //Soporte
+    //Negociación
+    if ($('#notas_soporte').val() != "") {
+        $("label[for='notas_soporte']").addClass("active");
+    }
+
     $('#cargar_xls').click(function () {
 
         var filenum = $('#file_dis').get(0).files.length;

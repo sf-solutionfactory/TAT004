@@ -311,6 +311,7 @@ C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\Microsoft.Owin.Security.Twitt
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\Newtonsoft.Json.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\Owin.dll
+C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\SimpleImpersonation.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Helpers.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Mvc.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Optimization.dll
@@ -324,6 +325,7 @@ C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\ExcelDataReader.DataSet.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\itextsharp.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\SimpleImpersonation.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Helpers.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Mvc.xml
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\System.Web.Optimization.xml

@@ -1,11 +1,15 @@
 ﻿using ExcelDataReader;
+using SimpleImpersonation;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
@@ -57,6 +61,17 @@ namespace TAT001.Controllers
             catch
             {
                 ViewBag.NUM_DOC = "";
+            }
+
+            try//Mensaje de documento creado
+            {
+                string error_files = Session["ERROR_FILES"].ToString();
+                ViewBag.ERROR_FILES = error_files;
+                Session["ERROR_FILES"] = null;
+            }
+            catch
+            {
+                ViewBag.ERROR_FILES = "";
             }
 
 
@@ -295,15 +310,6 @@ namespace TAT001.Controllers
 
 
             }
-            //ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION");
-            //ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION");
-            //ViewBag.USUARIOC_ID = new SelectList(db.USUARIOs, "ID", "NOMBRE");
-            //ViewBag.VKORG = new SelectList(db.CLIENTEs, "VKORG", "NAME1");
-            //ViewBag.VTWEG = new SelectList(db.CLIENTEs, "VTWEG", "NAME1");
-            //ViewBag.SPART = new SelectList(db.CLIENTEs, "SPART", "NAME1");
-            //ViewBag.PAYER_ID = new SelectList(db.CLIENTEs, "KUNNR", "NAME1");
-            //ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "LANDX");
-            //ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT");
 
             d.PERIODO = DateTime.Now.ToString("MM");
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
@@ -311,6 +317,8 @@ namespace TAT001.Controllers
             ViewBag.STCD1 = "";
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
+            ViewBag.NAME1 = "";
+            ViewBag.notas_soporte = "";
 
             return View(d);
         }
@@ -320,7 +328,14 @@ namespace TAT001.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "NUM_DOC,TSOL_ID,TALL_ID,SOCIEDAD_ID,PAIS_ID,ESTADO,CIUDAD,PERIODO,EJERCICIO,TIPO_TECNICO,TIPO_RECURRENTE,CANTIDAD_EV,USUARIOC_ID,FECHAD,FECHAC,ESTATUS,ESTATUS_C,ESTATUS_SAP,ESTATUS_WF,DOCUMENTO_REF,NOTAS,MONTO_DOC_MD,MONTO_FIJO_MD,MONTO_BASE_GS_PCT_MD,MONTO_BASE_NS_PCT_MD,MONTO_DOC_ML,MONTO_FIJO_ML,MONTO_BASE_GS_PCT_ML,MONTO_BASE_NS_PCT_ML,MONTO_DOC_ML2,MONTO_FIJO_ML2,MONTO_BASE_GS_PCT_ML2,MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID,MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL,VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL,MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO)
+        public ActionResult Create([Bind(Include = "NUM_DOC,TSOL_ID,TALL_ID,SOCIEDAD_ID,PAIS_ID,ESTADO,CIUDAD,PERIODO," +
+            "EJERCICIO,TIPO_TECNICO,TIPO_RECURRENTE,CANTIDAD_EV,USUARIOC_ID,FECHAD,FECHAC,ESTATUS,ESTATUS_C,ESTATUS_SAP," +
+            "ESTATUS_WF,DOCUMENTO_REF,NOTAS,MONTO_DOC_MD,MONTO_FIJO_MD,MONTO_BASE_GS_PCT_MD,MONTO_BASE_NS_PCT_MD,MONTO_DOC_ML," +
+            "MONTO_FIJO_ML,MONTO_BASE_GS_PCT_ML,MONTO_BASE_NS_PCT_ML,MONTO_DOC_ML2,MONTO_FIJO_ML2,MONTO_BASE_GS_PCT_ML2," +
+            "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
+            "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
+            "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -354,11 +369,6 @@ namespace TAT001.Controllers
 
                     //Obtener el país
                     dOCUMENTO.PAIS_ID = p.ToUpper();
-
-                    //Obtener el estado
-                    //dOCUMENTO.CIUDAD = 2427;
-                    //STATE state = getEstado((int)dOCUMENTO.CIUDAD);
-                    //dOCUMENTO.ESTADO = state.ID + "";
 
                     //CANTIDAD_EV > 1 si son recurrentes
                     dOCUMENTO.CANTIDAD_EV = 1;
@@ -434,7 +444,78 @@ namespace TAT001.Controllers
                     updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
                     //Redireccionar al inicio
+                    //Guardar número de documento creado
                     Session["NUM_DOC"] = dOCUMENTO.NUM_DOC;
+
+                    //Guardar las notas
+                    if (notas_soporte != null && notas_soporte != "")
+                    {
+                        DOCUMENTON doc_notas = new DOCUMENTON();
+                        doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
+                        doc_notas.POS = 1;
+                        doc_notas.STEP = 1;
+                        doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
+                        doc_notas.TEXTO = notas_soporte.ToString();
+
+                        db.DOCUMENTONs.Add(doc_notas);
+                        db.SaveChanges();
+                    }
+
+                    //Guardar los documentos cargados en la sección de soporte
+                    var res = "";
+                    string errorMessage = "";
+                    int numFiles = 0;
+                    //Checar si hay archivos para subir
+                    foreach (HttpPostedFileBase file in files_soporte)
+                    {
+                        if (file != null)
+                        {
+                            if (file.ContentLength > 0)
+                            {
+                                numFiles++;
+                            }
+                        }
+                    }
+
+                    if (numFiles > 0) { 
+                        //Obtener las variables con los datos de sesión y ruta
+                        string url = ConfigurationManager.AppSettings["URL_SAVE"];
+                        //Crear el directorio
+                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+
+                        //Evaluar que se creo el directorio
+                        if (dir.Equals(""))
+                        {
+                            foreach (HttpPostedFileBase file in files_soporte)
+                            {
+                                string errorfiles = "";
+
+                                if (file != null)
+                                {
+                                    if (file.ContentLength > 0)
+                                    {
+                                        string filename = file.FileName;
+                                        errorfiles = "";
+                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles);
+                                    }
+                                }
+                                if (errorfiles != "")
+                                {
+                                    errorMessage += "Error con el archivo " + errorfiles;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            errorMessage = dir;
+                        }
+
+                        errorString = errorMessage;
+                        //Guardar número de documento creado
+                        Session["ERROR_FILES"] = errorMessage;
+                    }
+
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
@@ -566,6 +647,7 @@ namespace TAT001.Controllers
                 dOCUMENTO.VTWEG = payer.VTWEG;
                 dOCUMENTO.SPART = payer.SPART;
                 ViewBag.STCD1 = payer.STCD1;
+                ViewBag.NAME1 = payer.NAME1;
 
                 try
                 {
@@ -596,6 +678,11 @@ namespace TAT001.Controllers
 
             ViewBag.tcambio = dOCUMENTO.TIPO_CAMBIO;
             ViewBag.MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
+            if(notas_soporte == null || notas_soporte == "")
+            {
+                notas_soporte = "";
+            }
+            ViewBag.notas_soporte = notas_soporte;
 
             return View(dOCUMENTO);
         }
@@ -1138,6 +1225,7 @@ namespace TAT001.Controllers
         public string saveFiles()
         {
             var res = "";
+            string error = "";
             if (Request.Files.Count > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
@@ -1145,7 +1233,7 @@ namespace TAT001.Controllers
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     HttpPostedFileBase file = Request.Files[i];
                     string filename = file.FileName;
-                    res = SaveFile(file, url);
+                    res = SaveFile(file, url, "100" ,out error);
                 }
                 //HttpPostedFileBase file1 = Request.Files["f_carta"];
                 //HttpPostedFileBase file2 = Request.Files["f_contratos"];
@@ -1169,38 +1257,85 @@ namespace TAT001.Controllers
             return res;
         }
 
-        string SaveFile(HttpPostedFileBase file, string path)
-        {
-            // Specify the path to save the uploaded file to.
-            string savePath = path;
+        public string createDir(string path, string documento) {
 
+            string ex = "";
+
+            // Specify the path to save the uploaded file to.
+            string savePath = path + documento + "\\";
+
+            // Create the path and file name to check for duplicates.
+            string pathToCheck = savePath;
+
+            try
+                {
+                if (!System.IO.File.Exists(pathToCheck))
+                {
+                    //No existe, se necesita crear
+                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+
+                    dir.Create();
+                            
+                }
+            //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
+            //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
+            //System.IO.File.Copy(copyFrom, savePath);
+            //f.CopyTo(savePath,true);
+            }catch(Exception e)
+            {
+                ex = "No se puede crear el directorio para guardar los archivos";
+            }
+
+            return ex;
+        }
+
+        public string SaveFile(HttpPostedFileBase file, string path,string documento, out string exception)
+        {
+            string ex = "";
+            string exdir = "";
             // Get the name of the file to upload.
             string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
 
+            // Specify the path to save the uploaded file to.
+            string savePath = path + documento + "\\";         
+
             // Create the path and file name to check for duplicates.
-            string pathToCheck = savePath + fileName;
+            string pathToCheck = savePath;
+
+            //
+            //FileInfo f = new FileInfo(fileName);
+            //string fullname = f.FullName;
+
+            //string pathl = Path.GetFullPath(f.DirectoryName.ToString());
+
+            //Get full file path
+            // string copyFrom = fullname;
 
             // Create a temporary file name to use for checking duplicates.
-            string tempfileName = "";
+            //string tempfileName = "";
 
             // Check to see if a file already exists with the
             // same name as the file to upload.
-            if (System.IO.File.Exists(Server.MapPath(pathToCheck)))
-            {
-                int counter = 2;
-                while (System.IO.File.Exists(Server.MapPath(pathToCheck)))
-                {
-                    // if a file with this name already exists,
-                    // prefix the filename with a number.
-                    tempfileName = counter.ToString() + fileName;
-                    pathToCheck = savePath + tempfileName;
-                    counter++;
-                }
+            //if (System.IO.File.Exists(Server.MapPath(pathToCheck)))
+            //if (!System.IO.File.Exists(savePath))
+            //{
+            //    //No existe se necesita crear
+            ////    int counter = 2;
+            ////    while (System.IO.File.Exists(Server.MapPath(pathToCheck)))
+            ////    {
+            ////        // if a file with this name already exists,
+            ////        // prefix the filename with a number.
+            ////        tempfileName = counter.ToString() + fileName;
+            ////        pathToCheck = savePath + tempfileName;
+            ////        counter++;
+            ////    }
 
-                fileName = tempfileName;
+            ////    fileName = tempfileName;
 
-                // Notify the user that the file name was changed.
-            }
+            ////    // Notify the user that the file name was changed.
+            //}
+
+            
 
 
             // Append the name of the file to upload to the path.
@@ -1208,8 +1343,60 @@ namespace TAT001.Controllers
 
             // Call the SaveAs method to save the uploaded
             // file to the specified directory.
-            file.SaveAs(Server.MapPath(savePath));
+            //file.SaveAs(Server.MapPath(savePath));
+
+            //file to domain
+            //Parte para guardar archivo
+            using (Impersonation.LogonUser("SF-0003", "EQUIPO", "0906", LogonType.NewCredentials))
+            {
+                //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
+                try
+                {
+              
+
+                    //Guardar el archivo
+                    file.SaveAs(savePath);
+
+                }
+                catch (Exception e)
+                {
+                    ex = "";
+                    ex = fileName;
+                }
+            }
+            exception = ex;            
             return fileName;
         }
+
+        //static void CopyToSharedFolder()
+        //{
+        //    IntPtr admin_token = default(IntPtr);
+        //    WindowsIdentity wid_current = WindowsIdentity.GetCurrent();
+        //    WindowsIdentity wid_admin = null;
+        //    WindowsImpersonationContext wic = null;
+
+        //    try
+        //    {
+        //        //if (LogonUser("Local Admin name", "Local computer name", "pwd", 9, 0, ref admin_token) != 0)
+        //        if (new WindowsImpersonationContext.LogonUser("EQUIPO", "SF-0003", "0906", 9, 0, ref admin_token) != 0)
+        //        {
+        //            wid_admin = new WindowsIdentity(admin_token);
+        //            wic = wid_admin.Impersonate();
+        //            //System.IO.File.Copy("C:\\right.bmp", "\\\\157.60.113.28\\testnew\\right.bmp", true);
+        //            System.IO.File.Copy(@"D:\ram\Test.txt", @"\\10.245.66.50\pdc\Test.txt", true);
+        //        }
+        //    }
+        //    catch (System.Exception se)
+        //    {
+        //        int ret = Marshal.GetLastWin32Error();
+        //    }
+        //    finally
+        //    {
+        //        if (wic != null)
+        //        {
+        //            wic.Undo();
+        //        }
+        //    }
+        //}
     }
 }

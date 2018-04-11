@@ -32,6 +32,30 @@
         </script>
     }
 }
+
+@if (ViewBag.ERROR_FILES != null)
+{
+    if (ViewBag.ERROR_FILES != "")
+    {
+        <script>
+        $(document).ready(function () {
+            function docMessage(msg) {
+                M.toast({ html: msg });
+            }
+
+            var message = '@ViewBag.ERROR_FILES';
+
+            if (message != "")
+            {
+                // do drop down loic
+                docMessage('Error: ' + message+'');
+            }
+        });
+        </script>
+    }
+}
+
+
 <div class="row" style="margin-bottom:0;">
     <div class="input-field col s3 m3 l3">
         <select id="selecc">

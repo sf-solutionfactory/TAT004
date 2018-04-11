@@ -176,7 +176,7 @@
     </div>
 </div>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -204,14 +204,14 @@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.DropDownList("TSOL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Grupo de solicitudes", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.DropDownList("GALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
-                                    @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             @*Clasificación*@
@@ -222,7 +222,7 @@
                                         @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
                                     </div>
                                 </div>*@
-                            @Html.HiddenFor(model => model.TALL_ID, new {  @id = "tall_id", @class = "form-control" })
+                            @Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })
                         </div>
                     </div>
                     @*Datos del país*@
@@ -243,7 +243,7 @@
                                     @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @id = "sociedad_id", @class = "form-control", @disabled = "disabled" } })
-                                        @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
+                                        @*@Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                                         @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
                                         <div class="col-md-10">
                                             @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
-                                            @Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })
+                                            @*@Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })*@
                                         </div>
                                     </div>
                                     <div class="input-field col-md-2">
@@ -276,7 +276,7 @@
                                 <div class="col-md-10">
                                     @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
                                     @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <link href="~/Content/autocomplete.css" rel="stylesheet" />
@@ -312,7 +312,7 @@
                                 <div class="col-md-10">
                                     @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
                                     @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <script>
@@ -355,7 +355,7 @@
                                 <i class="material-icons prefix">date_range</i>
                                 @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "fechad", @class = "form-control datepicker", onkeyup = "borrar(this);", @Value = ViewBag.FECHAD } })
                                 @Html.LabelFor(model => model.FECHAD, "Fecha", htmlAttributes: new { @class = "active" })
-                                @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
+                                @*@Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })*@
 
                             </div>
 
@@ -378,7 +378,7 @@
                                 @Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @id = "periodo", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <script>
@@ -408,24 +408,20 @@
 
                                 var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
-                                function updatePeriodo() {
-
-                                    alert('func');
-                                }
                             </script>
 
                             <div class="form-group col s6">
                                 @Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.EJERCICIO, new { htmlAttributes = new { @id = "ejercicio", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                         </div>
@@ -439,7 +435,7 @@
                                 <div class="col-md-10">
                                     @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
                                     @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
-                                    @Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
                                 </div>
                                 <script>
                                     auto(document).ready(function () {
@@ -479,14 +475,14 @@
                                     </div>
                                 </div>*@
                             <div class="input-field col s12">
-                                <input type="text" id="cli_name" disabled="disabled" />
+                                <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
                                 <label for="cli_name">Nombre</label>
                             </div>
                             <div class="input-field col s12">
-                                @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for="vkorg" })
+                                @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -505,7 +501,7 @@
                                 @Html.LabelFor(model => model.VTWEG, "Canal", htmlAttributes: new { @class = "control-label col-md-2", @for = "vtweg" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.VTWEG, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -513,7 +509,7 @@
                                 @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
 
@@ -521,8 +517,8 @@
                                 @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                                 <div class="col-md-10">
                                     @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type="email" } })
-                                    @Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })
+                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
+                                    @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                         </div>
@@ -540,12 +536,12 @@
                             <i class="material-icons prefix">date_range</i>
                             @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker", @onkeyup = "borrar(this);" } })
                             @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
-                            @Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })
+                            @*@Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })*@
                         </div><div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
                             @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker", onkeyup = "borrar(this);" } })
                             @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
-                            @Html.ValidationMessageFor(model => model.FECHAF_VIG, "", new { @class = "text-danger" })
+                            @*@Html.ValidationMessageFor(model => model.FECHAF_VIG, "", new { @class = "text-danger" })*@
                         </div>
                         <script>
                             var elemth = document.querySelector('#fechai_vig');
@@ -569,6 +565,16 @@
                             var elemtd = document.querySelector('#fechaf_vig');
                             var optionstd = { //format: 'dd - mm - yy'
                                 format: 'yyyy-mm-dd',
+                                onClose: function (e) {
+                                    var datei = $('#fechai_vig').val();
+                                    var datef = $('#fechaf_vig').val();
+                                    var res = validar_fechas(datei, datef);
+
+                                    if (!res) {
+                                        $('#fechaf_vig').val("");
+                                        M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                    }
+                                },
                                 i18n: {
                                     clear: 'Limpiar',
                                     today: 'Hoy',
@@ -600,17 +606,43 @@
                         <h5>Documentos de Soporte</h5>
                         <label>* Campos obligatorios</label>
                         <div class="row" style="margin-bottom:0">
-                            @*<table class="tg">
-                                <tr>*@
                             <div class="col s12">
-                                <label>Carta</label><label class"lbl_nec">*</label>
-                                @*</td>
-                                    <td class="tg-yw4l">*@
                                 <form action="#">
+                                    <label>Carta</label><label class"lbl_nec">*</label>
                                     <div class="file-field input-field">
                                         <div class="btn">
                                             <span>Examinar</span>
-                                            <input class="file_soporte nec" id="file_carta" type="file">
+                                            <input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                    <label>Contratos</label><label class"lbl_nec"></label>
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>Examinar</span>
+                                            <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                    <label>Facturas Cliente</label>
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>Examinar</span>
+                                            <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                    <label>JBP</label>
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>Examinar</span>
+                                            <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
                                             <input class="file-path validate" type="text">
@@ -618,62 +650,6 @@
                                     </div>
                                 </form>
                             </div>
-                            @*</tr>
-                                <tr>*@
-                            <div class="col s12">
-                                <label>Contratos</label><label class"lbl_nec"></label>
-                                @*</td>
-                                    <td class="tg-yw4l">*@
-                                <form action="#">
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" id="file_contratos" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            @*</tr>
-                                <tr>*@
-                            <div class="col s12">
-                                <label>Facturas Cliente</label>
-                                @*</td>
-                                    <td class="tg-yw4l">*@
-                                <form action="#">
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" id="file_factura" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            @*</tr>
-                                <tr>*@
-                            <div class="col s12">
-                                <label>JBP</label>
-                                @*</td>
-                                    <td class="tg-yw4l">*@
-                                <form action="#">
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" id="file_jbp" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            @*</tr>
-                                </table>*@
                         </div>
                     </div>
                 </div>
@@ -681,14 +657,25 @@
                     <div class="card-panel">
                         <h5>Notas</h5>
                         <div class="row" style="margin-bottom:0">
-                            <form class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                        <label for="textarea1"></label>
-                                    </div>
+                            @*<form class="col s12">*@
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup = "maxchar_notas();">@ViewBag.notas_soporte</textarea>
+                                    <label for="notas_soporte"></label>
                                 </div>
-                            </form>
+                            </div>
+                            <script>
+                                function maxchar_notas() {
+                                    var maxLength = 500;
+                                    var text = $('#notas_soporte').val();
+                                    var textLength = text.length;
+                                    if (textLength > (maxLength)) {
+                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                        var msg = 'Número máximo para la nota es ' + maxLength;
+                                        M.toast({ html: msg });
+                                    }
+                                }
+                            </script>
                         </div>
                         @*<input type="button" id="btnsoportes" value="cargar" />*@
                     </div>
@@ -708,7 +695,7 @@
                                         @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
                                             @Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @id = "monto_doc_md", @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.MONTO_DOC_MD, "", new { @class = "text-danger" })
+                                            @*@Html.ValidationMessageFor(model => model.MONTO_DOC_MD, "", new { @class = "text-danger" })*@
                                         </div>
                                     </div>
                                 </div>
@@ -717,7 +704,7 @@
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
                                             @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })
-                                            @Html.ValidationMessageFor(model => model.MONEDA_ID, "", new { @class = "text-danger" })
+                                            @*@Html.ValidationMessageFor(model => model.MONEDA_ID, "", new { @class = "text-danger" })*@
                                         </div>
                                     </div>
                                 </div>
@@ -730,7 +717,7 @@
                                     @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })
-                                        @Html.ValidationMessageFor(model => model.TIPO_CAMBIO, "", new { @class = "text-danger" })
+                                        @*@Html.ValidationMessageFor(model => model.TIPO_CAMBIO, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
                                 <div class=" input-field col s6">
@@ -741,24 +728,35 @@
                                     @Html.LabelFor(model => model.MONTO_DOC_ML, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.MONTO_DOC_ML, new { htmlAttributes = new { @class = "form-control", @style = "display: none" } }) @*@style = "display: none"*@
-                                        @Html.ValidationMessageFor(model => model.MONTO_DOC_ML, "", new { @class = "text-danger" })
+                                        @*@Html.ValidationMessageFor(model => model.MONTO_DOC_ML, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.MONTO_DOC_ML2, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.MONTO_DOC_ML2, new { htmlAttributes = new { @id = "monto_doc_ml2", @class = "form-control", @style = "display: none" } }) @*@style = "display: none"*@
-                                        @Html.ValidationMessageFor(model => model.MONTO_DOC_ML2, "", new { @class = "text-danger" })
+                                        @*@Html.ValidationMessageFor(model => model.MONTO_DOC_ML2, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
                                 <div class="form-group input-field col s12">
-                                    @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea" })
+                                    @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
                                     @Html.LabelFor(model => model.NOTAS, "Negociación", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    @Html.ValidationMessageFor(model => model.NOTAS, "", new { @class = "text-danger" })
+                                    @*@Html.ValidationMessageFor(model => model.NOTAS, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             @*<input type="button" id="btnsoportes" value="cargar" />*@
-
+                            <script>
+                                function maxchar(w) {
+                                    var maxLength = 255;
+                                    var text = $('#notas_txt').val();
+                                    var textLength = text.length;
+                                    if (textLength > (maxLength)) {
+                                        $('#notas_txt').val(text.substring(0, ((maxLength))));
+                                        var msg = 'Número máximo para la negociación es ' + maxLength;
+                                        M.toast({ html: msg });
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
