@@ -57,6 +57,10 @@ namespace TAT001.Entities
         public Nullable<bool> LEGALX { get; set; }
         public string MAIL { get; set; }
         public Nullable<bool> MAILX { get; set; }
+        public string LUGARFECH { get; set; }
+        public Nullable<bool> LUGARFECHX { get; set; }
+        public string MONTO { get; set; }
+        public string MONEDA { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public virtual USUARIO USUARIO { get; set; }

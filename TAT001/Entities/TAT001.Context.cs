@@ -88,6 +88,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
+        public virtual DbSet<ROLT> ROLTs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
@@ -125,7 +126,7 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CARPETA_Result>("CSP_CARPETA", iDParameter, aCCIONParameter);
         }
     
-        public virtual ObjectResult<CSP_CONSULTARPRESUPUESTO_Result> CSP_CONSULTARPRESUPUESTO(string sOCIEDAD, string aNIOC, string aNIOS, string pERIODOC, string pERIODOS, string mONEDAD, string mONEDAA)
+        public virtual ObjectResult<CSP_CONSULTARPRESUPUESTO_Result> CSP_CONSULTARPRESUPUESTO(string sOCIEDAD, string aNIOC, string aNIOS, string pERIODOC, string pERIODOS, string mONEDAD, string mONEDAA, string cPT)
         {
             var sOCIEDADParameter = sOCIEDAD != null ?
                 new ObjectParameter("SOCIEDAD", sOCIEDAD) :
@@ -155,7 +156,11 @@ namespace TAT001.Entities
                 new ObjectParameter("MONEDAA", mONEDAA) :
                 new ObjectParameter("MONEDAA", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CONSULTARPRESUPUESTO_Result>("CSP_CONSULTARPRESUPUESTO", sOCIEDADParameter, aNIOCParameter, aNIOSParameter, pERIODOCParameter, pERIODOSParameter, mONEDADParameter, mONEDAAParameter);
+            var cPTParameter = cPT != null ?
+                new ObjectParameter("CPT", cPT) :
+                new ObjectParameter("CPT", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CONSULTARPRESUPUESTO_Result>("CSP_CONSULTARPRESUPUESTO", sOCIEDADParameter, aNIOCParameter, aNIOSParameter, pERIODOCParameter, pERIODOSParameter, mONEDADParameter, mONEDAAParameter, cPTParameter);
         }
     
         public virtual ObjectResult<CSP_PERMISO_Result> CSP_PERMISO(string iD, Nullable<int> aCCION)

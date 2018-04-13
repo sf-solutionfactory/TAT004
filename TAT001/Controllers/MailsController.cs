@@ -41,6 +41,8 @@ namespace TAT001.Controllers
             ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
             ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
             ViewBag.url = "http://localhost:64497";
+            ViewBag.url = "http://192.168.1.77";
+            ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");
             return View(dOCUMENTO);
         }
 
@@ -66,6 +68,8 @@ namespace TAT001.Controllers
             ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
             ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
             ViewBag.url = "http://localhost:64497";
+            ViewBag.url = "http://192.168.1.77";
+            ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");
             return View(dOCUMENTO);
         }
 
@@ -87,8 +91,8 @@ namespace TAT001.Controllers
                                                     & a.VTWEG.Equals(dOCUMENTO.VTWEG)
                                                     & a.SPART.Equals(dOCUMENTO.SPART)
                                                     & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
-            ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
-            ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
+            var workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderByDescending(a => a.POS).FirstOrDefault();
+            //ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
 
             MailMessage mail = new MailMessage("rogeliosnchez@gmail.com", "rogelio.sanchez@sf-solutionfactory.com");
             SmtpClient client = new SmtpClient();
@@ -100,7 +104,10 @@ namespace TAT001.Controllers
             client.Credentials = new NetworkCredential("rogeliosnchez@gmail.com", "808estoylistO");
 
 
-            mail.Subject = "N" + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
+            if (workflow == null)
+                mail.Subject = "N" + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
+            else
+                mail.Subject = workflow.ESTATUS + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
             mail.IsBodyHtml = true;
             string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
             //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));

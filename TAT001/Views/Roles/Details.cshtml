@@ -1,0 +1,46 @@
+﻿@model TAT001.Entities.ROL
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 611;
+    ViewBag.carpeta_r = 500;
+}
+
+<div class="row">
+    <div class="input-field col s6">
+        @Html.EditorFor(model => model.CLAVE, new { htmlAttributes = new { @disabled = "disabled" } })
+        @Html.LabelFor(model => model.CLAVE)
+    </div>
+    <div class="input-field col s6">
+        @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
+        @Html.LabelFor(model => model.NOMBRE)
+    </div>
+</div>
+<div class="row">
+    <h5>Páginas</h5>
+    <div class="col s12">
+        <ul class="collapsible">
+            @foreach (var item in Model.PERMISO_PAGINA)
+            {
+                <li>
+                    <div class="collapsible-header">@item.PAGINA.URL</div>
+                    <div class="collapsible-body">
+                        <h5>@item.PAGINA.URL</h5>
+                        <span>@item.PAGINA.PAGINATs.Where(a => a.SPRAS_ID.Equals(ViewBag.usuario.SPRAS_ID)).FirstOrDefault().TXT50</span>
+                    </div>
+                </li>
+
+            }
+        </ul>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<script>
+
+    var elem = document.querySelectorAll('.collapsible');
+    var instance = M.Collapsible.init(elem, []);
+</script>

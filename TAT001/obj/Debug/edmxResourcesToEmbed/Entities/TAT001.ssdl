@@ -67,7 +67,7 @@
     <Property Name="PAYERX" Type="bit" />
     <Property Name="ESTIMADO" Type="nvarchar" MaxLength="100" />
     <Property Name="ESTIMADOX" Type="bit" />
-    <Property Name="MECANICA" Type="nvarchar(max)" />
+    <Property Name="MECANICA" Type="nvarchar" MaxLength="100" />
     <Property Name="MECANICAX" Type="bit" />
     <Property Name="NOMBREE" Type="nvarchar" MaxLength="100" />
     <Property Name="NOMBREEX" Type="bit" />
@@ -83,8 +83,12 @@
     <Property Name="COMPANYCCX" Type="bit" />
     <Property Name="LEGAL" Type="nvarchar" MaxLength="500" />
     <Property Name="LEGALX" Type="bit" />
-    <Property Name="MAIL" Type="nvarchar" MaxLength="200" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
     <Property Name="MAILX" Type="bit" />
+    <Property Name="LUGARFECH" Type="nvarchar" MaxLength="100" />
+    <Property Name="LUGARFECHX" Type="bit" />
+    <Property Name="MONTO" Type="nvarchar" MaxLength="100" />
+    <Property Name="MONEDA" Type="nchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="CATEGORIA">
     <Key>
@@ -159,7 +163,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NOMBRE" Type="nvarchar" MaxLength="150" />
     <Property Name="PHONE" Type="nvarchar" MaxLength="15" />
     <Property Name="EMAIL" Type="nvarchar" MaxLength="250" />
@@ -578,6 +582,15 @@
     <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
+  <EntityType Name="ROLT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="ROL_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="ROL_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="SOCIEDAD">
     <Key>
       <PropertyRef Name="BUKRS" />
@@ -722,8 +735,8 @@
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" />
     <Property Name="PUESTO_ID" Type="int" />
-    <Property Name="MANAGER" Type="nvarchar" MaxLength="16" Nullable="false" />
-    <Property Name="BACKUP_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="MANAGER" Type="nvarchar" MaxLength="16" />
+    <Property Name="BACKUP_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="BUNIT" Type="nchar" MaxLength="4" Nullable="false" />
   </EntityType>
   <EntityType Name="WARNING">
@@ -749,6 +762,8 @@
     <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
     <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="FECHAC" Type="datetime" />
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" />
+    <Property Name="ROL_ID" Type="int" />
   </EntityType>
   <EntityType Name="WORKFP">
     <Key>
@@ -1503,6 +1518,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ROLT_ROL">
+    <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+    <End Role="ROLT" Type="Self.ROLT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ROLT">
+        <PropertyRef Name="ROL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ROLT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="ROLT" Type="Self.ROLT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ROLT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SOCIEDAD_MONEDA">
     <End Role="MONEDA" Type="Self.MONEDA" Multiplicity="0..1" />
     <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="*" />
@@ -1709,6 +1748,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_USUARIO_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="USUARIO">
+        <PropertyRef Name="BUNIT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_USUARIO_SPRAS">
     <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
     <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
@@ -1838,6 +1889,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="PERIODOS" Type="nvarchar" Mode="In" />
     <Parameter Name="MONEDAD" Type="nvarchar" Mode="In" />
     <Parameter Name="MONEDAA" Type="nvarchar" Mode="In" />
+    <Parameter Name="CPT" Type="nchar" Mode="In" />
   </Function>
   <Function Name="CSP_PERMISO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="ID" Type="nvarchar" Mode="In" />
@@ -1919,6 +1971,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PUESTOT" EntityType="Self.PUESTOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RANGO" EntityType="Self.RANGO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ROLT" EntityType="Self.ROLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
@@ -2229,6 +2282,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="PUESTOT" EntitySet="PUESTOT" />
     </AssociationSet>
+    <AssociationSet Name="FK_ROLT_ROL" Association="Self.FK_ROLT_ROL">
+      <End Role="ROL" EntitySet="ROL" />
+      <End Role="ROLT" EntitySet="ROLT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ROLT_SPRAS" Association="Self.FK_ROLT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="ROLT" EntitySet="ROLT" />
+    </AssociationSet>
     <AssociationSet Name="FK_SOCIEDAD_MONEDA" Association="Self.FK_SOCIEDAD_MONEDA">
       <End Role="MONEDA" EntitySet="MONEDA" />
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
@@ -2295,6 +2356,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     </AssociationSet>
     <AssociationSet Name="FK_USUARIO_PUESTO" Association="Self.FK_USUARIO_PUESTO">
       <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="USUARIO" EntitySet="USUARIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_SOCIEDAD" Association="Self.FK_USUARIO_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
       <End Role="USUARIO" EntitySet="USUARIO" />
     </AssociationSet>
     <AssociationSet Name="FK_USUARIO_SPRAS" Association="Self.FK_USUARIO_SPRAS">

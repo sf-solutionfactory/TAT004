@@ -6613,7 +6613,12 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Approximate with half of window size
 
         if ($textarea.css('display') !== 'hidden') {
-            hiddenDiv.css('width', $textarea.width() + 'px');
+            var wid = $textarea.width();
+            if (wid != 0) {
+                hiddenDiv.css('width', $textarea.width() + 'px');
+            } else {
+                hiddenDiv.css('width', '500px');
+            }
         } else {
             hiddenDiv.css('width', $(window).width() / 2 + 'px');
         }

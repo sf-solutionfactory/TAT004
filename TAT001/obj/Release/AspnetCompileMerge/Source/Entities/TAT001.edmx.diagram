@@ -138,6 +138,10 @@
         <AssociationConnector Association="TAT001Model.FK_WORKV_WORKFH" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_USUARIO_SOCIEDAD" />
+        <EntityTypeShape EntityType="TAT001Model.ROLT" Width="1.5" PointX="19.25" PointY="35.5" />
+        <AssociationConnector Association="TAT001Model.FK_ROLT_ROL" />
+        <AssociationConnector Association="TAT001Model.FK_ROLT_SPRAS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

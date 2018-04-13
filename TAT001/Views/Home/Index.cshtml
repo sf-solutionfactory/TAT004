@@ -42,7 +42,10 @@
             </div>
             <script>
                 var elem = document.getElementById('date_ini');
-                var options = [];
+                var options = {
+                    //format: 'mmm dd, yyyy'
+                    format: 'dd/mm/yyyy'
+                };
                 var instance = M.Datepicker.init(elem, options);
                 var elem2 = document.getElementById('date_fin');
                 var instance2 = M.Datepicker.init(elem2, options);
@@ -84,10 +87,6 @@
         <div class="row">
             <div class="row">
                 <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="textarea1" class="materialize-textarea"></textarea>
-                        <label for="textarea1">Textarea</label>
-                    </div>
                 </div>
             </div>
         </div>

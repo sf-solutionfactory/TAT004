@@ -18,6 +18,7 @@ namespace TAT001.Entities
         public SOCIEDAD()
         {
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
+            this.USUARIOs = new HashSet<USUARIO>();
         }
     
         public string BUKRS { get; set; }
@@ -35,5 +36,7 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual MONEDA MONEDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<USUARIO> USUARIOs { get; set; }
     }
 }

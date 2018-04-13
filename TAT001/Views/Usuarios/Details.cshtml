@@ -22,30 +22,30 @@
         @Html.HiddenFor(model => model.ID)
         @Html.HiddenFor(model => model.PASS)
         @*<div class="input-field col s6">
-                        @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
-                        @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
-                        @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
-                    <div class="input-field col s6">
-                        <div style="height:54px;"></div>
-                    </div>
-            </div>*@
+                    @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
+                    @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
+                <div class="input-field col s6">
+                    <div style="height:54px;"></div>
+                </div>
+        </div>*@
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled= "disabled" } })
+            @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
         </div>
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled= "disabled" } })
+            @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
         </div>
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled= "disabled" } })
+            @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
         </div>
         <div class="input-field col s8">
-            @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled= "disabled" } })
+            @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
         </div>
@@ -55,25 +55,18 @@
             @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
         </div>
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.PUESTO_ID, null, new { htmlAttributes = new { @disabled = "disabled" } })
+            @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.PUESTO_ID, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
         </div>
-
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.MANAGER, new { htmlAttributes = new { @disabled= "disabled" } })
-            @Html.LabelFor(model => model.MANAGER, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.ValidationMessageFor(model => model.MANAGER, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+            @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
         </div>
 
         <div class="input-field col s4">
-            @Html.EditorFor(model => model.BACKUP_ID, new { htmlAttributes = new { @disabled= "disabled" } })
-            @Html.LabelFor(model => model.BACKUP_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-            @Html.ValidationMessageFor(model => model.BACKUP_ID, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="input-field col s4">
-            @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled= "disabled" } })
+            @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
             @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @class = "control-label col-md-2" })
             @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
         </div>

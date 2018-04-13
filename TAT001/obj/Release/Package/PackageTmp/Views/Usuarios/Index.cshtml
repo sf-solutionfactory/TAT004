@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TAT001.Entities.USUARIO>
+﻿@*@model IEnumerable<TAT001.Entities.USUARIO>*@
+@model TAT001.Models.UsuarioNuevo
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,66 +8,70 @@
 }
 
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NOMBRE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EMAIL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MANAGER)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BACKUP_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BUNIT)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.PUESTO.ACTIVO)
-        </th>*@
-        <th></th>
-    </tr>
+<div class="row right">
+    <a class="btn" href="@Url.Action("Create")">Nuevo</a>
+    @*<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nuevo</a>*@
+</div>
+<div class="row">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().NOMBRE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().EMAIL)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().MANAGER)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().BACKUP_ID)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.L.FirstOrDefault().BUNIT)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.L.PUESTO.ACTIVO)
+                </th>*@
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NOMBRE)
-            @Html.DisplayFor(modelItem => item.APELLIDO_P)
-            @Html.DisplayFor(modelItem => item.APELLIDO_M)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EMAIL)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MANAGER)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BACKUP_ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BUNIT)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.FirstOrDefault().)
-        </td>*@
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model.L)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NOMBRE)
+                    @Html.DisplayFor(modelItem => item.APELLIDO_P)
+                    @Html.DisplayFor(modelItem => item.APELLIDO_M)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EMAIL)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.MANAGER)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BACKUP_ID)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.BUNIT)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.FirstOrDefault().)
+                    </td>*@
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+</div>

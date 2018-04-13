@@ -122,6 +122,30 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th id="lbl_num">
+                <div class="input-field s12">
+                    @Html.DisplayNameFor(model => model.NUM_DOC)
+                </div>
+            </th>
+            <th id="lbl_tsol">
+                @Html.DisplayNameFor(model => model.TSOL)
+            </th>
+            <th id="lbl_tall">
+                @Html.DisplayNameFor(model => model.TALL)
+            </th>
+            <th id="lbl_fechad">
+                @Html.DisplayNameFor(model => model.FECHAD)
+            </th>
+            <th id="lbl_estatus">
+                @Html.DisplayNameFor(model => model.ESTATUS)
+            </th>
+            <th id="lbl_concepto">
+                @Html.DisplayNameFor(model => model.CONCEPTO)
+            </th>
+        </tr>
+    </tfoot>
 </table>
 
 <script>
@@ -148,7 +172,35 @@
                     targets: [1, 2, 3, 4, 5],
                     className: 'mdl-data-table__cell--non-numeric'
                 }
-            ]
+            ],
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    //var div = $('<div class="inputa-field col s12">').appendTo($(column.footer()).empty());
+                    var select = $('<select style="display:initial;" class="browser-default"><option value=""></option></select>')
+                    //var select = $('<select ><option value=""></option></select>')
+                        //.appendTo($(div))
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                                )
+                                ;
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    //column.data().unique().sort().each(function (d, j) {
+                    column.cells('', column[0]).render('display').sort().unique().each(function (d, j) {
+                        //select.append('<option value="' + d + '">' + d + '</option>')
+                        var val = $('<div/>').html(d).text();
+                        select.append('<option value="' + val + '">' + val + '</option>');
+                    });
+                    //var scr = div.append('<script>var elem = document.querySelectorAll("select");var instance = M.Select.init(elem, []);');
+                });
+            }
         });
 
         var a = $('#selecc').val();

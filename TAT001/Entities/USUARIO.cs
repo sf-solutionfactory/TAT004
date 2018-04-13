@@ -55,5 +55,6 @@ namespace TAT001.Entities
         public virtual ICollection<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual PUESTO PUESTO { get; set; }
         public virtual SPRA SPRA { get; set; }
+        public virtual SOCIEDAD SOCIEDAD { get; set; }
     }
 }
