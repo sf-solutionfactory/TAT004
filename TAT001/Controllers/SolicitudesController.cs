@@ -1154,7 +1154,7 @@ namespace TAT001.Controllers
         [AllowAnonymous]
         public JsonResult LoadExcel()
         {
-            List<Entities.DOCUMENTOP> ld = new List<Entities.DOCUMENTOP>();
+            List<DOCUMENTOP_MOD> ld = new List<DOCUMENTOP_MOD>();
 
 
             if (Request.Files.Count > 0)
@@ -1186,35 +1186,52 @@ namespace TAT001.Controllers
                 var cols = 1; // B
                 var pos = 1;
 
-                for (var i = rows; i < rowsc; i++)
+                for (int i = rows; i < rowsc; i++)
                 {
                     //for (var j = 0; j < columnsc; j++)
                     //{
                     //    var data = dt.Rows[i][j];
                     //}
-                    var v = dt.Rows[i][1];
-                    if (Convert.ToString(v) == "")
+                    if (i >= 4)
                     {
-                        break;
+                        var v = dt.Rows[i][1];
+                        if (Convert.ToString(v) == "")
+                        {
+                            break;
+                        }
                     }
-                    Entities.DOCUMENTOP p = new DOCUMENTOP();
+                    DOCUMENTOP_MOD doc = new DOCUMENTOP_MOD();
+                    //Entities.DOCUMENTOP p = new DOCUMENTOP();
 
                     var poss = dt.Rows[i][1];
                     string a = Convert.ToString(pos);
-                    p.POS = Convert.ToDecimal(a);
-                    p.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][1]);
-                    p.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][2]);
-                    p.MATNR = (string)dt.Rows[i][4];
 
-                    ld.Add(p);
+                    doc.POS = Convert.ToDecimal(a);
+                    doc.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][1]); //DEL
+                    doc.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][2]); //AL
+                    doc.MATNR = (string)dt.Rows[i][3]; //Material
+                    doc.MATKL = (string)dt.Rows[i][4]; //Categoría
+                    doc.DESC = (string)dt.Rows[i][5]; //Descripción
+                    double monto = (double)dt.Rows[i][6]; //Costo unitario    
+                    doc.MONTO = Convert.ToDecimal(monto);      
+                    double porc_apoyo = (double)dt.Rows[i][7]; //% apoyo
+                    doc.PORC_APOYO = Convert.ToDecimal(porc_apoyo);
+                    double monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
+                    doc.MONTO_APOYO = Convert.ToDecimal(monto_apoyo);
+                    double montoc_apoyo = (double)dt.Rows[i][9]; //Costo con apoyo
+                    doc.MONTOC_APOYO = Convert.ToDecimal(montoc_apoyo);
+                    double precio_sug = (double)dt.Rows[i][10]; //Precio sugerido
+                    doc.PRECIO_SUG = Convert.ToDecimal(precio_sug);
+                    double volumen_est = (double)dt.Rows[i][11]; //Volumen estimado
+                    doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
+                    double porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
+                    doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
+                    ld.Add(doc);
                     pos++;
                 }
 
                 reader.Close();
-                //}
 
-
-                //}
             }
             JsonResult jl = Json(ld, JsonRequestBehavior.AllowGet);
             return jl;

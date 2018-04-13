@@ -167,11 +167,8 @@
             <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="active">Información</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
+            <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont">Financiera</a></li>
-            @if (ViewBag.soltipo == "v")
-            {
-                <li class="tab col s3 tabs_menu"><a id="dis_fin" href="#Distribucion_cont">Distribución</a></li>
-            }
         </ul>
     </div>
 </div>
@@ -182,107 +179,107 @@
 
 
 
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.NUM_DOC, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.NUM_DOC, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.NUM_DOC, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-        @*Información*@
-        @*Tipo de solicitud*@
-        <div id="Informacion_cont" class="col s12" style="font-size:12px;">
-            <div class="row">
-                <div class="col s12 m6 l6">
-                    <div class="card-panel">
-                        <h5>Tipo de solicitud y Clasificación</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="form-group col s12">
-                                @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("TSOL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
-                                    @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
-                                </div>
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.NUM_DOC, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NUM_DOC, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NUM_DOC, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    @*Información*@
+    @*Tipo de solicitud*@
+    <div id="Informacion_cont" class="col s12" style="font-size:12px;">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <div class="card-panel">
+                    <h5>Tipo de solicitud y Clasificación</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="form-group col s12">
+                            @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("TSOL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
                             </div>
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.TALL_ID, "Grupo de solicitudes", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("GALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
-                                    @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-                            @*Clasificación*@
-                            @*<div class="form-group col s12">
-                                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("TALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tall_id", @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
-                            @Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })
                         </div>
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.TALL_ID, "Grupo de solicitudes", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("GALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
+                                @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        @*Clasificación*@
+                        @*<div class="form-group col s12">
+                                @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("TALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tall_id", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                        @Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })
                     </div>
-                    @*Datos del país*@
-                    <div class="card-panel">
-                        <h5>Datos del país</h5>
-                        <div class="row" style="margin-bottom:0">
-                            @*@{
-                                TAT001.Entities.SOCIEDAD bukrs = ViewBag.SOCIEDAD_ID;*@
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Company code", htmlAttributes: new { @class = "control-label col-md-2" })
+                </div>
+                @*Datos del país*@
+                <div class="card-panel">
+                    <h5>Datos del país</h5>
+                    <div class="row" style="margin-bottom:0">
+                        @*@{
+                            TAT001.Entities.SOCIEDAD bukrs = ViewBag.SOCIEDAD_ID;*@
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.SOCIEDAD_ID, "Company code", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                        <div class="col s6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @id = "sociedad_id", @class = "form-control", @disabled = "disabled" } })
+                                    @*@Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })*@
+                                </div>
+                            </div>
+                        </div>
+                        @*}
+                            <div class="form-group">
+                                    @Html.LabelFor(model => model.PAIS_ID, "Subregion", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
+                                        @Html.DropDownList("PAIS_ID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })
                                     </div>
                                 </div>*@
+                        @{
+                            TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
                             <div class="col s6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="form-group hidden">
+                                    @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @id = "sociedad_id", @class = "form-control", @disabled = "disabled" } })
-                                        @*@Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })*@
+                                        @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
+                                        @*@Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })*@
                                     </div>
+                                </div>
+                                <div class="input-field col-md-2">
+                                    <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                    <label for="pais_txt">Subregión</label>
                                 </div>
                             </div>
-                            @*}
-                                <div class="form-group">
-                                        @Html.LabelFor(model => model.PAIS_ID, "Subregion", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("PAIS_ID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
-                                            @Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>*@
-                            @{
-                                TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
-                                <div class="col s6">
-                                    <div class="form-group hidden">
-                                        @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
-                                            @*@Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })*@
-                                        </div>
-                                    </div>
-                                    <div class="input-field col-md-2">
-                                        <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
-                                        <label for="pais_txt">Subregión</label>
-                                    </div>
-                                </div>
-                            }
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
-                                    @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
-                                </div>
+                        }
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
+                                @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
                             </div>
-                            <link href="~/Content/autocomplete.css" rel="stylesheet" />
-                            <script src="~/Scripts/autocomplete1.10.2.js"></script>
-                            <script src="~/Scripts/autocomplete1.11.4.js"></script>
-                            <script>
+                        </div>
+                        <link href="~/Content/autocomplete.css" rel="stylesheet" />
+                        <script src="~/Scripts/autocomplete1.10.2.js"></script>
+                        <script src="~/Scripts/autocomplete1.11.4.js"></script>
+                        <script>
                                 var auto = $.noConflict(true);
                                 auto(document).ready(function () {
                                     var pais = '@ViewBag.pais';
@@ -305,275 +302,92 @@
                                         }
                                     });
                                 })
-                            </script>
+                        </script>
 
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
-                                    @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
-                                </div>
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
+                                @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
                             </div>
-                            <script>
-                                auto(document).ready(function () {
-                                    auto("#city_id").autocomplete({
-                                        source: function (request, response) {
-                                            var estado = $("#state_id").val();
-                                            auto.ajax({
-                                                url: "../Listas/Ciudades",
-                                                type: "GET",
-                                                dataType: "json",
-                                                data: { estado: estado, Prefix: request.term },
-                                                success: function (data) {
-                                                    response(auto.map(data, function (item) {
-                                                        return { label: item.NAME, value: item.NAME };
-                                                    }))
-                                                }
-                                            })
-                                        },
-                                        messages: {
-                                            noResults: "", results: ""
-                                        }
-                                    });
-                                })
-                            </script>
-                            @*<div class="form-group">
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "citys_id", @class = "form-control", @style = "display: none" } })
-                                    </div>
-                                </div>*@
                         </div>
+                        <script>
+                            auto(document).ready(function () {
+                                auto("#city_id").autocomplete({
+                                    source: function (request, response) {
+                                        var estado = $("#state_id").val();
+                                        auto.ajax({
+                                            url: "../Listas/Ciudades",
+                                            type: "GET",
+                                            dataType: "json",
+                                            data: { estado: estado, Prefix: request.term },
+                                            success: function (data) {
+                                                response(auto.map(data, function (item) {
+                                                    return { label: item.NAME, value: item.NAME };
+                                                }))
+                                            }
+                                        })
+                                    },
+                                    messages: {
+                                        noResults: "", results: ""
+                                    }
+                                });
+                            })
+                        </script>
+                        @*<div class="form-group">
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "citys_id", @class = "form-control", @style = "display: none" } })
+                                </div>
+                            </div>*@
                     </div>
                 </div>
-                <div class="col s12 m6 l6">
-                    @*Información General*@
-                    <div class="card-panel">
-                        <h5>Información General</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">date_range</i>
-                                @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "fechad", @class = "form-control datepicker", onkeyup = "borrar(this);", @Value = ViewBag.FECHAD } })
-                                @Html.LabelFor(model => model.FECHAD, "Fecha", htmlAttributes: new { @class = "active" })
-                                @*@Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })*@
+            </div>
+            <div class="col s12 m6 l6">
+                @*Información General*@
+                <div class="card-panel">
+                    <h5>Información General</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">date_range</i>
+                            @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "fechad", @class = "form-control datepicker", onkeyup = "borrar(this);", @Value = ViewBag.FECHAD } })
+                            @Html.LabelFor(model => model.FECHAD, "Fecha", htmlAttributes: new { @class = "active" })
+                            @*@Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })*@
 
-                            </div>
+                        </div>
 
-                            @*<div class="form-group">
-                                        @Html.LabelFor(model => model.FECHAD,"Hora", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
-                                            @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.FECHAD, "Hora", htmlAttributes: new { @class = "control-label col-md-2" })
+                        @*<div class="form-group">
+                                    @Html.LabelFor(model => model.FECHAD,"Hora", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
                                         @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
                                     </div>
-                                </div>*@
-
-                            <div class="form-group col s6">
-                                @Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @id = "periodo", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })*@
                                 </div>
-                            </div>
-                            <script>
-                                var elemdp = document.querySelector('#fechad');
-                                var optionsdp = {
-                                    //format: 'dd - mm - yy'
-                                    format: 'yyyy-mm-dd',
-                                    onClose: function (e) {
-                                        var date = $('#fechad').val();
-                                        var periodo = date.split("-");
-
-                                        $('#periodo').val(periodo[1]);
-                                    },
-                                    i18n: {
-                                        clear: 'Limpiar',
-                                        today: 'Hoy',
-                                        done: 'Seleccionar',
-                                        previousMonth: '‹',
-                                        nextMonth: '›',
-                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                    }
-                                };
-
-                                var instancedp = M.Datepicker.init(elemdp, optionsdp);
-
-                            </script>
-
-                            <div class="form-group col s6">
-                                @Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FECHAD, "Hora", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.EditorFor(model => model.EJERCICIO, new { htmlAttributes = new { @id = "ejercicio", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })*@
+                                    @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
+                                    @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
                                 </div>
-                            </div>
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @*Información Cliente*@
-                    <div class="card-panel">
-                        <h5>Información del cliente</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
-                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
-                                </div>
-                                <script>
-                                    auto(document).ready(function () {
-                                        auto("#payer_id").autocomplete({
-                                            source: function (request, response) {
-                                                auto.ajax({
-                                                    url: "../Listas/Clientes",
-                                                    type: "GET",
-                                                    dataType: "json",
-                                                    data: { Prefix: request.term },
-                                                    success: function (data) {
-                                                        response(auto.map(data, function (item) {
-                                                            return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
-                                                        }))
-                                                    }
-                                                })
-                                            },
-                                            messages: {
-                                                noResults: "", results: ""
-                                            },
-                                            select(event, ui) {
+                            </div>*@
 
-                                                var label = ui.item.label;
-                                                var value = ui.item.value;
-                                                selectCliente(value);
-                                            }
-                                        });
-                                    })
-                                </script>
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @id = "periodo", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })*@
                             </div>
-
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.VKORG, "Tipo de cliente", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("VKORG", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
-                            <div class="input-field col s12">
-                                <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
-                                <label for="cli_name">Nombre</label>
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-
-                            @*<div class="form-group">
-                                    @Html.LabelFor(model => model.VTWEG, "VTWEG", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("VTWEG", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
-                            <div class="input-field  col s12">
-                                <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
-                                <label for="stcd1">Tax ID</label>
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.LabelFor(model => model.VTWEG, "Canal", htmlAttributes: new { @class = "control-label col-md-2", @for = "vtweg" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.VTWEG, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-
-                            <div class="input-field col s12">
-                                @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-
-                            <div class="input-field col s12">
-                                @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
-                                <div class="col-md-10">
-                                    @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @*Temporalidad*@
-        <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
-            <div class="row">
-                <div class="card-panel">
-                    <h5>Vigencia</h5>
-                    <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker", @onkeyup = "borrar(this);" } })
-                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
-                            @*@Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })*@
-                        </div><div class="input-field col s6">
-                            <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
-                            @*@Html.ValidationMessageFor(model => model.FECHAF_VIG, "", new { @class = "text-danger" })*@
                         </div>
                         <script>
-                            var elemth = document.querySelector('#fechai_vig');
-                            var optionsth = { //format: 'dd - mm - yy'
-                                format: 'yyyy-mm-dd',
-                                i18n: {
-                                    clear: 'Limpiar',
-                                    today: 'Hoy',
-                                    done: 'Seleccionar',
-                                    previousMonth: '‹',
-                                    nextMonth: '›',
-                                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                    weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                    weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                }
-                            };
-                            var instanceth = M.Datepicker.init(elemth, optionsth);
-
-                            var elemtd = document.querySelector('#fechaf_vig');
-                            var optionstd = { //format: 'dd - mm - yy'
+                            var elemdp = document.querySelector('#fechad');
+                            var optionsdp = {
+                                //format: 'dd - mm - yy'
                                 format: 'yyyy-mm-dd',
                                 onClose: function (e) {
-                                    var datei = $('#fechai_vig').val();
-                                    var datef = $('#fechaf_vig').val();
-                                    var res = validar_fechas(datei, datef);
+                                    var date = $('#fechad').val();
+                                    var periodo = date.split("-");
 
-                                    if (!res) {
-                                        $('#fechaf_vig').val("");
-                                        M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
-                                    }
+                                    $('#periodo').val(periodo[1]);
                                 },
                                 i18n: {
                                     clear: 'Limpiar',
@@ -588,96 +402,456 @@
                                     weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
                                 }
                             };
-                            var instancetd = M.Datepicker.init(elemtd, optionstd);
 
-                            function borrar(field) {
-                                field.value = "";
-                            }
+                            var instancedp = M.Datepicker.init(elemdp, optionsdp);
+
                         </script>
+
+                        <div class="form-group col s6">
+                            @Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.EJERCICIO, new { htmlAttributes = new { @id = "ejercicio", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*Información Cliente*@
+                <div class="card-panel">
+                    <h5>Información del cliente</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="form-group col s12">
+                            @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
+                                @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
+                                @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
+                            </div>
+                            <script>
+                                auto(document).ready(function () {
+                                    auto("#payer_id").autocomplete({
+                                        source: function (request, response) {
+                                            auto.ajax({
+                                                url: "../Listas/Clientes",
+                                                type: "GET",
+                                                dataType: "json",
+                                                data: { Prefix: request.term },
+                                                success: function (data) {
+                                                    response(auto.map(data, function (item) {
+                                                        return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+                                                    }))
+                                                }
+                                            })
+                                        },
+                                        messages: {
+                                            noResults: "", results: ""
+                                        },
+                                        select(event, ui) {
+
+                                            var label = ui.item.label;
+                                            var value = ui.item.value;
+                                            selectCliente(value);
+                                        }
+                                    });
+                                })
+                            </script>
+                        </div>
+
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.VKORG, "Tipo de cliente", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("VKORG", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                        <div class="input-field col s12">
+                            <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
+                            <label for="cli_name">Nombre</label>
+                        </div>
+                        <div class="input-field col s12">
+                            @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.VTWEG, "VTWEG", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("VTWEG", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+                        <div class="input-field  col s12">
+                            <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                            <label for="stcd1">Tax ID</label>
+                        </div>
+                        <div class="input-field col s12">
+                            @Html.LabelFor(model => model.VTWEG, "Canal", htmlAttributes: new { @class = "control-label col-md-2", @for = "vtweg" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.VTWEG, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+
+                        <div class="input-field col s12">
+                            @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
+                                @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
+
+                        <div class="input-field col s12">
+                            @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
+                            <div class="col-md-10">
+                                @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
+                                @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
+                                @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        @*Soporte*@
-        <div id="Soporte_cont">
-            <div class="row">
-                <div class="col s12 m6 l6">
-                    <div class="card-panel">
-                        <h5>Documentos de Soporte</h5>
-                        <label>* Campos obligatorios</label>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="col s12">
-                                <form action="#">
-                                    <label>Carta</label><label class"lbl_nec">*</label>
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
+    </div>
+    @*Temporalidad*@
+    <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
+        <div class="row">
+            <div class="card-panel">
+                <h5>Vigencia</h5>
+                <div class="row" style="margin-bottom:0">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">date_range</i>
+                        @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker", @onkeyup = "borrar(this);" } })
+                        @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
+                        @*@Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })*@
+                    </div><div class="input-field col s6">
+                        <i class="material-icons prefix">date_range</i>
+                        @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker", onkeyup = "borrar(this);" } })
+                        @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
+                        @*@Html.ValidationMessageFor(model => model.FECHAF_VIG, "", new { @class = "text-danger" })*@
+                    </div>
+                    <script>
+                        var elemth = document.querySelector('#fechai_vig');
+                        var optionsth = { //format: 'dd - mm - yy'
+                            format: 'yyyy-mm-dd',
+                            i18n: {
+                                clear: 'Limpiar',
+                                today: 'Hoy',
+                                done: 'Seleccionar',
+                                previousMonth: '‹',
+                                nextMonth: '›',
+                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                            }
+                        };
+                        var instanceth = M.Datepicker.init(elemth, optionsth);
+
+                        var elemtd = document.querySelector('#fechaf_vig');
+                        var optionstd = { //format: 'dd - mm - yy'
+                            format: 'yyyy-mm-dd',
+                            onClose: function (e) {
+                                var datei = $('#fechai_vig').val();
+                                var datef = $('#fechaf_vig').val();
+                                var res = validar_fechas(datei, datef);
+
+                                if (!res) {
+                                    $('#fechaf_vig').val("");
+                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                }
+                            },
+                            i18n: {
+                                clear: 'Limpiar',
+                                today: 'Hoy',
+                                done: 'Seleccionar',
+                                previousMonth: '‹',
+                                nextMonth: '›',
+                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                            }
+                        };
+                        var instancetd = M.Datepicker.init(elemtd, optionstd);
+
+                        function borrar(field) {
+                            field.value = "";
+                        }
+                    </script>
+                    @*Parte para mostrar recurrencia en fija
+                        @if (ViewBag.soltipo == "v")
+                        {
+
+                        }*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Soporte*@
+    <div id="Soporte_cont">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <div class="card-panel">
+                    <h5>Documentos de Soporte</h5>
+                    <label>* Campos obligatorios</label>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="col s12">
+                            <form action="#">
+                                <label>Carta</label><label class"lbl_nec">*</label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">
                                     </div>
-                                    <label>Contratos</label><label class"lbl_nec"></label>
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
                                     </div>
-                                    <label>Facturas Cliente</label>
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
+                                </div>
+                                <label>Contratos</label><label class"lbl_nec"></label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
                                     </div>
-                                    <label>JBP</label>
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
                                     </div>
-                                </form>
+                                </div>
+                                <label>Facturas Cliente</label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <label>JBP</label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <label>Otros</label>
+                                <div class="file-field input-field">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <script>
+                                    //Validar tamaño y extensión de archivos cargados
+                                </script>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l6">
+                <div class="card-panel">
+                    <h5>Notas</h5>
+                    <div class="row" style="margin-bottom:0">
+                        @*<form class="col s12">*@
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+                                <label for="notas_soporte"></label>
+                            </div>
+                        </div>
+                        <script>
+                            function maxchar_notas() {
+                                var maxLength = 500;
+                                var text = $('#notas_soporte').val();
+                                var textLength = text.length;
+                                if (textLength > (maxLength)) {
+                                    $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                    var msg = 'Número máximo para la nota es ' + maxLength;
+                                    M.toast({ html: msg });
+                                }
+                            }
+                        </script>
+                    </div>
+                    @*<input type="button" id="btnsoportes" value="cargar" />*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Distribución*@
+    <div id="Distribucion_cont">
+        <div class="row">
+            <div class="col s12 m6 l6">
+                <div class="card-panel">
+                    <h5>Distribución</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="input-field col s6">
+                            <select onchange = "selectDis(this.value)">
+                                <option value="" selected>Choose your option</option>
+                                <option value="M">Monto</option>
+                                <option value="P">Porcentaje</option>
+                            </select>
+                            <label>Tipo de negociación</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select id="select_dis" onchange = "selectMonto(this.value)">
+                                <option value="" selected>Choose your option</option>
+                                <option value="C">Categoría</option>
+                                <option value="M">Material</option>
+                            </select>
+                            <label>Distribución</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="div_montobase" class="col s12 m6 l6" style="display:none">
+                <div class="card-panel">
+                    <h5>Monto Base</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="input-field col s6">                                                        
+                                <input value="" id="monto_dis" type="text" class="validate" />
+                                <label for="monto_dis">Monto</label>                            
+                        </div>
+                        <div class="input-field col s6">
+                            <div class="form-group">
+                                <select>
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="MXN">MXN</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                                <label>Moneda</label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col s12 m6 l6">
-                    <div class="card-panel">
-                        <h5>Notas</h5>
-                        <div class="row" style="margin-bottom:0">
-                            @*<form class="col s12">*@
+            </div>
+            <div class="col s12">
+                <div class="card-panel">
+                    <h5>Mecánica de Negociación</h5>
+
+                    <div class="row" style="margin-bottom:0;">                        
+                                <div class="file-field input-field" id="cargar_excel" style="display:none">
+                                    <div class="btn">
+                                        <span>Examinar</span>
+                                        <input id="file_dis" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>     
+                            @*<input id="cargar_xls" type="button" value="cargar" />*@
+                            <button id="addRow">add</button>
+                            <button id="delRow">Del</button>
+
                             <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup = "maxchar_notas();">@ViewBag.notas_soporte</textarea>
-                                    <label for="notas_soporte"></label>
-                                </div>
+                            <ul id="coll_2" class="collapsible expandable">
+                                <li class="active">
+                                    @*<div class="collapsible-header">
+                                        <i class="material-icons">whatshot</i>Mecánica
+                                        <span class="badge">
+                                            <a id="cargar_xls" class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">file_upload</i></a>
+                                        </span>
+                                     </div>*@
+                                    <div class="collapsible-body" style="display:flex">
+                                        <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <th>Vigencia De</th>
+                                                    <th>Vigencia Al</th>
+                                                    @*<th>Item</th>*@
+                                                    <th>Material</th>
+                                                    <th>Categoría</th>
+                                                    <th>Descripción</th>
+                                                    <th>Costo unitario</th>
+                                                    <th>% Apoyo</th>
+                                                    <th>Apoyo por pieza</th>
+                                                    <th>Costo con apoyo</th>
+                                                    <th>Precio sugerido</th>
+                                                    <th>Volumen estimado</th>
+                                                    <th>Estimado apoyo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @*<tr>
+                                                    <td>Tiger Nixon</td>
+                                                    <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
+                                                    <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
+                                                    <td>
+                                                        <select size="1" id="row-1-office" name="row-1-office">
+                                                            <option value="Edinburgh" selected="selected">
+                                                                Edinburgh
+                                                            </option>
+                                                            <option value="London">
+                                                                London
+                                                            </option>
+                                                            <option value="New York">
+                                                                New York
+                                                            </option>
+                                                            <option value="San Francisco">
+                                                                San Francisco
+                                                            </option>
+                                                            <option value="Tokyo">
+                                                                Tokyo
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Garrett Winters</td>
+                                                    <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
+                                                    <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
+                                                    <td>
+                                                        <select size="1" id="row-2-office" name="row-2-office">
+                                                            <option value="Edinburgh">
+                                                                Edinburgh
+                                                            </option>
+                                                            <option value="London">
+                                                                London
+                                                            </option>
+                                                            <option value="New York">
+                                                                New York
+                                                            </option>
+                                                            <option value="San Francisco">
+                                                                San Francisco
+                                                            </option>
+                                                            <option value="Tokyo" selected="selected">
+                                                                Tokyo
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                </tr>*@
+                                            </tbody>
+                                            <tfoot id="tfoot_dis" style="display:none">
+                                                <tr>
+                                                    <th colspan="11" style="text-align:right">Total:</th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ul>
                             </div>
-                            <script>
-                                function maxchar_notas() {
-                                    var maxLength = 500;
-                                    var text = $('#notas_soporte').val();
-                                    var textLength = text.length;
-                                    if (textLength > (maxLength)) {
-                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
-                                        var msg = 'Número máximo para la nota es ' + maxLength;
-                                        M.toast({ html: msg });
-                                    }
-                                }
-                            </script>
                         </div>
-                        @*<input type="button" id="btnsoportes" value="cargar" />*@
                     </div>
                 </div>
             </div>
@@ -895,154 +1069,30 @@
                     </div>
                 </div>
             </div>
-            @*Distribución*@
-            @if (ViewBag.soltipo == "v")
-            {
-                <div id="Distribucion_cont">
-                    <div class="row">
-                        <div class="card-panel">
-                            <h5>Distribución</h5>
-                            <div class="row" style="margin-bottom:0">
-                                <div class="input-field col s6">
-                                    <select>
-                                        <option value="" disabled selected>Choose your option</option>
-                                        <option value="cat">Categoría</option>
-                                        <option value="mat">Material</option>
-                                    </select>
-                                    <label>Categoría</label>
-                                </div>
+        </div>
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.TIPO_TECNICO, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TIPO_TECNICO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TIPO_TECNICO, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                                <div class="input-field col s6">
-                                    <select multiple>
-                                        <option value="" disabled selected>Choose your option</option>
-                                        <option value="1">Cereales</option>
-                                        <option value="2">Snacks</option>
-                                        <option value="3">Lechitas</option>
-                                    </select>
-                                    <label>categorías</label>
-                                </div>
-                            </div>
-                        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TIPO_RECURRENTE, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TIPO_RECURRENTE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TIPO_RECURRENTE, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="card-panel">
-                            <h5>Mecánica de Negociación</h5>
-                            <div class="row" style="margin-bottom:0">
-                                <form action="#">
-                                    <div class="file-field input-field">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input id="file_dis" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                </form>
-
-                                @*<input id="cargar_xls" type="button" value="cargar" />*@
-                                <button id="addRow">add</button>
-                                <button id="delRow">Del</button>
-                                <hr />
-                                <div class="row">
-                                    <ul id="coll_2" class="collapsible expandable">
-                                        <li class="active">
-                                            <div class="collapsible-header">
-                                                <i class="material-icons">whatshot</i>Mecánica
-                                                <span class="badge"><a id="cargar_xls" class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">file_upload</i></a></span>
-                                            </div>
-                                            <div class="collapsible-body" style="display:flex">
-                                                <table id="table_dis" class="display" cellspacing="0" width="100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Vigencia De</th>
-                                                            <th>Vigencia Al</th>
-                                                            @*<th>Item</th>*@
-                                                            <th>Material</th>
-                                                            <th>Categoría</th>
-                                                            <th>Descripción</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @*<tr>
-                                                                <td>Tiger Nixon</td>
-                                                                <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
-                                                                <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
-                                                                <td>
-                                                                    <select size="1" id="row-1-office" name="row-1-office">
-                                                                        <option value="Edinburgh" selected="selected">
-                                                                            Edinburgh
-                                                                        </option>
-                                                                        <option value="London">
-                                                                            London
-                                                                        </option>
-                                                                        <option value="New York">
-                                                                            New York
-                                                                        </option>
-                                                                        <option value="San Francisco">
-                                                                            San Francisco
-                                                                        </option>
-                                                                        <option value="Tokyo">
-                                                                            Tokyo
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Garrett Winters</td>
-                                                                <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
-                                                                <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
-                                                                <td>
-                                                                    <select size="1" id="row-2-office" name="row-2-office">
-                                                                        <option value="Edinburgh">
-                                                                            Edinburgh
-                                                                        </option>
-                                                                        <option value="London">
-                                                                            London
-                                                                        </option>
-                                                                        <option value="New York">
-                                                                            New York
-                                                                        </option>
-                                                                        <option value="San Francisco">
-                                                                            San Francisco
-                                                                        </option>
-                                                                        <option value="Tokyo" selected="selected">
-                                                                            Tokyo
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>*@
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.TIPO_TECNICO, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.TIPO_TECNICO, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.TIPO_TECNICO, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.TIPO_RECURRENTE, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.TIPO_RECURRENTE, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.TIPO_RECURRENTE, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.CANTIDAD_EV, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.CANTIDAD_EV, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.CANTIDAD_EV, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.CANTIDAD_EV, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CANTIDAD_EV, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CANTIDAD_EV, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.USUARIOC_ID, "USUARIOC_ID", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -1050,57 +1100,57 @@
                             @Html.DropDownList("USUARIOC_ID", null, htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.USUARIOC_ID, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div>*@
 
-                    @*<div class="form-group">
-                            @Html.LabelFor(model => model.FECHAC, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.FECHAC, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FECHAC, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.FECHAC, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.FECHAC, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FECHAC, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ESTATUS, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ESTATUS, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ESTATUS, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ESTATUS, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ESTATUS, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ESTATUS, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ESTATUS_C, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ESTATUS_C, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ESTATUS_C, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ESTATUS_C, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ESTATUS_C, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ESTATUS_C, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ESTATUS_SAP, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ESTATUS_SAP, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ESTATUS_SAP, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ESTATUS_SAP, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ESTATUS_SAP, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ESTATUS_SAP, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.ESTATUS_WF, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ESTATUS_WF, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.ESTATUS_WF, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ESTATUS_WF, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ESTATUS_WF, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ESTATUS_WF, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.DOCUMENTO_REF, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.DOCUMENTO_REF, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.DOCUMENTO_REF, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.DOCUMENTO_REF, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DOCUMENTO_REF, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DOCUMENTO_REF, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
-
+            @*
 
                     <div class="form-group">
                         @Html.LabelFor(model => model.MONTO_FIJO_MD, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -1221,162 +1271,161 @@
                     </div>
 
 
-                    @*
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.NO_FACTURA, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.NO_FACTURA, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.NO_FACTURA, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FECHAD_SOPORTE, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.FECHAD_SOPORTE, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FECHAD_SOPORTE, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.METODO_PAGO, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.METODO_PAGO, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.METODO_PAGO, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.NO_PROVEEDOR, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.NO_PROVEEDOR, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.NO_PROVEEDOR, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.PASO_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.PASO_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PASO_ACTUAL, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.AGENTE_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.AGENTE_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.AGENTE_ACTUAL, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FECHA_PASO_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.FECHA_PASO_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FECHA_PASO_ACTUAL, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.SPART, "SPART", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownList("SPART", null, htmlAttributes: new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.SPART, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.HORAC, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.HORAC, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.HORAC, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FECHAC_PLAN, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.FECHAC_PLAN, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FECHAC_PLAN, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.FECHAC_USER, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.FECHAC_USER, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.FECHAC_USER, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.HORAC_USER, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.HORAC_USER, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.HORAC_USER, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.PORC_ADICIONAL, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.PORC_ADICIONAL, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.PORC_ADICIONAL, "", new { @class = "text-danger" })
-                            </div>
-                        </div>*@
-
-
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MONEDAL_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.MONEDAL_ID, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.MONEDAL_ID, "", new { @class = "text-danger" })
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NO_FACTURA, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NO_FACTURA, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NO_FACTURA, "", new { @class = "text-danger" })
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MONEDAL2_ID, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.MONEDAL2_ID, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.MONEDAL2_ID, "", new { @class = "text-danger" })
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FECHAD_SOPORTE, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FECHAD_SOPORTE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FECHAD_SOPORTE, "", new { @class = "text-danger" })
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TIPO_CAMBIOL, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.TIPO_CAMBIOL, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TIPO_CAMBIOL, "", new { @class = "text-danger" })
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.METODO_PAGO, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.METODO_PAGO, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.METODO_PAGO, "", new { @class = "text-danger" })
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.TIPO_CAMBIOL2, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.TIPO_CAMBIOL2, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.TIPO_CAMBIOL2, "", new { @class = "text-danger" })
-                        </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NO_PROVEEDOR, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NO_PROVEEDOR, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NO_PROVEEDOR, "", new { @class = "text-danger" })
                     </div>
-                </div> //Fin contenido de tabs
-            }
-            @*<div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PASO_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PASO_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PASO_ACTUAL, "", new { @class = "text-danger" })
                     </div>
-                </div>*@
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AGENTE_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AGENTE_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.AGENTE_ACTUAL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FECHA_PASO_ACTUAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FECHA_PASO_ACTUAL, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FECHA_PASO_ACTUAL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SPART, "SPART", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SPART", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SPART, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HORAC, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HORAC, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HORAC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FECHAC_PLAN, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FECHAC_PLAN, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FECHAC_PLAN, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FECHAC_USER, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FECHAC_USER, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FECHAC_USER, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HORAC_USER, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HORAC_USER, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HORAC_USER, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PORC_ADICIONAL, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PORC_ADICIONAL, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PORC_ADICIONAL, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    @*<input style="display:none;" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />*@
-                    <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
+                @Html.LabelFor(model => model.MONEDAL_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MONEDAL_ID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MONEDAL_ID, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MONEDAL2_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MONEDAL2_ID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MONEDAL2_ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TIPO_CAMBIOL, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TIPO_CAMBIOL, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TIPO_CAMBIOL, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TIPO_CAMBIOL2, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TIPO_CAMBIOL2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TIPO_CAMBIOL2, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+         
+        @*}
+        <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @*<input style="display:none;" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />*@
+                <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>    
+</div>
 }
 
 @*<div>

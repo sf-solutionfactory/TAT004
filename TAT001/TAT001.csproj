@@ -436,6 +436,7 @@
     <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
+    <Compile Include="Models\DOCUMENTOP_MOD.cs" />
     <Compile Include="Models\HeaderFooter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

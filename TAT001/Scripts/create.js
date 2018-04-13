@@ -32,8 +32,66 @@
         $("label[for='notas_soporte']").addClass("active");
     }
 
-    $('#cargar_xls').click(function () {
+    //Distribución    
+    $('#table_dis').DataTable({
+        "language": {
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        //        "ordering": false,
+        "info": false,
+        "searching": false,
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
 
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '') * 1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+            // Total over all pages
+            total = api
+                .column(11)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(11, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            //Fixed 2
+            var tc = parseFloat(total).toFixed(2);
+
+            // Update footer
+            $(api.column(11).footer()).html(
+                //'$' + pageTotal + ' ( $' + total + ' total)'
+                '$' + tc
+            );
+        }//Termina el callback
+    });
+
+    $('#table_dis tbody').on('click', 'tr', function (e) {
+        $(this).toggleClass('selected');
+        e.preventDefault();
+    });
+
+    $('#delRow').click(function (e) {
+        alert("del");
+        table.rows('.selected').remove().draw(false);
+        e.preventDefault();
+    });
+
+    $("#file_dis").change(function () {
         var filenum = $('#file_dis').get(0).files.length;
         if (filenum > 0) {
             var file = document.getElementById("file_dis").files[0];
@@ -47,16 +105,6 @@
         } else {
             M.toast({ html: 'Seleccione un archivo' });
         }
-    });
-
-
-    $('#table_dis tbody').on('click', 'tr', function () {
-        $(this).toggleClass('selected');
-    });
-
-    $('#delRow').click(function () {
-        alert("del");
-        table.rows('.selected').remove().draw(false);
     });
 
     //Archivos de soporte
@@ -119,18 +167,24 @@
 
     $('#tab_temp').on("click", function (e) {
 
-        evalInfoTab(false, e);
+        //evalInfoTab(false, e);
     });
 
     $('#tab_soporte').on("click", function (e) {
 
-        evalTempTab(false, e);
+        //evalTempTab(false, e);
+
+    });
+
+    $('#tab_dis').on("click", function (e) {
+
+        //evalSoporteTab(false, e);
 
     });
 
     $('#tab_fin').on("click", function (e) {
 
-        evalSoporteTab(false, e);
+        //evalSoporteTab(false, e);
 
     });
 
@@ -458,10 +512,23 @@ function loadExcel(file) {
                         date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear(),
                         date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear(),
                         dataj.MATNR,
-                        "Cereales",
-                        "Corn Flakes 200gr"
+                        dataj.MATKL,
+                        dataj.DESC,                        
+                        dataj.MONTO,                     
+                        dataj.PORC_APOYO,                        
+                        dataj.MONTO_APOYO,                     
+                        dataj.MONTOC_APOYO,                        
+                        dataj.PRECIO_SUG,                
+                        dataj.VOLUMEN_EST,                      
+                        dataj.PORC_APOYOEST
                     ]).draw(false);
                 });
+                $('#table_dis').css("font-size", "12px");
+                $('#table_dis').css("display", "table");  
+
+                //if ($('#select_dis').val() == "M") {
+                //    $('#tfoot_dis').css("display", "table-footer-group");
+                //}
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -912,9 +979,42 @@ function evaluarFiles() {
                 break;
             }
         }
+
+        //Validar tamaño y extensión
+        var file = $(files[i]).get(0).files;  
+        var sizefile = file[0].size;
+        if (sizefile > 20971520) {
+            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+            message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + lbltext + " sobrepasa el tamaño";
+            break;
+        }
+
+        var namefile = file[0].name;
+        if (!evaluarExtSoporte(namefile)) {
+            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+            message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + lbltext + " no es compatible";
+            break;
+        }
+
     }
 
     if (message == "") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//function evaluarExt(filename) {
+function evaluarExtSoporte(filename) {
+
+    var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];
+    // split file name at dot
+    var get_ext = filename.split('.');
+    // reverse name to check extension
+    get_ext = get_ext.reverse();
+    // check file type is valid as given in 'exts' array
+    if ($.inArray(get_ext[0].toLowerCase(), exts) > -1) {
         return true;
     } else {
         return false;
@@ -973,6 +1073,34 @@ function selectTall(valu) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
             }
         });
+    }
+}
+
+function selectDis(val) {
+    M.toast({ html: 'Tipo negociación ' + val });
+    //Desactivar el select de distribución
+    //if (val == "") {        
+    //    $('#select_dis').prop('disabled', 'disabled');
+    //} else {
+    ////Activar el select de distribución
+    //    $('#select_dis').prop('disabled', false);
+    //}
+}
+
+function selectMonto(val) {
+    M.toast({ html: 'Tipo de monto ' + val });
+    //Desactivar el panel de monto
+    if (val == "") {
+        $('#div_montobase').css("display", "none"); 
+    } else {
+    //Activar el panel de monto
+        $('#div_montobase').css("display", "inherit");
+    }
+
+    if (val == "M") {
+        $('#cargar_excel').css("display", "inherit");
+    } else {
+        $('#cargar_excel').css("display", "none");
     }
 }
 
