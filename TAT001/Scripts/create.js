@@ -70,12 +70,12 @@
                 }, 0);
 
             //Fixed 2
-            var tc = parseFloat(total).toFixed(2);
+            //var tc = parseFloat(total).toFixed(2);
 
             // Update footer
             $(api.column(11).footer()).html(
                 //'$' + pageTotal + ' ( $' + total + ' total)'
-                '$' + tc
+                '$' + total
             );
         }//Termina el callback
     });
@@ -86,9 +86,32 @@
     });
 
     $('#delRow').click(function (e) {
-        alert("del");
-        table.rows('.selected').remove().draw(false);
-        e.preventDefault();
+        var t = $('#table_dis').DataTable();
+        t.rows('.selected').remove().draw(false);
+        event.returnValue = false;
+        event.cancel = true;
+    });
+
+    $('#addRow').on('click', function () {
+        var t = $('#table_dis').DataTable();
+        t.row.add([
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "<input type=\"text\" id=\"row-1-age\" name=\"row-1-age\" value=\"$100\">",
+        ]).draw(false);
+
+        event.returnValue = false;
+        event.cancel = true;
+        
     });
 
     $("#file_dis").change(function () {
@@ -525,6 +548,9 @@ function loadExcel(file) {
                 });
                 $('#table_dis').css("font-size", "12px");
                 $('#table_dis').css("display", "table");  
+                $('#tfoot_dis').css("display", "table-footer-group");
+
+                $('.rows_btn').css("display", "inline-flex");
 
                 //if ($('#select_dis').val() == "M") {
                 //    $('#tfoot_dis').css("display", "table-footer-group");

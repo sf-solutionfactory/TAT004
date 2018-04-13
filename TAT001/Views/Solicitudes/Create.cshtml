@@ -748,29 +748,29 @@
                 <div class="card-panel">
                     <h5>Mecánica de Negociación</h5>
 
-                    <div class="row" style="margin-bottom:0;">                        
-                                <div class="file-field input-field" id="cargar_excel" style="display:none">
-                                    <div class="btn">
-                                        <span>Examinar</span>
-                                        <input id="file_dis" type="file">
-                                    </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text">
-                                    </div>
-                                </div>     
-                            @*<input id="cargar_xls" type="button" value="cargar" />*@
-                            <button id="addRow">add</button>
-                            <button id="delRow">Del</button>
+                    <div class="row" style="margin-bottom:0;">
+                        <div class="file-field input-field" id="cargar_excel" style="display:none">
+                            <div class="btn">
+                                <span>Examinar</span>
+                                <input id="file_dis" type="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                        @*<input id="cargar_xls" type="button" value="cargar" />*@
+                        <a class="rows_btn btn-floating btn-large waves-effect waves-light green" id="addRow" style="display:none"><i class="material-icons">add</i></a>
+                        <a class="rows_btn btn-floating btn-large waves-effect waves-light red" id="delRow" style="display:none"><i class="material-icons">clear</i></a>
 
-                            <div class="row">
+                        <div class="row">
                             <ul id="coll_2" class="collapsible expandable">
                                 <li class="active">
                                     @*<div class="collapsible-header">
-                                        <i class="material-icons">whatshot</i>Mecánica
-                                        <span class="badge">
-                                            <a id="cargar_xls" class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">file_upload</i></a>
-                                        </span>
-                                     </div>*@
+                       <i class="material-icons">whatshot</i>Mecánica
+                       <span class="badge">
+                           <a id="cargar_xls" class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">file_upload</i></a>
+                       </span>
+                    </div>*@
                                     <div class="collapsible-body" style="display:flex">
                                         <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                             <thead>
@@ -792,66 +792,66 @@
                                             </thead>
                                             <tbody>
                                                 @*<tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
-                                                    <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
-                                                    <td>
-                                                        <select size="1" id="row-1-office" name="row-1-office">
-                                                            <option value="Edinburgh" selected="selected">
-                                                                Edinburgh
-                                                            </option>
-                                                            <option value="London">
-                                                                London
-                                                            </option>
-                                                            <option value="New York">
-                                                                New York
-                                                            </option>
-                                                            <option value="San Francisco">
-                                                                San Francisco
-                                                            </option>
-                                                            <option value="Tokyo">
-                                                                Tokyo
-                                                            </option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
-                                                    <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
-                                                    <td>
-                                                        <select size="1" id="row-2-office" name="row-2-office">
-                                                            <option value="Edinburgh">
-                                                                Edinburgh
-                                                            </option>
-                                                            <option value="London">
-                                                                London
-                                                            </option>
-                                                            <option value="New York">
-                                                                New York
-                                                            </option>
-                                                            <option value="San Francisco">
-                                                                San Francisco
-                                                            </option>
-                                                            <option value="Tokyo" selected="selected">
-                                                                Tokyo
-                                                            </option>
-                                                        </select>
-                                                    </td>
-                                                </tr>*@
+                                    <td>Tiger Nixon</td>
+                                    <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
+                                    <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
+                                    <td>
+                                        <select size="1" id="row-1-office" name="row-1-office">
+                                            <option value="Edinburgh" selected="selected">
+                                                Edinburgh
+                                            </option>
+                                            <option value="London">
+                                                London
+                                            </option>
+                                            <option value="New York">
+                                                New York
+                                            </option>
+                                            <option value="San Francisco">
+                                                San Francisco
+                                            </option>
+                                            <option value="Tokyo">
+                                                Tokyo
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Garrett Winters</td>
+                                    <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
+                                    <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
+                                    <td>
+                                        <select size="1" id="row-2-office" name="row-2-office">
+                                            <option value="Edinburgh">
+                                                Edinburgh
+                                            </option>
+                                            <option value="London">
+                                                London
+                                            </option>
+                                            <option value="New York">
+                                                New York
+                                            </option>
+                                            <option value="San Francisco">
+                                                San Francisco
+                                            </option>
+                                            <option value="Tokyo" selected="selected">
+                                                Tokyo
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>*@
                                             </tbody>
                                             <tfoot id="tfoot_dis" style="display:none">
                                                 <tr>
                                                     <th colspan="11" style="text-align:right">Total:</th>
-                                                    <th></th>
+                                                    <th id="total_dis"></th>
                                                 </tr>
                                             </tfoot>
                                         </table>
                                     </div>
                                 </li>
                             </ul>
-                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
