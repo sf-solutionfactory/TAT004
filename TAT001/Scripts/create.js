@@ -35,6 +35,8 @@
     //Distribución    
     $('#table_dis').DataTable({
         "language": {
+            "zeroRecords": "No hay registros",
+            "infoEmpty": "No records available",
             "decimal": ".",
             "thousands": ","
         },
@@ -55,7 +57,7 @@
 
             // Total over all pages
             total = api
-                .column(11)
+                .column(14)
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
@@ -63,26 +65,64 @@
 
             // Total over this page
             pageTotal = api
-                .column(11, { page: 'current' })
+                .column(14, { page: 'current' })
                 .data()
                 .reduce(function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0);
 
             //Fixed 2
-            //var tc = parseFloat(total).toFixed(2);
+            var tc = parseFloat(total).toFixed(2);
 
             // Update footer
-            $(api.column(11).footer()).html(
+            $(api.column(14).footer()).html(
                 //'$' + pageTotal + ' ( $' + total + ' total)'
-                '$' + total
+                '$' + tc
             );
-        }//Termina el callback
+        },//Termina el callback
+        "columns": [
+            {
+                "className": 'id_row',
+                "orderable": false,
+                "defaultContent": ''
+
+            },
+            {
+                "className": 'detail_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {
+                "className": 'select_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+            
+        ]
     });
 
-    $('#table_dis tbody').on('click', 'tr', function (e) {
-        $(this).toggleClass('selected');
-        e.preventDefault();
+    //$('#table_dis tbody').on('click', 'tr', function (e) {
+    //    $(this).toggleClass('selected');
+    //    e.preventDefault();
+    //});
+
+    $('#table_dis tbody').on('click', 'td.select_row', function () {
+        var tr = $(this).closest('tr');
+        $(tr).toggleClass('selected');
     });
 
     $('#delRow').click(function (e) {
@@ -92,22 +132,99 @@
         event.cancel = true;
     });
 
-    $('#addRow').on('click', function () {
+    $('#table_dis tbody').on('click', 'td.detail_row', function () {
         var t = $('#table_dis').DataTable();
-        t.row.add([
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "<input type=\"text\" id=\"row-1-age\" name=\"row-1-age\" value=\"$100\">",
-        ]).draw(false);
+        var tr = $(this).closest('tr');
+        var row = t.row(tr);
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('details');
+        }
+        else {
+            row.child(format()).show();
+            tr.addClass('details');
+        }
+    });
+
+    $('#addRow').on('click', function () {
+
+        //Obtener el tipo de negociación
+        var neg = $("#select_neg").val();
+
+        if (neg != "") {
+            //Monto
+            if (neg == "M") {
+                //Obtener la distribución
+                var dis = $("#select_dis").val();
+                if (dis != "") {
+                    var t = $('#table_dis').DataTable();
+                    //Distribución por categoría
+                    if (dis == "C") {
+                        //Obtener la categoría
+                        var cat = $('#select_categoria').val();
+
+                        if (cat != "") {
+                            var opt = $("#select_categoria option:selected").text();
+                            t.row.add([
+                                cat + "",
+                                "",
+                                "",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                opt + "",
+                                "",
+                                "",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "",
+                            ]).draw(false);
+                        } else {
+                            M.toast({ html: 'Seleccione una categoría' });
+                        }
+
+                    } else if (dis == "M") {
+                        //Distribución por material
+                        t.row.add([
+                            "",
+                            "",
+                            "",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                            "",
+                            "",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                        ]).draw(false);
+
+                        $('#table_dis').css("font-size", "12px");
+                        $('#table_dis').css("display", "table");
+                        $('#tfoot_dis').css("display", "table-footer-group");
+
+                        //if ($('#select_dis').val() == "M") {
+
+                            table.column(0).visible(false);
+                            table.column(1).visible(false);
+                        //}
+                    }
+                } else {
+                    M.toast({ html: 'Seleccione distribución' });
+                }
+
+            }
+        } else {
+            M.toast({ html: 'Seleccione negociación' });
+        }
 
         event.returnValue = false;
         event.cancel = true;
@@ -435,6 +552,52 @@
 
 });
 
+function format() {
+
+    var detail = '<table class=\"display\" style=\"width:100%\">' +
+        '<tbody>' +
+        '<tr>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td>Tiger</td>' +
+        '<td>Nixon</td>' +
+        '<td>System Architect</td>' +
+        '<td>Edinburgh</td>' +
+        '<td>$320,800</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td>Garrett</td>' +
+        '<td>Winters</td>' +
+        '<td>Accountant</td>' +
+        '<td>Tokyo</td>' +
+        '<td>$170,250</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '<td>Tiger</td>' +
+        '</tr>' +
+        '</tbody>' +
+        '</table>';
+    //    return 'Full name: Matías Gallegos <br>'+
+    //        'Salary: $0 <br>'+
+    //        'The child row can contain any data you wish, including links, images, inner tables etc.';
+    return detail;
+}
+
 function keypressHandler(e) {
 
     //if (e.which == 13) {
@@ -514,6 +677,7 @@ function loadExcel(file) {
     //}
 
     var table = $('#table_dis').DataTable();
+    table.clear().draw();
     $.ajax({
         type: "POST",
         url: 'LoadExcel',
@@ -532,17 +696,20 @@ function loadExcel(file) {
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
                     table.row.add([
-                        date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear(),
-                        date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear(),
-                        dataj.MATNR,
+                        dataj.POS,
+                        "",
+                        "",
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                         dataj.MATKL,
                         dataj.DESC,                        
                         dataj.MONTO,                     
-                        dataj.PORC_APOYO,                        
-                        dataj.MONTO_APOYO,                     
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",                        
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",                     
                         dataj.MONTOC_APOYO,                        
-                        dataj.PRECIO_SUG,                
-                        dataj.VOLUMEN_EST,                      
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",                
+                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",                      
                         dataj.PORC_APOYOEST
                     ]).draw(false);
                 });
@@ -550,11 +717,11 @@ function loadExcel(file) {
                 $('#table_dis').css("display", "table");  
                 $('#tfoot_dis').css("display", "table-footer-group");
 
-                $('.rows_btn').css("display", "inline-flex");
-
-                //if ($('#select_dis').val() == "M") {
-                //    $('#tfoot_dis').css("display", "table-footer-group");
-                //}
+                if ($('#select_dis').val() == "M") {
+                    
+                    table.column(0).visible(false);
+                    table.column(1).visible(false);
+                }
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -1115,19 +1282,46 @@ function selectDis(val) {
 
 function selectMonto(val) {
     M.toast({ html: 'Tipo de monto ' + val });
+
+    //Siempre inicializar la tabla
+    var ta = $('#table_dis').DataTable();
+    ta.clear().draw();
+
     //Desactivar el panel de monto
     if (val == "") {
         $('#div_montobase').css("display", "none"); 
+        $('#cargar_excel').css("display", "none");
+        $('#select_categoria').css("display", "none");
+        $('#div_categoria').css("display", "none");     
+        $('#table_dis').css("display", "none");
+        $('#div_btns_row').css("display", "none");  
+        ta.column(0).visible(false);
+        ta.column(1).visible(false);
     } else {
     //Activar el panel de monto
         $('#div_montobase').css("display", "inherit");
+        $('#div_btns_row').css("display", "inherit");
     }
 
+    //Monto
     if (val == "M") {
         $('#cargar_excel').css("display", "inherit");
-    } else {
-        $('#cargar_excel').css("display", "none");
+        $('#select_categoria').css("display", "none");
+        $('#div_categoria').css("display", "none"); 
+        ta.column(0).visible(false);
+        ta.column(1).visible(false);
     }
+
+    //Categoría
+    if (val == "C") {
+        $('#cargar_excel').css("display", "none");        
+        $('#div_categoria').css("display", "inline-block");  
+        //Mostrar el encabezado de la tabla               
+        $('#table_dis').css("font-size", "12px");
+        $('#table_dis').css("display", "table"); 
+        ta.column(0).visible(false);
+        ta.column(1).visible(true);
+    }    
 }
 
 function selectCity(valu) {
@@ -1293,10 +1487,10 @@ function validar_fechas(ini_date, fin_date) {
     var DateToValue = new Date();
     var DateFromValue = new Date();
 
-    var idate = ini_date.split('-');
+    var idate = ini_date.split('/');
     DateFromValue.setFullYear(idate[0], idate[1], idate[2], 0, 0, 0, 0);
 
-    var fdate = fin_date.split('-');
+    var fdate = fin_date.split('/');
     DateToValue.setFullYear(fdate[0], fdate[1], fdate[2], 0, 0, 0, 0);
 
     if (Date.parse(DateFromValue) <= Date.parse(DateToValue)) {

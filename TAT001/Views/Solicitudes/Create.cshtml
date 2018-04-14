@@ -102,43 +102,63 @@
                 </script>
             </div>
         </div>*@
-    <style>
-        .div_left {
-            float: left;
-        }
+        <style>
+            .div_left {
+                float: left;
+            }
 
-        .div_right {
-            float: right;
-            /*margin-bottom: 10px;*/
-        }
+            .div_right {
+                float: right;
+                /*margin-bottom: 10px;*/
+            }
 
-        .div_bottom {
-            clear: both;
-        }
+            .div_bottom {
+                clear: both;
+            }
 
-        .hr_bw {
-            height: 4px;
-            border: 0;
-            margin-bottom: 0px;
-            padding: 0;
-            background-color: #ccc;
-        }
+            .hr_bw {
+                height: 4px;
+                border: 0;
+                margin-bottom: 0px;
+                padding: 0;
+                background-color: #ccc;
+            }
 
-        .hr_color {
-            height: 6px;
-            border: 0;
-            margin: 0 0;
-            padding: 0;
-            background-color: #B90C46;
-        }
+            .hr_color {
+                height: 6px;
+                border: 0;
+                margin: 0 0;
+                padding: 0;
+                background-color: #B90C46;
+            }
 
-        .hidden {
-            display: none;
-        }
+            .hidden {
+                display: none;
+            }
 
-        .tabs_menu {
-            width: auto;
-        }
+            .tabs_menu {
+                width: auto;
+            }
+
+            td.select_row {
+                background: url('../../images/playb.svg') no-repeat center center;                
+                cursor: pointer;
+            }
+
+            tr.selected td.select_row {
+                background: url('../../images/play.svg') no-repeat center center;
+            }
+
+            td.detail_row { 
+                background: url('../../images/expandm.svg') no-repeat center center; cursor: pointer; 
+
+            }
+
+            tr.details td.detail_row { 
+                background: url('../../images/expandl.svg') no-repeat center center; 
+
+            }
+      
     </style>
 
     <div class="div_right">
@@ -381,11 +401,11 @@
                         <script>
                             var elemdp = document.querySelector('#fechad');
                             var optionsdp = {
-                                //format: 'dd - mm - yy'
-                                format: 'yyyy-mm-dd',
+                                format: 'dd/mm/yyyy',
+                                //format: 'yyyy-mm-dd',
                                 onClose: function (e) {
                                     var date = $('#fechad').val();
-                                    var periodo = date.split("-");
+                                    var periodo = date.split("/");
 
                                     $('#periodo').val(periodo[1]);
                                 },
@@ -543,7 +563,8 @@
                     <script>
                         var elemth = document.querySelector('#fechai_vig');
                         var optionsth = { //format: 'dd - mm - yy'
-                            format: 'yyyy-mm-dd',
+                            //format: 'yyyy-mm-dd',
+                            format: 'dd/mm/yyyy',
                             i18n: {
                                 clear: 'Limpiar',
                                 today: 'Hoy',
@@ -561,7 +582,8 @@
 
                         var elemtd = document.querySelector('#fechaf_vig');
                         var optionstd = { //format: 'dd - mm - yy'
-                            format: 'yyyy-mm-dd',
+                            //format: 'yyyy-mm-dd',
+                            format: 'dd/mm/yyyy',
                             onClose: function (e) {
                                 var datei = $('#fechai_vig').val();
                                 var datef = $('#fechaf_vig').val();
@@ -705,7 +727,7 @@
                     <h5>Distribución</h5>
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s6">
-                            <select onchange = "selectDis(this.value)">
+                            <select id="select_neg" onchange="selectDis(this.value)">
                                 <option value="" selected>Choose your option</option>
                                 <option value="M">Monto</option>
                                 <option value="P">Porcentaje</option>
@@ -713,12 +735,27 @@
                             <label>Tipo de negociación</label>
                         </div>
                         <div class="input-field col s6">
-                            <select id="select_dis" onchange = "selectMonto(this.value)">
+                            <select id="select_dis" onchange="selectMonto(this.value)">
                                 <option value="" selected>Choose your option</option>
                                 <option value="C">Categoría</option>
                                 <option value="M">Material</option>
                             </select>
                             <label>Distribución</label>
+                        </div>
+                        @*<div id="div_categoria" class="input-field col s6" style="display:none">
+                            <select id="select_categoria">
+                                <option value="" selected>Choose your option</option>
+                                <option value="C">Cereales</option>
+                                <option value="S">Snacks</option>
+                                <option value="L">Lechitas</option>
+                            </select>
+                            <label>Categoría</label>
+                        </div>*@
+                        <div id="div_categoria" class="form-group col s12" style="display:none">                            
+                            @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("CATEGORIA_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_categoria", @class = "form-control" })                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -747,7 +784,6 @@
             <div class="col s12">
                 <div class="card-panel">
                     <h5>Mecánica de Negociación</h5>
-
                     <div class="row" style="margin-bottom:0;">
                         <div class="file-field input-field" id="cargar_excel" style="display:none">
                             <div class="btn">
@@ -757,101 +793,40 @@
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text">
                             </div>
+                        </div>                        
+                        <div id="div_btns_row" style="display:none">
+                            <a class="waves-effect waves-light btn" id="addRow" ><i class="material-icons left">add</i>Registro</a>
+                            <a class="waves-effect waves-light btn" id="delRow" ><i class="material-icons left">clear</i>Registro</a>
                         </div>
-                        @*<input id="cargar_xls" type="button" value="cargar" />*@
-                        <a class="rows_btn btn-floating btn-large waves-effect waves-light green" id="addRow" style="display:none"><i class="material-icons">add</i></a>
-                        <a class="rows_btn btn-floating btn-large waves-effect waves-light red" id="delRow" style="display:none"><i class="material-icons">clear</i></a>
-
-                        <div class="row">
-                            <ul id="coll_2" class="collapsible expandable">
-                                <li class="active">
-                                    @*<div class="collapsible-header">
-                       <i class="material-icons">whatshot</i>Mecánica
-                       <span class="badge">
-                           <a id="cargar_xls" class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">file_upload</i></a>
-                       </span>
-                    </div>*@
-                                    <div class="collapsible-body" style="display:flex">
-                                        <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
-                                            <thead>
-                                                <tr>
-                                                    <th>Vigencia De</th>
-                                                    <th>Vigencia Al</th>
-                                                    @*<th>Item</th>*@
-                                                    <th>Material</th>
-                                                    <th>Categoría</th>
-                                                    <th>Descripción</th>
-                                                    <th>Costo unitario</th>
-                                                    <th>% Apoyo</th>
-                                                    <th>Apoyo por pieza</th>
-                                                    <th>Costo con apoyo</th>
-                                                    <th>Precio sugerido</th>
-                                                    <th>Volumen estimado</th>
-                                                    <th>Estimado apoyo</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @*<tr>
-                                    <td>Tiger Nixon</td>
-                                    <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>
-                                    <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>
-                                    <td>
-                                        <select size="1" id="row-1-office" name="row-1-office">
-                                            <option value="Edinburgh" selected="selected">
-                                                Edinburgh
-                                            </option>
-                                            <option value="London">
-                                                London
-                                            </option>
-                                            <option value="New York">
-                                                New York
-                                            </option>
-                                            <option value="San Francisco">
-                                                San Francisco
-                                            </option>
-                                            <option value="Tokyo">
-                                                Tokyo
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
+                        <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
+                            <thead>
                                 <tr>
-                                    <td>Garrett Winters</td>
-                                    <td><input type="text" id="row-2-age" name="row-2-age" value="63"></td>
-                                    <td><input type="text" id="row-2-position" name="row-2-position" value="Accountant"></td>
-                                    <td>
-                                        <select size="1" id="row-2-office" name="row-2-office">
-                                            <option value="Edinburgh">
-                                                Edinburgh
-                                            </option>
-                                            <option value="London">
-                                                London
-                                            </option>
-                                            <option value="New York">
-                                                New York
-                                            </option>
-                                            <option value="San Francisco">
-                                                San Francisco
-                                            </option>
-                                            <option value="Tokyo" selected="selected">
-                                                Tokyo
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>*@
-                                            </tbody>
-                                            <tfoot id="tfoot_dis" style="display:none">
-                                                <tr>
-                                                    <th colspan="11" style="text-align:right">Total:</th>
-                                                    <th id="total_dis"></th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </li>
-                            </ul>
+                                    <th></th> @*ID*@
+                                    <th></th> @*Detalle*@
+                                    <th></th> @*Seleccionar*@
+                                    <th>Vigencia De</th>
+                                    <th>Vigencia Al</th>
+                                    <th>Material</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Costo unitario</th>
+                                    <th>% Apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Costo con apoyo</th>
+                                    <th>Precio sugerido</th>
+                                    <th>Volumen estimado</th>
+                                    <th>Estimado apoyo</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot id="tfoot_dis" style="display:none">
+                                <tr>
+                                    <th colspan="14" style="text-align:right">Total:</th>
+                                    <th id="total_dis"></th>
+                                </tr>
+                            </tfoot>
+                        </table>                 
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

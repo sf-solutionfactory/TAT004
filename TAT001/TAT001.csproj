@@ -481,6 +481,8 @@
     <Content Include="fonts\roboto\Roboto-Regular.woff2" />
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
+    <Content Include="images\expandl.svg" />
+    <Content Include="images\expandm.svg" />
     <Content Include="images\flags\1x1\ar.svg" />
     <Content Include="images\flags\1x1\br.svg" />
     <Content Include="images\flags\1x1\gt.svg" />
@@ -494,6 +496,9 @@
     <Content Include="images\header-transient.png" />
     <Content Include="images\logo-kellogg2.png" />
     <Content Include="images\logo_kellogg.png" />
+    <Content Include="images\play.svg" />
+    <Content Include="images\playb.svg" />
+    <Content Include="images\remboxb.svg" />
     <Content Include="images\sf-logo.jpg" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />

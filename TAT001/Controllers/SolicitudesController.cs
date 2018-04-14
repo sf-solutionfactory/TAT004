@@ -285,6 +285,19 @@ namespace TAT001.Controllers
 
                 //Información de categorías
 
+                var id_cat = db.CATEGORIAs.Where(c => c.ACTIVO == true)
+                                .Join(
+                                db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                                c => c.ID,
+                                ct => ct.CATEGORIA_ID,
+                                (c, ct) => new
+                                {                                    
+                                    ct.CATEGORIA_ID,
+                                    TEXT = ct.TXT50
+                                }).ToList();
+
+                ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
+
                 d.SOCIEDAD_ID = id_bukrs.BUKRS;
                 d.MONEDA_ID = id_bukrs.WAERS;
                 var date = DateTime.Now.Date;
@@ -313,7 +326,8 @@ namespace TAT001.Controllers
 
             d.PERIODO = DateTime.Now.ToString("MM");
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
-            ViewBag.FECHAD = DateTime.Now.ToString("yyyy-MM-dd");
+            //ViewBag.FECHAD = DateTime.Now.ToString("yyyy-MM-dd");
+            ViewBag.FECHAD = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.STCD1 = "";
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
