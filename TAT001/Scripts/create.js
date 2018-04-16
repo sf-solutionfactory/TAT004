@@ -36,7 +36,7 @@
     $('#table_dis').DataTable({
         "language": {
             "zeroRecords": "No hay registros",
-            "infoEmpty": "No records available",
+            "infoEmpty": "Registros no disponibles",
             "decimal": ".",
             "thousands": ","
         },
@@ -44,42 +44,42 @@
         //        "ordering": false,
         "info": false,
         "searching": false,
-        "footerCallback": function (row, data, start, end, display) {
-            var api = this.api(), data;
+        //"footerCallback": function (row, data, start, end, display) {
+        //    var api = this.api(), data;
 
-            // Remove the formatting to get integer data for summation
-            var intVal = function (i) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '') * 1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
+        //    // Remove the formatting to get integer data for summation
+        //    var intVal = function (i) {
+        //        return typeof i === 'string' ?
+        //            i.replace(/[\$,]/g, '') * 1 :
+        //            typeof i === 'number' ?
+        //                i : 0;
+        //    };
 
-            // Total over all pages
-            total = api
-                .column(14)
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
+        //    // Total over all pages
+        //    total = api
+        //        .column(14)
+        //        .data()
+        //        .reduce(function (a, b) {
+        //            return intVal(a) + intVal(b);
+        //        }, 0);
 
-            // Total over this page
-            pageTotal = api
-                .column(14, { page: 'current' })
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
+        //    // Total over this page
+        //    pageTotal = api
+        //        .column(14, { page: 'current' })
+        //        .data()
+        //        .reduce(function (a, b) {
+        //            return intVal(a) + intVal(b);
+        //        }, 0);
 
-            //Fixed 2
-            var tc = parseFloat(total).toFixed(2);
+        //    //Fixed 2
+        //    var tc = parseFloat(total).toFixed(2);
 
-            // Update footer
-            $(api.column(14).footer()).html(
-                //'$' + pageTotal + ' ( $' + total + ' total)'
-                '$' + tc
-            );
-        },//Termina el callback
+        //    // Update footer
+        //    $(api.column(14).footer()).html(
+        //        //'$' + pageTotal + ' ( $' + total + ' total)'
+        //        '$' + tc
+        //    );
+        //},//Termina el callback
         "columns": [
             {
                 "className": 'id_row',
@@ -132,17 +132,21 @@
         event.cancel = true;
     });
 
+    //Mostrar los materiales (detalle) de la categoria 
     $('#table_dis tbody').on('click', 'td.detail_row', function () {
         var t = $('#table_dis').DataTable();
         var tr = $(this).closest('tr');
-        var row = t.row(tr);
+        var row = t.row(tr);        
 
         if (row.child.isShown()) {
             row.child.hide();
             tr.removeClass('details');
         }
         else {
-            row.child(format()).show();
+            //Obtener el id de la categoría
+            var index = t.row(tr).index();
+            var catid = t.row(index).data()[0];
+            row.child(format(catid)).show();
             tr.addClass('details');
         }
     });
@@ -165,22 +169,23 @@
                         var cat = $('#select_categoria').val();
 
                         if (cat != "") {
+                            M.toast({ html: 'Categoría id '+cat });
                             var opt = $("#select_categoria option:selected").text();
                             t.row.add([
-                                cat + "",
-                                "",
-                                "",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                cat + "", //col0
+                                "", //col1
+                                "", ////col2
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 opt + "",
                                 "",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
                             ]).draw(false);
                         } else {
@@ -193,17 +198,17 @@
                             "",
                             "",
                             "",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                         ]).draw(false);
 
@@ -213,8 +218,8 @@
 
                         //if ($('#select_dis').val() == "M") {
 
-                            table.column(0).visible(false);
-                            table.column(1).visible(false);
+                            t.column(0).visible(false);
+                            t.column(1).visible(false);
                         //}
                     }
                 } else {
@@ -298,7 +303,25 @@
         //} else {
         //    M.toast({ html: message });
         //}
+
+        
     });
+
+    function updateFooter() {
+        var t = $('#table_dis').DataTable();
+        var api = t.api();
+        
+        var total = api
+            .column(14)
+            .data()
+            .reduce(function (a, b) {
+                return convertI(a) + convertI(b);
+            }, 0);
+
+        $(api.column(14).footer()).html(
+            '$' + total
+        );
+    }
 
     $('#tabs').tabs();
 
@@ -552,51 +575,159 @@
 
 });
 
-function format() {
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
 
-    var detail = '<table class=\"display\" style=\"width:100%\">' +
-        '<tbody>' +
-        '<tr>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td>Tiger</td>' +
-        '<td>Nixon</td>' +
-        '<td>System Architect</td>' +
-        '<td>Edinburgh</td>' +
-        '<td>$320,800</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td>Garrett</td>' +
-        '<td>Winters</td>' +
-        '<td>Accountant</td>' +
-        '<td>Tokyo</td>' +
-        '<td>$170,250</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '<td>Tiger</td>' +
-        '</tr>' +
-        '</tbody>' +
-        '</table>';
+
+    updateTotalRow(t, tr);
+
+});
+
+function updateTotalRow(t, tr) {
+
+    //Add index
+    //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+    //Obtener la distribución
+    var dis = $("#select_dis").val();
+    if (dis != "") {
+        var t = $('#table_dis').DataTable();
+        //Distribución por categoría
+        if (dis == "C") {
+            index = -1;             
+        } else if (dis == "M") {            
+            //Distribución por material
+            index = -2;
+        }
+    } 
+
+    
+    //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
+    //Columnas 8 * 9 res 10
+    //Categoría es 7 * 8 = 9  --> -1
+    //Material es 6 * 7 = 8   --> -2
+
+    var col8 = tr.find("td:eq("+(8+index)+") input").val();
+    var col9 = tr.find("td:eq(" + (9 + index) +") input").val();
+
+    col9 = convertP(col9);
+
+    if ($.isNumeric(col9)) {
+        col9 = col9 / 100;
+    }
+
+    var col10 = col8 * col9;
+
+    //Apoyo por pieza
+    tr.find("td:eq(" + (10 + index) + ")").text("$" + col10);
+
+    //Costo con apoyo
+    var col11 = col8 - col10;
+    tr.find("td:eq(" + (11 + index) + ")").text("$" + col11);
+
+    //var col3 = tr.find("td:eq(3) input").val(); // get current row 3rd TD
+
+    //var col5 = tr.find("td:eq(5) input").val();
+
+    //if ($.isNumeric(col3) && $.isNumeric(col5)) {
+    //var v = "$" + (col3 * col5);
+    //tr.find("td:eq(7)").text(v);
+    //t.row(inn).data(v)[7];
+    //t.draw(true);
+    //t.fnUpdate( v, index, 7 ); 
+
+    //}
+    //Index 3 * 5 = 7 
+
+
+}
+
+function convertI(i) {
+    return typeof i === 'string' ?
+        i.replace(/[\$,]/g, '') * 1 :
+        typeof i === 'number' ?
+            i : 0;
+};
+
+function convertP(i) {
+    return typeof i === 'string' ?
+        i.replace(/[\$,]/g, '') * 1 :
+        typeof i === 'number' ?
+            i : 0;
+};
+
+var detail = "";
+function format(catid) {
+
+    detail = "";
+    var id = parseInt(catid)
+    if (catid != "") {
+
+        $.ajax({
+            type: "POST",
+            url: 'selectMatCat',
+            data: { "catid": id },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                   var detaill = '<table class=\"display\" style=\"width:100%\">' +
+                        '<tbody>' +
+                        '<tr>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Nixon</td>' +
+                        '<td>System Architect</td>' +
+                        '<td>Edinburgh</td>' +
+                        '<td>$320,800</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td>Garrett</td>' +
+                        '<td>Winters</td>' +
+                        '<td>Accountant</td>' +
+                        '<td>Tokyo</td>' +
+                        '<td>$170,250</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>';
+                   useReturnData(detaill);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+        });
+    } 
     //    return 'Full name: Matías Gallegos <br>'+
     //        'Salary: $0 <br>'+
     //        'The child row can contain any data you wish, including links, images, inner tables etc.';
     return detail;
 }
+
+function useReturnData(data) {
+    detail = data;
+};
 
 function keypressHandler(e) {
 

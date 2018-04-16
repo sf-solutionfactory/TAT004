@@ -694,7 +694,6 @@
                 <div class="card-panel">
                     <h5>Notas</h5>
                     <div class="row" style="margin-bottom:0">
-                        @*<form class="col s12">*@
                         <div class="row">
                             <div class="input-field col s12">
                                 <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
@@ -714,7 +713,6 @@
                             }
                         </script>
                     </div>
-                    @*<input type="button" id="btnsoportes" value="cargar" />*@
                 </div>
             </div>
         </div>
@@ -742,15 +740,6 @@
                             </select>
                             <label>Distribución</label>
                         </div>
-                        @*<div id="div_categoria" class="input-field col s6" style="display:none">
-                            <select id="select_categoria">
-                                <option value="" selected>Choose your option</option>
-                                <option value="C">Cereales</option>
-                                <option value="S">Snacks</option>
-                                <option value="L">Lechitas</option>
-                            </select>
-                            <label>Categoría</label>
-                        </div>*@
                         <div id="div_categoria" class="form-group col s12" style="display:none">                            
                             @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
