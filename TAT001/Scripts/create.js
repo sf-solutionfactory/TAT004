@@ -214,7 +214,7 @@
 
                         $('#table_dis').css("font-size", "12px");
                         $('#table_dis').css("display", "table");
-                        $('#tfoot_dis').css("display", "table-footer-group");
+                        //$('#tfoot_dis').css("display", "table-footer-group");
 
                         //if ($('#select_dis').val() == "M") {
 
@@ -306,23 +306,7 @@
 
         
     });
-
-    function updateFooter() {
-        var t = $('#table_dis').DataTable();
-        var api = t.api();
-        
-        var total = api
-            .column(14)
-            .data()
-            .reduce(function (a, b) {
-                return convertI(a) + convertI(b);
-            }, 0);
-
-        $(api.column(14).footer()).html(
-            '$' + total
-        );
-    }
-
+    
     $('#tabs').tabs();
 
     var elem = document.querySelectorAll('select');
@@ -594,21 +578,21 @@ function updateTotalRow(t, tr) {
         var t = $('#table_dis').DataTable();
         //Distribución por categoría
         if (dis == "C") {
-            index = -1;             
-        } else if (dis == "M") {            
+            index = -1;
+        } else if (dis == "M") {
             //Distribución por material
             index = -2;
         }
-    } 
+    }
 
-    
+
     //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
     //Columnas 8 * 9 res 10
     //Categoría es 7 * 8 = 9  --> -1
     //Material es 6 * 7 = 8   --> -2
 
-    var col8 = tr.find("td:eq("+(8+index)+") input").val();
-    var col9 = tr.find("td:eq(" + (9 + index) +") input").val();
+    var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
+    var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
 
     col9 = convertP(col9);
 
@@ -625,6 +609,12 @@ function updateTotalRow(t, tr) {
     var col11 = col8 - col10;
     tr.find("td:eq(" + (11 + index) + ")").text("$" + col11);
 
+    //Estimado apoyo
+    var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+    var col14 = col10 * col13;
+    tr.find("td:eq(" + (14 + index) + ")").text("$" + col14);
+    coltotal = (14 + index);
+    updateFooter(coltotal);
     //var col3 = tr.find("td:eq(3) input").val(); // get current row 3rd TD
 
     //var col5 = tr.find("td:eq(5) input").val();
@@ -633,7 +623,7 @@ function updateTotalRow(t, tr) {
     //var v = "$" + (col3 * col5);
     //tr.find("td:eq(7)").text(v);
     //t.row(inn).data(v)[7];
-    //t.draw(true);
+    //t.draw(false);
     //t.fnUpdate( v, index, 7 ); 
 
     //}
@@ -641,6 +631,28 @@ function updateTotalRow(t, tr) {
 
 
 }
+
+
+function updateFooter(coltotal) {
+    var t = $('#table_dis').DataTable();
+    //var api = $('#table_dis').data("api");
+    //var api = t.api();
+
+    var total = 0;
+
+    $('#table_dis').find("tr").each(function (index) {
+        var col4 = $(this).find("td:eq(" + coltotal+")").text();
+
+        col4 = convertI(col4);
+
+        if ($.isNumeric(col4)) {
+            total += col4;
+        }
+
+    });
+
+    $('#total_dis').text("$" + total);
+ }
 
 function convertI(i) {
     return typeof i === 'string' ?
