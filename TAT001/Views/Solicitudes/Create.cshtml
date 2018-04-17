@@ -740,10 +740,16 @@
                             </select>
                             <label>Distribución</label>
                         </div>
-                        <div id="div_categoria" class="form-group col s12" style="display:none">                            
+                        <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
                             @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("CATEGORIA_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_categoria", @class = "form-control" })                                
+                                @Html.DropDownList("CATEGORIA_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none">
+                            @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownList("BASE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_base", @class = "form-control" })
                             </div>
                         </div>
                     </div>
@@ -753,11 +759,11 @@
                 <div class="card-panel">
                     <h5>Monto Base</h5>
                     <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s6">                                                        
-                                <input value="" id="monto_dis" type="text" class="validate" />
-                                <label for="monto_dis">Monto</label>                            
-                        </div>
                         <div class="input-field col s6">
+                            <input value="" id="monto_dis" type="text" class="validate" />
+                            <label for="monto_dis">Monto</label>
+                        </div>
+                        @*<div class="input-field col s6">
                             <div class="form-group">
                                 <select>
                                     <option value="" disabled selected>Choose your option</option>
@@ -766,7 +772,26 @@
                                 </select>
                                 <label>Moneda</label>
                             </div>
+                        </div>*@
+                        <div class="input-field col s6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div id="div_apoyobase" class="col s12 m6 l6" style="display:none">
+                <div class="card-panel">
+                    <h5>Base para aplicar %</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <div class="input-field col s6">
+                            <input value="" id="monto_apoyo" type="text" class="validate" />
+                            <label for="monto_apoyo">% Apoyo</label>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -782,10 +807,10 @@
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text">
                             </div>
-                        </div>                        
+                        </div>
                         <div id="div_btns_row" style="display:none">
-                            <a class="waves-effect waves-light btn" id="addRow" ><i class="material-icons left">add</i>Registro</a>
-                            <a class="waves-effect waves-light btn" id="delRow" ><i class="material-icons left">clear</i>Registro</a>
+                            <a class="waves-effect waves-light btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
+                            <a class="waves-effect waves-light btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                         </div>
                         <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                             <thead>
@@ -808,17 +833,18 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                            <tfoot id="tfoot_dis" style="">@*//display:none*@
-                                <tr>
-                                    <th colspan="14" style="text-align:right">Total:</th>
-                                    <th id="total_dis"></th>
-                                </tr>
-                            </tfoot>
-                        </table>                 
-                        </div>
-                    </div>
+                            <tfoot id="tfoot_dis" style="">
+                                @*//display:none*@
+                            <tr>
+                                <th colspan="14" style="text-align:right">Total:</th>
+                                <th id="total_dis"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
+        </div>
+        </div>
         </div>
         @*Financiera*@
         <div id="Financiera_cont">
@@ -832,17 +858,15 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
-                                            @Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @id = "monto_doc_md", @class = "form-control" } })
-                                            @*@Html.ValidationMessageFor(model => model.MONTO_DOC_MD, "", new { @class = "text-danger" })*@
+                                            @Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @id = "monto_doc_md", @class = "form-control", @disabled = "disabled" } })                                            
                                         </div>
-                                    </div>
+                                    </div>                                                                    
                                 </div>
                                 <div class="input-field col s6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
-                                            @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })
-                                            @*@Html.ValidationMessageFor(model => model.MONEDA_ID, "", new { @class = "text-danger" })*@
+                                            @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })                                            
                                         </div>
                                     </div>
                                 </div>
@@ -854,8 +878,7 @@
                                 <div class="form-group input-field col s6">
                                     @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })
-                                        @*@Html.ValidationMessageFor(model => model.TIPO_CAMBIO, "", new { @class = "text-danger" })*@
+                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })                                        
                                     </div>
                                 </div>
                                 <div class=" input-field col s6">

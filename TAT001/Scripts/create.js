@@ -128,6 +128,7 @@
     $('#delRow').click(function (e) {
         var t = $('#table_dis').DataTable();
         t.rows('.selected').remove().draw(false);
+        updateFooter();
         event.returnValue = false;
         event.cancel = true;
     });
@@ -222,6 +223,7 @@
                             t.column(1).visible(false);
                         //}
                     }
+                    updateFooter();
                 } else {
                     M.toast({ html: 'Seleccione distribución' });
                 }
@@ -244,6 +246,7 @@
             if (evaluarExt(filename)) {
                 M.toast({ html: 'Uploading' + filename });
                 loadExcel(file);
+                updateFooter();
             } else {
                 M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
             }
@@ -331,8 +334,37 @@
 
     $('#tab_fin').on("click", function (e) {
 
-        //evalSoporteTab(false, e);
+        evalDistribucionTab(false, e);
 
+        //Copiar el monto de distribución de la tabla footer al monto financiera
+        var total_dis = $('#total_dis').text();
+        var basei = convertI(total_dis);
+        
+        //Obtiene el id del tipo de negociación, default envía vacío
+        var select_neg = $('#select_neg').val();
+        //Validar el monto base vs monto tabla
+        if (select_neg == "M") {
+            //Tiene que tener una moneda
+            //Obtener la moneda de distribución y de financiera
+            var monedadis_id = $('#monedadis_id').val();
+            var monedafin_id = $('#moneda_id').val();
+
+            //Si las monedas son iguales, se pasa el monto
+            if (monedadis_id == monedafin_id) {
+                $('#monto_doc_md').val(basei);
+            } else {
+                //Realizar conversión de monedas
+                var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
+                $('#monto_doc_md').val(newMonto);
+            }
+            
+        } else {
+            //Si no es por monto solo se copia la cantidad
+            $('#monto_doc_md').val(basei);
+        }
+
+        //Emular un focus out para actualizar los campos
+        $('#monto_doc_md').focusout();
     });
 
     //Financiera   
@@ -568,23 +600,16 @@ $('body').on('focusout', '.input_oper', function () {
 
 });
 
+//Variables globales
+var detail = "";
+var montocambio = 0;
+
 function updateTotalRow(t, tr) {
 
     //Add index
     //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
     //Obtener la distribución
-    var dis = $("#select_dis").val();
-    if (dis != "") {
-        var t = $('#table_dis').DataTable();
-        //Distribución por categoría
-        if (dis == "C") {
-            index = -1;
-        } else if (dis == "M") {
-            //Distribución por material
-            index = -2;
-        }
-    }
-
+    var index = getIndex();    
 
     //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
     //Columnas 8 * 9 res 10
@@ -613,8 +638,8 @@ function updateTotalRow(t, tr) {
     var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
     var col14 = col10 * col13;
     tr.find("td:eq(" + (14 + index) + ")").text("$" + col14);
-    coltotal = (14 + index);
-    updateFooter(coltotal);
+    
+    updateFooter();
     //var col3 = tr.find("td:eq(3) input").val(); // get current row 3rd TD
 
     //var col5 = tr.find("td:eq(5) input").val();
@@ -632,8 +657,33 @@ function updateTotalRow(t, tr) {
 
 }
 
+function resetFooter() {
+    $('#total_dis').text("$0");
+}
 
-function updateFooter(coltotal) {
+function getIndex() {
+    var index = 0;
+    var dis = $("#select_dis").val();
+    if (dis != "") {
+        var t = $('#table_dis').DataTable();
+        //Distribución por categoría
+        if (dis == "C") {
+            index = -1;
+        } else if (dis == "M") {
+            //Distribución por material
+            index = -2;
+        }
+    }
+
+    return index;
+}
+
+
+function updateFooter() {
+    resetFooter();
+    var index = getIndex();
+    coltotal = (14 + index);
+
     var t = $('#table_dis').DataTable();
     //var api = $('#table_dis').data("api");
     //var api = t.api();
@@ -668,7 +718,7 @@ function convertP(i) {
             i : 0;
 };
 
-var detail = "";
+
 function format(catid) {
 
     detail = "";
@@ -869,7 +919,8 @@ function loadExcel(file) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
 
 }
@@ -905,7 +956,8 @@ function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
 
 }
@@ -950,7 +1002,8 @@ function loadFiles(files) {//, f_contratos, f_factura, f_jbp) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
 
 }
@@ -1044,6 +1097,34 @@ function evalSoporteTab(ret, e) {
             var ell = document.getElementById("tabs");
             var instances = M.Tabs.getInstance(ell);
             instances.select('Soporte_cont');
+        }
+        return "";
+    }
+}
+
+function evalDistribucionTab(ret, e) {
+    var res = true;
+    var msg = "";
+
+    if (evaluarDisTab()) {
+        msg = 'siguiente pestaña!';
+    } else {
+        msg = 'Verificar valores en los campos de Distribución!';
+        res = false;
+    }
+
+    if (ret == true) {
+        return res;
+    } else {
+        if (!res) {
+            M.toast({ html: msg });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Distribucion_cont');
         }
         return "";
     }
@@ -1239,6 +1320,48 @@ function evaluarSoporteTab() {
     return evaluarFiles();
 }
 
+function evaluarDisTab() {
+
+    var res = true;
+
+    //Obtiene el id del tipo de negociación, default envía vacío
+    var select_neg = $('#select_neg').val();
+
+    if (!evaluarVal(select_neg)) {
+        return false;
+    }
+
+    //Obtiene el id de la lista distribución, default envía vacío
+    var select_dis = $('#select_dis').val();
+
+    if (!evaluarVal(select_dis)) {
+        return false;
+    }
+
+    if (res) {
+        //Validar los montos tipo de negociación monto
+        //Validar el monto base vs monto tabla
+        if (select_neg == "M") {
+            var monedadis_id = $('#monedadis_id').val();
+            var monto_dis = $('#monto_dis').val();
+            var total_dis = $('#total_dis').text();
+
+            if ((monto_dis != "" & total_dis != "") & monedadis_id != "") {
+
+                //Base, monto footer
+                var res = validar_montos(monto_dis, total_dis);
+            } else {
+                return false;
+            }
+            //Validar el porcentaje apoyo monto
+        } else if (select_neg == "P"){
+
+        }        
+    }
+
+    return res;
+}
+
 function evaluarFinancieraTab() {
 
     var res = true;
@@ -1407,64 +1530,90 @@ function selectTall(valu) {
             },
             error: function (data) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+            },
+            async: false
         });
     }
 }
 
 function selectDis(val) {
     M.toast({ html: 'Tipo negociación ' + val });
-    //Desactivar el select de distribución
-    //if (val == "") {        
-    //    $('#select_dis').prop('disabled', 'disabled');
-    //} else {
-    ////Activar el select de distribución
-    //    $('#select_dis').prop('disabled', false);
-    //}
+    resetFooter();
+    if (val == "M") {//Monto
+        $('#div_apoyobase').css("display", "none");
+        $('#div_montobase').css("display", "inherit");
+    } else if (val == "P") {//Porcentaje
+        $('#div_montobase').css("display", "none");
+        $('#div_apoyobase').css("display", "inherit");
+    } else {
+        $('#div_montobase').css("display", "none");
+        $('#div_apoyobase').css("display", "none");
+    }  
+    var select_dis = $('#select_dis').val();
+    $('#select_dis').val(select_dis).change();
 }
 
-function selectMonto(val) {
-    M.toast({ html: 'Tipo de monto ' + val });
+function selectMonto(val) {    
 
     //Siempre inicializar la tabla
     var ta = $('#table_dis').DataTable();
     ta.clear().draw();
 
+    //Obtener la negociación
+    var select_neg = $('#select_neg').val();
+
     //Desactivar el panel de monto
-    if (val == "") {
+    if (val == "" || select_neg == "") {
         $('#div_montobase').css("display", "none"); 
+        $('#div_apoyobase').css("display", "none"); 
         $('#cargar_excel').css("display", "none");
         $('#select_categoria').css("display", "none");
-        $('#div_categoria').css("display", "none");     
+        $('.div_categoria').css("display", "none");     
         $('#table_dis').css("display", "none");
         $('#div_btns_row').css("display", "none");  
         ta.column(0).visible(false);
         ta.column(1).visible(false);
     } else {
-    //Activar el panel de monto
-        $('#div_montobase').css("display", "inherit");
+    //Activar el panel de monto dependiendo del tipo de negociación
+        //$('#div_montobase').css("display", "inherit");
         $('#div_btns_row').css("display", "inherit");
+        
+        if (select_neg == "M") {//Monto
+            $('#div_apoyobase').css("display", "none");
+            $('#div_montobase').css("display", "inherit");             
+        } else if (select_neg == "P") {//Porcentaje
+            $('#div_montobase').css("display", "none");
+            $('#div_apoyobase').css("display", "inherit");            
+        } else {
+            $('#div_montobase').css("display", "none");
+            $('#div_apoyobase').css("display", "none"); 
+        }
     }
+    if (select_neg != "") {
+        //Monto
+        if (val == "M") {
+            $('#cargar_excel').css("display", "inherit");
+            $('#select_categoria').css("display", "none");
+            $('.div_categoria').css("display", "none");
+            ta.column(0).visible(false);
+            ta.column(1).visible(false);
+        }
 
-    //Monto
-    if (val == "M") {
-        $('#cargar_excel').css("display", "inherit");
-        $('#select_categoria').css("display", "none");
-        $('#div_categoria').css("display", "none"); 
-        ta.column(0).visible(false);
-        ta.column(1).visible(false);
+        //Categoría
+        if (val == "C") {
+            $('#cargar_excel').css("display", "none");
+            $('.div_categoria').css("display", "inline-block");
+            //Mostrar el encabezado de la tabla               
+            $('#table_dis').css("font-size", "12px");
+            $('#table_dis').css("display", "table");
+            ta.column(0).visible(false);
+            ta.column(1).visible(true);
+        }
+
+        resetFooter();
+    } else {
+        M.toast({ html: 'Seleccione Negociación' });
     }
-
-    //Categoría
-    if (val == "C") {
-        $('#cargar_excel').css("display", "none");        
-        $('#div_categoria').css("display", "inline-block");  
-        //Mostrar el encabezado de la tabla               
-        $('#table_dis').css("font-size", "12px");
-        $('#table_dis').css("display", "table"); 
-        ta.column(0).visible(false);
-        ta.column(1).visible(true);
-    }    
 }
 
 function selectCity(valu) {
@@ -1493,7 +1642,8 @@ function selectCity(valu) {
             },
             error: function (data) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+            },
+            async: false
         });
     }
 
@@ -1533,7 +1683,8 @@ function selectCliente(valu) {
             },
             error: function (data) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+            },
+            async: false
         });
     }
 
@@ -1574,13 +1725,16 @@ function selectMoneda(valu) {
                                 selectTcambio(MONEDA_ID, monto_doc_md);
 
                             }
+                        } else {
+                            M.toast({ html: data });
                         }
                     }
 
                 },
                 error: function (data) {
                     alert("Error tipo de cambio        " + data);
-                }
+                },
+                async: false
             });
 
         } else {
@@ -1619,10 +1773,50 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
                 M.toast({ html: msg });
-            }
+            },
+            async: false
         });
     }
 
+}
+
+function cambioCurr(fcurr, tcurr, monto) {
+    montocambio = 0;
+    var localmonto = 0;
+    if (fcurr != "" & tcurr != "" & monto != "") {
+
+        $.ajax({
+            type: "POST",
+            url: 'cambioCurr',
+            data: { "fcurr": fcurr, "tcurr": tcurr, "monto": monto },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                                    
+                    var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
+                    if (iNum > 0) {
+                        asignarMonto(data);
+                    } else {
+                        M.toast({ html: data });
+                    }
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+        });
+    }
+
+    localmonto = montocambio;
+    return localmonto;
+
+}
+
+function asignarMonto(monto) {
+    montocambio = monto;
 }
 
 function validar_fechas(ini_date, fin_date) {
@@ -1639,6 +1833,18 @@ function validar_fechas(ini_date, fin_date) {
     if (Date.parse(DateFromValue) <= Date.parse(DateToValue)) {
         return true;
     }
+    return false;
+}
+
+function validar_montos(base, footer) {
+
+    var basei = convertI(base);
+    var footeri = convertI(footer);
+
+    if (basei == footeri) {
+        return true;
+    }
+
     return false;
 }
 

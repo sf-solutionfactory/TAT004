@@ -297,6 +297,8 @@ namespace TAT001.Controllers
                                 }).ToList();
 
                 ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
+                List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
+                ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
 
                 d.SOCIEDAD_ID = id_bukrs.BUKRS;
                 d.MONEDA_ID = id_bukrs.WAERS;
@@ -1436,6 +1438,51 @@ namespace TAT001.Controllers
         {
             
             return "dfdf";
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public string cambioCurr(string fcurr, string tcurr, string monto)
+        {
+            string p = "";
+            string errorString = "";
+            decimal montoret = 0;
+            try
+            {
+                p = Session["pais"].ToString();
+            }
+            catch
+            {
+            }
+
+            TAT001Entities db = new TAT001Entities();
+
+            var id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+            try
+            {
+                var date = DateTime.Now.Date;
+                //var UKURS = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault().UKURS;
+                var tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(date)).FirstOrDefault();
+                if (tc == null)
+                {
+                    var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr)).Max(a => a.GDATU);
+                    tc = db.TCAMBIOs.Where(t => t.FCURR.Equals(fcurr) && t.TCURR.Equals(tcurr) && t.GDATU.Equals(max)).FirstOrDefault();
+                }
+
+                decimal uk = Convert.ToDecimal(tc.UKURS);
+
+                if (tc.UKURS > 0)
+                {
+                    montoret = Convert.ToDecimal(monto) / uk;
+                }
+            }
+            catch (Exception e)
+            {
+                errorString = e.Message + "detail: conversion " + fcurr + " to " + tcurr + " in date " + DateTime.Now.Date;
+                //throw new System.Exception(errorString);
+                return errorString;
+            }
+            return Convert.ToString(montoret);
         }
     }
 }
