@@ -328,7 +328,7 @@
 
     $('#tab_dis').on("click", function (e) {
 
-        //evalSoporteTab(false, e);
+        evalSoporteTab(false, e);
 
     });
 
@@ -1440,19 +1440,21 @@ function evaluarFiles() {
         }
 
         //Validar tamaño y extensión
-        var file = $(files[i]).get(0).files;  
-        var sizefile = file[0].size;
-        if (sizefile > 20971520) {
-            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
-            message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + lbltext + " sobrepasa el tamaño";
-            break;
-        }
+        var file = $(files[i]).get(0).files;
+        if (file.length > 0) {
+            var sizefile = file[0].size;
+            if (sizefile > 20971520) {
+                var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+                message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + lbltext + " sobrepasa el tamaño";
+                break;
+            }
 
-        var namefile = file[0].name;
-        if (!evaluarExtSoporte(namefile)) {
-            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
-            message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + lbltext + " no es compatible";
-            break;
+            var namefile = file[0].name;
+            if (!evaluarExtSoporte(namefile)) {
+                var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+                message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + lbltext + " no es compatible";
+                break;
+            }
         }
 
     }
