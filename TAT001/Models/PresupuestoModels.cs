@@ -37,11 +37,11 @@ namespace TAT001.Models
             if (String.IsNullOrEmpty(cambio) == false)
             {
                 string[] moneda = cambio.Split('-');
-                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, moneda[0], moneda[1]).ToList();
+                //sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, moneda[0], moneda[1]).ToList();
             }
             else
             {
-                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "").ToList();
+               // sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "").ToList();
             }
             return sociedades;
         }

@@ -327,10 +327,18 @@ namespace TAT001.Controllers
             }
 
             d.PERIODO = DateTime.Now.ToString("MM");
-            d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
-            //ViewBag.FECHAD = DateTime.Now.ToString("yyyy-MM-dd");
-            ViewBag.FECHAD = DateTime.Now.ToString("dd/MM/yyyy");
+            d.EJERCICIO = Convert.ToString(DateTime.Now.Year);            
+            string dates = DateTime.Now.ToString("dd/MM/yyyy");
+            DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
+                                            "dd/MM/yyyy",
+                                            System.Globalization.CultureInfo.InvariantCulture,
+                                            System.Globalization.DateTimeStyles.None);
+            d.FECHAD = theTime;
+            ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            ViewBag.PERIODO = d.PERIODO;
+            ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
+            ViewBag.PARVW = "";
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
             ViewBag.NAME1 = "";
@@ -680,7 +688,9 @@ namespace TAT001.Controllers
                                             "dd/MM/yyyy",
                                             System.Globalization.CultureInfo.InvariantCulture,
                                             System.Globalization.DateTimeStyles.None);
-                    ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                    ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");                    
+                    ViewBag.PERIODO = dOCUMENTO.PERIODO;
+                    ViewBag.EJERCICIO = dOCUMENTO.EJERCICIO;
                 }
                 catch (Exception e)
                 {
@@ -1057,21 +1067,52 @@ namespace TAT001.Controllers
 
             TAT001Entities db = new TAT001Entities();
 
-            var id_cl = (from c in db.CLIENTEs
+            CLIENTE_MOD id_cl = (from c in db.CLIENTEs
                          join co in db.CONTACTOCs
                          on new { c.VKORG, c.VTWEG, c.SPART, c.KUNNR } equals new { co.VKORG, co.VTWEG, co.SPART, co.KUNNR } into jjcont
                          from co in jjcont.DefaultIfEmpty()
                          where c.KUNNR == kunnr
-                         select new
+                         select new CLIENTE_MOD
                          {
-                             c.VKORG,
-                             c.VTWEG,
-                             c.NAME1,
-                             c.KUNNR,
-                             c.STCD1,
+                             VKORG = c.VKORG,
+                             VTWEG = c.VTWEG,
+                             NAME1 = c.NAME1,
+                             KUNNR = c.KUNNR,
+                             STCD1 = c.STCD1,
+                             PARVW = c.PARVW,
+                             BANNER = c.BANNER,
                              PAYER_NOMBRE = co == null ? String.Empty : co.NOMBRE,
                              PAYER_EMAIL = co == null ? String.Empty : co.EMAIL,
                          }).FirstOrDefault();
+
+            if(id_cl != null)
+            {
+                //Obtener el cliente
+                CANAL canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnr).FirstOrDefault();
+                id_cl.VTWEG = "";
+                if (canal == null)
+                {
+                    string kunnrwz = kunnr.TrimStart('0');
+                    canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnrwz).FirstOrDefault();                    
+                }
+
+                if(canal != null)
+                {
+                    id_cl.VTWEG = canal.CANAL1;
+                }
+
+                //Obtener el tipo de cliente
+                var clientei = (from c in db.TCLIENTEs
+                                join ct in db.TCLIENTETs
+                                on c.ID equals ct.PARVW_ID
+                                where c.ID == id_cl.PARVW && c.ACTIVO == true
+                                select ct).FirstOrDefault();
+                id_cl.PARVW = "";
+                if (clientei != null)
+                {
+                    id_cl.PARVW = clientei.TXT50;
+                }
+            }
 
             JsonResult jc = Json(id_cl, JsonRequestBehavior.AllowGet);
             return jc;

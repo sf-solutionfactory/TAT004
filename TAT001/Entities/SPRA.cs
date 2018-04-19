@@ -22,6 +22,7 @@ namespace TAT001.Entities
             this.GALLTs = new HashSet<GALLT>();
             this.PAGINATs = new HashSet<PAGINAT>();
             this.PUESTOTs = new HashSet<PUESTOT>();
+            this.ROLTs = new HashSet<ROLT>();
             this.TALLTs = new HashSet<TALLT>();
             this.TCLIENTETs = new HashSet<TCLIENTET>();
             this.TEXTOes = new HashSet<TEXTO>();
@@ -45,6 +46,8 @@ namespace TAT001.Entities
         public virtual ICollection<PAGINAT> PAGINATs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PUESTOT> PUESTOTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ROLT> ROLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALLT> TALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

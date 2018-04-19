@@ -14,8 +14,10 @@ namespace TAT001.Entities
     public partial class CSP_CONSULTARPRESUPUESTO_Result
     {
         public string CANAL { get; set; }
+        public string CDESCRIPCION { get; set; }
         public double PPTOC { get; set; }
         public string BANNER { get; set; }
+        public string BDESCRIPCION { get; set; }
         public double PPTO { get; set; }
         public double CSHDC { get; set; }
         public double RECUN { get; set; }
@@ -30,7 +32,6 @@ namespace TAT001.Entities
         public double ADVER { get; set; }
         public double DSTRB { get; set; }
         public double VVX17 { get; set; }
-        public double OHV { get; set; }
         public double CONSU { get; set; }
         public double TOTAL { get; set; }
     }

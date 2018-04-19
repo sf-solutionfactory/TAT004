@@ -7,6 +7,10 @@
         $("label[for='cli_name']").addClass("active");
     }
     //Razón social
+    if ($('#parvw').val() != "") {
+        $("label[for='parvw']").addClass("active");
+    }
+    //Razón social
     if ($('#vkorg').val() != "") {
         $("label[for='vkorg']").addClass("active");
     }
@@ -256,7 +260,7 @@
     });
 
     //Archivos de soporte
-    $('#btnsoportes').click(function () {
+    //$('#btnsoportes').click(function () {
         //loadFilesf();
         //var file_carta = $('#file_carta').get(0).files.length;
 
@@ -308,7 +312,11 @@
         //}
 
         
-    });
+    //});
+    //Temporalidad
+    if ($('#monto_doc_md').val() != "") {
+        $("label[for='monto_doc_md']").addClass("active");
+    }
     
     $('#tabs').tabs();
 
@@ -317,7 +325,7 @@
 
     $('#tab_temp').on("click", function (e) {
 
-        //evalInfoTab(false, e);
+        evalInfoTab(false, e);
     });
 
     $('#tab_soporte').on("click", function (e) {
@@ -334,37 +342,60 @@
 
     $('#tab_fin').on("click", function (e) {
 
-        evalDistribucionTab(false, e);
+        var res = evalDistribucionTab(true, e);
 
-        //Copiar el monto de distribución de la tabla footer al monto financiera
-        var total_dis = $('#total_dis').text();
-        var basei = convertI(total_dis);
-        
-        //Obtiene el id del tipo de negociación, default envía vacío
-        var select_neg = $('#select_neg').val();
-        //Validar el monto base vs monto tabla
-        if (select_neg == "M") {
-            //Tiene que tener una moneda
-            //Obtener la moneda de distribución y de financiera
-            var monedadis_id = $('#monedadis_id').val();
-            var monedafin_id = $('#moneda_id').val();
+        if (res) {
 
-            //Si las monedas son iguales, se pasa el monto
-            if (monedadis_id == monedafin_id) {
-                $('#monto_doc_md').val(basei);
+            //Activar el botón de guardar
+            $("#btn_guardarh").removeClass("disabled");
+
+            //Copiar el monto de distribución de la tabla footer al monto financiera
+            var total_dis = $('#total_dis').text();
+            var basei = convertI(total_dis);
+
+            //Obtiene el id del tipo de negociación, default envía vacío
+            var select_neg = $('#select_neg').val();
+            //Validar el monto base vs monto tabla
+            if (select_neg == "M") {
+                //Tiene que tener una moneda
+                //Obtener la moneda de distribución y de financiera
+                var monedadis_id = $('#monedadis_id').val();
+                var monedafin_id = $('#moneda_id').val();
+
+                //Si las monedas son iguales, se pasa el monto
+                if (monedadis_id == monedafin_id) {
+                    $('#monto_doc_md').val(basei);
+                    
+                } else {
+                    //Realizar conversión de monedas
+                    var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
+                    $('#monto_doc_md').val(newMonto);
+                    
+                }
+
             } else {
-                //Realizar conversión de monedas
-                var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
-                $('#monto_doc_md').val(newMonto);
+                //Si no es por monto solo se copia la cantidad
+                $('#monto_doc_md').val(basei);
+                
             }
+
+            //Emular un focus out para actualizar los campos
+            $('#monto_doc_md').focusout();
+            
+            $("label[for='monto_doc_md']").addClass("active");
             
         } else {
-            //Si no es por monto solo se copia la cantidad
-            $('#monto_doc_md').val(basei);
+            M.toast({ html: 'Verificar valores en los campos de Distribución!' });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Distribucion_cont');
         }
 
-        //Emular un focus out para actualizar los campos
-        $('#monto_doc_md').focusout();
+        
     });
 
     //Financiera   
@@ -381,6 +412,7 @@
             //Obtener la moneda en la lista
             //var MONEDA_ID = $('#moneda_id').val();
             $('#monto_doc_md').val(mt);
+           
             //selectTcambio(MONEDA_ID, mt);
             var tipo_cambio = $('#tipo_cambio').val();
             var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
@@ -425,6 +457,7 @@
             var is_num2 = $.isNumeric(monto_doc_md);
             if (mt > 0 & is_num2 == true) {
                 $('#monto_doc_md').val(mt);
+                
                 //Validar la moneda                    
                 var moneda_id = $('#moneda_id').val();
                 if (moneda_id != null && moneda_id != "") {
@@ -440,6 +473,7 @@
 
                 } else {
                     $('#monto_doc_md').val();
+                    
                     $('#monto_doc_ml2').val(monto);
                     $('#montos_doc_ml2').val(monto);
                     var msg = 'Moneda incorrecta';
@@ -448,6 +482,7 @@
 
             } else {
                 $('#monto_doc_md').val();
+                
                 $('#tipo_cambio').val("");
                 $('#monto_doc_ml2').val(monto);
                 $('#montos_doc_ml2').val(monto);
@@ -474,6 +509,7 @@
         //Obtener la moneda en la lista
         //var MONEDA_ID = $('#moneda_id').val();
         $('#monto_doc_md').val(mt);
+        
         //selectTcambio(MONEDA_ID, mt);
         var tipo_cambio = $('#tipo_cambio').val();
         var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
@@ -574,11 +610,9 @@
             //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
             var numm = parseFloat(monto.replace(',', ''));
             if (numm > 0) {
-                //var numsm = "" + numm;
-                //numsm = numsm.replace('.', ',');
-                //var numexp2m = numsm;// * 60000000000;
-                //$('#monto_doc_md').val(numexp2m);
-            } else {
+                $('#MONTO_DOC_MD').val(numm);
+            } else {   
+                $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
             //Termina provisional
@@ -1357,8 +1391,7 @@ function evaluarDisTab() {
         } else if (select_neg == "P"){
 
         }        
-    }
-
+    } 
     return res;
 }
 
@@ -1538,13 +1571,13 @@ function selectTall(valu) {
     }
 }
 
-function selectDis(val) {
-    M.toast({ html: 'Tipo negociación ' + val });
+function selectDis(val) {    
     resetFooter();
     if (val == "M") {//Monto
         $('#div_apoyobase').css("display", "none");
         $('#div_montobase').css("display", "inherit");
     } else if (val == "P") {//Porcentaje
+        M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
         $('#div_montobase').css("display", "none");
         $('#div_apoyobase').css("display", "inherit");
     } else {
@@ -1672,6 +1705,8 @@ function selectCliente(valu) {
                     $("label[for='cli_name']").addClass("active");
                     $('#vkorg').val(data.VKORG).focus();
                     $("label[for='vkorg']").addClass("active");
+                    $('#parvw').val(data.PARVW).focus();
+                    $("label[for='parvw']").addClass("active");
                     $('#stcd1').val(data.STCD1);
                     $("label[for='stcd1']").addClass("active");
                     $('#vtweg').val(data.VTWEG);

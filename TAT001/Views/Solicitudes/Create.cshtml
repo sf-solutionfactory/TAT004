@@ -164,8 +164,8 @@
     <div class="div_right">
         @*<input id="image_print" type="image" src="~/images/solicitudPrint.png" />*@
         <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
-        @*<a class="btn waves-effect waves-light btn-small">reversar</a>*@
-        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small">Guardar</a>
+        <a id="btn_borrador" class="btn waves-effect waves-light btn-small">Borrador</a>
+        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
         @*<input type="submit" value="Guardar" class="btn btn-default btn waves-effect waves-light btn-small" />*@
     </div>
     <div class="div_bottom">
@@ -225,7 +225,7 @@
                             </div>
                         </div>
                         <div class="form-group col s12">
-                            @Html.LabelFor(model => model.TALL_ID, "Grupo de solicitudes", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @Html.DropDownList("GALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
                                 @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
@@ -233,12 +233,12 @@
                         </div>
                         @*Clasificación*@
                         @*<div class="form-group col s12">
-                                @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("TALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tall_id", @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
-                                </div>
-                            </div>*@
+                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("TALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tall_id", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
                         @Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })
                     </div>
                 </div>
@@ -247,14 +247,14 @@
                     <h5>Datos del país</h5>
                     <div class="row" style="margin-bottom:0">
                         @*@{
-                            TAT001.Entities.SOCIEDAD bukrs = ViewBag.SOCIEDAD_ID;*@
+                TAT001.Entities.SOCIEDAD bukrs = ViewBag.SOCIEDAD_ID;*@
                         @*<div class="form-group">
-                                @Html.LabelFor(model => model.SOCIEDAD_ID, "Company code", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
-                                </div>
-                            </div>*@
+                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Company code", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("SOCIEDAD_ID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
                         <div class="col s6">
                             <div class="form-group">
                                 @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -265,28 +265,28 @@
                             </div>
                         </div>
                         @*}
-                            <div class="form-group">
-                                    @Html.LabelFor(model => model.PAIS_ID, "Subregion", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("PAIS_ID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
-                                        @Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
+                <div class="form-group">
+                        @Html.LabelFor(model => model.PAIS_ID, "Subregion", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("PAIS_ID", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
                         @{
-                            TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
-                            <div class="col s6">
-                                <div class="form-group hidden">
-                                    @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
-                                        @*@Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })*@
-                                    </div>
-                                </div>
-                                <div class="input-field col-md-2">
-                                    <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
-                                    <label for="pais_txt">Subregión</label>
-                                </div>
-                            </div>
+                TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
+                <div class="col s6">
+                    <div class="form-group hidden">
+                        @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
+                            @*@Html.ValidationMessageFor(model => model.PAIS_ID, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                    <div class="input-field col-md-2">
+                        <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                        <label for="pais_txt">Subregión</label>
+                    </div>
+                </div>
                         }
                         <div class="form-group col s12">
                             @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -356,47 +356,45 @@
                             })
                         </script>
                         @*<div class="form-group">
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "citys_id", @class = "form-control", @style = "display: none" } })
-                                </div>
-                            </div>*@
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "citys_id", @class = "form-control", @style = "display: none" } })
+                    </div>
+                </div>*@
                     </div>
                 </div>
-            </div>
-            <div class="col s12 m6 l6">
                 @*Información General*@
                 <div class="card-panel">
                     <h5>Información General</h5>
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s12">
                             <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "fechad", @class = "form-control datepicker", onkeyup = "borrar(this);", @Value = ViewBag.FECHAD } })
-                            @Html.LabelFor(model => model.FECHAD, "Fecha", htmlAttributes: new { @class = "active" })
-                            @*@Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })*@
-
+                            @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
+                            @*@Html.LabelFor(model => model.FECHAD, "Fecha", htmlAttributes: new { @class = "active" })*@
+                            <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                            <label for="fechad">Fecha</label>
                         </div>
 
                         @*<div class="form-group">
-                                    @Html.LabelFor(model => model.FECHAD,"Hora", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
-                                        @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.FECHAD, "Hora", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
-                                    @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
-                                </div>
-                            </div>*@
+                        @Html.LabelFor(model => model.FECHAD,"Hora", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
+                            @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FECHAD, "Hora", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FECHAD, new { htmlAttributes = new { @id = "time_sol", @class = "form-control timepicker" } })
+                        @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
-                        <div class="form-group col s6">
-                            @Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.PERIODO, new { htmlAttributes = new { @id = "periodo", @class = "form-control" } })
+                        <div class="input-field col s6">
+                            @*@Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })*@                            
+                                @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
                                 @*@Html.ValidationMessageFor(model => model.PERIODO, "", new { @class = "text-danger" })*@
-                            </div>
+                                <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                <label for="periodo">Periodo</label>                            
                         </div>
                         <script>
                             var elemdp = document.querySelector('#fechad');
@@ -427,12 +425,14 @@
 
                         </script>
 
-                        <div class="form-group col s6">
-                            @Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.EJERCICIO, new { htmlAttributes = new { @id = "ejercicio", @class = "form-control" } })
+                        <div class="input-field col s6">
+                            @*@Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                            
+                                @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
                                 @*@Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })*@
-                            </div>
+                                <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                <label for="ejercicio">Ejercicio</label>
+                            
                         </div>
                         <div class="form-group col s12">
                             @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -441,8 +441,26 @@
                                 @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
+                        <div class="form-group input-field col s12">
+                            @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
+                            @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "control-label col-md-2" })
+                        </div>
+                        <script>
+                            function maxchar(w) {
+                                var maxLength = 255;
+                                var text = $('#notas_txt').val();
+                                var textLength = text.length;
+                                if (textLength > (maxLength)) {
+                                    $('#notas_txt').val(text.substring(0, ((maxLength))));
+                                    var msg = 'Número máximo para la negociación es ' + maxLength;
+                                    M.toast({ html: msg });
+                                }
+                            }
+                        </script>
                     </div>
                 </div>
+            </div>
+            <div class="col s12 m6 l6">                
                 @*Información Cliente*@
                 <div class="card-panel">
                     <h5>Información del cliente</h5>
@@ -495,11 +513,14 @@
                             <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
                             <label for="cli_name">Nombre</label>
                         </div>
+                        <div class="input-field  col s12">
+                            <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                            <label for="parvw">Tipo de cliente</label>
+                        </div>
                         <div class="input-field col s12">
                             @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
-                                @*@Html.ValidationMessageFor(model => model.VKORG, "", new { @class = "text-danger" })*@
+                                @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })                                
                             </div>
                         </div>
 
@@ -554,7 +575,8 @@
                         @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker", @onkeyup = "borrar(this);" } })
                         @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
                         @*@Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })*@
-                    </div><div class="input-field col s6">
+                    </div>
+                    <div class="input-field col s6">
                         <i class="material-icons prefix">date_range</i>
                         @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker", onkeyup = "borrar(this);" } })
                         @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
@@ -855,12 +877,14 @@
                         <div class="row" style="margin-bottom:0">
                             <div class="row">
                                 <div class="input-field col s6">
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @id = "monto_doc_md", @class = "form-control", @disabled = "disabled" } })                                            
-                                        </div>
-                                    </div>                                                                    
+                                        <div class="col-md-10">*@
+                                            @Html.HiddenFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @class = "form-control" } })
+                                        @*</div>
+                                    </div>*@
+                                    <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                    <label for="monto_doc_md">Monto</label>
                                 </div>
                                 <div class="input-field col s6">
                                     <div class="form-group">
@@ -899,14 +923,13 @@
                                         @*@Html.ValidationMessageFor(model => model.MONTO_DOC_ML2, "", new { @class = "text-danger" })*@
                                     </div>
                                 </div>
-                                <div class="form-group input-field col s12">
+                                @*<div class="form-group input-field col s12">
                                     @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
-                                    @Html.LabelFor(model => model.NOTAS, "Negociación", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    @*@Html.ValidationMessageFor(model => model.NOTAS, "", new { @class = "text-danger" })*@
-                                </div>
+                                    @Html.LabelFor(model => model.NOTAS, "Negociación", htmlAttributes: new { @class = "control-label col-md-2" })                                    
+                                </div>*@
                             </div>
                             @*<input type="button" id="btnsoportes" value="cargar" />*@
-                            <script>
+                            @*<script>
                                 function maxchar(w) {
                                     var maxLength = 255;
                                     var text = $('#notas_txt').val();
@@ -917,7 +940,7 @@
                                         M.toast({ html: msg });
                                     }
                                 }
-                            </script>
+                            </script>*@
                         </div>
                     </div>
                 </div>
