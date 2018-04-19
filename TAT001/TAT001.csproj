@@ -471,6 +471,7 @@
     <Compile Include="Models\HeaderFooter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\Pass.cs" />
     <Compile Include="Models\PresupuestoModels.cs" />
     <Compile Include="Models\Usuario.cs" />
@@ -533,6 +534,7 @@
     <Content Include="images\sf-logo.jpg" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
+    <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\create.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />

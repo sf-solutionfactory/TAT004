@@ -1258,30 +1258,117 @@ namespace TAT001.Controllers
                         }
                     }
                     DOCUMENTOP_MOD doc = new DOCUMENTOP_MOD();
-                    //Entities.DOCUMENTOP p = new DOCUMENTOP();
+
+                    //Rows variables
+                    double monto = 0;
+                    double porc_apoyo = 0;
+                    double monto_apoyo = 0;
+                    double montoc_apoyo = 0;
+                    double precio_sug = 0;
+                    double volumen_est = 0;
+                    double porc_apoyoest = 0;
+                    
 
                     var poss = dt.Rows[i][1];
                     string a = Convert.ToString(pos);
 
+                    
                     doc.POS = Convert.ToDecimal(a);
-                    doc.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][1]); //DEL
-                    doc.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][2]); //AL
-                    doc.MATNR = (string)dt.Rows[i][3]; //Material
-                    doc.MATKL = (string)dt.Rows[i][4]; //Categoría
-                    doc.DESC = (string)dt.Rows[i][5]; //Descripción
-                    double monto = (double)dt.Rows[i][6]; //Costo unitario    
-                    doc.MONTO = Convert.ToDecimal(monto);      
-                    double porc_apoyo = (double)dt.Rows[i][7]; //% apoyo
-                    doc.PORC_APOYO = Convert.ToDecimal(porc_apoyo);
-                    double monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
-                    doc.MONTO_APOYO = Convert.ToDecimal(monto_apoyo);
-                    double montoc_apoyo = (double)dt.Rows[i][9]; //Costo con apoyo
-                    doc.MONTOC_APOYO = Convert.ToDecimal(montoc_apoyo);
-                    double precio_sug = (double)dt.Rows[i][10]; //Precio sugerido
-                    doc.PRECIO_SUG = Convert.ToDecimal(precio_sug);
-                    double volumen_est = (double)dt.Rows[i][11]; //Volumen estimado
-                    doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
-                    double porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
+                    try
+                    {
+                        doc.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][1]); //DEL
+                    }
+                    catch (Exception e)
+                    {
+                        doc.VIGENCIA_DE = null;
+                    }
+                    try { 
+                        doc.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][2]); //AL
+                    }catch (Exception e)
+                    {
+                        doc.VIGENCIA_AL = null;
+                    }
+                    try
+                    {
+                        doc.MATNR = (string)dt.Rows[i][3]; //Material
+                        MATERIAL mat = material(doc.MATNR);
+                        if (mat != null)//Validar si el material existe
+                        {
+                            //doc.MATKL = (string)dt.Rows[i][4]; //Categoría se toma de la bd
+                            doc.MATKL = getCategoria(material: doc.MATNR); //Categoría
+                                                                           //doc.DESC = (string)dt.Rows[i][5]; //Descripción se toma de la bd
+                            doc.DESC = mat.MAKTX.ToString(); //Descripción
+                            doc.ACTIVO = true;
+                        }
+                        else
+                        {
+                            doc.ACTIVO = false;
+                        }
+                    }catch (Exception e)
+                    {
+                        doc.ACTIVO = false;
+                    }
+                    try
+                    {
+                        monto = (double)dt.Rows[i][6]; //Costo unitario    
+                    }
+                    catch (Exception e)
+                    {
+                        monto = 0;
+                    }
+                        doc.MONTO = Convert.ToDecimal(monto);
+                    try
+                    {
+                        porc_apoyo = (double)dt.Rows[i][7]; //% apoyo
+                    }
+                    catch (Exception e)
+                    {
+                        porc_apoyo = 0;
+                    }
+                        doc.PORC_APOYO = Convert.ToDecimal(porc_apoyo);
+                    try
+                    {
+                        monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
+                    }
+                    catch (Exception e)
+                    {
+                        monto_apoyo = 0;
+                    }
+                        doc.MONTO_APOYO = Convert.ToDecimal(monto_apoyo);
+                    try
+                    {
+                        montoc_apoyo = (double)dt.Rows[i][9]; //Costo con apoyo
+                    }
+                    catch (Exception e)
+                    {
+                        montoc_apoyo = 0;
+                    }
+                        doc.MONTOC_APOYO = Convert.ToDecimal(montoc_apoyo);
+                    try
+                    {
+                        precio_sug = (double)dt.Rows[i][10]; //Precio sugerido
+                    }
+                    catch (Exception e)
+                    {
+                        precio_sug = 0;
+                    }
+                        doc.PRECIO_SUG = Convert.ToDecimal(precio_sug);
+                    try
+                    {
+                        volumen_est = (double)dt.Rows[i][11]; //Volumen estimado
+                    }
+                    catch (Exception e)
+                    {
+                        volumen_est = 0;
+                    }
+                        doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
+                    try
+                    {
+                        porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
+                    }catch(Exception e)
+                    {
+                        porc_apoyoest = 0;
+                    }
                     doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
                     ld.Add(doc);
                     pos++;
@@ -1374,43 +1461,7 @@ namespace TAT001.Controllers
             string savePath = path + documento + "\\";         
 
             // Create the path and file name to check for duplicates.
-            string pathToCheck = savePath;
-
-            //
-            //FileInfo f = new FileInfo(fileName);
-            //string fullname = f.FullName;
-
-            //string pathl = Path.GetFullPath(f.DirectoryName.ToString());
-
-            //Get full file path
-            // string copyFrom = fullname;
-
-            // Create a temporary file name to use for checking duplicates.
-            //string tempfileName = "";
-
-            // Check to see if a file already exists with the
-            // same name as the file to upload.
-            //if (System.IO.File.Exists(Server.MapPath(pathToCheck)))
-            //if (!System.IO.File.Exists(savePath))
-            //{
-            //    //No existe se necesita crear
-            ////    int counter = 2;
-            ////    while (System.IO.File.Exists(Server.MapPath(pathToCheck)))
-            ////    {
-            ////        // if a file with this name already exists,
-            ////        // prefix the filename with a number.
-            ////        tempfileName = counter.ToString() + fileName;
-            ////        pathToCheck = savePath + tempfileName;
-            ////        counter++;
-            ////    }
-
-            ////    fileName = tempfileName;
-
-            ////    // Notify the user that the file name was changed.
-            //}
-
-            
-
+            string pathToCheck = savePath;       
 
             // Append the name of the file to upload to the path.
             savePath += fileName;
@@ -1441,37 +1492,6 @@ namespace TAT001.Controllers
             exception = ex;            
             return fileName;
         }
-
-        //static void CopyToSharedFolder()
-        //{
-        //    IntPtr admin_token = default(IntPtr);
-        //    WindowsIdentity wid_current = WindowsIdentity.GetCurrent();
-        //    WindowsIdentity wid_admin = null;
-        //    WindowsImpersonationContext wic = null;
-
-        //    try
-        //    {
-        //        //if (LogonUser("Local Admin name", "Local computer name", "pwd", 9, 0, ref admin_token) != 0)
-        //        if (new WindowsImpersonationContext.LogonUser("EQUIPO", "SF-0003", "0906", 9, 0, ref admin_token) != 0)
-        //        {
-        //            wid_admin = new WindowsIdentity(admin_token);
-        //            wic = wid_admin.Impersonate();
-        //            //System.IO.File.Copy("C:\\right.bmp", "\\\\157.60.113.28\\testnew\\right.bmp", true);
-        //            System.IO.File.Copy(@"D:\ram\Test.txt", @"\\10.245.66.50\pdc\Test.txt", true);
-        //        }
-        //    }
-        //    catch (System.Exception se)
-        //    {
-        //        int ret = Marshal.GetLastWin32Error();
-        //    }
-        //    finally
-        //    {
-        //        if (wic != null)
-        //        {
-        //            wic.Undo();
-        //        }
-        //    }
-        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -1524,6 +1544,67 @@ namespace TAT001.Controllers
                 return errorString;
             }
             return Convert.ToString(montoret);
+        }
+
+        [HttpPost]
+        public JsonResult materiales(string Prefix)
+        {
+            if (Prefix == null)
+                Prefix = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from m in db.MATERIALs
+                     where m.ID.Contains(Prefix) && m.ACTIVO == true
+                     select new { m.ID, m.MAKTX }).ToList();
+            if (c.Count == 0)
+            {
+                var c2 = (from m in db.MATERIALs
+                          where m.MAKTX.Contains(Prefix) && m.ACTIVO == true
+                          select new { m.ID, m.MAKTX }).ToList();
+                c.AddRange(c2);
+            }
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        public MATERIAL material(string material)
+        {
+            if (material == null)
+                material = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            MATERIAL mat = db.MATERIALs.Where(m => m.ID == material).FirstOrDefault();   
+                        
+            return mat;
+        }
+
+        [HttpPost]
+        public string getCategoria(string material)
+        {
+            if (material == null)
+                material = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
+            CATEGORIAT cat = new CATEGORIAT();
+
+            if (m != null && m.MATKL_ID != "")
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+
+                cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                            .Join(
+                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            c => c.ID,
+                            ct => ct.CATEGORIA_ID,
+                            (c, ct) => ct)
+                        .FirstOrDefault();
+        }                       
+            return cat.TXT50.ToString();
         }
     }
 }

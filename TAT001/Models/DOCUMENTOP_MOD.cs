@@ -24,6 +24,7 @@ namespace TAT001.Models
         public Nullable<decimal> APOYO_REAL { get; set; }
         public Nullable<System.DateTime> VIGENCIA_DE { get; set; }
         public Nullable<System.DateTime> VIGENCIA_AL { get; set; }
+        public bool ACTIVO { get; set; }
 
         public virtual Entities.DOCUMENTO DOCUMENTO { get; set; }
     }

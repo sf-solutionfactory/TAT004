@@ -173,8 +173,7 @@
                         //Obtener la categoría
                         var cat = $('#select_categoria').val();
 
-                        if (cat != "") {
-                            M.toast({ html: 'Categoría id '+cat });
+                        if (cat != "") {                        
                             var opt = $("#select_categoria option:selected").text();
                             t.row.add([
                                 cat + "", //col0
@@ -182,9 +181,9 @@
                                 "", ////col2
                                 "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
                                 "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "", //Material
                                 opt + "",
-                                "",
+                                opt + "",
                                 "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -205,7 +204,7 @@
                             "",
                             "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
                             "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -259,60 +258,6 @@
         }
     });
 
-    //Archivos de soporte
-    //$('#btnsoportes').click(function () {
-        //loadFilesf();
-        //var file_carta = $('#file_carta').get(0).files.length;
-
-        //var file_carta = $('#file_soporte').get().files;
-        //var file_contratos = $('#file_contratos').get(0).files.length;
-        //var file_factura = $('#file_factura').get(0).files.length;
-        //var file_jbp = $('#file_jbp').get(0).files.length;
-
-        //if (file_carta > 0)//&& file_contratos > 0 && file_factura > 0 && file_jbp > 0) {
-        //{
-        //var f_carta = document.getElementById("file_carta").files[0];
-        //var f_contratos = document.getElementById("file_contratos").files[0];
-        //var f_factura = document.getElementById("file_factura").files[0];
-        //var f_jbp = document.getElementById("file_jbp").files[0];
-
-        //var filename = f_carta.name;            
-        //M.toast({ html: 'Uploading' + filename });
-        //loadFile(f_carta)//, f_contratos, f_factura, f_jbp);   
-
-        //} else {
-        //M.toast({ html: 'Seleccione un archivo' });
-        //}        
-        //var files = $('.file_soporte');
-        //var message = "";
-
-        //for (var i = 0; i < files.length; i++) {
-        //    //var file = $(files[i]).get(0).files;
-        //    var className = $(files[i]).attr("class");
-        //    //Valida si el archivo es obligatorio
-        //    if (className.indexOf('nec') >= 0) {
-        //        //Validar archivo en archivo obligatorio
-        //        var nfile = $(files[i]).get(0).files.length;
-        //        if (!nfile > 0) {
-        //            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
-        //            //var parenttd = $(files[i]).closest('td').prev().children().eq(0).html();
-        //            //var sitd = $(parenttd).prev().children().eq(0).html();
-        //            //var labeltext = $(sitd).children().eq(0).html();
-        //            //M.toast({ html: 'Error! Archivo Obligatorio: ' + lbltext });
-        //            message = 'Error! Archivo Obligatorio: ' + lbltext;
-        //            break;
-        //        }
-        //    }
-        //}
-
-        //if (message == "") {
-        //    loadFiles(files)
-        //} else {
-        //    M.toast({ html: message });
-        //}
-
-        
-    //});
     //Temporalidad
     if ($('#monto_doc_md').val() != "") {
         $("label[for='monto_doc_md']").addClass("active");
@@ -637,6 +582,7 @@ $('body').on('focusout', '.input_oper', function () {
 //Variables globales
 var detail = "";
 var montocambio = 0;
+var categoriamaterial = "";
 
 function updateTotalRow(t, tr) {
 
@@ -674,21 +620,6 @@ function updateTotalRow(t, tr) {
     tr.find("td:eq(" + (14 + index) + ")").text("$" + col14);
     
     updateFooter();
-    //var col3 = tr.find("td:eq(3) input").val(); // get current row 3rd TD
-
-    //var col5 = tr.find("td:eq(5) input").val();
-
-    //if ($.isNumeric(col3) && $.isNumeric(col5)) {
-    //var v = "$" + (col3 * col5);
-    //tr.find("td:eq(7)").text(v);
-    //t.row(inn).data(v)[7];
-    //t.draw(false);
-    //t.fnUpdate( v, index, 7 ); 
-
-    //}
-    //Index 3 * 5 = 7 
-
-
 }
 
 function resetFooter() {
@@ -719,9 +650,6 @@ function updateFooter() {
     coltotal = (14 + index);
 
     var t = $('#table_dis').DataTable();
-    //var api = $('#table_dis').data("api");
-    //var api = t.api();
-
     var total = 0;
 
     $('#table_dis').find("tr").each(function (index) {
@@ -815,36 +743,13 @@ function format(catid) {
             async: false
         });
     } 
-    //    return 'Full name: Matías Gallegos <br>'+
-    //        'Salary: $0 <br>'+
-    //        'The child row can contain any data you wish, including links, images, inner tables etc.';
+
     return detail;
 }
 
 function useReturnData(data) {
     detail = data;
 };
-
-function keypressHandler(e) {
-
-    //if (e.which == 13) {
-    //    e.preventDefault(); //stops default action: submitting form
-    //    //var msg = 'Enter';
-    //    //M.toast({ html: msg })
-
-    //    var monto_doc_md = $('#monto_doc_md').val()
-
-    //    if (monto_doc_md > 0){
-    //        //Obtener la moneda en la lista
-    //        var MONEDA_ID = $('#moneda_id').val();
-
-    //        selectTcambio(MONEDA_ID, monto_doc_md);
-
-    //    }
-
-    //}
-    alert("ddd");
-}
 
 function evaluarExt(filename) {
 
@@ -895,20 +800,14 @@ function loadFilesf() {
 function loadExcel(file) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
     formData.append("FileUpload", file);
-    //}
 
     var table = $('#table_dis').DataTable();
     table.clear().draw();
     $.ajax({
         type: "POST",
         url: 'LoadExcel',
-        //data: { "url": url },
         data: formData,
         dataType: "json",
         cache: false,
@@ -962,16 +861,9 @@ function loadExcel(file) {
 function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
     formData.append("f_carta", f_carta);
-    //formData.append("f_contratos", f_contratos);
-    //formData.append("f_factura", f_factura);
-    //formData.append("f_jbp", f_jbp);
-    //}
+
 
     $.ajax({
         type: "POST",
@@ -996,23 +888,13 @@ function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
 
 }
 
-function loadFiles(files) {//, f_contratos, f_factura, f_jbp) {
+function loadFiles(files) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
-    //formData.append("f_carta", f_carta);
-    //formData.append("f_contratos", f_contratos);
-    //formData.append("f_factura", f_factura);
-    //formData.append("f_jbp", f_jbp);
-    //}
     var count = 1;
     for (var i = 0; i < files.length; i++) {
         var file = $(files[i]).get(0);
-        //var name = "f_carta" + count;
         if ($(files[i]).get(0).files.length > 0) {
             formData.append(file.files[0].name, file.files[0]);
             count++;
@@ -1885,26 +1767,34 @@ function validar_montos(base, footer) {
     return false;
 }
 
-    //function loadExcel() {
+function getCategoria(mat) {
+    categoriamaterial = "";
+    var localcat = "";
+    if (mat != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getCategoria',
+            data: { "material": mat },
 
-    //    var url = "C:\Users\matias\Desktop\prueba.xlsx";
-    //    var sim = "@@n\\";
-    //    var url2 = url.replace('n\\', sim));
+            success: function (data) {
 
-    //    $.ajax({
-    //        type: "POST",
-    //        url: 'LoadExcel',
-    //        data: { "url": url },
-    //        dataType: "json",
-    //        success: function (data) {
+                if (data !== null || data !== "") {
+                        asignarCategoria(data);                     
+                }
 
-    //            if (data !== null || data !== "") {
-    //                alert("success" + data);
-    //            }
-    //        },
-    //        error: function (data) {
-    //            alert("Request couldn't be processed. Please try again later. the reason        " + data);
-    //        }
-    //    });
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+        });
+    }
 
-    //}
+    localcat = categoriamaterial;
+    return localcat;
+
+}
+
+function asignarCategoria(cat) {
+    categoriamaterial = cat;
+}
