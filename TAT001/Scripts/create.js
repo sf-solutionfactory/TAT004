@@ -330,7 +330,7 @@
 
     $('#tab_soporte').on("click", function (e) {
 
-        //evalTempTab(false, e);
+        evalTempTab(false, e);
 
     });
 
