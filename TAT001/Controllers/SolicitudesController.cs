@@ -1239,8 +1239,8 @@ namespace TAT001.Controllers
                 var columnsc = dt.Columns.Count;
 
                 //Columnd and row to start
-                var rows = 4; // 5
-                var cols = 1; // B
+                var rows = 1; // 2
+                var cols = 0; // A
                 var pos = 1;
 
                 for (int i = rows; i < rowsc; i++)
@@ -1269,28 +1269,28 @@ namespace TAT001.Controllers
                     double porc_apoyoest = 0;
                     
 
-                    var poss = dt.Rows[i][1];
+                    //var poss = dt.Rows[i][1];
                     string a = Convert.ToString(pos);
 
                     
                     doc.POS = Convert.ToDecimal(a);
                     try
                     {
-                        doc.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][1]); //DEL
+                        doc.VIGENCIA_DE = Convert.ToDateTime(dt.Rows[i][0]); //DEL
                     }
                     catch (Exception e)
                     {
                         doc.VIGENCIA_DE = null;
                     }
                     try { 
-                        doc.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][2]); //AL
+                        doc.VIGENCIA_AL = Convert.ToDateTime(dt.Rows[i][1]); //AL
                     }catch (Exception e)
                     {
                         doc.VIGENCIA_AL = null;
                     }
                     try
                     {
-                        doc.MATNR = (string)dt.Rows[i][3]; //Material
+                        doc.MATNR = (string)dt.Rows[i][2]; //Material
                         MATERIAL mat = material(doc.MATNR);
                         if (mat != null)//Validar si el material existe
                         {
@@ -1310,7 +1310,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        monto = (double)dt.Rows[i][6]; //Costo unitario    
+                        monto = (double)dt.Rows[i][3]; //Costo unitario    
                     }
                     catch (Exception e)
                     {
@@ -1319,34 +1319,35 @@ namespace TAT001.Controllers
                         doc.MONTO = Convert.ToDecimal(monto);
                     try
                     {
-                        porc_apoyo = (double)dt.Rows[i][7]; //% apoyo
+                        porc_apoyo = (double)dt.Rows[i][4]; //% apoyo
+                        porc_apoyo = porc_apoyo * 100;
                     }
                     catch (Exception e)
                     {
                         porc_apoyo = 0;
                     }
                         doc.PORC_APOYO = Convert.ToDecimal(porc_apoyo);
+                    //try
+                    //{
+                    //    monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    monto_apoyo = 0;
+                    //}
+                    //    doc.MONTO_APOYO = Convert.ToDecimal(monto_apoyo);
+                    //try
+                    //{
+                    //    montoc_apoyo = (double)dt.Rows[i][9]; //Costo con apoyo
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    montoc_apoyo = 0;
+                    //}
+                    //    doc.MONTOC_APOYO = Convert.ToDecimal(montoc_apoyo);
                     try
                     {
-                        monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
-                    }
-                    catch (Exception e)
-                    {
-                        monto_apoyo = 0;
-                    }
-                        doc.MONTO_APOYO = Convert.ToDecimal(monto_apoyo);
-                    try
-                    {
-                        montoc_apoyo = (double)dt.Rows[i][9]; //Costo con apoyo
-                    }
-                    catch (Exception e)
-                    {
-                        montoc_apoyo = 0;
-                    }
-                        doc.MONTOC_APOYO = Convert.ToDecimal(montoc_apoyo);
-                    try
-                    {
-                        precio_sug = (double)dt.Rows[i][10]; //Precio sugerido
+                        precio_sug = (double)dt.Rows[i][5]; //Precio sugerido
                     }
                     catch (Exception e)
                     {
@@ -1355,20 +1356,20 @@ namespace TAT001.Controllers
                         doc.PRECIO_SUG = Convert.ToDecimal(precio_sug);
                     try
                     {
-                        volumen_est = (double)dt.Rows[i][11]; //Volumen estimado
+                        volumen_est = (double)dt.Rows[i][6]; //Volumen estimado
                     }
                     catch (Exception e)
                     {
                         volumen_est = 0;
                     }
                         doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
-                    try
-                    {
-                        porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
-                    }catch(Exception e)
-                    {
-                        porc_apoyoest = 0;
-                    }
+                    //try
+                    //{
+                    //    //porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
+                    //}catch(Exception e)
+                    //{
+                    //    porc_apoyoest = 0;
+                    //}
                     doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
                     ld.Add(doc);
                     pos++;
@@ -1578,6 +1579,18 @@ namespace TAT001.Controllers
             MATERIAL mat = db.MATERIALs.Where(m => m.ID == material).FirstOrDefault();   
                         
             return mat;
+        }
+
+        [HttpPost]
+        public JsonResult getMaterial(string mat)
+        {
+            if (mat == null)
+                mat = "";
+
+            MaterialVal matt = db.MATERIALs.Where(m => m.ID == mat && m.ACTIVO == true).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATKL_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
+
+            JsonResult cc = Json(matt, JsonRequestBehavior.AllowGet);
+            return cc;
         }
 
         [HttpPost]

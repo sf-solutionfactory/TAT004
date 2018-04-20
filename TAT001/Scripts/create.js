@@ -575,7 +575,26 @@ $('body').on('focusout', '.input_oper', function () {
     var tr = $(this).closest('tr'); //Obtener el row 
 
 
-    updateTotalRow(t, tr);
+    //updateTotalRow(t, tr);
+
+    //Validar si el focusout fue en la columna de material
+    if ($(this).hasClass("input_material")) {
+        //Validar el material
+        var mat = $(this).val();
+        var val = valMaterial(mat);
+        var index = getIndex();
+
+        if (val.ID == null || val.ID == "") {
+            tr.find('td').eq((5 + index)).addClass("errorMaterial");
+        } else if (val.ID == mat) {
+            
+            selectMaterial(val.ID, val.MAKTX, tr);
+
+        } else {
+            tr.find('td').eq((5 + index)).addClass("errorMaterial");
+        }
+
+    }
 
 });
 
@@ -583,6 +602,7 @@ $('body').on('focusout', '.input_oper', function () {
 var detail = "";
 var montocambio = 0;
 var categoriamaterial = "";
+var materialVal = "";
 
 function updateTotalRow(t, tr) {
 
@@ -608,11 +628,12 @@ function updateTotalRow(t, tr) {
     var col10 = col8 * col9;
 
     //Apoyo por pieza
-    tr.find("td:eq(" + (10 + index) + ")").text("$" + col10);
+    //Modificar el input
+    tr.find("td:eq(" + (10 + index) + ") input").val(col10);
 
     //Costo con apoyo
     var col11 = col8 - col10;
-    tr.find("td:eq(" + (11 + index) + ")").text("$" + col11);
+    tr.find("td:eq(" + (11 + index) + ")").text(col11);
 
     //Estimado apoyo
     var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
@@ -620,6 +641,18 @@ function updateTotalRow(t, tr) {
     tr.find("td:eq(" + (14 + index) + ")").text("$" + col14);
     
     updateFooter();
+}
+
+function updateTable() {
+    var t = $('#table_dis').DataTable();
+    $('#table_dis > tbody  > tr').each(function () {
+                
+        updateTotalRow(t, $(this));
+        
+    });
+
+    updateFooter();
+
 }
 
 function resetFooter() {
@@ -816,29 +849,34 @@ function loadExcel(file) {
         success: function (data) {
 
             if (data !== null || data !== "") {
-                //alert("success" + data);
+                var index = getIndex();
                 $.each(data, function (i, dataj) {
 
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
-                    table.row.add([
-                        dataj.POS,
-                        "",
-                        "",
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
-                        dataj.MATKL,
-                        dataj.DESC,                        
-                        dataj.MONTO,                     
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",                        
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",                     
-                        dataj.MONTOC_APOYO,                        
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",                
-                        "<input class=\"input_dis\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",                      
-                        dataj.PORC_APOYOEST
-                    ]).draw(false);
-                });
+                    var addedRow = table.row.add([
+                                        dataj.POS,
+                                        "",
+                                        "",
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                                        "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                                        dataj.MATKL,
+                                        dataj.DESC,                        
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",                     
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",                        
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",                     
+                                        dataj.MONTOC_APOYO,                        
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",                
+                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",                      
+                                        dataj.PORC_APOYOEST
+                    ]).draw(false).node();
+
+                    if (dataj.ACTIVO == false) {
+                        $(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
+                    }
+
+                }); //Fin de for
                 $('#table_dis').css("font-size", "12px");
                 $('#table_dis').css("display", "table");  
                 $('#tfoot_dis').css("display", "table-footer-group");
@@ -848,6 +886,8 @@ function loadExcel(file) {
                     table.column(0).visible(false);
                     table.column(1).visible(false);
                 }
+
+                updateTable();
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -855,6 +895,9 @@ function loadExcel(file) {
         },
         async: false
     });
+
+    //Actualizar los valores en la tabla
+    updateTable();
 
 }
 
@@ -1784,7 +1827,7 @@ function getCategoria(mat) {
 
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: msg });
+                M.toast({ html: httpStatusMessage });
             },
             async: false
         });
@@ -1798,3 +1841,36 @@ function getCategoria(mat) {
 function asignarCategoria(cat) {
     categoriamaterial = cat;
 }
+
+function valMaterial(mat) {
+    materialVal = "";
+    var localval = "";
+    if (mat != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getMaterial',
+            dataType: "json",
+            data: { "mat": mat },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarValMat(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+    localval = materialVal;
+    return localval;
+}
+
+function asignarValMat(val) {
+    materialVal = val;
+}
+

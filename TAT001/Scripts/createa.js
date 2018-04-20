@@ -38,4 +38,6 @@ function selectMaterial(val, desc, tr) {
     //Descripción
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
 
+    //Remove background a celda de material
+    tr.find('td').eq((5 + index)).removeClass("errorMaterial");
 }
