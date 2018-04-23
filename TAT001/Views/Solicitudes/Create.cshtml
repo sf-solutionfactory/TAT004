@@ -446,7 +446,7 @@
                         </div>
                         <div class="form-group input-field col s12">
                             @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
-                            @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "control-label col-md-2 active" })
                         </div>
                         <script>
                             function maxchar(w) {
@@ -657,11 +657,13 @@
                     <div class="row" style="margin-bottom:0">
                         <div class="col s12">
                             <form action="#">
-                                <label>Carta</label><label class"lbl_nec">*</label>
+                                @*<label>Carta</label><label class"lbl_nec">*</label>*@
+                                <label>Carta</label><label class"lbl_nec"></label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
-                                        <input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">
+                                        @*<input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">*@
+                                        <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
                                     </div>
                                     <div class="file-path-wrapper">
                                         <input class="file-path validate" type="text">

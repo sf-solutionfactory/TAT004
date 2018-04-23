@@ -575,7 +575,7 @@ $('body').on('focusout', '.input_oper', function () {
     var tr = $(this).closest('tr'); //Obtener el row 
 
 
-    //updateTotalRow(t, tr);
+    updateTotalRow(t, tr);
 
     //Validar si el focusout fue en la columna de material
     if ($(this).hasClass("input_material")) {
@@ -595,6 +595,12 @@ $('body').on('focusout', '.input_oper', function () {
         }
 
     }
+
+});
+
+//Validar el patrón para dos decimales en los campos editables de la tabla
+$('body').on('input', '.input_oper', function () {
+    
 
 });
 
@@ -626,19 +632,20 @@ function updateTotalRow(t, tr) {
     }
 
     var col10 = col8 * col9;
-
     //Apoyo por pieza
     //Modificar el input
-    tr.find("td:eq(" + (10 + index) + ") input").val(col10);
+    tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
 
     //Costo con apoyo
     var col11 = col8 - col10;
-    tr.find("td:eq(" + (11 + index) + ")").text(col11);
+    //col11 = col11.toFixed(2);
+    tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
 
     //Estimado apoyo
     var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
     var col14 = col10 * col13;
-    tr.find("td:eq(" + (14 + index) + ")").text("$" + col14);
+    //col14 = col14.toFixed(2);
+    tr.find("td:eq(" + (14 + index) + ")").text("$" + col14.toFixed(2));
     
     updateFooter();
 }
@@ -691,10 +698,12 @@ function updateFooter() {
         col4 = convertI(col4);
 
         if ($.isNumeric(col4)) {
-            total += col4;
+            total += col4;            
         }
 
     });
+
+    total = total.toFixed(2);
 
     $('#total_dis').text("$" + total);
  }

@@ -1317,6 +1317,7 @@ namespace TAT001.Controllers
                         monto = 0;
                     }
                         doc.MONTO = Convert.ToDecimal(monto);
+                        //doc.MONTO = Math.Round(doc.MONTO, 2);
                     try
                     {
                         porc_apoyo = (double)dt.Rows[i][4]; //% apoyo
@@ -1327,6 +1328,7 @@ namespace TAT001.Controllers
                         porc_apoyo = 0;
                     }
                         doc.PORC_APOYO = Convert.ToDecimal(porc_apoyo);
+                        //doc.PORC_APOYO = Math.Round(doc.PORC_APOYO, 2);
                     //try
                     //{
                     //    monto_apoyo = (double)dt.Rows[i][8]; //Apoyo por pieza
@@ -1354,6 +1356,7 @@ namespace TAT001.Controllers
                         precio_sug = 0;
                     }
                         doc.PRECIO_SUG = Convert.ToDecimal(precio_sug);
+                        //doc.PRECIO_SUG = Math.Round(doc.PRECIO_SUG, 2);
                     try
                     {
                         volumen_est = (double)dt.Rows[i][6]; //Volumen estimado
@@ -1363,6 +1366,7 @@ namespace TAT001.Controllers
                         volumen_est = 0;
                     }
                         doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
+                        //doc.VOLUMEN_EST = Math.Round(doc.VOLUMEN_EST, 2);
                     //try
                     //{
                     //    //porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
@@ -1370,7 +1374,8 @@ namespace TAT001.Controllers
                     //{
                     //    porc_apoyoest = 0;
                     //}
-                    doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
+                    //doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
+
                     ld.Add(doc);
                     pos++;
                 }
