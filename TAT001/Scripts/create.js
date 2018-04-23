@@ -2,6 +2,7 @@
 
     //Validar que los labels esten activos
     //Información
+    $("label[for='notas_txt']").addClass("active");
     //Nombre    
     if ($('#cli_name').val() != "") {
         $("label[for='cli_name']").addClass("active");

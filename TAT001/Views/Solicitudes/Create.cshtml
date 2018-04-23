@@ -437,16 +437,14 @@
                                 <label for="ejercicio">Ejercicio</label>
                             
                         </div>
-                        <div class="form-group col s12">
+                        <div class="input-field col s12">
                             @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
                                 @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
                                 @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
-                            </div>
                         </div>
-                        <div class="form-group input-field col s12">
+                        <div class="input-field col s12">
                             @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
-                            @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "control-label col-md-2 active" })
+                            @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt" })
                         </div>
                         <script>
                             function maxchar(w) {
