@@ -29,6 +29,7 @@ namespace TAT001.Entities
     
         public virtual DbSet<ACCION> ACCIONs { get; set; }
         public virtual DbSet<CAMPOS> CAMPOS { get; set; }
+        public virtual DbSet<CANAL> CANALs { get; set; }
         public virtual DbSet<CARPETA> CARPETAs { get; set; }
         public virtual DbSet<CARPETAT> CARPETATs { get; set; }
         public virtual DbSet<CARTA> CARTAs { get; set; }
@@ -38,8 +39,11 @@ namespace TAT001.Entities
         public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
         public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
+        public virtual DbSet<CONPOSAPP> CONPOSAPPs { get; set; }
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
+        public virtual DbSet<DET_AGENTE> DET_AGENTE { get; set; }
+        public virtual DbSet<DET_APROB> DET_APROB { get; set; }
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
@@ -48,6 +52,7 @@ namespace TAT001.Entities
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
         public virtual DbSet<GALLT> GALLTs { get; set; }
+        public virtual DbSet<GAUTORIZACION> GAUTORIZACIONs { get; set; }
         public virtual DbSet<IIMPUESTO> IIMPUESTOes { get; set; }
         public virtual DbSet<IMPUESTO> IMPUESTOes { get; set; }
         public virtual DbSet<LEYENDA> LEYENDAs { get; set; }
@@ -92,10 +97,10 @@ namespace TAT001.Entities
         public virtual DbSet<WORKFT> WORKFTs { get; set; }
         public virtual DbSet<WORKFV> WORKFVs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
+        public virtual DbSet<CREADOR> CREADORs { get; set; }
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<CANAL> CANALs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

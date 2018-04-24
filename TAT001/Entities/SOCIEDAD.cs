@@ -18,6 +18,7 @@ namespace TAT001.Entities
         public SOCIEDAD()
         {
             this.CONPOSAPHs = new HashSet<CONPOSAPH>();
+            this.DET_APROB = new HashSet<DET_APROB>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.USUARIOs = new HashSet<USUARIO>();
         }
@@ -36,6 +37,8 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONPOSAPH> CONPOSAPHs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB> DET_APROB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual MONEDA MONEDA { get; set; }

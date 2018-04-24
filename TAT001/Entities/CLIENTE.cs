@@ -30,6 +30,8 @@ namespace TAT001.Entities
         public string STCD1 { get; set; }
         public string STCD2 { get; set; }
         public string LAND { get; set; }
+        public string REGION { get; set; }
+        public string SUBREGION { get; set; }
         public string REGIO { get; set; }
         public string ORT01 { get; set; }
         public string STRAS_GP { get; set; }
@@ -43,6 +45,10 @@ namespace TAT001.Entities
         public bool ACTIVO { get; set; }
         public string BANNER { get; set; }
         public string CANAL { get; set; }
+        public string BZIRK { get; set; }
+        public string KONDA { get; set; }
+        public string VKGRP { get; set; }
+        public string VKBUR { get; set; }
     
         public virtual PAI PAI { get; set; }
         public virtual TCLIENTE TCLIENTE { get; set; }

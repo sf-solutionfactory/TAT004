@@ -18,8 +18,8 @@ namespace TAT001.Entities
         public string TIPO_SOL { get; set; }
         public string TIPO_DOC { get; set; }
         public string SOCIEDAD { get; set; }
-        public Nullable<System.DateTime> FECHA_CONTAB { get; set; }
-        public Nullable<System.DateTime> FECHA_DOCU { get; set; }
+        public string FECHA_CONTAB { get; set; }
+        public string FECHA_DOCU { get; set; }
         public string MONEDA { get; set; }
         public string HEADER_TEXT { get; set; }
         public Nullable<System.DateTime> FECHA_INIVIG { get; set; }

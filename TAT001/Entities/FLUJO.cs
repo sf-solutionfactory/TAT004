@@ -19,6 +19,7 @@ namespace TAT001.Entities
         public int WF_POS { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
+        public int DETPOS { get; set; }
         public Nullable<int> LOOP { get; set; }
         public string USUARIOA_ID { get; set; }
         public string USUARIOD_ID { get; set; }

@@ -223,14 +223,14 @@
                             @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                             @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("TSOL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                @Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
                                 @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                         <div class="form-group col s12">
                             @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("GALL_ID", null, "--Seleccione--", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
+                                @Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
                                 @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
@@ -656,7 +656,7 @@
                         <div class="col s12">
                             <form action="#">
                                 @*<label>Carta</label><label class"lbl_nec">*</label>*@
-                                <label>Carta</label><label class"lbl_nec"></label>
+                                <label name="files_soportel" >Carta</label><label class"lbl_nec"></label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
@@ -667,7 +667,7 @@
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <label>Contratos</label><label class"lbl_nec"></label>
+                                <label name="files_soportel">Contratos</label><label class"lbl_nec"></label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
@@ -677,7 +677,7 @@
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <label>Facturas Cliente</label>
+                                <label name="files_soportel">Facturas Cliente</label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
@@ -687,7 +687,7 @@
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <label>JBP</label>
+                                <label name="files_soportel">JBP</label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
@@ -697,7 +697,7 @@
                                         <input class="file-path validate" type="text">
                                     </div>
                                 </div>
-                                <label>Otros</label>
+                                <label name="files_soportel">Otros</label>
                                 <div class="file-field input-field">
                                     <div class="btn">
                                         <span>Examinar</span>
@@ -750,31 +750,29 @@
                     <h5>Distribución</h5>
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s6">
-                            <select id="select_neg" onchange="selectDis(this.value)">
-                                <option value="" selected>Choose your option</option>
+                            <select id="select_neg" onchange="selectDis(this.value)">                                
                                 <option value="M">Monto</option>
                                 <option value="P">Porcentaje</option>
                             </select>
                             <label>Tipo de negociación</label>
                         </div>
                         <div class="input-field col s6">
-                            <select id="select_dis" onchange="selectMonto(this.value)">
-                                <option value="" selected>Choose your option</option>
-                                <option value="C">Categoría</option>
+                            <select id="select_dis" onchange="selectMonto(this.value)">                                
                                 <option value="M">Material</option>
+                                <option value="C">Categoría</option>
                             </select>
                             <label>Distribución</label>
                         </div>
                         <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
                             @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("CATEGORIA_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
+                                @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
                             </div>
                         </div>
                         <div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none">
                             @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.DropDownList("BASE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "select_base", @class = "form-control" })
+                                @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
                             </div>
                         </div>
                     </div>
@@ -792,7 +790,7 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
                                 </div>
                             </div>
                         </div>
@@ -871,11 +869,11 @@
                             <div class="row">
                                 <div class="input-field col s6">
                                     @*<div class="form-group">
-                                        @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">*@
-                                            @Html.HiddenFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @class = "form-control" } })
-                                        @*</div>
-                                    </div>*@
+                        @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">*@
+                                    @Html.HiddenFor(model => model.MONTO_DOC_MD, new { htmlAttributes = new { @class = "form-control" } })
+                                    @*</div>
+                        </div>*@
                                     <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
                                     <label for="monto_doc_md">Monto</label>
                                 </div>
@@ -883,7 +881,7 @@
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
-                                            @Html.DropDownList("MONEDA", null, "--Seleccione--", htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })                                            
+                                            @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })
                                         </div>
                                     </div>
                                 </div>
@@ -895,7 +893,7 @@
                                 <div class="form-group input-field col s6">
                                     @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })                                        
+                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })
                                     </div>
                                 </div>
                                 <div class=" input-field col s6">
@@ -917,29 +915,104 @@
                                     </div>
                                 </div>
                                 @*<div class="form-group input-field col s12">
-                                    @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
-                                    @Html.LabelFor(model => model.NOTAS, "Negociación", htmlAttributes: new { @class = "control-label col-md-2" })                                    
-                                </div>*@
+                        @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
+                        @Html.LabelFor(model => model.NOTAS, "Negociación", htmlAttributes: new { @class = "control-label col-md-2" })
+                    </div>*@
                             </div>
                             @*<input type="button" id="btnsoportes" value="cargar" />*@
                             @*<script>
-                                function maxchar(w) {
-                                    var maxLength = 255;
-                                    var text = $('#notas_txt').val();
-                                    var textLength = text.length;
-                                    if (textLength > (maxLength)) {
-                                        $('#notas_txt').val(text.substring(0, ((maxLength))));
-                                        var msg = 'Número máximo para la negociación es ' + maxLength;
-                                        M.toast({ html: msg });
-                                    }
-                                }
-                            </script>*@
+                    function maxchar(w) {
+                        var maxLength = 255;
+                        var text = $('#notas_txt').val();
+                        var textLength = text.length;
+                        if (textLength > (maxLength)) {
+                            $('#notas_txt').val(text.substring(0, ((maxLength))));
+                            var msg = 'Número máximo para la negociación es ' + maxLength;
+                            M.toast({ html: msg });
+                        }
+                    }
+                </script>*@
+                        </div>
+                    </div>
+                    <div class="card-panel">
+                        <h5>Análisis Presupuesto</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <table class="tg">
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Presupuesto canal</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_vtweg"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_canal"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Presupuesto cliente</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_kunnr"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_banner"></label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="card-panel">
+                            <div class="row" style="margin-bottom:0">
+                                <table class="tg">
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Registrado en SAP</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_c"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Por registrar en SAP</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_a"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>En proceso TAT</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_p"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Consumido</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_t"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Presupuesto disponible</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div class="col s12 m6 l6">
-                        <div class="card-panel">
+                        @*<div class="card-panel">
                             <h5>Análisis Presupuesto</h5>
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg">
@@ -989,7 +1062,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="card-panel">
                             <h5>Análisis Solicitud</h5>
                             <div class="row" style="margin-bottom:0">

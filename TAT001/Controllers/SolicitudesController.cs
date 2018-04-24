@@ -296,6 +296,8 @@ namespace TAT001.Controllers
                                     TEXT = ct.TXT50
                                 }).ToList();
 
+                
+
                 ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
                 List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
                 ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
@@ -359,7 +361,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte)
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, FormCollection form)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -501,7 +503,11 @@ namespace TAT001.Controllers
                         }
                     }
 
-                    if (numFiles > 0) { 
+                    if (numFiles > 0) {
+                        //Obtener la clase de los archivos de los archivos
+                        //var scannedValue = Request.Form["files_soportel"];
+                        var scan = form["files_soportel"];
+
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
@@ -510,6 +516,8 @@ namespace TAT001.Controllers
                         //Evaluar que se creo el directorio
                         if (dir.Equals(""))
                         {
+                            
+                            int i = 0;
                             foreach (HttpPostedFileBase file in files_soporte)
                             {
                                 string errorfiles = "";
@@ -518,15 +526,42 @@ namespace TAT001.Controllers
                                 {
                                     if (file.ContentLength > 0)
                                     {
+                                        string path = "";
                                         string filename = file.FileName;
                                         errorfiles = "";
-                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles);
+                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);
+
+                                        if (errorfiles == "")
+                                        {
+                                            DOCUMENTOA doc = new DOCUMENTOA();
+                                            var ext = System.IO.Path.GetExtension(filename);
+                                            i++;
+                                            doc.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                            doc.POS = i;
+                                            doc.TIPO = ext.Replace(".","");
+                                            //doc.CLASE
+                                            doc.STEP_WF = 1;
+                                            doc.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
+                                            doc.PATH = path;
+                                            doc.ACTIVO = true;
+                                            try
+                                            {
+                                                db.DOCUMENTOAs.Add(doc);
+                                                db.SaveChanges();
+                                            }catch(Exception e)
+                                            {
+                                                errorfiles = "No se guardo archivo " + filename;
+                                            }
+
+                                        }
                                     }
                                 }
                                 if (errorfiles != "")
                                 {
                                     errorMessage += "Error con el archivo " + errorfiles;
                                 }
+
+
 
                             }
                         }
@@ -1098,7 +1133,7 @@ namespace TAT001.Controllers
 
                 if(canal != null)
                 {
-                    id_cl.VTWEG = canal.CANAL1;
+                    id_cl.VTWEG = canal.CANAL1 +" - "+canal.CDESCRIPCION;
                 }
 
                 //Obtener el tipo de cliente
@@ -1393,6 +1428,7 @@ namespace TAT001.Controllers
         {
             var res = "";
             string error = "";
+            string path = "";
             if (Request.Files.Count > 0)
             {
                 for (int i = 0; i < Request.Files.Count; i++)
@@ -1400,7 +1436,7 @@ namespace TAT001.Controllers
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     HttpPostedFileBase file = Request.Files[i];
                     string filename = file.FileName;
-                    res = SaveFile(file, url, "100" ,out error);
+                    res = SaveFile(file, url, "100" ,out error, out path);
                 }
                 //HttpPostedFileBase file1 = Request.Files["f_carta"];
                 //HttpPostedFileBase file2 = Request.Files["f_contratos"];
@@ -1456,7 +1492,7 @@ namespace TAT001.Controllers
             return ex;
         }
 
-        public string SaveFile(HttpPostedFileBase file, string path,string documento, out string exception)
+        public string SaveFile(HttpPostedFileBase file, string path,string documento, out string exception, out string pathsaved)
         {
             string ex = "";
             string exdir = "";
@@ -1477,8 +1513,8 @@ namespace TAT001.Controllers
             //file.SaveAs(Server.MapPath(savePath));
 
             //file to domain
-            //Parte para guardar archivo
-            using (Impersonation.LogonUser("SF-0003", "EQUIPO", "0906", LogonType.NewCredentials))
+            //Parte para guardar archivo en el servidor
+            using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
             {
                 //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
                 try
@@ -1487,6 +1523,7 @@ namespace TAT001.Controllers
 
                     //Guardar el archivo
                     file.SaveAs(savePath);
+                    
 
                 }
                 catch (Exception e)
@@ -1495,6 +1532,13 @@ namespace TAT001.Controllers
                     ex = fileName;
                 }
             }
+
+            //Guardarlo en la base de datos
+            if(ex == "")
+            {
+
+            }
+            pathsaved = savePath;
             exception = ex;            
             return fileName;
         }
@@ -1597,6 +1641,33 @@ namespace TAT001.Controllers
             JsonResult cc = Json(matt, JsonRequestBehavior.AllowGet);
             return cc;
         }
+
+        [HttpPost]
+        public JsonResult getPresupuesto(string kunnr)
+        {
+            if (kunnr == null)
+                kunnr = "";
+
+            //Obtener presupuesto
+            var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+
+            PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+
+            if(presupuesto != null)
+            {
+                pm.P_CANAL = presupuesto[0].VAL;
+                pm.P_BANNER = presupuesto[1].VAL;
+                pm.PC_C = presupuesto[4].VAL;
+                pm.PC_A = presupuesto[5].VAL;
+                pm.PC_P = presupuesto[6].VAL;
+                pm.PC_T = presupuesto[7].VAL;
+            }
+
+            JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        
 
         [HttpPost]
         public string getCategoria(string material)

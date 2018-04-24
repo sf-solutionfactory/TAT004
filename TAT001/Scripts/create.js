@@ -180,17 +180,17 @@
                                 cat + "", //col0
                                 "", //col1
                                 "", ////col2
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "", //Material
                                 opt + "",
                                 opt + "",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
                             ]).draw(false);
                         } else {
@@ -203,17 +203,17 @@
                             "",
                             "",
                             "",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                         ]).draw(false);
 
@@ -241,6 +241,10 @@
         event.cancel = true;
         
     });
+
+    $('#select_neg').change();
+    $('#select_dis').change();
+    
 
     $("#file_dis").change(function () {
         var filenum = $('#file_dis').get(0).files.length;
@@ -270,7 +274,7 @@
     var instance = M.Select.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
-
+        $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
@@ -288,8 +292,8 @@
 
     $('#tab_fin').on("click", function (e) {
 
-        var res = evalDistribucionTab(true, e);
-
+        //var res = evalDistribucionTab(true, e);
+        var res = true;
         if (res) {
 
             //Activar el botón de guardar
@@ -329,6 +333,20 @@
             $('#monto_doc_md').focusout();
             
             $("label[for='monto_doc_md']").addClass("active");
+
+            //Obtener los valores para asignar persupuesto
+            //Obtener canal desc
+            var canal = $('#vtweg').val();
+            var canal = canal.split('-');
+            canal[1] = $.trim(canal[1]);
+            $('#p_vtweg').text(canal[1]);
+            //Obtener cliente id
+            var kunnr = $('#payer_id').val();
+            //$('#cli_name').val();
+            $('#p_kunnr').text(kunnr);
+            
+            
+            asignarPresupuesto(kunnr);
             
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });
@@ -571,6 +589,35 @@
 
 });
 
+function asignarPresupuesto(kunnr) {
+
+    $.ajax({
+        type: "POST",
+        url: 'getPresupuesto',
+        dataType: "json",
+        data: { "kunnr": kunnr },
+
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+                $('#p_canal').text(data.P_CANAL);
+                $('#p_banner').text(data.P_BANNER);
+                $('#pc_c').text(data.PC_C);
+                $('#pc_a').text(data.PC_A);
+                $('#pc_p').text(data.PC_P);
+                $('#pc_t').text(data.PC_T);
+            
+            }
+
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+        },
+        async: false
+    });
+
+}
+
 $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
@@ -600,8 +647,21 @@ $('body').on('focusout', '.input_oper', function () {
 });
 
 //Validar el patrón para dos decimales en los campos editables de la tabla
-$('body').on('input', '.input_oper', function () {
-    
+$('body').on('keypress keydown', '.input_oper', function () {
+
+    ////Si está escribiendo en campos de fecha, aceptar numeros y diagonal
+    //if ($(this).hasClass("format_date")) {
+
+
+    //} else if ($(this).hasClass("number")) {
+    //    //Si es material, acepta puros numeros
+    //} else if ($(this).hasClass("numberd")) {
+    //    //Si es cantidad, acepta numeros y punto
+    //    $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+    //    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+    //        event.preventDefault();
+    //    }  
+    //}
 
 });
 
@@ -868,17 +928,17 @@ function loadExcel(file) {
                                         dataj.POS,
                                         "",
                                         "",
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                                        "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                                        "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                                         dataj.MATKL,
                                         dataj.DESC,                        
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",                     
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",                        
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",                     
+                                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",                     
+                                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",                        
+                                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",                     
                                         dataj.MONTOC_APOYO,                        
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",                
-                                        "<input class=\"input_oper\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",                      
+                                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",                
+                                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",                      
                                         dataj.PORC_APOYOEST
                     ]).draw(false).node();
 

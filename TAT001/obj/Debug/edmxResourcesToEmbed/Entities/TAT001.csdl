@@ -26,6 +26,17 @@
     <NavigationProperty Name="TEXTOes" Relationship="Self.FK_TEXTO_CAMPOS" FromRole="CAMPOS" ToRole="TEXTO" />
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_CAMPOS" FromRole="CAMPOS" ToRole="WARNING" />
   </EntityType>
+  <EntityType Name="CANAL">
+    <Key>
+      <PropertyRef Name="BANNER" />
+      <PropertyRef Name="KUNNR" />
+    </Key>
+    <Property Name="CANAL1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="CDESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BANNER" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BDESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
   <EntityType Name="CARPETA">
     <Key>
       <PropertyRef Name="ID" />
@@ -149,6 +160,8 @@
     <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
     <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SUBREGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="REGIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ORT01" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="STRAS_GP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -162,6 +175,10 @@
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <Property Name="BANNER" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="CANAL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="BZIRK" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
+    <Property Name="KONDA" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="VKGRP" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="VKBUR" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_CLIENTE_PAIS" FromRole="CLIENTE" ToRole="PAIS" />
     <NavigationProperty Name="TCLIENTE" Relationship="Self.FK_CLIENTE_TCLIENTE" FromRole="CLIENTE" ToRole="TCLIENTE" />
     <NavigationProperty Name="CLIENTEIs" Relationship="Self.FK_CLIENTEI_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTEI" />
@@ -196,9 +213,9 @@
     <Property Name="TIPO_SOL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="TIPO_DOC" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
-    <Property Name="FECHA_CONTAB" Type="DateTime" Precision="0" />
-    <Property Name="FECHA_DOCU" Type="DateTime" Precision="0" />
-    <Property Name="MONEDA" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="FECHA_CONTAB" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="FECHA_DOCU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="MONEDA" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="HEADER_TEXT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="FECHA_INIVIG" Type="DateTime" Precision="0" />
     <Property Name="FECHA_FINVIG" Type="DateTime" Precision="0" />
@@ -207,7 +224,42 @@
     <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK__CONPOSAPH__SOCIE__2077C861" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK__CONPOSAPH__SOCIE__24485945" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+  </EntityType>
+  <EntityType Name="CONPOSAPP">
+    <Key>
+      <PropertyRef Name="CONSECUTIVO" />
+      <PropertyRef Name="POSICION" />
+    </Key>
+    <Property Name="CONSECUTIVO" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POSICION" Type="Int32" Nullable="false" />
+    <Property Name="POSTING_KEY" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="NUM_PROV" Type="Boolean" />
+    <Property Name="NUM_CTE" Type="Boolean" />
+    <Property Name="CTA_MAYOR" Type="Boolean" />
+    <Property Name="CTA_MAYOR_FV" Type="Boolean" />
+    <Property Name="CECO" Type="Boolean" />
+    <Property Name="TEXTO" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="SALES_ORG" Type="Boolean" />
+    <Property Name="CAN_DIST" Type="Boolean" />
+    <Property Name="DIVISION" Type="Boolean" />
+    <Property Name="SALES_OFF" Type="Boolean" />
+    <Property Name="SALES_GRP" Type="Boolean" />
+    <Property Name="PRICE_GRP" Type="Boolean" />
+    <Property Name="CORP_CAT" Type="Boolean" />
+    <Property Name="CORP_BRAND" Type="Boolean" />
+    <Property Name="INV_REF" Type="Boolean" />
+    <Property Name="PAYM_TERM" Type="Boolean" />
+    <Property Name="JURIS_CODE" Type="Boolean" />
+    <Property Name="SALES_DIST" Type="Boolean" />
+    <Property Name="PRODUCT" Type="Boolean" />
+    <Property Name="TAX_CODE" Type="Boolean" />
+    <Property Name="PLANT" Type="Boolean" />
+    <Property Name="REF_KEY1" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+    <Property Name="REF_KEY3" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
+    <Property Name="ASSIGNACION" Type="Boolean" />
+    <Property Name="QUANTITY" Type="Boolean" />
+    <Property Name="BASE_UNIT" Type="Boolean" />
   </EntityType>
   <EntityType Name="CONTACTOC">
     <Key>
@@ -234,6 +286,42 @@
     <Property Name="NAME" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="PHONECODE" Type="Int32" Nullable="false" />
     <NavigationProperty Name="STATES" Relationship="Self.FK_STATES_COUNTRIES" FromRole="COUNTRIES" ToRole="STATES" />
+  </EntityType>
+  <EntityType Name="DET_AGENTE">
+    <Key>
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="PUESTOA_ID" />
+      <PropertyRef Name="AGROUP_ID" />
+    </Key>
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
+    <Property Name="MONTO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="Boolean" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="GAUTORIZACION" Relationship="Self.FK_DET_AGENTE_GAUTORIZACION" FromRole="DET_AGENTE" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_AGENTE_PUESTO" FromRole="DET_AGENTE" ToRole="PUESTO" />
+    <NavigationProperty Name="PUESTO1" Relationship="Self.FK_DET_AGENTE_PUESTO1" FromRole="DET_AGENTE" ToRole="PUESTO" />
+  </EntityType>
+  <EntityType Name="DET_APROB">
+    <Key>
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="PUESTOA_ID" />
+      <PropertyRef Name="BUKRS" />
+    </Key>
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" Nullable="false" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="MONTO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="Boolean" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_APROB_PUESTO" FromRole="DET_APROB" ToRole="PUESTO" />
+    <NavigationProperty Name="PUESTO1" Relationship="Self.FK_DET_APROB_PUESTO1" FromRole="DET_APROB" ToRole="PUESTO" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="DET_APROB" ToRole="SOCIEDAD" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
     <Key>
@@ -392,7 +480,7 @@
     </Key>
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
-    <Property Name="TIPO" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="TIPO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="CLASE" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
     <Property Name="STEP_WF" Type="Int32" />
     <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
@@ -440,12 +528,14 @@
       <PropertyRef Name="WF_POS" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
+      <PropertyRef Name="DETPOS" />
     </Key>
     <Property Name="WORKF_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="WF_VERSION" Type="Int32" Nullable="false" />
     <Property Name="WF_POS" Type="Int32" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="DETPOS" Type="Int32" Nullable="false" />
     <Property Name="LOOP" Type="Int32" />
     <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="USUARIOD_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
@@ -478,6 +568,18 @@
     <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="GALL" Relationship="Self.FK_GALLT_GALL" FromRole="GALLT" ToRole="GALL" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_GALLT_SPRAS" FromRole="GALLT" ToRole="SPRAS" />
+  </EntityType>
+  <EntityType Name="GAUTORIZACION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CLAVE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="DET_AGENTE" Relationship="Self.FK_DET_AGENTE_GAUTORIZACION" FromRole="GAUTORIZACION" ToRole="DET_AGENTE" />
+    <NavigationProperty Name="USUARIOs" Relationship="Self.USUARIOGA" FromRole="GAUTORIZACION" ToRole="USUARIO" />
   </EntityType>
   <EntityType Name="IIMPUESTO">
     <Key>
@@ -611,7 +713,7 @@
     <Property Name="ROL_ID" Type="Int32" Nullable="false" />
     <Property Name="PERMISO" Type="Boolean" />
     <NavigationProperty Name="PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PAGINA" FromRole="PERMISO_PAGINA" ToRole="PAGINA" />
-    <NavigationProperty Name="ROL" Relationship="Self.FK_PERMISO_PAGINA_ROL" FromRole="PERMISO_PAGINA" ToRole="ROL" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PERMISO_PAGINA" ToRole="PUESTO" />
   </EntityType>
   <EntityType Name="POSICION">
     <Key>
@@ -735,7 +837,12 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ACTIVO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="DET_AGENTE" Relationship="Self.FK_DET_AGENTE_PUESTO" FromRole="PUESTO" ToRole="DET_AGENTE" />
+    <NavigationProperty Name="DET_AGENTE1" Relationship="Self.FK_DET_AGENTE_PUESTO1" FromRole="PUESTO" ToRole="DET_AGENTE" />
+    <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_PUESTO" FromRole="PUESTO" ToRole="DET_APROB" />
+    <NavigationProperty Name="DET_APROB1" Relationship="Self.FK_DET_APROB_PUESTO1" FromRole="PUESTO" ToRole="DET_APROB" />
+    <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PUESTO" ToRole="PERMISO_PAGINA" />
     <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_PUESTO" FromRole="PUESTO" ToRole="PUESTOT" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_PUESTO" FromRole="PUESTO" ToRole="USUARIO" />
   </EntityType>
@@ -770,7 +877,6 @@
     <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" />
     <NavigationProperty Name="MIEMBROS" Relationship="Self.FK_MIEMBROS_ROL" FromRole="ROL" ToRole="MIEMBROS" />
-    <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_ROL" FromRole="ROL" ToRole="PERMISO_PAGINA" />
     <NavigationProperty Name="ROLTs" Relationship="Self.FK_ROLT_ROL" FromRole="ROL" ToRole="ROLT" />
   </EntityType>
   <EntityType Name="ROLT">
@@ -799,7 +905,8 @@
     <Property Name="KTOPL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <Property Name="REGION" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK__CONPOSAPH__SOCIE__2077C861" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
+    <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK__CONPOSAPH__SOCIE__24485945" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
+    <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_APROB" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DOCUMENTO" />
     <NavigationProperty Name="MONEDA" Relationship="Self.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="USUARIO" />
@@ -1028,6 +1135,7 @@
     <NavigationProperty Name="PUESTO" Relationship="Self.FK_USUARIO_PUESTO" FromRole="USUARIO" ToRole="PUESTO" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
+    <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
   </EntityType>
   <EntityType Name="WARNING">
     <Key>
@@ -1125,6 +1233,21 @@
     <Property Name="URL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ICON" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CREADOR">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="AGROUP_ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="DOCUMENTOV">
     <Key>
@@ -1484,7 +1607,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__CONPOSAPH__SOCIE__2077C861">
+  <Association Name="FK__CONPOSAPH__SOCIE__24485945">
     <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
     <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
     <ReferentialConstraint>
@@ -1505,6 +1628,78 @@
       </Principal>
       <Dependent Role="STATES">
         <PropertyRef Name="COUNTRY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTE_GAUTORIZACION">
+    <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="1" />
+    <End Role="DET_AGENTE" Type="Self.DET_AGENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GAUTORIZACION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTE">
+        <PropertyRef Name="AGROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTE_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_AGENTE" Type="Self.DET_AGENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTE">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTE_PUESTO1">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_AGENTE" Type="Self.DET_AGENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTE">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROB_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_APROB">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROB_PUESTO1">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_APROB">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROB_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DET_APROB">
+        <PropertyRef Name="BUKRS" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1824,11 +2019,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_PERMISO_PAGINA_ROL">
-    <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+  <Association Name="FK_PERMISO_PAGINA_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
     <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="ROL">
+      <Principal Role="PUESTO">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="PERMISO_PAGINA">
@@ -2180,9 +2375,14 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="USUARIOGA">
+    <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="*" />
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+  </Association>
   <EntityContainer Name="TAT001Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ACCIONs" EntityType="Self.ACCION" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" />
+    <EntitySet Name="CANALs" EntityType="Self.CANAL" />
     <EntitySet Name="CARPETAs" EntityType="Self.CARPETA" />
     <EntitySet Name="CARPETATs" EntityType="Self.CARPETAT" />
     <EntitySet Name="CARTAs" EntityType="Self.CARTA" />
@@ -2192,8 +2392,11 @@
     <EntitySet Name="CLIENTEs" EntityType="Self.CLIENTE" />
     <EntitySet Name="CLIENTEIs" EntityType="Self.CLIENTEI" />
     <EntitySet Name="CONPOSAPHs" EntityType="Self.CONPOSAPH" />
+    <EntitySet Name="CONPOSAPPs" EntityType="Self.CONPOSAPP" />
     <EntitySet Name="CONTACTOCs" EntityType="Self.CONTACTOC" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRy" />
+    <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" />
+    <EntitySet Name="DET_APROB" EntityType="Self.DET_APROB" />
     <EntitySet Name="DOCUMENTBORRs" EntityType="Self.DOCUMENTBORR" />
     <EntitySet Name="DOCUMENTOes" EntityType="Self.DOCUMENTO" />
     <EntitySet Name="DOCUMENTOAs" EntityType="Self.DOCUMENTOA" />
@@ -2202,6 +2405,7 @@
     <EntitySet Name="FLUJOes" EntityType="Self.FLUJO" />
     <EntitySet Name="GALLs" EntityType="Self.GALL" />
     <EntitySet Name="GALLTs" EntityType="Self.GALLT" />
+    <EntitySet Name="GAUTORIZACIONs" EntityType="Self.GAUTORIZACION" />
     <EntitySet Name="IIMPUESTOes" EntityType="Self.IIMPUESTO" />
     <EntitySet Name="IMPUESTOes" EntityType="Self.IMPUESTO" />
     <EntitySet Name="LEYENDAs" EntityType="Self.LEYENDA" />
@@ -2246,6 +2450,7 @@
     <EntitySet Name="WORKFTs" EntityType="Self.WORKFT" />
     <EntitySet Name="WORKFVs" EntityType="Self.WORKFV" />
     <EntitySet Name="CARPETAVs" EntityType="Self.CARPETAV" />
+    <EntitySet Name="CREADORs" EntityType="Self.CREADOR" />
     <EntitySet Name="DOCUMENTOVs" EntityType="Self.DOCUMENTOV" />
     <EntitySet Name="PAGINAVs" EntityType="Self.PAGINAV" />
     <EntitySet Name="WARNINGVs" EntityType="Self.WARNINGV" />
@@ -2325,13 +2530,37 @@
       <End Role="IMPUESTO" EntitySet="IMPUESTOes" />
       <End Role="CLIENTEI" EntitySet="CLIENTEIs" />
     </AssociationSet>
-    <AssociationSet Name="FK__CONPOSAPH__SOCIE__2077C861" Association="Self.FK__CONPOSAPH__SOCIE__2077C861">
+    <AssociationSet Name="FK__CONPOSAPH__SOCIE__24485945" Association="Self.FK__CONPOSAPH__SOCIE__24485945">
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="CONPOSAPH" EntitySet="CONPOSAPHs" />
     </AssociationSet>
     <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
       <End Role="COUNTRIES" EntitySet="COUNTRIES" />
       <End Role="STATES" EntitySet="STATES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTE_GAUTORIZACION" Association="Self.FK_DET_AGENTE_GAUTORIZACION">
+      <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
+      <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTE_PUESTO" Association="Self.FK_DET_AGENTE_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTE_PUESTO1" Association="Self.FK_DET_AGENTE_PUESTO1">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROB_PUESTO" Association="Self.FK_DET_APROB_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_APROB" EntitySet="DET_APROB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROB_PUESTO1" Association="Self.FK_DET_APROB_PUESTO1">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_APROB" EntitySet="DET_APROB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROB_SOCIEDAD" Association="Self.FK_DET_APROB_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="DET_APROB" EntitySet="DET_APROB" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
@@ -2437,8 +2666,8 @@
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="PAGINAT" EntitySet="PAGINATs" />
     </AssociationSet>
-    <AssociationSet Name="FK_PERMISO_PAGINA_ROL" Association="Self.FK_PERMISO_PAGINA_ROL">
-      <End Role="ROL" EntitySet="ROLs" />
+    <AssociationSet Name="FK_PERMISO_PAGINA_PUESTO" Association="Self.FK_PERMISO_PAGINA_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
       <End Role="PERMISO_PAGINA" EntitySet="PERMISO_PAGINA" />
     </AssociationSet>
     <AssociationSet Name="FK_WARNING_POSICION" Association="Self.FK_WARNING_POSICION">
@@ -2553,6 +2782,10 @@
       <End Role="WORKFV" EntitySet="WORKFVs" />
       <End Role="WORKFT" EntitySet="WORKFTs" />
     </AssociationSet>
+    <AssociationSet Name="USUARIOGA" Association="Self.USUARIOGA">
+      <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+    </AssociationSet>
     <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model.split_Result)">
       <Parameter Name="delimited" Mode="In" Type="String" />
       <Parameter Name="delimiter" Mode="In" Type="String" />
@@ -2634,7 +2867,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <EntitySet Name="CANALs" EntityType="TAT001Model.CANAL" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="4" />
@@ -2679,7 +2911,7 @@
     <Property Type="String" Name="ICONO" Nullable="true" MaxLength="20" />
   </ComplexType>
   <ComplexType Name="CSP_PRESU_CLIENT_Result">
-    <Property Type="String" Name="DESCRIPCION" Nullable="true" MaxLength="21" />
+    <Property Type="String" Name="DESCRIPCION" Nullable="true" MaxLength="100" />
     <Property Type="Double" Name="VALOR" Nullable="true" />
   </ComplexType>
   <ComplexType Name="CSP_PRESUPUESTO_ADDP_Result">
@@ -2739,15 +2971,4 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
-  <EntityType Name="CANAL">
-    <Key>
-      <PropertyRef Name="BANNER" />
-      <PropertyRef Name="KUNNR" />
-    </Key>
-    <Property Name="CANAL1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="CDESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="BANNER" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="BDESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-  </EntityType>
 </Schema>
