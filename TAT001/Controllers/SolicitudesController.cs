@@ -563,7 +563,7 @@ namespace TAT001.Controllers
                                                 db.SaveChanges();
                                             }catch(Exception e)
                                             {
-                                                errorfiles = "No se guardo archivo " + filename;
+                                                errorfiles = "" + filename;
                                             }
 
                                         }

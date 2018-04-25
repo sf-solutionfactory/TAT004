@@ -32,6 +32,47 @@
         $("label[for='payer_email']").addClass("active");
     }
     //Soporte
+    //Evaluar la extensión y tamaño del archivo a cargar
+    $('.file_soporte').change(function () {
+        var length = $(this).length;
+        var message = "";
+        var namefile = "";
+        if (length > 0) {
+            //Validar tamaño y extensión
+            var file = $(this).get(0).files;
+            if (file.length > 0) {
+                var sizefile = file[0].size;
+                namefile = file[0].name;
+                if (sizefile > 20971520) {             
+                    message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + namefile + " sobrepasa el tamaño";
+                 
+                }
+                
+                if (!evaluarExtSoporte(namefile)) {              
+                    message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + namefile + " no es compatible";
+             
+                }
+            }
+        } else {
+            message = "No selecciono archivo";
+        }
+
+        if (message != "") {
+            $(this).val("");
+            M.toast({ html: message });
+        } else {
+            //Verificar los nombres
+            var id = $(this).attr('id');
+            var res = evaluarFilesName(id, namefile);
+
+            if (res) {
+                //Nombre duplicado
+                M.toast({ html: 'Ya existe un archivo con ese mismo nombre' });
+            }
+
+        }
+        
+    });
     //Negociación
     if ($('#notas_soporte').val() != "") {
         $("label[for='notas_soporte']").addClass("active");
@@ -281,7 +322,7 @@
 
     $('#tab_dis').on("click", function (e) {
 
-        evalSoporteTab(false, e);
+        //evalSoporteTab(false, e);
 
     });
 
@@ -1437,6 +1478,30 @@ function evaluarFile(id) {
         //M.toast({ html: 'Seleccione un archivo' });
         return false;
     }
+}
+
+function evaluarFilesName(id, name) {
+    var files = $('.file_soporte');
+    var res = false;
+    for (var i = 0; i < files.length; i++) {
+        
+        var idFile = $(files[i]).attr("id");
+
+        if (idFile != id) {
+            //Evaluar solamente los demás archivos
+            var file = $(files[i]).get(0).files;
+            if (file.length > 0) {
+                var localfilename = file[i].name;
+                if (localfilename == name) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        
+    }
+   
+        return res;    
 }
 
 function evaluarFiles() {
