@@ -32,6 +32,69 @@
         $("label[for='payer_email']").addClass("active");
     }
     //Soporte
+    $('#table_sop').DataTable({
+        "language": {
+            "zeroRecords": "No hay registros",
+            "infoEmpty": "Registros no disponibles",
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        //        "ordering": false,
+        "info": false,
+        "searching": false,
+        "columns": [            
+            {
+                "className": 'select_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+        ]
+    });
+
+    $('#table_sop tbody').on('click', 'td.select_row', function () {
+        var tr = $(this).closest('tr');
+        $(tr).toggleClass('selected');
+    });
+
+    $('#delRowSoporte').click(function (e) {
+        var t = $('#table_sop').DataTable();
+        t.rows('.selected').remove().draw(false);        
+        event.returnValue = false;
+        event.cancel = true;
+    });
+
+    $('#addRowSoporte').on('click', function () {
+        var t = $('#table_sop').DataTable();
+        //Obtener el tipo de solicitud NC
+        var sol = $("#tsol_id").val();        
+        if (sol == "NC") {
+            
+            t.row.add([
+                "", //Selección
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
+                ""
+            ]).draw(false);
+        } else {
+            M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
+        }
+                    
+        event.returnValue = false;
+        event.cancel = true;
+
+    });
+
+
     //Evaluar la extensión y tamaño del archivo a cargar
     $('.file_soporte').change(function () {
         var length = $(this).length;
@@ -318,11 +381,22 @@
 
         evalTempTab(false, e);
 
+        //Obtener el tipo de solicitud NC
+        var sol = $("#tsol_id").val();  
+
+        if (sol == "NC") {
+            $('#ref_soporte').css("display", "table");
+        } else {
+            var table = $('#table_sop').DataTable();
+            table.clear().draw();
+            $('#ref_soporte').css("display", "none");
+        }
+
     });
 
     $('#tab_dis').on("click", function (e) {
 
-        //evalSoporteTab(false, e);
+        evalSoporteTab(false, e);
 
     });
 
