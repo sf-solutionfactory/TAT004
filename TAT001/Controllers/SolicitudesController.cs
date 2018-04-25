@@ -361,7 +361,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, FormCollection form)
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -504,9 +504,7 @@ namespace TAT001.Controllers
                     }
 
                     if (numFiles > 0) {
-                        //Obtener la clase de los archivos de los archivos
-                        //var scannedValue = Request.Form["files_soportel"];
-                        var scan = form["files_soportel"];
+                        //Obtener la clase de los archivos de los archivos                                                
 
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
@@ -518,10 +516,18 @@ namespace TAT001.Controllers
                         {
                             
                             int i = 0;
+                            int indexlabel = 0;
                             foreach (HttpPostedFileBase file in files_soporte)
                             {
                                 string errorfiles = "";
-
+                                var clasefile = "";
+                                try
+                                {
+                                    clasefile = labels_soporte[indexlabel];
+                                }catch(Exception ex)
+                                {
+                                    clasefile = "";
+                                }
                                 if (file != null)
                                 {
                                     if (file.ContentLength > 0)
@@ -539,7 +545,14 @@ namespace TAT001.Controllers
                                             doc.NUM_DOC = dOCUMENTO.NUM_DOC;
                                             doc.POS = i;
                                             doc.TIPO = ext.Replace(".","");
-                                            //doc.CLASE
+                                            try
+                                            {
+                                                var clasefileM = clasefile.ToUpper();
+                                                doc.CLASE = clasefileM.Substring(0, 3);
+                                            }catch(Exception e)
+                                            {
+                                                doc.CLASE = "";
+                                            }
                                             doc.STEP_WF = 1;
                                             doc.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
                                             doc.PATH = path;
@@ -556,6 +569,7 @@ namespace TAT001.Controllers
                                         }
                                     }
                                 }
+                                indexlabel++;
                                 if (errorfiles != "")
                                 {
                                     errorMessage += "Error con el archivo " + errorfiles;
@@ -1275,7 +1289,7 @@ namespace TAT001.Controllers
 
                 //Columnd and row to start
                 var rows = 1; // 2
-                var cols = 0; // A
+                //var cols = 0; // A
                 var pos = 1;
 
                 for (int i = rows; i < rowsc; i++)
@@ -1297,11 +1311,11 @@ namespace TAT001.Controllers
                     //Rows variables
                     double monto = 0;
                     double porc_apoyo = 0;
-                    double monto_apoyo = 0;
-                    double montoc_apoyo = 0;
+                    //double monto_apoyo = 0;
+                    //double montoc_apoyo = 0;
                     double precio_sug = 0;
                     double volumen_est = 0;
-                    double porc_apoyoest = 0;
+                    //double porc_apoyoest = 0;
                     
 
                     //var poss = dt.Rows[i][1];
@@ -1495,7 +1509,7 @@ namespace TAT001.Controllers
         public string SaveFile(HttpPostedFileBase file, string path,string documento, out string exception, out string pathsaved)
         {
             string ex = "";
-            string exdir = "";
+            //string exdir = "";
             // Get the name of the file to upload.
             string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
 

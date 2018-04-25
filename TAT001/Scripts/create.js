@@ -120,11 +120,6 @@
         ]
     });
 
-    //$('#table_dis tbody').on('click', 'tr', function (e) {
-    //    $(this).toggleClass('selected');
-    //    e.preventDefault();
-    //});
-
     $('#table_dis tbody').on('click', 'td.select_row', function () {
         var tr = $(this).closest('tr');
         $(tr).toggleClass('selected');
@@ -292,8 +287,7 @@
 
     $('#tab_fin').on("click", function (e) {
 
-        //var res = evalDistribucionTab(true, e);
-        var res = true;
+        var res = evalDistribucionTab(true, e);        
         if (res) {
 
             //Activar el botón de guardar
