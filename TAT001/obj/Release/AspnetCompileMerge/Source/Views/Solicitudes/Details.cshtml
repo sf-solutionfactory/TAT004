@@ -228,7 +228,7 @@
                         <h5>Cliente @*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled",@id = "payer_id" } })
                                 @Html.LabelFor(model => model.D.CLIENTE.KUNNR)
                             </div>
                             <div class="input-field col s12">
@@ -238,6 +238,10 @@
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.D.CLIENTE.STCD1, new { htmlAttributes = new { @disabled = "disabled" } })
                                 @Html.LabelFor(model => model.D.CLIENTE.STCD1, "Taxid", new { @id = "lbl_stcd1" })
+                            </div>
+                            <div class="input-field col s12">
+                                @Html.EditorFor(model => model.D.CLIENTE.CANAL, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg" } })
+                                @Html.LabelFor(model => model.D.CLIENTE.CANAL, "Canal", new { @id = "lbl_stcd1" })
                             </div>
                         </div>
                     </div>
@@ -306,6 +310,7 @@
         <div class="row">
             <div class="col s12 m6 l6">
                 <div class="card-panel">
+                    <h5>Detalle de solicitud</h5>
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s8">
                             @if (ViewBag.accion == "N")
@@ -325,12 +330,101 @@
                         </div>
                         <div class="input-field col s6">
                             @Html.EditorFor(model => model.D.MONTO_DOC_ML, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.MONTO_DOC_ML, "Estado", new { @id = "lbl_state" })
+                            @Html.LabelFor(model => model.D.MONTO_DOC_ML, "Monto USD", new { @id = "lbl_montoml2" })
                         </div>
                         <div class="input-field col s12">
                             @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
-                            @Html.LabelFor(model => model.D.NOTAS, "Notas", new { @id = "lbl_state" })
+                            @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12 m6 l6 right">
+                <div class="card-panel">
+                    <h5>Análisis Presupuesto</h5>
+                    <div class="row" style="margin-bottom:0">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s4">
+                                        Presupuesto canal
+                                    </div>
+                                    <div class="col s4">
+                                        <label id="p_vtweg">aaaa</label>
+                                    </div>
+                                    <div class="col s4 right-align">
+                                        <label id="p_canal">1111</label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s4">
+                                        Presupuesto cliente
+                                    </div>
+                                    <div class="col s4">
+                                        <label id="p_kunnr"></label>
+                                    </div>
+                                    <div class="col s4 right-align">
+                                        <label id="p_banner"></label>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <ul class="collection">
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s6">
+                                        Registrado en SAP
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <label id="pc_c"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s6">
+                                        Por registrar en SAP
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <label id="pc_a"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s6">
+                                        En proceso TAT
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <label id="pc_p"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s6">
+                                        Consumido
+                                    </div>
+                                    <div class="col s6 right-align">
+                                        <label id="pc_t"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;">
+                                    <div class="col s6">
+                                        Presupuesto disponible
+                                    </div>
+                                    <div class="col s6 right-align">
+
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -400,7 +494,7 @@
             </div>
             <div class="modal-fixed-footer right">
                 <a href="#!" class="modal-action modal-close btn-flat">Cancelar</a>
-                <input type="submit" value="Aceptar" class="modal-action modal-close btn-flat" />
+                <input type="submit" value="Aceptar" class="modal-action modal-close btn-flat" onclick="document.getElementById('loader').style.display = 'initial';" />
                 @*<a class="btn btn-default" href="@Url.Action("Details", "Solicitudes", new { id= Model.F.NUM_DOC})">Cancelar</a>*@
             </div>
         </div>
@@ -499,7 +593,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <input type="checkbox" id="chk-@ii.TSFORM_ID" name="chk-@ii.TSFORM_ID" disabled="disabled"/>
+                                                        <input type="checkbox" id="chk-@ii.TSFORM_ID" name="chk-@ii.TSFORM_ID" disabled="disabled" />
                                                     }
                                                     <span>@ii.TXT100</span>
                                                 }
@@ -560,6 +654,7 @@
             </div>
         </div>
     </div>
+
 }
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.D.NUM_DOC }) |
@@ -567,6 +662,50 @@
 </p>
 
 <script>
-                                                                                                                                                                                                                                                    //$('#txt_notas').addClass("materialize-textarea");
-                                                                                                                                                                                                                                                                            //M.textareaAutoResize($('#txt_notas'));
+    var canal = $('#vtweg').val();
+    var canal = canal.split('-');
+    canal[0] = $.trim(canal[0]);
+    $('#p_vtweg').text(canal[0]);
+    //Obtener cliente id
+    var kunnr = $('#payer_id').val();
+    //$('#cli_name').val();
+    $('#p_kunnr').text(kunnr);
+    var aaa = document.getElementById("payer_id").value;
+    asignarPresupuesto(aaa);
+
+    function asignarPresupuesto(kunnr) {
+
+        $.ajax({
+            type: "POST",
+            url: '../../Listas/getPresupuesto',
+            dataType: "json",
+            data: { "kunnr": kunnr },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    //$('#p_canal').text(data.P_CANAL);
+                    //$('#p_banner').text(data.P_BANNER);
+                    //$('#pc_c').text(data.PC_C);
+                    //$('#pc_a').text(data.PC_A);
+                    //$('#pc_p').text(data.PC_P);
+                    //$('#pc_t').text(data.PC_T);
+                    //RSG 26.04.2018----------------
+                    $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
+                    $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
+                    $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
+                    $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
+                    $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
+                    $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                    //RSG 26.04.2018----------------
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+    }                                                                                                                                                                                                                                                                  //M.textareaAutoResize($('#txt_notas'));
 </script>

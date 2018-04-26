@@ -621,6 +621,7 @@
     //$('#monto_doc_md').keypress(keypressHandler);
 
     $('#btn_guardarh').on("click", function (e) {
+        document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
         var msg = 'Verificar valores en los campos de ';
         var res = true;
         //Evaluar TabInfo values
@@ -692,6 +693,7 @@
             $('#btn_guardar').click();
         } else {
             M.toast({ html: msg })
+            document.getElementById("loader").style.display = "none";//RSG 26.04.2018
         }
 
     });
@@ -709,13 +711,20 @@ function asignarPresupuesto(kunnr) {
         success: function (data) {
 
             if (data !== null || data !== "") {
-                $('#p_canal').text(data.P_CANAL);
-                $('#p_banner').text(data.P_BANNER);
-                $('#pc_c').text(data.PC_C);
-                $('#pc_a').text(data.PC_A);
-                $('#pc_p').text(data.PC_P);
-                $('#pc_t').text(data.PC_T);
-
+                //$('#p_canal').text(data.P_CANAL);
+                //$('#p_banner').text(data.P_BANNER);
+                //$('#pc_c').text(data.PC_C);
+                //$('#pc_a').text(data.PC_A);
+                //$('#pc_p').text(data.PC_P);
+                //$('#pc_t').text(data.PC_T);
+                //RSG 26.04.2018----------------
+                $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
+                $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
+                $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
+                $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
+                $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
+                $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                //RSG 26.04.2018----------------
             }
 
         },

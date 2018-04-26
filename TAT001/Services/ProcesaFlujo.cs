@@ -201,6 +201,9 @@ namespace TAT001.Services
                                         correcto = 1;
 
                                 }
+                                d.ESTATUS_WF = "P";
+                                db.Entry(d).State = EntityState.Modified;
+
                                 db.SaveChanges();
                                 ban = false;
                             }

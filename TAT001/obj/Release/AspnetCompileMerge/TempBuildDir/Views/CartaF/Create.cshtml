@@ -1,10 +1,12 @@
 ﻿@model TAT001.Models.CartaF
 
 @{
-    //ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 201;
-    ViewBag.carpeta_r = 200;
+                /**/
+
+                //ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.pagina_r = 201;
+                ViewBag.carpeta_r = 200;
 }
 
 
@@ -87,6 +89,16 @@
                             <div class="col l8 m8 s12">
                                 <div class="col l2 s2">
                                     <label>
+                                        <input type="checkbox" name="payerNom_x" value="true" id="payerNom_x" @Html.Raw((Model.payerNom_x) ? "checked=\"checked\"" : "") />
+                                        <span style="height:0"></span>
+                                    </label>
+                                </div>
+                                <div class="input-field col l10 m10" style="margin-bottom:0;">
+                                    @Html.EditorFor(model => model.payerNom, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
+                                    @Html.LabelFor(model => model.payerNom, "Payer nombre", htmlAttributes: new { @class = "control-label col-md-2" })
+                                </div>
+                                <div class="col l2 s2">
+                                    <label>
                                         <input type="checkbox" name="cliente_x" value="true" id="cliente_x" @Html.Raw((Model.cliente_x) ? "checked=\"checked\"" : "") />
                                         <span style="height:0"></span>
                                     </label>
@@ -130,6 +142,18 @@
                                 @Html.EditorFor(model => model.folio, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
                                 @Html.LabelFor(model => model.folio, "Folio", htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
+
+                            <div class="col l2 s2">
+                                <label>
+                                    <input type="checkbox" name="lugarFech_x" value="true" id="lugarFech_x" @Html.Raw((Model.lugarFech_x) ? "checked=\"checked\"" : "") />
+                                    <span style="height:0"></span>
+                                </label>
+                            </div>
+                            <div class="input-field col l10 m10" style="margin-bottom:0;">
+                                @Html.EditorFor(model => model.lugarFech, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
+                                @Html.LabelFor(model => model.lugarFech, "Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+                            </div>
+
                             <div class="col l2 s2">
                                 <label>
                                     <input type="checkbox" name="lugar_x" value="true" id="lugar_x" @Html.Raw((Model.lugar_x) ? "checked=\"checked\"" : "") />
@@ -143,13 +167,13 @@
 
                             <div class="col l2 s2">
                                 <label>
-                                    <input type="checkbox" name="payer_x" value="true" id="payer_x" @Html.Raw((Model.payer_x) ? "checked=\"checked\"" : "") />
+                                    <input type="checkbox" name="payerId_x" value="true" id="payerId_x" @Html.Raw((Model.payerId_x) ? "checked=\"checked\"" : "") />
                                     <span style="height:0"></span>
                                 </label>
                             </div>
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
-                                @Html.EditorFor(model => model.payer, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
-                                @Html.LabelFor(model => model.payer, "Payer", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.EditorFor(model => model.payerId, new { htmlAttributes = new { @class = "form-control", @style = "height:auto;" } })
+                                @Html.LabelFor(model => model.payerId, "Payer", htmlAttributes: new { @class = "control-label col-md-2" })
                             </div>
                         </div>
                     </div>
@@ -183,6 +207,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col l8 m8 s12">
+                        <div class="input-field col l10 m10" style="margin-bottom:0;">
+                            @Html.HiddenFor(model => model.monto)
+                            @Html.HiddenFor(model => model.moneda)
+                            @{ string monto = @ViewBag.mon; }
+                            @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2" })
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+
                 <div class="row">
                     <div class="col l6 m6">
                         <div class="row">
@@ -334,6 +371,6 @@
 @if (ViewBag.error != null)
 {
     <script>
-    M.toast({ html: '@ViewBag.error', classes: 'red' });
+        M.toast({ html: '@ViewBag.error', classes: 'red' });
     </script>
 }

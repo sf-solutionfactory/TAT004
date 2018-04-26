@@ -166,7 +166,7 @@
     <div class="div_right">
         @*<input id="image_print" type="image" src="~/images/solicitudPrint.png" />*@
         <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
-        <a id="btn_borrador" class="btn waves-effect waves-light btn-small">Borrador</a>
+        @*<a id="btn_borrador" class="btn waves-effect waves-light btn-small">Borrador</a>*@
         <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
         @*<input type="submit" value="Guardar" class="btn btn-default btn waves-effect waves-light btn-small" />*@
     </div>
@@ -222,14 +222,16 @@
                                 @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                    @*@Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })*@
+                                    @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
                                     @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
+                                    @*@Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })*@
+                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
                                     @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
@@ -966,213 +968,301 @@
                                 </script>*@
                         </div>
                     </div>
+                </div>
+                <div class="col s12 m6 l6 right">
+                    @*<div class="card-panel">
+            <h5>Análisis Presupuesto</h5>
+            <div class="row" style="margin-bottom:0">
+                <table class="tg">
+                    <tr>
+                        <td class="tg-yw4l">
+                            <label>Presupuesto canal</label>
+                        </td>
+                        <td class="tg-yw4l">
+                            <label id="p_vtweg"></label>
+                        </td>
+                        <td class="tg-yw4l">
+                            <label id="p_canal"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tg-yw4l">
+                            <label>Presupuesto cliente</label>
+                        </td>
+                        <td class="tg-yw4l">
+                            <label id="p_kunnr"></label>
+                        </td>
+                        <td class="tg-yw4l">
+                            <label id="p_banner"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-panel">
+                <div class="row" style="margin-bottom:0">
+                    <table class="tg">
+                        <tr>
+                            <td class="tg-yw4l" colspan="2">
+                                <label>Registrado en SAP</label>
+                            </td>
+                            <td class="tg-yw4l">
+                                <label id="pc_c"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-yw4l" colspan="2">
+                                <label>Por registrar en SAP</label>
+                            </td>
+                            <td class="tg-yw4l">
+                                <label id="pc_a"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-yw4l" colspan="2">
+                                <label>En proceso TAT</label>
+                            </td>
+                            <td class="tg-yw4l">
+                                <label id="pc_p"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-yw4l" colspan="2">
+                                <label>Consumido</label>
+                            </td>
+                            <td class="tg-yw4l">
+                                <label id="pc_t"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tg-yw4l" colspan="2">
+                                <label>Presupuesto disponible</label>
+                            </td>
+                            <td class="tg-yw4l">
+                                <label></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>*@
+
                     <div class="card-panel">
                         <h5>Análisis Presupuesto</h5>
                         <div class="row" style="margin-bottom:0">
-                            <table class="tg">
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Presupuesto canal</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label id="p_vtweg"></label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label id="p_canal"></label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Presupuesto cliente</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label id="p_kunnr"></label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label id="p_banner"></label>
-                                    </td>
-                                </tr>
-                            </table>
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s4">
+                                            Presupuesto canal
+                                        </div>
+                                        <div class="col s4">
+                                            <label id="p_vtweg">aaaa</label>
+                                        </div>
+                                        <div class="col s4 right-align">
+                                            <label id="p_canal">1111</label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s4">
+                                            Presupuesto cliente
+                                        </div>
+                                        <div class="col s4">
+                                            <label id="p_kunnr"></label>
+                                        </div>
+                                        <div class="col s4 right-align">
+                                            <label id="p_banner"></label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-panel">
-                            <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l" colspan="2">
-                                            <label>Registrado en SAP</label>
-                                        </td>
-                                        <td class="tg-yw4l">
+                        <div class="row">
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Registrado en SAP
+                                        </div>
+                                        <div class="col s6 right-align">
                                             <label id="pc_c"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l" colspan="2">
-                                            <label>Por registrar en SAP</label>
-                                        </td>
-                                        <td class="tg-yw4l">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Por registrar en SAP
+                                        </div>
+                                        <div class="col s6 right-align">
                                             <label id="pc_a"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l" colspan="2">
-                                            <label>En proceso TAT</label>
-                                        </td>
-                                        <td class="tg-yw4l">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            En proceso TAT
+                                        </div>
+                                        <div class="col s6 right-align">
                                             <label id="pc_p"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l" colspan="2">
-                                            <label>Consumido</label>
-                                        </td>
-                                        <td class="tg-yw4l">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Consumido
+                                        </div>
+                                        <div class="col s6 right-align">
                                             <label id="pc_t"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l" colspan="2">
-                                            <label>Presupuesto disponible</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label></label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Presupuesto disponible
+                                        </div>
+                                        <div class="col s6 right-align">
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div class="col s12 m6 l6">
-                        @*<div class="card-panel">
-                                <h5>Análisis Presupuesto</h5>
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l">
-                                                <label>Presupuesto canal</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>20000013</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>$25,000.00</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l">
-                                                <label>Presupuesto cliente</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>20000013</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>$15,000.00</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="card-panel">
-                                    <div class="row" style="margin-bottom:0">
-                                        <table class="tg">
-                                            <tr>
-                                                <td class="tg-yw4l" colspan="2">
-                                                    <label>Visible</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label>$20,000.00</label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l" colspan="2">
-                                                    <label>Disponible</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label>0.00</label>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>*@
-                        <div class="card-panel">
-                            <h5>Análisis Solicitud</h5>
+                <div class="col s12 m6 l6">
+                    @*<div class="card-panel">
+                            <h5>Análisis Presupuesto</h5>
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg">
                                     <tr>
                                         <td class="tg-yw4l">
-                                            <label>Importe solicitud</label>
+                                            <label>Presupuesto canal</label>
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label>$11,000.00</label>
+                                            <label>20000013</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>$25,000.00</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tg-yw4l">
-                                            <label>Monto provisión original</label>
+                                            <label>Presupuesto cliente</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>20000013</label>
                                         </td>
                                         <td class="tg-yw4l">
                                             <label>$15,000.00</label>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Monto aplicado</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$1,000.00</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Saldo Provisión</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$14,000.00</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Impuesto a</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>-</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Impuesto b</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>-</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Impuesto c</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>-</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Impuesto solicitud más impuestos</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$11,000.00</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Retenciones</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>-</label>
-                                        </td>
-                                    </tr>
                                 </table>
                             </div>
+                            <div class="card-panel">
+                                <div class="row" style="margin-bottom:0">
+                                    <table class="tg">
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Visible</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label>$20,000.00</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Disponible</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label>0.00</label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="card-panel">
+                        <h5>Análisis Solicitud</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <table class="tg">
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Importe solicitud</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>$11,000.00</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Monto provisión original</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>$15,000.00</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Monto aplicado</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>$1,000.00</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Saldo Provisión</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>$14,000.00</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Impuesto a</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>-</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Impuesto b</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>-</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Impuesto c</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>-</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Impuesto solicitud más impuestos</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>$11,000.00</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Retenciones</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label>-</label>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
