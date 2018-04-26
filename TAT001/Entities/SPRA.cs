@@ -26,6 +26,7 @@ namespace TAT001.Entities
             this.TALLTs = new HashSet<TALLT>();
             this.TCLIENTETs = new HashSet<TCLIENTET>();
             this.TEXTOes = new HashSet<TEXTO>();
+            this.TS_FORMT = new HashSet<TS_FORMT>();
             this.TSOLTs = new HashSet<TSOLT>();
             this.UMEDIDATs = new HashSet<UMEDIDAT>();
             this.USUARIOs = new HashSet<USUARIO>();
@@ -54,6 +55,8 @@ namespace TAT001.Entities
         public virtual ICollection<TCLIENTET> TCLIENTETs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEXTO> TEXTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TS_FORMT> TS_FORMT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

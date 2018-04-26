@@ -49,6 +49,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
+        public virtual DbSet<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
         public virtual DbSet<GALLT> GALLTs { get; set; }
@@ -86,6 +87,8 @@ namespace TAT001.Entities
         public virtual DbSet<TEXTO> TEXTOes { get; set; }
         public virtual DbSet<TEXTOCARTAF> TEXTOCARTAFs { get; set; }
         public virtual DbSet<TEXTOCARTAV> TEXTOCARTAVs { get; set; }
+        public virtual DbSet<TS_FORM> TS_FORM { get; set; }
+        public virtual DbSet<TS_FORMT> TS_FORMT { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
         public virtual DbSet<TSOLT> TSOLTs { get; set; }
         public virtual DbSet<UMEDIDA> UMEDIDAs { get; set; }
@@ -116,9 +119,9 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<split_Result>("[TAT001Entities].[split](@delimited, @delimiter)", delimitedParameter, delimiterParameter);
         }
     
-        public virtual ObjectResult<string> CSP_BANNERSINCANAL()
+        public virtual int CSP_BANNERSINCANAL()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("CSP_BANNERSINCANAL");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CSP_BANNERSINCANAL");
         }
     
         public virtual ObjectResult<CSP_CAMBIO_Result> CSP_CAMBIO(string sociedad)

@@ -25,9 +25,6 @@
         <MappingFragment StoreEntitySet="CANAL">
           <ScalarProperty Name="CANAL1" ColumnName="CANAL" />
           <ScalarProperty Name="CDESCRIPCION" ColumnName="CDESCRIPCION" />
-          <ScalarProperty Name="BANNER" ColumnName="BANNER" />
-          <ScalarProperty Name="BDESCRIPCION" ColumnName="BDESCRIPCION" />
-          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -155,6 +152,7 @@
           <ScalarProperty Name="GRUPO" ColumnName="GRUPO" />
           <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="BDESCRIPCION" ColumnName="BDESCRIPCION" />
           <ScalarProperty Name="BANNER" ColumnName="BANNER" />
           <ScalarProperty Name="CANAL" ColumnName="CANAL" />
           <ScalarProperty Name="BZIRK" ColumnName="BZIRK" />
@@ -467,6 +465,15 @@
           <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
           <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
           <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOTS">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOT">
+        <MappingFragment StoreEntitySet="DOCUMENTOTS">
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+          <ScalarProperty Name="TSFORM_ID" ColumnName="TSFORM_ID" />
+          <ScalarProperty Name="CHECKS" ColumnName="CHECKS" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -932,6 +939,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TS_FORM">
+      <EntityTypeMapping TypeName="TAT001Model.TS_FORM">
+        <MappingFragment StoreEntitySet="TS_FORM">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="BUKRS_ID" ColumnName="BUKRS_ID" />
+          <ScalarProperty Name="LAND_ID" ColumnName="LAND_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="CAMPO" ColumnName="CAMPO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TS_FORMT">
+      <EntityTypeMapping TypeName="TAT001Model.TS_FORMT">
+        <MappingFragment StoreEntitySet="TS_FORMT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TSFORM_ID" ColumnName="TSFORM_ID" />
+          <ScalarProperty Name="TXT100" ColumnName="TXT100" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TSOLs">
       <EntityTypeMapping TypeName="TAT001Model.TSOL">
         <MappingFragment StoreEntitySet="TSOL">
@@ -1235,6 +1262,7 @@
           <ScalarProperty Name="BANNER" ColumnName="BANNER" />
           <ScalarProperty Name="BDESCRIPCION" ColumnName="BDESCRIPCION" />
           <ScalarProperty Name="PPTO" ColumnName="PPTO" />
+          <ScalarProperty Name="PERIODO" ColumnName="PERIODO" />
           <ScalarProperty Name="CSHDC" ColumnName="CSHDC" />
           <ScalarProperty Name="RECUN" ColumnName="RECUN" />
           <ScalarProperty Name="OTHTA" ColumnName="OTHTA" />

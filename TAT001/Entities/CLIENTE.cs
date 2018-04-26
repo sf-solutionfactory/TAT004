@@ -43,6 +43,7 @@ namespace TAT001.Entities
         public string GRUPO { get; set; }
         public string SPRAS { get; set; }
         public bool ACTIVO { get; set; }
+        public string BDESCRIPCION { get; set; }
         public string BANNER { get; set; }
         public string CANAL { get; set; }
         public string BZIRK { get; set; }

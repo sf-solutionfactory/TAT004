@@ -16,8 +16,5 @@ namespace TAT001.Entities
     {
         public string CANAL1 { get; set; }
         public string CDESCRIPCION { get; set; }
-        public string BANNER { get; set; }
-        public string BDESCRIPCION { get; set; }
-        public string KUNNR { get; set; }
     }
 }

@@ -1130,6 +1130,7 @@ namespace TAT001.Controllers
                              STCD1 = c.STCD1,
                              PARVW = c.PARVW,
                              BANNER = c.BANNER,
+                             CANAL = c.CANAL,
                              PAYER_NOMBRE = co == null ? String.Empty : co.NOMBRE,
                              PAYER_EMAIL = co == null ? String.Empty : co.EMAIL,
                          }).FirstOrDefault();
@@ -1137,13 +1138,9 @@ namespace TAT001.Controllers
             if(id_cl != null)
             {
                 //Obtener el cliente
-                CANAL canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnr).FirstOrDefault();
+                CANAL canal = db.CANALs.Where(ca => ca.CANAL1 == id_cl.CANAL).FirstOrDefault();
                 id_cl.VTWEG = "";
-                if (canal == null)
-                {
-                    string kunnrwz = kunnr.TrimStart('0');
-                    canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnrwz).FirstOrDefault();                    
-                }
+                
 
                 if(canal != null)
                 {
