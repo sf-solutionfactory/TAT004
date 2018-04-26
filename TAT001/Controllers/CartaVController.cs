@@ -22,7 +22,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -52,7 +52,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -83,7 +83,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -118,23 +118,15 @@ namespace TAT001.Controllers
                 for (int i = 0; i < lista.Count; i++)
                 {
                     contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(lista[i].Remove(25));
-                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, 25));
+
+                    DateTime a1 = DateTime.Parse(lista[i].Remove(24));
+                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, 24));
 
                     var con2 = db.DOCUMENTOPs
                                           .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
                                           .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
                                           .ToList();
 
-                    //DateTime a1 = (DateTime)item.Key.VIGENCIA_DE;
-                    //DateTime a2 = (DateTime)item.Key.VIGENCIA_DE;
-                    //var con2 = db.DOCUMENTOPs
-                    //                  .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
-                    //                  .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
-                    //                  .ToList();
-
-
-                    //.Select(x => new { x.MATNR, x.MATKL, x.PORC_APOYO, x.MONTO_APOYO, x.APOYO_REAL, x.PRECIO_SUG })
                     foreach (var item2 in con2)
                     {
                         armadoCuerpoTab.Add(item2.MATNR);
@@ -211,7 +203,7 @@ namespace TAT001.Controllers
                 cv.folio = d.NUM_DOC.ToString();
                 cv.folio_x = true;
                 //cv.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
-                cv.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
+                cv.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim();
                 ////cv.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
                 cv.lugar_x = true;
                 cv.lugarFech = DateTime.Now.ToShortDateString();
@@ -293,8 +285,8 @@ namespace TAT001.Controllers
                 for (int i = 0; i < encabezadoFech.Count; i++)
                 {
                     contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(25));
-                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, 25));
+                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(24));
+                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, 24));
 
                     var con2 = db.DOCUMENTOPs
                                       .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)

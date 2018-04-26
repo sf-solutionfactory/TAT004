@@ -110,5 +110,39 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+        [HttpPost]
+        public JsonResult getPresupuesto(string kunnr)
+        {
+            TAT001Entities db = new TAT001Entities();
+            PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+            try
+            {
+                if (kunnr == null)
+                    kunnr = "";
+
+                //Obtener presupuesto
+                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+
+
+                if (presupuesto != null)
+                {
+                    pm.P_CANAL = presupuesto[0].VAL;
+                    pm.P_BANNER = presupuesto[1].VAL;
+                    pm.PC_C = presupuesto[4].VAL;
+                    pm.PC_A = presupuesto[5].VAL;
+                    pm.PC_P = presupuesto[6].VAL;
+                    pm.PC_T = presupuesto[7].VAL;
+                }
+            }
+            catch
+            {
+
+            }
+            db.Dispose();
+
+            JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
     }
 }

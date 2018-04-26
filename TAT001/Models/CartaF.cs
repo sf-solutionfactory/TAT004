@@ -29,12 +29,16 @@ namespace TAT001.Models
 
         public string folio { get; set; }
         public bool folio_x { get; set; }
-
+        public string lugarFech { get; set; }
+        public bool lugarFech_x { get; set; }
         public string lugar { get; set; }
         public bool lugar_x { get; set; }
 
-        public string payer { get; set; }
-        public bool payer_x { get; set; }
+        public string payerId { get; set; }
+        public bool payerId_x { get; set; }
+
+        public string payerNom { get; set; }
+        public bool payerNom_x { get; set; }
 
         public string estimado { get; set; }
         public bool estimado_x { get; set; }
@@ -65,6 +69,7 @@ namespace TAT001.Models
 
         public string mail { get; set; }
         public bool mail_x { get; set; }
-
+        public string monto { get; set; }
+        public string moneda { get; set; }
     }
 }

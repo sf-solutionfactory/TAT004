@@ -22,7 +22,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -54,7 +54,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -94,10 +94,11 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.mon = db.TEXTOCARTAVs.Where(t => t.SPRAS_ID.Equals(user.SPRAS_ID)).Select(t => t.MONTO).FirstOrDefault();
 
                 try
                 {
@@ -134,12 +135,18 @@ namespace TAT001.Controllers
             cf.folio_x = (bool)c.FOLIOX;
             cf.lugar = c.LUGAR;
             cf.lugar_x = (bool)c.LUGARX;
-            cf.payer = c.PAYER;
-            cf.payer_x = (bool)c.PAYERX;
+            cf.lugarFech = c.LUGARFECH;
+            cf.lugarFech_x = (bool)c.LUGARFECHX;
+            cf.payerId = c.PAYER;
+            cf.payerId_x = (bool)c.PAYERX;
+            cf.payerNom = c.NOMBREC;
+            cf.payerNom_x = (bool)c.NOMBRECX;
             cf.estimado = c.ESTIMADO;
             cf.estimado_x = (bool)c.ESTIMADOX;
             cf.mecanica = c.MECANICA;
             cf.mecanica_x = (bool)c.MECANICAX;
+            cf.monto = c.MONEDA;
+            cf.monto = c.MONTO;
             cf.nombreE = c.NOMBREE;
             cf.nombreE_x = (bool)c.NOMBREEX;
             cf.puestoE = c.PUESTOE;
@@ -162,6 +169,7 @@ namespace TAT001.Controllers
         public ActionResult Create(decimal id)
         {
             int pagina = 231; //ID EN BASE DE DATOS
+            TEXTOCARTAF c = new TEXTOCARTAF();
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -169,10 +177,11 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.mon = db.TEXTOCARTAVs.Where(t => t.SPRAS_ID.Equals(user.SPRAS_ID)).Select(t => t.MONTO).FirstOrDefault();
 
                 try
                 {
@@ -185,12 +194,18 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+
+                c = db.TEXTOCARTAFs
+                        .Where(x => x.SPRAS_ID == user.SPRAS_ID)
+                        .First();
             }
+
             DOCUMENTO d = new DOCUMENTO();
             PUESTOT p = new PUESTOT();
             using (TAT001Entities db = new TAT001Entities())
             {
                 d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
+
                 //var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(doa => doa.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
                 if (d != null)
                 {
@@ -204,52 +219,62 @@ namespace TAT001.Controllers
                     ////d.CITy.STATE.NAME = db.STATES.Where(a => a.ID.Equals(d.CITy.STATE_ID)).FirstOrDefault().NAME;
                 }
                 ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
+
+                HeaderFooter hfc = new HeaderFooter();
+                hfc.eliminaArchivos();
+
+                CartaF cf = new CartaF();
+                cf.num_doc = id;
+                cf.company = d.SOCIEDAD.BUTXT;
+                cf.company_x = true;
+                cf.taxid = d.SOCIEDAD.LAND;
+                cf.taxid_x = true;
+                cf.concepto = d.CONCEPTO;
+                cf.concepto_x = true;
+                cf.cliente = d.PAYER_NOMBRE;
+                cf.cliente_x = true;
+                cf.puesto = " ";
+                cf.puesto_x = false;
+                cf.direccion = d.CLIENTE.STRAS_GP;
+                cf.direccion_x = true;
+                cf.folio = d.NUM_DOC.ToString();
+                cf.folio_x = true;
+                //cf.lugar = "Qro, Qro."+ DateTime.Now.ToShortTimeString();
+                cf.lugarFech = DateTime.Now.ToShortDateString();
+                cf.lugarFech_x = true;
+                cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim();
+                ////cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
+                cf.lugar_x = true;
+                cf.payerId = d.CLIENTE.PAYER;
+                cf.payerId_x = true;
+                cf.payerNom = d.CLIENTE.NAME1;
+                cf.payerNom_x = true;
+                cf.estimado = d.PAYER_NOMBRE;
+                cf.estimado_x = true;
+                cf.mecanica = d.NOTAS;
+                cf.mecanica_x = true;
+                cf.nombreE = d.USUARIO.NOMBRE + " " + d.USUARIO.APELLIDO_P + " " + d.USUARIO.APELLIDO_M;
+                cf.nombreE_x = true;
+                if (p != null)
+                    cf.puestoE = p.TXT50;
+                cf.puestoE_x = true;
+                cf.companyC = cf.company;
+                cf.companyC_x = true;
+                cf.nombreC = d.PAYER_NOMBRE;
+                cf.nombreC_x = true;
+                cf.puestoC = " ";
+                cf.puestoC_x = false;
+                cf.companyCC = d.CLIENTE.NAME1;
+                cf.companyCC_x = true;
+                if (ViewBag.legal != null)
+                    cf.legal = ViewBag.legal.LEYENDA1;
+                cf.legal_x = true;
+                cf.mail = c.E_MAIL + " " + d.PAYER_EMAIL;
+                cf.mail_x = true;
+                cf.monto = d.MONTO_DOC_MD.ToString();
+                cf.moneda = d.MONEDA_ID.ToString();
+                return View(cf);
             }
-            CartaF cf = new CartaF();
-            cf.num_doc = id;
-            cf.company = d.SOCIEDAD.BUTXT;
-            cf.company_x = true;
-            cf.taxid = d.SOCIEDAD.LAND;
-            cf.taxid_x = true;
-            cf.concepto = d.CONCEPTO;
-            cf.concepto_x = true;
-            cf.cliente = d.PAYER_NOMBRE;
-            cf.cliente_x = true;
-            cf.puesto = " ";
-            cf.puesto_x = false;
-            cf.direccion = d.CLIENTE.STRAS_GP;
-            cf.direccion_x = true;
-            cf.folio = d.NUM_DOC.ToString();
-            cf.folio_x = true;
-            //cf.lugar = "Qro, Qro."+DateTime.Now.ToShortTimeString();
-            cf.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
-            ////cf.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
-            cf.lugar_x = true;
-            cf.payer = d.CLIENTE.NAME1;
-            cf.payer_x = true;
-            cf.estimado = d.PAYER_NOMBRE;
-            cf.estimado_x = true;
-            cf.mecanica = d.NOTAS;
-            cf.mecanica_x = true;
-            cf.nombreE = d.USUARIO.NOMBRE + " " + d.USUARIO.APELLIDO_P + " " + d.USUARIO.APELLIDO_M;
-            cf.nombreE_x = true;
-            if (p != null)
-                cf.puestoE = p.TXT50;
-            cf.puestoE_x = true;
-            cf.companyC = cf.company;
-            cf.companyC_x = true;
-            cf.nombreC = d.PAYER_NOMBRE;
-            cf.nombreC_x = true;
-            cf.puestoC = " ";
-            cf.puestoC_x = false;
-            cf.companyCC = d.CLIENTE.NAME1;
-            cf.companyCC_x = true;
-            if (ViewBag.legal != null)
-                cf.legal = ViewBag.legal.LEYENDA1;
-            cf.legal_x = true;
-            cf.mail = "El contenido del presente Acuerdo será enviado electrónicamente al correo: " + d.PAYER_EMAIL;
-            cf.mail_x = true;
-            return View(cf);
         }
 
         // POST: CartaF/Create
@@ -280,6 +305,8 @@ namespace TAT001.Controllers
                 ca.FOLIOX = c.folio_x;
                 ca.LEGAL = c.legal;
                 ca.LEGALX = c.legal_x;
+                ca.LUGARFECH = c.lugarFech;
+                ca.LUGARFECHX = c.lugarFech_x;
                 ca.LUGAR = c.lugar;
                 ca.LUGARX = c.lugar_x;
                 ca.MAIL = c.mail;
@@ -291,8 +318,8 @@ namespace TAT001.Controllers
                 ca.NOMBREE = c.nombreE;
                 ca.NOMBREEX = c.nombreE_x;
                 ca.NUM_DOC = c.num_doc;
-                ca.PAYER = c.payer;
-                ca.PAYERX = c.payer_x;
+                ca.PAYER = c.payerId;
+                ca.PAYERX = c.payerId_x;
                 ca.PUESTO = c.puesto;
                 ca.PUESTOC = c.puestoC;
                 ca.PUESTOCX = c.puestoC_x;
@@ -301,6 +328,8 @@ namespace TAT001.Controllers
                 ca.PUESTOX = c.puestoE_x;
                 ca.TAXID = c.taxid;
                 ca.TAXIDX = c.taxid_x;
+                ca.MONTO = c.monto;
+                ca.MONEDA = c.moneda;
                 //ca.TIPO = c.TIPO;
                 //ca.USUARIO = c.USUARIO;
                 //ca.USUARIO_ID = c.USUARIO_ID;
@@ -308,10 +337,12 @@ namespace TAT001.Controllers
                 ca.FECHAC = DateTime.Now;
 
                 CartaFEsqueleto cfe = new CartaFEsqueleto();
-                cfe.crearPDF(c);
-                string recibeRuta = Convert.ToString(Session["rutaCompleta"]);
+                TEXTOCARTAF f = new TEXTOCARTAF();
+                string u = User.Identity.Name;
+                string recibeRuta = "";
                 using (TAT001Entities db = new TAT001Entities())
                 {
+                    var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                     var cartas = db.CARTAs.Where(a => a.NUM_DOC.Equals(ca.NUM_DOC)).ToList();
                     int pos = 0;
                     if (cartas.Count > 0)
@@ -319,39 +350,46 @@ namespace TAT001.Controllers
                     ca.POS = pos + 1;
                     db.CARTAs.Add(ca);
                     db.SaveChanges();
+
+                    f = db.TEXTOCARTAFs
+                        .Where(x => x.SPRAS_ID == user.SPRAS_ID)
+                        .First();
                 }
+
+                cfe.crearPDF(c, f);
+                recibeRuta = Convert.ToString(Session["rutaCompletaf"]);
                 return RedirectToAction("Details", new { ruta = recibeRuta });
             }
             catch (DbEntityValidationException e)
             {
 
                 int pagina = 231; //ID EN BASE DE DATOS
-            using (TAT001Entities db = new TAT001Entities())
-            {
-                string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user;
-                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                using (TAT001Entities db = new TAT001Entities())
+                {
+                    string u = User.Identity.Name;
+                    var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                    ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                    ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                    ViewBag.usuario = user;
+                    ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                    ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                    ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                    ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                try
-                {
-                    string pa = Session["pais"].ToString();
-                    ViewBag.pais = pa + ".svg";
+                    try
+                    {
+                        string pa = Session["pais"].ToString();
+                        ViewBag.pais = pa + ".svg";
+                    }
+                    catch
+                    {
+                        ViewBag.pais = "mx.svg";
+                        //return RedirectToAction("Pais", "Home");
+                    }
+                    Session["spras"] = user.SPRAS_ID;
+                    DOCUMENTO d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(c.num_doc)).First();
+                    ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
                 }
-                catch
-                {
-                    ViewBag.pais = "mx.svg";
-                    //return RedirectToAction("Pais", "Home");
-                }
-                Session["spras"] = user.SPRAS_ID;
-                DOCUMENTO d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(c.num_doc)).First();
-                ViewBag.legal = db.LEYENDAs.Where(a => a.PAIS_ID.Equals(d.PAIS_ID) && a.ACTIVO == true).FirstOrDefault();
-            }
                 try
                 {
                     ViewBag.error = e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage;
@@ -360,9 +398,9 @@ namespace TAT001.Controllers
                 {
                     ViewBag.error = e.Message;
                 }
-            return View(c);
+                return View(c);
+            }
         }
-    }
 
         // GET: CartaF/Edit/5
         public ActionResult Edit(int id)

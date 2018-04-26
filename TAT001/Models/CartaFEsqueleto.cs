@@ -21,7 +21,10 @@ namespace TAT001.Models
         PdfPTable tablaDatos3 = new PdfPTable(2);
         public int a, b, r;
 
-        public void crearPDF(CartaF c)
+        Entities.TEXTOCARTAF foo = new Entities.TEXTOCARTAF();
+
+
+        public void crearPDF(CartaF c, Entities.TEXTOCARTAF f)
         {
             HeaderFooter hfClass = new HeaderFooter(c);
             DateTime fechaCreacion = DateTime.Now;
@@ -32,6 +35,7 @@ namespace TAT001.Models
             Document pdfDoc = new Document(PageSize.A4, 30f, 30f, 40f, 100f);
             PdfWriter pdfWriter = PdfWriter.GetInstance(pdfDoc, fsDocumento);
             pdfWriter.PageEvent = new HeaderFooter();
+
 
             try
             {
@@ -106,42 +110,52 @@ namespace TAT001.Models
                 { PdfPCell celda1 = new PdfPCell(new Paragraph("", negritaPeque)); celda1.Border = 0; tablaDatos1.AddCell(celda1); }
 
                 if (c.folio_x == true)
-                { PdfPCell celda2 = new PdfPCell(new Paragraph("Folio:" + c.folio, negritaPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
+                { PdfPCell celda2 = new PdfPCell(new Paragraph(f.FOLIO + " " + c.folio, negritaPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
                 else
                 { PdfPCell celda2 = new PdfPCell(new Paragraph("", normalPeque)); celda2.HorizontalAlignment = Element.ALIGN_RIGHT; celda2.Border = 0; tablaDatos1.AddCell(celda2); }
 
                 PdfPCell celdaB1 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB1.Border = 0; tablaDatos1.AddCell(celdaB1);
                 PdfPCell celdaB2 = new PdfPCell(new Paragraph("\n", negritaPeque)); celdaB2.Border = 0; tablaDatos1.AddCell(celdaB2);
 
-                if (c.cliente_x == true)
-                { PdfPCell celda3 = new PdfPCell(new Paragraph(c.cliente, negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
+                if (c.payerNom_x == true)
+                { PdfPCell celda3 = new PdfPCell(new Paragraph(c.payerNom, negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
                 else
-                { PdfPCell celda3 = new PdfPCell(new Paragraph("", negritaPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
+                { PdfPCell celda3 = new PdfPCell(new Paragraph("", normalPeque)); celda3.Border = 0; tablaDatos1.AddCell(celda3); }
+
+                if (c.lugarFech_x == true)
+                { PdfPCell celda4 = new PdfPCell(new Paragraph(c.lugarFech, negritaPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+                else
+                { PdfPCell celda4 = new PdfPCell(new Paragraph("", normalPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+
+                if (c.cliente_x == true)
+                { PdfPCell celda5 = new PdfPCell(new Paragraph(c.cliente, negritaPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
+                else
+                { PdfPCell celda5 = new PdfPCell(new Paragraph("", negritaPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
 
                 if (c.lugar_x == true)
-                { PdfPCell celda4 = new PdfPCell(new Paragraph(c.lugar, negritaPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+                { PdfPCell celda6 = new PdfPCell(new Paragraph(c.lugar, negritaPeque)); celda6.HorizontalAlignment = Element.ALIGN_RIGHT; celda6.Border = 0; tablaDatos1.AddCell(celda6); }
                 else
-                { PdfPCell celda4 = new PdfPCell(new Paragraph("", negritaPeque)); celda4.HorizontalAlignment = Element.ALIGN_RIGHT; celda4.Border = 0; tablaDatos1.AddCell(celda4); }
+                { PdfPCell celda6 = new PdfPCell(new Paragraph("", negritaPeque)); celda6.HorizontalAlignment = Element.ALIGN_RIGHT; celda6.Border = 0; tablaDatos1.AddCell(celda6); }
 
                 if (c.puesto_x == true)
-                { PdfPCell celda5 = new PdfPCell(new Paragraph(c.puesto, normalPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
-                else
-                { PdfPCell celda5 = new PdfPCell(new Paragraph("", normalPeque)); celda5.Border = 0; tablaDatos1.AddCell(celda5); }
-
-                if (c.payer_x == true)
-                { PdfPCell celda6 = new PdfPCell(new Paragraph("Para control interno Kellogg´s", negritaPeque)); celda6.BackgroundColor = new BaseColor(204, 204, 204); tablaDatos1.AddCell(celda6); }
-                else
-                { PdfPCell celda6 = new PdfPCell(new Paragraph("", negritaPeque)); celda6.Border = 0; tablaDatos1.AddCell(celda6); }
-
-                if (c.direccion_x == true)
-                { PdfPCell celda7 = new PdfPCell(new Paragraph(c.direccion, normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
+                { PdfPCell celda7 = new PdfPCell(new Paragraph(c.puesto, normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
                 else
                 { PdfPCell celda7 = new PdfPCell(new Paragraph("", normalPeque)); celda7.Border = 0; tablaDatos1.AddCell(celda7); }
 
-                if (c.payer_x == true)
-                { PdfPCell celda8 = new PdfPCell(new Paragraph("Payer: 354952, 245387, 354952, 245387, 354952, 245387" + c.payer, normalPeque)); tablaDatos1.AddCell(celda8); }
+                if (c.payerId_x == true)
+                { PdfPCell celda8 = new PdfPCell(new Paragraph(f.CONTROL, negritaPeque)); celda8.BackgroundColor = new BaseColor(204, 204, 204); tablaDatos1.AddCell(celda8); }
                 else
-                { PdfPCell celda8 = new PdfPCell(new Paragraph("", normalPeque)); celda8.Border = 0; tablaDatos1.AddCell(celda8); }
+                { PdfPCell celda8 = new PdfPCell(new Paragraph("", negritaPeque)); celda8.Border = 0; tablaDatos1.AddCell(celda8); }
+
+                if (c.direccion_x == true)
+                { PdfPCell celda9 = new PdfPCell(new Paragraph(c.direccion, normalPeque)); celda9.Border = 0; tablaDatos1.AddCell(celda9); }
+                else
+                { PdfPCell celda9 = new PdfPCell(new Paragraph("", normalPeque)); celda9.Border = 0; tablaDatos1.AddCell(celda9); }
+
+                if (c.payerId_x == true)
+                { PdfPCell celda10 = new PdfPCell(new Paragraph(f.PAYER + " " + c.payerId, normalPeque)); tablaDatos1.AddCell(celda10); }
+                else
+                { PdfPCell celda10 = new PdfPCell(new Paragraph("", normalPeque)); celda10.Border = 0; tablaDatos1.AddCell(celda10); }
 
                 float var = tablaDatos1.TotalHeight;
                 pdfDoc.Add(tablaDatos1);
@@ -152,7 +166,7 @@ namespace TAT001.Models
 
                 if (c.estimado_x == true)
                 {
-                    fraseEstimado.Add(new Paragraph("Estimado " + c.estimado, negritaPeque));
+                    fraseEstimado.Add(new Paragraph(f.ESTIMADO + " " + c.estimado, negritaPeque));
                 }
                 else
                 {
@@ -161,6 +175,7 @@ namespace TAT001.Models
                 pdfDoc.Add(fraseEstimado);
 
                 //APARTIR DE AQUI VA LA MECANICA
+                pdfDoc.Add(new Chunk("\n"));
                 pdfDoc.Add(new Chunk("\n"));
                 Phrase miFrase = new Phrase();
 
@@ -172,6 +187,12 @@ namespace TAT001.Models
                 {
                     miFrase.Add("");
                 }
+                pdfDoc.Add(miFrase);
+
+                //APARTIR DE AQUI VA EL MONTO
+                pdfDoc.Add(new Chunk("\n"));
+                miFrase.Clear();
+                miFrase.Add(new Paragraph(f.MONTO + " " + c.monto + " " + c.moneda, normalPeque));
                 pdfDoc.Add(miFrase);
 
                 //LINEAS PARA LA FIRMA EN UNA TABLA
@@ -254,7 +275,8 @@ namespace TAT001.Models
 
                 pdfDoc.Close();
 
-                HttpContext.Current.Session["rutaCompleta"] = "../PdfTemp/" + nombreArchivo;
+                string rutaf = "../PdfTemp/" + nombreArchivo;
+                HttpContext.Current.Session["rutaCompletaf"] = rutaf;
             }
             catch (Exception ex)
             {

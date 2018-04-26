@@ -813,6 +813,14 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
+        [HttpPost]
+        public FileResult Descargar(string archivo)
+        {
+            Models.PresupuestoModels carga = new Models.PresupuestoModels();
+            string nombre = "", contentyp = "";
+            carga.contDescarga(archivo, ref contentyp, ref nombre);
+            return File(archivo, contentyp, nombre);
+        }
         public decimal getValSoc(string waers, string moneda_id, decimal monto_doc_md, out string errorString)
         {
             decimal val = 0;
