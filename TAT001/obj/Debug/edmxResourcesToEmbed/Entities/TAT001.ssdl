@@ -20,14 +20,10 @@
   </EntityType>
   <EntityType Name="CANAL">
     <Key>
-      <PropertyRef Name="BANNER" />
-      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="CANAL" />
     </Key>
-    <Property Name="CANAL" Type="nvarchar" MaxLength="10" />
+    <Property Name="CANAL" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="CDESCRIPCION" Type="nvarchar" MaxLength="50" />
-    <Property Name="BANNER" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="BDESCRIPCION" Type="nvarchar" MaxLength="50" />
-    <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
   </EntityType>
   <EntityType Name="CARPETA">
     <Key>
@@ -154,7 +150,8 @@
     <Property Name="GRUPO" Type="nchar" MaxLength="10" />
     <Property Name="SPRAS" Type="nchar" MaxLength="2" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
-    <Property Name="BANNER" Type="nchar" MaxLength="10" />
+    <Property Name="BDESCRIPCION" Type="nchar" MaxLength="50" />
+    <Property Name="BANNER" Type="nchar" MaxLength="50" />
     <Property Name="CANAL" Type="nchar" MaxLength="10" />
     <Property Name="BZIRK" Type="nchar" MaxLength="6" />
     <Property Name="KONDA" Type="nchar" MaxLength="2" />
@@ -175,6 +172,64 @@
     <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CONPOSAPH">
+    <Key>
+      <PropertyRef Name="CONSECUTIVO" />
+      <PropertyRef Name="TIPO_SOL" />
+      <PropertyRef Name="TIPO_DOC" />
+      <PropertyRef Name="SOCIEDAD" />
+    </Key>
+    <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
+    <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
+    <Property Name="MONEDA" Type="nchar" MaxLength="1" />
+    <Property Name="HEADER_TEXT" Type="nvarchar" MaxLength="50" />
+    <Property Name="FECHA_INIVIG" Type="date" />
+    <Property Name="FECHA_FINVIG" Type="date" />
+    <Property Name="REFERENCIA" Type="nchar" MaxLength="16" />
+    <Property Name="PAIS" Type="nchar" MaxLength="2" />
+    <Property Name="NOTA" Type="nchar" MaxLength="50" />
+    <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
+    <Property Name="CALC_TAXT" Type="nchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="CONPOSAPP">
+    <Key>
+      <PropertyRef Name="CONSECUTIVO" />
+      <PropertyRef Name="POSICION" />
+    </Key>
+    <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POSICION" Type="int" Nullable="false" />
+    <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
+    <Property Name="NUM_PROV" Type="bit" />
+    <Property Name="NUM_CTE" Type="bit" />
+    <Property Name="CTA_MAYOR" Type="bit" />
+    <Property Name="CTA_MAYOR_FV" Type="bit" />
+    <Property Name="CECO" Type="bit" />
+    <Property Name="TEXTO" Type="nchar" MaxLength="50" />
+    <Property Name="SALES_ORG" Type="bit" />
+    <Property Name="CAN_DIST" Type="bit" />
+    <Property Name="DIVISION" Type="bit" />
+    <Property Name="SALES_OFF" Type="bit" />
+    <Property Name="SALES_GRP" Type="bit" />
+    <Property Name="PRICE_GRP" Type="bit" />
+    <Property Name="CORP_CAT" Type="bit" />
+    <Property Name="CORP_BRAND" Type="bit" />
+    <Property Name="INV_REF" Type="bit" />
+    <Property Name="PAYM_TERM" Type="bit" />
+    <Property Name="JURIS_CODE" Type="bit" />
+    <Property Name="SALES_DIST" Type="bit" />
+    <Property Name="PRODUCT" Type="bit" />
+    <Property Name="TAX_CODE" Type="bit" />
+    <Property Name="PLANT" Type="bit" />
+    <Property Name="REF_KEY1" Type="nchar" MaxLength="12" />
+    <Property Name="REF_KEY3" Type="nchar" MaxLength="12" />
+    <Property Name="ASSIGNACION" Type="bit" />
+    <Property Name="QUANTITY" Type="bit" />
+    <Property Name="BASE_UNIT" Type="bit" />
   </EntityType>
   <EntityType Name="CONTACTOC">
     <Key>
@@ -514,6 +569,15 @@
     <Property Name="MEINS" Type="nchar" MaxLength="3" />
     <Property Name="PUNIT" Type="decimal" Precision="13" Scale="5" />
     <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="MENSAJES">
+    <Key>
+      <PropertyRef Name="ID_MENSAJE" />
+    </Key>
+    <Property Name="ID_MENSAJE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SPRAS" Type="nvarchar" MaxLength="2" Nullable="false" />
+    <Property Name="PAGINA_ID" Type="int" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="MIEMBROS">
     <Key>
@@ -1166,6 +1230,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Property Name="POSICION" Type="nvarchar" MaxLength="10" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
+  <Association Name="FK__CONPOSAPH__SOCIE__24485945">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CONPOSAPH">
+        <PropertyRef Name="SOCIEDAD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CAMPOS_PAGINA">
     <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
     <End Role="CAMPOS" Type="Self.CAMPOS" Multiplicity="*" />
@@ -2315,49 +2391,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
-  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-  </Function>
-  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
-    <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
-    <ReturnType>
-      <CollectionType>
-        <RowType>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="val" Type="nvarchar(max)" />
-        </RowType>
-      </CollectionType>
-    </ReturnType>
-  </Function>
   <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
@@ -2370,6 +2403,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CITIES" EntityType="Self.CITIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONTACTOC" EntityType="Self.CONTACTOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
@@ -2388,6 +2423,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="IMPUESTO" EntityType="Self.IMPUESTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LEYENDA" EntityType="Self.LEYENDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MENSAJES" EntityType="Self.MENSAJES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
@@ -2547,6 +2583,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [WARNINGV].[ACTIVO] AS [ACTIVO]
     FROM [dbo].[WARNINGV] AS [WARNINGV]</DefiningQuery>
     </EntitySet>
+    <AssociationSet Name="FK__CONPOSAPH__SOCIE__24485945" Association="Self.FK__CONPOSAPH__SOCIE__24485945">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CONPOSAPH" EntitySet="CONPOSAPH" />
+    </AssociationSet>
     <AssociationSet Name="FK_CAMPOS_PAGINA" Association="Self.FK_CAMPOS_PAGINA">
       <End Role="PAGINA" EntitySet="PAGINA" />
       <End Role="CAMPOS" EntitySet="CAMPOS" />

@@ -17,8 +17,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TS_FORM()
         {
-            this.TS_FORMT = new HashSet<TS_FORMT>();
             this.DOCUMENTOTS = new HashSet<DOCUMENTOT>();
+            this.TS_FORMT = new HashSet<TS_FORMT>();
         }
     
         public int ID { get; set; }
@@ -27,11 +27,11 @@ namespace TAT001.Entities
         public int POS { get; set; }
         public string CAMPO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual PAI PAI { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_FORMT> TS_FORMT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTOT> DOCUMENTOTS { get; set; }
     }
 }

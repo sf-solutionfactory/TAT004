@@ -290,13 +290,11 @@
                                     </div>
                                 </div>
                             }
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
-                                    @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
-                                </div>
+                            <div class="input-field col s12">
+                                @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
+                                @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
+                                @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id" })
+                                @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
                             </div>
                             <link href="~/Content/autocomplete.css" rel="stylesheet" />
                             <script src="~/Scripts/autocomplete1.10.2.js"></script>
@@ -332,13 +330,11 @@
                                 })
                             </script>
                             <script src="~/Scripts/createa.js"></script>
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
-                                    @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
-                                </div>
+                            <div class="input-field col s12">
+                                @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
+                                @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
+                                @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id" })
+                                @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
                             </div>
                             <script>
                                 auto(document).ready(function () {
@@ -449,8 +445,9 @@
 
                             </div>
                             <div class="input-field col s12">
-                                @Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })
                                 @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
+                                @*@Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                                <label for="concepto">Concepto*</label>
                                 @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
                             </div>
                             <div class="input-field col s12">
@@ -477,48 +474,47 @@
                     <div class="card-panel">
                         <h5>Información del cliente</h5>
                         <div class="row" style="margin-bottom:0">
-                            <div class="form-group col s12">
-                                @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
-                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
-                                </div>
-                                <script>
-                                    auto(document).ready(function () {
-                                        auto("#payer_id").autocomplete({
-                                            source: function (request, response) {
-                                                auto.ajax({
-                                                    url: "../Listas/Clientes",
-                                                    type: "GET",
-                                                    dataType: "json",
-                                                    data: { Prefix: request.term },
-                                                    success: function (data) {
-                                                        response(auto.map(data, function (item) {
-                                                            return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
-                                                        }))
-                                                    }
-                                                })
-                                            },
-                                            messages: {
-                                                noResults: '',
-                                                results: function (resultsCount) { }
-                                            },
-                                            change: function (e, ui) {
-                                                if (!(ui.item)) {
-                                                    e.target.value = "";
-                                                }
-                                            },
-                                            select(event, ui) {
-
-                                                var label = ui.item.label;
-                                                var value = ui.item.value;
-                                                selectCliente(value);
-                                            }
-                                        });
-                                    })
-                                </script>
+                            <div class="input-field col s12">
+                                @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
+                                @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
+                                @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id" })
+                                @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
                             </div>
+                            <script>
+                                auto(document).ready(function () {
+                                    auto("#payer_id").autocomplete({
+                                        source: function (request, response) {
+                                            auto.ajax({
+                                                url: "../Listas/Clientes",
+                                                type: "GET",
+                                                dataType: "json",
+                                                data: { Prefix: request.term },
+                                                success: function (data) {
+                                                    response(auto.map(data, function (item) {
+                                                        return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+                                                    }))
+                                                }
+                                            })
+                                        },
+                                        messages: {
+                                            noResults: '',
+                                            results: function (resultsCount) { }
+                                        },
+                                        change: function (e, ui) {
+                                            if (!(ui.item)) {
+                                                e.target.value = "";
+                                            }
+                                        },
+                                        select(event, ui) {
+
+                                            var label = ui.item.label;
+                                            var value = ui.item.value;
+                                            selectCliente(value);
+                                        }
+                                    });
+                                })
+                            </script>
+                            @*</div>*@
 
                             @*<div class="form-group">
                                     @Html.LabelFor(model => model.VKORG, "Tipo de cliente", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -562,26 +558,23 @@
                             </div>
 
                             <div class="input-field col s12">
+                                @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
                                 @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
-                                </div>
+                                @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
                             </div>
 
                             <div class="input-field col s12">
+                                @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
+                                @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
                                 @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
-                                <div class="col-md-10">
-                                    @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
-                                    @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
-                                </div>
+                                @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         @*Temporalidad*@
         <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
             <div class="row">
@@ -854,7 +847,7 @@
                     <div class="card-panel">
                         <h5>Mecánica de Negociación</h5>
                         <div class="row" style="margin-bottom:0;">
-                            <div class="file-field input-field" id="cargar_excel" style="display:none">
+                            <div class="file-field input-field col s6" id="cargar_excel" style="display:none">
                                 <div class="btn">
                                     <span>Examinar</span>
                                     <input id="file_dis" type="file">
@@ -863,7 +856,7 @@
                                     <input class="file-path validate" type="text">
                                 </div>
                             </div>
-                            <div id="div_btns_row" style="display:none">
+                            <div id="div_btns_row" style="display:none" class="col s6">
                                 <a class="waves-effect waves-light btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
                                 <a class="waves-effect waves-light btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                             </div>

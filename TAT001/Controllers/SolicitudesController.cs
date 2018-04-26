@@ -161,6 +161,8 @@ namespace TAT001.Controllers
             ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
             ViewBag.acciones = f;
+            List<DOCUMENTOA> archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(id)).ToList();
+            ViewBag.files = archivos;
             if (f != null)
                 ViewBag.accion = db.WORKFPs.Where(a => a.ID.Equals(f.WORKF_ID) & a.POS.Equals(f.WF_POS) & a.VERSION.Equals(f.WF_VERSION)).FirstOrDefault().ACCION.TIPO;
 
@@ -1179,6 +1181,7 @@ namespace TAT001.Controllers
                                      STCD1 = c.STCD1,
                                      PARVW = c.PARVW,
                                      BANNER = c.BANNER,
+                                     CANAL = c.CANAL,
                                      PAYER_NOMBRE = co == null ? String.Empty : co.NOMBRE,
                                      PAYER_EMAIL = co == null ? String.Empty : co.EMAIL,
                                  }).FirstOrDefault();
@@ -1186,14 +1189,15 @@ namespace TAT001.Controllers
             if (id_cl != null)
             {
                 //Obtener el cliente
-                CANAL canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnr).FirstOrDefault();
+                //CANAL canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnr).FirstOrDefault();
+                CANAL canal = db.CANALs.Where(ca => ca.CANAL1 == id_cl.CANAL).FirstOrDefault();
                 id_cl.VTWEG = "";
-                if (canal == null)
-                {
-                    string kunnrwz = kunnr.TrimStart('0');
-                    string bannerwz = id_cl.BANNER.TrimStart('0');
-                    canal = db.CANALs.Where(ca => ca.BANNER == bannerwz && ca.KUNNR == kunnrwz).FirstOrDefault();
-                }
+                //if (canal == null)
+                //{
+                //    string kunnrwz = kunnr.TrimStart('0');
+                //    string bannerwz = id_cl.BANNER.TrimStart('0');
+                //    canal = db.CANALs.Where(ca => ca.BANNER == bannerwz && ca.KUNNR == kunnrwz).FirstOrDefault();
+                //}
 
                 if (canal != null)
                 {
@@ -1714,22 +1718,29 @@ namespace TAT001.Controllers
         [HttpPost]
         public JsonResult getPresupuesto(string kunnr)
         {
-            if (kunnr == null)
-                kunnr = "";
-
-            //Obtener presupuesto
-            var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
-
-            if (presupuesto != null)
+            try
             {
-                pm.P_CANAL = presupuesto[0].VAL;
-                pm.P_BANNER = presupuesto[1].VAL;
-                pm.PC_C = presupuesto[4].VAL;
-                pm.PC_A = presupuesto[5].VAL;
-                pm.PC_P = presupuesto[6].VAL;
-                pm.PC_T = presupuesto[7].VAL;
+                if (kunnr == null)
+                    kunnr = "";
+
+                //Obtener presupuesto
+                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+
+
+                if (presupuesto != null)
+                {
+                    pm.P_CANAL = presupuesto[0].VAL;
+                    pm.P_BANNER = presupuesto[1].VAL;
+                    pm.PC_C = presupuesto[4].VAL;
+                    pm.PC_A = presupuesto[5].VAL;
+                    pm.PC_P = presupuesto[6].VAL;
+                    pm.PC_T = presupuesto[7].VAL;
+                }
+            }
+            catch
+            {
+
             }
 
             JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);

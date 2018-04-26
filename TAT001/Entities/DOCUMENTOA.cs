@@ -17,11 +17,11 @@ namespace TAT001.Entities
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public string TIPO { get; set; }
+        public string CLASE { get; set; }
         public Nullable<int> STEP_WF { get; set; }
         public string USUARIO_ID { get; set; }
         public string PATH { get; set; }
         public bool ACTIVO { get; set; }
-        public string CLASE { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

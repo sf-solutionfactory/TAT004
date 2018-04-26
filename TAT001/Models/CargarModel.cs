@@ -351,7 +351,7 @@ namespace TAT001.Models
                             presupuesto.presupuestoCPT[i].ID = ide;
                         }
                         db.BulkInsert(presupuesto.presupuestoCPT);
-                        presupuesto.bannerscanal = db.CSP_BANNERSINCANAL().ToList();
+                        //presupuesto.bannerscanal = db.CSP_BANNERSINCANAL().ToList();
                         mensaje = "Guardado Correctamente CPT.";
                     }
                     else
@@ -615,7 +615,8 @@ namespace TAT001.Models
         public string bannres(string ruta)
         {
 
-            List<string> bannerscanal = db.CSP_BANNERSINCANAL().ToList();
+            //List<string> bannerscanal = db.CSP_BANNERSINCANAL().ToList();
+            List<string> bannerscanal = new List<string>();
             if (bannerscanal.Count > 0)
             {
                 generarExcelBanner(bannerscanal, ruta);

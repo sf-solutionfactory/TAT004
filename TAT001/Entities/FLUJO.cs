@@ -19,6 +19,7 @@ namespace TAT001.Entities
         public int WF_POS { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
+        public int DETPOS { get; set; }
         public Nullable<int> LOOP { get; set; }
         public string USUARIOA_ID { get; set; }
         public string USUARIOD_ID { get; set; }
@@ -26,7 +27,6 @@ namespace TAT001.Entities
         public Nullable<System.DateTime> FECHAC { get; set; }
         public Nullable<System.DateTime> FECHAM { get; set; }
         public string COMENTARIO { get; set; }
-        public int DETPOS { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public virtual USUARIO USUARIO { get; set; }

@@ -19,6 +19,7 @@ namespace TAT001.Entities
         public string BANNER { get; set; }
         public string BDESCRIPCION { get; set; }
         public double PPTO { get; set; }
+        public string PERIODO { get; set; }
         public double CSHDC { get; set; }
         public double RECUN { get; set; }
         public double OTHTA { get; set; }
