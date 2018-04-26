@@ -65,7 +65,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr  onclick="document.location = '@Url.Action("Details", new { id = item.ID })'" style="cursor:pointer">
                     <td>
                         @Html.DisplayFor(modelItem => item.URL)
                     </td>
@@ -77,9 +77,9 @@
                     </td>
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |*@
-                        <a href="@Url.Action("Details", "Paginas",new { id = item.ID })">
+                        @*<a href="@Url.Action("Details", "Paginas",new { id = item.ID })">
                             <i class='material-icons green-text'>description</i>
-                        </a>
+                        </a>*@
                         @*@Html.ActionLink("Warnings", "Index", "Warnings", new { id = item.ID }, htmlAttributes: new { @id = "btn-" + item.ID })*@
                         <a href="@Url.Action("Index", "Warnings",new { id = item.ID })">
                             <i class='material-icons red-text'>warning</i>
@@ -96,12 +96,12 @@
 
 <script>
     $(document).ready(function () {
-        var i = 0;
-        $('#table tfoot th').each(function () {
-            i++;
-            var title = $(this).text();
-            $(this).html('<input type="text" id="lbl_search' + i + '" />');
-        });
+        //var i = 0;
+        //$('#table tfoot th').each(function () {
+        //    i++;
+        //    var title = $(this).text();
+        //    $(this).html('<input type="text" id="lbl_search' + i + '" />');
+        //});
         var table = $('#table').DataTable({
             //paging: false,
             //searching: false
@@ -126,21 +126,21 @@
                 }
             ]
         });
-        table.columns().every(function () {
-            var that = this;
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        })
-        var a = $('#selecc').val();
-        table.page.len(a).draw();
-        $('#selecc').on('change', function () {
-            table.page.len(this.value).draw();
-        });
+        //table.columns().every(function () {
+        //    var that = this;
+        //    $('input', this.footer()).on('keyup change', function () {
+        //        if (that.search() !== this.value) {
+        //            that
+        //                .search(this.value)
+        //                .draw();
+        //        }
+        //    });
+        //})
+        //var a = $('#selecc').val();
+        //table.page.len(a).draw();
+        //$('#selecc').on('change', function () {
+        //    table.page.len(this.value).draw();
+        //});
 
         $('input.global_filter').on('keyup click', function () {
             filterGlobal();

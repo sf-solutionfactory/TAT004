@@ -22,7 +22,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a=>a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -52,7 +52,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a=>a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -75,6 +75,7 @@ namespace TAT001.Controllers
         public ActionResult Create(decimal id)
         {
             int pagina = 232; //ID EN BASE DE DATOS
+            TEXTOCARTAV c = new TEXTOCARTAV();
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -82,10 +83,13 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a=>a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.de = db.TEXTOCARTAVs.Where(t => t.SPRAS_ID.Equals(user.SPRAS_ID)).Select(t => t.DE).FirstOrDefault();
+                ViewBag.al = db.TEXTOCARTAVs.Where(t => t.SPRAS_ID.Equals(user.SPRAS_ID)).Select(t => t.A).FirstOrDefault();
+                ViewBag.mon = db.TEXTOCARTAVs.Where(t => t.SPRAS_ID.Equals(user.SPRAS_ID)).Select(t => t.MONTO).FirstOrDefault();
 
                 try
                 {
@@ -153,16 +157,19 @@ namespace TAT001.Controllers
                 EncabezadoMateriales em = new EncabezadoMateriales();
                 CartaV cv = new CartaV();
 
+                c = db.TEXTOCARTAVs
+                        .Where(x => x.SPRAS_ID == user.SPRAS_ID)
+                        .First();
                 //ENCABEZADO TABLA
                 var encabezado = new List<string>();
-                encabezado.Add(em.material = "Material");
-                encabezado.Add(em.categoria = "Categoria");
-                encabezado.Add(em.descripcion = "Descripcion");
-                encabezado.Add(em.costoun = "Costo unitario");
-                encabezado.Add(em.apoyo = "% Apoyo");
-                encabezado.Add(em.apoyop = "Apoyo por pieza");
-                encabezado.Add(em.costoap = "Costo con apoyo");
-                encabezado.Add(em.precio = "Precio sugerido");
+                encabezado.Add(em.material = c.MATERIAL);
+                encabezado.Add(em.categoria = c.CATEGORIA);
+                encabezado.Add(em.descripcion = c.DESCRIPCION);
+                encabezado.Add(em.costoun = c.COSTOU);
+                encabezado.Add(em.apoyo = c.APOYOP);
+                encabezado.Add(em.apoyop = c.APOYOPP);
+                encabezado.Add(em.costoap = c.COSTOA);
+                encabezado.Add(em.precio = c.PRECIOSU);
 
                 DOCUMENTO d = new DOCUMENTO();
                 PUESTOT pp = new PUESTOT();
@@ -207,8 +214,12 @@ namespace TAT001.Controllers
                 cv.lugar = d.CIUDAD.Trim() + ", " + d.ESTADO.Trim() + ". " + DateTime.Now.ToShortDateString();
                 ////cv.lugar = d.CITy.NAME + ", " + d.CITy.STATE.NAME;
                 cv.lugar_x = true;
-                cv.payer = d.CLIENTE.NAME1;
-                cv.payer_x = true;
+                cv.lugarFech = DateTime.Now.ToShortDateString();
+                cv.lugarFech_x = true;
+                cv.payerId = d.CLIENTE.PAYER;
+                cv.payerId_x = true;
+                cv.payerNom = d.CLIENTE.NAME1;
+                cv.payerNom_x = true;
                 cv.estimado = d.PAYER_NOMBRE;
                 cv.estimado_x = true;
                 cv.mecanica = d.NOTAS;
@@ -229,7 +240,7 @@ namespace TAT001.Controllers
                 if (ViewBag.legal != null)
                     cv.legal = ViewBag.legal.LEYENDA1;
                 cv.legal_x = true;
-                cv.mail = "El contenido del presente Acuerdo será enviado electrónicamente al correo: " + d.PAYER_EMAIL;
+                cv.mail = c.E_MAIL + " " + d.PAYER_EMAIL;
                 cv.mail_x = true;
                 cv.comentarios = "";
                 cv.comentarios_x = true;
@@ -237,6 +248,8 @@ namespace TAT001.Controllers
                 cv.compromisoK_x = true;
                 cv.compromisoC = "";
                 cv.compromisoC_x = true;
+                cv.monto = d.MONTO_DOC_MD.ToString();
+                cv.moneda = d.MONEDA_ID;
                 return View(cv);
             }
         }
@@ -247,16 +260,22 @@ namespace TAT001.Controllers
         {
             using (TAT001Entities db = new TAT001Entities())
             {
+                TEXTOCARTAV c = new TEXTOCARTAV();
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                c = db.TEXTOCARTAVs
+                        .Where(x => x.SPRAS_ID == user.SPRAS_ID)
+                        .First();
                 EncabezadoMateriales em = new EncabezadoMateriales();
                 var encabezadoTab = new List<string>();
-                encabezadoTab.Add(em.material = "Material");
-                encabezadoTab.Add(em.categoria = "Categoria");
-                encabezadoTab.Add(em.descripcion = "Descripcion");
-                encabezadoTab.Add(em.costoun = "Costo unitario");
-                encabezadoTab.Add(em.apoyo = "% Apoyo");
-                encabezadoTab.Add(em.apoyop = "Apoyo por pieza");
-                encabezadoTab.Add(em.costoap = "Costo con apoyo");
-                encabezadoTab.Add(em.precio = "Precio sugerido");
+                encabezadoTab.Add(em.material = c.MATERIAL);
+                encabezadoTab.Add(em.categoria = c.CATEGORIA);
+                encabezadoTab.Add(em.descripcion = c.DESCRIPCION);
+                encabezadoTab.Add(em.costoun = c.COSTOU);
+                encabezadoTab.Add(em.apoyo = c.APOYOP);
+                encabezadoTab.Add(em.apoyop = c.APOYOPP);
+                encabezadoTab.Add(em.costoap = c.COSTOA);
+                encabezadoTab.Add(em.precio = c.PRECIOSU);
 
                 List<string> encabezadoFech = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>();
@@ -299,7 +318,7 @@ namespace TAT001.Controllers
 
                 CartaV carta = v;
                 CartaVEsqueleto cve = new CartaVEsqueleto();
-                cve.crearPDF(carta, encabezadoFech, encabezadoTab, numfilasTab, armadoCuerpoTab);
+                cve.crearPDF(carta, c, encabezadoFech, encabezadoTab, numfilasTab, armadoCuerpoTab);
                 string recibeRuta = Convert.ToString(Session["rutaCompletaV"]);
                 return RedirectToAction("Index", new { ruta = recibeRuta });
             }

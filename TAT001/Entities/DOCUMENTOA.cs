@@ -21,6 +21,7 @@ namespace TAT001.Entities
         public string USUARIO_ID { get; set; }
         public string PATH { get; set; }
         public bool ACTIVO { get; set; }
+        public string CLASE { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

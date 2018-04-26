@@ -19,6 +19,6 @@ namespace TAT001.Entities
         public Nullable<bool> PERMISO { get; set; }
     
         public virtual PAGINA PAGINA { get; set; }
-        public virtual ROL ROL { get; set; }
+        public virtual PUESTO PUESTO { get; set; }
     }
 }

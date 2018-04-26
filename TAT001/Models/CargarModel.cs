@@ -7,6 +7,8 @@ using System.Web;
 using TAT001.Entities;
 using EntityFramework.BulkInsert.Extensions;
 using EntityFramework.MappingAPI;
+using ClosedXML.Excel;
+
 namespace TAT001.Models
 {
 
@@ -44,8 +46,15 @@ namespace TAT001.Models
                             pRESUPUESTOP.POS = i;
                             pRESUPUESTOP.MES = lines[0].Trim();
                             pRESUPUESTOP.VERSION = lines[2].Trim();
-                            pRESUPUESTOP.PAIS = lines[3].Substring(0, 6).Trim();
-                            pRESUPUESTOP.REGION = lines[3].Substring(6, 6).Trim();
+                            if (lines[3].Length == 12)
+                            {
+                                pRESUPUESTOP.PAIS = lines[3].Substring(0, 6).Trim();
+                                pRESUPUESTOP.REGION = lines[3].Substring(6, 6).Trim();
+                            }
+                            else
+                            {
+                                pRESUPUESTOP.REGION = lines[3].Substring(0, 6).Trim();
+                            }
                             pRESUPUESTOP.MONEDA = lines[4].Trim();
                             pRESUPUESTOP.MATERIAL = lines[5].Trim();
                             pRESUPUESTOP.BANNER = lines[6].Trim();
@@ -98,8 +107,15 @@ namespace TAT001.Models
                             pRESUPUESTOP.POS = i;
                             pRESUPUESTOP.MES = lines[0].Trim();
                             pRESUPUESTOP.VERSION = lines[2].Trim();
-                            pRESUPUESTOP.PAIS = lines[3].Substring(0, 6).Trim();
-                            pRESUPUESTOP.REGION = lines[3].Substring(6, 6).Trim();
+                            if (lines[3].Length == 12)
+                            {
+                                pRESUPUESTOP.PAIS = lines[3].Substring(0, 6).Trim();
+                                pRESUPUESTOP.REGION = lines[3].Substring(6, 6).Trim();
+                            }
+                            else
+                            {
+                                pRESUPUESTOP.REGION = lines[3].Substring(0, 6).Trim();
+                            }
                             pRESUPUESTOP.MONEDA = lines[4].Trim();
                             pRESUPUESTOP.MATERIAL = lines[5].Trim();
                             pRESUPUESTOP.BANNER = lines[6].Trim();
@@ -315,7 +331,7 @@ namespace TAT001.Models
 
             return pRESUPUESTOPS;
         }
-        public string guardarPresupuesto(DatosPresupuesto presupuesto, string[] sociedadcpt, string[] periodocpt, string[] sociedadsap, string[] periodosap, string usuario)
+        public string guardarPresupuesto(ref DatosPresupuesto presupuesto, string[] sociedadcpt, string[] periodocpt, string[] sociedadsap, string[] periodosap, string usuario)
         {
             TAT001Entities db = new TAT001Entities();
             string mensaje = "", soc = "", pre = "";
@@ -335,6 +351,7 @@ namespace TAT001.Models
                             presupuesto.presupuestoCPT[i].ID = ide;
                         }
                         db.BulkInsert(presupuesto.presupuestoCPT);
+                        presupuesto.bannerscanal = db.CSP_BANNERSINCANAL().ToList();
                         mensaje = "Guardado Correctamente CPT.";
                     }
                     else
@@ -595,6 +612,58 @@ namespace TAT001.Models
             sociedades.sociedad = db.SOCIEDADs.Where(x => x.ACTIVO == true).ToList();
             return sociedades;
         }
+        public string bannres(string ruta)
+        {
+
+            List<string> bannerscanal = db.CSP_BANNERSINCANAL().ToList();
+            if (bannerscanal.Count > 0)
+            {
+                generarExcelBanner(bannerscanal, ruta);
+                return "";
+            }
+            else
+            {
+                return "No se pudo obtener los banners sin canal";
+            }
+        }
+        public void generarExcelBanner(List<string> banners, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            int contador = 2;
+            string index;
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+                 {
+                  new {
+                      BANNER = "Banner"
+                      },
+                    };
+                foreach (string row in banners)
+                {
+                    index = "A";
+                    index = index + contador;
+                    worksheet.Cell(index).Value = new[]
+                 {
+                  new {
+                      BANNER       = row
+                      },
+                    };
+                    contador++;
+                }
+                worksheet.Range("A1:A1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                for (int i = 1; i < 22; i++)
+                {
+                    worksheet.Column(i).AdjustToContents();
+                }
+                workbook.SaveAs(ruta + @"\Banners sin canal.xlsx");
+            }
+            catch (Exception)
+            {
+
+            }
+        }
     }
 
     public class DatosPresupuesto
@@ -604,6 +673,7 @@ namespace TAT001.Models
         public List<SOCIEDAD> sociedad = new List<SOCIEDAD>();
         public List<CSP_CAMBIO_Result> cambio = new List<CSP_CAMBIO_Result>();
         public List<CSP_CONSULTARPRESUPUESTO_Result> presupuesto = new List<CSP_CONSULTARPRESUPUESTO_Result>();
+        public List<string> bannerscanal = new List<string>();
         //public DatosPresupuesto(List<PRESUPUESTOP> PresupuestoSAP, List<PRESUPSAPP> PresupuestoCPT)
         //{
         //    this.presupuestoSAP = PresupuestoSAP;

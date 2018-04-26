@@ -1,7 +1,351 @@
 ﻿$(document).ready(function () {
 
-    $('#cargar_xls').click(function () {
+    //Validar que los labels esten activos
+    //Información
+    $("label[for='notas_txt']").addClass("active");
+    //Nombre    
+    if ($('#cli_name').val() != "") {
+        $("label[for='cli_name']").addClass("active");
+    }
+    //Razón social
+    if ($('#parvw').val() != "") {
+        $("label[for='parvw']").addClass("active");
+    }
+    //Razón social
+    if ($('#vkorg').val() != "") {
+        $("label[for='vkorg']").addClass("active");
+    }
+    //Tax ID
+    if ($('#stcd1').val() != "") {
+        $("label[for='stcd1']").addClass("active");
+    }
+    //Canal
+    if ($('#vtweg').val() != "") {
+        $("label[for='vtweg']").addClass("active");
+    }
+    //Payer nombre
+    if ($('#payer_nombre').val() != "") {
+        $("label[for='payer_nombre']").addClass("active");
+    }
+    //Email nombre
+    if ($('#payer_email').val() != "") {
+        $("label[for='payer_email']").addClass("active");
+    }
+    //Soporte
+    $('#table_sop').DataTable({
+        "language": {
+            "zeroRecords": "No hay registros",
+            "infoEmpty": "Registros no disponibles",
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        //        "ordering": false,
+        "info": false,
+        "searching": false,
+        "columns": [
+            {
+                "className": 'select_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {},
+            {},
+            {},
+            {},
+            {}
+        ]
+    });
 
+    $('#table_sop tbody').on('click', 'td.select_row', function () {
+        var tr = $(this).closest('tr');
+        $(tr).toggleClass('selected');
+    });
+
+    $('#delRowSoporte').click(function (e) {
+        var t = $('#table_sop').DataTable();
+        t.rows('.selected').remove().draw(false);
+        event.returnValue = false;
+        event.cancel = true;
+    });
+
+    $('#addRowSoporte').on('click', function () {
+        var t = $('#table_sop').DataTable();
+        //Obtener el tipo de solicitud NC
+        var sol = $("#tsol_id").val();
+        if (sol == "NC") {
+
+            t.row.add([
+                "", //Selección
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
+                ""
+            ]).draw(false);
+        } else {
+            M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
+        }
+
+        event.returnValue = false;
+        event.cancel = true;
+
+    });
+
+
+    //Evaluar la extensión y tamaño del archivo a cargar
+    $('.file_soporte').change(function () {
+        var length = $(this).length;
+        var message = "";
+        var namefile = "";
+        if (length > 0) {
+            //Validar tamaño y extensión
+            var file = $(this).get(0).files;
+            if (file.length > 0) {
+                var sizefile = file[0].size;
+                namefile = file[0].name;
+                if (sizefile > 20971520) {
+                    message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + namefile + " sobrepasa el tamaño";
+
+                }
+
+                if (!evaluarExtSoporte(namefile)) {
+                    message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + namefile + " no es compatible";
+
+                }
+            }
+        } else {
+            message = "No selecciono archivo";
+        }
+
+        if (message != "") {
+            $(this).val("");
+            M.toast({ html: message });
+        } else {
+            //Verificar los nombres
+            var id = $(this).attr('id');
+            var res = evaluarFilesName(id, namefile);
+
+            if (res) {
+                //Nombre duplicado
+                M.toast({ html: 'Ya existe un archivo con ese mismo nombre' });
+            }
+
+        }
+
+    });
+    //Negociación
+    if ($('#notas_soporte').val() != "") {
+        $("label[for='notas_soporte']").addClass("active");
+    }
+
+    //Distribución    
+    $('#table_dis').DataTable({
+        "language": {
+            "zeroRecords": "No hay registros",
+            "infoEmpty": "Registros no disponibles",
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        //        "ordering": false,
+        "info": false,
+        "searching": false,
+        //"footerCallback": function (row, data, start, end, display) {
+        //    var api = this.api(), data;
+
+        //    // Remove the formatting to get integer data for summation
+        //    var intVal = function (i) {
+        //        return typeof i === 'string' ?
+        //            i.replace(/[\$,]/g, '') * 1 :
+        //            typeof i === 'number' ?
+        //                i : 0;
+        //    };
+
+        //    // Total over all pages
+        //    total = api
+        //        .column(14)
+        //        .data()
+        //        .reduce(function (a, b) {
+        //            return intVal(a) + intVal(b);
+        //        }, 0);
+
+        //    // Total over this page
+        //    pageTotal = api
+        //        .column(14, { page: 'current' })
+        //        .data()
+        //        .reduce(function (a, b) {
+        //            return intVal(a) + intVal(b);
+        //        }, 0);
+
+        //    //Fixed 2
+        //    var tc = parseFloat(total).toFixed(2);
+
+        //    // Update footer
+        //    $(api.column(14).footer()).html(
+        //        //'$' + pageTotal + ' ( $' + total + ' total)'
+        //        '$' + tc
+        //    );
+        //},//Termina el callback
+        "columns": [
+            {
+                "className": 'id_row',
+                "orderable": false,
+                "defaultContent": ''
+
+            },
+            {
+                "className": 'detail_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {
+                "className": 'select_row',
+                "orderable": false,
+                "data": null,
+                "defaultContent": ''
+            },
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {}
+
+        ]
+    });
+
+    $('#table_dis tbody').on('click', 'td.select_row', function () {
+        var tr = $(this).closest('tr');
+        $(tr).toggleClass('selected');
+    });
+
+    $('#delRow').click(function (e) {
+        var t = $('#table_dis').DataTable();
+        t.rows('.selected').remove().draw(false);
+        updateFooter();
+        event.returnValue = false;
+        event.cancel = true;
+    });
+
+    //Mostrar los materiales (detalle) de la categoria 
+    $('#table_dis tbody').on('click', 'td.detail_row', function () {
+        var t = $('#table_dis').DataTable();
+        var tr = $(this).closest('tr');
+        var row = t.row(tr);
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('details');
+        }
+        else {
+            //Obtener el id de la categoría
+            var index = t.row(tr).index();
+            var catid = t.row(index).data()[0];
+            row.child(format(catid)).show();
+            tr.addClass('details');
+        }
+    });
+
+    $('#addRow').on('click', function () {
+
+        //Obtener el tipo de negociación
+        var neg = $("#select_neg").val();
+
+        if (neg != "") {
+            //Monto
+            if (neg == "M") {
+                //Obtener la distribución
+                var dis = $("#select_dis").val();
+                if (dis != "") {
+                    var t = $('#table_dis').DataTable();
+                    //Distribución por categoría
+                    if (dis == "C") {
+                        //Obtener la categoría
+                        var cat = $('#select_categoria').val();
+
+                        if (cat != "") {
+                            var opt = $("#select_categoria option:selected").text();
+                            t.row.add([
+                                cat + "", //col0
+                                "", //col1
+                                "", ////col2
+                                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "", //Material
+                                opt + "",
+                                opt + "",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "",
+                            ]).draw(false);
+                        } else {
+                            M.toast({ html: 'Seleccione una categoría' });
+                        }
+
+                    } else if (dis == "M") {
+                        //Distribución por material
+                        t.row.add([
+                            "",
+                            "",
+                            "",
+                            "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                            "",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "",
+                        ]).draw(false);
+
+                        $('#table_dis').css("font-size", "12px");
+                        $('#table_dis').css("display", "table");
+                        //$('#tfoot_dis').css("display", "table-footer-group");
+
+                        //if ($('#select_dis').val() == "M") {
+
+                        t.column(0).visible(false);
+                        t.column(1).visible(false);
+                        //}
+                    }
+                    updateFooter();
+                } else {
+                    M.toast({ html: 'Seleccione distribución' });
+                }
+
+            }
+        } else {
+            M.toast({ html: 'Seleccione negociación' });
+        }
+
+        event.returnValue = false;
+        event.cancel = true;
+
+    });
+
+    $('#select_neg').change();
+    $('#select_dis').change();
+
+
+    $("#file_dis").change(function () {
         var filenum = $('#file_dis').get(0).files.length;
         if (filenum > 0) {
             var file = document.getElementById("file_dis").files[0];
@@ -9,6 +353,7 @@
             if (evaluarExt(filename)) {
                 M.toast({ html: 'Uploading' + filename });
                 loadExcel(file);
+                updateFooter();
             } else {
                 M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
             }
@@ -17,68 +362,10 @@
         }
     });
 
-
-    $('#table_dis tbody').on('click', 'tr', function () {
-        $(this).toggleClass('selected');
-    });
-
-    $('#delRow').click(function () {
-        alert("del");
-        table.rows('.selected').remove().draw(false);
-    });
-
-    //Archivos de soporte
-    $('#btnsoportes').click(function () {
-        //loadFilesf();
-        //var file_carta = $('#file_carta').get(0).files.length;
-
-        //var file_carta = $('#file_soporte').get().files;
-        //var file_contratos = $('#file_contratos').get(0).files.length;
-        //var file_factura = $('#file_factura').get(0).files.length;
-        //var file_jbp = $('#file_jbp').get(0).files.length;
-
-        //if (file_carta > 0)//&& file_contratos > 0 && file_factura > 0 && file_jbp > 0) {
-        //{
-        //var f_carta = document.getElementById("file_carta").files[0];
-        //var f_contratos = document.getElementById("file_contratos").files[0];
-        //var f_factura = document.getElementById("file_factura").files[0];
-        //var f_jbp = document.getElementById("file_jbp").files[0];
-
-        //var filename = f_carta.name;            
-        //M.toast({ html: 'Uploading' + filename });
-        //loadFile(f_carta)//, f_contratos, f_factura, f_jbp);   
-
-        //} else {
-        //M.toast({ html: 'Seleccione un archivo' });
-        //}        
-        //var files = $('.file_soporte');
-        //var message = "";
-
-        //for (var i = 0; i < files.length; i++) {
-        //    //var file = $(files[i]).get(0).files;
-        //    var className = $(files[i]).attr("class");
-        //    //Valida si el archivo es obligatorio
-        //    if (className.indexOf('nec') >= 0) {
-        //        //Validar archivo en archivo obligatorio
-        //        var nfile = $(files[i]).get(0).files.length;
-        //        if (!nfile > 0) {
-        //            var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
-        //            //var parenttd = $(files[i]).closest('td').prev().children().eq(0).html();
-        //            //var sitd = $(parenttd).prev().children().eq(0).html();
-        //            //var labeltext = $(sitd).children().eq(0).html();
-        //            //M.toast({ html: 'Error! Archivo Obligatorio: ' + lbltext });
-        //            message = 'Error! Archivo Obligatorio: ' + lbltext;
-        //            break;
-        //        }
-        //    }
-        //}
-
-        //if (message == "") {
-        //    loadFiles(files)
-        //} else {
-        //    M.toast({ html: message });
-        //}
-    });
+    //Temporalidad
+    if ($('#monto_doc_md').val() != "") {
+        $("label[for='monto_doc_md']").addClass("active");
+    }
 
     $('#tabs').tabs();
 
@@ -86,7 +373,7 @@
     var instance = M.Select.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
-
+        $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
@@ -94,11 +381,93 @@
 
         evalTempTab(false, e);
 
+        //Obtener el tipo de solicitud NC
+        var sol = $("#tsol_id").val();
+
+        if (sol == "NC") {
+            $('#ref_soporte').css("display", "table");
+        } else {
+            var table = $('#table_sop').DataTable();
+            table.clear().draw();
+            $('#ref_soporte').css("display", "none");
+        }
+
+    });
+
+    $('#tab_dis').on("click", function (e) {
+
+        evalSoporteTab(false, e);
+
     });
 
     $('#tab_fin').on("click", function (e) {
 
-        evalSoporteTab(false, e);
+        var res = evalDistribucionTab(true, e);
+        if (res) {
+
+            //Activar el botón de guardar
+            $("#btn_guardarh").removeClass("disabled");
+
+            //Copiar el monto de distribución de la tabla footer al monto financiera
+            var total_dis = $('#total_dis').text();
+            var basei = convertI(total_dis);
+
+            //Obtiene el id del tipo de negociación, default envía vacío
+            var select_neg = $('#select_neg').val();
+            //Validar el monto base vs monto tabla
+            if (select_neg == "M") {
+                //Tiene que tener una moneda
+                //Obtener la moneda de distribución y de financiera
+                var monedadis_id = $('#monedadis_id').val();
+                var monedafin_id = $('#moneda_id').val();
+
+                //Si las monedas son iguales, se pasa el monto
+                if (monedadis_id == monedafin_id) {
+                    $('#monto_doc_md').val(basei);
+
+                } else {
+                    //Realizar conversión de monedas
+                    var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
+                    $('#monto_doc_md').val(newMonto);
+
+                }
+
+            } else {
+                //Si no es por monto solo se copia la cantidad
+                $('#monto_doc_md').val(basei);
+
+            }
+
+            //Emular un focus out para actualizar los campos
+            $('#monto_doc_md').focusout();
+
+            $("label[for='monto_doc_md']").addClass("active");
+
+            //Obtener los valores para asignar persupuesto
+            //Obtener canal desc
+            var canal = $('#vtweg').val();
+            var canal = canal.split('-');
+            canal[1] = $.trim(canal[1]);
+            $('#p_vtweg').text(canal[1]);
+            //Obtener cliente id
+            var kunnr = $('#payer_id').val();
+            //$('#cli_name').val();
+            $('#p_kunnr').text(kunnr);
+
+
+            asignarPresupuesto(kunnr);
+
+        } else {
+            M.toast({ html: 'Verificar valores en los campos de Distribución!' });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Distribucion_cont');
+        }
+
 
     });
 
@@ -116,6 +485,7 @@
             //Obtener la moneda en la lista
             //var MONEDA_ID = $('#moneda_id').val();
             $('#monto_doc_md').val(mt);
+
             //selectTcambio(MONEDA_ID, mt);
             var tipo_cambio = $('#tipo_cambio').val();
             var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
@@ -160,6 +530,7 @@
             var is_num2 = $.isNumeric(monto_doc_md);
             if (mt > 0 & is_num2 == true) {
                 $('#monto_doc_md').val(mt);
+
                 //Validar la moneda                    
                 var moneda_id = $('#moneda_id').val();
                 if (moneda_id != null && moneda_id != "") {
@@ -175,6 +546,7 @@
 
                 } else {
                     $('#monto_doc_md').val();
+
                     $('#monto_doc_ml2').val(monto);
                     $('#montos_doc_ml2').val(monto);
                     var msg = 'Moneda incorrecta';
@@ -183,6 +555,7 @@
 
             } else {
                 $('#monto_doc_md').val();
+
                 $('#tipo_cambio').val("");
                 $('#monto_doc_ml2').val(monto);
                 $('#montos_doc_ml2').val(monto);
@@ -209,6 +582,7 @@
         //Obtener la moneda en la lista
         //var MONEDA_ID = $('#moneda_id').val();
         $('#monto_doc_md').val(mt);
+
         //selectTcambio(MONEDA_ID, mt);
         var tipo_cambio = $('#tipo_cambio').val();
         var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
@@ -309,11 +683,9 @@
             //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
             var numm = parseFloat(monto.replace(',', ''));
             if (numm > 0) {
-                //var numsm = "" + numm;
-                //numsm = numsm.replace('.', ',');
-                //var numexp2m = numsm;// * 60000000000;
-                //$('#monto_doc_md').val(numexp2m);
+                $('#MONTO_DOC_MD').val(numm);
             } else {
+                $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
             //Termina provisional
@@ -326,26 +698,270 @@
 
 });
 
-function keypressHandler(e) {
+function asignarPresupuesto(kunnr) {
 
-    //if (e.which == 13) {
-    //    e.preventDefault(); //stops default action: submitting form
-    //    //var msg = 'Enter';
-    //    //M.toast({ html: msg })
+    $.ajax({
+        type: "POST",
+        url: 'getPresupuesto',
+        dataType: "json",
+        data: { "kunnr": kunnr },
 
-    //    var monto_doc_md = $('#monto_doc_md').val()
+        success: function (data) {
 
-    //    if (monto_doc_md > 0){
-    //        //Obtener la moneda en la lista
-    //        var MONEDA_ID = $('#moneda_id').val();
+            if (data !== null || data !== "") {
+                $('#p_canal').text(data.P_CANAL);
+                $('#p_banner').text(data.P_BANNER);
+                $('#pc_c').text(data.PC_C);
+                $('#pc_a').text(data.PC_A);
+                $('#pc_p').text(data.PC_P);
+                $('#pc_t').text(data.PC_T);
 
-    //        selectTcambio(MONEDA_ID, monto_doc_md);
+            }
 
-    //    }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+        },
+        async: false
+    });
 
-    //}
-    alert("ddd");
 }
+
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+
+
+    updateTotalRow(t, tr);
+
+    //Validar si el focusout fue en la columna de material
+    if ($(this).hasClass("input_material")) {
+        //Validar el material
+        var mat = $(this).val();
+        var val = valMaterial(mat);
+        var index = getIndex();
+
+        if (val.ID == null || val.ID == "") {
+            tr.find('td').eq((5 + index)).addClass("errorMaterial");
+        } else if (val.ID == mat) {
+
+            selectMaterial(val.ID, val.MAKTX, tr);
+
+        } else {
+            tr.find('td').eq((5 + index)).addClass("errorMaterial");
+        }
+
+    }
+
+});
+
+//Validar el patrón para dos decimales en los campos editables de la tabla
+$('body').on('keypress keydown', '.input_oper', function () {
+
+    ////Si está escribiendo en campos de fecha, aceptar numeros y diagonal
+    //if ($(this).hasClass("format_date")) {
+
+
+    //} else if ($(this).hasClass("number")) {
+    //    //Si es material, acepta puros numeros
+    //} else if ($(this).hasClass("numberd")) {
+    //    //Si es cantidad, acepta numeros y punto
+    //    $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+    //    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+    //        event.preventDefault();
+    //    }  
+    //}
+
+});
+
+//Variables globales
+var detail = "";
+var montocambio = 0;
+var categoriamaterial = "";
+var materialVal = "";
+
+function updateTotalRow(t, tr) {
+
+    //Add index
+    //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+    //Obtener la distribución
+    var index = getIndex();
+
+    //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
+    //Columnas 8 * 9 res 10
+    //Categoría es 7 * 8 = 9  --> -1
+    //Material es 6 * 7 = 8   --> -2
+
+    var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
+    var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+
+    col9 = convertP(col9);
+
+    if ($.isNumeric(col9)) {
+        col9 = col9 / 100;
+    }
+
+    var col10 = col8 * col9;
+    //Apoyo por pieza
+    //Modificar el input
+    tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
+
+    //Costo con apoyo
+    var col11 = col8 - col10;
+    //col11 = col11.toFixed(2);
+    tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
+
+    //Estimado apoyo
+    var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+    var col14 = col10 * col13;
+    //col14 = col14.toFixed(2);
+    tr.find("td:eq(" + (14 + index) + ")").text("$" + col14.toFixed(2));
+
+    updateFooter();
+}
+
+function updateTable() {
+    var t = $('#table_dis').DataTable();
+    $('#table_dis > tbody  > tr').each(function () {
+
+        updateTotalRow(t, $(this));
+
+    });
+
+    updateFooter();
+
+}
+
+function resetFooter() {
+    $('#total_dis').text("$0");
+}
+
+function getIndex() {
+    var index = 0;
+    var dis = $("#select_dis").val();
+    if (dis != "") {
+        var t = $('#table_dis').DataTable();
+        //Distribución por categoría
+        if (dis == "C") {
+            index = -1;
+        } else if (dis == "M") {
+            //Distribución por material
+            index = -2;
+        }
+    }
+
+    return index;
+}
+
+
+function updateFooter() {
+    resetFooter();
+    var index = getIndex();
+    coltotal = (14 + index);
+
+    var t = $('#table_dis').DataTable();
+    var total = 0;
+
+    $('#table_dis').find("tr").each(function (index) {
+        var col4 = $(this).find("td:eq(" + coltotal + ")").text();
+
+        col4 = convertI(col4);
+
+        if ($.isNumeric(col4)) {
+            total += col4;
+        }
+
+    });
+
+    total = total.toFixed(2);
+
+    $('#total_dis').text("$" + total);
+}
+
+function convertI(i) {
+    return typeof i === 'string' ?
+        i.replace(/[\$,]/g, '') * 1 :
+        typeof i === 'number' ?
+            i : 0;
+};
+
+function convertP(i) {
+    return typeof i === 'string' ?
+        i.replace(/[\$,]/g, '') * 1 :
+        typeof i === 'number' ?
+            i : 0;
+};
+
+
+function format(catid) {
+
+    detail = "";
+    var id = parseInt(catid)
+    if (catid != "") {
+
+        $.ajax({
+            type: "POST",
+            url: 'selectMatCat',
+            data: { "catid": id },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    var detaill = '<table class=\"display\" style=\"width:100%\">' +
+                        '<tbody>' +
+                        '<tr>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Nixon</td>' +
+                        '<td>System Architect</td>' +
+                        '<td>Edinburgh</td>' +
+                        '<td>$320,800</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td></td>' +
+                        '<td>Garrett</td>' +
+                        '<td>Winters</td>' +
+                        '<td>Accountant</td>' +
+                        '<td>Tokyo</td>' +
+                        '<td>$170,250</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '<td>Tiger</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table>';
+                    useReturnData(detaill);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+        });
+    }
+
+    return detail;
+}
+
+function useReturnData(data) {
+    detail = data;
+};
 
 function evaluarExt(filename) {
 
@@ -396,19 +1012,14 @@ function loadFilesf() {
 function loadExcel(file) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
     formData.append("FileUpload", file);
-    //}
 
     var table = $('#table_dis').DataTable();
+    table.clear().draw();
     $.ajax({
         type: "POST",
         url: 'LoadExcel',
-        //data: { "url": url },
         data: formData,
         dataType: "json",
         cache: false,
@@ -417,41 +1028,64 @@ function loadExcel(file) {
         success: function (data) {
 
             if (data !== null || data !== "") {
-                //alert("success" + data);
+                var index = getIndex();
                 $.each(data, function (i, dataj) {
 
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
-                    table.row.add([
-                        date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear(),
-                        date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear(),
-                        dataj.MATNR,
-                        "Cereales",
-                        "Corn Flakes 200gr"
-                    ]).draw(false);
-                });
+                    var addedRow = table.row.add([
+                        dataj.POS,
+                        "",
+                        "",
+                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                        dataj.MATKL,
+                        dataj.DESC,
+                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
+                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",
+                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",
+                        dataj.MONTOC_APOYO,
+                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",
+                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",
+                        dataj.PORC_APOYOEST
+                    ]).draw(false).node();
+
+                    if (dataj.ACTIVO == false) {
+                        $(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
+                    }
+
+                }); //Fin de for
+                $('#table_dis').css("font-size", "12px");
+                $('#table_dis').css("display", "table");
+                $('#tfoot_dis').css("display", "table-footer-group");
+
+                if ($('#select_dis').val() == "M") {
+
+                    table.column(0).visible(false);
+                    table.column(1).visible(false);
+                }
+
+                updateTable();
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
+
+    //Actualizar los valores en la tabla
+    updateTable();
 
 }
 
 function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
     formData.append("f_carta", f_carta);
-    //formData.append("f_contratos", f_contratos);
-    //formData.append("f_factura", f_factura);
-    //formData.append("f_jbp", f_jbp);
-    //}
+
 
     $.ajax({
         type: "POST",
@@ -470,28 +1104,19 @@ function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
 
 }
 
-function loadFiles(files) {//, f_contratos, f_factura, f_jbp) {
+function loadFiles(files) {
 
     var formData = new FormData();
-    //var totalFiles = document.getElementById("file_dis").files.length;
 
-    //for (var i = 0; i < totalFiles; i++) {
-    //    var file = document.getElementById("file_dis").files[i];
-    //    var filename = file.name;
-    //formData.append("f_carta", f_carta);
-    //formData.append("f_contratos", f_contratos);
-    //formData.append("f_factura", f_factura);
-    //formData.append("f_jbp", f_jbp);
-    //}
     var count = 1;
     for (var i = 0; i < files.length; i++) {
         var file = $(files[i]).get(0);
-        //var name = "f_carta" + count;
         if ($(files[i]).get(0).files.length > 0) {
             formData.append(file.files[0].name, file.files[0]);
             count++;
@@ -515,7 +1140,8 @@ function loadFiles(files) {//, f_contratos, f_factura, f_jbp) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        }
+        },
+        async: false
     });
 
 }
@@ -533,10 +1159,10 @@ function evalInfoTab(ret, e) {
     }
     //Email
     var payer_email = $('#payer_email').val();
-    
+
     if (!validateEmail(payer_email)) {
         msg = 'Introduzca un email válido!';
-        res=  false;
+        res = false;
     }
 
     if (ret == true) {
@@ -609,6 +1235,34 @@ function evalSoporteTab(ret, e) {
             var ell = document.getElementById("tabs");
             var instances = M.Tabs.getInstance(ell);
             instances.select('Soporte_cont');
+        }
+        return "";
+    }
+}
+
+function evalDistribucionTab(ret, e) {
+    var res = true;
+    var msg = "";
+
+    if (evaluarDisTab()) {
+        msg = 'siguiente pestaña!';
+    } else {
+        msg = 'Verificar valores en los campos de Distribución!';
+        res = false;
+    }
+
+    if (ret == true) {
+        return res;
+    } else {
+        if (!res) {
+            M.toast({ html: msg });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Distribucion_cont');
         }
         return "";
     }
@@ -804,6 +1458,47 @@ function evaluarSoporteTab() {
     return evaluarFiles();
 }
 
+function evaluarDisTab() {
+
+    var res = true;
+
+    //Obtiene el id del tipo de negociación, default envía vacío
+    var select_neg = $('#select_neg').val();
+
+    if (!evaluarVal(select_neg)) {
+        return false;
+    }
+
+    //Obtiene el id de la lista distribución, default envía vacío
+    var select_dis = $('#select_dis').val();
+
+    if (!evaluarVal(select_dis)) {
+        return false;
+    }
+
+    if (res) {
+        //Validar los montos tipo de negociación monto
+        //Validar el monto base vs monto tabla
+        if (select_neg == "M") {
+            var monedadis_id = $('#monedadis_id').val();
+            var monto_dis = $('#monto_dis').val();
+            var total_dis = $('#total_dis').text();
+
+            if ((monto_dis != "" & total_dis != "") & monedadis_id != "") {
+
+                //Base, monto footer
+                var res = validar_montos(monto_dis, total_dis);
+            } else {
+                return false;
+            }
+            //Validar el porcentaje apoyo monto
+        } else if (select_neg == "P") {
+
+        }
+    }
+    return res;
+}
+
 function evaluarFinancieraTab() {
 
     var res = true;
@@ -859,6 +1554,30 @@ function evaluarFile(id) {
     }
 }
 
+function evaluarFilesName(id, name) {
+    var files = $('.file_soporte');
+    var res = false;
+    for (var i = 0; i < files.length; i++) {
+
+        var idFile = $(files[i]).attr("id");
+
+        if (idFile != id) {
+            //Evaluar solamente los demás archivos
+            var file = $(files[i]).get(0).files;
+            if (file.length > 0) {
+                var localfilename = file[i].name;
+                if (localfilename == name) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+
+    }
+
+    return res;
+}
+
 function evaluarFiles() {
     var files = $('.file_soporte');
     var message = "";
@@ -880,9 +1599,44 @@ function evaluarFiles() {
                 break;
             }
         }
+
+        //Validar tamaño y extensión
+        var file = $(files[i]).get(0).files;
+        if (file.length > 0) {
+            var sizefile = file[0].size;
+            if (sizefile > 20971520) {
+                var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+                message = 'Error! Tamaño máximo del archivo 20 M --> Archivo ' + lbltext + " sobrepasa el tamaño";
+                break;
+            }
+
+            var namefile = file[0].name;
+            if (!evaluarExtSoporte(namefile)) {
+                var lbltext = $(files[i]).closest('td').prev().children().eq(0).html();
+                message = "Error! Tipos de archivos aceptados 'xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs' --> Archivo " + lbltext + " no es compatible";
+                break;
+            }
+        }
+
     }
 
     if (message == "") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+//function evaluarExt(filename) {
+function evaluarExtSoporte(filename) {
+
+    var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];
+    // split file name at dot
+    var get_ext = filename.split('.');
+    // reverse name to check extension
+    get_ext = get_ext.reverse();
+    // check file type is valid as given in 'exts' array
+    if ($.inArray(get_ext[0].toLowerCase(), exts) > -1) {
         return true;
     } else {
         return false;
@@ -939,8 +1693,89 @@ function selectTall(valu) {
             },
             error: function (data) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+            },
+            async: false
         });
+    }
+}
+
+function selectDis(val) {
+    resetFooter();
+    if (val == "M") {//Monto
+        $('#div_apoyobase').css("display", "none");
+        $('#div_montobase').css("display", "inherit");
+    } else if (val == "P") {//Porcentaje
+        M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
+        $('#div_montobase').css("display", "none");
+        $('#div_apoyobase').css("display", "inherit");
+    } else {
+        $('#div_montobase').css("display", "none");
+        $('#div_apoyobase').css("display", "none");
+    }
+    var select_dis = $('#select_dis').val();
+    $('#select_dis').val(select_dis).change();
+}
+
+function selectMonto(val) {
+
+    //Siempre inicializar la tabla
+    var ta = $('#table_dis').DataTable();
+    ta.clear().draw();
+
+    //Obtener la negociación
+    var select_neg = $('#select_neg').val();
+
+    //Desactivar el panel de monto
+    if (val == "" || select_neg == "") {
+        $('#div_montobase').css("display", "none");
+        $('#div_apoyobase').css("display", "none");
+        $('#cargar_excel').css("display", "none");
+        $('#select_categoria').css("display", "none");
+        $('.div_categoria').css("display", "none");
+        $('#table_dis').css("display", "none");
+        $('#div_btns_row').css("display", "none");
+        ta.column(0).visible(false);
+        ta.column(1).visible(false);
+    } else {
+        //Activar el panel de monto dependiendo del tipo de negociación
+        //$('#div_montobase').css("display", "inherit");
+        $('#div_btns_row').css("display", "inherit");
+
+        if (select_neg == "M") {//Monto
+            $('#div_apoyobase').css("display", "none");
+            $('#div_montobase').css("display", "inherit");
+        } else if (select_neg == "P") {//Porcentaje
+            $('#div_montobase').css("display", "none");
+            $('#div_apoyobase').css("display", "inherit");
+        } else {
+            $('#div_montobase').css("display", "none");
+            $('#div_apoyobase').css("display", "none");
+        }
+    }
+    if (select_neg != "") {
+        //Monto
+        if (val == "M") {
+            $('#cargar_excel').css("display", "inherit");
+            $('#select_categoria').css("display", "none");
+            $('.div_categoria').css("display", "none");
+            ta.column(0).visible(false);
+            ta.column(1).visible(false);
+        }
+
+        //Categoría
+        if (val == "C") {
+            $('#cargar_excel').css("display", "none");
+            $('.div_categoria').css("display", "inline-block");
+            //Mostrar el encabezado de la tabla               
+            $('#table_dis').css("font-size", "12px");
+            $('#table_dis').css("display", "table");
+            ta.column(0).visible(false);
+            ta.column(1).visible(true);
+        }
+
+        resetFooter();
+    } else {
+        M.toast({ html: 'Seleccione Negociación' });
     }
 }
 
@@ -970,7 +1805,8 @@ function selectCity(valu) {
             },
             error: function (data) {
                 alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+            },
+            async: false
         });
     }
 
@@ -997,6 +1833,8 @@ function selectCliente(valu) {
                     $("label[for='cli_name']").addClass("active");
                     $('#vkorg').val(data.VKORG).focus();
                     $("label[for='vkorg']").addClass("active");
+                    $('#parvw').val(data.PARVW).focus();
+                    $("label[for='parvw']").addClass("active");
                     $('#stcd1').val(data.STCD1);
                     $("label[for='stcd1']").addClass("active");
                     $('#vtweg').val(data.VTWEG);
@@ -1005,12 +1843,41 @@ function selectCliente(valu) {
                     $("label[for='payer_nombre']").addClass("active");
                     $('#payer_email').val(data.PAYER_EMAIL);
                     $("label[for='payer_email']").addClass("active");
+                } else {
+                    $('#cli_name').val("");
+                    $("label[for='cli_name']").removeClass("active");
+                    $('#vkorg').val("").focus();
+                    $("label[for='vkorg']").removeClass("active");
+                    $('#parvw').val("").focus();
+                    $("label[for='parvw']").removeClass("active");
+                    $('#stcd1').val("");
+                    $("label[for='stcd1']").removeClass("active");
+                    $('#vtweg').val("");
+                    $("label[for='vtweg']").removeClass("active");
+                    $('#payer_nombre').val("");
+                    $("label[for='payer_nombre']").removeClass("active");
+                    $('#payer_email').val("");
+                    $("label[for='payer_email']").removeClass("active");
                 }
 
             },
             error: function (data) {
-                alert("Request couldn't be processed. Please try again later. the reason        " + data);
-            }
+                $('#cli_name').val("");
+                $("label[for='cli_name']").removeClass("active");
+                $('#vkorg').val("").focus();
+                $("label[for='vkorg']").removeClass("active");
+                $('#parvw').val("").focus();
+                $("label[for='parvw']").removeClass("active");
+                $('#stcd1').val("");
+                $("label[for='stcd1']").removeClass("active");
+                $('#vtweg').val("");
+                $("label[for='vtweg']").removeClass("active");
+                $('#payer_nombre').val("");
+                $("label[for='payer_nombre']").removeClass("active");
+                $('#payer_email').val("");
+                $("label[for='payer_email']").removeClass("active");
+            },
+            async: false
         });
     }
 
@@ -1051,13 +1918,16 @@ function selectMoneda(valu) {
                                 selectTcambio(MONEDA_ID, monto_doc_md);
 
                             }
+                        } else {
+                            M.toast({ html: data });
                         }
                     }
 
                 },
                 error: function (data) {
                     alert("Error tipo de cambio        " + data);
-                }
+                },
+                async: false
             });
 
         } else {
@@ -1096,10 +1966,50 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
                 M.toast({ html: msg });
-            }
+            },
+            async: false
         });
     }
 
+}
+
+function cambioCurr(fcurr, tcurr, monto) {
+    montocambio = 0;
+    var localmonto = 0;
+    if (fcurr != "" & tcurr != "" & monto != "") {
+
+        $.ajax({
+            type: "POST",
+            url: 'cambioCurr',
+            data: { "fcurr": fcurr, "tcurr": tcurr, "monto": monto },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+
+                    var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
+                    if (iNum > 0) {
+                        asignarMonto(data);
+                    } else {
+                        M.toast({ html: data });
+                    }
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+        });
+    }
+
+    localmonto = montocambio;
+    return localmonto;
+
+}
+
+function asignarMonto(monto) {
+    montocambio = monto;
 }
 
 function validar_fechas(ini_date, fin_date) {
@@ -1107,10 +2017,10 @@ function validar_fechas(ini_date, fin_date) {
     var DateToValue = new Date();
     var DateFromValue = new Date();
 
-    var idate = ini_date.split('-');
+    var idate = ini_date.split('/');
     DateFromValue.setFullYear(idate[0], idate[1], idate[2], 0, 0, 0, 0);
 
-    var fdate = fin_date.split('-');
+    var fdate = fin_date.split('/');
     DateToValue.setFullYear(fdate[0], fdate[1], fdate[2], 0, 0, 0, 0);
 
     if (Date.parse(DateFromValue) <= Date.parse(DateToValue)) {
@@ -1119,26 +2029,78 @@ function validar_fechas(ini_date, fin_date) {
     return false;
 }
 
-    //function loadExcel() {
+function validar_montos(base, footer) {
 
-    //    var url = "C:\Users\matias\Desktop\prueba.xlsx";
-    //    var sim = "@@n\\";
-    //    var url2 = url.replace('n\\', sim));
+    var basei = convertI(base);
+    var footeri = convertI(footer);
 
-    //    $.ajax({
-    //        type: "POST",
-    //        url: 'LoadExcel',
-    //        data: { "url": url },
-    //        dataType: "json",
-    //        success: function (data) {
+    if (basei == footeri) {
+        return true;
+    }
 
-    //            if (data !== null || data !== "") {
-    //                alert("success" + data);
-    //            }
-    //        },
-    //        error: function (data) {
-    //            alert("Request couldn't be processed. Please try again later. the reason        " + data);
-    //        }
-    //    });
+    return false;
+}
 
-    //}
+function getCategoria(mat) {
+    categoriamaterial = "";
+    var localcat = "";
+    if (mat != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getCategoria',
+            data: { "material": mat },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarCategoria(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+    localcat = categoriamaterial;
+    return localcat;
+
+}
+
+function asignarCategoria(cat) {
+    categoriamaterial = cat;
+}
+
+function valMaterial(mat) {
+    materialVal = "";
+    var localval = "";
+    if (mat != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getMaterial',
+            dataType: "json",
+            data: { "mat": mat },
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarValMat(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+    localval = materialVal;
+    return localval;
+}
+
+function asignarValMat(val) {
+    materialVal = val;
+}

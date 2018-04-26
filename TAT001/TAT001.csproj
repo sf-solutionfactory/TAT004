@@ -77,6 +77,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="SimpleImpersonation, Version=2.0.1.27158, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleImpersonation.2.0.1\lib\net40-Client\SimpleImpersonation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -209,6 +212,7 @@
     <Compile Include="Controllers\PaginasController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
+    <Compile Include="Controllers\PuestosController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\TextosController.cs" />
@@ -219,6 +223,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CAMPOS.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CANAL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CARPETA.cs">
@@ -254,6 +261,9 @@
     <Compile Include="Entities\COUNTRy.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CREADOR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CSP_CAMBIO_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -275,6 +285,15 @@
     <Compile Include="Entities\CSP_USUARIO_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_APROB.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTBORR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -287,6 +306,9 @@
     <Compile Include="Entities\DOCUMENTOP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTOV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -297,6 +319,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\GALLT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GAUTORIZACION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\IIMPUESTO.cs">
@@ -371,7 +396,16 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\STATE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -407,10 +441,22 @@
     <Compile Include="Entities\TEXTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TEXTOCARTAF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TEXTOCARTAV.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TSOL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TSOLT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TS_FORM.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TS_FORMT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UMEDIDA.cs">
@@ -449,8 +495,12 @@
     <Compile Include="Models\CartaV.cs" />
     <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\CartaVEsqueleto.cs" />
+    <Compile Include="Models\CLIENTE_MOD.cs" />
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
+    <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\MaterialVal.cs" />
+    <Compile Include="Models\PRESUPUESTO_MOD.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\EncabezadoMateriales.cs" />
@@ -498,6 +548,10 @@
     <Content Include="fonts\roboto\Roboto-Regular.woff2" />
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
+    <Content Include="images\playb.svg" />
+    <Content Include="images\play.svg" />
+    <Content Include="images\expandm.svg" />
+    <Content Include="images\expandl.svg" />
     <Content Include="images\flags\1x1\ar.svg" />
     <Content Include="images\flags\1x1\br.svg" />
     <Content Include="images\flags\1x1\gt.svg" />
@@ -514,7 +568,9 @@
     <Content Include="images\sf-logo.jpg" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
+    <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\create.js" />
+    <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />
     <EntityDeploy Include="Entities\TAT001.edmx">
@@ -581,11 +637,16 @@
     <Content Include="Views\CartaV\Index.cshtml" />
     <Content Include="Views\CartaV\Create.cshtml" />
     <Content Include="Views\Solicitudes\DetailsF.cshtml" />
-    <Content Include="Views\Roles\Create.cshtml" />
-    <Content Include="Views\Roles\Delete.cshtml" />
-    <Content Include="Views\Roles\Details.cshtml" />
-    <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Puestos\Create.cshtml" />
+    <Content Include="Views\Puestos\Delete.cshtml" />
+    <Content Include="Views\Puestos\Details.cshtml" />
+    <Content Include="Views\Puestos\Edit.cshtml" />
+    <Content Include="Views\Puestos\Index.cshtml" />
+    <Content Include="Views\Presupuesto\Descargar.cshtml" />
+    <Content Include="Views\Listas\Det_Aprob.cshtml" />
+    <Content Include="Views\Listas\UsuariosPuesto.cshtml" />
+    <Content Include="Views\Usuarios\AgregarRol.cshtml" />
+    <Content Include="Views\Listas\Grupos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

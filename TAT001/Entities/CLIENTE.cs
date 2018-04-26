@@ -43,6 +43,14 @@ namespace TAT001.Entities
         public bool ACTIVO { get; set; }
         public string BANNER { get; set; }
         public string CANAL { get; set; }
+        public string BZIRK { get; set; }
+        public string KONDA { get; set; }
+        public string VKGRP { get; set; }
+        public string VKBUR { get; set; }
+        public string REGION { get; set; }
+        public string SUBREGION { get; set; }
+        public string BDESCRIPCION { get; set; }
+        public string CDESCRIPCION { get; set; }
     
         public virtual PAI PAI { get; set; }
         public virtual TCLIENTE TCLIENTE { get; set; }

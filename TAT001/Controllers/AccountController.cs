@@ -63,7 +63,7 @@ namespace TAT001.Controllers
         {
             LoginViewModel m = new LoginViewModel();
             m.ID = "admin";
-            m.Password = "admin";
+            //m.Password = "admin";
             ViewBag.ReturnUrl = returnUrl;
             return View(m);
         }

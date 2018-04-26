@@ -70,5 +70,45 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+
+        [HttpGet]
+        public JsonResult Det_Aprob(string bukrs, string puesto, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int p = Int16.Parse(puesto);
+            var c = (from N in db.DET_APROB
+                     join St in db.PUESTOTs
+                     on N.PUESTOA_ID equals St.PUESTO_ID
+                     where N.BUKRS.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras)
+                     //where N.BUKRS.Equals(bukrs) 
+                     select new { N.PUESTOA_ID, St.TXT50 });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpGet]
+        public JsonResult UsuariosPuesto(string puesto, string Prefix)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int p = Int16.Parse(puesto);
+            var c = (from N in db.USUARIOs
+                     where N.PUESTO_ID == p & N.ID.Contains(Prefix)
+                     //where N.BUKRS.Equals(bukrs) 
+                     select new { N.ID });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpGet]
+        public JsonResult Grupos(string bukrs, string pais, string user)
+        {
+            TAT001Entities db = new TAT001Entities();
+            var c = (from N in db.CREADORs
+                     where N.BUKRS == bukrs & N.LAND == pais & N.ID.Equals(user)
+                     //where N.BUKRS.Equals(bukrs) 
+                     select new { N.AGROUP_ID });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -75,7 +75,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -240,7 +240,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -264,17 +264,48 @@ namespace TAT001.Controllers
         [HttpPost]
         public ActionResult Procesa(FLUJO f)
         {
-            //FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.F.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
-            //FLUJO flujo = actual;
-            //flujo.ESTATUS = f.F.ESTATUS;
-            //flujo.FECHAM = DateTime.Now;
-            //flujo.COMENTARIO = f.F.COMENTARIO;
             FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+
+            DOCUMENTO d = db.DOCUMENTOes.Find(f.NUM_DOC);
+            List<TS_FORM> tts = db.TS_FORM.Where(a => a.BUKRS_ID.Equals(d.SOCIEDAD_ID) & a.LAND_ID.Equals(d.PAIS_ID)).ToList();
+
+            bool c = false;
+            if (actual.WORKFP.ACCION.TIPO == "R")
+            {
+                List<DOCUMENTOT> ddt = new List<DOCUMENTOT>();
+                foreach (TS_FORM ts in tts)
+                {
+                    DOCUMENTOT dts = new DOCUMENTOT();
+                    dts.NUM_DOC = f.NUM_DOC;
+                    dts.TSFORM_ID = ts.ID;
+                    try
+                    {
+                        string temp = Request.Form["chk-" + ts.ID].ToString();
+                        if (temp == "on")
+                            dts.CHECKS = true;
+                        c = true;
+                    }
+                    catch
+                    {
+                        dts.CHECKS = false;
+                    }
+                    int tt = db.DOCUMENTOTS.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) & a.TSFORM_ID == ts.ID).Count();
+                    if (tt == 0)
+                        ddt.Add(dts);
+                    else
+                        db.Entry(dts).State = EntityState.Modified;
+                }
+                if (ddt.Count > 0)
+                    db.DOCUMENTOTS.AddRange(ddt);
+                db.SaveChanges();
+
+                db.Dispose();
+            }
+
             FLUJO flujo = actual;
             flujo.ESTATUS = f.ESTATUS;
             flujo.FECHAM = DateTime.Now;
             flujo.COMENTARIO = f.COMENTARIO;
-
             ProcesaFlujo pf = new ProcesaFlujo();
             if (ModelState.IsValid)
             {
@@ -285,12 +316,12 @@ namespace TAT001.Controllers
                 }
                 else if (res.Equals(1))//CORREO
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
 
                 }
                 else if (res.Equals(2))//CORREO DE FIN DE WORKFLOW
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
                 }
                 else if (res.Equals(3))//Rechazado
                 {
@@ -306,7 +337,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();

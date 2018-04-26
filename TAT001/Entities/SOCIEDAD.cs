@@ -19,6 +19,8 @@ namespace TAT001.Entities
         {
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.USUARIOs = new HashSet<USUARIO>();
+            this.DET_APROB = new HashSet<DET_APROB>();
+            this.TS_FORM = new HashSet<TS_FORM>();
         }
     
         public string BUKRS { get; set; }
@@ -38,5 +40,9 @@ namespace TAT001.Entities
         public virtual MONEDA MONEDA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROB> DET_APROB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TS_FORM> TS_FORM { get; set; }
     }
 }

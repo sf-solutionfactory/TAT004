@@ -3359,7 +3359,7 @@
                 return;
             }
             if (content && content.length) {
-                message = this.options.messages.results(content.length);
+                message = this.options.messages.results(content.length);//RSG
             } else {
                 message = this.options.messages.noResults;
             }

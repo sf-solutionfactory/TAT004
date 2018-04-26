@@ -27,36 +27,36 @@
             $('#footer').on('click', '#cance', function () {
                 hilo = false;
             });
-            $('#chksociedad').on('click', function () {
-                if ($(this).is(':checked')) {
-                    // Hacer algo si el checkbox ha sido seleccionado
-                    $('[name="sociedadcpt"] option').each(function () {
-                        $(this).attr('selected', '');
-                    });
-                } else {
-                    // Hacer algo si el checkbox ha sido deseleccionado
-                    $('[name="sociedadcpt"] option').each(function () {
-                        $(this).removeAttr("selected");
-                    });
-                }
-                var elem = document.getElementsByName("sociedadcpt")
-                instance = M.Select.init(elem, []);
-            });
-            $('#chkperiodo').on('click', function () {
-                if ($(this).is(':checked')) {
-                    // Hacer algo si el checkbox ha sido seleccionado
-                    $('[name="periodocpt"] option').each(function () {
-                        $(this).attr('selected', '');
-                    });
-                } else {
-                    // Hacer algo si el checkbox ha sido deseleccionado
-                    $('[name="periodocpt"] option').each(function () {
-                        $(this).removeAttr("selected");
-                    });
-                }
-                var elem = document.getElementsByName("periodocpt")
-                instance = M.Select.init(elem, []);
-            });
+            //$('#chksociedad').on('click', function () {
+            //    if ($(this).is(':checked')) {
+            //        // Hacer algo si el checkbox ha sido seleccionado
+            //        $('[name="sociedadcpt"] option').each(function () {
+            //            $(this).attr('selected', '');
+            //        });
+            //    } else {
+            //        // Hacer algo si el checkbox ha sido deseleccionado
+            //        $('[name="sociedadcpt"] option').each(function () {
+            //            $(this).removeAttr("selected");
+            //        });
+            //    }
+            //    var elem = document.getElementsByName("sociedadcpt")
+            //    instance = M.Select.init(elem, []);
+            //});
+            //$('#chkperiodo').on('click', function () {
+            //    if ($(this).is(':checked')) {
+            //        // Hacer algo si el checkbox ha sido seleccionado
+            //        $('[name="periodocpt"] option').each(function () {
+            //            $(this).attr('selected', '');
+            //        });
+            //    } else {
+            //        // Hacer algo si el checkbox ha sido deseleccionado
+            //        $('[name="periodocpt"] option').each(function () {
+            //            $(this).removeAttr("selected");
+            //        });
+            //    }
+            //    var elem = document.getElementsByName("periodocpt")
+            //    instance = M.Select.init(elem, []);
+            //});
         });
 
         function filterGlobal2() {
@@ -110,15 +110,15 @@
                 <div class="card-panel">
                     <h5>CPT</h5>
                     <div class="row">
-                        <label class="col s4 right-align">
-                            <input id="chksociedad" type="checkbox" checked="checked" />
-                            <span>Seleccionar todas las sociedades</span>
-                        </label>
-                        <label class="col s5 offset-s3 right-align">
-                            <input id="chkperiodo" type="checkbox" checked="checked" />
-                            <span>Seleccionar todos los periodos</span>
-                        </label>
-                        <div class="input-field col s4">
+                        @*<label class="col s4 right-align">
+                                <input id="chksociedad" type="checkbox" checked="checked" />
+                                <span>Seleccionar todas las sociedades</span>
+                            </label>
+                            <label class="col s5 offset-s3 right-align">
+                                <input id="chkperiodo" type="checkbox" checked="checked" />
+                                <span>Seleccionar todos los periodos</span>
+                            </label>*@
+                        <div class="input-field col s4 f" name="sociedad">
                             <select multiple name="sociedadcpt" id="selec">
                                 @try
                                 {
@@ -204,7 +204,7 @@
                         {
                             string[] periodo = Session["Periodocpt"] as string[];
                             j = 0;
-                            <div class="input-field col s5">
+                            <div class="input-field col s5 f" name="periodo">
                                 <select multiple name="periodocpt">
                                     @if (periodo == null)
                                     {
@@ -227,9 +227,9 @@
                         }
                         else
                         {
-                            <div class="input-field col s5">
+                            <div class="input-field col s5 f" name="periodo">
                                 <select multiple name="periodocpt">
-                                    <option value="" disabled selected></option>
+                                    <option value="" disabled></option>
                                     <option value="1" selected>Enero</option>
                                     <option value="2" selected>Febrero</option>
                                     <option value="3" selected>Marzo</option>
@@ -249,7 +249,7 @@
                         <div class="col s12">
                             <div class="file-field input-field">
                                 <div class="btn blue-grey">
-                                    <span>Carga archivo CPT</span>
+                                    <span>Seleccionar archivo CPT</span>
                                     <input id="CPT" type="file" name="fileCPT" accept=".txt">
                                 </div>
                                 <div class="file-path-wrapper">
@@ -352,7 +352,7 @@
                             string[] periodo = Session["Periodosap"] as string[];
                             j = 0;
                             <div class="input-field col s5">
-                                <select multiple name="periodosap">
+                                <select name="periodosap">
                                     @if (periodo == null)
                                     {
                                         <option value="" disabled selected></option>
@@ -366,6 +366,10 @@
                                             {
                                                 j++;
                                             }
+                                        }
+                                        else
+                                        {
+                                            <option value="@i">@myTI.ToTitleCase(formatoFecha.GetMonthName(i))</option>
                                         }
                                     }
                                 </select>
@@ -395,7 +399,7 @@
                         <div class="col s12">
                             <div class="file-field input-field">
                                 <div class="btn btn blue-grey">
-                                    <span>Carga archivo SAP</span>
+                                    <span>Seleccionar archivo SAP</span>
                                     <input id="SAP" type="file" name="fileSAP" accept=".csv">
                                 </div>
                                 <div class="file-path-wrapper">
@@ -528,8 +532,32 @@ catch (Exception)
 {
 }
 @*<div class="center-align"><h5>@ViewBag.MensajeC</h5> </div>*@
-
-
+@if (Model.bannerscanal.Count > 0)
+{
+    <div>
+        @using (Html.BeginForm("Descargar", "Presupuesto", FormMethod.Post))
+        {
+            <button id="lbl_cargar" name="excel" class="btn-small" type="submit" value="Excel">
+                Generar Excel
+            </button>
+        }
+        <table id="table3" class="table mdl-data-table table-striped">
+            <thead>
+                <tr>
+                    <th>Banners sin asignar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.bannerscanal.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.bannerscanal[i]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
 @try
 {
     if (Model.presupuestoSAP.Count > 0)
@@ -692,9 +720,9 @@ catch (Exception)
     if (@ViewBag.MensajeS != "")
     {
         <script>
-    /**/
-    M.toast({ html: '@ViewBag.MensajeS', classes: 'red' });
-    /**/
+                    /**/
+                    M.toast({ html: '@ViewBag.MensajeS', classes: 'red' });
+                    /**/
         </script>
     }
 }
@@ -703,9 +731,9 @@ catch (Exception)
     if (@ViewBag.MensajeG != "")
     {
         <script>
-    /**/
-    M.toast({ html: '@ViewBag.MensajeG' });
-/**/
+                    /**/
+                    M.toast({ html: '@ViewBag.MensajeG' });
+                    /**/
         </script>
     }
 }
@@ -714,9 +742,9 @@ catch (Exception)
     if (@ViewBag.MensajeC != "")
     {
         <script>
-    /**/
-    M.toast({ html: '@ViewBag.MensajeC' });
-/**/
+                    /**/
+                    M.toast({ html: '@ViewBag.MensajeC' });
+                    /**/
         </script>
     }
 }

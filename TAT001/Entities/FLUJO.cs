@@ -26,6 +26,7 @@ namespace TAT001.Entities
         public Nullable<System.DateTime> FECHAC { get; set; }
         public Nullable<System.DateTime> FECHAM { get; set; }
         public string COMENTARIO { get; set; }
+        public int DETPOS { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public virtual USUARIO USUARIO { get; set; }

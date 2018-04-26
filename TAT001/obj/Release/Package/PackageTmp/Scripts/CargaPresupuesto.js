@@ -1,7 +1,14 @@
 ﻿var hilo = true;
 var acept = false;
 $(document).ready(function () {
-    $('select').select();
+    var activateOption = function (collection, newOption) {
+        if (newOption) {
+            collection.find("li.selected").removeClass("selected");
+
+            var option = $(newOption);
+            option.addClass("selected");
+        }
+    };
     var elem = document.querySelector('.modal');
     var instance = M.Modal.init(elem, []);
     try {
@@ -61,6 +68,28 @@ $(document).ready(function () {
 
         $('#serch').on('keyup click', function () {
             filterGlobal2();
+        });
+    } catch (e) {
+
+    }
+    try {
+        var table3 = $('#table3').DataTable({
+            //scrollY: "70vh",
+            scrollX: "10vh",
+            language: {
+                lengthMenu: "Display _MENU_ records per page",
+                zeroRecords: "No se encontraron datos",
+                info: "Página _PAGE_ de _PAGES_",
+                infoEmpty: "No hay datos",
+                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+            },
+            columnDefs: [
+                {
+
+                    //targets: [0, 1, 2],
+                    className: 'mdl-data-table__cell--non-numeric'
+                }
+            ]
         });
     } catch (e) {
 
@@ -157,4 +186,53 @@ $(document).ready(function () {
             document.getElementById("loader").style.display = "initial";
         }
     });
+    $('select').select();
+    $(".f > .select-wrapper > .select-dropdown").prepend(
+        '<li class="toggle selectnone"><span><label></label>Select none</span></li>'
+    );
+    $(".f > .select-wrapper > .select-dropdown").prepend(
+        '<li style="display:none" class="toggle selectall"><span><label></label>Select all</span></li>'
+    );
+    $(".f > .select-wrapper > .select-dropdown .selectall").on(
+        "click",
+        function () {
+            var id = '[name=' + $(this).parent().parent().parent().attr('name') + ']';
+            $(id + ' option:not(:disabled)')
+                .not(':selected')
+                .prop('selected', true);
+
+            $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:not(:checked)'
+            )
+                .not(':disabled')
+                .prop('checked', 'checked');
+            //$('.dropdown-content.multiple-select-dropdown input[type='checkbox']:not(:checked)').not(':disabled').trigger('click');
+            var values = $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:checked')
+                .not(':disabled')
+                .parent()
+                .map(function () {
+                    return $(this).text();
+                })
+                .get();
+            $(id + ' input.select-dropdown').val(values.join(', '));
+            $(id + '> .select-wrapper > .select-dropdown .toggle').toggle();
+        }
+    );
+    $(".f > .select-wrapper > .select-dropdown .selectnone").on(
+        "click",
+        function () {
+            var id = '[name=' + $(this).parent().parent().parent().attr('name') + ']';
+            $(id + ' option:selected')
+                .not(':disabled')
+                .prop('selected', false);
+            $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:checked')
+                .not(':disabled')
+                .prop('checked', '');
+            //$('.dropdown-content.multiple-select-dropdown input[type='checkbox']:checked').not(':disabled').trigger('click');
+            var values = $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:disabled')
+                .parent()
+                .text();
+            $(id + ' input.select-dropdown').val(values);
+            $(id + ' > .select-wrapper > .select-dropdown .toggle').toggle();
+        }
+    );
 });

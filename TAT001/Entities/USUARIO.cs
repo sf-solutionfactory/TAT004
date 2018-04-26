@@ -24,6 +24,7 @@ namespace TAT001.Entities
             this.MIEMBROS = new HashSet<MIEMBRO>();
             this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
+            this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
         }
     
         public string ID { get; set; }
@@ -54,7 +55,9 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual PUESTO PUESTO { get; set; }
-        public virtual SPRA SPRA { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
+        public virtual SPRA SPRA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
     }
 }

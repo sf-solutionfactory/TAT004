@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using TAT001.Entities;
 using System.Data.Entity;
+using ClosedXML.Excel;
+//using SimpleImpersonation;
 
 namespace TAT001.Models
 {
@@ -21,10 +23,11 @@ namespace TAT001.Models
             }
             return sociedades;
         }
-        public DatosPresupuesto consultarDatos(string sociedad, string anio, string periodo, string cambio)
+        public DatosPresupuesto consultarDatos(string sociedad, string anio, string periodo, string cambio, string cpt, string excel, string ruta)
         {
             DatosPresupuesto sociedades = new DatosPresupuesto();
             string anioc = "", periodoc = "";
+            string chkcpt = "";
             sociedades = consultSociedad(sociedad);
             if (String.IsNullOrEmpty(anio) == false)
             {
@@ -34,15 +37,23 @@ namespace TAT001.Models
             {
                 periodoc = mes(periodo);
             }
-            //////////if (String.IsNullOrEmpty(cambio) == false)
-            //////////{
-            //////////    string[] moneda = cambio.Split('-');
-            //////////    sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, moneda[0], moneda[1]).ToList();
-            //////////}
-            //////////else
-            //////////{
-            //////////    sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "").ToList();
-            //////////}
+            if (String.IsNullOrEmpty(cpt) == false)
+            {
+                chkcpt = "X";
+            }
+            if (String.IsNullOrEmpty(cambio) == false)
+            {
+                string[] moneda = cambio.Split('-');
+                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, moneda[0], moneda[1], chkcpt).ToList();
+            }
+            else
+            {
+                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "", chkcpt).ToList();
+            }
+            if (excel != null)
+            {
+                generarRepPresuExcel(sociedades.presupuesto, ruta, cpt);
+            }
             return sociedades;
         }
         public string consultarUCarga()
@@ -96,6 +107,215 @@ namespace TAT001.Models
                     break;
             }
             return ms;
+        }
+        public void generarRepPresuExcel(List<CSP_CONSULTARPRESUPUESTO_Result> resultado, string ruta, string cpt)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            int contador = 2;
+            string index;
+            if (resultado.Count > 1)
+            {
+                if (String.IsNullOrEmpty(cpt) == false)
+                {
+                    worksheet.Cell("A1").Value = new[]
+                 {
+                  new {
+                      CANAL        = "Canal",
+                      CDESCRIPCION = "Descripcion",
+                      PPTOC        = "Total Canal",
+                      BANNER       = "Banner",
+                      BDESCRIPCION = "Descripcion",
+                      PPTO         = "PPTO Banner",
+                      VVX17        = "VVX17 - Commercial Discounts",
+                      CSHDC        = "CSHDC - Cash Discounts",
+                      RECUN        = "RECUN - Unsaleables",
+                      DSTRB        = "DSTRB - Distribution Commission",
+                      OTHTA        = "OTHTA - Logistic Discount",
+                      ADVER        = "ADVER - Trade Promotion-Other",
+                      CORPM        = "CORPM - Booklets and Sponsorship",
+                      POP          = "POP - Store openings and Info Exchange",
+                      PMVAR        = "PMVAR - Growth Program",
+                      CONPR        = "CONPR - Everyday Low Price",
+                      RSRDV        = "RSRDV - Rollbacks",
+                      SPA          = "SPA - Cleareance",
+                      FREEG        = "FREEG - Free Goods"
+                      },
+                    };
+                    foreach (CSP_CONSULTARPRESUPUESTO_Result row in resultado)
+                    {
+                        index = "A";
+                        index = index + contador;
+                        worksheet.Cell(index).Value = new[]
+                     {
+                  new {
+                      CANAL        = row.CANAL,
+                      CDESCRIPCION = row.CDESCRIPCION,
+                      PPTOC        = row.PPTOC,
+                      BANNER       = row.BANNER,
+                      BDESCRIPCION = row.BDESCRIPCION,
+                      PPTO         = row.PPTO,
+                      VVX17        = row.VVX17,
+                      CSHDC        = row.CSHDC,
+                      RECUN        = row.RECUN,
+                      DSTRB        = row.DSTRB,
+                      OTHTA        = row.OTHTA,
+                      ADVER        = row.ADVER,
+                      CORPM        = row.CORPM,
+                      POP          = row.POP,
+                      PMVAR        = row.PMVAR,
+                      CONPR        = row.CONPR,
+                      RSRDV        = row.RSRDV,
+                      SPA          = row.SPA,
+                      FREEG        = row.FREEG
+                      },
+                    };
+                        contador++;
+                    }
+                    worksheet.Range("A1:S1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    for (int i = 1; i < 22; i++)
+                    {
+                        worksheet.Column(i).AdjustToContents();
+                    }
+                }
+                else
+                {
+                    worksheet.Cell("A1").Value = new[]
+                 {
+                  new {
+                      CANAL        = "Canal",
+                      CDESCRIPCION = "Descripcion",
+                      PPTOC        = "Total Canal",
+                      BANNER       = "Banner",
+                      BDESCRIPCION = "Descripcion",
+                      PPTO         = "PPTO Banner",
+                      VVX17        = "VVX17 - Commercial Discounts",
+                      CSHDC        = "CSHDC - Cash Discounts",
+                      RECUN        = "RECUN - Unsaleables",
+                      DSTRB        = "DSTRB - Distribution Commission",
+                      OTHTA        = "OTHTA - Logistic Discount",
+                      ADVER        = "ADVER - Trade Promotion-Other",
+                      CORPM        = "CORPM - Booklets and Sponsorship",
+                      POP          = "POP - Store openings and Info Exchange",
+                      PMVAR        = "PMVAR - Growth Program",
+                      CONPR        = "CONPR - Everyday Low Price",
+                      RSRDV        = "RSRDV - Rollbacks",
+                      SPA          = "SPA - Cleareance",
+                      FREEG        = "FREEG - Free Goods",
+                      CONSU        = "Consumido",
+                      TOTAL        = "PPTO Disponible"
+                      },
+                    };
+                    foreach (CSP_CONSULTARPRESUPUESTO_Result row in resultado)
+                    {
+                        index = "A";
+                        index = index + contador;
+                        worksheet.Cell(index).Value = new[]
+                     {
+                  new {
+                      CANAL        = row.CANAL,
+                      CDESCRIPCION = row.CDESCRIPCION,
+                      PPTOC        = row.PPTOC,
+                      BANNER       = row.BANNER,
+                      BDESCRIPCION = row.BDESCRIPCION,
+                      PPTO         = row.PPTO,
+                      VVX17        = row.VVX17,
+                      CSHDC        = row.CSHDC,
+                      RECUN        = row.RECUN,
+                      DSTRB        = row.DSTRB,
+                      OTHTA        = row.OTHTA,
+                      ADVER        = row.ADVER,
+                      CORPM        = row.CORPM,
+                      POP          = row.POP,
+                      PMVAR        = row.PMVAR,
+                      CONPR        = row.CONPR,
+                      RSRDV        = row.RSRDV,
+                      SPA          = row.SPA,
+                      FREEG        = row.FREEG,
+                      CONSU        = row.CONSU,
+                      TOTAL        = row.TOTAL
+                      },
+                    };
+                        contador++;
+                    }
+                    worksheet.Range("A1:U1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    for (int i = 1; i < 22; i++)
+                    {
+                        worksheet.Column(i).AdjustToContents();
+                    }
+                }
+                workbook.SaveAs(ruta + @"\Presupuesto.xlsx");
+            }
+        }
+
+        public void contDescarga(string ruta, ref string contentType, ref string nombre)
+        {
+            string[] archivo = ruta.Split('\\');
+            nombre = archivo[archivo.Length - 1];
+            string[] extencion = archivo[archivo.Length - 1].Split('.');
+            switch (extencion[extencion.Length - 1].ToLower())
+            {
+                case "xltx":
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.template";
+                    break;
+                case "xlsx":
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    break;
+                case "xlsm":
+                    contentType = "application/vnd.ms-excel.sheet.macroEnabled.12";
+                    break;
+                case "xltm ":
+                    contentType = "application/vnd.ms-excel.template.macroEnabled.12";
+                    break;
+                case "xlam":
+                    contentType = "application/vnd.ms-excel.addin.macroEnabled.12";
+                    break;
+                case "xlsb":
+                    contentType = "application/vnd.ms-excel.sheet.binary.macroEnabled.12";
+                    break;
+                case "xls":
+                    contentType = "application/vnd.ms-excel";
+                    break;
+                case "xlt":
+                    contentType = "application/vnd.ms-excel";
+                    break;
+                case "xla":
+                    contentType = "application/vnd.ms-excel";
+                    break;
+                case "doc":
+                    contentType = "application/msword";
+                    break;
+                case "dot":
+                    contentType = "application/msword";
+                    break;
+                case "docx":
+                    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    break;
+                case "dotx":
+                    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.template";
+                    break;
+                case "docm":
+                    contentType = "application/vnd.ms-word.document.macroEnabled.12";
+                    break;
+                case "dotm":
+                    contentType = "application/vnd.ms-word.template.macroEnabled.12";
+                    break;
+                case "pdf":
+                    contentType = "application/pdf";
+                    break;
+                case "zip":
+                    contentType = "application/zip";
+                    break;
+                case "jpg":
+                    contentType = "image/jpeg";
+                    break;
+                case "png":
+                    contentType = "image/png";
+                    break;
+                case "msg":
+                    contentType = "application/vnd.ms-outlook";
+                    break;
+            }
         }
     }
 }

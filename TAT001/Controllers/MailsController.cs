@@ -73,7 +73,7 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
-        public ActionResult Enviar(decimal id, string spras)
+        public ActionResult Enviar(decimal id, string spras, bool index)
         {
             //int pagina = 203; //ID EN BASE DE DATOS
             ViewBag.Title = "Solicitud";
@@ -124,7 +124,10 @@ namespace TAT001.Controllers
 
             client.Send(mail);
 
-            return RedirectToAction("Details", "Solicitudes", new { id = id, spras = spras });
+            if (index)
+                return RedirectToAction("Index", "Solicitudes", new { id = id, spras = spras });
+            else
+                return RedirectToAction("Details", "Solicitudes", new { id = id, spras = spras });
 
             //return View(dOCUMENTO);
         }
