@@ -82,7 +82,7 @@
     <Property Name="PAYERX" Type="Boolean" />
     <Property Name="ESTIMADO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="ESTIMADOX" Type="Boolean" />
-    <Property Name="MECANICA" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MECANICA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="MECANICAX" Type="Boolean" />
     <Property Name="NOMBREE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="NOMBREEX" Type="Boolean" />
@@ -98,7 +98,7 @@
     <Property Name="COMPANYCCX" Type="Boolean" />
     <Property Name="LEGAL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="LEGALX" Type="Boolean" />
-    <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="MAIL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="MAILX" Type="Boolean" />
     <Property Name="LUGARFECH" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="LUGARFECHX" Type="Boolean" />

@@ -116,17 +116,17 @@ namespace TAT001.Services
                                 nuevo.WF_POS = next.POS;
                                 nuevo.NUM_DOC = actual.NUM_DOC;
                                 nuevo.POS = actual.POS + 1;
-                                //nuevo.LOOP = 1;//-----------------------------------cc
-                                int loop = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
-                                if (loop >= next.LOOPS)
-                                {
-                                    paso_a = next;
-                                    continue;
-                                }
-                                if (loop != 0)
-                                    nuevo.LOOP = loop + 1;
-                                else
-                                    nuevo.LOOP = 1;
+                                nuevo.LOOP = 1;//-----------------------------------cc
+                                //int loop = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
+                                //if (loop >= next.LOOPS)
+                                //{
+                                //    paso_a = next;
+                                //    continue;
+                                //}
+                                //if (loop != 0)
+                                //    nuevo.LOOP = loop + 1;
+                                //else
+                                //    nuevo.LOOP = 1;
                                 if (paso_a.ACCION.TIPO == "N")
                                     actual.DETPOS = actual.DETPOS - 1;
                                 FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS);
@@ -155,20 +155,20 @@ namespace TAT001.Services
                                         //FLUJO nuevo = new FLUJO();
                                         nuevo.WORKF_ID = next.ID;
                                         nuevo.WF_VERSION = next.VERSION;
-                                        nuevo.WF_POS = next.POS;
+                                        nuevo.WF_POS = next.POS + detA.POS;
                                         nuevo.NUM_DOC = actual.NUM_DOC;
                                         nuevo.POS = actual.POS + 1;
-                                        /*nuevo.LOOP = 1;*///-----------------------------------
-                                        int loop1 = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
-                                        if (loop1 >= next.LOOPS)
-                                        {
-                                            paso_a = next;
-                                            continue;
-                                        }
-                                        if (loop != 0)
-                                            nuevo.LOOP = loop1 + 1;
-                                        else
-                                            nuevo.LOOP = 1;
+                                        nuevo.LOOP = 1;//-----------------------------------
+                                        //int loop1 = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
+                                        //if (loop1 >= next.LOOPS)
+                                        //{
+                                        //    paso_a = next;
+                                        //    continue;
+                                        //}
+                                        //if (loop1 != 0)
+                                        //    nuevo.LOOP = loop1 + 1;
+                                        //else
+                                        //    nuevo.LOOP = 1;
 
                                         //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0);
                                         //nuevo.USUARIOA_ID = "admin";
@@ -563,8 +563,12 @@ namespace TAT001.Services
                 else
                 {
                     FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
-                    ffl.DETPOS = 0;
+                    if (ffl.DETPOS == 99)
+                        ppos = 1;
+                    ffl.DETPOS = ffl.DETPOS - 1;
                     fin = true;
+                    ffl.POS = ppos;
+
                     return ffl;
                 }
                 //int fl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.WF_POS == 1).Count();
@@ -584,7 +588,7 @@ namespace TAT001.Services
                         if (d.MONTO_DOC_ML2 > actual.MONTO)
                         {
                             da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
-                            da.POS = da.POS - 1;
+                            ////da.POS = da.POS - 1;
                             ppos = -1;
                         }
                     if (actual.PRESUPUESTO != null)
@@ -592,7 +596,7 @@ namespace TAT001.Services
                             if (d.MONTO_DOC_MD > 10000)
                             {
                                 da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
-                                da.POS = da.POS - 1;
+                                ////da.POS = da.POS - 1;
                                 ppos = -1;
                             }
                 }

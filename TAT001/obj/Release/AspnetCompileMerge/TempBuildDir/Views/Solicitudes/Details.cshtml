@@ -329,8 +329,8 @@
                             @Html.LabelFor(model => model.D.TIPO_CAMBIO, "Tipo de cambio", new { @id = "lbl_tcambio" })
                         </div>
                         <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.MONTO_DOC_ML, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.MONTO_DOC_ML, "Monto USD", new { @id = "lbl_montoml2" })
+                            @Html.EditorFor(model => model.D.MONTO_DOC_ML2, new { htmlAttributes = new { @disabled = "disabled" } })
+                            @Html.LabelFor(model => model.D.MONTO_DOC_ML2, "Monto USD", new { @id = "lbl_montoml2" })
                         </div>
                         <div class="input-field col s12">
                             @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
@@ -428,7 +428,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col s12 m6 l6">
+            @*<div class="col s12 m6 l6">
                 <div class="card-panel">
                     <div class="row" style="margin-bottom:0">
                         <h5>Análisis presupuesto</h5>
@@ -437,7 +437,7 @@
                         <p>importe Solicitud</p>
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
     @*<div id="dist" class="col s12">Test 4</div>*@

@@ -74,7 +74,7 @@
     <Property Name="PAYERX" Type="bit" />
     <Property Name="ESTIMADO" Type="nvarchar" MaxLength="100" />
     <Property Name="ESTIMADOX" Type="bit" />
-    <Property Name="MECANICA" Type="nvarchar" MaxLength="100" />
+    <Property Name="MECANICA" Type="nvarchar(max)" />
     <Property Name="MECANICAX" Type="bit" />
     <Property Name="NOMBREE" Type="nvarchar" MaxLength="100" />
     <Property Name="NOMBREEX" Type="bit" />
@@ -90,7 +90,7 @@
     <Property Name="COMPANYCCX" Type="bit" />
     <Property Name="LEGAL" Type="nvarchar" MaxLength="500" />
     <Property Name="LEGALX" Type="bit" />
-    <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="200" />
     <Property Name="MAILX" Type="bit" />
     <Property Name="LUGARFECH" Type="nvarchar" MaxLength="100" />
     <Property Name="LUGARFECHX" Type="bit" />
