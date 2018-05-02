@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <ComplexType Name="split_Result">
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="val" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </ComplexType>
   <EntityType Name="ACCION">
     <Key>
       <PropertyRef Name="ID" />
@@ -217,7 +221,7 @@
     <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK__CONPOSAPH__SOCIE__24485945" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK__CONPOSAPH__SOCIE__58D1301D" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -454,6 +458,7 @@
     <Property Name="VKORG" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
     <Property Name="VTWEG" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="SPART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PUESTO_ID" Type="Int32" />
     <NavigationProperty Name="CARTAs" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="DOCUMENTO" ToRole="CARTA" />
     <NavigationProperty Name="CLIENTE" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="DOCUMENTO" ToRole="CLIENTE" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_DOCUMENTO_PAIS" FromRole="DOCUMENTO" ToRole="PAIS" />
@@ -911,7 +916,7 @@
     <Property Name="KTOPL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <Property Name="REGION" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK__CONPOSAPH__SOCIE__24485945" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
+    <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK__CONPOSAPH__SOCIE__58D1301D" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
     <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_APROB" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DOCUMENTO" />
     <NavigationProperty Name="MONEDA" Relationship="Self.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
@@ -949,16 +954,6 @@
     <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
     <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -1169,6 +1164,13 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+  </EntityType>
+  <EntityType Name="USUARIOSAP">
+    <Key>
+      <PropertyRef Name="IDUSUARIO" />
+    </Key>
+    <Property Name="IDUSUARIO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AUTOMATICO" Type="Boolean" />
   </EntityType>
   <EntityType Name="WARNING">
     <Key>
@@ -1640,7 +1642,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__CONPOSAPH__SOCIE__24485945">
+  <Association Name="FK__CONPOSAPH__SOCIE__58D1301D">
     <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
     <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
     <ReferentialConstraint>
@@ -2536,7 +2538,6 @@
     <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
     <EntitySet Name="STATES" EntityType="Self.STATE" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TALLs" EntityType="Self.TALL" />
     <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
     <EntitySet Name="TCAMBIOs" EntityType="Self.TCAMBIO" />
@@ -2552,6 +2553,7 @@
     <EntitySet Name="UMEDIDAs" EntityType="Self.UMEDIDA" />
     <EntitySet Name="UMEDIDATs" EntityType="Self.UMEDIDAT" />
     <EntitySet Name="USUARIOs" EntityType="Self.USUARIO" />
+    <EntitySet Name="USUARIOSAPs" EntityType="Self.USUARIOSAP" />
     <EntitySet Name="WARNINGs" EntityType="Self.WARNING" />
     <EntitySet Name="WORKFHs" EntityType="Self.WORKFH" />
     <EntitySet Name="WORKFPs" EntityType="Self.WORKFP" />
@@ -2638,7 +2640,7 @@
       <End Role="IMPUESTO" EntitySet="IMPUESTOes" />
       <End Role="CLIENTEI" EntitySet="CLIENTEIs" />
     </AssociationSet>
-    <AssociationSet Name="FK__CONPOSAPH__SOCIE__24485945" Association="Self.FK__CONPOSAPH__SOCIE__24485945">
+    <AssociationSet Name="FK__CONPOSAPH__SOCIE__58D1301D" Association="Self.FK__CONPOSAPH__SOCIE__58D1301D">
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="CONPOSAPH" EntitySet="CONPOSAPHs" />
     </AssociationSet>
@@ -2918,7 +2920,11 @@
       <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
       <End Role="USUARIO" EntitySet="USUARIOs" />
     </AssociationSet>
-    <FunctionImport Name="CSP_BANNERSINCANAL" />
+    <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model.split_Result)">
+      <Parameter Name="delimited" Mode="In" Type="String" />
+      <Parameter Name="delimiter" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
     <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
       <Parameter Name="sociedad" Mode="In" Type="String" />
     </FunctionImport>

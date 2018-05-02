@@ -325,7 +325,7 @@
                     @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
                 </td>
                 <td>
-                    @item.FECHAD.Value.ToShortDateString()
+                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
                 </td>
 
                 @if (item.ESTATUS_WF.Equals("P"))
@@ -353,29 +353,29 @@
         }
     </tbody>
     @*<tfoot>
-        <tr>
-            <th id="lbl_num">
-                <div class="input-field s12">
-                    @Html.DisplayNameFor(model => model.NUM_DOC)
-                </div>
-            </th>
-            <th id="lbl_tsol">
-                @Html.DisplayNameFor(model => model.TSOL)
-            </th>
-            <th id="lbl_tall">
-                @Html.DisplayNameFor(model => model.TALL)
-            </th>
-            <th id="lbl_fechad">
-                @Html.DisplayNameFor(model => model.FECHAD)
-            </th>
-            <th id="lbl_estatus">
-                @Html.DisplayNameFor(model => model.ESTATUS)
-            </th>
-            <th id="lbl_concepto">
-                @Html.DisplayNameFor(model => model.CONCEPTO)
-            </th>
-        </tr>
-    </tfoot>*@
+            <tr>
+                <th id="lbl_num">
+                    <div class="input-field s12">
+                        @Html.DisplayNameFor(model => model.NUM_DOC)
+                    </div>
+                </th>
+                <th id="lbl_tsol">
+                    @Html.DisplayNameFor(model => model.TSOL)
+                </th>
+                <th id="lbl_tall">
+                    @Html.DisplayNameFor(model => model.TALL)
+                </th>
+                <th id="lbl_fechad">
+                    @Html.DisplayNameFor(model => model.FECHAD)
+                </th>
+                <th id="lbl_estatus">
+                    @Html.DisplayNameFor(model => model.ESTATUS)
+                </th>
+                <th id="lbl_concepto">
+                    @Html.DisplayNameFor(model => model.CONCEPTO)
+                </th>
+            </tr>
+        </tfoot>*@
 </table>
 
 <script>

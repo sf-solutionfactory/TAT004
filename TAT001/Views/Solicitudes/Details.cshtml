@@ -153,8 +153,8 @@
             <li class="tab col s2"><a class="active" href="#info" id="lbl_info">Información</a></li>
             <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>
             <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
+            <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
             <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
-            @*<li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>*@
         </ul>
     </div>
     <div id="info" class="col s12" style="font-size:12px;">
@@ -300,6 +300,57 @@
                             catch (Exception)
                             {
                             }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dist" class="col s12">
+        <div class="row">
+            <div class="card-panel">
+                <div class="row" style="margin-bottom:0">
+                    <h5>Distribución</h5>
+                    <div class="input-field col s12">
+                        @if (Model.D.DOCUMENTOPs.Count > 0)
+                        {
+                            <table>
+                                <tr>
+                                    <th>Vigencia de</th>
+                                    <th>Vigencia a</th>
+                                    <th>Material</th>
+                                    <th>Desc</th>
+                                    <th>Precio unitario</th>
+                                    <th>% apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Precio sugerido</th>
+                                    <th>Volumen estimado</th>
+                                    <th>Estimado apoyo</th>
+                                </tr>
+                                @foreach (var item in Model.D.DOCUMENTOPs)
+                                {
+                                    <tr>
+                                        <td>@item.VIGENCIA_DE.Value.ToShortDateString()</td>
+                                        <td>@item.VIGENCIA_AL.Value.ToShortDateString()</td>
+                                        <td>@item.MATNR.TrimStart('0')</td>
+                                        @{
+                                            using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+                                            {
+                                                var matnr = db.MATERIALs.Find(item.MATNR);
+                                                <td>@matnr.MAKTX</td>
+                                            }
+                                        }
+                                        <td>@Math.Round(item.MONTO, 2)</td>
+                                        <td>@Math.Round(item.PORC_APOYO, 2)</td>
+                                        <td>@Math.Round(item.MONTO_APOYO, 2)</td>
+                                        <td>@Math.Round(item.PRECIO_SUG, 2)</td>
+                                        <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
+                                        <td>@Math.Round(item.VOLUMEN_EST * item.MONTO_APOYO, 2)</td>
+                                    </tr>
+
+                                }
+                            </table>
                         }
                     </div>
                 </div>

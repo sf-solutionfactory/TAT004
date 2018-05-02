@@ -558,7 +558,8 @@ namespace TAT001.Services
             {
                 if (loop == null)
                 {
-                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 1).FirstOrDefault();
+                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 1).FirstOrDefault();
+                    da.POS = da.POS - 1;
                 }
                 else
                 {
@@ -577,7 +578,7 @@ namespace TAT001.Services
             }
             else
             {
-                DET_AGENTE actual = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos)).FirstOrDefault();
+                DET_AGENTE actual = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos)).FirstOrDefault();
                 if (actual.POS == 99)
                 {
                     fin = true;
@@ -587,7 +588,7 @@ namespace TAT001.Services
                     if (actual.MONTO != null)
                         if (d.MONTO_DOC_ML2 > actual.MONTO)
                         {
-                            da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
+                            da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
                             ////da.POS = da.POS - 1;
                             ppos = -1;
                         }
@@ -595,7 +596,7 @@ namespace TAT001.Services
                         if ((bool)actual.PRESUPUESTO)
                             if (d.MONTO_DOC_MD > 10000)
                             {
-                                da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
+                                da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
                                 ////da.POS = da.POS - 1;
                                 ppos = -1;
                             }
@@ -614,7 +615,7 @@ namespace TAT001.Services
                 }
                 else
                 {
-                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 99).FirstOrDefault();
+                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 99).FirstOrDefault();
                     agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
                     f.DETPOS = da.POS;
                 }

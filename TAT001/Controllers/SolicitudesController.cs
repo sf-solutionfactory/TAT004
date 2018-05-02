@@ -411,6 +411,8 @@ namespace TAT001.Controllers
                     dOCUMENTO.CANTIDAD_EV = 1;
 
                     //Obtener usuarioc
+                    USUARIO u = db.USUARIOs.Find(User.Identity.Name);//RSG 02/05/2018
+                    dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
                     dOCUMENTO.USUARIOC_ID = User.Identity.Name;
 
                     //Fechac

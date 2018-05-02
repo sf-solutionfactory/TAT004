@@ -11,6 +11,7 @@
     if ($('#parvw').val() != "") {
         $("label[for='parvw']").addClass("active");
     }
+    
     //Razón social
     if ($('#vkorg').val() != "") {
         $("label[for='vkorg']").addClass("active");

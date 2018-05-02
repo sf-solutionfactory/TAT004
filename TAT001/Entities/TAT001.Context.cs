@@ -78,7 +78,6 @@ namespace TAT001.Entities
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
         public virtual DbSet<STATE> STATES { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
         public virtual DbSet<TCAMBIO> TCAMBIOs { get; set; }
@@ -94,6 +93,7 @@ namespace TAT001.Entities
         public virtual DbSet<UMEDIDA> UMEDIDAs { get; set; }
         public virtual DbSet<UMEDIDAT> UMEDIDATs { get; set; }
         public virtual DbSet<USUARIO> USUARIOs { get; set; }
+        public virtual DbSet<USUARIOSAP> USUARIOSAPs { get; set; }
         public virtual DbSet<WARNING> WARNINGs { get; set; }
         public virtual DbSet<WORKFH> WORKFHs { get; set; }
         public virtual DbSet<WORKFP> WORKFPs { get; set; }
@@ -105,9 +105,23 @@ namespace TAT001.Entities
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
     
-        public virtual int CSP_BANNERSINCANAL()
+        [DbFunction("TAT001Entities", "split")]
+        public virtual IQueryable<split_Result> split(string delimited, string delimiter)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CSP_BANNERSINCANAL");
+            var delimitedParameter = delimited != null ?
+                new ObjectParameter("delimited", delimited) :
+                new ObjectParameter("delimited", typeof(string));
+    
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("delimiter", delimiter) :
+                new ObjectParameter("delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<split_Result>("[TAT001Entities].[split](@delimited, @delimiter)", delimitedParameter, delimiterParameter);
+        }
+    
+        public virtual ObjectResult<string> CSP_BANNERSINCANAL()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("CSP_BANNERSINCANAL");
         }
     
         public virtual ObjectResult<CSP_CAMBIO_Result> CSP_CAMBIO(string sociedad)

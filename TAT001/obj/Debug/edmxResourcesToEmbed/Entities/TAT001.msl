@@ -420,6 +420,7 @@
           <ScalarProperty Name="VKORG" ColumnName="VKORG" />
           <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
           <ScalarProperty Name="SPART" ColumnName="SPART" />
+          <ScalarProperty Name="PUESTO_ID" ColumnName="PUESTO_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -832,17 +833,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="TAT001Model.sysdiagram">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="TALLs">
       <EntityTypeMapping TypeName="TAT001Model.TALL">
         <MappingFragment StoreEntitySet="TALL">
@@ -1015,6 +1005,14 @@
           <ScalarProperty Name="MANAGER" ColumnName="MANAGER" />
           <ScalarProperty Name="BACKUP_ID" ColumnName="BACKUP_ID" />
           <ScalarProperty Name="BUNIT" ColumnName="BUNIT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIOSAPs">
+      <EntityTypeMapping TypeName="TAT001Model.USUARIOSAP">
+        <MappingFragment StoreEntitySet="USUARIOSAP">
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="AUTOMATICO" ColumnName="AUTOMATICO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1226,6 +1224,14 @@
         <ScalarProperty Name="ID" ColumnName="USUARIO_ID" />
       </EndProperty>
     </AssociationSetMapping>
+    <FunctionImportMapping FunctionName="TAT001Model.Store.split" FunctionImportName="split">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="TAT001Model.split_Result">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="val" ColumnName="val" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="CSP_BANNERSINCANAL" FunctionName="TAT001Model.Store.CSP_BANNERSINCANAL" />
     <FunctionImportMapping FunctionImportName="CSP_CAMBIO" FunctionName="TAT001Model.Store.CSP_CAMBIO">
       <ResultMapping>

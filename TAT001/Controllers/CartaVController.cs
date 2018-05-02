@@ -108,7 +108,7 @@ namespace TAT001.Controllers
 
                 int contadorTabla = 0;
 
-                var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
                 foreach (var item in con)
                 {
@@ -119,12 +119,14 @@ namespace TAT001.Controllers
                 {
                     contadorTabla = 0;
 
-                    DateTime a1 = DateTime.Parse(lista[i].Remove(24));
-                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, 24));
+                    //DateTime a1 = DateTime.Parse(lista[i].Remove(24));
+                    DateTime a1 = DateTime.Parse(lista[i].Remove(lista[i].Length / 2));
+                    //DateTime a2 = DateTime.Parse(lista[i].Remove(0, 24));
+                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
 
                     var con2 = db.DOCUMENTOPs
-                                          .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
-                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
+                                          .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO ,y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
                                           .ToList();
 
                     foreach (var item2 in con2)
@@ -132,7 +134,7 @@ namespace TAT001.Controllers
                         armadoCuerpoTab.Add(item2.MATNR);
                         armadoCuerpoTab.Add(item2.MATKL);
                         armadoCuerpoTab.Add(item2.MAKTX);
-                        armadoCuerpoTab.Add(item2.PUNIT.ToString());
+                        armadoCuerpoTab.Add(item2.MONTO.ToString());
                         armadoCuerpoTab.Add(item2.PORC_APOYO.ToString());
                         armadoCuerpoTab.Add(item2.MONTO_APOYO.ToString());
                         armadoCuerpoTab.Add(item2.resta.ToString());

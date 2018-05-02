@@ -423,6 +423,7 @@
     <Property Name="VKORG" Type="nvarchar" MaxLength="4" />
     <Property Name="VTWEG" Type="nchar" MaxLength="2" />
     <Property Name="SPART" Type="nchar" MaxLength="2" />
+    <Property Name="PUESTO_ID" Type="int" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -824,16 +825,6 @@
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
-  </EntityType>
   <EntityType Name="TALL">
     <Key>
       <PropertyRef Name="ID" />
@@ -1011,6 +1002,13 @@
     </Key>
     <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
     <Property Name="AGROUP_ID" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USUARIOSAP">
+    <Key>
+      <PropertyRef Name="IDUSUARIO" />
+    </Key>
+    <Property Name="IDUSUARIO" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="AUTOMATICO" Type="bit" />
   </EntityType>
   <EntityType Name="WARNING">
     <Key>
@@ -1230,7 +1228,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Property Name="POSICION" Type="nvarchar" MaxLength="10" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
-  <Association Name="FK__CONPOSAPH__SOCIE__24485945">
+  <Association Name="FK__CONPOSAPH__SOCIE__58D1301D">
     <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
     <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
     <ReferentialConstraint>
@@ -2391,6 +2389,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
+    <ReturnType>
+      <CollectionType>
+        <RowType>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="val" Type="nvarchar(max)" />
+        </RowType>
+      </CollectionType>
+    </ReturnType>
+  </Function>
   <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
@@ -2443,7 +2453,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />
@@ -2460,6 +2469,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="UMEDIDAT" EntityType="Self.UMEDIDAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USUARIOGA" EntityType="Self.USUARIOGA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USUARIOSAP" EntityType="Self.USUARIOSAP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WARNING" EntityType="Self.WARNING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WORKFH" EntityType="Self.WORKFH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WORKFP" EntityType="Self.WORKFP" Schema="dbo" store:Type="Tables" />
@@ -2583,7 +2593,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [WARNINGV].[ACTIVO] AS [ACTIVO]
     FROM [dbo].[WARNINGV] AS [WARNINGV]</DefiningQuery>
     </EntitySet>
-    <AssociationSet Name="FK__CONPOSAPH__SOCIE__24485945" Association="Self.FK__CONPOSAPH__SOCIE__24485945">
+    <AssociationSet Name="FK__CONPOSAPH__SOCIE__58D1301D" Association="Self.FK__CONPOSAPH__SOCIE__58D1301D">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
       <End Role="CONPOSAPH" EntitySet="CONPOSAPH" />
     </AssociationSet>

@@ -29,7 +29,7 @@
                         <div style="height:54px;"></div>
                     </div>
             </div>*@
-        <div class="col s6">
+        <div class="col l6 s12">
             <div class="card-panel">
                 <div class="row">
                     <div class="input-field col s12">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s6">
+        <div class="col l6 s12">
             <div class="card-panel">
                 <div class="row">
                     <div class="input-field col s12">
@@ -95,7 +95,7 @@
             var options = [];
             var instance = M.Select.init(elem, options);
         </script>
-        <div class="col s6">
+        @*<div class="col l6 s12">
             <div class="card-panel">
                 <div class="row">
                     <h5>Grupos</h5>
@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s6">
+        <div class="col l6 s12">
             <div class="card-panel">
                 <div class="row">
                     <h5>Roles</h5>
@@ -154,7 +154,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 }
 
@@ -163,11 +163,10 @@
 </div>
 
 
-@using (Html.BeginForm("AgregarRol", "Usuarios"))
+@*@using (Html.BeginForm("AgregarRol", "Usuarios"))
 {
     @Html.AntiForgeryToken()
-
-    <!-- Modal Structure -->
+    
     <div id="modal1" class="modal modal-fixed-footer">
         <div class="modal-content">
             <h4>Agregar Rol</h4>
@@ -206,13 +205,13 @@
                     <label for="txt_pai">País</label>
                 </div>
                 <div id="lbl_puestos"></div>
-                @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
+                @foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
                     {
                         <div class="input-field col s6">
                             <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
                             <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
                         </div>
-                    }*@
+                    }
             </div>
         </div>
         <div class="modal-footer">
@@ -398,4 +397,4 @@
             minLength: 1
         });
     }
-</script>
+</script>*@

@@ -34,10 +34,10 @@
     <div class="navbar-fixed" style="z-index: 998;">
         <nav class="nav-extended">
             <div class="nav-wrapper pink darken-1" @*style="background-repeat: repeat-x;background-image: url(/images/header-transient.png);"*@>
-                <a href="@Url.Action("Index", "Home")" class="brand-logo">
+                <a href="@Url.Action("Index", "Home")" class="brand-logo left">
                     <img src="~/images/logo_kellogg.png" style="padding-top: 8px; padding-left: 8px;" />
                 </a>
-                <ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
+                <ul id="nav_mobile" class="right" runat="server">
 
                     @if (ViewBag.flag != true)
                     {

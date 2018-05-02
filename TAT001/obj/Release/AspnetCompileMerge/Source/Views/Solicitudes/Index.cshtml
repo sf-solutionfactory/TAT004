@@ -95,7 +95,7 @@
                     @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
                 </td>
                 <td>
-                    @item.FECHAD.Value.ToShortDateString()
+                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
                 </td>
 
                 @if (item.ESTATUS_WF.Equals("P"))

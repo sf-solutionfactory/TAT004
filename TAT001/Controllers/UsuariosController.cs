@@ -95,7 +95,16 @@ namespace TAT001.Controllers
             if (uSUARIO == null)
             {
                 return HttpNotFound();
-            }
+            }            
+            //ViewBag.PUESTO_ID = new SelectList(db.PUESTOes, "ID", "ID", uSUARIO.PUESTO_ID);
+            string spra = Session["spras"].ToString();
+            ViewBag.SPRAS_ID = new SelectList(db.SPRAS, "ID", "ID", uSUARIO.SPRAS_ID);
+            ViewBag.PUESTO_ID = new SelectList(db.PUESTOTs.Where(a => a.SPRAS_ID.Equals(spra)), "PUESTO_ID", "TXT50", uSUARIO.PUESTO_ID);
+            ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", uSUARIO.BUNIT);
+            ViewBag.ROLES = db.ROLTs.Where(a => a.SPRAS_ID.Equals(spra));
+            ViewBag.SOCIEDADES = db.SOCIEDADs;
+            ViewBag.PAISES = db.PAIS;
+            ViewBag.APROBADORES = db.DET_APROB.Where(a => a.BUKRS.Equals("KCMX") & a.PUESTOC_ID == uSUARIO.PUESTO_ID).ToList();
             return View(uSUARIO);
         }
 
@@ -284,7 +293,8 @@ namespace TAT001.Controllers
             {
                 db.Entry(uSUARIO).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", new { id = uSUARIO.ID});
+                //return RedirectToAction("Index");
             }
             int pagina = 603; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
