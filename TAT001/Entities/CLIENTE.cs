@@ -50,6 +50,7 @@ namespace TAT001.Entities
         public string KONDA { get; set; }
         public string VKGRP { get; set; }
         public string VKBUR { get; set; }
+        public string BANNERG { get; set; }
     
         public virtual PAI PAI { get; set; }
         public virtual TCLIENTE TCLIENTE { get; set; }

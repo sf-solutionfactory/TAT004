@@ -168,7 +168,7 @@
         @*<input id="image_print" type="image" src="~/images/solicitudPrint.png" />*@
         <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
         <a id="btn_borrador" class="btn waves-effect waves-light btn-small">Borrador</a>
-        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
+        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small">Guardar</a>
         @*<input type="submit" value="Guardar" class="btn btn-default btn waves-effect waves-light btn-small" />*@
     </div>
     <div class="div_bottom">
@@ -851,8 +851,8 @@
                             </div>
                         </div>
                         <div id="div_btns_row" style="display:none">
-                            <a class="waves-effect waves-light btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
-                            <a class="waves-effect waves-light btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
+                            <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
+                            <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                         </div>
                         <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                             <thead>
@@ -877,15 +877,74 @@
                             <tbody></tbody>
                             <tfoot id="tfoot_dis" style="">
                                 @*//display:none*@
-                            <tr>
-                                <th colspan="14" style="text-align:right">Total:</th>
-                                <th id="total_dis"></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                                <tr>
+                                    <th colspan="14" style="text-align:right">Total:</th>
+                                    <th id="total_dis"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
+                @*Tabla para ser enviada siempre está oculta*@
+                <a class="btn" id="addRowhtml"><i class="material-icons left">add</i>Registro controller</a>
+                <table id="table_dish" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>                            
+                            <th>Pos</th>
+                            <th>Vigencia De</th>
+                            <th>Vigencia Al</th>
+                            <th>Material</th>
+                            <th>Categoría</th>
+                            <th>Costo unitario</th>
+                            <th>% Apoyo</th>
+                            <th>Apoyo por pieza</th>
+                            <th>Precio sugerido</th>
+                            <th>Volumen estimado</th>     
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DOCUMENTOP != null)
+                        {
+                            for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                    </td>
+                                </tr>
+                            }
+                          }
+                    </tbody>
+                </table>
+                @*Tabla para ser enviada siempre está oculta*@
             </div>
-        </div>
         </div>
         </div>
         @*Financiera*@
@@ -1041,57 +1100,6 @@
                 </div>
                 <div>
                     <div class="col s12 m6 l6">
-                        @*<div class="card-panel">
-                            <h5>Análisis Presupuesto</h5>
-                            <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>20000013</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$25,000.00</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>20000013</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$15,000.00</label>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Visible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>$20,000.00</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>0.00</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>*@
                         <div class="card-panel">
                             <h5>Análisis Solicitud</h5>
                             <div class="row" style="margin-bottom:0">

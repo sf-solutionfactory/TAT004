@@ -624,6 +624,7 @@
     <Content Include="Views\Listas\Estados.cshtml" />
     <Content Include="Views\Listas\Ciudades.cshtml" />
     <Content Include="Views\Solicitudes\CreateNew.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialDisTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -468,6 +468,7 @@ C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.Fa
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.Google.resources.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.Twitter.resources.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
+C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csprojResolveAssemblyReference.cache
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CoreCompileInputs.cache
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.dll
 C:\Users\EQUIPO\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.pdb

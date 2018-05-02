@@ -43,5 +43,6 @@ namespace TAT001.Entities
         public Nullable<bool> ASSIGNACION { get; set; }
         public Nullable<bool> QUANTITY { get; set; }
         public Nullable<bool> BASE_UNIT { get; set; }
+        public string BUS_AREA { get; set; }
     }
 }

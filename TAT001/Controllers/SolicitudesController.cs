@@ -361,7 +361,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -485,6 +485,27 @@ namespace TAT001.Controllers
 
                         db.DOCUMENTONs.Add(doc_notas);
                         db.SaveChanges();
+                    }
+
+                    //Guardar los documentos p para el documento guardado
+                    for(int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                    {
+                        try
+                        {
+                            DOCUMENTOP docP = new DOCUMENTOP();
+
+                            docP = dOCUMENTO.DOCUMENTOP.ElementAt(j);
+
+                            docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            docP.CANTIDAD = 1;
+
+                            db.DOCUMENTOPs.Add(docP);
+                            db.SaveChanges();
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
                     }
 
                     //Guardar los documentos cargados en la sección de soporte
@@ -1659,20 +1680,27 @@ namespace TAT001.Controllers
             if (kunnr == null)
                 kunnr = "";
 
-            //Obtener presupuesto
-            var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
 
-            if(presupuesto != null)
+            //Obtener presupuesto
+            try
             {
-                pm.P_CANAL = presupuesto[0].VAL;
-                pm.P_BANNER = presupuesto[1].VAL;
-                pm.PC_C = presupuesto[4].VAL;
-                pm.PC_A = presupuesto[5].VAL;
-                pm.PC_P = presupuesto[6].VAL;
-                pm.PC_T = presupuesto[7].VAL;
+               var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+
+                if (presupuesto != null)
+                {
+                    pm.P_CANAL = presupuesto[0].VAL;
+                    pm.P_BANNER = presupuesto[1].VAL;
+                    pm.PC_C = presupuesto[4].VAL;
+                    pm.PC_A = presupuesto[5].VAL;
+                    pm.PC_P = presupuesto[6].VAL;
+                    pm.PC_T = presupuesto[7].VAL;
+                }
             }
+            catch (Exception e)
+            {
+
+            }                        
 
             JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
             return cc;
@@ -1705,6 +1733,65 @@ namespace TAT001.Controllers
                         .FirstOrDefault();
         }                       
             return cat.TXT50.ToString();
+        }
+
+        [HttpPost]
+        public ActionResult getPartialDis(List<DOCUMENTOP> docs)
+        {
+            DOCUMENTO doc = new DOCUMENTO();
+
+            //for(int i = 0; i < docs.Count():i++)
+            //{
+
+            //}
+
+
+            //DOCUMENTOP docP = new DOCUMENTOP();
+            //DOCUMENTOP docP2 = new DOCUMENTOP();
+
+            //string vd = "22/05/2018";
+            //string va = "22/05/2018";
+
+            //DateTime vdd = DateTime.ParseExact(vd, //"06/04/2018 12:00:00 a.m."
+            //                                "dd/MM/yyyy",
+            //                                System.Globalization.CultureInfo.InvariantCulture,
+            //                                System.Globalization.DateTimeStyles.None);
+
+            //DateTime vad = DateTime.ParseExact(va, //"06/04/2018 12:00:00 a.m."
+            //                                "dd/MM/yyyy",
+            //                                System.Globalization.CultureInfo.InvariantCulture,
+            //                                System.Globalization.DateTimeStyles.None);
+            //docP.POS = 1;
+            //docP.VIGENCIA_DE = vdd;
+            //docP.VIGENCIA_AL = vad;
+            //docP.MATNR = "123";
+            //docP.MATKL = "001";
+            //docP.MONTO = 200.22M;
+            //docP.PORC_APOYO = 10;
+            //docP.MONTO_APOYO = 20.22M;
+            //docP.PRECIO_SUG = 100M;
+            //docP.VOLUMEN_EST = 300M;
+
+            //docP2.POS = 2;
+            //docP2.VIGENCIA_DE = vdd;
+            //docP2.VIGENCIA_AL = vad;
+            //docP2.MATNR = "456";
+            //docP2.MATKL = "001"; ;
+            //docP2.MONTO = 200.22M;
+            //docP2.PORC_APOYO = 10;
+            //docP2.MONTO_APOYO = 20.22M;
+            //docP2.PRECIO_SUG = 100M;
+            //docP2.VOLUMEN_EST = 300M;
+
+            doc.DOCUMENTOP = docs;
+
+            //var index = 0;
+
+            //ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("Countries[{0}]", index);
+            //return PartialView("~/Views/Shared/EditorTemplates/Country.cshtml", newCountry);
+            //ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("DOCUMENTOP[{0}]", index);
+            //return PartialView("~/Views/cities/_PartialPageCityo.cshtml", newCountry);
+            return PartialView("~/Views/Solicitudes/_PartialDisTr.cshtml", doc);
         }
     }
 }

@@ -171,6 +171,8 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_GAUTORIZACION_SOCIEDAD" />
+        <AssociationConnector Association="TAT001Model.FK_TCAMBIO_MONEDA1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

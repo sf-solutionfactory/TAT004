@@ -31,5 +31,6 @@ namespace TAT001.Entities
         public virtual ICollection<DET_AGENTE> DET_AGENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
+        public virtual SOCIEDAD SOCIEDAD { get; set; }
     }
 }

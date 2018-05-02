@@ -196,13 +196,17 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PERMISO_Result>("CSP_PERMISO", iDParameter, aCCIONParameter);
         }
     
-        public virtual ObjectResult<CSP_PRESU_CLIENT_Result> CSP_PRESU_CLIENT(string cLIENTE)
+        public virtual ObjectResult<CSP_PRESU_CLIENT_Result> CSP_PRESU_CLIENT(string cLIENTE, string pERIODO)
         {
             var cLIENTEParameter = cLIENTE != null ?
                 new ObjectParameter("CLIENTE", cLIENTE) :
                 new ObjectParameter("CLIENTE", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESU_CLIENT_Result>("CSP_PRESU_CLIENT", cLIENTEParameter);
+            var pERIODOParameter = pERIODO != null ?
+                new ObjectParameter("PERIODO", pERIODO) :
+                new ObjectParameter("PERIODO", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESU_CLIENT_Result>("CSP_PRESU_CLIENT", cLIENTEParameter, pERIODOParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(string anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)

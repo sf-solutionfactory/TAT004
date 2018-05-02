@@ -153,42 +153,6 @@
         //        "ordering": false,
         "info": false,
         "searching": false,
-        //"footerCallback": function (row, data, start, end, display) {
-        //    var api = this.api(), data;
-
-        //    // Remove the formatting to get integer data for summation
-        //    var intVal = function (i) {
-        //        return typeof i === 'string' ?
-        //            i.replace(/[\$,]/g, '') * 1 :
-        //            typeof i === 'number' ?
-        //                i : 0;
-        //    };
-
-        //    // Total over all pages
-        //    total = api
-        //        .column(14)
-        //        .data()
-        //        .reduce(function (a, b) {
-        //            return intVal(a) + intVal(b);
-        //        }, 0);
-
-        //    // Total over this page
-        //    pageTotal = api
-        //        .column(14, { page: 'current' })
-        //        .data()
-        //        .reduce(function (a, b) {
-        //            return intVal(a) + intVal(b);
-        //        }, 0);
-
-        //    //Fixed 2
-        //    var tc = parseFloat(total).toFixed(2);
-
-        //    // Update footer
-        //    $(api.column(14).footer()).html(
-        //        //'$' + pageTotal + ' ( $' + total + ' total)'
-        //        '$' + tc
-        //    );
-        //},//Termina el callback
         "columns": [
             {
                 "className": 'id_row',
@@ -340,6 +304,78 @@
         event.cancel = true;
         
     });
+
+    $('#addRowhtml').on('click', function () {
+
+        var lengthT = $("table#table_dis tbody tr").length;
+
+        if (lengthT > 0) {
+
+            
+            $('#table_dish > tbody  > tr').each(function () {
+                //Obtener los valores de la tabla para agregarlos a la tabla oculta
+                //Eliminar los renglones actuales en la tabla oculta
+                $(this).remove();
+
+            });
+
+            var docs = [
+                {
+                    NUM_DOC: 0,
+                    POS: 1,
+                    VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
+                    VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
+                    MATNR: 123,
+                    MATKL: "001",
+                    CANTIDAD: 0,
+                    MONTO: 200.22,
+                    PORC_APOYO: 10,
+                    MONTO_APOYO: 20.22,
+                    PRECIO_SUG: 100,
+                    VOLUMEN_EST: 300.25
+                },
+                {
+                    NUM_DOC: 0,
+                    POS: 2,
+                    VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
+                    VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
+                    MATNR: 456,
+                    MATKL: "001",
+                    CANTIDAD: 0,
+                    MONTO: 200.22,
+                    PORC_APOYO: 10,
+                    MONTO_APOYO: 20.22,
+                    PRECIO_SUG: 100,
+                    VOLUMEN_EST: 300.25
+                }
+            ];  
+
+            docsenviar = JSON.stringify({ 'docs': docs });
+
+            $.ajax({
+                type: "POST",
+                url: 'getPartialDis',
+                contentType: "application/json; charset=UTF-8",
+                data: docsenviar,
+                success: function (data) {
+
+                    if (data !== null || data !== "") {
+                        $("table#table_dish tbody").append(data);
+                    }
+
+                },
+                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                    M.toast({ html: httpStatusMessage });
+                },
+                async: false
+            });
+        }
+
+        event.returnValue = false;
+        event.cancel = true;
+
+    });
+
 
     $('#select_neg').change();
     $('#select_dis').change();
@@ -642,7 +678,7 @@
             res = SoporteTab;
         }
 
-        //Evaluar SoporteTab values
+        //Evaluar FinancieraTab values
         var FinancieraTab = evalFinancieraTab(true, e);
         if (!FinancieraTab) {
             msg += ' ,Financiera';
@@ -688,6 +724,8 @@
                 $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
+            //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+
             //Termina provisional
             $('#btn_guardar').click();
         } else {
