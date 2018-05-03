@@ -22,8 +22,12 @@ namespace TAT001.Entities
         public string MEINS { get; set; }
         public Nullable<decimal> PUNIT { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
+        public string CTGR { get; set; }
+        public string BRAND { get; set; }
     
         public virtual CATEGORIA CATEGORIA { get; set; }
+        public virtual ZCTGR ZCTGR { get; set; }
+        public virtual ZBRAND ZBRAND { get; set; }
         public virtual UMEDIDA UMEDIDA { get; set; }
     }
 }

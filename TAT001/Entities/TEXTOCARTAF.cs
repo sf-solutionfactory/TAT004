@@ -21,5 +21,6 @@ namespace TAT001.Entities
         public string FOLIO { get; set; }
         public string PAYER { get; set; }
         public string MONTO { get; set; }
+        public string MARCA_AGUA { get; set; }
     }
 }

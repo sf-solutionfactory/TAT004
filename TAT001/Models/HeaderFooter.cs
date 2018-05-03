@@ -115,7 +115,14 @@ namespace TAT001.Models
 
             foreach (string archivo in todoArchivos)
             {
-                File.Delete(archivo);
+                try
+                {
+                    File.Delete(archivo);
+                }
+                catch
+                {
+
+                }
             }
 
             cf = null;

@@ -157,6 +157,7 @@
     <Property Name="KONDA" Type="nchar" MaxLength="2" />
     <Property Name="VKGRP" Type="nchar" MaxLength="3" />
     <Property Name="VKBUR" Type="nchar" MaxLength="4" />
+    <Property Name="BANNERG" Type="nchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -203,6 +204,7 @@
     </Key>
     <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POSICION" Type="int" Nullable="false" />
+    <Property Name="BUS_AREA" Type="nchar" MaxLength="3" />
     <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
     <Property Name="NUM_PROV" Type="bit" />
     <Property Name="NUM_CTE" Type="bit" />
@@ -570,6 +572,8 @@
     <Property Name="MEINS" Type="nchar" MaxLength="3" />
     <Property Name="PUNIT" Type="decimal" Precision="13" Scale="5" />
     <Property Name="ACTIVO" Type="bit" />
+    <Property Name="CTGR" Type="nvarchar" MaxLength="5" />
+    <Property Name="BRAND" Type="nvarchar" MaxLength="5" />
   </EntityType>
   <EntityType Name="MENSAJES">
     <Key>
@@ -825,6 +829,16 @@
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="TALL">
     <Key>
       <PropertyRef Name="ID" />
@@ -853,7 +867,7 @@
       <PropertyRef Name="GDATU" />
     </Key>
     <Property Name="KURST" Type="nchar" MaxLength="4" Nullable="false" />
-    <Property Name="FCURR" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="FCURR" Type="nchar" MaxLength="3" Nullable="false" />
     <Property Name="TCURR" Type="nchar" MaxLength="3" Nullable="false" />
     <Property Name="GDATU" Type="date" Nullable="false" />
     <Property Name="UKURS" Type="decimal" Precision="9" Scale="5" />
@@ -897,6 +911,7 @@
     <Property Name="FOLIO" Type="nvarchar" MaxLength="20" />
     <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
+    <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TEXTOCARTAV">
     <Key>
@@ -919,6 +934,7 @@
     <Property Name="FOLIO" Type="nvarchar" MaxLength="20" />
     <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
+    <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TS_FORM">
     <Key>
@@ -1084,6 +1100,20 @@
     <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="FECHAC" Type="datetime" />
   </EntityType>
+  <EntityType Name="ZBRAND">
+    <Key>
+      <PropertyRef Name="ID_ZB" />
+    </Key>
+    <Property Name="ID_ZB" Type="nvarchar" MaxLength="5" Nullable="false" />
+    <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="ZCTGR">
+    <Key>
+      <PropertyRef Name="ID_ZC" />
+    </Key>
+    <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="CARPETAV">
@@ -1228,18 +1258,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Property Name="POSICION" Type="nvarchar" MaxLength="10" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
-  <Association Name="FK__CONPOSAPH__SOCIE__58D1301D">
-    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
-    <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SOCIEDAD">
-        <PropertyRef Name="BUKRS" />
-      </Principal>
-      <Dependent Role="CONPOSAPH">
-        <PropertyRef Name="SOCIEDAD" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_CAMPOS_PAGINA">
     <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
     <End Role="CAMPOS" Type="Self.CAMPOS" Multiplicity="*" />
@@ -1387,6 +1405,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CLIENTEI">
         <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONPOSAPH_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="CONPOSAPH" Type="Self.CONPOSAPH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CONPOSAPH">
+        <PropertyRef Name="SOCIEDAD" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1694,6 +1724,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_GAUTORIZACION_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="0..1" />
+    <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="GAUTORIZACION">
+        <PropertyRef Name="BUKRS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_IIMPUESTO_IMPUESTO">
     <End Role="IMPUESTO" Type="Self.IMPUESTO" Multiplicity="1" />
     <End Role="IIMPUESTO" Type="Self.IIMPUESTO" Multiplicity="*" />
@@ -1739,6 +1781,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="MATERIAL">
         <PropertyRef Name="MATKL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIAL_CTGR">
+    <End Role="ZCTGR" Type="Self.ZCTGR" Multiplicity="0..1" />
+    <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ZCTGR">
+        <PropertyRef Name="ID_ZC" />
+      </Principal>
+      <Dependent Role="MATERIAL">
+        <PropertyRef Name="CTGR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIAL_MARCA">
+    <End Role="ZBRAND" Type="Self.ZBRAND" Multiplicity="0..1" />
+    <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ZBRAND">
+        <PropertyRef Name="ID_ZB" />
+      </Principal>
+      <Dependent Role="MATERIAL">
+        <PropertyRef Name="BRAND" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2007,6 +2073,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="TCAMBIO">
         <PropertyRef Name="TCURR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TCAMBIO_MONEDA1">
+    <End Role="MONEDA" Type="Self.MONEDA" Multiplicity="1" />
+    <End Role="TCAMBIO" Type="Self.TCAMBIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MONEDA">
+        <PropertyRef Name="WAERS" />
+      </Principal>
+      <Dependent Role="TCAMBIO">
+        <PropertyRef Name="FCURR" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2366,6 +2444,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
   </Function>
   <Function Name="CSP_PRESU_CLIENT" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="CLIENTE" Type="nvarchar" Mode="In" />
+    <Parameter Name="PERIODO" Type="nchar" Mode="In" />
   </Function>
   <Function Name="CSP_PRESUPUESTO_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="anio" Type="nvarchar" Mode="In" />
@@ -2389,6 +2468,37 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -2453,6 +2563,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />
@@ -2475,6 +2586,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="WORKFP" EntityType="Self.WORKFP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WORKFT" EntityType="Self.WORKFT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WORKFV" EntityType="Self.WORKFV" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ZBRAND" EntityType="Self.ZBRAND" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ZCTGR" EntityType="Self.ZCTGR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETAV" EntityType="Self.CARPETAV" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [CARPETAV].[USUARIO_ID] AS [USUARIO_ID], 
@@ -2593,10 +2706,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [WARNINGV].[ACTIVO] AS [ACTIVO]
     FROM [dbo].[WARNINGV] AS [WARNINGV]</DefiningQuery>
     </EntitySet>
-    <AssociationSet Name="FK__CONPOSAPH__SOCIE__58D1301D" Association="Self.FK__CONPOSAPH__SOCIE__58D1301D">
-      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
-      <End Role="CONPOSAPH" EntitySet="CONPOSAPH" />
-    </AssociationSet>
     <AssociationSet Name="FK_CAMPOS_PAGINA" Association="Self.FK_CAMPOS_PAGINA">
       <End Role="PAGINA" EntitySet="PAGINA" />
       <End Role="CAMPOS" EntitySet="CAMPOS" />
@@ -2644,6 +2753,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CLIENTEI_IMPUESTO" Association="Self.FK_CLIENTEI_IMPUESTO">
       <End Role="IMPUESTO" EntitySet="IMPUESTO" />
       <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONPOSAPH_SOCIEDAD" Association="Self.FK_CONPOSAPH_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CONPOSAPH" EntitySet="CONPOSAPH" />
     </AssociationSet>
     <AssociationSet Name="FK_CONTACTOC_CLIENTE" Association="Self.FK_CONTACTOC_CLIENTE">
       <End Role="CLIENTE" EntitySet="CLIENTE" />
@@ -2741,6 +2854,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="GALLT" EntitySet="GALLT" />
     </AssociationSet>
+    <AssociationSet Name="FK_GAUTORIZACION_SOCIEDAD" Association="Self.FK_GAUTORIZACION_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />
+    </AssociationSet>
     <AssociationSet Name="FK_IIMPUESTO_IMPUESTO" Association="Self.FK_IIMPUESTO_IMPUESTO">
       <End Role="IMPUESTO" EntitySet="IMPUESTO" />
       <End Role="IIMPUESTO" EntitySet="IIMPUESTO" />
@@ -2755,6 +2872,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     </AssociationSet>
     <AssociationSet Name="FK_MATERIAL_CATEGORIA" Association="Self.FK_MATERIAL_CATEGORIA">
       <End Role="CATEGORIA" EntitySet="CATEGORIA" />
+      <End Role="MATERIAL" EntitySet="MATERIAL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIAL_CTGR" Association="Self.FK_MATERIAL_CTGR">
+      <End Role="ZCTGR" EntitySet="ZCTGR" />
+      <End Role="MATERIAL" EntitySet="MATERIAL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIAL_MARCA" Association="Self.FK_MATERIAL_MARCA">
+      <End Role="ZBRAND" EntitySet="ZBRAND" />
       <End Role="MATERIAL" EntitySet="MATERIAL" />
     </AssociationSet>
     <AssociationSet Name="FK_MATERIAL_UMEDIDA" Association="Self.FK_MATERIAL_UMEDIDA">
@@ -2842,6 +2967,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="TALLT" EntitySet="TALLT" />
     </AssociationSet>
     <AssociationSet Name="FK_TCAMBIO_MONEDA" Association="Self.FK_TCAMBIO_MONEDA">
+      <End Role="MONEDA" EntitySet="MONEDA" />
+      <End Role="TCAMBIO" EntitySet="TCAMBIO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TCAMBIO_MONEDA1" Association="Self.FK_TCAMBIO_MONEDA1">
       <End Role="MONEDA" EntitySet="MONEDA" />
       <End Role="TCAMBIO" EntitySet="TCAMBIO" />
     </AssociationSet>

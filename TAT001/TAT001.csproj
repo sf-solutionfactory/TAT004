@@ -204,12 +204,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\ContactoController.cs" />
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImpuestoController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaginasController.cs" />
+    <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\PuestosController.cs" />
@@ -405,7 +409,16 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\STATE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -489,6 +502,12 @@
     <Compile Include="Entities\WORKFV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ZBRAND.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ZCTGR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -498,10 +517,13 @@
     <Compile Include="Models\CartaV.cs" />
     <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\CartaVEsqueleto.cs" />
+    <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\CLIENTE_MOD.cs" />
+    <Compile Include="Models\Contactoc.cs" />
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\PRESUPUESTO_MOD.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
@@ -595,6 +617,7 @@
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\tableHeadFixer.js" />
+    <Content Include="Scripts\ValidarNumero.js" />
     <Content Include="Views\Mails\logo_kellogg.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -650,6 +673,23 @@
     <Content Include="Views\Listas\UsuariosPuesto.cshtml" />
     <Content Include="Views\Usuarios\AgregarRol.cshtml" />
     <Content Include="Views\Listas\Grupos.cshtml" />
+    <Content Include="Views\Cliente\Details.cshtml" />
+    <Content Include="Views\Cliente\Edit.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Contacto\Create.cshtml" />
+    <Content Include="Views\Contacto\Details.cshtml" />
+    <Content Include="Views\Contacto\Edit.cshtml" />
+    <Content Include="Views\Contacto\Index.cshtml" />
+    <Content Include="Views\Impuesto\Create.cshtml" />
+    <Content Include="Views\Impuesto\Index.cshtml" />
+    <Content Include="Views\Pais\Create.cshtml" />
+    <Content Include="Views\Pais\Delete.cshtml" />
+    <Content Include="Views\Pais\Details.cshtml" />
+    <Content Include="Views\Pais\Edit.cshtml" />
+    <Content Include="Views\Pais\Index.cshtml" />
+    <Content Include="Scripts\lang\ES.json" />
+    <Content Include="Scripts\lang\EN.json" />
+    <Content Include="Scripts\lang\PO.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -315,7 +315,7 @@
                     <div class="input-field col s12">
                         @if (Model.D.DOCUMENTOPs.Count > 0)
                         {
-                            <table>
+                            <table style="font-size: 12px;">
                                 <tr>
                                     <th>Vigencia de</th>
                                     <th>Vigencia a</th>
@@ -338,7 +338,14 @@
                                             using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
                                             {
                                                 var matnr = db.MATERIALs.Find(item.MATNR);
-                                                <td>@matnr.MAKTX</td>
+                                                if (matnr != null)
+                                                {
+                                                    <td>@matnr.MAKTX</td>}
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
                                             }
                                         }
                                         <td>@Math.Round(item.MONTO, 2)</td>

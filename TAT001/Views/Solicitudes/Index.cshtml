@@ -3,12 +3,14 @@
 @{
     //ViewBag.Title = "Páginas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 201;
-    ViewBag.carpeta_r = 200;
+    ViewBag.pagina_r = 101;
+    ViewBag.carpeta_r = 100;
 }
 
-<div class="row right">
-    @Html.ActionLink("Crear Solicitud", "CreateNew", "Solicitudes", null, new { @class = "btn-small" })
+<div class="row">
+    <div class="col s12 right-align">
+        @Html.ActionLink("Crear Solicitud", "CreateNew", "Solicitudes", null, new { @class = "btn-small" })
+    </div>
 </div>
 
 @if (ViewBag.NUM_DOC != null)
@@ -42,7 +44,7 @@
         </select>
         <label id="lbl_length">Ver por página</label>
     </div>
-    <div class="input-field col s3 m3 l3 offset-l6 offset-m6">
+    <div class="input-field col s5 m3 l3 offset-l6 offset-m6 offset-s4">
         <input type="text" class="global_filter" id="global_filter">
         <label for="global_filter" id="lbl_search">Buscar</label>
     </div>
@@ -73,6 +75,9 @@
             <th id="lbl_fechad">
                 @Html.DisplayNameFor(model => model.FECHAD)
             </th>
+            <th id="lbl_horac">
+                @Html.DisplayNameFor(model => model.HORAC)
+            </th>
             <th id="lbl_estatus">
                 @Html.DisplayNameFor(model => model.ESTATUS)
             </th>
@@ -97,6 +102,10 @@
                 <td>
                     @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
                 </td>
+                <td>
+                    @*@item.HORAC.Value.Hours:@item.HORAC.Value.Minutes:@item.HORAC.Value.Seconds*@
+                    @item.HORAC.Value.ToString().Split('.')[0]
+                </td>
 
                 @if (item.ESTATUS_WF.Equals("P"))
                 {
@@ -106,9 +115,18 @@
                 }
                 else if (item.ESTATUS_WF.Equals("A"))
                 {
-                    <td class="green darken-1 white-text">
-                        <div class="lbl_approved">Aprobada</div>
-                    </td>
+                    if (item.ESTATUS.Equals("C"))
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_contab">Por contabilizar</div>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_approved">Aprobada</div>
+                        </td>
+                    }
                 }
                 else if (item.ESTATUS_WF.Equals("R"))
                 {
@@ -122,30 +140,30 @@
             </tr>
         }
     </tbody>
-    <tfoot>
-        <tr>
-            <th id="lbl_num">
-                <div class="input-field s12">
-                    @Html.DisplayNameFor(model => model.NUM_DOC)
-                </div>
-            </th>
-            <th id="lbl_tsol">
-                @Html.DisplayNameFor(model => model.TSOL)
-            </th>
-            <th id="lbl_tall">
-                @Html.DisplayNameFor(model => model.TALL)
-            </th>
-            <th id="lbl_fechad">
-                @Html.DisplayNameFor(model => model.FECHAD)
-            </th>
-            <th id="lbl_estatus">
-                @Html.DisplayNameFor(model => model.ESTATUS)
-            </th>
-            <th id="lbl_concepto">
-                @Html.DisplayNameFor(model => model.CONCEPTO)
-            </th>
-        </tr>
-    </tfoot>
+    @*<tfoot>
+            <tr>
+                <th id="lbl_num">
+                    <div class="input-field s12">
+                        @Html.DisplayNameFor(model => model.NUM_DOC)
+                    </div>
+                </th>
+                <th id="lbl_tsol">
+                    @Html.DisplayNameFor(model => model.TSOL)
+                </th>
+                <th id="lbl_tall">
+                    @Html.DisplayNameFor(model => model.TALL)
+                </th>
+                <th id="lbl_fechad">
+                    @Html.DisplayNameFor(model => model.FECHAD)
+                </th>
+                <th id="lbl_estatus">
+                    @Html.DisplayNameFor(model => model.ESTATUS)
+                </th>
+                <th id="lbl_concepto">
+                    @Html.DisplayNameFor(model => model.CONCEPTO)
+                </th>
+            </tr>
+        </tfoot>*@
 </table>
 
 <script>
@@ -154,8 +172,9 @@
             //paging: false,
             //searching: false
             //stateSave: true,
-            //scrollX: "50vh",
-            //scrollCollapse: true,
+            scrollX: "50vh",
+            scrollY: "50vh",
+            scrollCollapse: true,
             //language: {
             //    lengthMenu: "Display _MENU_ records per page",
             //    zeroRecords: "No se encontraron datos",

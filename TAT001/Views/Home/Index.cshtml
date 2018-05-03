@@ -237,7 +237,7 @@
 
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Crear Solicitud", "CreateNew", "Solicitudes", null, new { @class = "btn-small" })
+        <a href="@Url.Action("CreateNew", "Solicitudes")" class="btn-small" id="btn_create">Crear Solicitud</a>
     </div>
 </div>
 
@@ -270,7 +270,7 @@
             <option value="50">50</option>
             <option value="100">100</option>
         </select>
-        <label id="lbl_length">Ver por página</label>
+        <label id="btn_length">Ver por página</label>
     </div>
     <div class="input-field col s5 m3 l3 offset-l6 offset-m6 offset-s4">
         <input type="text" class="global_filter" id="global_filter">
@@ -303,6 +303,9 @@
             <th id="lbl_fechad">
                 @Html.DisplayNameFor(model => model.FECHAD)
             </th>
+            <th id="lbl_horac">
+                @Html.DisplayNameFor(model => model.HORAC)
+            </th>
             <th id="lbl_estatus">
                 @Html.DisplayNameFor(model => model.ESTATUS)
             </th>
@@ -319,13 +322,17 @@
                     @item.NUM_DOC
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
+                    @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT020)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
+                    @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
                 </td>
                 <td>
                     @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
+                </td>
+                <td>
+                    @*@item.HORAC.Value.Hours:@item.HORAC.Value.Minutes:@item.HORAC.Value.Seconds*@
+                    @item.HORAC.Value.ToString().Split('.')[0]
                 </td>
 
                 @if (item.ESTATUS_WF.Equals("P"))
@@ -336,9 +343,18 @@
                 }
                 else if (item.ESTATUS_WF.Equals("A"))
                 {
-                    <td class="green darken-1 white-text">
-                        <div class="lbl_approved">Aprobada</div>
-                    </td>
+                    if (item.ESTATUS.Equals("C"))
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_contab">Por contabilizar</div>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_approved">Aprobada</div>
+                        </td>
+                    }
                 }
                 else if (item.ESTATUS_WF.Equals("R"))
                 {
@@ -397,7 +413,7 @@
             //},
             order: [[3, "desc"], [0, "desc"]],
             language: {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                "url": "../Scripts/lang/@(Session["spras"].ToString()).json"
             },
             columnDefs: [
                 {

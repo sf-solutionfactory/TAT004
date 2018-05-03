@@ -121,18 +121,18 @@ namespace TAT001.Controllers
                     kunnr = "";
 
                 //Obtener presupuesto
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+                //var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
 
-                if (presupuesto != null)
-                {
-                    pm.P_CANAL = presupuesto[0].VAL;
-                    pm.P_BANNER = presupuesto[1].VAL;
-                    pm.PC_C = presupuesto[4].VAL;
-                    pm.PC_A = presupuesto[5].VAL;
-                    pm.PC_P = presupuesto[6].VAL;
-                    pm.PC_T = presupuesto[7].VAL;
-                }
+                //if (presupuesto != null)
+                //{
+                //    pm.P_CANAL = presupuesto[0].VAL;
+                //    pm.P_BANNER = presupuesto[1].VAL;
+                //    pm.PC_C = presupuesto[4].VAL;
+                //    pm.PC_A = presupuesto[5].VAL;
+                //    pm.PC_P = presupuesto[6].VAL;
+                //    pm.PC_T = presupuesto[7].VAL;
+                //}
             }
             catch
             {

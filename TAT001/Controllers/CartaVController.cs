@@ -125,20 +125,20 @@ namespace TAT001.Controllers
                     DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
 
                     var con2 = db.DOCUMENTOPs
-                                          .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
-                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO ,y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
+                                          .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
                                           .ToList();
 
                     foreach (var item2 in con2)
                     {
-                        armadoCuerpoTab.Add(item2.MATNR);
+                        armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
                         armadoCuerpoTab.Add(item2.MATKL);
                         armadoCuerpoTab.Add(item2.MAKTX);
-                        armadoCuerpoTab.Add(item2.MONTO.ToString());
-                        armadoCuerpoTab.Add(item2.PORC_APOYO.ToString());
-                        armadoCuerpoTab.Add(item2.MONTO_APOYO.ToString());
-                        armadoCuerpoTab.Add(item2.resta.ToString());
-                        armadoCuerpoTab.Add(item2.PRECIO_SUG.ToString());
+                        armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
                         contadorTabla++;
                     }
                     numfilasTabla.Add(contadorTabla);
@@ -277,7 +277,8 @@ namespace TAT001.Controllers
 
                 int contadorTabla = 0;
 
-                var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+                //var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
                 foreach (var item in con)
                 {
@@ -287,32 +288,38 @@ namespace TAT001.Controllers
                 for (int i = 0; i < encabezadoFech.Count; i++)
                 {
                     contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(24));
-                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, 24));
+                    //DateTime a1 = DateTime.Parse(lista[i].Remove(24));
+                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
+                    //DateTime a2 = DateTime.Parse(lista[i].Remove(0, 24));
+                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
 
                     var con2 = db.DOCUMENTOPs
-                                      .Where(x => x.VIGENCIA_DE >= a1 && x.VIGENCIA_AL <= a2)
-                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (y.PUNIT - x.MONTO_APOYO), x.PRECIO_SUG })
+                                      .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
                                       .ToList();
+
 
                     foreach (var item in con2)
                     {
-                        armadoCuerpoTab.Add(item.MATNR);
+                        armadoCuerpoTab.Add(item.MATNR.TrimStart('0'));
                         armadoCuerpoTab.Add(item.MATKL);
                         armadoCuerpoTab.Add(item.MAKTX);
-                        armadoCuerpoTab.Add(item.PUNIT.ToString());
-                        armadoCuerpoTab.Add(item.PORC_APOYO.ToString());
-                        armadoCuerpoTab.Add(item.MONTO_APOYO.ToString());
-                        armadoCuerpoTab.Add(item.resta.ToString());
-                        armadoCuerpoTab.Add(item.PRECIO_SUG.ToString());
+                        armadoCuerpoTab.Add(Math.Round((decimal)item.MONTO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item.PORC_APOYO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item.MONTO_APOYO, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round((decimal)item.resta, 2).ToString());
+                        armadoCuerpoTab.Add(Math.Round(item.PRECIO_SUG, 2).ToString());
                         contadorTabla++;
                     }
                     numfilasTab.Add(contadorTabla);
                 }
+                bool aprob = false;
+                DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
+                aprob = (d.ESTATUS_WF.Equals("A"));
 
                 CartaV carta = v;
                 CartaVEsqueleto cve = new CartaVEsqueleto();
-                cve.crearPDF(carta, c, encabezadoFech, encabezadoTab, numfilasTab, armadoCuerpoTab);
+                cve.crearPDF(carta, c, encabezadoFech, encabezadoTab, numfilasTab, armadoCuerpoTab, aprob);
                 string recibeRuta = Convert.ToString(Session["rutaCompletaV"]);
                 return RedirectToAction("Index", new { ruta = recibeRuta });
             }

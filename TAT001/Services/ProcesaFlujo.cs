@@ -159,22 +159,27 @@ namespace TAT001.Services
                                         nuevo.NUM_DOC = actual.NUM_DOC;
                                         nuevo.POS = actual.POS + 1;
                                         nuevo.LOOP = 1;//-----------------------------------
-                                        //int loop1 = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
-                                        //if (loop1 >= next.LOOPS)
-                                        //{
-                                        //    paso_a = next;
-                                        //    continue;
-                                        //}
-                                        //if (loop1 != 0)
-                                        //    nuevo.LOOP = loop1 + 1;
-                                        //else
-                                        //    nuevo.LOOP = 1;
+                                                       //int loop1 = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
+                                                       //if (loop1 >= next.LOOPS)
+                                                       //{
+                                                       //    paso_a = next;
+                                                       //    continue;
+                                                       //}
+                                                       //if (loop1 != 0)
+                                                       //    nuevo.LOOP = loop1 + 1;
+                                                       //else
+                                                       //    nuevo.LOOP = 1;
 
                                         //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0);
                                         //nuevo.USUARIOA_ID = "admin";
                                         //nuevo.DETPOS = 1;
+                                        d.ESTATUS_WF = "P";
                                         if (nuevo.DETPOS == 0)
+                                        {
                                             nuevo.USUARIOA_ID = null;
+                                            d.ESTATUS_WF = "A";
+                                            d.ESTATUS = "C";
+                                        }
                                         nuevo.ESTATUS = "P";
                                         nuevo.FECHAC = DateTime.Now;
                                         nuevo.FECHAM = DateTime.Now;
@@ -200,8 +205,8 @@ namespace TAT001.Services
                                     if (paso_a.EMAIL.Equals("X"))
                                         correcto = 1;
 
+                                    d.ESTATUS_WF = "P";
                                 }
-                                d.ESTATUS_WF = "P";
                                 db.Entry(d).State = EntityState.Modified;
 
                                 db.SaveChanges();

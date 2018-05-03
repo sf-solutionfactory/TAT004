@@ -21,5 +21,6 @@ namespace TAT001.Entities
         public Nullable<decimal> UKURS { get; set; }
     
         public virtual MONEDA MONEDA { get; set; }
+        public virtual MONEDA MONEDA1 { get; set; }
     }
 }

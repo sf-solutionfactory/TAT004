@@ -207,15 +207,15 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 //Tipo de solicitud
-                try
-                {
-                    string st = Session["sol_tipo"].ToString();
-                    ViewBag.soltipo = st;
-                }
-                catch
-                {
-                    return RedirectToAction("Index", "Solicitudes");
-                }
+                //try
+                //{
+                //    string st = Session["sol_tipo"].ToString();
+                //    ViewBag.soltipo = st;
+                //}
+                //catch
+                //{
+                //    return RedirectToAction("Index", "Solicitudes");
+                //}
 
                 Session["spras"] = user.SPRAS_ID;
 
@@ -1181,7 +1181,7 @@ namespace TAT001.Controllers
                                  join co in db.CONTACTOCs
                                  on new { c.VKORG, c.VTWEG, c.SPART, c.KUNNR } equals new { co.VKORG, co.VTWEG, co.SPART, co.KUNNR } into jjcont
                                  from co in jjcont.DefaultIfEmpty()
-                                 where c.KUNNR == kunnr
+                                 where (c.KUNNR == kunnr & co.DEFECTO == true)
                                  select new CLIENTE_MOD
                                  {
                                      VKORG = c.VKORG,
@@ -1735,18 +1735,18 @@ namespace TAT001.Controllers
                     kunnr = "";
 
                 //Obtener presupuesto
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+                //var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
 
-                if (presupuesto != null)
-                {
-                    pm.P_CANAL = presupuesto[0].VAL;
-                    pm.P_BANNER = presupuesto[1].VAL;
-                    pm.PC_C = presupuesto[4].VAL;
-                    pm.PC_A = presupuesto[5].VAL;
-                    pm.PC_P = presupuesto[6].VAL;
-                    pm.PC_T = presupuesto[7].VAL;
-                }
+                //if (presupuesto != null)
+                //{
+                //    pm.P_CANAL = presupuesto[0].VAL;
+                //    pm.P_BANNER = presupuesto[1].VAL;
+                //    pm.PC_C = presupuesto[4].VAL;
+                //    pm.PC_A = presupuesto[5].VAL;
+                //    pm.PC_P = presupuesto[6].VAL;
+                //    pm.PC_T = presupuesto[7].VAL;
+                //}
             }
             catch
             {

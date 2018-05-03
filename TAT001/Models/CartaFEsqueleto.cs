@@ -24,7 +24,7 @@ namespace TAT001.Models
         Entities.TEXTOCARTAF foo = new Entities.TEXTOCARTAF();
 
 
-        public void crearPDF(CartaF c, Entities.TEXTOCARTAF f)
+        public void crearPDF(CartaF c, Entities.TEXTOCARTAF f, bool aprob)
         {
             HeaderFooter hfClass = new HeaderFooter(c);
             DateTime fechaCreacion = DateTime.Now;
@@ -55,6 +55,22 @@ namespace TAT001.Models
                 frase1.Alignment = Element.ALIGN_RIGHT;
                 pdfDoc.Add(frase1);
                 pdfDoc.Add(new Chunk(""));
+
+
+                if (!aprob)
+                {
+                    float fontSize = 80;
+                    float xPosition = 300;
+                    float yPosition = 400;
+                    float angle = 45;
+                    PdfContentByte under = pdfWriter.DirectContentUnder;
+                    BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+                    under.BeginText();
+                    under.SetColorFill(BaseColor.LIGHT_GRAY);
+                    under.SetFontAndSize(baseFont, fontSize);
+                    under.EndText();
+                }
+
 
                 if (c.taxid_x == true)
                 {

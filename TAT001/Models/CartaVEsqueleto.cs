@@ -25,7 +25,7 @@ namespace TAT001.Models
         public int a, b, r;
         private int pos = 0;
 
-        public void crearPDF(CartaV v, Entities.TEXTOCARTAV cv, List<string> encabezadoFech, List<string> encabezadoTab, List<int> numFilasTab, List<string> armadoCuerpoTab)
+        public void crearPDF(CartaV v, Entities.TEXTOCARTAV cv, List<string> encabezadoFech, List<string> encabezadoTab, List<int> numFilasTab, List<string> armadoCuerpoTab, bool aprob)
         {
             HeaderFooter hfClass = new HeaderFooter(v);
             DateTime fechaCreacion = DateTime.Now;
@@ -52,6 +52,23 @@ namespace TAT001.Models
                     frase1 = new Paragraph("", negritaPeque);
                     a = 0;
                 }
+
+                if (!aprob)
+                {
+                    float fontSize = 80;
+                    float xPosition = 300;
+                    float yPosition = 400;
+                    float angle = 45;
+                    PdfContentByte under = pdfWriter.DirectContentUnder;
+                    BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+                    under.BeginText();
+                    under.SetColorFill(BaseColor.LIGHT_GRAY);
+                    under.SetFontAndSize(baseFont, fontSize);
+                    under.ShowTextAligned(PdfContentByte.ALIGN_CENTER, cv.MARCA_AGUA, xPosition, yPosition, angle);
+                    under.EndText();
+                }
+
+
                 frase1.Alignment = Element.ALIGN_RIGHT;
                 pdfDoc.Add(frase1);
                 pdfDoc.Add(new Chunk(""));
@@ -219,7 +236,8 @@ namespace TAT001.Models
                     else if (cols == 9)
                     { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
 
-                    PdfPCell rangoFecha = new PdfPCell(new Paragraph(cv.DE + " " + encabezadoFech[a].Remove(10) + " " + cv.A + " " + (encabezadoFech[a].Remove(0, 24)).Remove(10)));
+                    //PdfPCell rangoFecha = new PdfPCell(new Paragraph(cv.DE + " " + encabezadoFech[a].Remove(10) + " " + cv.A + " " + (encabezadoFech[a].Remove(0, 24)).Remove(10)));
+                    PdfPCell rangoFecha = new PdfPCell(new Paragraph(cv.DE + " " + encabezadoFech[a].Remove(10) + " " + cv.A + " " + (encabezadoFech[a].Remove(0, encabezadoFech[a].Length / 2)).Remove(10)));
                     rangoFecha.Border = 0;
                     rangoFecha.Colspan = cols;
                     tablasN.AddCell(rangoFecha);

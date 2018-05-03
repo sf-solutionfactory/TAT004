@@ -355,10 +355,16 @@ namespace TAT001.Controllers
                         .Where(x => x.SPRAS_ID == user.SPRAS_ID)
                         .First();
                 }
+                bool aprob = false;
+                using (TAT001Entities db = new TAT001Entities())
+                {
+                    DOCUMENTO d = db.DOCUMENTOes.Find(c.num_doc);
+                    aprob = (d.ESTATUS_WF.Equals("A"));
 
-                cfe.crearPDF(c, f);
-                recibeRuta = Convert.ToString(Session["rutaCompletaf"]);
-                return RedirectToAction("Details", new { ruta = recibeRuta });
+                    cfe.crearPDF(c, f, aprob);
+                    recibeRuta = Convert.ToString(Session["rutaCompletaf"]);
+                    return RedirectToAction("Details", new { ruta = recibeRuta });
+                }
             }
             catch (DbEntityValidationException e)
             {

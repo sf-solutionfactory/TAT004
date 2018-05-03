@@ -16,6 +16,7 @@ namespace TAT001.Entities
     {
         public decimal CONSECUTIVO { get; set; }
         public int POSICION { get; set; }
+        public string BUS_AREA { get; set; }
         public string POSTING_KEY { get; set; }
         public Nullable<bool> NUM_PROV { get; set; }
         public Nullable<bool> NUM_CTE { get; set; }

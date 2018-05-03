@@ -33,6 +33,8 @@ namespace TAT001.Entities
         public double ADVER { get; set; }
         public double DSTRB { get; set; }
         public double VVX17 { get; set; }
+        public double ALLB { get; set; }
+        public double ALLF { get; set; }
         public double CONSU { get; set; }
         public double TOTAL { get; set; }
     }
