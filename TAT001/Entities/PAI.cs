@@ -22,6 +22,7 @@ namespace TAT001.Entities
             this.IIMPUESTOes = new HashSet<IIMPUESTO>();
             this.LEYENDAs = new HashSet<LEYENDA>();
             this.TS_FORM = new HashSet<TS_FORM>();
+            this.CUENTAs = new HashSet<CUENTA>();
         }
     
         public string LAND { get; set; }
@@ -40,5 +41,7 @@ namespace TAT001.Entities
         public virtual ICollection<LEYENDA> LEYENDAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
     }
 }

@@ -473,6 +473,7 @@
     <NavigationProperty Name="DOCUMENTOPs" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOP" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+    <Property Name="GALL_ID" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -569,6 +570,7 @@
     <Property Name="ACTIVO" Type="Boolean" />
     <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_GALL" FromRole="GALL" ToRole="GALLT" />
     <NavigationProperty Name="TALLs" Relationship="Self.FK_TALL_GALL" FromRole="GALL" ToRole="TALL" />
+    <NavigationProperty Name="CUENTAs" Relationship="TAT001Model.FK_CUENTA_GALL" FromRole="GALL" ToRole="CUENTA" />
   </EntityType>
   <EntityType Name="GALLT">
     <Key>
@@ -722,6 +724,7 @@
     <NavigationProperty Name="IIMPUESTOes" Relationship="Self.FK_IIMPUESTO_PAIS" FromRole="PAIS" ToRole="IIMPUESTO" />
     <NavigationProperty Name="LEYENDAs" Relationship="Self.FK_LEYENDA_PAIS" FromRole="PAIS" ToRole="LEYENDA" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <NavigationProperty Name="CUENTAs" Relationship="TAT001Model.FK_CUENTA_PAIS" FromRole="PAI" ToRole="CUENTA" />
   </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
@@ -931,6 +934,7 @@
     <NavigationProperty Name="MONEDA" Relationship="Self.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TS_FORM" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="USUARIO" />
+    <NavigationProperty Name="CUENTAs" Relationship="TAT001Model.FK_CUENTA_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CUENTA" />
   </EntityType>
   <EntityType Name="SPRA">
     <Key>
@@ -3107,6 +3111,20 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="CUENTAs" EntityType="TAT001Model.CUENTA" />
+    <EntitySet Name="REGIONs" EntityType="TAT001Model.REGION" />
+    <AssociationSet Name="FK_CUENTA_GALL" Association="TAT001Model.FK_CUENTA_GALL">
+      <End Role="GALL" EntitySet="GALLs" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_PAIS" Association="TAT001Model.FK_CUENTA_PAIS">
+      <End Role="PAI" EntitySet="PAIS" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_SOCIEDAD" Association="TAT001Model.FK_CUENTA_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -3214,4 +3232,66 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="CUENTA">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="GALL_ID" />
+      <PropertyRef Name="EJERCICIO" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="GALL_ID" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="EJERCICIO" Type="Decimal" Nullable="false" Precision="4" Scale="0" />
+    <Property Name="ABONO" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="CARGO" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="CARGO_FV" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="LIMITE" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="GALL" Relationship="TAT001Model.FK_CUENTA_GALL" FromRole="CUENTA" ToRole="GALL" />
+    <NavigationProperty Name="PAI" Relationship="TAT001Model.FK_CUENTA_PAIS" FromRole="CUENTA" ToRole="PAI" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="TAT001Model.FK_CUENTA_SOCIEDAD" FromRole="CUENTA" ToRole="SOCIEDAD" />
+  </EntityType>
+  <EntityType Name="REGION">
+    <Key>
+      <PropertyRef Name="REGION1" />
+    </Key>
+    <Property Name="REGION1" Type="String" Nullable="false" MaxLength="6" FixedLength="true" Unicode="true" />
+    <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_CUENTA_GALL">
+    <End Type="TAT001Model.GALL" Role="GALL" Multiplicity="1" />
+    <End Type="TAT001Model.CUENTA" Role="CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GALL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="GALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_PAIS">
+    <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="1" />
+    <End Type="TAT001Model.CUENTA" Role="CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAI">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_SOCIEDAD">
+    <End Type="TAT001Model.SOCIEDAD" Role="SOCIEDAD" Multiplicity="1" />
+    <End Type="TAT001Model.CUENTA" Role="CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

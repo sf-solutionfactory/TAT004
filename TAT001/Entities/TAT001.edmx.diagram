@@ -178,6 +178,11 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.CUENTA" Width="1.5" PointX="12.75" PointY="31.75" />
+        <EntityTypeShape EntityType="TAT001Model.REGION" Width="1.5" PointX="14.375" PointY="8.75" />
+        <AssociationConnector Association="TAT001Model.FK_CUENTA_GALL" />
+        <AssociationConnector Association="TAT001Model.FK_CUENTA_PAIS" />
+        <AssociationConnector Association="TAT001Model.FK_CUENTA_SOCIEDAD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

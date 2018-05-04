@@ -62,7 +62,7 @@
                             @Html.DisplayNameFor(model => model.L.FirstOrDefault().BACKUP_ID)
                         </th>*@
                     <th>
-                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().BUNIT)
+                        @Html.DisplayNameFor(model => model.L.FirstOrDefault().PUESTO_ID)
                     </th>
                     @*<th>
                             @Html.DisplayNameFor(model => model.L.PUESTO.ACTIVO)
@@ -92,7 +92,7 @@
                                 @Html.DisplayFor(modelItem => item.BACKUP_ID)
                             </td>*@
                         <td>
-                            @Html.DisplayFor(modelItem => item.BUNIT)
+                            @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.Where(a=>a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
                         </td>
                         @*<td>
                                 @Html.DisplayFor(modelItem => item.PUESTO.PUESTOTs.FirstOrDefault().)

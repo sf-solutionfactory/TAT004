@@ -23,6 +23,7 @@ namespace TAT001.Entities
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
             this.TS_FORM = new HashSet<TS_FORM>();
             this.USUARIOs = new HashSet<USUARIO>();
+            this.CUENTAs = new HashSet<CUENTA>();
         }
     
         public string BUKRS { get; set; }
@@ -50,5 +51,7 @@ namespace TAT001.Entities
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
     }
 }

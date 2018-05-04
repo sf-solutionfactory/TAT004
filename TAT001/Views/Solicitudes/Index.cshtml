@@ -3,13 +3,13 @@
 @{
     //ViewBag.Title = "Páginas";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 101;
-    ViewBag.carpeta_r = 100;
+    ViewBag.pagina_r = 201;
+    ViewBag.carpeta_r = 200;
 }
 
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Crear Solicitud", "CreateNew", "Solicitudes", null, new { @class = "btn-small" })
+        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
     </div>
 </div>
 
@@ -63,7 +63,8 @@
 <table class="table mdl-data-table striped" id="table" style="width:100%;">
     <thead>
         <tr>
-            <th id="lbl_num">
+            <th></th>
+            <th class="lbl_num">
                 @Html.DisplayNameFor(model => model.NUM_DOC)
             </th>
             <th id="lbl_tsol">
@@ -89,8 +90,19 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr onclick="document.location = '@Url.Action("Details", new { id = item.NUM_DOC })'" style="cursor:pointer">
-                <td>
+
+            <tr>
+                @if (item.TSOL_ID.Equals("PR"))
+                {
+                    <td class=" details-control" style="cursor:pointer">
+                        <i class="material-icons">add</i>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td onclick="document.location='@Url.Action("Details", new { id = item.NUM_DOC })'" style="cursor:pointer">
                     @item.NUM_DOC
                 </td>
                 <td>
@@ -119,6 +131,12 @@
                     {
                         <td class="green darken-1 white-text">
                             <div class="lbl_contab">Por contabilizar</div>
+                        </td>
+                    }
+                    else if (item.ESTATUS.Equals("P"))
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_contab">Contabilizar SAP</div>
                         </td>
                     }
                     else
@@ -183,13 +201,13 @@
             //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
             //    search: "Buscar"
             //},
-            order: [[3, "desc"], [0, "desc"]],
+            order: [[4, "desc"], [1, "desc"]],
             language: {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
             },
             columnDefs: [
                 {
-                    targets: [1, 2, 3, 4, 5],
+                    targets: [ 1,2, 3, 4, 5,6],
                     className: 'mdl-data-table__cell--non-numeric'
                 }
             ],
@@ -232,11 +250,76 @@
         $('input.global_filter').on('keyup click', function () {
             filterGlobal();
         });
+
+        $('#table tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                var child = format(row.data(), row, tr);
+                if (child != undefined) {
+                }
+            }
+        });
+
     });
 
     function filterGlobal() {
         $('#table').DataTable().search(
             $('#global_filter').val()).draw();
+    }
+    function format(d, row, tr) {
+        $.ajax({
+            url: "../Listas/Relacionados",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { num_doc: d[1], spras:'@Session["spras"].ToString()' },
+            success: function (data) {
+                var uu = ($.map(data, function (item) {
+                    return { label: item.NUM_DOC, value: item };
+                }))
+                var ret = "<table class='table mdl-data-table striped'>";
+                for (var i = 0; i < uu.length; i++) {
+                    ret += "<tr onclick='link(" + uu[i].value.NUM_DOC+")' style='cursor:pointer'><td>" + uu[i].value.NUM_DOC + "</td><td>" + uu[i].value.TXT020 + "</td>";
+                    ret += "<td>" + uu[i].value.TXT500 + "</td>";
+                    ret += "<td>" + uu[i].value.FECHAD + "</td>";
+                    ret += "<td>" + uu[i].value.HORAC.split('.')[0] + "</td>";
+                    if (uu[i].value.ESTATUS_WF == "R") {
+                        uu[i].value.ESTATUS = "red"
+                        uu[i].value.ESTATUS_WF = "@foreach (TAT001.Entities.TEXTO t in ViewBag.textos){if(t.CAMPO_ID == "lbl_rejected"){<span>@t.TEXTOS</span>}}";
+                    } else if (uu[i].value.ESTATUS_WF == "P") {
+                        uu[i].value.ESTATUS = "yellow darken-2"
+                    uu[i].value.ESTATUS_WF = "@foreach (TAT001.Entities.TEXTO t in ViewBag.textos){if(t.CAMPO_ID == "lbl_pending"){<span>@t.TEXTOS</span>}}";
+                    } else if (uu[i].value.ESTATUS_WF == "A") {
+                        uu[i].value.ESTATUS = "green"
+                    uu[i].value.ESTATUS_WF = "@foreach (TAT001.Entities.TEXTO t in ViewBag.textos){if(t.CAMPO_ID == "lbl_approved"){<span>@t.TEXTOS</span>}}";
+                    }
+                    ret += "<td class='" + uu[i].value.ESTATUS + " white-text'>" + uu[i].value.ESTATUS_WF+"</td>";
+                    ret += "<td>" + uu[i].value.CONCEPTO + "</td>";
+                    ret += "</tr>";
+                }
+                ret += "</table>"
+
+                row.child(ret).show();
+                tr.addClass('shown');
+
+                return ret;
+            },
+            error: function (e, ew) {
+                alert(e);
+            }
+        });
+    }
+    function link(num) {
+        document.location = "/Solicitudes/Details/" + num;
     }
 </script>
 <style>

@@ -295,6 +295,9 @@
     <Compile Include="Entities\CSP_USUARIO_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CUENTA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -392,6 +395,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RANGO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\REGION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ROL.cs">
@@ -526,6 +532,7 @@
     <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\PRESUPUESTO_MOD.cs" />
+    <Compile Include="Models\SubirArchivo.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\EncabezadoMateriales.cs" />
@@ -573,6 +580,16 @@
     <Content Include="fonts\roboto\Roboto-Regular.woff2" />
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
+    <Content Include="images\flags\1x1\as.svg" />
+    <Content Include="images\flags\1x1\ec.svg" />
+    <Content Include="images\flags\1x1\pa.svg" />
+    <Content Include="images\flags\1x1\sg.svg" />
+    <Content Include="images\flags\1x1\ve.svg" />
+    <Content Include="images\flags\4x3\as.svg" />
+    <Content Include="images\flags\4x3\ec.svg" />
+    <Content Include="images\flags\4x3\pa.svg" />
+    <Content Include="images\flags\4x3\sg.svg" />
+    <Content Include="images\flags\4x3\ve.svg" />
     <Content Include="images\playb.svg" />
     <Content Include="images\play.svg" />
     <Content Include="images\expandm.svg" />
@@ -690,6 +707,7 @@
     <Content Include="Scripts\lang\ES.json" />
     <Content Include="Scripts\lang\EN.json" />
     <Content Include="Scripts\lang\PO.json" />
+    <Content Include="Views\Listas\Relacionados.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
+<script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
     <script>
@@ -971,80 +972,80 @@
                 </div>
                 <div class="col s12 m6 l6 right">
                     @*<div class="card-panel">
-            <h5>Análisis Presupuesto</h5>
-            <div class="row" style="margin-bottom:0">
-                <table class="tg">
-                    <tr>
-                        <td class="tg-yw4l">
-                            <label>Presupuesto canal</label>
-                        </td>
-                        <td class="tg-yw4l">
-                            <label id="p_vtweg"></label>
-                        </td>
-                        <td class="tg-yw4l">
-                            <label id="p_canal"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tg-yw4l">
-                            <label>Presupuesto cliente</label>
-                        </td>
-                        <td class="tg-yw4l">
-                            <label id="p_kunnr"></label>
-                        </td>
-                        <td class="tg-yw4l">
-                            <label id="p_banner"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="card-panel">
-                <div class="row" style="margin-bottom:0">
-                    <table class="tg">
-                        <tr>
-                            <td class="tg-yw4l" colspan="2">
-                                <label>Registrado en SAP</label>
-                            </td>
-                            <td class="tg-yw4l">
-                                <label id="pc_c"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-yw4l" colspan="2">
-                                <label>Por registrar en SAP</label>
-                            </td>
-                            <td class="tg-yw4l">
-                                <label id="pc_a"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-yw4l" colspan="2">
-                                <label>En proceso TAT</label>
-                            </td>
-                            <td class="tg-yw4l">
-                                <label id="pc_p"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-yw4l" colspan="2">
-                                <label>Consumido</label>
-                            </td>
-                            <td class="tg-yw4l">
-                                <label id="pc_t"></label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="tg-yw4l" colspan="2">
-                                <label>Presupuesto disponible</label>
-                            </td>
-                            <td class="tg-yw4l">
-                                <label></label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>*@
+                            <h5>Análisis Presupuesto</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <table class="tg">
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Presupuesto canal</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_vtweg"></label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_canal"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Presupuesto cliente</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_kunnr"></label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="p_banner"></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-panel">
+                                <div class="row" style="margin-bottom:0">
+                                    <table class="tg">
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Registrado en SAP</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_c"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Por registrar en SAP</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_a"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>En proceso TAT</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_p"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Consumido</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="pc_t"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l" colspan="2">
+                                                <label>Presupuesto disponible</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>*@
 
                     <div class="card-panel">
                         <h5>Análisis Presupuesto</h5>

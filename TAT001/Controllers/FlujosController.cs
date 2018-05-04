@@ -97,7 +97,9 @@ namespace TAT001.Controllers
                 //db.SaveChanges();
 
                 int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
-                WORKFV wf = db.WORKFHs.Where(a => a.BUKRS.Equals(dOCUMENTO.SOCIEDAD_ID) & a.ROL_ID == rol).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+                //WORKFV wf = db.WORKFHs.Where(a => a.BUKRS.Equals(dOCUMENTO.SOCIEDAD_ID) & a.ROL_ID == rol).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+                WORKFV wf = db.WORKFHs.Where(a => a.TSOL_ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+
                 WORKFP wp = wf.WORKFPs.OrderBy(a => a.POS).FirstOrDefault();
                 FLUJO f = new FLUJO();
                 f.WORKF_ID = wf.ID;
@@ -107,25 +109,27 @@ namespace TAT001.Controllers
                 f.POS = 1;
                 f.LOOP = 1;
                 f.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
-                f.ESTATUS = "A";
+                f.ESTATUS = "I";
                 f.FECHAC = DateTime.Now;
                 f.FECHAM = DateTime.Now;
+                ProcesaFlujo pf = new ProcesaFlujo();
+                int c = pf.procesa(f);
 
-                WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
-                FLUJO fn = new FLUJO();
-                fn.WORKF_ID = wf.ID;
-                fn.WF_VERSION = wf.VERSION;
-                fn.WF_POS = next.POS;
-                fn.NUM_DOC = dOCUMENTO.NUM_DOC;
-                fn.POS = 2;
-                fn.LOOP = 1;
-                fn.ESTATUS = "P";
-                fn.FECHAC = DateTime.Now;
-                fn.FECHAM = DateTime.Now;
-                fn.USUARIOA_ID = db.USUARIOs.Where(a => a.ID.Equals(dOCUMENTO.USUARIOC_ID)).FirstOrDefault().MANAGER;
+                //WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
+                //FLUJO fn = new FLUJO();
+                //fn.WORKF_ID = wf.ID;
+                //fn.WF_VERSION = wf.VERSION;
+                //fn.WF_POS = next.POS;
+                //fn.NUM_DOC = dOCUMENTO.NUM_DOC;
+                //fn.POS = 2;
+                //fn.LOOP = 1;
+                //fn.ESTATUS = "P";
+                //fn.FECHAC = DateTime.Now;
+                //fn.FECHAM = DateTime.Now;
+                //fn.USUARIOA_ID = db.USUARIOs.Where(a => a.ID.Equals(dOCUMENTO.USUARIOC_ID)).FirstOrDefault().MANAGER;
 
-                db.FLUJOes.Add(f);
-                db.FLUJOes.Add(fn);
+                //db.FLUJOes.Add(f);
+                //db.FLUJOes.Add(fn);
 
                 db.SaveChanges();
                 if (wp.EMAIL.Equals("X"))
@@ -306,6 +310,7 @@ namespace TAT001.Controllers
             flujo.ESTATUS = f.ESTATUS;
             flujo.FECHAM = DateTime.Now;
             flujo.COMENTARIO = f.COMENTARIO;
+            flujo.USUARIOA_ID = User.Identity.Name;
             ProcesaFlujo pf = new ProcesaFlujo();
             if (ModelState.IsValid)
             {

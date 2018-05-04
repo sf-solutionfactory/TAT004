@@ -144,5 +144,25 @@ namespace TAT001.Controllers
             return cc;
         }
 
+        [HttpGet]
+        public JsonResult Relacionados(string num_doc, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+            //var c = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF.Equals(num_doc));
+            decimal num = (decimal.Parse(num_doc));
+            var c = (from D in db.DOCUMENTOes
+                     join T in db.TSOLTs
+                     on D.TSOL_ID equals T.TSOL_ID
+                     join TA in db.TALLs
+                     on D.TALL_ID equals TA.ID
+                     join G in db.GALLTs
+                     on TA.GALL_ID equals G.GALL_ID
+                     where D.DOCUMENTO_REF == num
+                     & T.SPRAS_ID == spras
+                     & G.SPRAS_ID == spras
+                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(),D.ESTATUS_WF,D.ESTATUS, D.CONCEPTO });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
     }
 }

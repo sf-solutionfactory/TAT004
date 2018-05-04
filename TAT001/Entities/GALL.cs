@@ -19,6 +19,7 @@ namespace TAT001.Entities
         {
             this.GALLTs = new HashSet<GALLT>();
             this.TALLs = new HashSet<TALL>();
+            this.CUENTAs = new HashSet<CUENTA>();
         }
     
         public string ID { get; set; }
@@ -29,5 +30,7 @@ namespace TAT001.Entities
         public virtual ICollection<GALLT> GALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALL> TALLs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
     }
 }

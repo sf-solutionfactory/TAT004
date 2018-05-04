@@ -34,7 +34,7 @@
             $(this).val(parseFloat(xx).toFixed(2));
         }
         else {
-            $(this).val($(this));
+            $(this).val($(this).val());
         }
     });
 
@@ -63,10 +63,17 @@
     //Para validar las fechas
     $('body').on('focusout', '.input_fe', function () {
         var xx = $(this).val();
-        if (isDate(xx) === true) {
-            alert("true");
-        } else
-            alert("false");
+        if (xx != "") {
+            if (isDate(xx) === true) {
+                //alert("true");
+                $(this).val("");
+            } else {
+                //alert("false");
+                $(this).val("");
+            }
+        } else {
+            return;
+        }
     });
     function isDate(xx) {
         var currVal = xx;

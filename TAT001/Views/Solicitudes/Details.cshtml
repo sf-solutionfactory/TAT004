@@ -121,8 +121,25 @@
                     <a id="lbl_wfn" class="btn modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
                 }
             }
+            else if (Model.D.ESTATUS.Equals("P"))
+            {
+                <button type="button" class="btn-small" data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
+                <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
+                <ul id='list_rela' class='dropdown-content'>
+                    <li><a href="@Url.Action("Create", "Solicitudes", new { id = Model.D.NUM_DOC })" id="lbl_nc">Nota de crédito</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes", new { id = Model.D.NUM_DOC })" id="lbl_op">Orden de pago</a></li>
+                </ul>
+                <script>
+                    var elem = document.getElementById('btn_rela');
+                    var options = {
+                        hover: true
+                    };
+                    var instance = M.Dropdown.init(elem, options);
+                </script>
+            }
             else
-            {<button type="button" class="btn-small" data-target="list_carta" id="btn_carta">Carta</button>
+            {
+                <button type="button" class="btn-small" data-target="list_carta" id="btn_carta">Carta</button>
                 <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
                 <ul id='list_carta' class='dropdown-content'>
                     <li><a href="@Url.Action("Index", "CartaF", new { id = Model.D.NUM_DOC })" id="lbl_list">Ver cartas</a></li>
@@ -160,12 +177,22 @@
     <div id="info" class="col s12" style="font-size:12px;">
         <div class="row">
             <div class="col s12 m6 l6">
+                @if (Model.D.DOCUMENTO_REF != null)
+                {
+                    <div class="card-panel">
+                        <div class="row" style="margin-bottom:0">
+                            <div class="input-field col s8">
+                                <input type="text" value="@Model.D.DOCUMENTO_REF" disabled="disabled" />
+                                @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
+                            </div>
+                            <div class="col s4 right-align">
+                                <a href="@Url.Action("Details", new { id = Model.D.DOCUMENTO_REF })" class="btn-small">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+                }
                 <div class="card-panel">
                     <div class="row" style="margin-bottom:0">
-                        @*<div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.NUM_DOC)
-                            </div>*@
                         <div class="input-field col s12">
                             @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT020, new { htmlAttributes = new { @disabled = "disabled" } })
                             @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @id = "lbl_tsol" })
@@ -306,7 +333,6 @@
             </div>
         </div>
     </div>
-
     <div id="dist" class="col s12">
         <div class="row">
             <div class="card-panel">
@@ -518,6 +544,7 @@
                     <h4 id="txt_app" style="display:none">Aprobar solicitud</h4>
                     <h4 id="txt_rec" style="display:none">Rechazar solicitud</h4>
                     <h4 id="txt_nex" style="display:none">Agregar comentario</h4>
+                    <h4 id="txt_cont" style="display:none">Contabilizar</h4>
                     <br />
                 </div>
                 <div class="row" style="">
@@ -603,6 +630,7 @@
                 document.getElementById("txt_app").style.display = 'initial';
                 document.getElementById("txt_rec").style.display = 'none';
                 document.getElementById("txt_nex").style.display = 'none';
+                document.getElementById("txt_cont").style.display = 'none';
                 document.getElementById("txt_comentario").value = '';
                 document.getElementById("wf_estatus").value = 'A';
             }
@@ -610,6 +638,7 @@
                 document.getElementById("txt_rec").style.display = 'initial';
                 document.getElementById("txt_app").style.display = 'none';
                 document.getElementById("txt_nex").style.display = 'none';
+                document.getElementById("txt_cont").style.display = 'none';
                 document.getElementById("txt_comentario").value = '';
                 document.getElementById("wf_estatus").value = 'R';
             }
@@ -617,6 +646,15 @@
                 document.getElementById("txt_rec").style.display = 'none';
                 document.getElementById("txt_app").style.display = 'none';
                 document.getElementById("txt_nex").style.display = 'initial';
+                document.getElementById("txt_cont").style.display = 'none';
+                document.getElementById("txt_comentario").value = '';
+                document.getElementById("wf_estatus").value = 'A';
+            }
+            function contabilizar() {
+                document.getElementById("txt_rec").style.display = 'none';
+                document.getElementById("txt_app").style.display = 'none';
+                document.getElementById("txt_nex").style.display = 'none';
+                document.getElementById("txt_cont").style.display = 'initial';
                 document.getElementById("txt_comentario").value = '';
                 document.getElementById("wf_estatus").value = 'A';
             }

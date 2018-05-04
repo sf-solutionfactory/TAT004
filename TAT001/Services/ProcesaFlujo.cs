@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using TAT001.Entities;
+using TAT001.Models;
 
 namespace TAT001.Services
 {
@@ -87,6 +88,7 @@ namespace TAT001.Services
                     actual.ESTATUS = f.ESTATUS;
                     actual.FECHAM = f.FECHAM;
                     actual.COMENTARIO = f.COMENTARIO;
+                    actual.USUARIOA_ID = f.USUARIOA_ID;
                     db.Entry(actual).State = EntityState.Modified;
 
                     WORKFP paso_a = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS.Equals(actual.WF_POS)).FirstOrDefault();
@@ -213,10 +215,38 @@ namespace TAT001.Services
                                 ban = false;
                             }
                         }
-                        else if (paso_a.ACCION.TIPO == "R")
+                        else if (paso_a.ACCION.TIPO == "P")
                         {
+                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
+                            {
+                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
 
+                                SubirArchivo sa = new SubirArchivo();
+                                string file = sa.generarArchivo(d.NUM_DOC);
+
+                                if (file == "")
+                                {
+                                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+
+                                    FLUJO nuevo = new FLUJO();
+                                    nuevo.WORKF_ID = paso_a.ID;
+                                    nuevo.WF_VERSION = paso_a.VERSION;
+                                    nuevo.WF_POS = next.POS;
+                                    nuevo.NUM_DOC = actual.NUM_DOC;
+                                    nuevo.POS = actual.POS + 1;
+                                    nuevo.ESTATUS = "A";
+                                    nuevo.FECHAC = DateTime.Now;
+                                    nuevo.FECHAM = DateTime.Now;
+
+                                    d.ESTATUS = "P";
+
+                                    db.FLUJOes.Add(nuevo);
+                                    db.SaveChanges();
+                                    ban = false;
+                                }
+                            }
                         }
+
                     }
                 }
             }
