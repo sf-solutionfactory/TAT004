@@ -224,7 +224,7 @@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @*@Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })*@
-                                    @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                    @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control " + @ViewBag.relacionada })
                                     @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @*@Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })*@
-                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })
+                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
                                     @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
@@ -295,7 +295,7 @@
                             }
                             <div class="input-field col s12">
                                 @*@Html.DropDownList("STATE_ID", null, "--Seleccione--", htmlAttributes: new { @id = "state_id", @class = "form-control", onchange = @"selectCity(this.value)" })*@
-                                @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control" } })
+                                @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control "+ @ViewBag.relacionada  } })
                                 @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id" })
                                 @*@Html.ValidationMessageFor(model => model.ESTADO, "", new { @class = "text-danger" })*@
                             </div>
@@ -335,7 +335,7 @@
                             <script src="~/Scripts/createa.js"></script>
                             <div class="input-field col s12">
                                 @*@Html.DropDownList("CITY_ID", null, "--Seleccione--", htmlAttributes: new { @id = "city_id", @class = "form-control", onchange = @"asignCity(this.value)" })*@
-                                @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control" } })
+                                @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control "+ @ViewBag.relacionada } })
                                 @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id" })
                                 @*@Html.ValidationMessageFor(model => model.CIUDAD, "", new { @class = "text-danger" })*@
                             </div>
@@ -448,13 +448,13 @@
 
                             </div>
                             <div class="input-field col s12">
-                                @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control" } })
+                                @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " + @ViewBag.relacionada } })
                                 @*@Html.LabelFor(model => model.CONCEPTO, "Concepto*", htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 <label for="concepto">Concepto*</label>
                                 @*@Html.ValidationMessageFor(model => model.CONCEPTO, "", new { @class = "text-danger" })*@
                             </div>
                             <div class="input-field col s12">
-                                @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea", @id = "notas_txt", onkeyup = "maxchar();" })
+                                @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea " + @ViewBag.relacionada, @id = "notas_txt", onkeyup = "maxchar();" })
                                 @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt" })
                             </div>
                             <script>
@@ -479,7 +479,7 @@
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s12">
                                 @*@Html.DropDownList("PAYER_ID", null, "--Seleccione--", htmlAttributes: new { @id = "payer_id", @class = "form-control", onchange = @"selectCliente(this.value)" })*@
-                                @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control", @onchange = @"selectCliente(this.value)" } })
+                                @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })
                                 @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id" })
                                 @*@Html.ValidationMessageFor(model => model.PAYER_ID, "", new { @class = "text-danger" })*@
                             </div>
@@ -561,14 +561,14 @@
                             </div>
 
                             <div class="input-field col s12">
-                                @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control" } })
+                                @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " + @ViewBag.relacionada } })
                                 @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
                                 @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
                             </div>
 
                             <div class="input-field col s12">
                                 @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
-                                @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate", @type = "email" } })
+                                @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
                                 @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                                 @*@Html.ValidationMessageFor(model => model.PAYER_EMAIL, "", new { @class = "text-danger" })*@
                             </div>
@@ -586,13 +586,13 @@
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker", @onkeyup = "borrar(this);" } })
+                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
                             @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
                             @*@Html.ValidationMessageFor(model => model.FECHAI_VIG, "", new { @class = "text-danger" })*@
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker", onkeyup = "borrar(this);" } })
+                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
                             @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
                             @*@Html.ValidationMessageFor(model => model.FECHAF_VIG, "", new { @class = "text-danger" })*@
                         </div>
@@ -829,8 +829,12 @@
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">
-                                @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
-                                @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -850,7 +854,7 @@
                     <div class="card-panel">
                         <h5>Mecánica de Negociación</h5>
                         <div class="row" style="margin-bottom:0;">
-                            <div class="file-field input-field col s6" id="cargar_excel" style="display:none">
+                            <div class="file-field input-field" id="cargar_excel" style="display:none">
                                 <div class="btn">
                                     <span>Examinar</span>
                                     <input id="file_dis" type="file">
@@ -859,9 +863,9 @@
                                     <input class="file-path validate" type="text">
                                 </div>
                             </div>
-                            <div id="div_btns_row" style="display:none" class="col s6">
-                                <a class="waves-effect waves-light btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
-                                <a class="waves-effect waves-light btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
+                            <div id="div_btns_row" style="display:none">
+                                <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
+                                <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                             </div>
                             <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                 <thead>
@@ -894,6 +898,69 @@
                             </table>
                         </div>
                     </div>
+                    @*Tabla para ser enviada siempre está oculta*@
+                    <a class="btn" id="addRowhtml"><i class="material-icons left">add</i>Registro controller</a>
+                    <table id="table_dish" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Vigencia De</th>
+                                <th>Vigencia Al</th>
+                                <th>Material</th>
+                                <th>Categoría</th>
+                                <th>Categoría ID</th>
+                                <th>Costo unitario</th>
+                                <th>% Apoyo</th>
+                                <th>Apoyo por pieza</th>
+                                <th>Precio sugerido</th>
+                                <th>Volumen estimado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DOCUMENTOP != null)
+                            {
+                                for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL_ID)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @*Tabla para ser enviada siempre está oculta*@
                 </div>
             </div>
         </div>
@@ -916,9 +983,12 @@
                                     <label for="monto_doc_md">Monto</label>
                                 </div>
                                 <div class="input-field col s6">
-                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control", onchange = @"selectMoneda(this.value)" })
-                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
-
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-10">
@@ -928,7 +998,7 @@
                                 <div class="form-group input-field col s6">
                                     @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control", @Value = ViewBag.tcambio } })
+                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada, @Value = ViewBag.tcambio } })
                                     </div>
                                 </div>
                                 <div class=" input-field col s6">
@@ -969,301 +1039,162 @@
                                 </script>*@
                         </div>
                     </div>
-                </div>
-                <div class="col s12 m6 l6 right">
-                    @*<div class="card-panel">
-                            <h5>Análisis Presupuesto</h5>
+                    <div class="card-panel">
+                        <h5>Análisis Presupuesto</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <table class="tg">
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Presupuesto canal</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_vtweg"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_canal"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label>Presupuesto cliente</label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_kunnr"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_banner"></label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg">
                                     <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Registrado en SAP</label>
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
+                                            <label id="pc_c"></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Por registrar en SAP</label>
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
+                                            <label id="pc_a"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>En proceso TAT</label>
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
+                                            <label id="pc_p"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Consumido</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_t"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label>Presupuesto disponible</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label></label>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Registrado en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Por registrar en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>En proceso TAT</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Consumido</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Presupuesto disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>*@
-
-                    <div class="card-panel">
-                        <h5>Análisis Presupuesto</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <ul class="collection">
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s4">
-                                            Presupuesto canal
-                                        </div>
-                                        <div class="col s4">
-                                            <label id="p_vtweg">aaaa</label>
-                                        </div>
-                                        <div class="col s4 right-align">
-                                            <label id="p_canal">1111</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s4">
-                                            Presupuesto cliente
-                                        </div>
-                                        <div class="col s4">
-                                            <label id="p_kunnr"></label>
-                                        </div>
-                                        <div class="col s4 right-align">
-                                            <label id="p_banner"></label>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="row">
-                            <ul class="collection">
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s6">
-                                            Registrado en SAP
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <label id="pc_c"></label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s6">
-                                            Por registrar en SAP
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <label id="pc_a"></label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s6">
-                                            En proceso TAT
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <label id="pc_p"></label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s6">
-                                            Consumido
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            <label id="pc_t"></label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="collection-item">
-                                    <div class="row" style="margin-bottom:0;">
-                                        <div class="col s6">
-                                            Presupuesto disponible
-                                        </div>
-                                        <div class="col s6 right-align">
-
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>
-                <div class="col s12 m6 l6">
-                    @*<div class="card-panel">
-                            <h5>Análisis Presupuesto</h5>
+                <div>
+                    <div class="col s12 m6 l6">
+                        <div class="card-panel">
+                            <h5>Análisis Solicitud</h5>
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg">
                                     <tr>
                                         <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
+                                            <label>Importe solicitud</label>
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label>20000013</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>$25,000.00</label>
+                                            <label>$11,000.00</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label>20000013</label>
+                                            <label>Monto provisión original</label>
                                         </td>
                                         <td class="tg-yw4l">
                                             <label>$15,000.00</label>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Monto aplicado</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>$1,000.00</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Saldo Provisión</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>$14,000.00</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto a</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>-</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto b</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>-</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto c</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>-</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto solicitud más impuestos</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>$11,000.00</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Retenciones</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label>-</label>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Visible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>$20,000.00</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label>0.00</label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>*@
-                    <div class="card-panel">
-                        <h5>Análisis Solicitud</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <table class="tg">
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Importe solicitud</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>$11,000.00</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Monto provisión original</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>$15,000.00</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Monto aplicado</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>$1,000.00</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Saldo Provisión</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>$14,000.00</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Impuesto a</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>-</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Impuesto b</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>-</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Impuesto c</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>-</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Impuesto solicitud más impuestos</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>$11,000.00</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="tg-yw4l">
-                                        <label>Retenciones</label>
-                                    </td>
-                                    <td class="tg-yw4l">
-                                        <label>-</label>
-                                    </td>
-                                </tr>
-                            </table>
                         </div>
                     </div>
                 </div>

@@ -66,7 +66,7 @@
         if (xx != "") {
             if (isDate(xx) === true) {
                 //alert("true");
-                $(this).val("");
+                //$(this).val(xx);
             } else {
                 //alert("false");
                 $(this).val("");

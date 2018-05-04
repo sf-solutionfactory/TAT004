@@ -708,6 +708,7 @@
     <Content Include="Scripts\lang\EN.json" />
     <Content Include="Scripts\lang\PO.json" />
     <Content Include="Views\Listas\Relacionados.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialDisTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

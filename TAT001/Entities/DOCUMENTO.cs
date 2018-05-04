@@ -92,7 +92,9 @@ namespace TAT001.Entities
         public string SPART { get; set; }
         public Nullable<int> PUESTO_ID { get; set; }
         public string GALL_ID { get; set; }
-    
+
+        public List<TAT001.Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }
