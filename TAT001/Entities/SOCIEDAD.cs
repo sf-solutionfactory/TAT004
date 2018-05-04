@@ -18,11 +18,12 @@ namespace TAT001.Entities
         public SOCIEDAD()
         {
             this.CONPOSAPHs = new HashSet<CONPOSAPH>();
+            this.CUENTAs = new HashSet<CUENTA>();
             this.DET_APROB = new HashSet<DET_APROB>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
+            this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
             this.TS_FORM = new HashSet<TS_FORM>();
             this.USUARIOs = new HashSet<USUARIO>();
-            this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
         }
     
         public string BUKRS { get; set; }
@@ -40,15 +41,17 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONPOSAPH> CONPOSAPHs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_APROB> DET_APROB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
         public virtual MONEDA MONEDA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
     }
 }

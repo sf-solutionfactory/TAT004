@@ -42,6 +42,7 @@ namespace TAT001.Entities
         public virtual DbSet<CONPOSAPP> CONPOSAPPs { get; set; }
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
+        public virtual DbSet<CUENTA> CUENTAs { get; set; }
         public virtual DbSet<DET_AGENTE> DET_AGENTE { get; set; }
         public virtual DbSet<DET_APROB> DET_APROB { get; set; }
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
@@ -73,6 +74,7 @@ namespace TAT001.Entities
         public virtual DbSet<PUESTO> PUESTOes { get; set; }
         public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
         public virtual DbSet<RANGO> RANGOes { get; set; }
+        public virtual DbSet<REGION> REGIONs { get; set; }
         public virtual DbSet<ROL> ROLs { get; set; }
         public virtual DbSet<ROLT> ROLTs { get; set; }
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
@@ -94,11 +96,14 @@ namespace TAT001.Entities
         public virtual DbSet<UMEDIDA> UMEDIDAs { get; set; }
         public virtual DbSet<UMEDIDAT> UMEDIDATs { get; set; }
         public virtual DbSet<USUARIO> USUARIOs { get; set; }
+        public virtual DbSet<USUARIOSAP> USUARIOSAPs { get; set; }
         public virtual DbSet<WARNING> WARNINGs { get; set; }
         public virtual DbSet<WORKFH> WORKFHs { get; set; }
         public virtual DbSet<WORKFP> WORKFPs { get; set; }
         public virtual DbSet<WORKFT> WORKFTs { get; set; }
         public virtual DbSet<WORKFV> WORKFVs { get; set; }
+        public virtual DbSet<ZBRAND> ZBRANDs { get; set; }
+        public virtual DbSet<ZCTGR> ZCTGRs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<CREADOR> CREADORs { get; set; }
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
@@ -119,9 +124,9 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<split_Result>("[TAT001Entities].[split](@delimited, @delimiter)", delimitedParameter, delimiterParameter);
         }
     
-        public virtual int CSP_BANNERSINCANAL()
+        public virtual ObjectResult<string> CSP_BANNERSINCANAL()
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("CSP_BANNERSINCANAL");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("CSP_BANNERSINCANAL");
         }
     
         public virtual ObjectResult<CSP_CAMBIO_Result> CSP_CAMBIO(string sociedad)

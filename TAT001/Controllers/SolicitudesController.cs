@@ -346,6 +346,50 @@ namespace TAT001.Controllers
             ViewBag.NAME1 = "";
             ViewBag.notas_soporte = "";
 
+            // Agregar dis al inicio
+
+            TAT001.Models.DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
+            TAT001.Models.DOCUMENTOP_MOD docP2 = new DOCUMENTOP_MOD();
+
+            string vd = "22/05/2018";
+            string va = "22/05/2018";
+
+            DateTime vdd = DateTime.ParseExact(vd, //"06/04/2018 12:00:00 a.m."
+                                            "dd/MM/yyyy",
+                                            System.Globalization.CultureInfo.InvariantCulture,
+                                            System.Globalization.DateTimeStyles.None);
+
+            DateTime vad = DateTime.ParseExact(va, //"06/04/2018 12:00:00 a.m."
+                                            "dd/MM/yyyy",
+                                            System.Globalization.CultureInfo.InvariantCulture,
+                                            System.Globalization.DateTimeStyles.None);
+           
+            docP.POS = 1;
+            docP.VIGENCIA_DE = vdd;
+            docP.VIGENCIA_AL = vad;
+            docP.MATNR = "123";
+            docP.MATKL = "001";
+            docP2.MATKL_ID = "1";
+            docP.MONTO = 200.22M;
+            docP.PORC_APOYO = 10;
+            docP.MONTO_APOYO = 20.22M;
+            docP.PRECIO_SUG = 100M;
+            docP.VOLUMEN_EST = 300M;
+
+            docP2.POS = 2;
+            docP2.VIGENCIA_DE = vdd;
+            docP2.VIGENCIA_AL = vad;
+            docP2.MATNR = "000000001008011710";
+            docP2.MATKL = "001";
+            docP2.MATKL_ID = "2";
+            docP2.MONTO = 200.22M;
+            docP2.PORC_APOYO = 10;
+            docP2.MONTO_APOYO = 20.22M;
+            docP2.PRECIO_SUG = 100M;
+            docP2.VOLUMEN_EST = 300M;
+
+            d.DOCUMENTOP = new List<DOCUMENTOP_MOD>() { docP, docP2 };
+
             return View(d);
         }
 
@@ -361,7 +405,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, GALL_ID")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -493,11 +537,18 @@ namespace TAT001.Controllers
                         try
                         {
                             DOCUMENTOP docP = new DOCUMENTOP();
-
-                            docP = dOCUMENTO.DOCUMENTOP.ElementAt(j);
-
                             docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
+                            docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                            docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
                             docP.CANTIDAD = 1;
+                            docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
+                            docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
+                            docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                            docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
+                            docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                            docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
+                            docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;                                                                                 
 
                             db.DOCUMENTOPs.Add(docP);
                             db.SaveChanges();
@@ -1362,7 +1413,16 @@ namespace TAT001.Controllers
                         if (mat != null)//Validar si el material existe
                         {
                             //doc.MATKL = (string)dt.Rows[i][4]; //Categoría se toma de la bd
-                            doc.MATKL = getCategoria(material: doc.MATNR); //Categoría
+                            CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            try
+                            {
+                                doc.MATKL = cat.TXT50.ToString();
+                                doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                            }catch(Exception e)
+                            {
+                                doc.MATKL = "";
+                                doc.MATKL_ID = "";
+                            }
                                                                            //doc.DESC = (string)dt.Rows[i][5]; //Descripción se toma de la bd
                             doc.DESC = mat.MAKTX.ToString(); //Descripción
                             doc.ACTIVO = true;
@@ -1685,7 +1745,7 @@ namespace TAT001.Controllers
             //Obtener presupuesto
             try
             {
-               var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+               var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: "1").Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
                 if (presupuesto != null)
                 {
@@ -1709,7 +1769,43 @@ namespace TAT001.Controllers
         
 
         [HttpPost]
-        public string getCategoria(string material)
+        [AllowAnonymous]
+        public JsonResult getCategoria(string material)
+        {
+            if (material == null)
+                material = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
+            //var cat = new CATEGORIAT();
+            var cat = (dynamic)null;
+            if (m != null && m.MATKL_ID != "")
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+
+                cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                            .Join(
+                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            c => c.ID,
+                            ct => ct.CATEGORIA_ID,
+                            (c, ct) => new 
+                            {
+                                SPRAS_ID = ct.SPRAS_ID.ToString(),
+                                CATEGORIA_ID = ct.CATEGORIA_ID.ToString(),
+                                TXT50 = ct.TXT50.ToString()
+                            })
+                        .FirstOrDefault();
+            }
+
+            //var catv = cat;
+            JsonResult cc = Json(cat, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpPost]
+        public CATEGORIAT getCategoriaS(string material)
         {
             if (material == null)
                 material = "";
@@ -1731,12 +1827,12 @@ namespace TAT001.Controllers
                             ct => ct.CATEGORIA_ID,
                             (c, ct) => ct)
                         .FirstOrDefault();
-        }                       
-            return cat.TXT50.ToString();
+            }
+            return cat;
         }
 
         [HttpPost]
-        public ActionResult getPartialDis(List<DOCUMENTOP> docs)
+        public ActionResult getPartialDis(List<TAT001.Models.DOCUMENTOP_MOD> docs)
         {
             DOCUMENTO doc = new DOCUMENTO();
 

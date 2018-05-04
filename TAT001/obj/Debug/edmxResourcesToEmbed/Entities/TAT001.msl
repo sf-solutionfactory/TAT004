@@ -159,6 +159,7 @@
           <ScalarProperty Name="KONDA" ColumnName="KONDA" />
           <ScalarProperty Name="VKGRP" ColumnName="VKGRP" />
           <ScalarProperty Name="VKBUR" ColumnName="VKBUR" />
+          <ScalarProperty Name="BANNERG" ColumnName="BANNERG" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -200,6 +201,7 @@
         <MappingFragment StoreEntitySet="CONPOSAPP">
           <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
           <ScalarProperty Name="POSICION" ColumnName="POSICION" />
+          <ScalarProperty Name="BUS_AREA" ColumnName="BUS_AREA" />
           <ScalarProperty Name="POSTING_KEY" ColumnName="POSTING_KEY" />
           <ScalarProperty Name="NUM_PROV" ColumnName="NUM_PROV" />
           <ScalarProperty Name="NUM_CTE" ColumnName="NUM_CTE" />
@@ -253,6 +255,20 @@
           <ScalarProperty Name="SORTNAME" ColumnName="SORTNAME" />
           <ScalarProperty Name="NAME" ColumnName="NAME" />
           <ScalarProperty Name="PHONECODE" ColumnName="PHONECODE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CUENTAs">
+      <EntityTypeMapping TypeName="TAT001Model.CUENTA">
+        <MappingFragment StoreEntitySet="CUENTA">
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
+          <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
+          <ScalarProperty Name="ABONO" ColumnName="ABONO" />
+          <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+          <ScalarProperty Name="CARGO_FV" ColumnName="CARGO_FV" />
+          <ScalarProperty Name="LIMITE" ColumnName="LIMITE" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -420,6 +436,8 @@
           <ScalarProperty Name="VKORG" ColumnName="VKORG" />
           <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
           <ScalarProperty Name="SPART" ColumnName="SPART" />
+          <ScalarProperty Name="PUESTO_ID" ColumnName="PUESTO_ID" />
+          <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -566,6 +584,8 @@
           <ScalarProperty Name="MEINS" ColumnName="MEINS" />
           <ScalarProperty Name="PUNIT" ColumnName="PUNIT" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="CTGR" ColumnName="CTGR" />
+          <ScalarProperty Name="BRAND" ColumnName="BRAND" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -779,6 +799,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="REGIONs">
+      <EntityTypeMapping TypeName="TAT001Model.REGION">
+        <MappingFragment StoreEntitySet="REGION">
+          <ScalarProperty Name="REGION1" ColumnName="REGION" />
+          <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ROLs">
       <EntityTypeMapping TypeName="TAT001Model.ROL">
         <MappingFragment StoreEntitySet="ROL">
@@ -913,6 +941,7 @@
           <ScalarProperty Name="FOLIO" ColumnName="FOLIO" />
           <ScalarProperty Name="PAYER" ColumnName="PAYER" />
           <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="MARCA_AGUA" ColumnName="MARCA_AGUA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -936,6 +965,7 @@
           <ScalarProperty Name="FOLIO" ColumnName="FOLIO" />
           <ScalarProperty Name="PAYER" ColumnName="PAYER" />
           <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="MARCA_AGUA" ColumnName="MARCA_AGUA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1018,6 +1048,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="USUARIOSAPs">
+      <EntityTypeMapping TypeName="TAT001Model.USUARIOSAP">
+        <MappingFragment StoreEntitySet="USUARIOSAP">
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="AUTOMATICO" ColumnName="AUTOMATICO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="WARNINGs">
       <EntityTypeMapping TypeName="TAT001Model.WARNING">
         <MappingFragment StoreEntitySet="WARNING">
@@ -1087,6 +1125,22 @@
           <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
           <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
           <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ZBRANDs">
+      <EntityTypeMapping TypeName="TAT001Model.ZBRAND">
+        <MappingFragment StoreEntitySet="ZBRAND">
+          <ScalarProperty Name="ID_ZB" ColumnName="ID_ZB" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ZCTGRs">
+      <EntityTypeMapping TypeName="TAT001Model.ZCTGR">
+        <MappingFragment StoreEntitySet="ZCTGR">
+          <ScalarProperty Name="ID_ZC" ColumnName="ID_ZC" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1276,6 +1330,8 @@
           <ScalarProperty Name="ADVER" ColumnName="ADVER" />
           <ScalarProperty Name="DSTRB" ColumnName="DSTRB" />
           <ScalarProperty Name="VVX17" ColumnName="VVX17" />
+          <ScalarProperty Name="ALLB" ColumnName="ALLB" />
+          <ScalarProperty Name="ALLF" ColumnName="ALLF" />
           <ScalarProperty Name="CONSU" ColumnName="CONSU" />
           <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
         </ComplexTypeMapping>

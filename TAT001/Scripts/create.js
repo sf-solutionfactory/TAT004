@@ -200,6 +200,14 @@
         event.returnValue = false;
         event.cancel = true;
     });
+    $('#addRowhtml').click(function (e) {
+        copiarTableVista();
+        event.returnValue = false;
+        event.cancel = true;
+    });
+    
+    //Copiar los valores de la tabla oculta a la tabla de la vista
+    
 
     //Mostrar los materiales (detalle) de la categoria 
     $('#table_dis tbody').on('click', 'td.detail_row', function () {
@@ -240,7 +248,7 @@
                         if (cat != "") {                        
                             var opt = $("#select_categoria option:selected").text();
                             t.row.add([
-                                cat + "", //col0
+                                cat + "", //col0 ID
                                 "", //col1
                                 "", ////col2
                                 "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
@@ -263,9 +271,9 @@
                     } else if (dis == "M") {
                         //Distribución por material
                         t.row.add([
-                            "",
-                            "",
-                            "",
+                            "", //ID
+                            "", //detalle
+                            "", //Seleccionar
                             "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -304,78 +312,6 @@
         event.cancel = true;
         
     });
-
-    $('#addRowhtml').on('click', function () {
-
-        var lengthT = $("table#table_dis tbody tr").length;
-
-        if (lengthT > 0) {
-
-            
-            $('#table_dish > tbody  > tr').each(function () {
-                //Obtener los valores de la tabla para agregarlos a la tabla oculta
-                //Eliminar los renglones actuales en la tabla oculta
-                $(this).remove();
-
-            });
-
-            var docs = [
-                {
-                    NUM_DOC: 0,
-                    POS: 1,
-                    VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-                    VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-                    MATNR: 123,
-                    MATKL: "001",
-                    CANTIDAD: 0,
-                    MONTO: 200.22,
-                    PORC_APOYO: 10,
-                    MONTO_APOYO: 20.22,
-                    PRECIO_SUG: 100,
-                    VOLUMEN_EST: 300.25
-                },
-                {
-                    NUM_DOC: 0,
-                    POS: 2,
-                    VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-                    VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-                    MATNR: 456,
-                    MATKL: "001",
-                    CANTIDAD: 0,
-                    MONTO: 200.22,
-                    PORC_APOYO: 10,
-                    MONTO_APOYO: 20.22,
-                    PRECIO_SUG: 100,
-                    VOLUMEN_EST: 300.25
-                }
-            ];  
-
-            docsenviar = JSON.stringify({ 'docs': docs });
-
-            $.ajax({
-                type: "POST",
-                url: 'getPartialDis',
-                contentType: "application/json; charset=UTF-8",
-                data: docsenviar,
-                success: function (data) {
-
-                    if (data !== null || data !== "") {
-                        $("table#table_dish tbody").append(data);
-                    }
-
-                },
-                error: function (xhr, httpStatusMessage, customErrorMessage) {
-                    M.toast({ html: httpStatusMessage });
-                },
-                async: false
-            });
-        }
-
-        event.returnValue = false;
-        event.cancel = true;
-
-    });
-
 
     $('#select_neg').change();
     $('#select_dis').change();
@@ -725,7 +661,7 @@
                 $('#monto_doc_md').val(0);
             }
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-
+            copiarTableControl(); 
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -735,6 +671,214 @@
     });
 
 });
+
+function copiarTableVista() {
+
+    
+    var lengthT = $("table#table_dish tbody tr").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla de la vista
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        $('#table_dis').css("font-size", "12px");
+        $('#table_dis').css("display", "table");
+        var i = 1;
+        $('#table_dish > tbody  > tr').each(function () {           
+
+            var vigencia_de = $(this).find("td:eq(" + 1 + ") input").val();
+            var vigencia_al = $(this).find("td:eq(" + 2 + ") input").val();
+
+            var ddate = vigencia_de.split(' ');
+            var adate = vigencia_al.split(' ');
+
+            var matnr = $(this).find("td:eq(" + 3 + ") input").val();
+            var matkl = $(this).find("td:eq(" + 4 + ") input").val();
+            var matkl_id = $(this).find("td:eq(" + 5 + ") input").text();
+            var costo_unitario = $(this).find("td:eq(" + 6 + ") input").val();
+            var porc_apoyo = $(this).find("td:eq(" + 7 + ") input").val();
+            var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
+            var precio_sug = $(this).find("td:eq(" + 9 + ") input").val();
+            var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
+
+
+            var t = $('#table_dis').DataTable();
+           
+            t.row.add([
+                matkl_id + "", //col0 ID
+                "", //col1
+                "", ////col2
+                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0])+"\">", //col3
+                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0])+"\">",
+                "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                matkl + "",
+                matkl + "",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario+"\">",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo+"\">",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo+"\">",
+                "",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug+"\">",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + volumen_est+"\">",
+                "",
+            ]).draw(false);
+
+            //Quitar el row
+            $(this).remove();
+        });
+
+        $('.input_oper').trigger('focusout');
+    }
+
+}
+
+function copiarTableControl() {
+
+    var lengthT = $("table#table_dis tbody tr").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        var indext = getIndex();
+        jsonObjDocs = [];
+        var i = 1;
+        $('#table_dis > tbody  > tr').each(function () {            
+
+            //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
+            //Columnas 8 * 9 res 10
+            //Categoría es 7 * 8 = 9  --> -1
+            //Material es 6 * 7 = 8   --> -2
+            
+            var vigencia_de = $(this).find("td:eq(" + (3 + indext) + ") input").val();
+            var vigencia_al = $(this).find("td:eq(" + (4 + indext) + ") input").val();
+
+            var matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+            var matkl = $(this).find("td:eq(" + (6 + indext) + ")").text();
+
+            //Obtener el id de la categoría            
+            var t = $('#table_dis').DataTable();
+            var tr = $(this);
+            var indexcat = t.row(tr).index();
+            var matkl_id = t.row(indexcat).data()[0];
+
+            var costo_unitario = $(this).find("td:eq(" + (8 + indext) + ") input").val();
+            var porc_apoyo = $(this).find("td:eq(" + (9 + indext) + ") input").val();
+            var monto_apoyo = $(this).find("td:eq(" + (10 + indext) + ") input").val();
+
+            var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
+            var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
+           
+            var item = {};
+
+            item["NUM_DOC"] = 0;
+            item["POS"] = i;
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["MATNR"] = matnr;
+            item["MATKL"] = matkl;
+            item["MATKL_ID"] = matkl_id;
+            item["CANTIDAD"] = 0; //Siempre 0
+            item["MONTO"] = costo_unitario;
+            item["PORC_APOYO"] = porc_apoyo;
+            item["MONTO_APOYO"] = monto_apoyo;
+            item["PRECIO_SUG"] = precio_sug;
+            item["VOLUMEN_EST"] = volumen_est;
+
+            jsonObjDocs.push(item);
+            i++;
+            item = "";
+
+            $(this).addClass('selected');
+
+        });
+
+        //item = {};
+        //item["NUM_DOC"] = 0;
+        //item["POS"] = i;
+        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
+        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
+        //item["MATNR"] = 123;
+        //item["MATKL"] = "001";
+        //item["CANTIDAD"] = 0;
+        //item["MONTO"] = 200.22;
+        //item["PORC_APOYO"] = 10;
+        //item["MONTO_APOYO"] = 20.22;
+        //item["PRECIO_SUG"] = 100;
+        //item["VOLUMEN_EST"] = 300.25;
+
+        //jsonObjDocs.push(item);
+        //i++;
+
+        //item = "";
+        //item = {};
+        //item["NUM_DOC"] = 0;
+        //item["POS"] = i;
+        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
+        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
+        //item["MATNR"] = 456;
+        //item["MATKL"] = "001";
+        //item["CANTIDAD"] = 0;
+        //item["MONTO"] = 200.22;
+        //item["PORC_APOYO"] = 10;
+        //item["MONTO_APOYO"] = 20.22;
+        //item["PRECIO_SUG"] = 100;
+        //item["VOLUMEN_EST"] = 300.25;
+
+        //jsonObjDocs.push(item);
+
+        //var docs = [
+        //    {
+        //        NUM_DOC: 0,
+        //        POS: 1,
+        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
+        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
+        //        MATNR: 123,
+        //        MATKL: "001",
+        //        CANTIDAD: 0,
+        //        MONTO: 200.22,
+        //        PORC_APOYO: 10,
+        //        MONTO_APOYO: 20.22,
+        //        PRECIO_SUG: 100,
+        //        VOLUMEN_EST: 300.25
+        //    },
+        //    {
+        //        NUM_DOC: 0,
+        //        POS: 2,
+        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
+        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
+        //        MATNR: 456,
+        //        MATKL: "001",
+        //        CANTIDAD: 0,
+        //        MONTO: 200.22,
+        //        PORC_APOYO: 10,
+        //        MONTO_APOYO: 20.22,
+        //        PRECIO_SUG: 100,
+        //        VOLUMEN_EST: 300.25
+        //    }
+        //];  
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+        $.ajax({
+            type: "POST",
+            url: 'getPartialDis',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+
+                    $("table#table_dish tbody").append(data);
+                    $('#delRow').click();
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+}
 
 function asignarPresupuesto(kunnr) {
 
@@ -1072,7 +1216,7 @@ function loadExcel(file) {
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
                     var addedRow = table.row.add([
-                                        dataj.POS,
+                                        dataj.MATKL_ID,
                                         "",
                                         "",
                                         "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
@@ -1772,7 +1916,7 @@ function selectMonto(val) {
         $('.div_categoria').css("display", "none");     
         $('#table_dis').css("display", "none");
         $('#div_btns_row').css("display", "none");  
-        ta.column(0).visible(false);
+        ta.column(0).visible(false); 
         ta.column(1).visible(false);
     } else {
     //Activar el panel de monto dependiendo del tipo de negociación
@@ -2059,6 +2203,7 @@ function getCategoria(mat) {
             type: "POST",
             url: 'getCategoria',
             data: { "material": mat },
+            dataType: "json",
 
             success: function (data) {
 

@@ -30,14 +30,23 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
 });
 
 function selectMaterial(val, desc, tr) {
-    var index = getIndex();  
-    desc = $.trim(desc);
+    //Obtener el index del renglón
+    var t = $('#table_dis').DataTable();
+    var indexcat = t.row(tr).index();
+    //Resetear id cat   
+    t.cell(indexcat, 0).data("").draw();
+    //Obtener el index de la columna
+    var indexr = getIndex();  
+    desc = $.trim(desc);    
     //Categoría
     var cat = getCategoria(val);
-    tr.find("td:eq(" + (6 + index) + ")").text(cat);
+    tr.find("td:eq(" + (6 + indexr) + ")").text(cat.TXT50);
     //Descripción
-    tr.find("td:eq(" + (7 + index) + ")").text(desc);
+    tr.find("td:eq(" + (7 + indexr) + ")").text(desc);
+    
+    //Agregar id de la categoría    
+    t.cell(indexcat, 0).data(cat.CATEGORIA_ID).draw();    
 
     //Remove background a celda de material
-    tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    tr.find('td').eq((5 + indexr)).removeClass("errorMaterial");
 }

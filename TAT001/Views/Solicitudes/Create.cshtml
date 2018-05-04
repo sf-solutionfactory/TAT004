@@ -874,7 +874,8 @@
                                     <th>Estimado apoyo</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                            </tbody>
                             <tfoot id="tfoot_dis" style="">
                                 @*//display:none*@
                                 <tr>
@@ -889,17 +890,18 @@
                 <a class="btn" id="addRowhtml"><i class="material-icons left">add</i>Registro controller</a>
                 <table id="table_dish" class="display" cellspacing="0" width="100%">
                     <thead>
-                        <tr>                            
+                        <tr>
                             <th>Pos</th>
                             <th>Vigencia De</th>
                             <th>Vigencia Al</th>
                             <th>Material</th>
                             <th>Categoría</th>
+                            <th>Categoría ID</th>
                             <th>Costo unitario</th>
                             <th>% Apoyo</th>
                             <th>Apoyo por pieza</th>
                             <th>Precio sugerido</th>
-                            <th>Volumen estimado</th>     
+                            <th>Volumen estimado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -907,38 +909,41 @@
                         {
                             for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
-                                    </td>
-                                    <td>
-                                        @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL_ID)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
+                                </td>
+                                <td>
+                                    @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                </td>
+                            </tr>
                             }
                           }
                     </tbody>

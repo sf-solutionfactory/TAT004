@@ -17,6 +17,7 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GALL()
         {
+            this.CUENTAs = new HashSet<CUENTA>();
             this.GALLTs = new HashSet<GALLT>();
             this.TALLs = new HashSet<TALL>();
         }
@@ -25,6 +26,8 @@ namespace TAT001.Entities
         public string DESCRIPCION { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GALLT> GALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -11,6 +11,7 @@ namespace TAT001.Models
         public decimal POS { get; set; }
         public string MATNR { get; set; }
         public string MATKL { get; set; }
+        public string MATKL_ID { get; set; }
         public string DESC { get; set; }
         public decimal CANTIDAD { get; set; }
         public decimal MONTO { get; set; }
