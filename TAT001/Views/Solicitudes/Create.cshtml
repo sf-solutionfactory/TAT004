@@ -57,6 +57,14 @@
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
+            @if (ViewBag.relacionadan != "")
+            {
+                <div class="input-field col s6">
+                    <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
+                    <label for="txt_rel" id="lbl_rel">Relacionada</label>
+                </div>             
+            }
+            
         </div>
     }
     @*<div class="col s12 m5 l5">

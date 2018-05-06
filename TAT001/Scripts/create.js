@@ -678,7 +678,30 @@
 $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
     $('#gall_id').change(); //Cambio en allowance
+    $('#payer_id').change(); //Cambiar datos del cliente
+    //Fechas de temporalidad
+    var fechai_vig = $('#fechai_vig').val();
+    var fechaf_vig = $('#fechaf_vig').val();
+
+    var fi = fechai_vig.split(' ');
+    var ff = fechaf_vig.split(' ');
+
+    if (fi[0] != "") {
+        $('#fechai_vig').val($.trim(fi[0]));
+    }
+
+    if (ff[0] != "") {
+        $('#fechaf_vig').val($.trim(ff[0]));
+    }
+
+    //Valores en  distribución    
     copiarTableVista();
+
+    //Pasar el total de la tabla al total en monto
+    var total_dis = $('#total_dis').text();
+    var footeri = convertI(total_dis);
+    $('#monto_dis').val(footeri);
+    $("label[for='monto_dis']").addClass("active");
 });
 
 function copiarTableVista() {
@@ -2037,10 +2060,13 @@ function selectCliente(valu) {
                     $("label[for='stcd1']").addClass("active");
                     $('#vtweg').val(data.VTWEG);
                     $("label[for='vtweg']").addClass("active");
-                    $('#payer_nombre').val(data.PAYER_NOMBRE);
-                    $("label[for='payer_nombre']").addClass("active");
-                    $('#payer_email').val(data.PAYER_EMAIL);
-                    $("label[for='payer_email']").addClass("active");
+                    //Si la solicitud es una relacionada, obtener el nombre y email del contacto almacenado en DOCUMENTO
+                    if (!$('#payer_id').hasClass("prelacionada")) {
+                        $('#payer_nombre').val(data.PAYER_NOMBRE);
+                        $("label[for='payer_nombre']").addClass("active");
+                        $('#payer_email').val(data.PAYER_EMAIL);
+                        $("label[for='payer_email']").addClass("active");
+                    }
                 } else {
                     $('#cli_name').val("");
                     $("label[for='cli_name']").removeClass("active");

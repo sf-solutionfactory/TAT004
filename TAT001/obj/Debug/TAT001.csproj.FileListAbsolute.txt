@@ -499,3 +499,4 @@ C:\Users\matias\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CoreCompi
 C:\Users\matias\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CopyComplete
 C:\Users\matias\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.dll
 C:\Users\matias\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.pdb
+C:\Users\matias\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csprojResolveAssemblyReference.cache

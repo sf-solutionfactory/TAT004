@@ -227,18 +227,20 @@ namespace TAT001.Controllers
                 //{
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
-
-                //Session["rel"] = "2000000010";
+                
+                Session["rel"] = "2000000010";                
                 decimal rel = 0;
                 try
                 {
                     rel = Convert.ToDecimal(Session["rel"].ToString());
                     ViewBag.relacionada = "prelacionada";
+                    ViewBag.relacionadan = rel+"";
                 }
                 catch
                 {
                     rel = 0;
                     ViewBag.relacionada = "";
+                    ViewBag.relacionadan = "";
                 }
 
 
@@ -258,7 +260,9 @@ namespace TAT001.Controllers
                                     })
                                 .ToList();
 
-                
+
+                SOCIEDAD id_bukrs = new SOCIEDAD();
+                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
 
                 //Grupos de solicitud
                 var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
@@ -277,17 +281,55 @@ namespace TAT001.Controllers
                 if(rel > 0)
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
+                    d.DOCUMENTO_REF = rel;
 
-                    if(d != null)
+                    if (d != null)
                     {
                         ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
-                        ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                        ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+                        
+
+                        List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();
+                        d.NUM_DOC = 0;
+                        List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
+
+                        for (int j = 0; j < docpl.Count; j++)
+                        {
+                            try
+                            {
+                                DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
+                                docP.NUM_DOC = d.NUM_DOC;
+                                docP.POS = docpl[j].POS;
+                                docP.MATNR = docpl[j].MATNR;
+                                docP.MATKL = docpl[j].MATKL;
+                                docP.MATKL_ID = docpl[j].MATKL;
+                                docP.CANTIDAD = 1;
+                                docP.MONTO = docpl[j].MONTO;
+                                docP.PORC_APOYO = docpl[j].PORC_APOYO;
+                                docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
+                                docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
+                                docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+
+                                docsp.Add(docP);                              
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+
+                        d.DOCUMENTOP = docsp;
                     }
                 }
                 else
                 {
                     ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
                     ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
+
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
                 }
 
                 
@@ -304,9 +346,7 @@ namespace TAT001.Controllers
                 List<TAT001.Entities.GALL> id_clas = new List<TAT001.Entities.GALL>();
                 ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50");
 
-
                 //Datos del país
-                var id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
                 var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();
 
                 var id_states = (from st in db.STATES
@@ -320,7 +360,7 @@ namespace TAT001.Controllers
                                      st.COUNTRY_ID
                                  }).ToList();
 
-                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
+                
 
                 List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
 
@@ -329,7 +369,7 @@ namespace TAT001.Controllers
                 ViewBag.PAIS_ID = id_pais;
                 ViewBag.STATE_ID = "";// new SelectList(id_states, "ID", dataTextField: "NAME");
                 ViewBag.CITY_ID = "";// new SelectList(id_city, "ID", dataTextField: "NAME");
-                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS);
+                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS); //Duda si cambia en la relacionada
 
                 //Información del cliente
                 var id_clientes = db.CLIENTEs.Where(c => c.LAND.Equals(p) && c.ACTIVO == true).ToList();
@@ -427,8 +467,8 @@ namespace TAT001.Controllers
                     //dOCUMENTO.TIPO_CAMBIO = dOCUMENTO.TIPO_CAMBIO / 60000000000;
                     //dOCUMENTO.MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2 / 60000000000;
 
-                    //Obtener datos ocultos o deshabilitados                    
-                    try
+                        //Obtener datos ocultos o deshabilitados                    
+                        try
                     {
                         p = Session["pais"].ToString();
                         ViewBag.pais = p + ".svg";
@@ -438,12 +478,43 @@ namespace TAT001.Controllers
                         ViewBag.pais = "mx.svg";
                         //return RedirectToAction("Pais", "Home");
                     }
+                    try
+                    {
+                        decimal refe = Convert.ToDecimal(Session["rel"].ToString());
+                        dOCUMENTO.DOCUMENTO_REF = refe;
+                        Session["rel"] = null;
+                        }
+                        catch(Exception e)
+                    {
+                        dOCUMENTO.DOCUMENTO_REF = 0;
+                    }
+                    DOCUMENTO d = new DOCUMENTO();
+                    if (dOCUMENTO.DOCUMENTO_REF > 0)
+                    {
+                        d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).FirstOrDefault();
+                        dOCUMENTO.TSOL_ID = d.TSOL_ID;
+                        id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID).FirstOrDefault();
+                        dOCUMENTO.ESTADO = d.ESTADO;
+                        dOCUMENTO.CIUDAD = d.CIUDAD;
+                        dOCUMENTO.PAYER_ID = d.PAYER_ID;
+                        dOCUMENTO.CONCEPTO = d.CONCEPTO;
+                        dOCUMENTO.NOTAS = d.NOTAS;
+                        dOCUMENTO.FECHAI_VIG = d.FECHAI_VIG;
+                        dOCUMENTO.FECHAF_VIG = d.FECHAF_VIG;
+                        dOCUMENTO.PAYER_NOMBRE = d.PAYER_NOMBRE;
+                        dOCUMENTO.PAYER_EMAIL = d.PAYER_EMAIL;
+                        dOCUMENTO.TIPO_CAMBIO = d.TIPO_CAMBIO;
+                        dOCUMENTO.GALL_ID = d.GALL_ID;
+                    }
+                    else
+                    {
+                        id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                    }
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
 
-                    //Obtener SOCIEDAD_ID 
-                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                    //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
 
                     //Obtener el país
