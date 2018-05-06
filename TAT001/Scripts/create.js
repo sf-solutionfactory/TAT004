@@ -200,11 +200,11 @@
         event.returnValue = false;
         event.cancel = true;
     });
-    $('#addRowhtml').click(function (e) {
-        copiarTableVista();
-        event.returnValue = false;
-        event.cancel = true;
-    });
+    //$('#addRowhtml').click(function (e) {
+    //    copiarTableVista();
+    //    event.returnValue = false;
+    //    event.cancel = true;
+    //});
 
     //Copiar los valores de la tabla oculta a la tabla de la vista
 
@@ -346,12 +346,12 @@
 
     $('#tab_temp').on("click", function (e) {
         $('#gall_id').change();
-        //evalInfoTab(false, e);
+        evalInfoTab(false, e);
     });
 
     $('#tab_soporte').on("click", function (e) {
 
-        //evalTempTab(false, e);
+        evalTempTab(false, e);
 
         //Obtener el tipo de solicitud NC
         var sol = $("#tsol_id").val();
@@ -678,6 +678,7 @@
 $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
     $('#gall_id').change(); //Cambio en allowance
+    copiarTableVista();
 });
 
 function copiarTableVista() {

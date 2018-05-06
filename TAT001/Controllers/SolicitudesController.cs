@@ -228,7 +228,7 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
 
-                Session["rel"] = "2000000010";
+                //Session["rel"] = "2000000010";
                 decimal rel = 0;
                 try
                 {
