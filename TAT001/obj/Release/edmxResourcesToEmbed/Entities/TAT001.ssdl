@@ -528,6 +528,7 @@
     <Property Name="ID" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
     <Property Name="ACTIVO" Type="bit" />
+    <Property Name="GRUPO_ALL" Type="varchar" MaxLength="5" />
   </EntityType>
   <EntityType Name="GALLT">
     <Key>

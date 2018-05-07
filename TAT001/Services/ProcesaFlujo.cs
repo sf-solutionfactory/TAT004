@@ -221,7 +221,7 @@ namespace TAT001.Services
                             {
                                 DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
 
-                                SubirArchivo sa = new SubirArchivo();
+                                ArchivoContable sa = new ArchivoContable();
                                 string file = sa.generarArchivo(d.NUM_DOC);
 
                                 if (file == "")
@@ -242,6 +242,10 @@ namespace TAT001.Services
 
                                     db.FLUJOes.Add(nuevo);
                                     db.SaveChanges();
+                                    ban = false;
+                                }
+                                else
+                                {
                                     ban = false;
                                 }
                             }

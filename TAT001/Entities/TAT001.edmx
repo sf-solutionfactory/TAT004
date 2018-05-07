@@ -533,6 +533,7 @@
           <Property Name="ID" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="60" />
           <Property Name="ACTIVO" Type="bit" />
+          <Property Name="GRUPO_ALL" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="GALLT">
           <Key>
@@ -3737,6 +3738,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_GALL" FromRole="GALL" ToRole="GALLT" />
           <NavigationProperty Name="TALLs" Relationship="Self.FK_TALL_GALL" FromRole="GALL" ToRole="TALL" />
           <NavigationProperty Name="CUENTAs" Relationship="TAT001Model.FK_CUENTA_GALL" FromRole="GALL" ToRole="CUENTA" />
+          <Property Name="GRUPO_ALL" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="GALLT">
           <Key>
@@ -6968,6 +6970,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="GALLs">
             <EntityTypeMapping TypeName="TAT001Model.GALL">
               <MappingFragment StoreEntitySet="GALL">
+                <ScalarProperty Name="GRUPO_ALL" ColumnName="GRUPO_ALL" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />

@@ -27,6 +27,7 @@ namespace TAT001.Models
             bool prilinea = true, primero = true;
             string material = "";
             int i = 1, ide = 0;
+            List<REGION> sociedades = db.REGIONs.Where(x => sociedad.Contains(x.SOCIEDAD)).ToList();
             try
             {
                 while (strem.Peek() > -1)
@@ -63,7 +64,7 @@ namespace TAT001.Models
                         if (material != lines[5])
                         {
                             material = lines[5].Trim();
-                            if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedad, periodo, anio, true))
+                            if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedades, periodo, anio, true))
                             {
                                 pRESUPUESTOPS.Add(new PRESUPUESTOP
                                 {
@@ -128,7 +129,7 @@ namespace TAT001.Models
                         }
                     }
                 }
-                if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedad, periodo, anio, true))
+                if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedades, periodo, anio, true))
                 {
                     pRESUPUESTOPS.Add(new PRESUPUESTOP
                     {
@@ -185,6 +186,7 @@ namespace TAT001.Models
             PRESUPSAPP pRESUPUESTOP = new PRESUPSAPP();
             List<string[]> datosPresu = new List<string[]>();
             StreamReader strem = new StreamReader(file.InputStream);
+            List<REGION> sociedades = db.REGIONs.Where(x => sociedad.Contains(x.SOCIEDAD)).ToList();
             string[] lines;
             bool prilinea = true;
             int i = 1;
@@ -255,7 +257,7 @@ namespace TAT001.Models
                         //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
                         //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
                         //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
-                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, pRESUPUESTOP.PERIOD, sociedad, periodo, anio, false))
+                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, pRESUPUESTOP.PERIOD, sociedades, periodo, anio, false))
                         {
                             pRESUPUESTOPS.Add(new PRESUPSAPP
                             {
@@ -467,7 +469,7 @@ namespace TAT001.Models
                     break;
             }
         }
-        private bool filtrocarga(string sociedad, string anio, string periodo, string[] sociedades, string[] periodos, string[] anioss, bool cpt)
+        private bool filtrocarga(string sociedad, string anio, string periodo, List<REGION> sociedades, string[] periodos, string[] anioss, bool cpt)
         {
             string[] soc;
             string[] pre;
@@ -489,7 +491,14 @@ namespace TAT001.Models
             {
                 if (sociedades != null)
                 {
-                    soc = sociedades.Where(x => x == sociedad).ToArray();
+                    if (cpt)
+                    {
+                        soc = sociedades.Where(x => x.REGION1 == sociedad).Select(y => y.REGION1).ToArray();
+                    }
+                    else
+                    {
+                        soc = sociedades.Where(x => x.SOCIEDAD == sociedad).Select(y => y.REGION1).ToArray();
+                    }
                     if (soc.Length > 0)
                     {
                         if (periodos != null)
@@ -664,6 +673,10 @@ namespace TAT001.Models
             {
 
             }
+        }
+        public string mensajes(int id)
+        {
+            return db.MENSAJES.Where(x => x.ID_MENSAJE == id).Select(x => x.DESCRIPCION).Single();
         }
     }
 

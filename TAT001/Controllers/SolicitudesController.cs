@@ -228,6 +228,20 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
 
+                //Session["rel"] = "2000000010";
+                decimal rel = 0;
+                try
+                {
+                    rel = Convert.ToDecimal(Session["rel"].ToString());
+                    ViewBag.relacionada = "prelacionada";
+                }
+                catch
+                {
+                    rel = 0;
+                    ViewBag.relacionada = "";
+                }
+
+
                 Session["spras"] = user.SPRAS_ID;
 
                 //tipo de solicitud
@@ -244,7 +258,7 @@ namespace TAT001.Controllers
                                     })
                                 .ToList();
 
-                ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
+
 
                 //Grupos de solicitud
                 var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
@@ -259,7 +273,24 @@ namespace TAT001.Controllers
                                     TEXT = g.DESCRIPCION + " " + gt.TXT50
                                 }).ToList();
 
-                ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
+
+                if (rel > 0)
+                {
+                    d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
+
+                    if (d != null)
+                    {
+                        ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                        ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                    }
+                }
+                else
+                {
+                    ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
+                    ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
+                }
+
+
 
                 //Select clasificación
                 //var id_clas = db.TALLs.Where(t => t.ACTIVO == true)
@@ -383,7 +414,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, GALL_ID")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -509,6 +540,34 @@ namespace TAT001.Controllers
 
                         db.DOCUMENTONs.Add(doc_notas);
                         db.SaveChanges();
+                    }
+
+                    //Guardar los documentos p para el documento guardado
+                    for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                    {
+                        try
+                        {
+                            DOCUMENTOP docP = new DOCUMENTOP();
+                            docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
+                            docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                            docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
+                            docP.CANTIDAD = 1;
+                            docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
+                            docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
+                            docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                            docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
+                            docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                            docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
+                            docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+
+                            db.DOCUMENTOPs.Add(docP);
+                            db.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
                     }
 
                     //Guardar los documentos cargados en la sección de soporte
@@ -1207,6 +1266,25 @@ namespace TAT001.Controllers
                                      PAYER_EMAIL = co == null ? String.Empty : co.EMAIL,
                                  }).FirstOrDefault();
 
+            if (id_cl == null)
+            {
+                id_cl = (from c in db.CLIENTEs
+                         where (c.KUNNR == kunnr)
+                         select new CLIENTE_MOD
+                         {
+                             VKORG = c.VKORG,
+                             VTWEG = c.VTWEG,
+                             NAME1 = c.NAME1,
+                             KUNNR = c.KUNNR,
+                             STCD1 = c.STCD1,
+                             PARVW = c.PARVW,
+                             BANNER = c.BANNER,
+                             CANAL = c.CANAL,
+                             PAYER_NOMBRE = String.Empty,
+                             PAYER_EMAIL = String.Empty,
+                         }).FirstOrDefault();
+            }
+
             if (id_cl != null)
             {
                 //Obtener el cliente
@@ -1236,6 +1314,7 @@ namespace TAT001.Controllers
                 {
                     id_cl.PARVW = clientei.TXT50;
                 }
+
             }
 
             JsonResult jc = Json(id_cl, JsonRequestBehavior.AllowGet);
@@ -1421,8 +1500,18 @@ namespace TAT001.Controllers
                         if (mat != null)//Validar si el material existe
                         {
                             //doc.MATKL = (string)dt.Rows[i][4]; //Categoría se toma de la bd
-                            doc.MATKL = getCategoria(material: doc.MATNR); //Categoría
-                                                                           //doc.DESC = (string)dt.Rows[i][5]; //Descripción se toma de la bd
+                            CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            try
+                            {
+                                doc.MATKL = cat.TXT50.ToString();
+                                doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                            }
+                            catch (Exception e)
+                            {
+                                doc.MATKL = "";
+                                doc.MATKL_ID = "";
+                            }
+                            //doc.DESC = (string)dt.Rows[i][5]; //Descripción se toma de la bd
                             doc.DESC = mat.MAKTX.ToString(); //Descripción
                             doc.ACTIVO = true;
                         }
@@ -1739,27 +1828,27 @@ namespace TAT001.Controllers
         [HttpPost]
         public JsonResult getPresupuesto(string kunnr)
         {
+            if (kunnr == null)
+                kunnr = "";
+
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+
+            //Obtener presupuesto
             try
             {
-                if (kunnr == null)
-                    kunnr = "";
+                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: "1").Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
-                //Obtener presupuesto
-                //var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-
-
-                //if (presupuesto != null)
-                //{
-                //    pm.P_CANAL = presupuesto[0].VAL;
-                //    pm.P_BANNER = presupuesto[1].VAL;
-                //    pm.PC_C = presupuesto[4].VAL;
-                //    pm.PC_A = presupuesto[5].VAL;
-                //    pm.PC_P = presupuesto[6].VAL;
-                //    pm.PC_T = presupuesto[7].VAL;
-                //}
+                if (presupuesto != null)
+                {
+                    pm.P_CANAL = presupuesto[0].VAL;
+                    pm.P_BANNER = presupuesto[1].VAL;
+                    pm.PC_C = presupuesto[4].VAL;
+                    pm.PC_A = presupuesto[5].VAL;
+                    pm.PC_P = presupuesto[6].VAL;
+                    pm.PC_T = presupuesto[7].VAL;
+                }
             }
-            catch
+            catch (Exception e)
             {
 
             }
@@ -1771,7 +1860,43 @@ namespace TAT001.Controllers
 
 
         [HttpPost]
-        public string getCategoria(string material)
+        [AllowAnonymous]
+        public JsonResult getCategoria(string material)
+        {
+            if (material == null)
+                material = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
+            //var cat = new CATEGORIAT();
+            var cat = (dynamic)null;
+            if (m != null && m.MATKL_ID != "")
+            {
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+
+                cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                            .Join(
+                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            c => c.ID,
+                            ct => ct.CATEGORIA_ID,
+                            (c, ct) => new
+                            {
+                                SPRAS_ID = ct.SPRAS_ID.ToString(),
+                                CATEGORIA_ID = ct.CATEGORIA_ID.ToString(),
+                                TXT50 = ct.TXT50.ToString()
+                            })
+                        .FirstOrDefault();
+            }
+
+            //var catv = cat;
+            JsonResult cc = Json(cat, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpPost]
+        public CATEGORIAT getCategoriaS(string material)
         {
             if (material == null)
                 material = "";
@@ -1794,7 +1919,66 @@ namespace TAT001.Controllers
                             (c, ct) => ct)
                         .FirstOrDefault();
             }
-            return cat.TXT50.ToString();
+            return cat;
+        }
+
+        [HttpPost]
+        public ActionResult getPartialDis(List<TAT001.Models.DOCUMENTOP_MOD> docs)
+        {
+            DOCUMENTO doc = new DOCUMENTO();
+
+            //for(int i = 0; i < docs.Count():i++)
+            //{
+
+            //}
+
+
+            //DOCUMENTOP docP = new DOCUMENTOP();
+            //DOCUMENTOP docP2 = new DOCUMENTOP();
+
+            //string vd = "22/05/2018";
+            //string va = "22/05/2018";
+
+            //DateTime vdd = DateTime.ParseExact(vd, //"06/04/2018 12:00:00 a.m."
+            //                                "dd/MM/yyyy",
+            //                                System.Globalization.CultureInfo.InvariantCulture,
+            //                                System.Globalization.DateTimeStyles.None);
+
+            //DateTime vad = DateTime.ParseExact(va, //"06/04/2018 12:00:00 a.m."
+            //                                "dd/MM/yyyy",
+            //                                System.Globalization.CultureInfo.InvariantCulture,
+            //                                System.Globalization.DateTimeStyles.None);
+            //docP.POS = 1;
+            //docP.VIGENCIA_DE = vdd;
+            //docP.VIGENCIA_AL = vad;
+            //docP.MATNR = "123";
+            //docP.MATKL = "001";
+            //docP.MONTO = 200.22M;
+            //docP.PORC_APOYO = 10;
+            //docP.MONTO_APOYO = 20.22M;
+            //docP.PRECIO_SUG = 100M;
+            //docP.VOLUMEN_EST = 300M;
+
+            //docP2.POS = 2;
+            //docP2.VIGENCIA_DE = vdd;
+            //docP2.VIGENCIA_AL = vad;
+            //docP2.MATNR = "456";
+            //docP2.MATKL = "001"; ;
+            //docP2.MONTO = 200.22M;
+            //docP2.PORC_APOYO = 10;
+            //docP2.MONTO_APOYO = 20.22M;
+            //docP2.PRECIO_SUG = 100M;
+            //docP2.VOLUMEN_EST = 300M;
+
+            doc.DOCUMENTOP = docs;
+
+            //var index = 0;
+
+            //ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("Countries[{0}]", index);
+            //return PartialView("~/Views/Shared/EditorTemplates/Country.cshtml", newCountry);
+            //ViewData.TemplateInfo.HtmlFieldPrefix = string.Format("DOCUMENTOP[{0}]", index);
+            //return PartialView("~/Views/cities/_PartialPageCityo.cshtml", newCountry);
+            return PartialView("~/Views/Solicitudes/_PartialDisTr.cshtml", doc);
         }
     }
 }

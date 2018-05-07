@@ -721,19 +721,30 @@ catch (Exception)
     {
         <script>
                     /**/
-                    M.toast({ html: '@ViewBag.MensajeS', classes: 'red' });
+                    M.toast({ html: '@ViewBag.MensajeS', classes: 'green' });
                     /**/
         </script>
     }
 }
-@if (@ViewBag.MensajeG != null)
+@if (@ViewBag.MensajeGE != null)
 {
-    if (@ViewBag.MensajeG != "")
+    if (@ViewBag.MensajeGE != "")
     {
         <script>
                     /**/
-                    M.toast({ html: '@ViewBag.MensajeG' });
+                    M.toast({ html: '@ViewBag.MensajeGE', classes: 'red' });
                     /**/
+        </script>
+    }
+}
+@if (@ViewBag.MensajeGI != null)
+{
+    if (@ViewBag.MensajeGI != "")
+    {
+        <script>
+                            /**/
+                    M.toast({ html: '@ViewBag.MensajeGI', classes: 'green' });
+                            /**/
         </script>
     }
 }
@@ -743,7 +754,7 @@ catch (Exception)
     {
         <script>
                     /**/
-                    M.toast({ html: '@ViewBag.MensajeC' });
+                    M.toast({ html: '@ViewBag.MensajeC', classes: 'green' });
                     /**/
         </script>
     }

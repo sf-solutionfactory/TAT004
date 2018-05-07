@@ -571,6 +571,7 @@
     <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_GALL" FromRole="GALL" ToRole="GALLT" />
     <NavigationProperty Name="TALLs" Relationship="Self.FK_TALL_GALL" FromRole="GALL" ToRole="TALL" />
     <NavigationProperty Name="CUENTAs" Relationship="TAT001Model.FK_CUENTA_GALL" FromRole="GALL" ToRole="CUENTA" />
+    <Property Name="GRUPO_ALL" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="GALLT">
     <Key>

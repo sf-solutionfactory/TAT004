@@ -503,6 +503,7 @@
     <EntitySetMapping Name="GALLs">
       <EntityTypeMapping TypeName="TAT001Model.GALL">
         <MappingFragment StoreEntitySet="GALL">
+          <ScalarProperty Name="GRUPO_ALL" ColumnName="GRUPO_ALL" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />

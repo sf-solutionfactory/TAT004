@@ -532,7 +532,7 @@
     <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\PRESUPUESTO_MOD.cs" />
-    <Compile Include="Models\SubirArchivo.cs" />
+    <Compile Include="Models\ArchivoContable.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\EncabezadoMateriales.cs" />
@@ -708,6 +708,7 @@
     <Content Include="Scripts\lang\EN.json" />
     <Content Include="Scripts\lang\PO.json" />
     <Content Include="Views\Listas\Relacionados.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialDisTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -794,7 +795,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64497</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:64497/</IISUrl>
+          <IISUrl>http://localhost:60621/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

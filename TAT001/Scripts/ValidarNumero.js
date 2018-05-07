@@ -50,7 +50,7 @@
             return;
         }
         //Para slash
-        if (e.keyCode === 111) {
+        if (e.keyCode === 111 || (e.shiftKey & e.keyCode === 55)) {
             return;
         }
 
@@ -66,7 +66,6 @@
         if (xx != "") {
             if (isDate(xx) === true) {
                 //alert("true");
-                $(this).val("");
             } else {
                 //alert("false");
                 $(this).val("");
