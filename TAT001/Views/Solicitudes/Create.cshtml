@@ -740,6 +740,36 @@
                             </div>
                         </div>
                     </div>
+                    @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+                        if (ViewBag.relacionadan != "" && archivos.Count > 0)
+                        {
+                            string[] nombrefile;
+                            <div class="card-panel">
+                                <h5>Documentos de Soporte @ViewBag.relacionadan</h5>                      
+                                <div class="row" style="margin-bottom:0">
+                                    @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                                        {
+                                            try
+                                            {
+                                                for (int i = 0; i < archivos.Count; i++)
+                                                {
+                                                    nombrefile = archivos[i].PATH.Split('\\');
+                                                                    <div class="file-field input-field">
+                                                                        <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
+                                                                        <div class="file-path-wrapper">
+                                                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                                        </div>
+                                                                    </div>
+                                                }
+                                            }
+                                            catch (Exception)
+                                            {
+                                            }
+                                        }
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
                 <div class="col s12 m6 l6">
                     <div class="card-panel">

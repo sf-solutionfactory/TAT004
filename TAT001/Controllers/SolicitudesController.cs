@@ -228,13 +228,14 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
                 
-                Session["rel"] = "2000000010";                
+                Session["rel"] = "2000000015";                
                 decimal rel = 0;
                 try
                 {
                     rel = Convert.ToDecimal(Session["rel"].ToString());
                     ViewBag.relacionada = "prelacionada";
                     ViewBag.relacionadan = rel+"";
+                    
                 }
                 catch
                 {
@@ -277,8 +278,8 @@ namespace TAT001.Controllers
                                     TEXT = g.DESCRIPCION + " " + gt.TXT50
                                 }).ToList();
 
-
-                if(rel > 0)
+                List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
+                if (rel > 0)
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
@@ -288,6 +289,7 @@ namespace TAT001.Controllers
                     {
                         ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
                         ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+                        archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
                         
 
                         List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();
@@ -329,10 +331,10 @@ namespace TAT001.Controllers
                     ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
                     ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
 
-                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();                    
                 }
 
-                
+                ViewBag.files = archivos;
 
                 //Select clasificación
                 //var id_clas = db.TALLs.Where(t => t.ACTIVO == true)
@@ -1705,14 +1707,18 @@ namespace TAT001.Controllers
 
             try
             {
-                if (!System.IO.File.Exists(pathToCheck))
+                using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
                 {
-                    //No existe, se necesita crear
-                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+                    if (!System.IO.File.Exists(pathToCheck))
+                    {
+                        //No existe, se necesita crear
+                        DirectoryInfo dir = new DirectoryInfo(pathToCheck);
 
-                    dir.Create();
+                        dir.Create();
 
+                    }
                 }
+                
                 //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
                 //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
                 //System.IO.File.Copy(copyFrom, savePath);
