@@ -26,6 +26,8 @@ public partial class IIMPUESTO
 
     public Nullable<decimal> KBETR { get; set; }
 
+    public bool ACTIVO { get; set; }
+
 
 
     public virtual IMPUESTO IMPUESTO { get; set; }

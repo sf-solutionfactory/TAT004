@@ -35,7 +35,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -48,7 +48,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    ////return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -119,7 +119,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title += " ";
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -140,7 +140,7 @@ namespace TAT001.Controllers
                     else
                     {
                         //ViewBag.pais = "mx.svg";
-                        return RedirectToAction("Pais", "Home");
+                        ////return RedirectToAction("Pais", "Home");
                     }
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -188,7 +188,8 @@ namespace TAT001.Controllers
         }
 
         // GET: Solicitudes/Create
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult Create(string id_d, string tsol)
         {
 
             DOCUMENTO d = new DOCUMENTO();
@@ -202,7 +203,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -214,8 +215,8 @@ namespace TAT001.Controllers
                 }
                 catch
                 {
-                    ViewBag.pais = "mx.svg";
-                    //return RedirectToAction("Pais", "Home");
+                    //ViewBag.pais = "mx.svg";
+                    return RedirectToAction("Pais", "Home");//
                 }
                 //Tipo de solicitud
                 //try
@@ -228,69 +229,123 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
 
-                //Session["rel"] = "2000000010";
+                Session["rel"] = id_d;
                 decimal rel = 0;
                 try
                 {
                     rel = Convert.ToDecimal(Session["rel"].ToString());
                     ViewBag.relacionada = "prelacionada";
+                    ViewBag.relacionadan = rel + "";
+
                 }
                 catch
                 {
                     rel = 0;
                     ViewBag.relacionada = "";
+                    ViewBag.relacionadan = "";
                 }
 
 
                 Session["spras"] = user.SPRAS_ID;
 
+                List<TAT001.Models.TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
                 //tipo de solicitud
-                var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                //var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                list_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
                                     .Join(
                                     db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                     sol => sol.ID,
                                     solt => solt.TSOL_ID,
-                                    (sol, solt) => new
+                                    (sol, solt) => new TSOLT_MOD
                                     {
-                                        solt.SPRAS_ID,
-                                        solt.TSOL_ID,
+                                        SPRAS_ID = solt.SPRAS_ID,
+                                        TSOL_ID = solt.TSOL_ID,
                                         TEXT = solt.TSOL_ID + " " + solt.TXT020
                                     })
                                 .ToList();
 
 
+                SOCIEDAD id_bukrs = new SOCIEDAD();
+                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
 
+                List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
                 //Grupos de solicitud
-                var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
+                //var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
+                list_grupo = db.GALLs.Where(g => g.ACTIVO == true)
                                 .Join(
                                 db.GALLTs.Where(gt => gt.SPRAS_ID == user.SPRAS_ID),
                                 g => g.ID,
                                 gt => gt.GALL_ID,
-                                (g, gt) => new
+                                (g, gt) => new GALL_MOD
                                 {
-                                    gt.SPRAS_ID,
-                                    gt.GALL_ID,
+                                    SPRAS_ID = gt.SPRAS_ID,
+                                    GALL_ID = gt.GALL_ID,
                                     TEXT = g.DESCRIPCION + " " + gt.TXT50
                                 }).ToList();
 
-
+                List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
                 if (rel > 0)
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
+                    d.DOCUMENTO_REF = rel;
 
                     if (d != null)
                     {
-                        ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
-                        ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.TSOL_ID);
+
+                        d.TSOL_ID = tsol;
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                        ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+                        ViewBag.TSOL_IDI = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault().TEXT;
+                        TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
+                        ViewBag.GALL_IDI = gall_mod.TEXT;
+                        ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
+                        archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
+
+                        List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();
+                        d.NUM_DOC = 0;
+                        List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
+
+                        for (int j = 0; j < docpl.Count; j++)
+                        {
+                            try
+                            {
+                                DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
+                                docP.NUM_DOC = d.NUM_DOC;
+                                docP.POS = docpl[j].POS;
+                                docP.MATNR = docpl[j].MATNR;
+                                docP.MATKL = docpl[j].MATKL;
+                                docP.MATKL_ID = docpl[j].MATKL;
+                                docP.CANTIDAD = 1;
+                                docP.MONTO = docpl[j].MONTO;
+                                docP.PORC_APOYO = docpl[j].PORC_APOYO;
+                                docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
+                                docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
+                                docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+
+                                docsp.Add(docP);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+
+                        d.DOCUMENTOP = docsp;
                     }
                 }
                 else
                 {
-                    ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
-                    ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
+                    ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
+                    ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
+                    ViewBag.TSOL_IDI = "";
+                    ViewBag.GALL_IDI = "";
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
                 }
 
-
+                ViewBag.files = archivos;
 
                 //Select clasificación
                 //var id_clas = db.TALLs.Where(t => t.ACTIVO == true)
@@ -304,9 +359,7 @@ namespace TAT001.Controllers
                 List<TAT001.Entities.GALL> id_clas = new List<TAT001.Entities.GALL>();
                 ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50");
 
-
                 //Datos del país
-                var id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
                 var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();
 
                 var id_states = (from st in db.STATES
@@ -320,7 +373,7 @@ namespace TAT001.Controllers
                                      st.COUNTRY_ID
                                  }).ToList();
 
-                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
+
 
                 List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
 
@@ -329,7 +382,7 @@ namespace TAT001.Controllers
                 ViewBag.PAIS_ID = id_pais;
                 ViewBag.STATE_ID = "";// new SelectList(id_states, "ID", dataTextField: "NAME");
                 ViewBag.CITY_ID = "";// new SelectList(id_city, "ID", dataTextField: "NAME");
-                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS);
+                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS); //Duda si cambia en la relacionada
 
                 //Información del cliente
                 var id_clientes = db.CLIENTEs.Where(c => c.LAND.Equals(p) && c.ACTIVO == true).ToList();
@@ -438,12 +491,43 @@ namespace TAT001.Controllers
                         ViewBag.pais = "mx.svg";
                         //return RedirectToAction("Pais", "Home");
                     }
+                    try
+                    {
+                        decimal refe = Convert.ToDecimal(Session["rel"].ToString());
+                        dOCUMENTO.DOCUMENTO_REF = refe;
+                        Session["rel"] = null;
+                    }
+                    catch (Exception e)
+                    {
+                        dOCUMENTO.DOCUMENTO_REF = null;
+                    }
+                    DOCUMENTO d = new DOCUMENTO();
+                    if (dOCUMENTO.DOCUMENTO_REF > 0)
+                    {
+                        d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).FirstOrDefault();
+                        //dOCUMENTO.TSOL_ID = d.TSOL_ID;
+                        id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID).FirstOrDefault();
+                        dOCUMENTO.ESTADO = d.ESTADO;
+                        dOCUMENTO.CIUDAD = d.CIUDAD;
+                        dOCUMENTO.PAYER_ID = d.PAYER_ID;
+                        dOCUMENTO.CONCEPTO = d.CONCEPTO;
+                        dOCUMENTO.NOTAS = d.NOTAS;
+                        dOCUMENTO.FECHAI_VIG = d.FECHAI_VIG;
+                        dOCUMENTO.FECHAF_VIG = d.FECHAF_VIG;
+                        dOCUMENTO.PAYER_NOMBRE = d.PAYER_NOMBRE;
+                        dOCUMENTO.PAYER_EMAIL = d.PAYER_EMAIL;
+                        dOCUMENTO.TIPO_CAMBIO = d.TIPO_CAMBIO;
+                        dOCUMENTO.GALL_ID = d.GALL_ID;
+                    }
+                    else
+                    {
+                        id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                    }
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
 
-                    //Obtener SOCIEDAD_ID 
-                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                    //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
 
                     //Obtener el país
@@ -562,7 +646,7 @@ namespace TAT001.Controllers
                             docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
 
                             db.DOCUMENTOPs.Add(docP);
-                            db.SaveChanges();
+                            db.SaveChanges();//RSG
                         }
                         catch (Exception e)
                         {
@@ -699,8 +783,8 @@ namespace TAT001.Controllers
                             f.ESTATUS = "I";
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
-                            int c = pf.procesa(f);
-                            if (c == 1)
+                            string c = pf.procesa(f);
+                            if (c == "1")
                                 return RedirectToAction("Enviar", "Mails", new { id = f.NUM_DOC, index = true });
                         }
                     }
@@ -724,7 +808,6 @@ namespace TAT001.Controllers
 
                 }
             }
-
             //ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION");
             //ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION");
             //ViewBag.USUARIOC_ID = new SelectList(db.USUARIOs, "ID", "NOMBRE");
@@ -1654,14 +1737,18 @@ namespace TAT001.Controllers
 
             try
             {
-                if (!System.IO.File.Exists(pathToCheck))
+                using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
                 {
-                    //No existe, se necesita crear
-                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+                    if (!System.IO.File.Exists(pathToCheck))
+                    {
+                        //No existe, se necesita crear
+                        DirectoryInfo dir = new DirectoryInfo(pathToCheck);
 
-                    dir.Create();
+                        dir.Create();
 
+                    }
                 }
+
                 //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
                 //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
                 //System.IO.File.Copy(copyFrom, savePath);

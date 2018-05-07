@@ -95,7 +95,6 @@
     <button id="dialogo" data-target="modal1" class="btn modal-trigger" style="display:none;"></button>
 
     <div class=" row right-align">
-        <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
         <input id="Button2" class="btn-small blue-grey" type="submit" value="Cargar" name="enviar" />
         <hr />
     </div>
@@ -229,7 +228,6 @@
                         {
                             <div class="input-field col s5 f" name="periodo">
                                 <select multiple name="periodocpt">
-                                    <option value="" disabled></option>
                                     <option value="1" selected>Enero</option>
                                     <option value="2" selected>Febrero</option>
                                     <option value="3" selected>Marzo</option>
@@ -424,7 +422,7 @@
             @using (Html.BeginForm())
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
+                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -432,6 +430,7 @@
                         @Html.HiddenFor(m => Model[i])
                         }
                         }*@
+                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
                 </div>
             }
             <div class="row" style="margin-bottom:0;">

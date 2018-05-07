@@ -45,7 +45,7 @@ namespace TAT001.Models
                             material = lines[5].Trim();
                             pRESUPUESTOP.ANIO = lines[1].Trim();
                             pRESUPUESTOP.POS = i;
-                            pRESUPUESTOP.MES = lines[0].Trim();
+                            pRESUPUESTOP.MES = mes(lines[0].Trim());
                             pRESUPUESTOP.VERSION = lines[2].Trim();
                             if (lines[3].Length == 12)
                             {
@@ -106,7 +106,7 @@ namespace TAT001.Models
                             i++;
                             pRESUPUESTOP.ANIO = lines[1].Trim();
                             pRESUPUESTOP.POS = i;
-                            pRESUPUESTOP.MES = lines[0].Trim();
+                            pRESUPUESTOP.MES = mes(lines[0].Trim());
                             pRESUPUESTOP.VERSION = lines[2].Trim();
                             if (lines[3].Length == 12)
                             {
@@ -121,7 +121,6 @@ namespace TAT001.Models
                             pRESUPUESTOP.MATERIAL = lines[5].Trim();
                             pRESUPUESTOP.BANNER = lines[6].Trim();
                             decide(lines[7].Trim(), ref pRESUPUESTOP, Convert.ToDouble(lines[8].Trim()));
-
                         }
                         else
                         {
@@ -170,12 +169,12 @@ namespace TAT001.Models
                 pRESUPUESTOP = new PRESUPUESTOP();
                 if (pRESUPUESTOPS.Count == 0)
                 {
-                    mensaje = "No se encontraron datos en el archivo CPT de acuerdo al filtro de datos";
+                    mensaje = mensajes(5);//"No se encontraron datos en el archivo CPT de acuerdo al filtro de datos";
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                mensaje = "Formato de archivo para carga CPT incorrecto";
+                mensaje = mensajes(7);//"Formato de archivo para carga CPT incorrecto";
             }
             return pRESUPUESTOPS;
         }
@@ -323,12 +322,12 @@ namespace TAT001.Models
                 }
                 if (pRESUPUESTOPS.Count == 0)
                 {
-                    mensaje = "No se encontraron datos en el archivo SAP de acuerdo al filtro de datos";
+                    mensaje = mensajes(8);//"No se encontraron datos en el archivo SAP de acuerdo al filtro de datos";
                 }
             }
             catch (Exception)
             {
-                mensaje = "Formato de archivo para carga de SAP es incorrecto.";
+                mensaje = mensajes(9); //"Formato de archivo para carga de SAP es incorrecto.";
             }
 
             return pRESUPUESTOPS;
@@ -353,17 +352,17 @@ namespace TAT001.Models
                             presupuesto.presupuestoCPT[i].ID = ide;
                         }
                         db.BulkInsert(presupuesto.presupuestoCPT);
-                        //presupuesto.bannerscanal = db.CSP_BANNERSINCANAL().ToList();
-                        mensaje = "Guardado Correctamente CPT.";
+                        presupuesto.bannerscanal = db.CSP_BANNERSINCANAL().ToList();
+                        mensaje = mensajes(15); //"Guardado Correctamente CPT.";
                     }
                     else
                     {
-                        mensaje = "El usuario con el que se esta cargando los datos no exitene en el sistema.";
+                        mensaje = mensajes(10); //"El usuario con el que se esta cargando los datos no exitene en el sistema.";
                     }
                 }
                 else
                 {
-                    mensaje = "Ocurrio algo mientra se guardaba.";
+                    mensaje = mensajes(11); //"Ocurrio algo mientra se guardaba.";
                 }
             }
             if (presupuesto.presupuestoSAP.Count > 0)
@@ -381,16 +380,16 @@ namespace TAT001.Models
                             presupuesto.presupuestoSAP[i].ID = ide;
                         }
                         db.BulkInsert(presupuesto.presupuestoSAP);
-                        mensaje = "Guardado Correctamente SAP.";
+                        mensaje = mensajes(12); //"Guardado Correctamente SAP.";
                     }
                     else
                     {
-                        mensaje = "El usuario con el que se esta cargando los datos no exitene en el sistema.";
+                        mensaje = mensajes(10); //"El usuario con el que se esta cargando los datos no exitene en el sistema.";
                     }
                 }
                 else
                 {
-                    mensaje = "Ocurrio algo mientra se guardaba.";
+                    mensaje = mensajes(13); //"Ocurrio algo mientra se guardaba.";
                 }
             }
             return mensaje;
@@ -503,10 +502,10 @@ namespace TAT001.Models
                     {
                         if (periodos != null)
                         {
-                            if (cpt)
-                            {
-                                periodo = mes(periodo);
-                            }
+                            //if (cpt)
+                            //{
+                            //    periodo = mes(periodo);
+                            //}
                             pre = periodos.Where(x => x == periodo).ToArray();
                             if (pre.Length > 0)
                             {
@@ -600,7 +599,8 @@ namespace TAT001.Models
                 {
                     for (int i = 0; i < periodos.Length; i++)
                     {
-                        periodo += myTI.ToTitleCase(formatoFecha.GetMonthName(int.Parse(periodos[i]))).Substring(0, 3) + ",";
+                        //periodo += myTI.ToTitleCase(formatoFecha.GetMonthName(int.Parse(periodos[i]))).Substring(0, 3) + ",";
+                        periodo += periodos[i] + ",";
                     }
                 }
             }
@@ -624,8 +624,7 @@ namespace TAT001.Models
         public string bannres(string ruta)
         {
 
-            //List<string> bannerscanal = db.CSP_BANNERSINCANAL().ToList();
-            List<string> bannerscanal = new List<string>();
+            List<string> bannerscanal = db.CSP_BANNERSINCANAL().ToList();
             if (bannerscanal.Count > 0)
             {
                 generarExcelBanner(bannerscanal, ruta);
@@ -633,7 +632,7 @@ namespace TAT001.Models
             }
             else
             {
-                return "No se pudo obtener los banners sin canal";
+                return mensajes(14); //"No se pudo obtener los banners sin canal";
             }
         }
         public void generarExcelBanner(List<string> banners, string ruta)

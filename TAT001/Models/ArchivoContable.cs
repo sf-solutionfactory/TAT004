@@ -9,7 +9,7 @@ using System.Web;
 namespace TAT001.Models
 {
     public class ArchivoContable
-    {        
+    {
         public string generarArchivo(decimal docum)
         {
             TAT001Entities db = new TAT001Entities();
@@ -58,15 +58,15 @@ namespace TAT001.Models
                 }
                 if (tab.FECHA_DOCU != "D")
                 {
-                    doc.FECHAD = fecha(tab.FECHA_DOCU);
+                    doc.FECHAD = Fecha(tab.FECHA_DOCU);
                 }
                 //if (tab.FECHA_CONTAB != "D")
                 //{
-                    doc.FECHAC = fecha(tab.FECHA_CONTAB);
+                doc.FECHAC = Fecha(tab.FECHA_CONTAB);
                 //}
                 List<DetalleContab> det = new List<DetalleContab>();
-                msj = detalle(doc, ref det);
-                if (msj != "")
+                msj = Detalle(doc, ref det, tab);
+                if (msj != "1")
                 {
                     return msj;
                 }
@@ -75,9 +75,9 @@ namespace TAT001.Models
                 using (StreamWriter sw = new StreamWriter(url))
                 {
                     CONPOSAPH dir = tab;
-                    sw.WriteLine("SA" + "|" +
+                    sw.WriteLine(tab.TIPO_DOC + "|" +
                         dir.SOCIEDAD.Trim() + "|" + String.Format("{0:MM.dd.yyyy}", doc.FECHAC).Replace(".", "") //+ "|"
-                        //+ String.Format("{0:dd.MM.yyyy}", doc.FECHAD) 
+                                                                                                                 //+ String.Format("{0:dd.MM.yyyy}", doc.FECHAD) 
                         + "|" + doc.MONEDA_ID.Trim() + "|" + dir.HEADER_TEXT.Trim() + "|"
                         //+ String.Format("{0:dd.MM.yyyy}", dir.FECHA_INIVIG) + "|" + String.Format("{0:dd.MM.yyyy}", dir.FECHA_FINVIG) + "|" 
                         + dir.REFERENCIA.Trim() + "|" + dir.PAIS.Trim() + "|" + dir.NOTA.Trim() + "|" + dir.CORRESPONDENCIA.Trim() + "|" + dir.CALC_TAXT.Trim() + "|");
@@ -119,14 +119,14 @@ namespace TAT001.Models
                     }
                     sw.Close();
                 }
-                return "";
+                return "correcto";
             }
             catch (Exception e)
             {
                 return "Error al generar el documento contable";
             }
         }
-        private DateTime fecha(string id_fecha)
+        private DateTime Fecha(string id_fecha)
         {
             DateTime fecha = DateTime.Today;
             switch (id_fecha)
@@ -141,7 +141,7 @@ namespace TAT001.Models
             }
             return fecha;
         }
-        private string detalle(DOCUMENTO doc, ref List<DetalleContab> contas)
+        private string Detalle(DOCUMENTO doc, ref List<DetalleContab> contas, CONPOSAPH enca)
         {
             contas = new List<DetalleContab>();
             TAT001Entities db = new TAT001Entities();
@@ -152,7 +152,7 @@ namespace TAT001.Models
             {
                 try
                 {
-                    conp = db.CONPOSAPPs.ToList();
+                    conp = db.CONPOSAPPs.Where(x => x.CONSECUTIVO == enca.CONSECUTIVO).ToList();
                 }
                 catch (Exception f)
                 {
@@ -176,15 +176,15 @@ namespace TAT001.Models
                 }
                 for (int i = 0; i < conp.Count; i++)
                 {
-                    if (conp[i].POSTING_KEY == "50")
+                    if (conp[i].POSICION == 1)
                     {
                         DetalleContab conta = new DetalleContab();
-                        conta.G = "G";
+                        conta.G = enca.CLASE1;
                         conta.ACCOUNT = cuent.ABONO.ToString();
                         conta.BALANCE = doc.MONTO_DOC_MD.ToString();
                         conta.COMP_CODE = doc.SOCIEDAD_ID;
-                        conta.BUS_AREA = "KLA";
-                        conta.POST_KEY = "50";
+                        conta.BUS_AREA = enca.CLASE2;
+                        conta.POST_KEY = conp[i].POSTING_KEY;
                         conta.TEXT = doc.CONCEPTO;
                         contas.Add(conta);
                     }
@@ -197,10 +197,10 @@ namespace TAT001.Models
                             {
                                 decimal total = Convert.ToDecimal(cuent.ABONO) - Convert.ToDecimal(cuent.LIMITE);
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = "G";
+                                conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.BUS_AREA = "KLA";
-                                conta.POST_KEY = "40";
+                                conta.G = enca.CLASE2;
+                                conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = cuent.LIMITE.ToString();
                                 conta.TEXT = doc.CONCEPTO;
@@ -214,10 +214,10 @@ namespace TAT001.Models
                                 conta.CUSTOMER = doc.PAYER_ID;
                                 contas.Add(conta);
                                 DetalleContab conta2 = new DetalleContab();
-                                conta2.G = "G";
+                                conta.G = enca.CLASE1;
                                 conta2.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta2.BUS_AREA = "KLA";
-                                conta2.POST_KEY = "40";
+                                conta.G = enca.CLASE2;
+                                conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta2.ACCOUNT = cuent.CARGO.ToString();
                                 conta2.BALANCE = cuent.LIMITE.ToString();
                                 conta2.TEXT = doc.CONCEPTO;
@@ -234,10 +234,10 @@ namespace TAT001.Models
                             else
                             {
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = "G";
+                                conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.BUS_AREA = "KLA";
-                                conta.POST_KEY = "40";
+                                conta.G = enca.CLASE2;
+                                conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = cuent.ABONO.ToString();
                                 conta.TEXT = doc.CONCEPTO;
@@ -257,10 +257,10 @@ namespace TAT001.Models
                             for (int j = 0; j < docp.Count; j++)
                             {
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = "G";
+                                conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.BUS_AREA = "KLA";
-                                conta.POST_KEY = "40";
+                                conta.G = enca.CLASE2;
+                                conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
                                 conta.TEXT = doc.CONCEPTO;
@@ -278,7 +278,7 @@ namespace TAT001.Models
                         }
                     }
                 }
-                return "";
+                return "1";
             }
             catch (Exception e)
             {
@@ -319,5 +319,5 @@ namespace TAT001.Models
         public string BASE_UNIT;
         public string AMOUNT_LC;
     }
-    
+
 }

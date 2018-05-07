@@ -43,7 +43,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    ////return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
 
@@ -128,8 +128,15 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                var p = db.PAIS.Where(a => a.ACTIVO.Equals(true));
+                //var p = db.PAIS.Where(a => a.ACTIVO.Equals(true));
 
+                //ViewBag.creador = db.CREADORs.Where(a => a.ID.Equals(u) & a.ACTIVO == true).ToList();
+
+                var p = from P in db.PAIS
+                    join C in db.CREADORs on P.LAND equals C.LAND
+                    where P.ACTIVO == true
+                    & C.ID == u & C.ACTIVO == true
+                    select P;
 
                 return View(p.ToList());
             }

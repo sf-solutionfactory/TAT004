@@ -272,17 +272,17 @@
                 <div class="input-field col s2 f" name="canalFltr">
                     <select multiple id="canalFltr" name="filtro" col="0"></select>
                     <label>Canal</label>
-                </div>                
+                </div>
                 <div class="input-field col s2 f" name="totCanFltr">
-                    <select multiple id="totCanFltr" name="filtro" col="2"></select>
+                    <select multiple id="totCanFltr" name="filtro" col="1"></select>
                     <label>Total Canal</label>
                 </div>
                 <div class="input-field col s2 f" name="bannerFltr">
-                    <select multiple id="bannerFltr" name="filtro" col="3"></select>
+                    <select multiple id="bannerFltr" name="filtro" col="2"></select>
                     <label>Banner</label>
-                </div>                
+                </div>
                 <div class="input-field col s2 f" name="totBannerFltr">
-                    <select multiple id="totBannerFltr" name="filtro" col="5"></select>
+                    <select multiple id="totBannerFltr" name="filtro" col="3"></select>
                     <label>PPTO Banner</label>
                 </div>
                 <div class="input-field col s2 f" name="periodoFltr">
@@ -290,55 +290,55 @@
                     <label>Periodo</label>
                 </div>
                 <div class="input-field col s2 f" name="VVX17Fltr">
-                    <select multiple id="VVX17Fltr" name="filtro" col="6"></select>
+                    <select multiple id="VVX17Fltr" name="filtro" col="5"></select>
                     <label>VVX17 - Commercial Discounts</label>
                 </div>
                 <div class="input-field col s2 f" name="CSHDCFltr">
-                    <select multiple id="CSHDCFltr" name="filtro" col="7"></select>
+                    <select multiple id="CSHDCFltr" name="filtro" col="6"></select>
                     <label>CSHDC - Cash Discounts</label>
                 </div>
                 <div class="input-field col s2 f" name="RECUNFltr">
-                    <select multiple id="RECUNFltr" name="filtro" col="8"></select>
+                    <select multiple id="RECUNFltr" name="filtro" col="7"></select>
                     <label>RECUN - Unsaleables</label>
                 </div>
                 <div class="input-field col s2 f" name="DSTRBFltr">
-                    <select multiple id="DSTRBFltr" name="filtro" col="9"></select>
+                    <select multiple id="DSTRBFltr" name="filtro" col="8"></select>
                     <label>DSTRB - Distribution Commission</label>
                 </div>
                 <div class="input-field col s2 f" name="OTHTAFltr">
-                    <select multiple id="OTHTAFltr" name="filtro" col="10"></select>
+                    <select multiple id="OTHTAFltr" name="filtro" col="9"></select>
                     <label>OTHTA - Logistic Discount</label>
                 </div>
                 <div class="input-field col s2 f" name="ADVERFltr">
-                    <select multiple id="ADVERFltr" name="filtro" col="11"></select>
+                    <select multiple id="ADVERFltr" name="filtro" col="10"></select>
                     <label>ADVER - Trade Promotion-Other</label>
                 </div>
                 <div class="input-field col s2 f" name="CORPMFltr">
-                    <select multiple id="CORPMFltr" name="filtro" col="12"></select>
+                    <select multiple id="CORPMFltr" name="filtro" col="11"></select>
                     <label>CORPM - Booklets and Sponsorship</label>
                 </div>
                 <div class="input-field col s2 f" name="POPFltr">
-                    <select multiple id="POPFltr" name="filtro" col="13"></select>
+                    <select multiple id="POPFltr" name="filtro" col="12"></select>
                     <label>POP - Store openings and Info Exchange</label>
                 </div>
                 <div class="input-field col s2 f" name="PMVARFltr">
-                    <select multiple id="PMVARFltr" name="filtro" col="14"></select>
+                    <select multiple id="PMVARFltr" name="filtro" col="13"></select>
                     <label>PMVAR - Growth Program</label>
                 </div>
                 <div class="input-field col s2 f" name="CONPRFltr">
-                    <select multiple id="CONPRFltr" name="filtro" col="15"></select>
+                    <select multiple id="CONPRFltr" name="filtro" col="14"></select>
                     <label>CONPR - Everyday Low Price</label>
                 </div>
                 <div class="input-field col s2 f" name="RSRDVFltr">
-                    <select multiple id="RSRDVFltr" name="filtro" col="16"></select>
+                    <select multiple id="RSRDVFltr" name="filtro" col="15"></select>
                     <label>RSRDV - Rollbacks</label>
                 </div>
                 <div class="input-field col s2 f" name="SPAFltr">
-                    <select multiple id="SPAFltr" name="filtro" col="17"></select>
+                    <select multiple id="SPAFltr" name="filtro" col="16"></select>
                     <label>SPA - Cleareance</label>
                 </div>
                 <div class="input-field col s2 f" name="FREEGFltr">
-                    <select multiple id="FREEGFltr" name="filtro" col="18"></select>
+                    <select multiple id="FREEGFltr" name="filtro" col="17"></select>
                     <label>FREEG - Free Goods</label>
                 </div>
                 @if (ViewBag.chkcpt == null)
@@ -389,10 +389,10 @@
             <table class="centered mdl-data-table cent table" id="table">
                 <thead>
                     <tr>
-                        <th>Canal</th>                        
+                        <th>Canal</th>
                         <th>Total Canal</th>
-                        <th>Banner</th>                        
-                        <th>PPTO Banner</th>                        
+                        <th>Banner</th>
+                        <th>PPTO Banner</th>
                         @*<th>GRSLS</th>
                             <th>RECSL</th>
                             <th>INDLB</th>
@@ -429,6 +429,8 @@
                             <th>OHV  </th>*@
                         @if (ViewBag.chkcpt == null)
                         {
+                            <th>Allowance Registros Manuales</th>
+                            <th>Allowance Facturados</th>
                             <th>Consumido</th>
                             <th>PPTO Disponible</th>
                         }
@@ -437,72 +439,76 @@
                 <tbody>
                     @for (int i = 0; i < Model.presupuesto.Count; i++)
                     {
-                        <tr>
-                            <td>@Model.presupuesto[i].CANAL<br>@Model.presupuesto[i].CDESCRIPCION</td>                            
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTOC)</td>
-                            <td>@Model.presupuesto[i].BANNER<br>@Model.presupuesto[i].BDESCRIPCION</td>                               
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTO)</td>
-                            <td>@Model.presupuesto[i].PERIODO.Trim().PadLeft(2, '0')</td>
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECSL)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].INDLB)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FRGHT)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PURCH)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RAWMT)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGMT)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDV)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDF)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DIRLB)</td>*@
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].VVX17)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].CSHDC)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].RECUN)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].DSTRB)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].OTHTA)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].ADVER)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].CORPM)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].POP)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].PMVAR)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONPR)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].RSRDV)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].SPA)</td>
-                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].FREEG)</td>
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGDS)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NETLB)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLLBS)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLCAS)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PRCAS)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NPCAS)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].ILVAR)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].BILBK)</td>
-                                <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHVV)</td>*@
-                            @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OHV)</td>*@
-                            @if (ViewBag.chkcpt == null)
-                            {
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLB)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLF)</td>
-                                if (Model.presupuesto[i].CONSU > 0)
+
+                        if (Model.presupuesto[i].PPTO != 0)
+                        {
+                            <tr>
+                                <td>@Model.presupuesto[i].CANAL<br>@Model.presupuesto[i].CDESCRIPCION</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTOC)</td>
+                                <td>@Model.presupuesto[i].BANNER<br>@Model.presupuesto[i].BDESCRIPCION</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTO)</td>
+                                <td>@Model.presupuesto[i].PERIODO.Trim().PadLeft(2, '0')</td>
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECSL)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].INDLB)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].FRGHT)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PURCH)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RAWMT)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGMT)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDV)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDF)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DIRLB)</td>*@
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].VVX17)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CSHDC)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].RECUN)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].DSTRB)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].OTHTA)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].ADVER)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CORPM)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].POP)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PMVAR)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONPR)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].RSRDV)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].SPA)</td>
+                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].FREEG)</td>
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGDS)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NETLB)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLLBS)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLCAS)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PRCAS)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NPCAS)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].ILVAR)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].BILBK)</td>
+                                    <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHVV)</td>*@
+                                @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OHV)</td>*@
+                                @if (ViewBag.chkcpt == null)
                                 {
-                                    <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
-                                }
-                                else if (Model.presupuesto[i].CONSU == 0)
-                                {
-                                    Model.presupuesto[i].CONSU = Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF);
+                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLB)</td>
+                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLF)</td>
                                     if (Model.presupuesto[i].CONSU > 0)
                                     {
-                                        <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                        <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
+                                    }
+                                    else if (Model.presupuesto[i].CONSU == 0)
+                                    {
+                                        Model.presupuesto[i].CONSU = Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF);
+                                        if (Model.presupuesto[i].CONSU > 0)
+                                        {
+                                            <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                        }
                                     }
                                     else
                                     {
-                                        <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                        <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
                                     }
+                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].TOTAL - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
                                 }
-                                else
-                                {
-                                    <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
-                                }
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].TOTAL - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
-                            }
-                        </tr>
+                            </tr>
+                        }
                     }
                 </tbody>
                 <tfoot>

@@ -10,9 +10,9 @@ namespace TAT001.Services
 {
     public class ProcesaFlujo
     {
-        public int procesa(FLUJO f)
+        public string procesa(FLUJO f)
         {
-            int correcto = 0;
+            string correcto = String.Empty;
             TAT001Entities db = new TAT001Entities();
             FLUJO actual = new FLUJO();
             if (f.ESTATUS.Equals("I"))//---------------------------NUEVO REGISTRO
@@ -46,7 +46,7 @@ namespace TAT001.Services
                     DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                     d.ESTATUS_WF = "A";
                     if (paso_a.EMAIL.Equals("X"))
-                        correcto = 2;
+                        correcto = "2";
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace TAT001.Services
 
                     db.FLUJOes.Add(nuevo);
                     if (paso_a.EMAIL.Equals("X"))
-                        correcto = 1;
+                        correcto = "1";
                     d.ESTATUS_WF = "P";
                     db.Entry(d).State = EntityState.Modified;
 
@@ -81,7 +81,7 @@ namespace TAT001.Services
                 actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
 
                 if (actual.ESTATUS.Equals("A"))
-                    return 1;//-----------------YA FUE PROCESADA
+                    return "1";//-----------------YA FUE PROCESADA
                 else
                 {
                     var wf = actual.WORKFP;
@@ -149,7 +149,7 @@ namespace TAT001.Services
                                         //DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                                         d.ESTATUS_WF = "A";
                                         if (paso_a.EMAIL.Equals("X"))
-                                            correcto = 2;
+                                            correcto = "2";
                                     }
                                     else
                                     {
@@ -188,7 +188,7 @@ namespace TAT001.Services
 
                                         db.FLUJOes.Add(nuevo);
                                         if (paso_a.EMAIL.Equals("X"))
-                                            correcto = 1;
+                                            correcto = "1";
                                     }
                                 }
                                 //else if(nuevo.DETPOS == 99)
@@ -205,7 +205,7 @@ namespace TAT001.Services
 
                                     db.FLUJOes.Add(nuevo);
                                     if (paso_a.EMAIL.Equals("X"))
-                                        correcto = 1;
+                                        correcto = "1";
 
                                     d.ESTATUS_WF = "P";
                                 }
@@ -224,7 +224,7 @@ namespace TAT001.Services
                                 ArchivoContable sa = new ArchivoContable();
                                 string file = sa.generarArchivo(d.NUM_DOC);
 
-                                if (file == "")
+                                if (file == "correcto")
                                 {
                                     next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
 
@@ -239,6 +239,7 @@ namespace TAT001.Services
                                     nuevo.FECHAM = DateTime.Now;
 
                                     d.ESTATUS = "P";
+                                    correcto = file;
 
                                     db.FLUJOes.Add(nuevo);
                                     db.SaveChanges();
@@ -247,6 +248,7 @@ namespace TAT001.Services
                                 else
                                 {
                                     ban = false;
+                                    correcto = file;
                                 }
                             }
                         }
@@ -271,7 +273,7 @@ namespace TAT001.Services
                 WORKFP next = new WORKFP();
                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_r).FirstOrDefault();
 
-                correcto = 3;
+                correcto = "3";
                 actual.ESTATUS = f.ESTATUS;
                 actual.FECHAM = f.FECHAM;
                 actual.COMENTARIO = f.COMENTARIO;
@@ -308,7 +310,7 @@ namespace TAT001.Services
             if (false)
             {
                 if (actual.ESTATUS.Equals("A"))
-                    return 1;//Ya fue procesada
+                    return "1";//Ya fue procesada
                 else
                 {
                     if (actual.ESTATUS.Equals("I"))
@@ -379,7 +381,7 @@ namespace TAT001.Services
                                         //DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                                         d.ESTATUS_WF = "A";
                                         if (paso_a.EMAIL.Equals("X"))
-                                            correcto = 2;
+                                            correcto = "2";
                                     }
                                     else
                                     {
@@ -413,7 +415,7 @@ namespace TAT001.Services
 
                                         db.FLUJOes.Add(nuevo);
                                         if (paso_a.EMAIL.Equals("X"))
-                                            correcto = 1;
+                                            correcto = "1";
                                     }
                                 }
                                 //else if(nuevo.DETPOS == 99)
@@ -429,7 +431,7 @@ namespace TAT001.Services
 
                                     db.FLUJOes.Add(nuevo);
                                     if (paso_a.EMAIL.Equals("X"))
-                                        correcto = 1;
+                                        correcto = "1";
 
                                 }
                                 db.SaveChanges();
@@ -439,7 +441,7 @@ namespace TAT001.Services
                             {
                                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_r).FirstOrDefault();
 
-                                correcto = 3;
+                                correcto = "3";
                                 actual.ESTATUS = f.ESTATUS;
                                 actual.FECHAM = f.FECHAM;
                                 actual.COMENTARIO = f.COMENTARIO;
@@ -486,7 +488,7 @@ namespace TAT001.Services
                                     DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                                     d.ESTATUS_WF = "A";
                                     if (paso_a.EMAIL.Equals("X"))
-                                        correcto = 2;
+                                        correcto = "2";
                                 }
                                 else
                                 {
@@ -528,7 +530,7 @@ namespace TAT001.Services
 
                                     db.FLUJOes.Add(nuevo);
                                     if (paso_a.EMAIL.Equals("X"))
-                                        correcto = 1;
+                                        correcto = "1";
                                     d.ESTATUS_WF = "P";
                                     db.Entry(d).State = EntityState.Modified;
                                 }
@@ -539,7 +541,7 @@ namespace TAT001.Services
                             {
                                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_r).FirstOrDefault();
 
-                                correcto = 3;
+                                correcto = "3";
                                 actual.ESTATUS = f.ESTATUS;
                                 actual.FECHAM = f.FECHAM;
                                 actual.COMENTARIO = f.COMENTARIO;

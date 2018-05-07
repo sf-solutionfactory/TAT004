@@ -26,17 +26,17 @@ namespace TAT001.Models
         public DatosPresupuesto consultarDatos(string sociedad, string anio, string periodo, string cambio, string cpt, string excel, string ruta)
         {
             DatosPresupuesto sociedades = new DatosPresupuesto();
-            string anioc = "", periodoc = "";
+            string anioc = "";// periodoc = "";
             string chkcpt = "";
             sociedades = consultSociedad(sociedad);
             if (String.IsNullOrEmpty(anio) == false)
             {
                 anioc = anio.Substring(2, 2);
             }
-            if (String.IsNullOrEmpty(periodo) == false)
-            {
-                periodoc = mes(periodo);
-            }
+            //if (String.IsNullOrEmpty(periodo) == false)
+            //{
+            //    periodoc = periodo;
+            //}
             if (String.IsNullOrEmpty(cpt) == false)
             {
                 chkcpt = "X";
@@ -44,11 +44,11 @@ namespace TAT001.Models
             if (String.IsNullOrEmpty(cambio) == false)
             {
                 string[] moneda = cambio.Split('-');
-                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, moneda[0], moneda[1], chkcpt).ToList();
+                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodo, periodo, moneda[0], moneda[1], chkcpt).ToList();
             }
             else
             {
-                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodoc, periodo, "", "", chkcpt).ToList();
+                sociedades.presupuesto = db.CSP_CONSULTARPRESUPUESTO(sociedad, anioc, anio, periodo, periodo, "", "", chkcpt).ToList();
             }
             if (excel != null)
             {
@@ -127,6 +127,7 @@ namespace TAT001.Models
                       BANNER       = "Banner",
                       BDESCRIPCION = "Descripcion",
                       PPTO         = "PPTO Banner",
+                      PERIODO      = "Periodo",
                       VVX17        = "VVX17 - Commercial Discounts",
                       CSHDC        = "CSHDC - Cash Discounts",
                       RECUN        = "RECUN - Unsaleables",
@@ -155,6 +156,7 @@ namespace TAT001.Models
                       BANNER       = row.BANNER,
                       BDESCRIPCION = row.BDESCRIPCION,
                       PPTO         = row.PPTO,
+                      PERIODO      = row.PERIODO,
                       VVX17        = row.VVX17,
                       CSHDC        = row.CSHDC,
                       RECUN        = row.RECUN,
@@ -172,7 +174,7 @@ namespace TAT001.Models
                     };
                         contador++;
                     }
-                    worksheet.Range("A1:S1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    worksheet.Range("A1:T1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
                     for (int i = 1; i < 22; i++)
                     {
                         worksheet.Column(i).AdjustToContents();
@@ -189,6 +191,7 @@ namespace TAT001.Models
                       BANNER       = "Banner",
                       BDESCRIPCION = "Descripcion",
                       PPTO         = "PPTO Banner",
+                      PERIODO      = "Periodo",
                       VVX17        = "VVX17 - Commercial Discounts",
                       CSHDC        = "CSHDC - Cash Discounts",
                       RECUN        = "RECUN - Unsaleables",
@@ -202,6 +205,8 @@ namespace TAT001.Models
                       RSRDV        = "RSRDV - Rollbacks",
                       SPA          = "SPA - Cleareance",
                       FREEG        = "FREEG - Free Goods",
+                      ALLB         = "Allowance Registros Manuales",
+                      ALLF         = "Allowance Facturados",
                       CONSU        = "Consumido",
                       TOTAL        = "PPTO Disponible"
                       },
@@ -219,6 +224,7 @@ namespace TAT001.Models
                       BANNER       = row.BANNER,
                       BDESCRIPCION = row.BDESCRIPCION,
                       PPTO         = row.PPTO,
+                      PERIODO      = row.PERIODO,
                       VVX17        = row.VVX17,
                       CSHDC        = row.CSHDC,
                       RECUN        = row.RECUN,
@@ -232,13 +238,15 @@ namespace TAT001.Models
                       RSRDV        = row.RSRDV,
                       SPA          = row.SPA,
                       FREEG        = row.FREEG,
-                      CONSU        = row.CONSU,
-                      TOTAL        = row.TOTAL
+                      ALLB        = row.ALLB,
+                      ALLF        = row.ALLF,
+                      CONSU        = row.CONSU + row.ALLB + row.ALLF,
+                      TOTAL        = row.TOTAL - ( row.ALLB + row.ALLF )
                       },
                     };
                         contador++;
                     }
-                    worksheet.Range("A1:U1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    worksheet.Range("A1:X1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
                     for (int i = 1; i < 22; i++)
                     {
                         worksheet.Column(i).AdjustToContents();

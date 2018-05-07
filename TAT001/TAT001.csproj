@@ -219,6 +219,7 @@
     <Compile Include="Controllers\PuestosController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
+    <Compile Include="Controllers\TCambioController.cs" />
     <Compile Include="Controllers\TextosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\WarningsController.cs" />
@@ -529,10 +530,12 @@
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\GALL_MOD.cs" />
     <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\PRESUPUESTO_MOD.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
+    <Compile Include="Models\TSOLT_MOD.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\EncabezadoMateriales.cs" />
@@ -634,7 +637,9 @@
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\tableHeadFixer.js" />
+    <Content Include="Scripts\ValidarEdC.js" />
     <Content Include="Scripts\ValidarNumero.js" />
+    <Content Include="Scripts\ValidarTCambio.js" />
     <Content Include="Views\Mails\logo_kellogg.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -709,6 +714,11 @@
     <Content Include="Scripts\lang\PO.json" />
     <Content Include="Views\Listas\Relacionados.cshtml" />
     <Content Include="Views\Solicitudes\_PartialDisTr.cshtml" />
+    <Content Include="Views\TCambio\Index.cshtml" />
+    <Content Include="Views\TCambio\Create.cshtml" />
+    <Content Include="Views\TCambio\Delete.cshtml" />
+    <Content Include="Views\TCambio\Details.cshtml" />
+    <Content Include="Views\TCambio\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

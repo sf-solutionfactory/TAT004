@@ -28,7 +28,7 @@ namespace TAT001.Controllers
                 }
                 catch
                 {
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
             }
             return View();

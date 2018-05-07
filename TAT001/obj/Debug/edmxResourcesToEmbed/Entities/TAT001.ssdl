@@ -185,6 +185,8 @@
     <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="CLASE1" Type="nchar" MaxLength="1" />
+    <Property Name="CLASE2" Type="nchar" MaxLength="3" />
     <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
     <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
     <Property Name="MONEDA" Type="nchar" MaxLength="1" />
@@ -558,6 +560,7 @@
     <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="KSCHL" Type="nchar" MaxLength="4" />
     <Property Name="KBETR" Type="decimal" Precision="11" Scale="2" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="IMPUESTO">
     <Key>

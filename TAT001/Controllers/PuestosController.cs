@@ -40,7 +40,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -72,7 +72,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -113,7 +113,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -168,7 +168,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -200,7 +200,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -266,7 +266,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }

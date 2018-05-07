@@ -39,7 +39,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -49,7 +49,7 @@ namespace TAT001.Controllers
         // GET: Workflows/Details/5
         public ActionResult Details(string id)
         {
-            int pagina = 103; //ID EN BASE DE DATOS
+            int pagina = 111; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -70,7 +70,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }

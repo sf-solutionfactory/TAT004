@@ -48,6 +48,10 @@ public partial class CONPOSAPH
 
     public string CALC_TAXT { get; set; }
 
+    public string CLASE1 { get; set; }
+
+    public string CLASE2 { get; set; }
+
 
 
     public virtual SOCIEDAD SOCIEDAD1 { get; set; }

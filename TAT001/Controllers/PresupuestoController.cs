@@ -1,4 +1,4 @@
-﻿//using SimpleImpersonation;
+﻿using SimpleImpersonation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -91,7 +91,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -136,7 +136,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -168,7 +168,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -202,8 +202,8 @@ namespace TAT001.Controllers
                     }
                     catch (Exception e)
                     {
-                        ViewBag.MensajeG = "Error en la carga de archivo";
-                        ViewBag.MensajeG = e.Message;
+                        ViewBag.MensajeGE = carga.mensajes(1);//"Error en la carga de archivo CPT y/o SAP";
+                        //ViewBag.MensajeG = e.Message;
                     }
                     ViewBag.MensajeC = mensajeC;
                     ViewBag.MensajeS = mensajeS;
@@ -221,23 +221,23 @@ namespace TAT001.Controllers
                                 ViewBag.MensajeC = carga.guardarPresupuesto(ref pRESUPUESTOP, Session["Sociedadcpt"] as string[], Session["Periodocpt"] as string[], Session["Sociedadsap"] as string[], Session["Periodosap"] as string[], User.Identity.Name);
                                 if (pRESUPUESTOP.bannerscanal.Count > 0)
                                 {
-                                    ViewBag.MensajeG = "Se encontraron banners sin canal asignados";
+                                    ViewBag.MensajeGI = carga.mensajes(3);//"Se encontraron banners sin canal asignados";
                                 }
                             }
                             else
                             {
-                                ViewBag.MensajeG = "Ocurrio algo intente de nuevo cargar el/los archivo/s";
+                                ViewBag.MensajeGE = carga.mensajes(6);//"Ocurrio algo intente de nuevo cargar el/los archivo/s";
                             }
                         }
                         catch (Exception e)
                         {
-                            ViewBag.MensajeG = "Ocurrio algo, intenté de nuevo cargar el/los archivo/s";
-                            ViewBag.MensajeG = e.InnerException.Message;
+                            ViewBag.MensajeGE = carga.mensajes(6);//"Ocurrio algo, intenté de nuevo cargar el/los archivo/s";
+                            //ViewBag.MensajeG = e.InnerException.Message;
                         }
                     }
                     else
                     {
-                        ViewBag.MensajeG = "Cargue algún archivo";
+                        ViewBag.MensajeGE = carga.mensajes(2);//"Cargue algún archivo";
                     }
                     Session["Presupuesto"] = null;
                     Session["Sociedadsap"] = null;
@@ -262,7 +262,7 @@ namespace TAT001.Controllers
                 Session["Aniosap"] = null;
                 pRESUPUESTOP.presupuestoCPT = new List<PRESUPUESTOP>();
                 pRESUPUESTOP.presupuestoSAP = new List<PRESUPSAPP>();
-                ViewBag.MensajeG = "Carga cancelada";
+                ViewBag.MensajeGI = carga.mensajes(4);//"Carga cancelada";
                 return View(pRESUPUESTOP);
             }
         }

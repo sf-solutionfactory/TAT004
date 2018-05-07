@@ -41,7 +41,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -88,7 +88,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
 
@@ -113,7 +113,7 @@ namespace TAT001.Controllers
                 f.FECHAC = DateTime.Now;
                 f.FECHAM = DateTime.Now;
                 ProcesaFlujo pf = new ProcesaFlujo();
-                int c = pf.procesa(f);
+                string c = pf.procesa(f);
 
                 //WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
                 //FLUJO fn = new FLUJO();
@@ -257,7 +257,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -314,22 +314,27 @@ namespace TAT001.Controllers
             ProcesaFlujo pf = new ProcesaFlujo();
             if (ModelState.IsValid)
             {
-                int res = pf.procesa(flujo);
-                if (res.Equals(0))//Aprobado
+                string res = pf.procesa(flujo);
+                if (res.Equals("0"))//Aprobado
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
-                else if (res.Equals(1))//CORREO
+                else if (res.Equals("1"))//CORREO
                 {
                     return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
 
                 }
-                else if (res.Equals(2))//CORREO DE FIN DE WORKFLOW
+                else if (res.Equals("2"))//CORREO DE FIN DE WORKFLOW
                 {
                     return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
                 }
-                else if (res.Equals(3))//Rechazado
+                else if (res.Equals("3"))//Rechazado
                 {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+                else
+                {
+                    TempData["error"] = res;
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
             }
@@ -355,7 +360,7 @@ namespace TAT001.Controllers
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }

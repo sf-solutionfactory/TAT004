@@ -10,229 +10,229 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.pdb">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/06/2018 14:56:41</publishTime>
+      <publishTime>05/07/2018 07:07:24</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/06/2018 14:56:41</publishTime>
+      <publishTime>05/07/2018 07:07:24</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>04/10/2018 16:30:58</publishTime>
     </File>
     <File Include="bin/ClosedXML.pdb">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>04/10/2018 16:30:58</publishTime>
     </File>
     <File Include="bin/DocumentFormat.OpenXml.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>06/06/2017 22:59:20</publishTime>
     </File>
     <File Include="bin/EntityFramework.BulkInsert.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>08/01/2016 21:59:32</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/EntityFramework.MappingAPI.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>11/13/2014 21:56:20</publishTime>
     </File>
     <File Include="bin/EntityFramework.MappingAPI.pdb">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>11/13/2014 21:56:20</publishTime>
     </File>
     <File Include="bin/EntityFramework.SqlServer.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/es/EntityFramework.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>03/02/2015 09:32:42</publishTime>
     </File>
     <File Include="bin/es/EntityFramework.SqlServer.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>03/02/2015 09:32:42</publishTime>
     </File>
     <File Include="bin/es/Microsoft.AspNet.Identity.Core.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>04/03/2015 17:09:40</publishTime>
     </File>
     <File Include="bin/es/Microsoft.AspNet.Identity.EntityFramework.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>04/03/2015 17:09:40</publishTime>
     </File>
     <File Include="bin/es/Microsoft.AspNet.Identity.Owin.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>04/03/2015 17:09:40</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Host.SystemWeb.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:10</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:12</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Security.Facebook.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:12</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Security.Google.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:12</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Security.MicrosoftAccount.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:14</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Security.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:14</publishTime>
     </File>
     <File Include="bin/es/Microsoft.Owin.Security.Twitter.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/13/2015 13:24:14</publishTime>
     </File>
     <File Include="bin/es/System.Web.Helpers.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:04:36</publishTime>
     </File>
     <File Include="bin/es/System.Web.Mvc.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:02:24</publishTime>
     </File>
     <File Include="bin/es/System.Web.Optimization.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/11/2014 15:28:40</publishTime>
     </File>
     <File Include="bin/es/System.Web.Razor.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:02:36</publishTime>
     </File>
     <File Include="bin/es/System.Web.WebPages.Deployment.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:04:36</publishTime>
     </File>
     <File Include="bin/es/System.Web.WebPages.Razor.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:04:36</publishTime>
     </File>
     <File Include="bin/es/System.Web.WebPages.resources.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/28/2015 04:04:36</publishTime>
     </File>
     <File Include="bin/ExcelDataReader.DataSet.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/04/2018 01:44:48</publishTime>
     </File>
     <File Include="bin/ExcelDataReader.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/04/2018 01:44:46</publishTime>
     </File>
     <File Include="bin/ExcelNumberFormat.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>11/23/2017 09:21:44</publishTime>
     </File>
     <File Include="bin/FastMember.Signed.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>03/06/2018 05:28:04</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>01/22/2018 18:40:38</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.EntityFramework.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Facebook.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Google.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.MicrosoftAccount.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Owin.Security.Twitter.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/Owin.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:11</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/System.Collections.Immutable.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/System.Reflection.Metadata.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/vbc.exe">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:10</publishTime>
     </File>
     <File Include="bin/SimpleImpersonation.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>06/15/2016 15:27:04</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.Razor.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Deployment.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/System.Web.WebPages.Razor.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/TAT001.dll">
-      <publishTime>05/06/2018 14:56:23</publishTime>
+      <publishTime>05/07/2018 07:05:19</publishTime>
     </File>
     <File Include="bin/TAT001.pdb">
-      <publishTime>05/06/2018 14:56:23</publishTime>
+      <publishTime>05/07/2018 07:05:19</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
-      <publishTime>05/03/2018 17:51:38</publishTime>
+      <publishTime>02/27/2018 09:43:11</publishTime>
     </File>
     <File Include="Content/autocomplete.css">
       <publishTime>05/03/2018 17:51:38</publishTime>
@@ -1876,7 +1876,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/06/2018 14:56:31</publishTime>
+      <publishTime>05/07/2018 07:07:10</publishTime>
     </File>
     <File Include="Scripts/autocomplete1.10.2.js">
       <publishTime>05/03/2018 17:51:38</publishTime>
@@ -1888,7 +1888,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Scripts/ConsultarPresupuesto.js">
-      <publishTime>05/04/2018 19:00:16</publishTime>
+      <publishTime>05/07/2018 03:19:50</publishTime>
     </File>
     <File Include="Scripts/create.js">
       <publishTime>05/06/2018 14:45:27</publishTime>
@@ -1951,7 +1951,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Scripts/ValidarNumero.js">
-      <publishTime>05/06/2018 14:02:56</publishTime>
+      <publishTime>05/06/2018 16:21:59</publishTime>
     </File>
     <File Include="Views/Account/ConfirmEmail.cshtml">
       <publishTime>05/03/2018 17:51:38</publishTime>
@@ -2143,13 +2143,13 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Views/Presupuesto/Carga.cshtml">
-      <publishTime>05/04/2018 19:17:38</publishTime>
+      <publishTime>05/06/2018 23:27:06</publishTime>
     </File>
     <File Include="Views/Presupuesto/Descargar.cshtml">
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Views/Presupuesto/Index.cshtml">
-      <publishTime>05/04/2018 18:55:43</publishTime>
+      <publishTime>05/07/2018 01:45:58</publishTime>
     </File>
     <File Include="Views/Provision/Index.cshtml">
       <publishTime>05/03/2018 17:51:38</publishTime>
@@ -2284,7 +2284,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/06/2018 14:56:25</publishTime>
+      <publishTime>05/07/2018 07:06:59</publishTime>
     </File>
   </ItemGroup>
 </Project>

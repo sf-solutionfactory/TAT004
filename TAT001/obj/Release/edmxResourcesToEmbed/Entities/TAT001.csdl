@@ -223,6 +223,8 @@
     <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+    <Property Name="CLASE1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="CLASE2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -608,6 +610,7 @@
     <Property Name="KBETR" Type="Decimal" Precision="11" Scale="2" />
     <NavigationProperty Name="IMPUESTO" Relationship="Self.FK_IIMPUESTO_IMPUESTO" FromRole="IIMPUESTO" ToRole="IMPUESTO" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_IIMPUESTO_PAIS" FromRole="IIMPUESTO" ToRole="PAIS" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="IMPUESTO">
     <Key>

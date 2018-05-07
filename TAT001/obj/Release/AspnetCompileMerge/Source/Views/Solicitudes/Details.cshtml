@@ -1,5 +1,4 @@
 ﻿@model TAT001.Models.DocumentoFlujo
-
 @{
     //ViewBag.Title = "Páginas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -126,8 +125,8 @@
                 <button type="button" class="btn-small" data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
                 <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
                 <ul id='list_rela' class='dropdown-content'>
-                    <li><a href="@Url.Action("Create", "Solicitudes", new { id = Model.D.NUM_DOC })" id="lbl_nc">Nota de crédito</a></li>
-                    <li><a href="@Url.Action("Create", "Solicitudes", new { id = Model.D.NUM_DOC })" id="lbl_op">Orden de pago</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP"  })" id="lbl_op">Orden de pago</a></li>
                 </ul>
                 <script>
                     var elem = document.getElementById('btn_rela');
@@ -206,7 +205,6 @@
                 <div class="card-panel">
                     <h5>Datos país</h5>
                     <div class="row" style="margin-bottom:0">
-
                         <div class="input-field col s6">
                             @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
                             @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_bukrs" })
@@ -504,7 +502,6 @@
                                         Presupuesto disponible
                                     </div>
                                     <div class="col s6 right-align">
-
                                     </div>
                                 </div>
                             </li>
@@ -531,14 +528,12 @@
     options = [];
     var instance = M.Tabs.init(el, options);
 </script>
-
 @if (ViewBag.acciones != null)
 {
     using (Html.BeginForm("Procesa", "Flujos"))
     {
         <div id="modal1" class="modal  bottom-sheet">
             @Html.AntiForgeryToken()
-
             <div class="modal-content">
                 <div class="row">
                     <h4 id="txt_app" style="display:none">Aprobar solicitud</h4>
@@ -550,25 +545,18 @@
                 <div class="row" style="">
                     <div class="col s12 m12 l12">
                         <div class="row" style="margin-bottom:0">
-
                             @Html.HiddenFor(model => model.F.WORKF_ID)
                             @*@Html.LabelFor(model => model.F.WORKF_ID, new { @id = "lbl_userid" })*@
-
                             @Html.HiddenFor(model => model.F.WF_VERSION)
                             @*@Html.LabelFor(model => model.F.WF_VERSION, new { @id = "lbl_userid" })*@
-
                             @Html.HiddenFor(model => model.F.WF_POS)
                             @*@Html.LabelFor(model => model.F.WF_POS, new { @id = "lbl_userid" })*@
-
                             @Html.HiddenFor(model => model.F.NUM_DOC)
                             @*@Html.LabelFor(model => model.F.NUM_DOC, new { @id = "lbl_userid" })*@
-
                             @Html.HiddenFor(model => model.F.LOOP)
                             @*@Html.LabelFor(model => model.F.LOOP, new { @id = "lbl_userid" })*@
-
                             @Html.HiddenFor(model => model.F.ESTATUS, new { @id = "wf_estatus" })
                             @*@Html.LabelFor(model => model.F.ESTATUS, new { @id = "lbl_userid" })*@
-
                             <div class="input-field col s10 offset-s1">
                                 @Html.TextAreaFor(model => model.F.COMENTARIO, new { @class = "materialize-textarea", @id = "txt_comentario" })
                                 @Html.LabelFor(model => model.F.COMENTARIO, new { @id = "lbl_userid" })
@@ -661,7 +649,6 @@
         </script>
     }
 }
-
 @if (ViewBag.tts.Count != 0)
 {
 
@@ -708,7 +695,6 @@
         </div>
     </div>
 }
-
 @if (ViewBag.workflow.Count != 0)
 {
     <div class="row" style="font-size:12px;">
@@ -756,7 +742,6 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.D.NUM_DOC }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
 <script>
     var canal = $('#vtweg').val();
     var canal = canal.split('-');
@@ -805,3 +790,16 @@
 
     }                                                                                                                                                                                                                                                                  //M.textareaAutoResize($('#txt_notas'));
 </script>
+@if (TempData["error"] != null)
+{
+    @*<div class="row red-text">
+            @ViewBag.Error
+        </div>*@
+
+    if (TempData["error"].ToString() != "")
+    {
+        <script>
+            M.toast({ html: '@TempData["error"]', classes: '' });
+        </script>
+    }
+}

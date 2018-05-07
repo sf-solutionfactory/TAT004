@@ -4,6 +4,7 @@
     ViewBag.pagina_r = 202;
     ViewBag.carpeta_r = 200;
 }
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
@@ -26,6 +27,7 @@
         });
     </script>
 }
+
 <div class="row" style="margin-bottom:0">
     @{
         TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -46,15 +48,23 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m2 l2">
-            <div class="input-field col s6">
+        <div class="col s12 m4 l4">
+            <div class="input-field col s3">
                 @Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })
                 @Html.LabelFor(model => model.USUARIO.BUNIT, "BU", new { @id = "lbl_bu" })
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s3">
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
+            @if (ViewBag.relacionadan != "")
+            {
+                <div class="input-field col s4">
+                    <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
+                    <label for="txt_rel" id="lbl_rel">Relacionada</label>
+                </div>
+            }
+
         </div>
     }
     @*<div class="col s12 m5 l5">
@@ -102,7 +112,6 @@
             </div>
         </div>*@
     <style>
-
         .div_left {
             float: left;
         }
@@ -162,6 +171,7 @@
             background-color: red;
         }
     </style>
+
     <div class="div_right">
         @*<input id="image_print" type="image" src="~/images/solicitudPrint.png" />*@
         <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
@@ -175,9 +185,12 @@
     </div>
 </div>
 
+
+
 <script>
 
 </script>
+
 
 <div class="row">
     <div class="col s12">
@@ -190,6 +203,7 @@
         </ul>
     </div>
 </div>
+
 @using (Html.BeginForm("Create", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -217,17 +231,29 @@
                                 @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @*@Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })*@
-                                    @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control " + @ViewBag.relacionada })
-                                    @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.TSOL_ID)
+                                        <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
+                                    }
                                 </div>
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @*@Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })*@
-                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
-                                    @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
+                                    }
+                                    else
+                                    {
+                                        <input type="text" value="@ViewBag.GALL_IDI" disabled="disabled" />
+                                        <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
+                                    }
                                 </div>
                             </div>
                             @*Clasificación*@
@@ -380,6 +406,7 @@
                                 <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
                                 <label for="fechad">Fecha</label>
                             </div>
+
                             @*<div class="form-group">
                                         @Html.LabelFor(model => model.FECHAD,"Hora", htmlAttributes: new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
@@ -394,6 +421,7 @@
                                         @Html.ValidationMessageFor(model => model.FECHAD, "", new { @class = "text-danger" })
                                     </div>
                                 </div>*@
+
                             <div class="input-field col s6">
                                 @*@Html.LabelFor(model => model.PERIODO, "Periodo", htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
@@ -429,12 +457,15 @@
                                 var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
                             </script>
+
                             <div class="input-field col s6">
                                 @*@Html.LabelFor(model => model.EJERCICIO, "Ejercicio", htmlAttributes: new { @class = "control-label col-md-2" })*@
+
                                 @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
                                 @*@Html.ValidationMessageFor(model => model.EJERCICIO, "", new { @class = "text-danger" })*@
                                 <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
                                 <label for="ejercicio">Ejercicio</label>
+
                             </div>
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " + @ViewBag.relacionada } })
@@ -507,6 +538,7 @@
                                 })
                             </script>
                             @*</div>*@
+
                             @*<div class="form-group">
                                     @Html.LabelFor(model => model.VKORG, "Tipo de cliente", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -528,6 +560,7 @@
                                     @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
                                 </div>
                             </div>
+
                             @*<div class="form-group">
                                     @Html.LabelFor(model => model.VTWEG, "VTWEG", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -546,11 +579,13 @@
                                     @*@Html.ValidationMessageFor(model => model.VTWEG, "", new { @class = "text-danger" })*@
                                 </div>
                             </div>
+
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " + @ViewBag.relacionada } })
                                 @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
                                 @*@Html.ValidationMessageFor(model => model.PAYER_NOMBRE, "", new { @class = "text-danger" })*@
                             </div>
+
                             <div class="input-field col s12">
                                 @*@Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "form-control" } })*@
                                 @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
@@ -562,6 +597,7 @@
                 </div>
             </div>
         </div>
+
         @*Temporalidad*@
         <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
             <div class="row">
@@ -716,6 +752,36 @@
                             </div>
                         </div>
                     </div>
+                    @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+                        if (ViewBag.relacionadan != "" && archivos.Count > 0)
+                        {
+                            string[] nombrefile;
+                            <div class="card-panel">
+                                <h5>Documentos de Soporte @ViewBag.relacionadan</h5>
+                                <div class="row" style="margin-bottom:0">
+                                    @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                                    {
+                                        try
+                                        {
+                                            for (int i = 0; i < archivos.Count; i++)
+                                            {
+                                                nombrefile = archivos[i].PATH.Split('\\');
+                                                <div class="file-field input-field">
+                                                    <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
+                                                    <div class="file-path-wrapper">
+                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
                 <div class="col s12 m6 l6">
                     <div class="card-panel">
@@ -1215,6 +1281,7 @@
                             @Html.ValidationMessageFor(model => model.USUARIOC_ID, "", new { @class = "text-danger" })
                         </div>
                     </div>*@
+
         @*<div class="form-group">
                 @Html.LabelFor(model => model.FECHAC, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -1262,6 +1329,7 @@
                     @Html.ValidationMessageFor(model => model.DOCUMENTO_REF, "", new { @class = "text-danger" })
                 </div>
             </div>*@
+
         @*
 
                     <div class="form-group">
@@ -1523,12 +1591,14 @@
                     @Html.ValidationMessageFor(model => model.TIPO_CAMBIOL2, "", new { @class = "text-danger" })
                 </div>
             </div>*@
+
         @*}
             <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input type="submit" value="Create" class="btn btn-default" />
                     </div>
                 </div>*@
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 @*<input style="display:none;" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />*@
@@ -1537,6 +1607,7 @@
         </div>
     </div>
 }
+
 @*<div>
         @Html.ActionLink("Back to List", "Index")
     </div>*@

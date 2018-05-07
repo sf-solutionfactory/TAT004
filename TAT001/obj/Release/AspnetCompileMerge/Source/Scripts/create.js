@@ -368,8 +368,44 @@
 
     $('#tab_dis').on("click", function (e) {
 
-        evalSoporteTab(false, e);
-
+        var res = evalSoporteTab(true, e);
+        if (res) {
+            var restemp = evalTempTab(true, e);
+            if (restemp) {
+                resinfo = evalInfoTab(true, e);
+                if (!resinfo) {
+                    msg = 'Verificar valores en los campos de Información!';
+                    M.toast({ html: msg });
+                    e.preventDefault();
+                    e.stopPropagation();
+                    //var active = $('ul.tabs .active').attr('href');
+                    //$('ul.tabs').tabs('select_tab', active);
+                    var ell = document.getElementById("tabs");
+                    var instances = M.Tabs.getInstance(ell);
+                    instances.select('Informacion_cont');
+                }
+            } else {
+                msg = 'Verificar valores en los campos de Temporalidad!';
+                M.toast({ html: msg });
+                e.preventDefault();
+                e.stopPropagation();
+                //    //var active = $('ul.tabs .active').attr('href');
+                //    //$('ul.tabs').tabs('select_tab', active);
+                var ell = document.getElementById("tabs");
+                var instances = M.Tabs.getInstance(ell);
+                instances.select('Temporalidad_cont');
+            }
+        } else {
+            msg = 'Verificar valores en los campos de Soporte!';
+            M.toast({ html: msg });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Soporte_cont');
+        }
     });
 
     $('#tab_fin').on("click", function (e) {
@@ -678,7 +714,34 @@
 $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
     $('#gall_id').change(); //Cambio en allowance
+    if ($('#gall_idt').hasClass("prelacionada")) {
+        selectTall($('#gall_idt').val());
+    }
+
+    $('#payer_id').change(); //Cambiar datos del cliente
+    //Fechas de temporalidad
+    var fechai_vig = $('#fechai_vig').val();
+    var fechaf_vig = $('#fechaf_vig').val();
+
+    var fi = fechai_vig.split(' ');
+    var ff = fechaf_vig.split(' ');
+
+    if (fi[0] != "") {
+        $('#fechai_vig').val($.trim(fi[0]));
+    }
+
+    if (ff[0] != "") {
+        $('#fechaf_vig').val($.trim(ff[0]));
+    }
+
+    //Valores en  distribución    
     copiarTableVista();
+
+    //Pasar el total de la tabla al total en monto
+    var total_dis = $('#total_dis').text();
+    var footeri = convertI(total_dis);
+    $('#monto_dis').val(footeri);
+    $("label[for='monto_dis']").addClass("active");
 });
 
 function copiarTableVista() {
@@ -779,8 +842,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
             item["MATNR"] = matnr;
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
@@ -1500,17 +1563,20 @@ function evaluarInfoTab() {
     var res = true;
 
     //Obtiene el id de la lista id solicitud, default envía vacío
-    var tsol_id = $('#tsol_id').val();
 
-    if (!evaluarVal(tsol_id)) {
-        return false;
-    }
+    if (!$('#txt_rel').length) {
+        var tsol_id = $('#tsol_id').val();
 
-    //Obtiene el id de la lista id clasificación, default envía vacío
-    var tall_id = $('#tall_id').val();
+        if (!evaluarVal(tsol_id)) {
+            return false;
+        }
 
-    if (!evaluarVal(tall_id)) {
-        return false;
+        //Obtiene el id de la lista id clasificación, default envía vacío
+        var tall_id = $('#tall_id').val();
+
+        if (!evaluarVal(tall_id)) {
+            return false;
+        }
     }
 
     //Sociedad
@@ -2037,10 +2103,13 @@ function selectCliente(valu) {
                     $("label[for='stcd1']").addClass("active");
                     $('#vtweg').val(data.VTWEG);
                     $("label[for='vtweg']").addClass("active");
-                    $('#payer_nombre').val(data.PAYER_NOMBRE);
-                    $("label[for='payer_nombre']").addClass("active");
-                    $('#payer_email').val(data.PAYER_EMAIL);
-                    $("label[for='payer_email']").addClass("active");
+                    //Si la solicitud es una relacionada, obtener el nombre y email del contacto almacenado en DOCUMENTO
+                    if (!$('#payer_id').hasClass("prelacionada")) {
+                        $('#payer_nombre').val(data.PAYER_NOMBRE);
+                        $("label[for='payer_nombre']").addClass("active");
+                        $('#payer_email').val(data.PAYER_EMAIL);
+                        $("label[for='payer_email']").addClass("active");
+                    }
                 } else {
                     $('#cli_name').val("");
                     $("label[for='cli_name']").removeClass("active");

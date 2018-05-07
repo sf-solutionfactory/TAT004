@@ -190,6 +190,8 @@
           <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="CLASE1" Type="nchar" MaxLength="1" />
+          <Property Name="CLASE2" Type="nchar" MaxLength="3" />
           <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
           <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
           <Property Name="MONEDA" Type="nchar" MaxLength="1" />
@@ -563,6 +565,7 @@
           <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="KSCHL" Type="nchar" MaxLength="4" />
           <Property Name="KBETR" Type="decimal" Precision="11" Scale="2" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="IMPUESTO">
           <Key>
@@ -3390,6 +3393,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+          <Property Name="CLASE1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="CLASE2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="CONPOSAPP">
           <Key>
@@ -3775,6 +3780,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="KBETR" Type="Decimal" Precision="11" Scale="2" />
           <NavigationProperty Name="IMPUESTO" Relationship="Self.FK_IIMPUESTO_IMPUESTO" FromRole="IIMPUESTO" ToRole="IMPUESTO" />
           <NavigationProperty Name="PAI" Relationship="Self.FK_IIMPUESTO_PAIS" FromRole="IIMPUESTO" ToRole="PAIS" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="IMPUESTO">
           <Key>
@@ -6645,6 +6651,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CONPOSAPHs">
             <EntityTypeMapping TypeName="TAT001Model.CONPOSAPH">
               <MappingFragment StoreEntitySet="CONPOSAPH">
+                <ScalarProperty Name="CLASE2" ColumnName="CLASE2" />
+                <ScalarProperty Name="CLASE1" ColumnName="CLASE1" />
                 <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
                 <ScalarProperty Name="TIPO_SOL" ColumnName="TIPO_SOL" />
                 <ScalarProperty Name="TIPO_DOC" ColumnName="TIPO_DOC" />
@@ -7000,6 +7008,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="IIMPUESTOes">
             <EntityTypeMapping TypeName="TAT001Model.IIMPUESTO">
               <MappingFragment StoreEntitySet="IIMPUESTO">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
                 <ScalarProperty Name="LAND" ColumnName="LAND" />
                 <ScalarProperty Name="MWSKZ" ColumnName="MWSKZ" />
                 <ScalarProperty Name="KSCHL" ColumnName="KSCHL" />
