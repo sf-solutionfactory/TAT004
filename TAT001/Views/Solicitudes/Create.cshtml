@@ -48,18 +48,18 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m2 l2">
-            <div class="input-field col s6">
+        <div class="col s12 m4 l4">
+            <div class="input-field col s3">
                 @Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })
                 @Html.LabelFor(model => model.USUARIO.BUNIT, "BU", new { @id = "lbl_bu" })
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s3">
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
             @if (ViewBag.relacionadan != "")
             {
-                <div class="input-field col s6">
+                <div class="input-field col s4">
                     <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>             
@@ -231,17 +231,28 @@
                                 @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @*@Html.DropDownList("TSOL_ID", null, htmlAttributes: new { @id = "tsol_id", @class = "form-control" })*@
-                                    @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control " + @ViewBag.relacionada })
-                                    @*@Html.ValidationMessageFor(model => model.TSOL_ID, "", new { @class = "text-danger" })*@
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })                                    
+                                    }
+                                    else
+                                    {
+                                    <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
+                                    }
                                 </div>
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
-                                    @*@Html.DropDownList("GALL_ID", null, htmlAttributes: new { @id = "gall_id", @class = "form-control", onchange = @"selectTall(this.value)" })*@
-                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
-                                    @*@Html.ValidationMessageFor(model => model.TALL_ID, "", new { @class = "text-danger" })*@
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
+                                    }
+                                    else
+                                    {
+                                    <input type="text" value="@ViewBag.GALL_IDI" disabled="disabled" />
+                                    <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
+                                    }                                                                        
                                 </div>
                             </div>
                             @*Clasificación*@

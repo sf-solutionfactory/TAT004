@@ -228,7 +228,7 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
                 
-                Session["rel"] = "2000000015";                
+                Session["rel"] = "2000000019";                
                 decimal rel = 0;
                 try
                 {
@@ -247,16 +247,18 @@ namespace TAT001.Controllers
 
                 Session["spras"] = user.SPRAS_ID;
 
+                List<TAT001.Models.TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
                 //tipo de solicitud
-                var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                //var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                list_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
                                     .Join(
                                     db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                     sol => sol.ID,
                                     solt => solt.TSOL_ID,
-                                    (sol, solt) => new
+                                    (sol, solt) => new TSOLT_MOD
                                     {
-                                        solt.SPRAS_ID,
-                                        solt.TSOL_ID,
+                                        SPRAS_ID = solt.SPRAS_ID,
+                                        TSOL_ID = solt.TSOL_ID,
                                         TEXT = solt.TSOL_ID + " " + solt.TXT020
                                     })
                                 .ToList();
@@ -265,16 +267,18 @@ namespace TAT001.Controllers
                 SOCIEDAD id_bukrs = new SOCIEDAD();
                 var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
 
+                List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
                 //Grupos de solicitud
-                var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
+                //var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
+                list_grupo = db.GALLs.Where(g => g.ACTIVO == true)
                                 .Join(
                                 db.GALLTs.Where(gt => gt.SPRAS_ID == user.SPRAS_ID),
                                 g => g.ID,
                                 gt => gt.GALL_ID,
-                                (g, gt) => new
+                                (g, gt) => new GALL_MOD
                                 {
-                                    gt.SPRAS_ID,
-                                    gt.GALL_ID,
+                                    SPRAS_ID = gt.SPRAS_ID,
+                                    GALL_ID = gt.GALL_ID,
                                     TEXT = g.DESCRIPCION + " " + gt.TXT50
                                 }).ToList();
 
@@ -287,11 +291,15 @@ namespace TAT001.Controllers
 
                     if (d != null)
                     {
-                        ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
-                        ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                        ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+                        ViewBag.TSOL_IDI = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault().TEXT;
+                        TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
+                        ViewBag.GALL_IDI = gall_mod.TEXT;
+                        ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
                         archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
                         
-
                         List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();
                         d.NUM_DOC = 0;
                         List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
@@ -328,9 +336,10 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    ViewBag.TSOL_ID = new SelectList(id_sol, "TSOL_ID", "TEXT");
-                    ViewBag.GALL_ID = new SelectList(id_grupo, "GALL_ID", "TEXT");
-
+                    ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
+                    ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
+                    ViewBag.TSOL_IDI = "";
+                    ViewBag.GALL_IDI = "";
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();                    
                 }
 

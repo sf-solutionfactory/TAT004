@@ -368,8 +368,44 @@
 
     $('#tab_dis').on("click", function (e) {
 
-        evalSoporteTab(false, e);
-
+        var res = evalSoporteTab(true, e);
+        if (res) {
+            var restemp = evalTempTab(true, e);
+            if (restemp) {
+                resinfo = evalInfoTab(true, e);
+                if (!resinfo) {
+                    msg = 'Verificar valores en los campos de Información!';
+                    M.toast({ html: msg });
+                    e.preventDefault();
+                    e.stopPropagation();
+                    //var active = $('ul.tabs .active').attr('href');
+                    //$('ul.tabs').tabs('select_tab', active);
+                    var ell = document.getElementById("tabs");
+                    var instances = M.Tabs.getInstance(ell);
+                    instances.select('Informacion_cont');
+                }
+            } else {
+                msg = 'Verificar valores en los campos de Temporalidad!';
+                M.toast({ html: msg });
+                e.preventDefault();
+                e.stopPropagation();
+                //    //var active = $('ul.tabs .active').attr('href');
+                //    //$('ul.tabs').tabs('select_tab', active);
+                var ell = document.getElementById("tabs");
+                var instances = M.Tabs.getInstance(ell);
+                instances.select('Temporalidad_cont');
+            }
+        } else {
+            msg = 'Verificar valores en los campos de Soporte!';
+            M.toast({ html: msg });
+            e.preventDefault();
+            e.stopPropagation();
+            //var active = $('ul.tabs .active').attr('href');
+            //$('ul.tabs').tabs('select_tab', active);
+            var ell = document.getElementById("tabs");
+            var instances = M.Tabs.getInstance(ell);
+            instances.select('Soporte_cont');            
+        }
     });
 
     $('#tab_fin').on("click", function (e) {
@@ -678,6 +714,10 @@
 $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
     $('#gall_id').change(); //Cambio en allowance
+    if ($('#gall_idt').hasClass("prelacionada")) {
+        selectTall($('#gall_idt').val());
+    }
+    
     $('#payer_id').change(); //Cambiar datos del cliente
     //Fechas de temporalidad
     var fechai_vig = $('#fechai_vig').val();
@@ -1523,17 +1563,20 @@ function evaluarInfoTab() {
     var res = true;
 
     //Obtiene el id de la lista id solicitud, default envía vacío
-    var tsol_id = $('#tsol_id').val();
+  
+    if (!$('#txt_rel').length) {
+        var tsol_id = $('#tsol_id').val();
 
-    if (!evaluarVal(tsol_id)) {
-        return false;
-    }
+        if (!evaluarVal(tsol_id)) {
+            return false;
+        }
 
-    //Obtiene el id de la lista id clasificación, default envía vacío
-    var tall_id = $('#tall_id').val();
+        //Obtiene el id de la lista id clasificación, default envía vacío
+        var tall_id = $('#tall_id').val();
 
-    if (!evaluarVal(tall_id)) {
-        return false;
+        if (!evaluarVal(tall_id)) {
+            return false;
+        }
     }
 
     //Sociedad
