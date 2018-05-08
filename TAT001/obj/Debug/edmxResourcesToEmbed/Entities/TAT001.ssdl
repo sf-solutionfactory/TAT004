@@ -185,8 +185,6 @@
     <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
-    <Property Name="CLASE1" Type="nchar" MaxLength="1" />
-    <Property Name="CLASE2" Type="nchar" MaxLength="3" />
     <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
     <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
     <Property Name="MONEDA" Type="nchar" MaxLength="1" />
@@ -194,6 +192,7 @@
     <Property Name="FECHA_INIVIG" Type="date" />
     <Property Name="FECHA_FINVIG" Type="date" />
     <Property Name="REFERENCIA" Type="nchar" MaxLength="16" />
+    <Property Name="POSTING_MENSAJE" Type="nchar" MaxLength="1" />
     <Property Name="PAIS" Type="nchar" MaxLength="2" />
     <Property Name="NOTA" Type="nchar" MaxLength="50" />
     <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
@@ -206,6 +205,7 @@
     </Key>
     <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POSICION" Type="int" Nullable="false" />
+    <Property Name="KEY" Type="nchar" MaxLength="1" />
     <Property Name="BUS_AREA" Type="nchar" MaxLength="3" />
     <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
     <Property Name="NUM_PROV" Type="bit" />
@@ -460,6 +460,24 @@
     <Property Name="PATH" Type="nvarchar" MaxLength="500" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="DOCUMENTOF">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FACTURA" Type="nvarchar" MaxLength="50" />
+    <Property Name="FECHA" Type="date" />
+    <Property Name="PROVEEDOR" Type="nchar" MaxLength="10" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="50" />
+    <Property Name="AUTORIZACION" Type="nvarchar" MaxLength="50" />
+    <Property Name="VENCIMIENTO" Type="date" />
+    <Property Name="FACTURAK" Type="nvarchar" MaxLength="50" />
+    <Property Name="EJERCICIOK" Type="nchar" MaxLength="4" />
+    <Property Name="BILL_DOC" Type="nchar" MaxLength="10" />
+    <Property Name="BELNR" Type="nchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
       <PropertyRef Name="NUM_DOC" />
@@ -499,6 +517,26 @@
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSFORM_ID" Type="int" Nullable="false" />
     <Property Name="CHECKS" Type="bit" />
+  </EntityType>
+  <EntityType Name="FACTURASCONF">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="TSOL" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="TSOL" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="FACTURA" Type="bit" Nullable="false" />
+    <Property Name="FECHA" Type="bit" Nullable="false" />
+    <Property Name="PROVEEDOR" Type="bit" Nullable="false" />
+    <Property Name="CONTROL" Type="bit" Nullable="false" />
+    <Property Name="AUTORIZACION" Type="bit" Nullable="false" />
+    <Property Name="VENCIMIENTO" Type="bit" Nullable="false" />
+    <Property Name="FACTURAK" Type="bit" Nullable="false" />
+    <Property Name="EJERCICIOK" Type="bit" Nullable="false" />
+    <Property Name="BILL_DOC" Type="bit" Nullable="false" />
+    <Property Name="BELNR" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="FLUJO">
     <Key>
@@ -1142,8 +1180,8 @@
     <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CARPETAV">
     <Key>
       <PropertyRef Name="USUARIO_ID" />
@@ -1155,8 +1193,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="ICON" Type="nvarchar" MaxLength="20" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR">
     <Key>
       <PropertyRef Name="ID" />
@@ -1172,8 +1210,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DOCUMENTOV">
     <Key>
       <PropertyRef Name="POS" />
@@ -1248,8 +1286,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PAGINAV">
     <Key>
       <PropertyRef Name="ID" />
@@ -1269,8 +1307,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="WARNINGV">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -2597,9 +2635,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />

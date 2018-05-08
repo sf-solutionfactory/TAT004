@@ -12,17 +12,19 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class DOCUMENTOA
+    public partial class DOCUMENTOF
     {
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
-        public string TIPO { get; set; }
-        public string CLASE { get; set; }
-        public Nullable<int> STEP_WF { get; set; }
-        public string USUARIO_ID { get; set; }
-        public string PATH { get; set; }
-        public bool ACTIVO { get; set; }
-    
-        public virtual DOCUMENTO DOCUMENTO { get; set; }
+        public string FACTURA { get; set; }
+        public Nullable<System.DateTime> FECHA { get; set; }
+        public string PROVEEDOR { get; set; }
+        public string CONTROL { get; set; }
+        public string AUTORIZACION { get; set; }
+        public Nullable<System.DateTime> VENCIMIENTO { get; set; }
+        public string FACTURAK { get; set; }
+        public string EJERCICIOK { get; set; }
+        public string BILL_DOC { get; set; }
+        public string BELNR { get; set; }
     }
 }

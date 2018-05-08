@@ -812,11 +812,17 @@
                     <div class="card-panel">
                         <h5>Referencia de Facturas</h5>
                         <div class="row" style="margin-bottom:0;">
-                            <div id="">
+                            <p>
+                                <label>
+                                    <input id="check_factura" type="checkbox" checked="checked"/>
+                                    <span>Una Factura</span>
+                                </label>
+                            </p>
+                            <div class="table_sop" id="" style="display:none">
                                 <a class="waves-effect waves-light btn-small" id="addRowSoporte"><i class="material-icons left">add</i>Registro</a>
                                 <a class="waves-effect waves-light btn-small" id="delRowSoporte"><i class="material-icons left">clear</i>Registro</a>
                             </div>
-                            <table id="table_sop" class="display" cellspacing="0" style="width:100%">
+                            <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
                                 <thead>
                                     <tr>
                                         <th></th>@*Seleccionar*@
@@ -829,6 +835,16 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
+                            @*Cargar archivo excel soporte*@
+                            <div id="file_factura" class="file-field input-field" style="display:none">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input type="file">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

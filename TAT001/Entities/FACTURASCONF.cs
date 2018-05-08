@@ -12,19 +12,20 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CUENTA
+    public partial class FACTURASCONF
     {
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
-        public string GALL_ID { get; set; }
-        public decimal EJERCICIO { get; set; }
-        public Nullable<decimal> ABONO { get; set; }
-        public Nullable<decimal> CARGO { get; set; }
-        public Nullable<decimal> CARGO_FV { get; set; }
-        public Nullable<decimal> LIMITE { get; set; }
-    
-        public virtual GALL GALL { get; set; }
-        public virtual PAI PAI { get; set; }
-        public virtual SOCIEDAD SOCIEDAD { get; set; }
+        public string TSOL { get; set; }
+        public bool FACTURA { get; set; }
+        public bool FECHA { get; set; }
+        public bool PROVEEDOR { get; set; }
+        public bool CONTROL { get; set; }
+        public bool AUTORIZACION { get; set; }
+        public bool VENCIMIENTO { get; set; }
+        public bool FACTURAK { get; set; }
+        public bool EJERCICIOK { get; set; }
+        public bool BILL_DOC { get; set; }
+        public bool BELNR { get; set; }
     }
 }

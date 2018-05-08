@@ -179,11 +179,11 @@ namespace TAT001.Models
                     if (conp[i].POSICION == 1)
                     {
                         DetalleContab conta = new DetalleContab();
-                        conta.G = enca.CLASE1;
+                        //conta.G = enca.CLASE1;
                         conta.ACCOUNT = cuent.ABONO.ToString();
                         conta.BALANCE = doc.MONTO_DOC_MD.ToString();
                         conta.COMP_CODE = doc.SOCIEDAD_ID;
-                        conta.BUS_AREA = enca.CLASE2;
+                        //conta.BUS_AREA = enca.CLASE2;
                         conta.POST_KEY = conp[i].POSTING_KEY;
                         conta.TEXT = doc.CONCEPTO;
                         contas.Add(conta);
@@ -197,9 +197,9 @@ namespace TAT001.Models
                             {
                                 decimal total = Convert.ToDecimal(cuent.ABONO) - Convert.ToDecimal(cuent.LIMITE);
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
+                                //conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
+                                //conta.G = enca.CLASE2;
                                 conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = cuent.LIMITE.ToString();
@@ -214,9 +214,9 @@ namespace TAT001.Models
                                 conta.CUSTOMER = doc.PAYER_ID;
                                 contas.Add(conta);
                                 DetalleContab conta2 = new DetalleContab();
-                                conta.G = enca.CLASE1;
+                                //conta.G = enca.CLASE1;
                                 conta2.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
+                                //conta.G = enca.CLASE2;
                                 conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta2.ACCOUNT = cuent.CARGO.ToString();
                                 conta2.BALANCE = cuent.LIMITE.ToString();
@@ -234,9 +234,9 @@ namespace TAT001.Models
                             else
                             {
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
+                                //conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
+                               // conta.G = enca.CLASE2;
                                 conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = cuent.ABONO.ToString();
@@ -257,9 +257,9 @@ namespace TAT001.Models
                             for (int j = 0; j < docp.Count; j++)
                             {
                                 DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
+                                //conta.G = enca.CLASE1;
                                 conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
+                                //conta.G = enca.CLASE2;
                                 conta.POST_KEY = conp[i].POSTING_KEY;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();

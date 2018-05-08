@@ -334,6 +334,17 @@
         }
     });
 
+    $('#check_factura').change(function () {
+        if ($(this).is(":checked")) {
+            $(".table_sop").css("display", "none");
+            $("#file_factura").css("display", "block");
+        } else {
+            $(".table_sop").css("display", "table");
+            $("#file_factura").css("display", "none");
+        }
+        
+    });
+
     //Temporalidad
     if ($('#monto_doc_md').val() != "") {
         $("label[for='monto_doc_md']").addClass("active");
@@ -344,20 +355,28 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
     $('#tab_soporte').on("click", function (e) {
 
-        evalTempTab(false, e);
+        //evalTempTab(false, e);
 
         //Obtener el tipo de solicitud NC
         var sol = $("#tsol_id").val();
 
         if (sol == "NC" | sol == "NCI" | sol == "OP") {
             $('#ref_soporte').css("display", "table");
+            //Checar si mostrar la tabla o el archivo
+            if ($("#check_factura").is(':checked')) {
+                $(".table_sop").css("display", "none");
+                $("#file_factura").css("display", "block");
+            } else {
+                $(".table_sop").css("display", "table");
+                $("#file_factura").css("display", "none");
+            }
         } else {
             var table = $('#table_sop').DataTable();
             table.clear().draw();
