@@ -356,7 +356,7 @@
         //Obtener el tipo de solicitud NC
         var sol = $("#tsol_id").val();
 
-        if (sol == "NC") {
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
             $('#ref_soporte').css("display", "table");
         } else {
             var table = $('#table_sop').DataTable();
@@ -367,6 +367,15 @@
     });
 
     $('#tab_dis').on("click", function (e) {
+
+        var sol = $("#tsol_id").val();
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+            $('#lbl_volumen').html("Volumen real");
+            $('#lbl_apoyo').html("Apoyo real");
+        } else {
+            $('#lbl_volumen').html("Volumen estimado");
+            $('#lbl_apoyo').html("Apoyo estimado");
+        }
 
         var res = evalSoporteTab(true, e);
         if (res) {
@@ -842,8 +851,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
             item["MATNR"] = matnr;
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
