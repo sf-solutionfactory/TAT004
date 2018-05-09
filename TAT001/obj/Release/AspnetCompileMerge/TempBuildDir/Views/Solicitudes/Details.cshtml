@@ -1,9 +1,11 @@
 ﻿@model TAT001.Models.DocumentoFlujo
 @{
-    //ViewBag.Title = "Páginas";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 201;
-    ViewBag.carpeta_r = 200;
+                /**/
+
+                //ViewBag.Title = "Páginas";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.pagina_r = 201;
+                ViewBag.carpeta_r = 200;
 }
 <div class="row" style="margin-bottom:0">
     <div class="col s12 m5 l5">
@@ -126,6 +128,7 @@
                 <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
                 <ul id='list_rela' class='dropdown-content'>
                     <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
                     <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP"  })" id="lbl_op">Orden de pago</a></li>
                 </ul>
                 <script>

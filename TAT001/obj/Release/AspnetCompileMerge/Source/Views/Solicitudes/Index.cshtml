@@ -1,18 +1,15 @@
 ﻿@model IEnumerable<TAT001.Entities.DOCUMENTO>
-
 @{
     //ViewBag.Title = "Páginas";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 201;
     ViewBag.carpeta_r = 200;
 }
-
 <div class="row">
     <div class="col s12 right-align">
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
     </div>
 </div>
-
 @if (ViewBag.NUM_DOC != null)
 {
     if (ViewBag.NUM_DOC != "")
@@ -118,7 +115,6 @@
                     @*@item.HORAC.Value.Hours:@item.HORAC.Value.Minutes:@item.HORAC.Value.Seconds*@
                     @item.HORAC.Value.ToString().Split('.')[0]
                 </td>
-
                 @if (item.ESTATUS_WF.Equals("P"))
                 {
                     <td class="yellow darken-2 white-text">
@@ -183,7 +179,6 @@
             </tr>
         </tfoot>*@
 </table>
-
 <script>
     $(document).ready(function () {
         var table = $('#table').DataTable({
@@ -319,10 +314,11 @@
         });
     }
     function link(num) {
-        document.location = "/Solicitudes/Details/" + num;
+        document.location = "../Solicitudes/Details/" + num;
     }
 </script>
 <style>
+
     .dataTables_length {
         display: none;
     }

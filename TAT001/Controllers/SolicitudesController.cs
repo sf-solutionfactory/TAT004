@@ -186,7 +186,155 @@ namespace TAT001.Controllers
 
             return View(DF);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(IEnumerable<HttpPostedFileBase> files_soporte, string[] labels_soporte)
+        {
+            decimal num_doc = decimal.Parse(Request.Form["D.NUM_DOC"].ToString());
+            var res = "";
+            string errorMessage = "";
+            int numFiles = 0;
+            //Checar si hay archivos para subir
+            foreach (HttpPostedFileBase file in files_soporte)
+            {
+                if (file != null)
+                {
+                    if (file.ContentLength > 0)
+                    {
+                        numFiles++;
+                    }
+                }
+            }
+            if (numFiles > 0)
+            {
+                string url = ConfigurationManager.AppSettings["URL_SAVE"];
+                //Crear el directorio
+                var dir = createDir(url, num_doc.ToString());
 
+                //Evaluar que se creo el directorio
+                if (dir.Equals(""))
+                {
+
+                    int i = 0;
+                    int indexlabel = 0;
+                    foreach (HttpPostedFileBase file in files_soporte)
+                    {
+                        string errorfiles = "";
+                        var clasefile = "";
+                        try
+                        {
+                            clasefile = labels_soporte[indexlabel];
+                        }
+                        catch (Exception ex)
+                        {
+                            clasefile = "";
+                        }
+                        if (file != null)
+                        {
+                            if (file.ContentLength > 0)
+                            {
+                                string path = "";
+                                string filename = file.FileName;
+                                errorfiles = "";
+                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
+
+                                if (errorfiles == "")
+                                {
+                                    DOCUMENTOA doc = new DOCUMENTOA();
+                                    var ext = System.IO.Path.GetExtension(filename);
+                                    i++;
+                                    doc.NUM_DOC = num_doc;
+                                    doc.POS = i;
+                                    doc.TIPO = ext.Replace(".", "");
+                                    try
+                                    {
+                                        var clasefileM = clasefile.ToUpper();
+                                        doc.CLASE = clasefileM.Substring(0, 3);
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        doc.CLASE = "";
+                                    }
+                                    doc.STEP_WF = 1;
+                                    doc.USUARIO_ID = User.Identity.Name;
+                                    doc.PATH = path;
+                                    doc.ACTIVO = true;
+                                    try
+                                    {
+                                        db.DOCUMENTOAs.Add(doc);
+                                        db.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        try
+                                        {
+                                            db.Entry(doc).State = EntityState.Modified;
+                                            db.SaveChanges();
+                                        }
+                                        catch (Exception ee)
+                                        {
+                                            errorfiles = "" + filename;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        indexlabel++;
+                        if (errorfiles != "")
+                        {
+                            errorMessage += "Error con el archivo " + errorfiles;
+                        }
+
+
+
+                    }
+                }
+                else
+                {
+                    errorMessage = dir;
+                }
+
+                ////errorString = errorMessage;
+                //Guardar número de documento creado
+                Session["ERROR_FILES"] = errorMessage;
+            }
+            if(errorMessage == "")
+            {
+
+                FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
+                FLUJO flujo = actual;
+                flujo.ESTATUS = "A";
+                flujo.FECHAM = DateTime.Now;
+                flujo.COMENTARIO = "";
+                flujo.USUARIOA_ID = User.Identity.Name;
+                ProcesaFlujo pf = new ProcesaFlujo();
+                string c = pf.procesa(flujo);
+                if (c.Equals("0"))//Aprobado
+                {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+                else if (c.Equals("1"))//CORREO
+                {
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+
+                }
+                else if (c.Equals("2"))//CORREO DE FIN DE WORKFLOW
+                {
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+                }
+                else if (c.Equals("3"))//Rechazado
+                {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+                else
+                {
+                    TempData["error"] = c;
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                }
+            }
+
+            return RedirectToAction("Details");
+        }
         // GET: Solicitudes/Create
         [HttpGet]
         public ActionResult Create(string id_d, string tsol)

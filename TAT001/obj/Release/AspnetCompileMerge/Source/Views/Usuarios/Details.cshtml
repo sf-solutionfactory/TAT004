@@ -1,13 +1,22 @@
 ﻿@model TAT001.Entities.USUARIO
-
 @{
     //ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 601;
     ViewBag.carpeta_r = 500;
 }
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.10.2.js"></script>
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
+<style>
 
-
+    .ui-autocomplete {
+        z-index: 1003;
+    }
+</style>
+<script>
+    var auto = $.noConflict(true);
+</script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -73,7 +82,6 @@
                             @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
                             @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
                         </div>*@
-
                     <div class="input-field col s12">
                         @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
                         @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @id = "lbl_bukrs" })
@@ -152,18 +160,8 @@
                                                                     <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.LAND" />
                                                                     <label for="mtxt_pai">País</label>
                                                                 </div>
+
                                                                 <div id="q">
-                                                                    <link href="~/Content/autocomplete.css" rel="stylesheet" />
-                                                                    <script src="~/Scripts/autocomplete1.10.2.js"></script>
-                                                                    <script src="~/Scripts/autocomplete1.11.4.js"></script>
-                                                                    <style>
-                                                                        .ui-autocomplete {
-                                                                            z-index: 1003;
-                                                                        }
-                                                                    </style>
-                                                                    <script>
-                                                                        var auto = $.noConflict(true);
-                                                                    </script>
                                                                     @foreach (var input in item.USUARIOs)
                                                                     {
                                                                         if (input.ID != Model.ID)
@@ -280,7 +278,6 @@
         </div>
     </div>
 }
-
 @using (Html.BeginForm("AgregarRol", "Usuarios"))
 {
     @Html.AntiForgeryToken()
@@ -465,9 +462,10 @@
     }
 </script>
 @*<link href="~/Content/autocomplete.css" rel="stylesheet" />
-<script src="~/Scripts/autocomplete1.10.2.js"></script>
-<script src="~/Scripts/autocomplete1.11.4.js"></script>*@
+    <script src="~/Scripts/autocomplete1.10.2.js"></script>
+    <script src="~/Scripts/autocomplete1.11.4.js"></script>*@
 <style>
+
     .ui-autocomplete {
         z-index: 1005;
     }
@@ -517,7 +515,6 @@
     }
 
 </script>
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

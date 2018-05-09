@@ -199,6 +199,8 @@ public partial class TAT001Entities : DbContext
 
     public virtual DbSet<REGION> REGIONs { get; set; }
 
+    public virtual DbSet<DET_APROBV> DET_APROBV { get; set; }
+
 
     [DbFunction("TAT001Entities", "split")]
     public virtual IQueryable<split_Result> split(string delimited, string delimiter)

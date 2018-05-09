@@ -89,7 +89,7 @@
         {
 
             <tr>
-                @if (item.TSOL_ID.Equals("PR"))
+                @if (item.TSOL_ID.Equals("PR") | item.TSOL_ID.Equals("PR1"))
                 {
                     <td class=" details-control" style="cursor:pointer">
                         <i class="material-icons">add</i>
@@ -115,7 +115,7 @@
                     @*@item.HORAC.Value.Hours:@item.HORAC.Value.Minutes:@item.HORAC.Value.Seconds*@
                     @item.HORAC.Value.ToString().Split('.')[0]
                 </td>
-                @if (item.ESTATUS_WF.Equals("P"))
+                @if (item.ESTATUS_WF.Equals("P") | item.ESTATUS_WF.Equals("S"))
                 {
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_pending">Pendiente</div>
@@ -196,7 +196,7 @@
             //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
             //    search: "Buscar"
             //},
-            order: [[4, "desc"], [1, "desc"]],
+            order: [[4, "desc"], [5, "desc"], [1, "desc"]],
             language: {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
             },

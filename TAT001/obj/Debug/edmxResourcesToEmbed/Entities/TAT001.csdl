@@ -221,10 +221,8 @@
     <Property Name="PAIS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-    <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="CALC_TAXT" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
-    <Property Name="CLASE1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <Property Name="CLASE2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -261,6 +259,7 @@
     <Property Name="ASSIGNACION" Type="Boolean" />
     <Property Name="QUANTITY" Type="Boolean" />
     <Property Name="BASE_UNIT" Type="Boolean" />
+    <Property Name="KEY" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="CONTACTOC">
     <Key>
@@ -3129,6 +3128,7 @@
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="CUENTA" EntitySet="CUENTAs" />
     </AssociationSet>
+    <EntitySet Name="DET_APROBV" EntityType="TAT001Model.DET_APROBV" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -3298,4 +3298,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="DET_APROBV">
+    <Key>
+      <PropertyRef Name="BUKRS" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="SPRAS_ID" />
+    </Key>
+    <Property Name="BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+  </EntityType>
 </Schema>

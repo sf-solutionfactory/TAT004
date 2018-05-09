@@ -178,8 +178,6 @@
     <EntitySetMapping Name="CONPOSAPHs">
       <EntityTypeMapping TypeName="TAT001Model.CONPOSAPH">
         <MappingFragment StoreEntitySet="CONPOSAPH">
-          <ScalarProperty Name="CLASE2" ColumnName="CLASE2" />
-          <ScalarProperty Name="CLASE1" ColumnName="CLASE1" />
           <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
           <ScalarProperty Name="TIPO_SOL" ColumnName="TIPO_SOL" />
           <ScalarProperty Name="TIPO_DOC" ColumnName="TIPO_DOC" />
@@ -201,6 +199,7 @@
     <EntitySetMapping Name="CONPOSAPPs">
       <EntityTypeMapping TypeName="TAT001Model.CONPOSAPP">
         <MappingFragment StoreEntitySet="CONPOSAPP">
+          <ScalarProperty Name="KEY" ColumnName="KEY" />
           <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
           <ScalarProperty Name="POSICION" ColumnName="POSICION" />
           <ScalarProperty Name="BUS_AREA" ColumnName="BUS_AREA" />
@@ -1438,6 +1437,16 @@
         <MappingFragment StoreEntitySet="REGION">
           <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
           <ScalarProperty Name="REGION1" ColumnName="REGION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_APROBV">
+      <EntityTypeMapping TypeName="TAT001Model.DET_APROBV">
+        <MappingFragment StoreEntitySet="DET_APROBV">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

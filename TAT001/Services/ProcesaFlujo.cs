@@ -119,6 +119,159 @@ namespace TAT001.Services
                                 nuevo.NUM_DOC = actual.NUM_DOC;
                                 nuevo.POS = actual.POS + 1;
                                 nuevo.LOOP = 1;//-----------------------------------cc
+                                               //int loop = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
+                                               //if (loop >= next.LOOPS)
+                                               //{
+                                               //    paso_a = next;
+                                               //    continue;
+                                               //}
+                                               //if (loop != 0)
+                                               //    nuevo.LOOP = loop + 1;
+                                               //else
+                                               //    nuevo.LOOP = 1;
+                                FLUJO detA = new FLUJO();
+                                if (paso_a.ACCION.TIPO == "N")
+                                    actual.DETPOS = actual.DETPOS - 1;
+                                int sop = 99;
+                                if (next.ACCION.TIPO == "S")
+                                    sop = 98;
+                                detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS, sop);
+                                nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                                nuevo.DETPOS = detA.DETPOS;
+                                if (paso_a.ACCION.TIPO == "N")
+                                {
+                                    nuevo.DETPOS = nuevo.DETPOS + 1;
+                                    actual.DETPOS = actual.DETPOS + 1;
+                                }
+
+
+                                if (nuevo.DETPOS == 0 | nuevo.DETPOS == 99)
+                                {
+                                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                                    if (next.NEXT_STEP.Equals(99))//--------FIN DEL WORKFLOW
+                                    {
+                                        //DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                        d.ESTATUS_WF = "A";
+                                        if (paso_a.EMAIL.Equals("X"))
+                                            correcto = "2";
+                                    }
+                                    else
+                                    {
+                                        //DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                        //FLUJO nuevo = new FLUJO();
+                                        nuevo.WORKF_ID = next.ID;
+                                        nuevo.WF_VERSION = next.VERSION;
+                                        nuevo.WF_POS = next.POS + detA.POS;
+                                        nuevo.NUM_DOC = actual.NUM_DOC;
+                                        nuevo.POS = actual.POS + 1;
+                                        nuevo.LOOP = 1;//-----------------------------------
+                                                       //int loop1 = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
+                                                       //if (loop1 >= next.LOOPS)
+                                                       //{
+                                                       //    paso_a = next;
+                                                       //    continue;
+                                                       //}
+                                                       //if (loop1 != 0)
+                                                       //    nuevo.LOOP = loop1 + 1;
+                                                       //else
+                                                       //    nuevo.LOOP = 1;
+
+                                        //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0);
+                                        //nuevo.USUARIOA_ID = "admin";
+                                        //nuevo.DETPOS = 1;
+                                        d.ESTATUS_WF = "P";
+                                        if (nuevo.DETPOS == 0)
+                                        {
+                                            nuevo.USUARIOA_ID = null;
+                                            d.ESTATUS_WF = "A";
+                                            d.ESTATUS = "C";
+                                        }
+                                        nuevo.ESTATUS = "P";
+                                        nuevo.FECHAC = DateTime.Now;
+                                        nuevo.FECHAM = DateTime.Now;
+
+                                        db.FLUJOes.Add(nuevo);
+                                        if (paso_a.EMAIL.Equals("X"))
+                                            correcto = "1";
+                                    }
+                                }
+                                //else if(nuevo.DETPOS == 99)
+                                //{
+                                //    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                                //}
+                                else
+                                {
+                                    //nuevo.USUARIOD_ID
+                                    nuevo.ESTATUS = "P";
+                                    nuevo.FECHAC = DateTime.Now;
+                                    nuevo.FECHAM = DateTime.Now;
+                                    nuevo.WF_POS = nuevo.WF_POS + detA.POS;
+
+                                    db.FLUJOes.Add(nuevo);
+                                    if (paso_a.EMAIL.Equals("X"))
+                                        correcto = "1";
+
+                                    d.ESTATUS_WF = "P";
+                                }
+                                if (nuevo.DETPOS.Equals(98))
+                                    d.ESTATUS_WF = "S";
+                                db.Entry(d).State = EntityState.Modified;
+
+                                db.SaveChanges();
+                                ban = false;
+                            }
+                        }
+                        else if (paso_a.ACCION.TIPO == "P")
+                        {
+                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
+                            {
+                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+
+                                ArchivoContable sa = new ArchivoContable();
+                                string file = sa.generarArchivo(d.NUM_DOC);
+
+                                if (file == "")
+                                {
+                                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+
+                                    FLUJO nuevo = new FLUJO();
+                                    nuevo.WORKF_ID = paso_a.ID;
+                                    nuevo.WF_VERSION = paso_a.VERSION;
+                                    nuevo.WF_POS = next.POS;
+                                    nuevo.NUM_DOC = actual.NUM_DOC;
+                                    nuevo.POS = actual.POS + 1;
+                                    nuevo.ESTATUS = "A";
+                                    nuevo.FECHAC = DateTime.Now;
+                                    nuevo.FECHAM = DateTime.Now;
+
+                                    d.ESTATUS = "P";
+                                    correcto = file;
+
+                                    db.FLUJOes.Add(nuevo);
+                                    db.SaveChanges();
+                                    ban = false;
+                                }
+                                else
+                                {
+                                    ban = false;
+                                    correcto = file;
+                                }
+                            }
+                        }
+                        else if (paso_a.ACCION.TIPO == "S")
+                        {
+                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
+                            {
+                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+
+                                FLUJO nuevo = new FLUJO();
+                                nuevo.WORKF_ID = paso_a.ID;
+                                nuevo.WF_VERSION = paso_a.VERSION;
+                                nuevo.WF_POS = next.POS;
+                                nuevo.NUM_DOC = actual.NUM_DOC;
+                                nuevo.POS = actual.POS + 1;
+                                nuevo.LOOP = 1;//-----------------------------------cc
                                 //int loop = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
                                 //if (loop >= next.LOOPS)
                                 //{
@@ -131,7 +284,7 @@ namespace TAT001.Services
                                 //    nuevo.LOOP = 1;
                                 if (paso_a.ACCION.TIPO == "N")
                                     actual.DETPOS = actual.DETPOS - 1;
-                                FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS);
+                                FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 98, next.LOOPS, 98);
                                 nuevo.USUARIOA_ID = detA.USUARIOA_ID;
                                 nuevo.DETPOS = detA.DETPOS;
                                 if (paso_a.ACCION.TIPO == "N")
@@ -213,43 +366,6 @@ namespace TAT001.Services
 
                                 db.SaveChanges();
                                 ban = false;
-                            }
-                        }
-                        else if (paso_a.ACCION.TIPO == "P")
-                        {
-                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
-                            {
-                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
-
-                                ArchivoContable sa = new ArchivoContable();
-                                string file = sa.generarArchivo(d.NUM_DOC);
-
-                                if (file == "correcto")
-                                {
-                                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
-
-                                    FLUJO nuevo = new FLUJO();
-                                    nuevo.WORKF_ID = paso_a.ID;
-                                    nuevo.WF_VERSION = paso_a.VERSION;
-                                    nuevo.WF_POS = next.POS;
-                                    nuevo.NUM_DOC = actual.NUM_DOC;
-                                    nuevo.POS = actual.POS + 1;
-                                    nuevo.ESTATUS = "A";
-                                    nuevo.FECHAC = DateTime.Now;
-                                    nuevo.FECHAM = DateTime.Now;
-
-                                    d.ESTATUS = "P";
-                                    correcto = file;
-
-                                    db.FLUJOes.Add(nuevo);
-                                    db.SaveChanges();
-                                    ban = false;
-                                }
-                                else
-                                {
-                                    ban = false;
-                                    correcto = file;
-                                }
                             }
                         }
 
@@ -369,9 +485,9 @@ namespace TAT001.Services
                                 else
                                     nuevo.LOOP = 1;
 
-                                FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, 1);
-                                nuevo.USUARIOA_ID = detA.USUARIOA_ID;
-                                nuevo.DETPOS = detA.DETPOS;
+                                ////FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, 1);
+                                ////nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                                ////nuevo.DETPOS = detA.DETPOS;
 
                                 if (nuevo.DETPOS == 0 | nuevo.DETPOS == 99)
                                 {
@@ -513,9 +629,9 @@ namespace TAT001.Services
 
                                     if (paso_a.ACCION.TIPO == "N")//Si está en creación
                                     {
-                                        FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, 1);
-                                        nuevo.USUARIOA_ID = detA.USUARIOA_ID;
-                                        nuevo.DETPOS = detA.DETPOS;
+                                        //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, 1);
+                                        //nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                                        //nuevo.DETPOS = detA.DETPOS;
                                     }
                                     else
                                     {
@@ -583,7 +699,7 @@ namespace TAT001.Services
             return correcto;
         }
 
-        public FLUJO determinaAgente(DOCUMENTO d, string user, string delega, int pos, int? loop)
+        public FLUJO determinaAgente(DOCUMENTO d, string user, string delega, int pos, int? loop, int sop)
         {
             if (delega != null)
                 user = delega;
@@ -617,12 +733,20 @@ namespace TAT001.Services
                 //if (fl == 1)
                 //da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 1).FirstOrDefault();
             }
+            else if (pos.Equals(98))
+            {
+                da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
+            }
             else
             {
                 DET_AGENTE actual = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos)).FirstOrDefault();
                 if (actual.POS == 99)
                 {
                     fin = true;
+                }
+                else if (actual.POS == 98)
+                {
+                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
                 }
                 else
                 {
@@ -656,9 +780,17 @@ namespace TAT001.Services
                 }
                 else
                 {
-                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 99).FirstOrDefault();
-                    agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
-                    f.DETPOS = da.POS;
+                    da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == sop).FirstOrDefault();
+                    if (da == null)
+                    {
+                        agente = db.GAUTORIZACIONs.Where(a => a.ID == gaa).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == 2).First().ID;
+                        f.DETPOS = 98;
+                    }
+                    else
+                    {
+                        agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                        f.DETPOS = da.POS;
+                    }
                 }
             }
             f.POS = ppos;

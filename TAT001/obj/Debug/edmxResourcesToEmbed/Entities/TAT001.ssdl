@@ -185,8 +185,6 @@
     <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
-    <Property Name="CLASE1" Type="nchar" MaxLength="1" />
-    <Property Name="CLASE2" Type="nchar" MaxLength="3" />
     <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
     <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
     <Property Name="MONEDA" Type="nchar" MaxLength="1" />
@@ -197,7 +195,7 @@
     <Property Name="PAIS" Type="nchar" MaxLength="2" />
     <Property Name="NOTA" Type="nchar" MaxLength="50" />
     <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
-    <Property Name="CALC_TAXT" Type="nchar" MaxLength="50" />
+    <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -206,6 +204,7 @@
     </Key>
     <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POSICION" Type="int" Nullable="false" />
+    <Property Name="KEY" Type="nchar" MaxLength="1" />
     <Property Name="BUS_AREA" Type="nchar" MaxLength="3" />
     <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
     <Property Name="NUM_PROV" Type="bit" />
@@ -1171,6 +1170,19 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="ACTIVO" Type="bit" />
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="DET_APROBV">
+    <Key>
+      <PropertyRef Name="BUKRS" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="SPRAS_ID" />
+    </Key>
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
   <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -2673,6 +2685,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [CREADOR].[BUKRS] AS [BUKRS], 
     [CREADOR].[LAND] AS [LAND]
     FROM [dbo].[CREADOR] AS [CREADOR]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DET_APROBV" EntityType="Self.DET_APROBV" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DET_APROBV].[BUKRS] AS [BUKRS], 
+    [DET_APROBV].[PUESTOC_ID] AS [PUESTOC_ID], 
+    [DET_APROBV].[TXT50] AS [TXT50], 
+    [DET_APROBV].[SPRAS_ID] AS [SPRAS_ID]
+    FROM [dbo].[DET_APROBV] AS [DET_APROBV]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="DOCUMENTOV" EntityType="Self.DOCUMENTOV" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

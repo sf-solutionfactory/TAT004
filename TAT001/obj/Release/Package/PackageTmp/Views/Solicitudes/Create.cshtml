@@ -237,7 +237,7 @@
                                     }
                                     else
                                     {
-                                        @Html.HiddenFor(model => model.TSOL_ID)
+                                        @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id" })
                                         <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
                                     }
                                 </div>
@@ -933,8 +933,8 @@
                                         <th>Apoyo por pieza</th>
                                         <th>Costo con apoyo</th>
                                         <th>Precio sugerido</th>
-                                        <th>Volumen estimado</th>
-                                        <th>Estimado apoyo</th>
+                                        <th id="lbl_volumen">Volumen estimado</th>
+                                        <th id="lbl_apoyo">Estimado apoyo</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>

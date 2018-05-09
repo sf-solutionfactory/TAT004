@@ -206,6 +206,7 @@
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ContactoController.cs" />
+    <Compile Include="Controllers\Det_AprobsController.cs" />
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImpuestoController.cs" />
@@ -303,6 +304,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DET_APROB.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_APROBV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTBORR.cs">
@@ -528,6 +532,7 @@
     <Compile Include="Models\CLIENTE_MOD.cs" />
     <Compile Include="Models\Contactoc.cs" />
     <Compile Include="Models\Cryptography.cs" />
+    <Compile Include="Models\Det_Aprob.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
     <Compile Include="Models\GALL_MOD.cs" />
@@ -719,6 +724,11 @@
     <Content Include="Views\TCambio\Delete.cshtml" />
     <Content Include="Views\TCambio\Details.cshtml" />
     <Content Include="Views\TCambio\Edit.cshtml" />
+    <Content Include="Views\Det_Aprobs\Create.cshtml" />
+    <Content Include="Views\Det_Aprobs\Delete.cshtml" />
+    <Content Include="Views\Det_Aprobs\Details.cshtml" />
+    <Content Include="Views\Det_Aprobs\Edit.cshtml" />
+    <Content Include="Views\Det_Aprobs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -190,8 +190,6 @@
           <Property Name="TIPO_SOL" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TIPO_DOC" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" Nullable="false" />
-          <Property Name="CLASE1" Type="nchar" MaxLength="1" />
-          <Property Name="CLASE2" Type="nchar" MaxLength="3" />
           <Property Name="FECHA_CONTAB" Type="nchar" MaxLength="1" />
           <Property Name="FECHA_DOCU" Type="nchar" MaxLength="1" />
           <Property Name="MONEDA" Type="nchar" MaxLength="1" />
@@ -202,7 +200,7 @@
           <Property Name="PAIS" Type="nchar" MaxLength="2" />
           <Property Name="NOTA" Type="nchar" MaxLength="50" />
           <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
-          <Property Name="CALC_TAXT" Type="nchar" MaxLength="50" />
+          <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="CONPOSAPP">
           <Key>
@@ -211,6 +209,7 @@
           </Key>
           <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
           <Property Name="POSICION" Type="int" Nullable="false" />
+          <Property Name="KEY" Type="nchar" MaxLength="1" />
           <Property Name="BUS_AREA" Type="nchar" MaxLength="3" />
           <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
           <Property Name="NUM_PROV" Type="bit" />
@@ -1176,6 +1175,19 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
           <Property Name="ACTIVO" Type="bit" />
           <Property Name="BUKRS" Type="nchar" MaxLength="4" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="DET_APROBV">
+          <Key>
+            <PropertyRef Name="BUKRS" />
+            <PropertyRef Name="PUESTOC_ID" />
+            <PropertyRef Name="SPRAS_ID" />
+          </Key>
+          <Property Name="BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -2679,6 +2691,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [CREADOR].[LAND] AS [LAND]
     FROM [dbo].[CREADOR] AS [CREADOR]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="DET_APROBV" EntityType="Self.DET_APROBV" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DET_APROBV].[BUKRS] AS [BUKRS], 
+    [DET_APROBV].[PUESTOC_ID] AS [PUESTOC_ID], 
+    [DET_APROBV].[TXT50] AS [TXT50], 
+    [DET_APROBV].[SPRAS_ID] AS [SPRAS_ID]
+    FROM [dbo].[DET_APROBV] AS [DET_APROBV]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="DOCUMENTOV" EntityType="Self.DOCUMENTOV" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DOCUMENTOV].[POS] AS [POS], 
@@ -3391,10 +3411,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PAIS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="CALC_TAXT" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="CALC_TAXT" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
-          <Property Name="CLASE1" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-          <Property Name="CLASE2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="CONPOSAPP">
           <Key>
@@ -3431,6 +3449,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="ASSIGNACION" Type="Boolean" />
           <Property Name="QUANTITY" Type="Boolean" />
           <Property Name="BASE_UNIT" Type="Boolean" />
+          <Property Name="KEY" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="CONTACTOC">
           <Key>
@@ -6299,6 +6318,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
             <End Role="CUENTA" EntitySet="CUENTAs" />
           </AssociationSet>
+          <EntitySet Name="DET_APROBV" EntityType="TAT001Model.DET_APROBV" />
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -6468,6 +6488,17 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DET_APROBV">
+          <Key>
+            <PropertyRef Name="BUKRS" />
+            <PropertyRef Name="PUESTOC_ID" />
+            <PropertyRef Name="SPRAS_ID" />
+          </Key>
+          <Property Name="BUKRS" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6651,8 +6682,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CONPOSAPHs">
             <EntityTypeMapping TypeName="TAT001Model.CONPOSAPH">
               <MappingFragment StoreEntitySet="CONPOSAPH">
-                <ScalarProperty Name="CLASE2" ColumnName="CLASE2" />
-                <ScalarProperty Name="CLASE1" ColumnName="CLASE1" />
                 <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
                 <ScalarProperty Name="TIPO_SOL" ColumnName="TIPO_SOL" />
                 <ScalarProperty Name="TIPO_DOC" ColumnName="TIPO_DOC" />
@@ -6674,6 +6703,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CONPOSAPPs">
             <EntityTypeMapping TypeName="TAT001Model.CONPOSAPP">
               <MappingFragment StoreEntitySet="CONPOSAPP">
+                <ScalarProperty Name="KEY" ColumnName="KEY" />
                 <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
                 <ScalarProperty Name="POSICION" ColumnName="POSICION" />
                 <ScalarProperty Name="BUS_AREA" ColumnName="BUS_AREA" />
@@ -7911,6 +7941,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               <MappingFragment StoreEntitySet="REGION">
                 <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
                 <ScalarProperty Name="REGION1" ColumnName="REGION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DET_APROBV">
+            <EntityTypeMapping TypeName="TAT001Model.DET_APROBV">
+              <MappingFragment StoreEntitySet="DET_APROBV">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+                <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+                <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

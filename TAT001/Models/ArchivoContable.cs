@@ -20,10 +20,12 @@ namespace TAT001.Models
                 && x.SOCIEDAD == doc.SOCIEDAD_ID
                 && x.FECHA_FINVIG >= doc.FECHAF_VIG
                 ).Single();
-                doc.GALL_ID = db.GALLs.Where(x => x.ID == doc.GALL_ID).Select(x => x.GRUPO_ALL).Single();
                 string txt = "";
                 string msj = "";
                 string[] cc;
+                string cta = "";
+                cta = doc.GALL_ID;
+                doc.GALL_ID = db.GALLs.Where(x => x.ID == doc.GALL_ID).Select(x => x.GRUPO_ALL).Single();
                 var ppd = doc.GetType().GetProperties();
                 if (String.IsNullOrEmpty(tab.HEADER_TEXT) == false)
                 {
@@ -52,6 +54,7 @@ namespace TAT001.Models
                     return "Agrege comando para generar referencia";
                 }
                 tab.REFERENCIA = txt;
+                doc.GALL_ID = cta;
                 if (String.IsNullOrEmpty(tab.MONEDA))
                 {
                     doc.MONEDA_ID = "";
@@ -64,9 +67,10 @@ namespace TAT001.Models
                 //{
                 doc.FECHAC = Fecha(tab.FECHA_CONTAB);
                 //}
+
                 List<DetalleContab> det = new List<DetalleContab>();
                 msj = Detalle(doc, ref det, tab);
-                if (msj != "1")
+                if (msj != "")
                 {
                     return msj;
                 }
@@ -80,12 +84,14 @@ namespace TAT001.Models
                                                                                                                  //+ String.Format("{0:dd.MM.yyyy}", doc.FECHAD) 
                         + "|" + doc.MONEDA_ID.Trim() + "|" + dir.HEADER_TEXT.Trim() + "|"
                         //+ String.Format("{0:dd.MM.yyyy}", dir.FECHA_INIVIG) + "|" + String.Format("{0:dd.MM.yyyy}", dir.FECHA_FINVIG) + "|" 
-                        + dir.REFERENCIA.Trim() + "|" + dir.PAIS.Trim() + "|" + dir.NOTA.Trim() + "|" + dir.CORRESPONDENCIA.Trim() + "|" + dir.CALC_TAXT.Trim() + "|");
+                        + dir.REFERENCIA.Trim() + "|" + dir.CALC_TAXT.Trim() + "|"
+                        //+ dir.PAIS.Trim() + "|" 
+                        + dir.NOTA.Trim() + "|" + dir.CORRESPONDENCIA.Trim());
                     sw.WriteLine("");
                     for (int i = 0; i < det.Count; i++)
                     {
                         sw.WriteLine(
-                            det[i].G + "|" +
+                            det[i].POS_TYPE + "|" +
                             det[i].COMP_CODE + "|" +
                             det[i].BUS_AREA + "|" +
                             det[i].POST_KEY + "|" +
@@ -114,12 +120,12 @@ namespace TAT001.Models
                             det[i].ASSIGNMENT + "|" +
                             det[i].QTY + "|" +
                             det[i].BASE_UNIT + "|" +
-                            det[i].AMOUNT_LC
+                            det[i].AMOUNT_LC + "|"
                             );
                     }
                     sw.Close();
                 }
-                return "correcto";
+                return "";
             }
             catch (Exception e)
             {
@@ -148,6 +154,7 @@ namespace TAT001.Models
             List<CONPOSAPP> conp = new List<CONPOSAPP>();
             CLIENTE clien;
             CUENTA cuent;
+            CLIENTEI cliei = new CLIENTEI();
             try
             {
                 try
@@ -179,106 +186,124 @@ namespace TAT001.Models
                     if (conp[i].POSICION == 1)
                     {
                         DetalleContab conta = new DetalleContab();
-                        conta.G = enca.CLASE1;
+                        conta.POS_TYPE = conp[i].KEY;
                         conta.ACCOUNT = cuent.ABONO.ToString();
                         conta.BALANCE = doc.MONTO_DOC_MD.ToString();
                         conta.COMP_CODE = doc.SOCIEDAD_ID;
-                        conta.BUS_AREA = enca.CLASE2;
+                        conta.BUS_AREA = conp[i].BUS_AREA;
                         conta.POST_KEY = conp[i].POSTING_KEY;
                         conta.TEXT = doc.CONCEPTO;
+                        if (conp[i].POSTING_KEY == "11")
+                        {
+                            conta.REF_KEY1 = "G02";
+                            conta.REF_KEY3 = "84111506";
+                            conta.ACCOUNT = clien.KUNNR;
+                        }
                         contas.Add(conta);
                     }
                     else
                     {
                         List<DOCUMENTOP> docp = db.DOCUMENTOPs.Where(x => x.NUM_DOC == doc.NUM_DOC).ToList();
-                        if (cuent.CARGO_FV != null)
+                        //if (cuent.CARGO_FV != null)
+                        //{
+                        //    if (cuent.LIMITE < cuent.ABONO)
+                        //    {
+                        //        decimal total = Convert.ToDecimal(cuent.ABONO) - Convert.ToDecimal(cuent.LIMITE);
+                        //        DetalleContab conta = new DetalleContab();
+                        //        conta.POS_TYPE = conp[i].KEY;
+                        //        conta.COMP_CODE = doc.SOCIEDAD_ID;
+                        //        conta.BUS_AREA = conp[i].BUS_AREA;
+                        //        conta.POST_KEY = conp[i].POSTING_KEY;
+                        //        conta.ACCOUNT = cuent.CARGO.ToString();
+                        //        conta.BALANCE = cuent.LIMITE.ToString();
+                        //        conta.TEXT = doc.CONCEPTO;
+                        //        conta.SALES_ORG = clien.VKORG;
+                        //        conta.DIST_CHANEL = clien.VTWEG;
+                        //        conta.DIVISION = clien.SPART;
+                        //        conta.SALES_OFF = clien.VKBUR;
+                        //        conta.SALES_GR = clien.VKGRP;
+                        //        conta.PRICE_GR = clien.KONDA;
+                        //        conta.SALES_DIST = clien.BZIRK;
+                        //        conta.CUSTOMER = doc.PAYER_ID;
+                        //        contas.Add(conta);
+                        //        DetalleContab conta2 = new DetalleContab();
+                        //        conta.POS_TYPE = conp[i].KEY;
+                        //        conta2.COMP_CODE = doc.SOCIEDAD_ID;
+                        //        conta.BUS_AREA = conp[i].BUS_AREA;
+                        //        conta.POST_KEY = conp[i].POSTING_KEY;
+                        //        conta2.ACCOUNT = cuent.CARGO.ToString();
+                        //        conta2.BALANCE = cuent.LIMITE.ToString();
+                        //        conta2.TEXT = doc.CONCEPTO;
+                        //        conta2.SALES_ORG = clien.VKORG;
+                        //        conta2.DIST_CHANEL = clien.VTWEG;
+                        //        conta2.DIVISION = clien.SPART;
+                        //        conta2.SALES_OFF = clien.VKBUR;
+                        //        conta2.SALES_GR = clien.VKGRP;
+                        //        conta2.PRICE_GR = clien.KONDA;
+                        //        conta2.SALES_DIST = clien.BZIRK;
+                        //        conta2.CUSTOMER = doc.PAYER_ID;
+                        //        contas.Add(conta2);
+                        //    }
+                        //    else
+                        //    {
+                        //        DetalleContab conta = new DetalleContab();
+                        //        conta.POS_TYPE = conp[i].KEY;
+                        //        conta.COMP_CODE = doc.SOCIEDAD_ID;
+                        //        conta.BUS_AREA = conp[i].BUS_AREA;
+                        //        conta.POST_KEY = conp[i].POSTING_KEY;
+                        //        conta.ACCOUNT = cuent.CARGO.ToString();
+                        //        conta.BALANCE = cuent.ABONO.ToString();
+                        //        conta.TEXT = doc.CONCEPTO;
+                        //        conta.SALES_ORG = clien.VKORG;
+                        //        conta.DIST_CHANEL = clien.VTWEG;
+                        //        conta.DIVISION = clien.SPART;
+                        //        conta.SALES_OFF = clien.VKBUR;
+                        //        conta.SALES_GR = clien.VKGRP;
+                        //        conta.PRICE_GR = clien.KONDA;
+                        //        conta.SALES_DIST = clien.BZIRK;
+                        //        conta.CUSTOMER = doc.PAYER_ID;
+                        //        contas.Add(conta);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        if (enca.TIPO_SOL == "NC")
                         {
-                            if (cuent.LIMITE < cuent.ABONO)
+                            try
                             {
-                                decimal total = Convert.ToDecimal(cuent.ABONO) - Convert.ToDecimal(cuent.LIMITE);
-                                DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
-                                conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
-                                conta.POST_KEY = conp[i].POSTING_KEY;
-                                conta.ACCOUNT = cuent.CARGO.ToString();
-                                conta.BALANCE = cuent.LIMITE.ToString();
-                                conta.TEXT = doc.CONCEPTO;
-                                conta.SALES_ORG = clien.VKORG;
-                                conta.DIST_CHANEL = clien.VTWEG;
-                                conta.DIVISION = clien.SPART;
-                                conta.SALES_OFF = clien.VKBUR;
-                                conta.SALES_GR = clien.VKGRP;
-                                conta.PRICE_GR = clien.KONDA;
-                                conta.SALES_DIST = clien.BZIRK;
-                                conta.CUSTOMER = doc.PAYER_ID;
-                                contas.Add(conta);
-                                DetalleContab conta2 = new DetalleContab();
-                                conta.G = enca.CLASE1;
-                                conta2.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
-                                conta.POST_KEY = conp[i].POSTING_KEY;
-                                conta2.ACCOUNT = cuent.CARGO.ToString();
-                                conta2.BALANCE = cuent.LIMITE.ToString();
-                                conta2.TEXT = doc.CONCEPTO;
-                                conta2.SALES_ORG = clien.VKORG;
-                                conta2.DIST_CHANEL = clien.VTWEG;
-                                conta2.DIVISION = clien.SPART;
-                                conta2.SALES_OFF = clien.VKBUR;
-                                conta2.SALES_GR = clien.VKGRP;
-                                conta2.PRICE_GR = clien.KONDA;
-                                conta2.SALES_DIST = clien.BZIRK;
-                                conta2.CUSTOMER = doc.PAYER_ID;
-                                contas.Add(conta2);
+                                cliei = db.CLIENTEIs.Where(x => x.KUNNR == clien.KUNNR).Single();
                             }
-                            else
+                            catch (Exception)
                             {
-                                DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
-                                conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
-                                conta.POST_KEY = conp[i].POSTING_KEY;
-                                conta.ACCOUNT = cuent.CARGO.ToString();
-                                conta.BALANCE = cuent.ABONO.ToString();
-                                conta.TEXT = doc.CONCEPTO;
-                                conta.SALES_ORG = clien.VKORG;
-                                conta.DIST_CHANEL = clien.VTWEG;
-                                conta.DIVISION = clien.SPART;
-                                conta.SALES_OFF = clien.VKBUR;
-                                conta.SALES_GR = clien.VKGRP;
-                                conta.PRICE_GR = clien.KONDA;
-                                conta.SALES_DIST = clien.BZIRK;
-                                conta.CUSTOMER = doc.PAYER_ID;
-                                contas.Add(conta);
+                                return "No se encontro indicador de impuesto para el cliente";
                             }
                         }
-                        else
+                        for (int j = 0; j < docp.Count; j++)
                         {
-                            for (int j = 0; j < docp.Count; j++)
-                            {
-                                DetalleContab conta = new DetalleContab();
-                                conta.G = enca.CLASE1;
-                                conta.COMP_CODE = doc.SOCIEDAD_ID;
-                                conta.G = enca.CLASE2;
-                                conta.POST_KEY = conp[i].POSTING_KEY;
-                                conta.ACCOUNT = cuent.CARGO.ToString();
-                                conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
-                                conta.TEXT = doc.CONCEPTO;
-                                conta.SALES_ORG = clien.VKORG;
-                                conta.DIST_CHANEL = clien.VTWEG;
-                                conta.DIVISION = clien.SPART;
-                                conta.SALES_OFF = clien.VKBUR;
-                                conta.SALES_GR = clien.VKGRP;
-                                conta.PRICE_GR = clien.KONDA;
-                                conta.SALES_DIST = clien.BZIRK;
-                                conta.CUSTOMER = doc.PAYER_ID;
-                                conta.PRODUCT = docp[j].MATNR;
-                                contas.Add(conta);
-                            }
+                            DetalleContab conta = new DetalleContab();
+                            conta.POS_TYPE = conp[i].KEY;
+                            conta.COMP_CODE = doc.SOCIEDAD_ID;
+                            conta.BUS_AREA = conp[i].BUS_AREA;
+                            conta.POST_KEY = conp[i].POSTING_KEY;
+                            conta.ACCOUNT = cuent.CARGO.ToString();
+                            conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
+                            conta.TEXT = doc.CONCEPTO;
+                            conta.SALES_ORG = clien.VKORG;
+                            conta.DIST_CHANEL = clien.VTWEG;
+                            conta.DIVISION = clien.SPART;
+                            conta.SALES_OFF = clien.VKBUR;
+                            conta.SALES_GR = clien.VKGRP;
+                            conta.PRICE_GR = clien.KONDA;
+                            conta.SALES_DIST = clien.BZIRK;
+                            conta.CUSTOMER = doc.PAYER_ID;
+                            conta.PRODUCT = docp[j].MATNR;
+                            conta.TAX_CODE = cliei.MWSKZ;
+                            contas.Add(conta);
                         }
+                        //}
                     }
                 }
-                return "1";
+                return "";
             }
             catch (Exception e)
             {
@@ -288,7 +313,7 @@ namespace TAT001.Models
     }
     public class DetalleContab
     {
-        public string G;
+        public string POS_TYPE;
         public string COMP_CODE;
         public string BUS_AREA;
         public string POST_KEY;

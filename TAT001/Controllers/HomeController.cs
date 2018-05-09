@@ -106,7 +106,7 @@ namespace TAT001.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SelPais(string pais)
         {
-            Session["pais"] = pais;
+            Session["pais"] = pais.ToUpper() ;
             return View();
         }
 

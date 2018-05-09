@@ -315,7 +315,7 @@ namespace TAT001.Controllers
                 }
                 bool aprob = false;
                 DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
-                aprob = (d.ESTATUS_WF.Equals("A"));
+                aprob = (d.ESTATUS_WF.Equals("A") | d.ESTATUS_WF.Equals("S"));
 
                 CartaV carta = v;
                 CartaVEsqueleto cve = new CartaVEsqueleto();
