@@ -34,8 +34,8 @@
     //Soporte
     $('#table_sop').DataTable({
         "language": {
-            "zeroRecords": "No hay registros",
-            "infoEmpty": "Registros no disponibles",
+            "zerorecords": "no hay registros",
+            "infoempty": "registros no disponibles",
             "decimal": ".",
             "thousands": ","
         },
@@ -44,55 +44,86 @@
         "info": false,
         "searching": false,
         "columns": [
+            //{
+            //    "classname": 'select_row',
+            //    "orderable": false,
+            //    "data": null,
+            //    "defaultcontent": ''
+            //},
             {
-                "className": 'select_row',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
+                "name": 'pos'
             },
-            {},
-            {},
-            {},
-            {},
-            {}
+            {
+                "name": 'factura'
+            },
+            {
+                "name": 'fecha'
+            },
+            {
+                "name": 'proveedor'
+            },
+            {
+                "name": 'proveedor_txt'
+            },
+            {
+                "name": 'control'
+            },
+            {
+                "name": 'autorizacion'
+            },
+            {
+                "name": 'vencimiento'
+            },
+            {
+                "name": 'facturak'
+            },
+            {
+                "name": 'ejerciciok'
+            },
+            {
+                "name": 'bill_doc'
+            },
+            {
+                "name": 'belnr'
+            }            
         ]
     });
 
-    $('#table_sop tbody').on('click', 'td.select_row', function () {
-        var tr = $(this).closest('tr');
-        $(tr).toggleClass('selected');
-    });
+    //$('#table_sop tbody').on('click', 'td.select_row', function () {
+    //    var tr = $(this).closest('tr');
+    //    $(tr).toggleClass('selected');
+    //});
 
-    $('#delRowSoporte').click(function (e) {
-        var t = $('#table_sop').DataTable();
-        t.rows('.selected').remove().draw(false);
-        event.returnValue = false;
-        event.cancel = true;
-    });
+    //$('#delRowSoporte').click(function (e) {
+    //    var t = $('#table_sop').DataTable();
+    //    t.rows('.selected').remove().draw(false);
+    //    event.returnValue = false;
+    //    event.cancel = true;
+    //});
 
-    $('#addRowSoporte').on('click', function () {
-        var t = $('#table_sop').DataTable();
-        //Obtener el tipo de solicitud NC
-        var sol = $("#tsol_id").val();
-        if (sol == "NC") {
+    //$('#addRowSoporte').on('click', function () {
+    //    var t = $('#table_sop').DataTable();
+    //    //Obtener el tipo de solicitud NC
+    //    var sol = $("#tsol_id").val();
+    //    if (sol == "NC") {
 
-            t.row.add([
-                "", //Selección
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
-                ""
-            ]).draw(false);
-        } else {
-            M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
-        }
+    //        t.row.add([
+    //            "", //Selección
+    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+    //            //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
+    //            ""
+    //        ]).draw(false);
+    //    } else {
+    //        M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
+    //    }
 
-        event.returnValue = false;
-        event.cancel = true;
+    //    event.returnValue = false;
+    //    event.cancel = true;
 
-    });
+    //});
 
 
     //Evaluar la extensión y tamaño del archivo a cargar
@@ -316,15 +347,15 @@
     $('#select_neg').change();
     $('#select_dis').change();
 
-
+    //Archivo para tabla de distribución
     $("#file_dis").change(function () {
         var filenum = $('#file_dis').get(0).files.length;
         if (filenum > 0) {
             var file = document.getElementById("file_dis").files[0];
             var filename = file.name;
             if (evaluarExt(filename)) {
-                M.toast({ html: 'Uploading' + filename });
-                loadExcel(file);
+                M.toast({ html: 'Cargando ' + filename });
+                loadExcelDis(file);
                 updateFooter();
             } else {
                 M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
@@ -337,12 +368,29 @@
     $('#check_factura').change(function () {
         if ($(this).is(":checked")) {
             $(".table_sop").css("display", "none");
-            $("#file_factura").css("display", "block");
+            $("#file_facturat").css("display", "block");
         } else {
             $(".table_sop").css("display", "table");
-            $("#file_factura").css("display", "none");
+            $("#file_facturat").css("display", "none");
         }
         
+    });
+
+    //Archivo para facturas en soporte
+    $("#file_sop").change(function () {
+        var filenum = $('#file_sop').get(0).files.length;
+        if (filenum > 0) {
+            var file = document.getElementById("file_sop").files[0];
+            var filename = file.name;
+            if (evaluarExt(filename)) {
+                M.toast({ html: 'Cargando ' + filename });
+                loadExcelSop(file);                
+            } else {
+                M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
+            }
+        } else {
+            M.toast({ html: 'Seleccione un archivo' });
+        }
     });
 
     //Temporalidad
@@ -372,10 +420,10 @@
             //Checar si mostrar la tabla o el archivo
             if ($("#check_factura").is(':checked')) {
                 $(".table_sop").css("display", "none");
-                $("#file_factura").css("display", "block");
+                $("#file_facturat").css("display", "block");
             } else {
                 $(".table_sop").css("display", "table");
-                $("#file_factura").css("display", "none");
+                $("#file_facturat").css("display", "none");
             }
         } else {
             var table = $('#table_sop').DataTable();
@@ -1298,7 +1346,7 @@ function loadFilesf() {
 
 }
 
-function loadExcel(file) {
+function loadExcelDis(file) {
 
     var formData = new FormData();
 
@@ -1367,6 +1415,101 @@ function loadExcel(file) {
     //Actualizar los valores en la tabla
     updateTable();
 
+}
+
+function loadExcelSop(file) {
+
+    var formData = new FormData();
+
+    formData.append("FileUpload", file);
+
+    var table = $('#table_sop').DataTable();
+    table.clear().draw();
+    $.ajax({
+        type: "POST",
+        url: 'LoadExcelSop',
+        data: formData,
+        dataType: "json",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+                
+                $.each(data, function (i, dataj) {
+
+                    var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
+                    var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
+                    var addedRow = table.row.add([
+                        dataj.POS,
+                        dataj.FACTURA,                        
+                        "" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.PROVEEDOR,
+                        dataj.PROVEEDOR_TXT,
+                        dataj.CONTROL,
+                        dataj.AUTORIZACION,
+                        "" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
+                        dataj.FACTURAK,
+                        dataj.EJERCICIOK,
+                        dataj.BILL_DOC,
+                        dataj.BELNR
+                    ]).draw(false).node();
+
+                    if (dataj.PROVEEDOR_ACTIVO == false) {
+                        //$(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
+                    }
+
+                });
+                //Aplicar configuración de columnas en las tablas
+                ocultarColumnasTablaSoporteDatos();
+                $(".table_sop").css("display", "table");
+                $("#table_sop").css("display", "table");
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+        },
+        async: false
+    });
+
+}
+
+function ocultarColumnasTablaSoporteDatos() {
+    //Obtener la sociedad
+    var sociedad = "KCMX";
+    //Obtener el país ID
+    var pais = "MX";
+    //Obtener el tipo de solicitud
+    var tsol_id = $('#tsol_id').val();
+    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
+
+}
+
+function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+    $.ajax({
+        type: "POST",
+        url: 'LoadConfigSoporte',
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol },
+        
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+                //True son los visibles
+                var i;
+                for (i in data) {
+                    if (data.hasOwnProperty(i)) {
+                        alert(i +" -- " +data[i]);
+                    }
+                }
+
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+        },
+        async: false
+    });
 }
 
 function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {

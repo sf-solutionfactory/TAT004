@@ -1688,6 +1688,174 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        public JsonResult LoadExcelSop()
+        {
+            List<DOCUMENTOF_MOD> ld = new List<DOCUMENTOF_MOD>();
+
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files["FileUpload"];
+                //using (var stream2 = System.IO.File.Open(url, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                //{
+                string extension = System.IO.Path.GetExtension(file.FileName);
+                // Auto-detect format, supports:
+                //  - Binary Excel files (2.0-2003 format; *.xls)
+                //  - OpenXml Excel files (2007 format; *.xlsx)
+                //using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(file.InputStream))
+                //{
+                IExcelDataReader reader = ExcelReaderFactory.CreateReader(file.InputStream);
+                // 2. Use the AsDataSet extension method
+                DataSet result = reader.AsDataSet();
+
+                // The result of each spreadsheet is in result.Tables
+                // 3.DataSet - Create column names from first row
+                DataTable dt = result.Tables[0];
+
+                //Rows
+                var rowsc = dt.Rows.Count;
+                //columns
+                var columnsc = dt.Columns.Count;
+
+                //Columnd and row to start
+                var rows = 1; // 2
+                //var cols = 0; // A
+                int pos = 1;
+
+                for (int i = rows; i < rowsc; i++)
+                {
+                                   
+                    DOCUMENTOF_MOD doc = new DOCUMENTOF_MOD();
+
+                    doc.POS = pos;
+                    try
+                    {
+                        doc.FACTURA = (string)dt.Rows[i][0]; //Factura
+                    }
+                    catch (Exception e)
+                    {
+                        doc.FACTURA = null;
+                    }
+                    try
+                    {
+                        doc.FECHA = Convert.ToDateTime(dt.Rows[i][1]); //Fecha
+                    }
+                    catch (Exception e)
+                    {
+                        doc.FECHA = null;
+                    }
+                    try
+                    {
+                        doc.PROVEEDOR = (string)dt.Rows[i][2]; //Proveedor
+                        PROVEEDOR prov = proveedor(doc.PROVEEDOR);
+                        if (prov != null)//Validar si el proveedor existe
+                        {
+
+                            doc.PROVEEDOR_TXT = prov.prov_desc.ToString(); //Descripción
+                            doc.PROVEEDOR_ACTIVO = true;
+                        }
+                        else
+                        {
+                            doc.PROVEEDOR_ACTIVO = false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        doc.PROVEEDOR_ACTIVO = false;
+                    }
+                    try
+                    {
+                        doc.CONTROL = (string)dt.Rows[i][3]; //Control   
+                    }
+                    catch (Exception e)
+                    {
+                        doc.CONTROL = "";
+                    }
+                    try
+                    {
+                        doc.AUTORIZACION = (string)dt.Rows[i][4]; //Autorización                        
+                    }
+                    catch (Exception e)
+                    {
+                        doc.AUTORIZACION = "";
+                    }
+                    try
+                    {
+                        doc.VENCIMIENTO = Convert.ToDateTime(dt.Rows[i][5]); //Vencimiento
+                    }
+                    catch (Exception e)
+                    {
+                        doc.VENCIMIENTO = null;
+                    }
+                    try
+                    {
+                        doc.FACTURAK = (string)dt.Rows[i][6]; //Facturak
+                    }
+                    catch (Exception e)
+                    {
+                        doc.FACTURAK = null;
+                    }
+                    try
+                    {
+                        int ej = Convert.ToInt32(dt.Rows[i][7]);
+                        doc.EJERCICIOK = Convert.ToString(ej); //Ejerciciok
+                    }
+                    catch (Exception e)
+                    {
+                        doc.EJERCICIOK = null;
+                    }
+                    try
+                    {
+                        doc.BILL_DOC = (string)dt.Rows[i][8]; //Bill_doc
+                    }
+                    catch (Exception e)
+                    {
+                        doc.BILL_DOC = null;
+                    }
+                    try
+                    {
+                        doc.BELNR = (string)dt.Rows[i][9]; //Belnr
+                    }
+                    catch (Exception e)
+                    {
+                        doc.BELNR = null;
+                    }
+
+                    ld.Add(doc);
+                    pos++;
+                }
+
+                reader.Close();
+
+            }
+            JsonResult jl = Json(ld, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult LoadConfigSoporte(string sociedad, string pais, string tsol)
+        {
+
+            FACTURASCONF fc = new FACTURASCONF();
+
+            try
+            {
+                fc = db.FACTURASCONFs.Where(f => f.SOCIEDAD_ID.Equals(sociedad) && f.PAIS_ID.Equals(pais) && f.TSOL.Equals(tsol)).FirstOrDefault();
+            }
+            catch
+            {
+
+            }
+
+            JsonResult jl = Json(fc, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        
+
+        [HttpPost]
+        [AllowAnonymous]
         public string saveFiles()
         {
             var res = "";
@@ -1898,6 +2066,25 @@ namespace TAT001.Controllers
             MATERIAL mat = db.MATERIALs.Where(m => m.ID == material).FirstOrDefault();
 
             return mat;
+        }
+
+        public PROVEEDOR proveedor(string proveedor)
+        {
+            if (proveedor == null)
+                proveedor = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            PROVEEDOR PRO1 = new PROVEEDOR();
+            PRO1.prov_id = "P1234";
+            PRO1.prov_desc = "PROVEEDOR X";
+
+            List<PROVEEDOR> pl = new List<PROVEEDOR>() { PRO1 };
+
+
+            PROVEEDOR pro = pl.Where(m => m.prov_id.Equals(proveedor)).FirstOrDefault();
+
+            return pro;
         }
 
         [HttpPost]
