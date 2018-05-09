@@ -168,18 +168,19 @@ namespace TAT001.Controllers
                 List<SPRA> ss = db.SPRAS.ToList();
                 foreach (SPRA s in ss)
                 {
+                    PAGINAT p = new PAGINAT();
                     try
                     {
-                        PAGINAT p = new PAGINAT();
                         p.ID = pAGINA.ID;
                         p.SPRAS_ID = s.ID;
                         p.TXT50 = Request.Form[s.ID].ToString();
-                        db.Entry(p).State = EntityState.Modified;
+                        db.PAGINATs.Add(p);
                         db.SaveChanges();
                     }
-                    catch
+                    catch(Exception e)
                     {
-
+                        db.Entry(p).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
                 return RedirectToAction("Index");

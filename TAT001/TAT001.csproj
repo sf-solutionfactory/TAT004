@@ -205,6 +205,7 @@
     <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\ContactoController.cs" />
     <Compile Include="Controllers\Det_AprobsController.cs" />
     <Compile Include="Controllers\FlujosController.cs" />
@@ -729,6 +730,11 @@
     <Content Include="Views\Det_Aprobs\Details.cshtml" />
     <Content Include="Views\Det_Aprobs\Edit.cshtml" />
     <Content Include="Views\Det_Aprobs\Index.cshtml" />
+    <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Clientes\Delete.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Edit.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
