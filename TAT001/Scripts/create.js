@@ -51,40 +51,40 @@
             //    "defaultcontent": ''
             //},
             {
-                "name": 'pos'
+                "name": 'POS'
             },
             {
-                "name": 'factura'
+                "name": 'FACTURA'
             },
             {
-                "name": 'fecha'
+                "name": 'FECHA'
             },
             {
-                "name": 'proveedor'
+                "name": 'PROVEEDOR'
             },
             {
-                "name": 'proveedor_txt'
+                "name": 'PROVEEDOR_TXT'
             },
             {
-                "name": 'control'
+                "name": 'CONTROL'
             },
             {
-                "name": 'autorizacion'
+                "name": 'AUTORIZACION'
             },
             {
-                "name": 'vencimiento'
+                "name": 'VENCIMIENTO'
             },
             {
-                "name": 'facturak'
+                "name": 'FACTURAK'
             },
             {
-                "name": 'ejerciciok'
+                "name": 'EJERCICIOK'
             },
             {
-                "name": 'bill_doc'
+                "name": 'BILL_DOC'
             },
             {
-                "name": 'belnr'
+                "name": 'BELNR'
             }            
         ]
     });
@@ -373,10 +373,11 @@
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
         }
-        
+        var table = $('#table_sop').DataTable();
+        table.clear().draw();
     });
 
-    //Archivo para facturas en soporte
+    //Archivo para facturas en soporte ahora información
     $("#file_sop").change(function () {
         var filenum = $('#file_sop').get(0).files.length;
         if (filenum > 0) {
@@ -411,25 +412,6 @@
     $('#tab_soporte').on("click", function (e) {
 
         //evalTempTab(false, e);
-
-        //Obtener el tipo de solicitud NC
-        var sol = $("#tsol_id").val();
-
-        if (sol == "NC" | sol == "NCI" | sol == "OP") {
-            $('#ref_soporte').css("display", "table");
-            //Checar si mostrar la tabla o el archivo
-            if ($("#check_factura").is(':checked')) {
-                $(".table_sop").css("display", "none");
-                $("#file_facturat").css("display", "block");
-            } else {
-                $(".table_sop").css("display", "table");
-                $("#file_facturat").css("display", "none");
-            }
-        } else {
-            var table = $('#table_sop').DataTable();
-            table.clear().draw();
-            $('#ref_soporte').css("display", "none");
-        }
 
     });
 
@@ -1475,11 +1457,35 @@ function loadExcelSop(file) {
 
 }
 
+function selectTsol(sol) {
+
+    //Obtener el tipo de solicitud NC
+    //var sol = $("#tsol_id").val();
+    var table = $('#table_sop').DataTable();
+    if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        $('#ref_soporte').css("display", "table");
+        //Checar si mostrar la tabla o el archivo
+        if ($("#check_factura").is(':checked')) {
+            $(".table_sop").css("display", "none");
+            $("#file_facturat").css("display", "block");
+        } else {
+            $(".table_sop").css("display", "table");
+            $("#file_facturat").css("display", "none");
+        }
+        table.clear().draw();
+    } else {
+        
+        table.clear().draw();
+        $('#ref_soporte').css("display", "none");
+    }
+
+}
+
 function ocultarColumnasTablaSoporteDatos() {
     //Obtener la sociedad
-    var sociedad = "KCMX";
+    var sociedad = $('#sociedad_id').val();
     //Obtener el país ID
-    var pais = "MX";
+    var pais = $('#pais_id').val(); 
     //Obtener el tipo de solicitud
     var tsol_id = $('#tsol_id').val();
     ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
@@ -1487,6 +1493,7 @@ function ocultarColumnasTablaSoporteDatos() {
 }
 
 function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+    var table = $('#table_sop').DataTable();
     $.ajax({
         type: "POST",
         url: 'LoadConfigSoporte',
@@ -1496,12 +1503,19 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
 
             if (data !== null || data !== "") {
                 //True son los visibles
+                var prov_txt = true;;
                 var i;
                 for (i in data) {
+                    if (i == "PROVEEDOR") {
+                        prov_txt = data[i];
+                    }
                     if (data.hasOwnProperty(i)) {
-                        alert(i +" -- " +data[i]);
+                        //alert(i + " -- " + data[i]);
+                        table.column(i + ':name').visible(data[i]);
                     }
                 }
+                table.column('PROVEEDOR_TXT:name').visible(prov_txt);
+
 
             }
         },

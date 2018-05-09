@@ -176,7 +176,7 @@
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
-                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control" })
+                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value)" })
                                     }
                                     else
                                     {
@@ -214,7 +214,7 @@
                                     </div>
                                 </div>
                             </div>
-                                @{TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
+                            @{TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
                                 <div class="col s6">
                                     <div class="form-group hidden">
                                         @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
@@ -292,7 +292,7 @@
                                         },
                                         change: function (e, ui) {
                                             if (!(ui.item)) {
-                                             
+
                                             }
                                         }
                                     });
@@ -447,6 +447,73 @@
                                 @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
                                 @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ref_soporte" style="display:none" class="col s12">
+                    <div class="card-panel">
+                        <h5>Referencia de Facturas</h5>
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <label>
+                                    <input id="check_factura" type="checkbox" checked="checked" />
+                                    <span>Una Factura</span>
+                                </label>
+                            </p>
+                            @*Cargar archivo excel soporte*@
+                            <div id="file_facturat" class="file-field input-field" style="display:none">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input type="file" id="file_sop">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+                            <div class="table_sop" id="" style="display:none">
+                                <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Registro</a>
+                                @*<a class="waves-effect waves-light btn-small" id="delRowSoporte"><i class="material-icons left">clear</i>Registro</a>*@
+                            </div>
+                            <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
+                                <thead>
+                                    <tr>
+                                        @*<th></th>Seleccionar*@
+                                        <th>Pos</th>
+                                        <th>Factura</th>
+                                        <th>Fecha Factura</th>
+                                        <th>Proveedor</th>
+                                        <th>Proveedor Desc</th>
+                                        <th>Control</th>
+                                        <th>Autorización</th>
+                                        <th>Vencimiento</th>
+                                        <th>Factura k</th>
+                                        <th>Ejercicio k</th>
+                                        <th>Bill doc</th>
+                                        <th>Belnr</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <table id="table_soph" class="display" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        @*<th></th>Seleccionar*@
+                                        <th>Pos</th>
+                                        <th>Factura</th>
+                                        <th>Fecha Factura</th>
+                                        <th>Proveedor</th>
+                                        <th>Proveedor Desc</th>
+                                        <th>Control</th>
+                                        <th>Autorización</th>
+                                        <th>Vencimiento</th>
+                                        <th>Factura k</th>
+                                        <th>Ejercicio k</th>
+                                        <th>Bill doc</th>
+                                        <th>Belnr</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -650,74 +717,7 @@
                             </script>
                         </div>
                     </div>
-                </div>
-                <div id="ref_soporte" style="display:none" class="col s12">
-                    <div class="card-panel">
-                        <h5>Referencia de Facturas</h5>
-                        <div class="row" style="margin-bottom:0;">
-                            <p>
-                                <label>
-                                    <input id="check_factura" type="checkbox" checked="checked" />
-                                    <span>Una Factura</span>
-                                </label>
-                            </p>
-                            @*Cargar archivo excel soporte*@
-                            <div id="file_facturat" class="file-field input-field" style="display:none">
-                                <div class="btn">
-                                    <span>File</span>
-                                    <input type="file" id="file_sop">
-                                </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
-                                </div>
-                            </div>
-                            <div class="table_sop" id="" style="display:none">
-                                <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Registro</a>
-                                @*<a class="waves-effect waves-light btn-small" id="delRowSoporte"><i class="material-icons left">clear</i>Registro</a>*@
-                            </div>
-                            <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
-                                <thead>
-                                    <tr>
-                                        @*<th></th>Seleccionar*@
-                                        <th>Pos</th>
-                                        <th>Factura</th>
-                                        <th>Fecha Factura</th>
-                                        <th>Proveedor</th>
-                                        <th>Proveedor Desc</th>
-                                        <th>Control</th>
-                                        <th>Autorización</th>
-                                        <th>Vencimiento</th>
-                                        <th>Factura k</th>
-                                        <th>Ejercicio k</th>
-                                        <th>Bill doc</th>
-                                        <th>Belnr</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <table id="table_soph" class="display" cellspacing="0" >
-                                <thead>
-                                    <tr>
-                                        @*<th></th>Seleccionar*@
-                                        <th>Pos</th>
-                                        <th>Factura</th>
-                                        <th>Fecha Factura</th>
-                                        <th>Proveedor</th>
-                                        <th>Proveedor Desc</th>
-                                        <th>Control</th>
-                                        <th>Autorización</th>
-                                        <th>Vencimiento</th>
-                                        <th>Factura k</th>
-                                        <th>Ejercicio k</th>
-                                        <th>Bill doc</th>
-                                        <th>Belnr</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                </div>                
             </div>
         </div>
         @*Distribución*@
