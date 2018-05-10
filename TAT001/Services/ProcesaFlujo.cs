@@ -708,7 +708,7 @@ namespace TAT001.Services
             DET_AGENTE da = new DET_AGENTE();
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);
             //GAUTORIZACION gg = u.GAUTORIZACIONs.Where(a => a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
-            long gaa = db.CREADORs.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
+            long gaa = db.CREADORs.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
             int ppos = 0;
 
             if (pos.Equals(0))
@@ -775,7 +775,8 @@ namespace TAT001.Services
             {
                 if (da.PUESTOA_ID != 0)
                 {
-                    agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    agente = da.USUARIOA;
                     f.DETPOS = da.POS;
                 }
                 else
@@ -783,12 +784,13 @@ namespace TAT001.Services
                     da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == sop).FirstOrDefault();
                     if (da == null)
                     {
-                        agente = db.GAUTORIZACIONs.Where(a => a.ID == gaa).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == 2).First().ID;
+                        agente = d.USUARIOC_ID;
                         f.DETPOS = 98;
                     }
                     else
                     {
-                        agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                        //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                        agente = da.USUARIOA;
                         f.DETPOS = da.POS;
                     }
                 }
@@ -821,13 +823,15 @@ namespace TAT001.Services
             {
                 if (da.PUESTOA_ID != 0)
                 {
-                    agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    agente = da.USUARIOA;
                     f.DETPOS = da.POS;
                 }
                 else
                 {
                     da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == 99).FirstOrDefault();
-                    agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                    agente = da.USUARIOA;
                     f.DETPOS = da.POS;
                 }
             }

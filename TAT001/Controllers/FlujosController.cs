@@ -45,6 +45,26 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
+
+            List<DET_AGENTE> dda = db.DET_AGENTE.ToList();
+            foreach(DET_AGENTE da in dda)
+            {
+                string id = da.GAUTORIZACION.USUARIOs.Where(a => a.PUESTO_ID.Equals(da.PUESTOA_ID)).FirstOrDefault().ID;
+                da.USUARIOA = id;
+                da.USUARIOC = da.GAUTORIZACION.USUARIOs.Where(a => a.PUESTO_ID.Equals(da.PUESTOC_ID)).FirstOrDefault().ID;
+                db.Entry(da).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            //List<USUARIO> uu = db.USUARIOs.ToList();
+            //foreach(USUARIO u in uu)
+            //{
+            //    foreach(GAUTORIZACION g in u.GAUTORIZACIONs)
+            //    {
+            //        int i = 0;
+            //    }
+            //}
+
             var fLUJOes = db.FLUJOes.Include(f => f.DOCUMENTO).Include(f => f.USUARIO).Include(f => f.USUARIO1).Include(f => f.WORKFP);
             return View(fLUJOes.ToList());
         }

@@ -1,12 +1,10 @@
 ﻿@model TAT001.Entities.PAGINA
-
 @{
     //ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 502;
     ViewBag.carpeta_r = 500;
 }
-
 <div class="row">
     <div class="col s12 right-align">
         @*@Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn-small" })*@
@@ -48,7 +46,7 @@
             <div class="card-panel">
                 <h5>Traducciones</h5>
                 <div class="row">
-                    @foreach (var s in ViewBag.spras)
+                    @foreach (TAT001.Entities.SPRA s in ViewBag.spras)
                     {
                         @*@foreach (var item in Model.PAGINATs)
                             {
@@ -57,8 +55,14 @@
                         <div class=" input-field col s12">
                             @*@Html.TextBoxFor(modelItem => item.TXT50, new { @id = "A" + item.SPRAS_ID, name = "A" + item.SPRAS_ID })*@
                             @*@Html.EditorFor(modelItem => item.TXT50, null, item.SPRAS_ID, new { htmlAttributes = new { @id = "A" + item.SPRAS_ID } })*@
-                            <input type="text" id="@("A" + s.ID)" value="@Model.PAGINATs.Where(a=>a.SPRAS_ID.Equals(s.ID)).FirstOrDefault().TXT50"/>
-                            <label for="@("A" + s.ID)">@s.DESCRIPCION</label>
+                            @if (Model.PAGINATs.Where(a => a.SPRAS_ID.Equals(s.ID)).FirstOrDefault() == null)
+                            {
+                                <input type="text" id="@("A" + s.ID)" name="@(s.ID)" value="" />
+                            }
+                            else
+                            {
+                                <input type="text" id="@("A" + s.ID)" name="@(s.ID)" value="@Model.PAGINATs.Where(a=>a.SPRAS_ID.Equals(s.ID)).FirstOrDefault().TXT50" />
+                            } <label for="@("A" + s.ID)">@s.DESCRIPCION</label>
                         </div>
                         @*}
                             }*@

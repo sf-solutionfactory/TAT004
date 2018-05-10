@@ -288,6 +288,8 @@
     <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PRESUPUESTO" Type="bit" />
     <Property Name="ACTIVO" Type="bit" />
+    <Property Name="USUARIOA" Type="nvarchar" MaxLength="16" />
+    <Property Name="USUARIOC" Type="nvarchar" MaxLength="16" />
   </EntityType>
   <EntityType Name="DET_APROB">
     <Key>
@@ -459,6 +461,24 @@
     <Property Name="PATH" Type="nvarchar" MaxLength="500" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="DOCUMENTOF">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FACTURA" Type="nvarchar" MaxLength="50" />
+    <Property Name="FECHA" Type="date" />
+    <Property Name="PROVEEDOR" Type="nchar" MaxLength="10" />
+    <Property Name="CONTROL" Type="nvarchar" MaxLength="50" />
+    <Property Name="AUTORIZACION" Type="nvarchar" MaxLength="50" />
+    <Property Name="VENCIMIENTO" Type="date" />
+    <Property Name="FACTURAK" Type="nvarchar" MaxLength="50" />
+    <Property Name="EJERCICIOK" Type="nchar" MaxLength="4" />
+    <Property Name="BILL_DOC" Type="nchar" MaxLength="10" />
+    <Property Name="BELNR" Type="nchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
       <PropertyRef Name="NUM_DOC" />
@@ -498,6 +518,26 @@
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSFORM_ID" Type="int" Nullable="false" />
     <Property Name="CHECKS" Type="bit" />
+  </EntityType>
+  <EntityType Name="FACTURASCONF">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="TSOL" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="TSOL" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="FACTURA" Type="bit" Nullable="false" />
+    <Property Name="FECHA" Type="bit" Nullable="false" />
+    <Property Name="PROVEEDOR" Type="bit" Nullable="false" />
+    <Property Name="CONTROL" Type="bit" Nullable="false" />
+    <Property Name="AUTORIZACION" Type="bit" Nullable="false" />
+    <Property Name="VENCIMIENTO" Type="bit" Nullable="false" />
+    <Property Name="FACTURAK" Type="bit" Nullable="false" />
+    <Property Name="EJERCICIOK" Type="bit" Nullable="false" />
+    <Property Name="BILL_DOC" Type="bit" Nullable="false" />
+    <Property Name="BELNR" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="FLUJO">
     <Key>
@@ -855,16 +895,6 @@
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -2544,37 +2574,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
-  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="version" Type="int" Mode="In" />
-    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-  </Function>
-  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-  </Function>
-  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-    <Parameter Name="owner_id" Type="int" Mode="In" />
-    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-  </Function>
-  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -2609,9 +2608,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />
@@ -2641,7 +2642,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />

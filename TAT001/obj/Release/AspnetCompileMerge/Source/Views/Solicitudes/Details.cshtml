@@ -1,11 +1,11 @@
 ﻿@model TAT001.Models.DocumentoFlujo
 @{
-                /**/
+    /**/
 
-                //ViewBag.Title = "Páginas";
-                Layout = "~/Views/Shared/_Layout.cshtml";
-                ViewBag.pagina_r = 201;
-                ViewBag.carpeta_r = 200;
+    //ViewBag.Title = "Páginas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 201;
+    ViewBag.carpeta_r = 200;
 }
 <div class="row" style="margin-bottom:0">
     <div class="col s12 m5 l5">
@@ -49,7 +49,7 @@
             {
                 if (ViewBag.accion == "A" | ViewBag.accion == "R")
                 {
-                    @*<button type="button" class="btn-small" id="btn_workf">Acciones</button>*@
+                    @*<button type="button" class="btn-small  " id="btn_workf">Acciones</button>*@
                     <div class="fixed-action-btn" id="lbl_wf">
                         <a class="btn-floating btn-large blue">
                             <i class="large material-icons">work</i>
@@ -69,10 +69,10 @@
                         };
                         var instance = M.FloatingActionButton.init(elem, options);
                     </script>
-                    @*<a id="lbl_wfa" class="btn-small" href="@Url.Action("Procesa", "Flujos", new { id = Model.D.NUM_DOC, accion = "A" })">Aprobar</a>
-                        <a id="lbl_wfr" class="btn-small" href="@Url.Action("Procesa", "Flujos", new { id = Model.D.NUM_DOC, accion = "R" })">Rechazar</a>*@
-                    <a class="btn modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
-                    <a class="btn modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
+                    @*<a id="lbl_wfa" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="A" })">Aprobar</a>
+                        <a id="lbl_wfr" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="R" })">Rechazar</a>*@
+                    <a class="btn-small modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
+                    <a class="btn-small modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
                 }
                 else if (ViewBag.accion == "N")
                 {
@@ -94,8 +94,8 @@
                         };
                         var instance = M.FloatingActionButton.init(elem, options);
                     </script>
-                    @*<a id="lbl_wfn" class="btn-small" href="@Url.Action("Procesa", "Flujos", new { id = Model.D.NUM_DOC, accion = "N" })">Siguiente</a>*@
-                    <a id="lbl_wfn" class="btn modal-trigger" href="#modal1" onclick="siguiente()">Siguiente</a>
+                    @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                    <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="siguiente()">Siguiente</a>
                 }
                 else if (ViewBag.accion == "P")
                 {
@@ -118,18 +118,18 @@
                         };
                         var instance = M.FloatingActionButton.init(elem, options);
                     </script>
-                    @*<a id="lbl_wfn" class="btn-small" href="@Url.Action("Procesa", "Flujos", new { id = Model.D.NUM_DOC, accion = "N" })">Siguiente</a>*@
-                    <a id="lbl_wfn" class="btn modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
+                    @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                    <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
                 }
             }
-            else if (Model.D.ESTATUS.Equals("P"))
+            else if (Model.D.ESTATUS.Equals("P") && (Model.D.TSOL_ID == "PR" | Model.D.TSOL_ID == "PR1"))
             {
-                <button type="button" class="btn-small" data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
-                <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
+                <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
+                <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
                 <ul id='list_rela' class='dropdown-content'>
-                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
-                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
-                    <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP"  })" id="lbl_op">Orden de pago</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
+                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>
                 </ul>
                 <script>
                     var elem = document.getElementById('btn_rela');
@@ -139,39 +139,46 @@
                     var instance = M.Dropdown.init(elem, options);
                 </script>
             }
-            else
-            {
-                <button type="button" class="btn-small" data-target="list_carta" id="btn_carta">Carta</button>
-                <button type="button" class="btn-small" id="btn_cancel">Cancelar</button>
-                <ul id='list_carta' class='dropdown-content'>
-                    <li><a href="@Url.Action("Index", "CartaF", new { id = Model.D.NUM_DOC })" id="lbl_list">Ver cartas</a></li>
-                    @if (Model.D.DOCUMENTOPs.Count().Equals(0))
-                    {
-                        <li><a href="@Url.Action("Create", "CartaF", new { id = Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
-                    }
-                    else
-                    {
-                        <li><a href="@Url.Action("Create", "CartaV", new { id = Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
-                    }
-                </ul>
-                <script>
-                    var elem = document.getElementById('btn_carta');
-                    var options = {
-                        constrainWidth: false
-                        //,hover: true
-                    };
-                    var instance = M.Dropdown.init(elem, options);
-                </script>
-            }
+            @*//else
+                //{*@
+            <button type="button" class="btn-small  " data-target="list_carta" id="btn_carta">Carta</button>
+            @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
+            <ul id='list_carta' class='dropdown-content'>
+                <li><a href="@Url.Action("Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Ver cartas</a></li>
+                @if (Model.D.DOCUMENTOPs.Count().Equals(0))
+                {
+                    <li><a href="@Url.Action("Create", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                }
+            </ul>
+            <script>
+                var elem = document.getElementById('btn_carta');
+                var options = {
+                    constrainWidth: false
+                    //,hover: true
+                };
+                var instance = M.Dropdown.init(elem, options);
+            </script>
+            @* } *@
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col s12">
         <ul class="tabs tabs-fixed-width tab-demo " id="tab">
-            <li class="tab col s2"><a class="active" href="#info" id="lbl_info">Información</a></li>
+            <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
             <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>
-            <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
+            @if (ViewBag.acciones != null & ViewBag.accion == "S")
+            {
+                <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
+            }
+            else
+            {
+                <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
+            }
             <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
             <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
         </ul>
@@ -188,7 +195,7 @@
                                 @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
                             </div>
                             <div class="col s4 right-align">
-                                <a href="@Url.Action("Details", new { id = Model.D.DOCUMENTO_REF })" class="btn-small">Ver</a>
+                                <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
                             </div>
                         </div>
                     </div>
@@ -300,7 +307,9 @@
     </div>
     <div id="supp" class="col s12">
         @{
-            List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+            List<TAT001.Entities.DOCUMENTOA>
+                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                    ;
             string[] nombrefile;
         }
         <div class="row">
@@ -332,6 +341,44 @@
                     </div>
                 </div>
             </div>
+            @if (ViewBag.acciones != null)
+            {
+                if (ViewBag.accion == "S")
+                {
+                    <div class="col s12 m12 l6">
+                        <div class="card-panel">
+                            <div class="row">
+                                <h5>Carta</h5>
+                            </div>
+                            <div class="row">
+
+
+                                @using (Html.BeginForm("Details", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.HiddenFor(model => model.D.NUM_DOC)
+                                    @*<label>Carta</label><label class"lbl_nec">*</label>*@
+                                    <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
+                                    <input type="text" value="Carta" name="labels_soporte" hidden />
+                                    <div class="file-field input-field">
+                                        <div class="btn-small  " style="float:left;">
+                                            <span>Examinar</span>
+                                            @*<input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">*@
+                                            <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col s12 right-align">
+                                        <input type="submit" value="Enviar" class="btn-small  " />
+                                    </div>}
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
         </div>
     </div>
     <div id="dist" class="col s12">
@@ -571,7 +618,7 @@
             <div class="modal-fixed-footer right">
                 <a href="#!" class="modal-action modal-close btn-flat">Cancelar</a>
                 <input type="submit" value="Aceptar" class="modal-action modal-close btn-flat" onclick="document.getElementById('loader').style.display = 'initial';" />
-                @*<a class="btn btn-default" href="@Url.Action("Details", "Solicitudes", new { id= Model.F.NUM_DOC})">Cancelar</a>*@
+                @*<a class="btn-small btn-default" href="@Url.Action("Details", "Solicitudes" , new { id=Model.F.NUM_DOC})">Cancelar</a>*@
             </div>
         </div>
         if (ViewBag.accion == "R")
@@ -604,7 +651,7 @@
                                     }
                                 </div>
                                 @*<div class="col s8 right-align">
-                                        <input type="submit" value="Calificar" class="btn-small" />
+                                        <input type="submit" value="Calificar" class="btn-small  " />
                                     </div>*@
                             </div>
                         </div>
@@ -690,7 +737,7 @@
                             }
                         </div>
                         @*<div class="col s8 right-align">
-                                <input type="submit" value="Calificar" class="btn-small" />
+                                <input type="submit" value="Calificar" class="btn-small  " />
                             </div>*@
                     </div>
                 </div>
@@ -705,7 +752,8 @@
             <div class="row" style="margin-bottom:0">
                 <div class="card-panel">
                     <h5>Workflow</h5>
-                    @*<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+                    @*
+                        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
                         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
                         <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
                         <link href="~/Content/dataTable.css" rel="stylesheet" />
@@ -802,7 +850,9 @@
     if (TempData["error"].ToString() != "")
     {
         <script>
-            M.toast({ html: '@TempData["error"]', classes: '' });
+    /**/
+    M.toast({ html: '@TempData["error"]', classes: '' });
+/**/
         </script>
     }
 }

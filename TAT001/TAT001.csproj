@@ -214,6 +214,7 @@
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MaterialesController.cs" />
     <Compile Include="Controllers\PaginasController.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
@@ -319,6 +320,9 @@
     <Compile Include="Entities\DOCUMENTOA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTON.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -329,6 +333,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOV.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\FACTURASCONF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\FLUJO.cs">
@@ -421,16 +428,7 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\STATE.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -735,6 +733,11 @@
     <Content Include="Views\Clientes\Details.cshtml" />
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Materiales\Create.cshtml" />
+    <Content Include="Views\Materiales\Delete.cshtml" />
+    <Content Include="Views\Materiales\Details.cshtml" />
+    <Content Include="Views\Materiales\Edit.cshtml" />
+    <Content Include="Views\Materiales\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

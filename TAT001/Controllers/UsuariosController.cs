@@ -538,8 +538,10 @@ namespace TAT001.Controllers
             {
                 DET_AGENTE da = new DET_AGENTE();
                 da.PUESTOC_ID = (int)u.PUESTO_ID;
+                da.USUARIOC = u.ID;
                 da.POS = d.POS;
                 da.PUESTOA_ID = d.PUESTOA_ID;
+                da.USUARIOA = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
                 da.ACTIVO = true;
                 da.AGROUP_ID = ga.ID;
                 da.MONTO = d.MONTO;
