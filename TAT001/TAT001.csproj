@@ -537,6 +537,7 @@
     <Compile Include="Models\DocumentoComparer.cs" />
     <Compile Include="Models\DOCUMENTOF_MOD.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\FACTURASCONF_MOD.cs" />
     <Compile Include="Models\GALL_MOD.cs" />
     <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
@@ -727,6 +728,7 @@
     <Content Include="Views\TCambio\Delete.cshtml" />
     <Content Include="Views\TCambio\Details.cshtml" />
     <Content Include="Views\TCambio\Edit.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialSopTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

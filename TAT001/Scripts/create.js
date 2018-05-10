@@ -51,40 +51,53 @@
             //    "defaultcontent": ''
             //},
             {
-                "name": 'POS'
+                "name": 'POS',
+                "className": 'POS',
             },
             {
-                "name": 'FACTURA'
+                "name": 'FACTURA',
+                "className": 'FACTURA'
             },
             {
-                "name": 'FECHA'
+                "name": 'FECHA',
+                "className": 'FECHA'
             },
             {
-                "name": 'PROVEEDOR'
+                "name": 'PROVEEDOR',
+                "className": 'PROVEEDOR'
             },
             {
-                "name": 'PROVEEDOR_TXT'
+                "name": 'PROVEEDOR_TXT',
+                "className": 'PROVEEDOR_TXT'
             },
             {
-                "name": 'CONTROL'
+                "name": 'CONTROL',
+                "className": 'CONTROL'
+
             },
             {
-                "name": 'AUTORIZACION'
+                "name": 'AUTORIZACION',
+                "className": 'AUTORIZACION'
             },
             {
-                "name": 'VENCIMIENTO'
+                "name": 'VENCIMIENTO',
+                "className": 'VENCIMIENTO'
             },
             {
-                "name": 'FACTURAK'
+                "name": 'FACTURAK',
+                "className": 'FACTURAK'
             },
             {
-                "name": 'EJERCICIOK'
+                "name": 'EJERCICIOK',
+                "className": 'EJERCICIOK'
             },
             {
-                "name": 'BILL_DOC'
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
             },
             {
-                "name": 'BELNR'
+                "name": 'BELNR',
+                "className": 'BELNR'
             }            
         ]
     });
@@ -94,10 +107,16 @@
     //    $(tr).toggleClass('selected');
     //});
 
-    //$('#delRowSoporte').click(function (e) {
+    //$('#delRowSop').click(function (e) {
     //    var t = $('#table_sop').DataTable();
     //    t.rows('.selected').remove().draw(false);
     //    event.returnValue = false;
+    //    event.cancel = true;
+    //});
+
+    //$('#sendTable').click(function (e) {
+    //    copiarSopTableControl();
+    //    event.returnvalue = false;
     //    event.cancel = true;
     //});
 
@@ -375,6 +394,11 @@
         }
         var table = $('#table_sop').DataTable();
         table.clear().draw();
+        $('.file_sop').val('');
+    });
+
+    $('#file_sop').on('click touchstart', function () {
+        $('.file_sop').val('');
     });
 
     //Archivo para facturas en soporte ahora información
@@ -756,7 +780,8 @@
                 $('#monto_doc_md').val(0);
             }
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-            copiarTableControl();
+            copiarTableControl();//Distribución
+            copiarSopTableControl(); //Soporte ahora en información
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -812,6 +837,13 @@ function copiarTableVista() {
         //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
         $('#table_dis').css("font-size", "12px");
         $('#table_dis').css("display", "table");
+        var tsol = "";
+        var sol = $("#tsol_id").val();
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+            tsol = "real";
+        } else {
+            tsol = "estimado";
+        }
         var i = 1;
         $('#table_dish > tbody  > tr').each(function () {
 
@@ -829,6 +861,14 @@ function copiarTableVista() {
             var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
             var precio_sug = $(this).find("td:eq(" + 9 + ") input").val();
             var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
+            var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
+
+            var vol = 0;
+            if (tsol == "estimada") {
+                vol = volumen_est;
+            } else {
+                vol = volumen_real;
+            }
 
 
             var t = $('#table_dis').DataTable();
@@ -847,7 +887,7 @@ function copiarTableVista() {
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
                 "",
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + volumen_est + "\">",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
                 "",
             ]).draw(false);
 
@@ -870,6 +910,14 @@ function copiarTableControl() {
         var indext = getIndex();
         jsonObjDocs = [];
         var i = 1;
+        var vol = "";
+        var sol = $("#tsol_id").val();
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+            vol = "real";
+        } else {
+            vol = "estimado";
+        }
+
         $('#table_dis > tbody  > tr').each(function () {
 
             //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
@@ -910,8 +958,13 @@ function copiarTableControl() {
             item["PORC_APOYO"] = porc_apoyo;
             item["MONTO_APOYO"] = monto_apoyo;
             item["PRECIO_SUG"] = precio_sug;
-            item["VOLUMEN_EST"] = volumen_est;
-
+            if (vol == "estimado") {
+                item["VOLUMEN_EST"] = volumen_est;
+            } else {
+                item["VOLUMEN_EST"] = 0;
+                item["VOLUMEN_REAL"] = volumen_est;
+            }
+            
             jsonObjDocs.push(item);
             i++;
             item = "";
@@ -998,6 +1051,103 @@ function copiarTableControl() {
 
                     $("table#table_dish tbody").append(data);
                     $('#delRow').click();
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+}
+
+//Copiar la tabla de soporte a la de control ahora en información
+function copiarSopTableControl() {
+
+    var lengthT = $("table#table_sop tbody tr").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+
+        jsonObjDocs = [];
+        var i = 1;
+
+        var check = false;
+        if ($("#check_factura").is(':checked')) {
+            //Tabla desde excel
+            check = true;
+        }//} else {
+        //    //Tabla con inputs
+        //}
+
+        //Obtener la configuración de las columnas
+        var sociedad = $('#sociedad_id').val();
+        //Obtener el país ID
+        var pais = $('#pais_id').val();
+        //Obtener el tipo de solicitud
+        var tsol_id = $('#tsol_id').val();
+        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X");
+
+        $('#table_sop > tbody  > tr').each(function () {            
+
+            //Tabla desde excel
+            var item = {};
+            if (check) {
+
+                //Llenar los valores para meterlos en el json
+                if (data !== null || data !== "") {
+                    //True son los visibles
+                    //var prov_txt = true;;
+                    var i;
+                    for (i in data) {
+                        
+                        if (data.hasOwnProperty(i)) {
+                            //Valores en la tabla
+                            if (data[i] != null) {
+                                if (data[i] == true) {
+
+                                    //Obtener el valor guardado en la tabla
+                                    var rowcl = 'td.' + i;
+                                    var valtd = $(this).find(rowcl).text();
+                                    item[i] = valtd;
+
+
+                                } else if (data[i] == false) {
+                                    //Valores que no están en la tabla mandarlos como 0
+                                    item[i] = 0;
+                                } else {
+                                    item[i] = "";
+                                }
+                            }
+                        }
+                    }                    
+                }
+
+            }
+
+            jsonObjDocs.push(item);
+            item = "";
+            $(this).addClass('selected');
+
+        });
+
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+        $.ajax({
+            type: "POST",
+            url: 'getPartialSop',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    var t = $('#table_sop').DataTable();
+                    t.rows('.selected').remove().draw(false);
+                    $("table#table_soph tbody").append(data);
+                    
                 }
 
             },
@@ -1098,6 +1248,7 @@ var detail = "";
 var montocambio = 0;
 var categoriamaterial = "";
 var materialVal = "";
+var dataConfig = null;
 
 function updateTotalRow(t, tr) {
 
@@ -1478,7 +1629,7 @@ function selectTsol(sol) {
         table.clear().draw();
         $('#ref_soporte').css("display", "none");
     }
-
+    $('.file_sop').val('');
 }
 
 function ocultarColumnasTablaSoporteDatos() {
@@ -1494,29 +1645,41 @@ function ocultarColumnasTablaSoporteDatos() {
 
 function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
     var table = $('#table_sop').DataTable();
+
+    var data = configColumnasTablaSoporte(sociedad, pais, tsol ,"");
+
+    if (data !== null || data !== "") {
+        //True son los visibles
+        //var prov_txt = true;;
+        var i;
+        for (i in data) {
+            //if (i == "PROVEEDOR") {
+            //    prov_txt = data[i];
+            //}
+            if (data[i] == true | data[i] == false) {
+                if (data.hasOwnProperty(i)) {
+                    //alert(i + " -- " + data[i]);
+                    table.column(i + ':name').visible(data[i]);
+                }
+            }
+        }
+        //table.column('PROVEEDOR_TXT:name').visible(prov_txt);
+    }
+}
+
+function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
+
+    dataConfig = null;
+    var localdataConfig = null;
     $.ajax({
         type: "POST",
         url: 'LoadConfigSoporte',
-        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol },
-        
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu },
+
         success: function (data) {
 
             if (data !== null || data !== "") {
-                //True son los visibles
-                var prov_txt = true;;
-                var i;
-                for (i in data) {
-                    if (i == "PROVEEDOR") {
-                        prov_txt = data[i];
-                    }
-                    if (data.hasOwnProperty(i)) {
-                        //alert(i + " -- " + data[i]);
-                        table.column(i + ':name').visible(data[i]);
-                    }
-                }
-                table.column('PROVEEDOR_TXT:name').visible(prov_txt);
-
-
+                asignardataConfig(data)
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -1524,6 +1687,14 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
         },
         async: false
     });
+
+    localdataConfig = dataConfig;
+    return localdataConfig;
+}
+
+function asignardataConfig(val) {
+    dataConfig = null;
+    dataConfig  = val;
 }
 
 function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {

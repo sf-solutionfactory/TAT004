@@ -94,6 +94,7 @@ namespace TAT001.Entities
         public string GALL_ID { get; set; }
 
         public List<Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
+        public List<DOCUMENTOF> DOCUMENTOF { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }

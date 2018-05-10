@@ -464,14 +464,14 @@
                             <div id="file_facturat" class="file-field input-field" style="display:none">
                                 <div class="btn">
                                     <span>File</span>
-                                    <input type="file" id="file_sop">
+                                    <input type="file" class="file_sop" id="file_sop">
                                 </div>
                                 <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
+                                    <input class="file-path validate file_sop" type="text">
                                 </div>
                             </div>
                             <div class="table_sop" id="" style="display:none">
-                                <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Registro</a>
+                                <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table</a>
                                 @*<a class="waves-effect waves-light btn-small" id="delRowSoporte"><i class="material-icons left">clear</i>Registro</a>*@
                             </div>
                             <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
@@ -849,6 +849,7 @@
                                 <th>Apoyo por pieza</th>
                                 <th>Precio sugerido</th>
                                 <th>Volumen estimado</th>
+                                <th>Volumen real</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -889,6 +890,9 @@
                                         </td>
                                         <td>
                                             @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_REAL)
                                         </td>
                                     </tr>
                                 }
