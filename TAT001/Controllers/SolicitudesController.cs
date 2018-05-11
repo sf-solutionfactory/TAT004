@@ -298,7 +298,7 @@ namespace TAT001.Controllers
                 //Guardar número de documento creado
                 Session["ERROR_FILES"] = errorMessage;
             }
-            if(errorMessage == "")
+            if (errorMessage == "")
             {
 
                 FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
@@ -787,9 +787,10 @@ namespace TAT001.Controllers
                             docP.CANTIDAD = 1;
                             docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
                             docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
-                            docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
                             docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
                             docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                            //docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                            docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
                             docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
                             docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
 

@@ -10,30 +10,36 @@ namespace TAT001.Models
 {
     public class ArchivoContable
     {
-        public string generarArchivo(decimal docum, int relacion)
+        public string generarArchivo(decimal docum, decimal relacion)
         {
             TAT001Entities db = new TAT001Entities();
             try
             {
                 string dirFile = "";
-                //DOCUMENTO doc = db.DOCUMENTOes.Where(x => x.NUM_DOC == docum).Single();
-                DOCUMENTO doc = db.DOCUMENTOes.Find(docum);
+                DOCUMENTO doc = db.DOCUMENTOes.Where(x => x.NUM_DOC == docum).Single();
                 CONPOSAPH tab;
-                if (relacion == 0)
+                try
                 {
-                    tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == doc.TSOL_ID
-                    && x.SOCIEDAD == doc.SOCIEDAD_ID
-                    && x.FECHA_FINVIG >= doc.FECHAF_VIG
-                    ).Single();
-                }
-                else
-                {
-                    tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == "PR"
-                    && x.SOCIEDAD == doc.SOCIEDAD_ID
-                    && x.FECHA_FINVIG >= doc.FECHAF_VIG
-                    && x.RELACION == relacion
-                    ).Single();
+                    if (relacion == 0)
+                    {
+                        tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == doc.TSOL_ID
+                        && x.SOCIEDAD == doc.SOCIEDAD_ID
+                        && x.FECHA_FINVIG >= doc.FECHAF_VIG
+                        ).Single();
+                    }
+                    else
+                    {
+                        tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == "PR"
+                        && x.SOCIEDAD == doc.SOCIEDAD_ID
+                        && x.FECHA_FINVIG >= doc.FECHAF_VIG
+                        && x.CONSECUTIVO == relacion
+                        ).Single();
 
+                    }
+                }
+                catch (Exception)
+                {
+                    return "No se encontro configuracion para generar documento para este tipo de solicitud";
                 }
 
                 string txt = "";
@@ -88,7 +94,7 @@ namespace TAT001.Models
                 doc.FECHAC = Fecha(tab.FECHA_CONTAB);
 
                 List<DetalleContab> det = new List<DetalleContab>();
-                msj = Detalle(doc, ref det, tab, relacion);
+                msj = Detalle(doc, ref det, tab);
                 if (msj != "")
                 {
                     return msj;
@@ -112,37 +118,37 @@ namespace TAT001.Models
                     for (int i = 0; i < det.Count; i++)
                     {
                         sw.WriteLine(
-                             det[i].POS_TYPE + "|" +
-                             det[i].COMP_CODE + "|" +
-                             det[i].BUS_AREA + "|" +
-                             det[i].POST_KEY + "|" +
-                             det[i].ACCOUNT + "|" +
-                             det[i].COST_CENTER + "|" +
-                             det[i].BALANCE + "|" +
-                             det[i].TEXT + "|" +
-                             det[i].SALES_ORG + "|" +
-                             det[i].DIST_CHANEL + "|" +
-                             det[i].DIVISION + "|" +
-                             //"|" +
-                             //"|" +
-                             //"|" +
-                             //"|" +
-                             //"|" +
-                             det[i].INV_REF + "|" +
-                             det[i].PAY_TERM + "|" +
-                             det[i].JURIS_CODE + "|" +
-                             //"|" +
-                             det[i].CUSTOMER + "|" +
-                             det[i].PRODUCT + "|" +
-                             det[i].TAX_CODE + "|" +
-                             det[i].PLANT + "|" +
-                             det[i].REF_KEY1 + "|" +
-                             det[i].REF_KEY3 + "|" +
-                             det[i].ASSIGNMENT + "|" +
-                             det[i].QTY + "|" +
-                             det[i].BASE_UNIT + "|" +
-                             det[i].AMOUNT_LC + "|"
-                             );
+                            det[i].POS_TYPE + "|" +
+                            det[i].COMP_CODE + "|" +
+                            det[i].BUS_AREA + "|" +
+                            det[i].POST_KEY + "|" +
+                            det[i].ACCOUNT + "|" +
+                            det[i].COST_CENTER + "|" +
+                            det[i].BALANCE + "|" +
+                            det[i].TEXT + "|" +
+                            det[i].SALES_ORG + "|" +
+                            det[i].DIST_CHANEL + "|" +
+                            det[i].DIVISION + "|" +
+                            //"|" +
+                            //"|" +
+                            //"|" +
+                            //"|" +
+                            //"|" +
+                            det[i].INV_REF + "|" +
+                            det[i].PAY_TERM + "|" +
+                            det[i].JURIS_CODE + "|" +
+                            //"|" +
+                            det[i].CUSTOMER + "|" +
+                            det[i].PRODUCT + "|" +
+                            det[i].TAX_CODE + "|" +
+                            det[i].PLANT + "|" +
+                            det[i].REF_KEY1 + "|" +
+                            det[i].REF_KEY3 + "|" +
+                            det[i].ASSIGNMENT + "|" +
+                            det[i].QTY + "|" +
+                            det[i].BASE_UNIT + "|" +
+                            det[i].AMOUNT_LC + "|"
+                            );
                     }
                     sw.Close();
                 }
@@ -175,7 +181,7 @@ namespace TAT001.Models
             }
             return fecha;
         }
-        private string Detalle(DOCUMENTO doc, ref List<DetalleContab> contas, CONPOSAPH enca, int relacionado)
+        private string Detalle(DOCUMENTO doc, ref List<DetalleContab> contas, CONPOSAPH enca)
         {
             contas = new List<DetalleContab>();
             TAT001Entities db = new TAT001Entities();
@@ -187,14 +193,7 @@ namespace TAT001.Models
             {
                 try
                 {
-                    if (relacionado == 0)
-                    {
-                        conp = db.CONPOSAPPs.Where(x => x.CONSECUTIVO == enca.CONSECUTIVO).ToList();
-                    }
-                    else
-                    {
-                        conp = db.CONPOSAPPs.Where(x => x.CONSECUTIVO == enca.CONSECUTIVO && x.RELACION == relacionado).ToList();
-                    }
+                    conp = db.CONPOSAPPs.Where(x => x.CONSECUTIVO == enca.CONSECUTIVO).ToList();
                 }
                 catch (Exception f)
                 {
@@ -244,7 +243,7 @@ namespace TAT001.Models
                     {
                         List<DOCUMENTOP> docp = db.DOCUMENTOPs.Where(x => x.NUM_DOC == doc.NUM_DOC).ToList();
 
-                        for (int j = 0; j < 1; j++)
+                        for (int j = 0; j < docp.Count; j++)
                         {
                             DetalleContab conta = new DetalleContab();
                             conta.POS_TYPE = conp[i].KEY;
@@ -274,6 +273,10 @@ namespace TAT001.Models
                             }
                             conta.TAX_CODE = conp[i].TAX_CODE;
                             contas.Add(conta);
+                            if (enca.TIPO_DOC == "RN")
+                            {
+                                break;
+                            }
                         }
                     }
                 }
