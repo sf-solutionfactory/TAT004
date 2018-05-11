@@ -30,6 +30,7 @@ namespace TAT001.Entities
         public string LANDX { get; set; }
         public string IMAGE { get; set; }
         public bool ACTIVO { get; set; }
+        public string SOCIEDAD_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTEs { get; set; }

@@ -177,7 +177,9 @@
     <Property Name="VKGRP" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
     <Property Name="VKBUR" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="BANNERG" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+    <Property Name="PROVEEDOR_ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_CLIENTE_PAIS" FromRole="CLIENTE" ToRole="PAIS" />
+    <NavigationProperty Name="PROVEEDOR" Relationship="Self.FK_CLIENTE_PROVEEDOR" FromRole="CLIENTE" ToRole="PROVEEDOR" />
     <NavigationProperty Name="TCLIENTE" Relationship="Self.FK_CLIENTE_TCLIENTE" FromRole="CLIENTE" ToRole="TCLIENTE" />
     <NavigationProperty Name="CLIENTEIs" Relationship="Self.FK_CLIENTEI_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTEI" />
     <NavigationProperty Name="CONTACTOCs" Relationship="Self.FK_CONTACTOC_CLIENTE" FromRole="CLIENTE" ToRole="CONTACTOC" />
@@ -222,6 +224,7 @@
     <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
     <Property Name="CALC_TAXT" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="RELACION" Type="Int32" />
     <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
@@ -231,6 +234,7 @@
     </Key>
     <Property Name="CONSECUTIVO" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POSICION" Type="Int32" Nullable="false" />
+    <Property Name="RELACION" Type="Int32" />
     <Property Name="KEY" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="BUS_AREA" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
     <Property Name="POSTING_KEY" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
@@ -253,7 +257,7 @@
     <Property Name="JURIS_CODE" Type="Boolean" />
     <Property Name="SALES_DIST" Type="Boolean" />
     <Property Name="PRODUCT" Type="Boolean" />
-    <Property Name="TAX_CODE" Type="Boolean" />
+    <Property Name="TAX_CODE" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="PLANT" Type="Boolean" />
     <Property Name="REF_KEY1" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
     <Property Name="REF_KEY3" Type="String" MaxLength="12" FixedLength="true" Unicode="true" />
@@ -321,6 +325,7 @@
     <Property Name="PRESUPUESTO" Type="Boolean" />
     <Property Name="ACTIVO" Type="Boolean" />
     <Property Name="USUARIOA" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIOC" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="GAUTORIZACION" Relationship="Self.FK_DET_AGENTE_GAUTORIZACION" FromRole="DET_AGENTE" ToRole="GAUTORIZACION" />
     <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_AGENTE_PUESTO" FromRole="DET_AGENTE" ToRole="PUESTO" />
     <NavigationProperty Name="PUESTO1" Relationship="Self.FK_DET_AGENTE_PUESTO1" FromRole="DET_AGENTE" ToRole="PUESTO" />
@@ -780,6 +785,7 @@
     <Property Name="LANDX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="IMAGE" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_PAIS" FromRole="PAIS" ToRole="CLIENTE" />
     <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_PAIS" FromRole="PAIS" ToRole="CUENTA" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_PAIS" FromRole="PAIS" ToRole="DOCUMENTO" />
@@ -915,6 +921,16 @@
     <Property Name="SPA" Type="Double" />
     <NavigationProperty Name="PRESUPUESTOH" Relationship="Self.FK_PRESUPUESTOP_PRESUPUESTOH" FromRole="PRESUPUESTOP" ToRole="PRESUPUESTOH" />
   </EntityType>
+  <EntityType Name="PROVEEDOR">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_PROVEEDOR" FromRole="PROVEEDOR" ToRole="CLIENTE" />
+  </EntityType>
   <EntityType Name="PUESTO">
     <Key>
       <PropertyRef Name="ID" />
@@ -1035,6 +1051,16 @@
     <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
     <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -1672,6 +1698,18 @@
       </Principal>
       <Dependent Role="CLIENTE">
         <PropertyRef Name="LAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CLIENTE_PROVEEDOR">
+    <End Role="PROVEEDOR" Type="Self.PROVEEDOR" Multiplicity="0..1" />
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROVEEDOR">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CLIENTE">
+        <PropertyRef Name="PROVEEDOR_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2728,6 +2766,7 @@
     <EntitySet Name="PRESUPSAPPs" EntityType="Self.PRESUPSAPP" />
     <EntitySet Name="PRESUPUESTOHs" EntityType="Self.PRESUPUESTOH" />
     <EntitySet Name="PRESUPUESTOPs" EntityType="Self.PRESUPUESTOP" />
+    <EntitySet Name="PROVEEDORs" EntityType="Self.PROVEEDOR" />
     <EntitySet Name="PUESTOes" EntityType="Self.PUESTO" />
     <EntitySet Name="PUESTOTs" EntityType="Self.PUESTOT" />
     <EntitySet Name="RANGOes" EntityType="Self.RANGO" />
@@ -2737,6 +2776,7 @@
     <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
     <EntitySet Name="STATES" EntityType="Self.STATE" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TALLs" EntityType="Self.TALL" />
     <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
     <EntitySet Name="TCAMBIOs" EntityType="Self.TCAMBIO" />
@@ -2820,6 +2860,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_CLIENTE_PAIS" Association="Self.FK_CLIENTE_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="CLIENTE" EntitySet="CLIENTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CLIENTE_PROVEEDOR" Association="Self.FK_CLIENTE_PROVEEDOR">
+      <End Role="PROVEEDOR" EntitySet="PROVEEDORs" />
       <End Role="CLIENTE" EntitySet="CLIENTEs" />
     </AssociationSet>
     <AssociationSet Name="FK_CLIENTE_TCLIENTE" Association="Self.FK_CLIENTE_TCLIENTE">
@@ -3202,6 +3246,36 @@
       <Parameter Name="ACTIVO" Mode="In" Type="Boolean" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -3297,5 +3371,16 @@
     <Property Type="Boolean" Name="ACTIVO" Nullable="true" />
     <Property Type="Int32" Name="ID_GR" Nullable="false" />
     <Property Type="String" Name="NOMBRE_GR" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
 </Schema>

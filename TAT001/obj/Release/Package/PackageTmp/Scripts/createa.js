@@ -24,7 +24,7 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
                 e.target.value = "";
             }
         },
-        select(event, ui) {
+        select: function(event, ui) {
 
             var label = ui.item.label;
             var value = ui.item.value;
