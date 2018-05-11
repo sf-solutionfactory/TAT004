@@ -25,11 +25,11 @@ namespace TAT001.Entities
         public Nullable<System.DateTime> FECHA_INIVIG { get; set; }
         public Nullable<System.DateTime> FECHA_FINVIG { get; set; }
         public string REFERENCIA { get; set; }
-        public string POSTING_MENSAJE { get; set; }
         public string PAIS { get; set; }
         public string NOTA { get; set; }
         public string CORRESPONDENCIA { get; set; }
         public string CALC_TAXT { get; set; }
+        public Nullable<int> RELACION { get; set; }
     
         public virtual SOCIEDAD SOCIEDAD1 { get; set; }
     }

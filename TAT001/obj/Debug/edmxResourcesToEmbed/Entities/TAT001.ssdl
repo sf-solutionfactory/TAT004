@@ -158,6 +158,7 @@
     <Property Name="VKGRP" Type="nchar" MaxLength="3" />
     <Property Name="VKBUR" Type="nchar" MaxLength="4" />
     <Property Name="BANNERG" Type="nchar" MaxLength="50" />
+    <Property Name="PROVEEDOR_ID" Type="nchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -192,11 +193,11 @@
     <Property Name="FECHA_INIVIG" Type="date" />
     <Property Name="FECHA_FINVIG" Type="date" />
     <Property Name="REFERENCIA" Type="nchar" MaxLength="16" />
-    <Property Name="POSTING_MENSAJE" Type="nchar" MaxLength="1" />
     <Property Name="PAIS" Type="nchar" MaxLength="2" />
     <Property Name="NOTA" Type="nchar" MaxLength="50" />
     <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
-    <Property Name="CALC_TAXT" Type="nchar" MaxLength="50" />
+    <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
+    <Property Name="RELACION" Type="int" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -205,6 +206,7 @@
     </Key>
     <Property Name="CONSECUTIVO" Type="decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POSICION" Type="int" Nullable="false" />
+    <Property Name="RELACION" Type="int" />
     <Property Name="KEY" Type="nchar" MaxLength="1" />
     <Property Name="BUS_AREA" Type="nchar" MaxLength="3" />
     <Property Name="POSTING_KEY" Type="nchar" MaxLength="2" />
@@ -227,7 +229,7 @@
     <Property Name="JURIS_CODE" Type="bit" />
     <Property Name="SALES_DIST" Type="bit" />
     <Property Name="PRODUCT" Type="bit" />
-    <Property Name="TAX_CODE" Type="bit" />
+    <Property Name="TAX_CODE" Type="nchar" MaxLength="2" />
     <Property Name="PLANT" Type="bit" />
     <Property Name="REF_KEY1" Type="nchar" MaxLength="12" />
     <Property Name="REF_KEY3" Type="nchar" MaxLength="12" />
@@ -289,6 +291,8 @@
     <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PRESUPUESTO" Type="bit" />
     <Property Name="ACTIVO" Type="bit" />
+    <Property Name="USUARIOA" Type="nvarchar" MaxLength="16" />
+    <Property Name="USUARIOC" Type="nvarchar" MaxLength="16" />
   </EntityType>
   <EntityType Name="DET_APROB">
     <Key>
@@ -693,6 +697,7 @@
     <Property Name="LANDX" Type="nvarchar" MaxLength="50" />
     <Property Name="IMAGE" Type="nchar" MaxLength="6" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
   </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
@@ -812,6 +817,15 @@
     <Property Name="OTHTA" Type="float" />
     <Property Name="CORPM" Type="float" />
     <Property Name="SPA" Type="float" />
+  </EntityType>
+  <EntityType Name="PROVEEDOR">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="NOMBRE" Type="nvarchar" MaxLength="250" />
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
   </EntityType>
   <EntityType Name="PUESTO">
     <Key>
@@ -1211,6 +1225,19 @@ warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key de
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
   <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DET_APROBV">
+    <Key>
+      <PropertyRef Name="BUKRS" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="SPRAS_ID" />
+    </Key>
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
 warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DOCUMENTOV">
     <Key>
@@ -1429,6 +1456,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       </Principal>
       <Dependent Role="CLIENTE">
         <PropertyRef Name="LAND" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CLIENTE_PROVEEDOR">
+    <End Role="PROVEEDOR" Type="Self.PROVEEDOR" Multiplicity="0..1" />
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROVEEDOR">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CLIENTE">
+        <PropertyRef Name="PROVEEDOR_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2660,6 +2699,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
     <EntitySet Name="PRESUPSAPP" EntityType="Self.PRESUPSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PRESUPUESTOH" EntityType="Self.PRESUPUESTOH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PRESUPUESTOP" EntityType="Self.PRESUPUESTOP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PROVEEDOR" EntityType="Self.PROVEEDOR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PUESTO" EntityType="Self.PUESTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PUESTOT" EntityType="Self.PUESTOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RANGO" EntityType="Self.RANGO" Schema="dbo" store:Type="Tables" />
@@ -2713,6 +2753,14 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
     [CREADOR].[BUKRS] AS [BUKRS], 
     [CREADOR].[LAND] AS [LAND]
     FROM [dbo].[CREADOR] AS [CREADOR]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DET_APROBV" EntityType="Self.DET_APROBV" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DET_APROBV].[BUKRS] AS [BUKRS], 
+    [DET_APROBV].[PUESTOC_ID] AS [PUESTOC_ID], 
+    [DET_APROBV].[TXT50] AS [TXT50], 
+    [DET_APROBV].[SPRAS_ID] AS [SPRAS_ID]
+    FROM [dbo].[DET_APROBV] AS [DET_APROBV]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="DOCUMENTOV" EntityType="Self.DOCUMENTOV" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -2846,6 +2894,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
     </AssociationSet>
     <AssociationSet Name="FK_CLIENTE_PAIS" Association="Self.FK_CLIENTE_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CLIENTE_PROVEEDOR" Association="Self.FK_CLIENTE_PROVEEDOR">
+      <End Role="PROVEEDOR" EntitySet="PROVEEDOR" />
       <End Role="CLIENTE" EntitySet="CLIENTE" />
     </AssociationSet>
     <AssociationSet Name="FK_CLIENTE_TCLIENTE" Association="Self.FK_CLIENTE_TCLIENTE">

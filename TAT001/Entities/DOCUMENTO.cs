@@ -93,7 +93,7 @@ namespace TAT001.Entities
         public Nullable<int> PUESTO_ID { get; set; }
         public string GALL_ID { get; set; }
 
-        public List<Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
+        public List<TAT001.Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
         public List<DOCUMENTOF> DOCUMENTOF { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

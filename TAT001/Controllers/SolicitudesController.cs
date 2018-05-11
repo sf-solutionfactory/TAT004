@@ -447,10 +447,31 @@ namespace TAT001.Controllers
             ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
             ViewBag.PARVW = "";
+            ViewBag.UNAFACTURA = "false";
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
             ViewBag.NAME1 = "";
             ViewBag.notas_soporte = "";
+
+            //Prueba para agregar soporte a la tabla ahora información
+
+            DOCUMENTOF DF1 = new DOCUMENTOF();
+
+            DF1.POS = 1;
+            DF1.FACTURA = "FF1";
+            DF1.PROVEEDOR = "PP1";
+            DF1.FACTURAK = "FFK1";
+
+            DOCUMENTOF DF2 = new DOCUMENTOF();
+
+            DF2.POS = 2;
+            DF2.FACTURA = "FF2";
+            DF2.PROVEEDOR = "1000000001";
+            DF2.FACTURAK = "FFK2";
+
+            List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
+
+            d.DOCUMENTOF = LD;
 
             return View(d);
         }
@@ -467,8 +488,9 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO, IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte)
-        {
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO, 
+                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact)
+            {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
@@ -984,6 +1006,7 @@ namespace TAT001.Controllers
                 notas_soporte = "";
             }
             ViewBag.notas_soporte = notas_soporte;
+            ViewBag.UNAFACTURA = unafact;
 
             return View(dOCUMENTO);
         }
@@ -1766,12 +1789,13 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.PROVEEDOR = (string)dt.Rows[i][2]; //Proveedor
+                        var provs = dt.Rows[i][2];
+                        doc.PROVEEDOR = provs+""; //Proveedor
                         PROVEEDOR prov = proveedor(doc.PROVEEDOR);
                         if (prov != null)//Validar si el proveedor existe
                         {
 
-                            doc.PROVEEDOR_TXT = prov.prov_desc.ToString(); //Descripción
+                            doc.PROVEEDOR_TXT = prov.NOMBRE.ToString(); //Descripción
                             doc.PROVEEDOR_ACTIVO = true;
                         }
                         else
@@ -2110,6 +2134,28 @@ namespace TAT001.Controllers
             return cc;
         }
 
+        [HttpPost]
+        public JsonResult proveedores(string Prefix)
+        {
+            if (Prefix == null)
+                Prefix = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from m in db.PROVEEDORs
+                     where m.ID.Contains(Prefix)
+                     select new { m.ID, m.NOMBRE }).ToList();
+            if (c.Count == 0)
+            {
+                var c2 = (from m in db.PROVEEDORs
+                          where m.NOMBRE.Contains(Prefix)
+                          select new { m.ID, m.NOMBRE }).ToList();
+                c.AddRange(c2);
+            }
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
         public MATERIAL material(string material)
         {
             if (material == null)
@@ -2127,17 +2173,8 @@ namespace TAT001.Controllers
             if (proveedor == null)
                 proveedor = "";
 
-            TAT001Entities db = new TAT001Entities();
-
-            PROVEEDOR PRO1 = new PROVEEDOR();
-            PRO1.prov_id = "P1234";
-            PRO1.prov_desc = "PROVEEDOR X";
-
-            List<PROVEEDOR> pl = new List<PROVEEDOR>() { PRO1 };
-
-
-            PROVEEDOR pro = pl.Where(m => m.prov_id.Equals(proveedor)).FirstOrDefault();
-
+            PROVEEDOR pro = db.PROVEEDORs.Where(p => p.ID == proveedor).FirstOrDefault();
+            
             return pro;
         }
 
@@ -2150,6 +2187,18 @@ namespace TAT001.Controllers
             MaterialVal matt = db.MATERIALs.Where(m => m.ID == mat && m.ACTIVO == true).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATKL_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
 
             JsonResult cc = Json(matt, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpPost]
+        public JsonResult getProveedor(string prov)
+        {
+            if (prov == null)
+                prov = "";
+
+            ProveedorVal provv = db.PROVEEDORs.Where(m => m.ID == prov).Select(m => new ProveedorVal { ID = m.ID.ToString(), NOMBRE = m.NOMBRE.ToString() }).FirstOrDefault();
+
+            JsonResult cc = Json(provv, JsonRequestBehavior.AllowGet);
             return cc;
         }
 

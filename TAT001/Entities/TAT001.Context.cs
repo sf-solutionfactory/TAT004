@@ -73,6 +73,7 @@ namespace TAT001.Entities
         public virtual DbSet<PRESUPSAPP> PRESUPSAPPs { get; set; }
         public virtual DbSet<PRESUPUESTOH> PRESUPUESTOHs { get; set; }
         public virtual DbSet<PRESUPUESTOP> PRESUPUESTOPs { get; set; }
+        public virtual DbSet<PROVEEDOR> PROVEEDORs { get; set; }
         public virtual DbSet<PUESTO> PUESTOes { get; set; }
         public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
         public virtual DbSet<RANGO> RANGOes { get; set; }
@@ -108,6 +109,7 @@ namespace TAT001.Entities
         public virtual DbSet<ZCTGR> ZCTGRs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<CREADOR> CREADORs { get; set; }
+        public virtual DbSet<DET_APROBV> DET_APROBV { get; set; }
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }

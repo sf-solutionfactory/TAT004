@@ -51,8 +51,10 @@ namespace TAT001.Entities
         public string VKGRP { get; set; }
         public string VKBUR { get; set; }
         public string BANNERG { get; set; }
+        public string PROVEEDOR_ID { get; set; }
     
         public virtual PAI PAI { get; set; }
+        public virtual PROVEEDOR PROVEEDOR { get; set; }
         public virtual TCLIENTE TCLIENTE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTEI> CLIENTEIs { get; set; }

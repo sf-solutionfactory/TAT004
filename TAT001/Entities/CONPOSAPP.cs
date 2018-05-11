@@ -16,6 +16,7 @@ namespace TAT001.Entities
     {
         public decimal CONSECUTIVO { get; set; }
         public int POSICION { get; set; }
+        public Nullable<int> RELACION { get; set; }
         public string KEY { get; set; }
         public string BUS_AREA { get; set; }
         public string POSTING_KEY { get; set; }
@@ -38,7 +39,7 @@ namespace TAT001.Entities
         public Nullable<bool> JURIS_CODE { get; set; }
         public Nullable<bool> SALES_DIST { get; set; }
         public Nullable<bool> PRODUCT { get; set; }
-        public Nullable<bool> TAX_CODE { get; set; }
+        public string TAX_CODE { get; set; }
         public Nullable<bool> PLANT { get; set; }
         public string REF_KEY1 { get; set; }
         public string REF_KEY3 { get; set; }

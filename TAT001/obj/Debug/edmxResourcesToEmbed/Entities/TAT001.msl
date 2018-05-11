@@ -160,6 +160,7 @@
           <ScalarProperty Name="VKGRP" ColumnName="VKGRP" />
           <ScalarProperty Name="VKBUR" ColumnName="VKBUR" />
           <ScalarProperty Name="BANNERG" ColumnName="BANNERG" />
+          <ScalarProperty Name="PROVEEDOR_ID" ColumnName="PROVEEDOR_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -189,11 +190,11 @@
           <ScalarProperty Name="FECHA_INIVIG" ColumnName="FECHA_INIVIG" />
           <ScalarProperty Name="FECHA_FINVIG" ColumnName="FECHA_FINVIG" />
           <ScalarProperty Name="REFERENCIA" ColumnName="REFERENCIA" />
-          <ScalarProperty Name="POSTING_MENSAJE" ColumnName="POSTING_MENSAJE" />
           <ScalarProperty Name="PAIS" ColumnName="PAIS" />
           <ScalarProperty Name="NOTA" ColumnName="NOTA" />
           <ScalarProperty Name="CORRESPONDENCIA" ColumnName="CORRESPONDENCIA" />
           <ScalarProperty Name="CALC_TAXT" ColumnName="CALC_TAXT" />
+          <ScalarProperty Name="RELACION" ColumnName="RELACION" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -202,6 +203,7 @@
         <MappingFragment StoreEntitySet="CONPOSAPP">
           <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
           <ScalarProperty Name="POSICION" ColumnName="POSICION" />
+          <ScalarProperty Name="RELACION" ColumnName="RELACION" />
           <ScalarProperty Name="KEY" ColumnName="KEY" />
           <ScalarProperty Name="BUS_AREA" ColumnName="BUS_AREA" />
           <ScalarProperty Name="POSTING_KEY" ColumnName="POSTING_KEY" />
@@ -284,6 +286,8 @@
           <ScalarProperty Name="MONTO" ColumnName="MONTO" />
           <ScalarProperty Name="PRESUPUESTO" ColumnName="PRESUPUESTO" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="USUARIOA" ColumnName="USUARIOA" />
+          <ScalarProperty Name="USUARIOC" ColumnName="USUARIOC" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -691,6 +695,7 @@
           <ScalarProperty Name="LANDX" ColumnName="LANDX" />
           <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -809,6 +814,16 @@
           <ScalarProperty Name="OTHTA" ColumnName="OTHTA" />
           <ScalarProperty Name="CORPM" ColumnName="CORPM" />
           <ScalarProperty Name="SPA" ColumnName="SPA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROVEEDORs">
+      <EntityTypeMapping TypeName="TAT001Model.PROVEEDOR">
+        <MappingFragment StoreEntitySet="PROVEEDOR">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1206,6 +1221,16 @@
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
           <ScalarProperty Name="LAND" ColumnName="LAND" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_APROBV">
+      <EntityTypeMapping TypeName="TAT001Model.DET_APROBV">
+        <MappingFragment StoreEntitySet="DET_APROBV">
+          <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

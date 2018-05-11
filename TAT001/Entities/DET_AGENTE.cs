@@ -21,6 +21,8 @@ namespace TAT001.Entities
         public Nullable<decimal> MONTO { get; set; }
         public Nullable<bool> PRESUPUESTO { get; set; }
         public Nullable<bool> ACTIVO { get; set; }
+        public string USUARIOA { get; set; }
+        public string USUARIOC { get; set; }
     
         public virtual GAUTORIZACION GAUTORIZACION { get; set; }
         public virtual PUESTO PUESTO { get; set; }

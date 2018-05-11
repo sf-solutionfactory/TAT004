@@ -125,6 +125,10 @@
         .errorMaterial {
             background-color: red;
         }
+
+        .errorProveedor {
+            background-color: red;
+        }
     </style>
 
     <div class="div_right">
@@ -456,6 +460,7 @@
                         <div class="row" style="margin-bottom:0;">
                             <p>
                                 <label>
+                                    <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA"/>
                                     <input id="check_factura" type="checkbox" checked="checked" />
                                     <span>Una Factura</span>
                                 </label>
@@ -471,13 +476,10 @@
                                 </div>
                             </div>
                             <div class="table_sop" id="" style="display:none">
-                                <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table</a>
-                                @*<a class="waves-effect waves-light btn-small" id="delRowSoporte"><i class="material-icons left">clear</i>Registro</a>*@
                             </div>
                             <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
                                 <thead>
                                     <tr>
-                                        @*<th></th>Seleccionar*@
                                         <th>Pos</th>
                                         <th>Factura</th>
                                         <th>Fecha Factura</th>
@@ -494,10 +496,11 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <table id="table_soph" class="display" cellspacing="0">
+                            <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>
+                            <table id="table_soph" class="display" cellspacing="0" style="display:none">
                                 <thead>
                                     <tr>
-                                        @*<th></th>Seleccionar*@
+
                                         <th>Pos</th>
                                         <th>Factura</th>
                                         <th>Fecha Factura</th>
@@ -512,7 +515,65 @@
                                         <th>Belnr</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @if (Model.DOCUMENTOF != null)
+                                    {
+
+                                        for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
+                                        {
+                                            <tr>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].POS
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].FACTURA
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].FECHA
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].PROVEEDOR
+                                                </td>
+                                                <td>
+                                                    
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].CONTROL
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].AUTORIZACION
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].VENCIMIENTO
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].FACTURAK
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].EJERCICIOK
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].BILL_DOC
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOF[i].BELNR
+                                                </td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
                             </table>
                         </div>
                     </div>
