@@ -19,7 +19,9 @@ namespace TAT001.Entities
         {
             this.CONPOSAPHs = new HashSet<CONPOSAPH>();
             this.CUENTAs = new HashSet<CUENTA>();
+            this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.DET_APROB = new HashSet<DET_APROB>();
+            this.DET_APROBH = new HashSet<DET_APROBH>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
             this.TS_FORM = new HashSet<TS_FORM>();
@@ -43,7 +45,11 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CUENTA> CUENTAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEH> DET_AGENTEH { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_APROB> DET_APROB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_APROBH> DET_APROBH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

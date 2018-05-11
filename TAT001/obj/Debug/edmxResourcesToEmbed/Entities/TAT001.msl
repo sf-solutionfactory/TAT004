@@ -291,6 +291,34 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DET_AGENTEH">
+      <EntityTypeMapping TypeName="TAT001Model.DET_AGENTEH">
+        <MappingFragment StoreEntitySet="DET_AGENTEH">
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="AGROUP_ID" ColumnName="AGROUP_ID" />
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_AGENTEP">
+      <EntityTypeMapping TypeName="TAT001Model.DET_AGENTEP">
+        <MappingFragment StoreEntitySet="DET_AGENTEP">
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="AGROUP_ID" ColumnName="AGROUP_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
+          <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="PRESUPUESTO" ColumnName="PRESUPUESTO" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="DET_APROB">
       <EntityTypeMapping TypeName="TAT001Model.DET_APROB">
         <MappingFragment StoreEntitySet="DET_APROB">
@@ -298,6 +326,30 @@
           <ScalarProperty Name="POS" ColumnName="POS" />
           <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
           <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="PRESUPUESTO" ColumnName="PRESUPUESTO" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_APROBH">
+      <EntityTypeMapping TypeName="TAT001Model.DET_APROBH">
+        <MappingFragment StoreEntitySet="DET_APROBH">
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_APROBP">
+      <EntityTypeMapping TypeName="TAT001Model.DET_APROBP">
+        <MappingFragment StoreEntitySet="DET_APROBP">
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
           <ScalarProperty Name="MONTO" ColumnName="MONTO" />
           <ScalarProperty Name="PRESUPUESTO" ColumnName="PRESUPUESTO" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
@@ -1214,6 +1266,19 @@
     <EntitySetMapping Name="CREADORs">
       <EntityTypeMapping TypeName="TAT001Model.CREADOR">
         <MappingFragment StoreEntitySet="CREADOR">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="AGROUP_ID" ColumnName="AGROUP_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
+          <ScalarProperty Name="LAND" ColumnName="LAND" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CREADOR2">
+      <EntityTypeMapping TypeName="TAT001Model.CREADOR2">
+        <MappingFragment StoreEntitySet="CREADOR2">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
           <ScalarProperty Name="POS" ColumnName="POS" />

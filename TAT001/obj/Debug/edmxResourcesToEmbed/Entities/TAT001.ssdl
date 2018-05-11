@@ -294,6 +294,39 @@
     <Property Name="USUARIOA" Type="nvarchar" MaxLength="16" />
     <Property Name="USUARIOC" Type="nvarchar" MaxLength="16" />
   </EntityType>
+  <EntityType Name="DET_AGENTEH">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="AGROUP_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="bigint" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DET_AGENTEP">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="AGROUP_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="bigint" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="int" />
+    <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="bit" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="DET_APROB">
     <Key>
       <PropertyRef Name="PUESTOC_ID" />
@@ -308,6 +341,33 @@
     <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PRESUPUESTO" Type="bit" />
     <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="DET_APROBH">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DET_APROBP">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="int" />
+    <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="bit" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
     <Key>
@@ -1225,6 +1285,24 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
   <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="CREADOR2">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="AGROUP_ID" />
+      <PropertyRef Name="ACTIVO" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="bigint" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" />
+    <Property Name="LAND" Type="nchar" MaxLength="2" />
+  </EntityType>
+  <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="DET_APROBV">
     <Key>
@@ -1615,6 +1693,96 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DET_AGENTEH_GAUTORIZACION">
+    <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GAUTORIZACION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="AGROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_DET_AGENTEH">
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DET_AGENTEH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+        <PropertyRef Name="AGROUP_ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+        <PropertyRef Name="AGROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="USUARIOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DET_APROB_PUESTO">
     <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
     <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
@@ -1648,6 +1816,46 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="DET_APROB">
         <PropertyRef Name="BUKRS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBH_PUESTO1">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_APROBH">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBH_SOCIEDAD1">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DET_APROBH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBP_DET_APROBH">
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="1" />
+    <End Role="DET_APROBP" Type="Self.DET_APROBP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DET_APROBH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+      </Principal>
+      <Dependent Role="DET_APROBP">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2670,7 +2878,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CUENTA" EntityType="Self.CUENTA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_AGENTEH" EntityType="Self.DET_AGENTEH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_AGENTEP" EntityType="Self.DET_AGENTEP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_APROB" EntityType="Self.DET_APROB" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_APROBH" EntityType="Self.DET_APROBH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_APROBP" EntityType="Self.DET_APROBP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
@@ -2753,6 +2965,17 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [CREADOR].[BUKRS] AS [BUKRS], 
     [CREADOR].[LAND] AS [LAND]
     FROM [dbo].[CREADOR] AS [CREADOR]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="CREADOR2" EntityType="Self.CREADOR2" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [CREADOR2].[ID] AS [ID], 
+    [CREADOR2].[PUESTOC_ID] AS [PUESTOC_ID], 
+    [CREADOR2].[POS] AS [POS], 
+    [CREADOR2].[AGROUP_ID] AS [AGROUP_ID], 
+    [CREADOR2].[ACTIVO] AS [ACTIVO], 
+    [CREADOR2].[BUKRS] AS [BUKRS], 
+    [CREADOR2].[LAND] AS [LAND]
+    FROM [dbo].[CREADOR2] AS [CREADOR2]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="DET_APROBV" EntityType="Self.DET_APROBV" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
@@ -2944,6 +3167,34 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="PUESTO" EntitySet="PUESTO" />
       <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
     </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_GAUTORIZACION" Association="Self.FK_DET_AGENTEH_GAUTORIZACION">
+      <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_PUESTO" Association="Self.FK_DET_AGENTEH_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_SOCIEDAD" Association="Self.FK_DET_AGENTEH_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_USUARIO" Association="Self.FK_DET_AGENTEH_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_DET_AGENTEH" Association="Self.FK_DET_AGENTEP_DET_AGENTEH">
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_PUESTO" Association="Self.FK_DET_AGENTEP_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_USUARIO" Association="Self.FK_DET_AGENTEP_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
     <AssociationSet Name="FK_DET_APROB_PUESTO" Association="Self.FK_DET_APROB_PUESTO">
       <End Role="PUESTO" EntitySet="PUESTO" />
       <End Role="DET_APROB" EntitySet="DET_APROB" />
@@ -2955,6 +3206,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DET_APROB_SOCIEDAD" Association="Self.FK_DET_APROB_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
       <End Role="DET_APROB" EntitySet="DET_APROB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBH_PUESTO1" Association="Self.FK_DET_APROBH_PUESTO1">
+      <End Role="PUESTO" EntitySet="PUESTO" />
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBH_SOCIEDAD1" Association="Self.FK_DET_APROBH_SOCIEDAD1">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBP_DET_APROBH" Association="Self.FK_DET_APROBP_DET_APROBH">
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+      <End Role="DET_APROBP" EntitySet="DET_APROBP" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_CLIENTE" Association="Self.FK_DOCUMENTO_CLIENTE">
       <End Role="CLIENTE" EntitySet="CLIENTE" />

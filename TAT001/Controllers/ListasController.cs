@@ -87,6 +87,22 @@ namespace TAT001.Controllers
         }
 
         [HttpGet]
+        public JsonResult Det_Aprob2(string bukrs, string puesto, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int p = Int16.Parse(puesto);
+            DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.PUESTOC_ID == p).OrderByDescending(a => a.VERSION).FirstOrDefault();
+            var c = (from N in db.DET_APROBP
+                     join St in db.PUESTOTs
+                     on N.PUESTOA_ID equals St.PUESTO_ID
+                     where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
+                     //where N.BUKRS.Equals(bukrs) 
+                     select new { N.PUESTOA_ID, St.TXT50 });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpGet]
         public JsonResult UsuariosPuesto(string puesto, string Prefix)
         {
             TAT001Entities db = new TAT001Entities();
@@ -103,7 +119,7 @@ namespace TAT001.Controllers
         public JsonResult Grupos(string bukrs, string pais, string user)
         {
             TAT001Entities db = new TAT001Entities();
-            var c = (from N in db.CREADORs
+            var c = (from N in db.CREADOR2
                      where N.BUKRS == bukrs & N.LAND == pais & N.ID.Equals(user)
                      //where N.BUKRS.Equals(bukrs) 
                      select new { N.AGROUP_ID });
@@ -160,7 +176,19 @@ namespace TAT001.Controllers
                      where D.DOCUMENTO_REF == num
                      & T.SPRAS_ID == spras
                      & G.SPRAS_ID == spras
-                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(),D.ESTATUS_WF,D.ESTATUS, D.CONCEPTO });
+                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpGet]
+        public JsonResult Paises(string bukrs)
+        {
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from D in db.PAIS
+                     where D.SOCIEDAD_ID == bukrs
+                     select new { D.LAND, D.LANDX});
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }

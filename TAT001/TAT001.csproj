@@ -278,6 +278,9 @@
     <Compile Include="Entities\CREADOR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CREADOR2.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CSP_CAMBIO_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -305,7 +308,19 @@
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTEH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_AGENTEP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_APROB.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_APROBH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_APROBP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DET_APROBV.cs">
@@ -750,6 +765,7 @@
     <Content Include="Views\Materiales\Details.cshtml" />
     <Content Include="Views\Materiales\Edit.cshtml" />
     <Content Include="Views\Materiales\Index.cshtml" />
+    <Content Include="Views\Listas\Paises.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

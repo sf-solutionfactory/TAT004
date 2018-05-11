@@ -18,6 +18,7 @@ namespace TAT001.Entities
         public GAUTORIZACION()
         {
             this.DET_AGENTE = new HashSet<DET_AGENTE>();
+            this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.USUARIOs = new HashSet<USUARIO>();
         }
     
@@ -29,6 +30,8 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_AGENTE> DET_AGENTE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEH> DET_AGENTEH { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }

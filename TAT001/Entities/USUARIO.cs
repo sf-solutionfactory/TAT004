@@ -18,6 +18,8 @@ namespace TAT001.Entities
         public USUARIO()
         {
             this.CARTAs = new HashSet<CARTA>();
+            this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
+            this.DET_AGENTEP = new HashSet<DET_AGENTEP>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.FLUJOes = new HashSet<FLUJO>();
             this.FLUJOes1 = new HashSet<FLUJO>();
@@ -42,6 +44,10 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEH> DET_AGENTEH { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEP> DET_AGENTEP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

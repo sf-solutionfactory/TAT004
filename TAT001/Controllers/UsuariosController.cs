@@ -95,7 +95,7 @@ namespace TAT001.Controllers
             if (uSUARIO == null)
             {
                 return HttpNotFound();
-            }            
+            }
             //ViewBag.PUESTO_ID = new SelectList(db.PUESTOes, "ID", "ID", uSUARIO.PUESTO_ID);
             string spra = Session["spras"].ToString();
             ViewBag.SPRAS_ID = new SelectList(db.SPRAS, "ID", "ID", uSUARIO.SPRAS_ID);
@@ -293,7 +293,7 @@ namespace TAT001.Controllers
             {
                 db.Entry(uSUARIO).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = uSUARIO.ID});
+                return RedirectToAction("Details", new { id = uSUARIO.ID });
                 //return RedirectToAction("Index");
             }
             int pagina = 603; //ID EN BASE DE DATOS
@@ -522,7 +522,7 @@ namespace TAT001.Controllers
                 db.MIEMBROS.Add(m);
             }
 
-            List<DET_APROB> dd = db.DET_APROB.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.BUKRS.Equals(soc)).ToList();
+            //List<DET_APROB> dd = db.DET_APROB.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.BUKRS.Equals(soc)).ToList();
             GAUTORIZACION ga = new GAUTORIZACION();
             ga.LAND = pais;
             ga.BUKRS = soc;
@@ -534,40 +534,141 @@ namespace TAT001.Controllers
             db.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
 
-            foreach (DET_APROB d in dd)
+            ////foreach (DET_APROB d in dd)
+            ////{
+            ////    DET_AGENTE da = new DET_AGENTE();
+            ////    da.PUESTOC_ID = (int)u.PUESTO_ID;
+            ////    da.USUARIOC = u.ID;
+            ////    da.POS = d.POS;
+            ////    da.PUESTOA_ID = d.PUESTOA_ID;
+            ////    da.USUARIOA = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
+            ////    da.ACTIVO = true;
+            ////    da.AGROUP_ID = ga.ID;
+            ////    da.MONTO = d.MONTO;
+            ////    da.PRESUPUESTO = d.PRESUPUESTO;
+            ////    db.DET_AGENTE.Add(da);
+
+
+            ////    string us = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
+            ////    USUARIO uu = db.USUARIOs.Find(us);
+            ////    uu.GAUTORIZACIONs.Add(ga);
+            ////    db.Entry(uu).State = EntityState.Modified;
+
+            ////    MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
+            ////    if (mi == null)
+            ////    {
+            ////        mi = new MIEMBRO();
+            ////        mi.ROL_ID = 2;
+            ////        mi.USUARIO_ID = uu.ID;
+            ////        mi.ACTIVO = true;
+            ////        db.MIEMBROS.Add(mi);
+            ////    }
+
+            ////    db.SaveChanges();
+            ////}
+            //string rol = Request.Form["txt_p-3"].ToString();
+
+            DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID).OrderByDescending(a => a.VERSION).FirstOrDefault();
+            if (dh != null)
             {
-                DET_AGENTE da = new DET_AGENTE();
-                da.PUESTOC_ID = (int)u.PUESTO_ID;
-                da.USUARIOC = u.ID;
-                da.POS = d.POS;
-                da.PUESTOA_ID = d.PUESTOA_ID;
-                da.USUARIOA = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
-                da.ACTIVO = true;
-                da.AGROUP_ID = ga.ID;
-                da.MONTO = d.MONTO;
-                da.PRESUPUESTO = d.PRESUPUESTO;
-                db.DET_AGENTE.Add(da);
+                DET_AGENTEH dah = new DET_AGENTEH();
+                dah.SOCIEDAD_ID = dh.SOCIEDAD_ID;
+                dah.PUESTOC_ID = (int)u.PUESTO_ID;
+                dah.VERSION = dh.VERSION;
+                dah.AGROUP_ID = (int)ga.ID;
+                dah.USUARIOC_ID = u.ID;
+                dah.ACTIVO = true;
+                db.DET_AGENTEH.Add(dah);
+                db.SaveChanges();
 
-
-                string us = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
-                USUARIO uu = db.USUARIOs.Find(us);
-                uu.GAUTORIZACIONs.Add(ga);
-                db.Entry(uu).State = EntityState.Modified;
-
-                MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
-                if (mi == null)
+                List<DET_APROBP> ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.VERSION == dh.VERSION).ToList();
+                foreach (DET_APROBP dp in ddp)
                 {
-                    mi = new MIEMBRO();
-                    mi.ROL_ID = 2;
-                    mi.USUARIO_ID = uu.ID;
-                    mi.ACTIVO = true;
-                    db.MIEMBROS.Add(mi);
-                }
+                    DET_AGENTEP dap = new DET_AGENTEP();
+                    dap.SOCIEDAD_ID = dah.SOCIEDAD_ID;
+                    dap.PUESTOC_ID = dah.PUESTOC_ID;
+                    dap.VERSION = dah.VERSION;
+                    dap.AGROUP_ID = dah.AGROUP_ID;
+                    dap.POS = dp.POS;
+                    dap.PUESTOA_ID = dp.PUESTOA_ID;
+                    dap.USUARIOA_ID = Request.Form["txt_p-" + dp.PUESTOA_ID].ToString();
+                    dap.MONTO = dp.MONTO;
+                    dap.PRESUPUESTO = dp.PRESUPUESTO;
+                    dap.ACTIVO = true;
+                    dah.DET_AGENTEP.Add(dap);
+                    //dgp.Add(dap);
 
+                    ////string us = dap.USUARIOA_ID;
+                    ////USUARIO uu = db.USUARIOs.Find(us);
+                    ////uu.GAUTORIZACIONs.Add(ga);
+                    ////db.Entry(uu).State = EntityState.Modified;
+
+                    ////MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
+                    ////if (mi == null)
+                    ////{
+                    ////    mi = new MIEMBRO();
+                    ////    mi.ROL_ID = 2;
+                    ////    mi.USUARIO_ID = uu.ID;
+                    ////    mi.ACTIVO = true;
+                    ////    db.MIEMBROS.Add(mi);
+                    ////}
+
+                }
                 db.SaveChanges();
             }
-            //string rol = Request.Form["txt_p-3"].ToString();
-            return RedirectToAction("Edit", new { id = u.ID });
+            return RedirectToAction("Details", new { id = u.ID });
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ModificarRol(USUARIO u)
+        {
+            //int rol = Int32.Parse(Request.Form["txt_rol"].ToString());
+            string soc = Request.Form["item.BUKRS"].ToString();
+            string pais = Request.Form["item.LAND"].ToString();
+            long agroup = long.Parse(Request.Form["txt_agroup"].ToString());
+
+            DET_AGENTEH dh = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == (agroup)).OrderByDescending(a => a.VERSION).FirstOrDefault();
+            if (dh != null)
+            {
+
+                List<DET_APROBP> ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.VERSION == dh.VERSION).ToList();
+                foreach (DET_APROBP dp in ddp)
+                {
+                    DET_AGENTEP dap = new DET_AGENTEP();
+                    dap.SOCIEDAD_ID = dh.SOCIEDAD_ID;
+                    dap.PUESTOC_ID = dh.PUESTOC_ID;
+                    dap.VERSION = dh.VERSION;
+                    dap.AGROUP_ID = dh.AGROUP_ID;
+                    dap.POS = dp.POS;
+                    dap.PUESTOA_ID = dp.PUESTOA_ID;
+                    dap.USUARIOA_ID = Request.Form[soc + "-" + pais + "-" + dp.PUESTOA_ID].ToString();
+                    dap.MONTO = dp.MONTO;
+                    dap.PRESUPUESTO = dp.PRESUPUESTO;
+                    dap.ACTIVO = true;
+                    db.Entry(dap).State = EntityState.Modified;
+                    //dgp.Add(dap);
+
+                    ////string us = dap.USUARIOA_ID;
+                    ////USUARIO uu = db.USUARIOs.Find(us);
+                    ////uu.GAUTORIZACIONs.Add(ga);
+                    ////db.Entry(uu).State = EntityState.Modified;
+
+                    ////MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
+                    ////if (mi == null)
+                    ////{
+                    ////    mi = new MIEMBRO();
+                    ////    mi.ROL_ID = 2;
+                    ////    mi.USUARIO_ID = uu.ID;
+                    ////    mi.ACTIVO = true;
+                    ////    db.MIEMBROS.Add(mi);
+                    ////}
+
+                }
+                db.SaveChanges();
+            }
+            return RedirectToAction("Details", new { id = u.ID });
 
         }
 

@@ -44,7 +44,11 @@ namespace TAT001.Entities
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
         public virtual DbSet<CUENTA> CUENTAs { get; set; }
         public virtual DbSet<DET_AGENTE> DET_AGENTE { get; set; }
+        public virtual DbSet<DET_AGENTEH> DET_AGENTEH { get; set; }
+        public virtual DbSet<DET_AGENTEP> DET_AGENTEP { get; set; }
         public virtual DbSet<DET_APROB> DET_APROB { get; set; }
+        public virtual DbSet<DET_APROBH> DET_APROBH { get; set; }
+        public virtual DbSet<DET_APROBP> DET_APROBP { get; set; }
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
@@ -109,6 +113,7 @@ namespace TAT001.Entities
         public virtual DbSet<ZCTGR> ZCTGRs { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<CREADOR> CREADORs { get; set; }
+        public virtual DbSet<CREADOR2> CREADOR2 { get; set; }
         public virtual DbSet<DET_APROBV> DET_APROBV { get; set; }
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }

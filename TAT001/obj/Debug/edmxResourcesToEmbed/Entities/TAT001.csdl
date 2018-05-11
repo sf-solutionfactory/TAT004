@@ -330,6 +330,47 @@
     <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_AGENTE_PUESTO" FromRole="DET_AGENTE" ToRole="PUESTO" />
     <NavigationProperty Name="PUESTO1" Relationship="Self.FK_DET_AGENTE_PUESTO1" FromRole="DET_AGENTE" ToRole="PUESTO" />
   </EntityType>
+  <EntityType Name="DET_AGENTEH">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="AGROUP_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="GAUTORIZACION" Relationship="Self.FK_DET_AGENTEH_GAUTORIZACION" FromRole="DET_AGENTEH" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_AGENTEH_PUESTO" FromRole="DET_AGENTEH" ToRole="PUESTO" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_AGENTEH_SOCIEDAD" FromRole="DET_AGENTEH" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_DET_AGENTEH_USUARIO" FromRole="DET_AGENTEH" ToRole="USUARIO" />
+    <NavigationProperty Name="DET_AGENTEP" Relationship="Self.FK_DET_AGENTEP_DET_AGENTEH" FromRole="DET_AGENTEH" ToRole="DET_AGENTEP" />
+  </EntityType>
+  <EntityType Name="DET_AGENTEP">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="AGROUP_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" />
+    <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="MONTO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="Boolean" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEP_DET_AGENTEH" FromRole="DET_AGENTEP" ToRole="DET_AGENTEH" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_AGENTEP_PUESTO" FromRole="DET_AGENTEP" ToRole="PUESTO" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_DET_AGENTEP_USUARIO" FromRole="DET_AGENTEP" ToRole="USUARIO" />
+  </EntityType>
   <EntityType Name="DET_APROB">
     <Key>
       <PropertyRef Name="PUESTOC_ID" />
@@ -347,6 +388,37 @@
     <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_APROB_PUESTO" FromRole="DET_APROB" ToRole="PUESTO" />
     <NavigationProperty Name="PUESTO1" Relationship="Self.FK_DET_APROB_PUESTO1" FromRole="DET_APROB" ToRole="PUESTO" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="DET_APROB" ToRole="SOCIEDAD" />
+  </EntityType>
+  <EntityType Name="DET_APROBH">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_APROBH_PUESTO1" FromRole="DET_APROBH" ToRole="PUESTO" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DET_APROBH_SOCIEDAD1" FromRole="DET_APROBH" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="DET_APROBP" Relationship="Self.FK_DET_APROBP_DET_APROBH" FromRole="DET_APROBH" ToRole="DET_APROBP" />
+  </EntityType>
+  <EntityType Name="DET_APROBP">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" />
+    <Property Name="MONTO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="Boolean" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBP_DET_APROBH" FromRole="DET_APROBP" ToRole="DET_APROBH" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
     <Key>
@@ -658,6 +730,7 @@
     <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="DET_AGENTE" Relationship="Self.FK_DET_AGENTE_GAUTORIZACION" FromRole="GAUTORIZACION" ToRole="DET_AGENTE" />
+    <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_GAUTORIZACION" FromRole="GAUTORIZACION" ToRole="DET_AGENTEH" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_GAUTORIZACION_SOCIEDAD" FromRole="GAUTORIZACION" ToRole="SOCIEDAD" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.USUARIOGA" FromRole="GAUTORIZACION" ToRole="USUARIO" />
   </EntityType>
@@ -939,8 +1012,11 @@
     <Property Name="ACTIVO" Type="Boolean" />
     <NavigationProperty Name="DET_AGENTE" Relationship="Self.FK_DET_AGENTE_PUESTO" FromRole="PUESTO" ToRole="DET_AGENTE" />
     <NavigationProperty Name="DET_AGENTE1" Relationship="Self.FK_DET_AGENTE_PUESTO1" FromRole="PUESTO" ToRole="DET_AGENTE" />
+    <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_PUESTO" FromRole="PUESTO" ToRole="DET_AGENTEH" />
+    <NavigationProperty Name="DET_AGENTEP" Relationship="Self.FK_DET_AGENTEP_PUESTO" FromRole="PUESTO" ToRole="DET_AGENTEP" />
     <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_PUESTO" FromRole="PUESTO" ToRole="DET_APROB" />
     <NavigationProperty Name="DET_APROB1" Relationship="Self.FK_DET_APROB_PUESTO1" FromRole="PUESTO" ToRole="DET_APROB" />
+    <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBH_PUESTO1" FromRole="PUESTO" ToRole="DET_APROBH" />
     <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PUESTO" ToRole="PERMISO_PAGINA" />
     <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_PUESTO" FromRole="PUESTO" ToRole="PUESTOT" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_PUESTO" FromRole="PUESTO" ToRole="USUARIO" />
@@ -1013,7 +1089,9 @@
     <Property Name="REGION" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
     <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CUENTA" />
+    <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_AGENTEH" />
     <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_APROB" />
+    <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBH_SOCIEDAD1" FromRole="SOCIEDAD" ToRole="DET_APROBH" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DOCUMENTO" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.FK_GAUTORIZACION_SOCIEDAD" FromRole="SOCIEDAD" ToRole="GAUTORIZACION" />
     <NavigationProperty Name="MONEDA" Relationship="Self.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
@@ -1264,6 +1342,8 @@
     <Property Name="BACKUP_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="BUNIT" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
     <NavigationProperty Name="CARTAs" Relationship="Self.FK_CARTA_USUARIO" FromRole="USUARIO" ToRole="CARTA" />
+    <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_USUARIO" FromRole="USUARIO" ToRole="DET_AGENTEH" />
+    <NavigationProperty Name="DET_AGENTEP" Relationship="Self.FK_DET_AGENTEP_USUARIO" FromRole="USUARIO" ToRole="DET_AGENTEP" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_USUARIO" FromRole="USUARIO" ToRole="DOCUMENTO" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_USUARIO" FromRole="USUARIO" ToRole="FLUJO" />
     <NavigationProperty Name="FLUJOes1" Relationship="Self.FK_FLUJO_USUARIO1" FromRole="USUARIO" ToRole="FLUJO" />
@@ -1407,6 +1487,22 @@
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
     <Property Name="ACTIVO" Type="Boolean" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CREADOR2">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="AGROUP_ID" />
+      <PropertyRef Name="ACTIVO" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="AGROUP_ID" Type="Int64" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
   </EntityType>
@@ -1887,6 +1983,96 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DET_AGENTEH_GAUTORIZACION">
+    <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GAUTORIZACION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="AGROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEH_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEH">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_DET_AGENTEH">
+    <End Role="DET_AGENTEH" Type="Self.DET_AGENTEH" Multiplicity="1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DET_AGENTEH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+        <PropertyRef Name="AGROUP_ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+        <PropertyRef Name="AGROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEP_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="DET_AGENTEP" Type="Self.DET_AGENTEP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEP">
+        <PropertyRef Name="USUARIOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DET_APROB_PUESTO">
     <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
     <End Role="DET_APROB" Type="Self.DET_APROB" Multiplicity="*" />
@@ -1920,6 +2106,46 @@
       </Principal>
       <Dependent Role="DET_APROB">
         <PropertyRef Name="BUKRS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBH_PUESTO1">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="1" />
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_APROBH">
+        <PropertyRef Name="PUESTOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBH_SOCIEDAD1">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="DET_APROBH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_APROBP_DET_APROBH">
+    <End Role="DET_APROBH" Type="Self.DET_APROBH" Multiplicity="1" />
+    <End Role="DET_APROBP" Type="Self.DET_APROBP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DET_APROBH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
+      </Principal>
+      <Dependent Role="DET_APROBP">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PUESTOC_ID" />
+        <PropertyRef Name="VERSION" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2737,7 +2963,11 @@
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRy" />
     <EntitySet Name="CUENTAs" EntityType="Self.CUENTA" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" />
+    <EntitySet Name="DET_AGENTEH" EntityType="Self.DET_AGENTEH" />
+    <EntitySet Name="DET_AGENTEP" EntityType="Self.DET_AGENTEP" />
     <EntitySet Name="DET_APROB" EntityType="Self.DET_APROB" />
+    <EntitySet Name="DET_APROBH" EntityType="Self.DET_APROBH" />
+    <EntitySet Name="DET_APROBP" EntityType="Self.DET_APROBP" />
     <EntitySet Name="DOCUMENTBORRs" EntityType="Self.DOCUMENTBORR" />
     <EntitySet Name="DOCUMENTOes" EntityType="Self.DOCUMENTO" />
     <EntitySet Name="DOCUMENTOAs" EntityType="Self.DOCUMENTOA" />
@@ -2802,6 +3032,7 @@
     <EntitySet Name="ZCTGRs" EntityType="Self.ZCTGR" />
     <EntitySet Name="CARPETAVs" EntityType="Self.CARPETAV" />
     <EntitySet Name="CREADORs" EntityType="Self.CREADOR" />
+    <EntitySet Name="CREADOR2" EntityType="Self.CREADOR2" />
     <EntitySet Name="DET_APROBV" EntityType="Self.DET_APROBV" />
     <EntitySet Name="DOCUMENTOVs" EntityType="Self.DOCUMENTOV" />
     <EntitySet Name="PAGINAVs" EntityType="Self.PAGINAV" />
@@ -2918,6 +3149,34 @@
       <End Role="PUESTO" EntitySet="PUESTOes" />
       <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
     </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_GAUTORIZACION" Association="Self.FK_DET_AGENTEH_GAUTORIZACION">
+      <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_PUESTO" Association="Self.FK_DET_AGENTEH_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_SOCIEDAD" Association="Self.FK_DET_AGENTEH_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEH_USUARIO" Association="Self.FK_DET_AGENTEH_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_DET_AGENTEH" Association="Self.FK_DET_AGENTEP_DET_AGENTEH">
+      <End Role="DET_AGENTEH" EntitySet="DET_AGENTEH" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_PUESTO" Association="Self.FK_DET_AGENTEP_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEP_USUARIO" Association="Self.FK_DET_AGENTEP_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DET_AGENTEP" EntitySet="DET_AGENTEP" />
+    </AssociationSet>
     <AssociationSet Name="FK_DET_APROB_PUESTO" Association="Self.FK_DET_APROB_PUESTO">
       <End Role="PUESTO" EntitySet="PUESTOes" />
       <End Role="DET_APROB" EntitySet="DET_APROB" />
@@ -2929,6 +3188,18 @@
     <AssociationSet Name="FK_DET_APROB_SOCIEDAD" Association="Self.FK_DET_APROB_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="DET_APROB" EntitySet="DET_APROB" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBH_PUESTO1" Association="Self.FK_DET_APROBH_PUESTO1">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBH_SOCIEDAD1" Association="Self.FK_DET_APROBH_SOCIEDAD1">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_APROBP_DET_APROBH" Association="Self.FK_DET_APROBP_DET_APROBH">
+      <End Role="DET_APROBH" EntitySet="DET_APROBH" />
+      <End Role="DET_APROBP" EntitySet="DET_APROBP" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
