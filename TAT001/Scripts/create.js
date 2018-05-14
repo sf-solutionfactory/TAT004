@@ -864,7 +864,16 @@ function copiarTableVista() {
         $('#table_dis').css("font-size", "12px");
         $('#table_dis').css("display", "table");
         var tsol = "";
-        var sol = $("#tsol_id").val();
+        var sol = "";
+        //Obtener el tipo de solución a partir de la anterior
+        if ($("#tsolant_id").length) {
+            sol = $('#tsolant_id').val();
+            
+        } else {
+            sol = $("#tsol_id").val();
+        }
+
+        
         if (sol == "NC" | sol == "NCI" | sol == "OP") {
             tsol = "real";
         } else {
@@ -881,7 +890,7 @@ function copiarTableVista() {
 
             var matnr = $(this).find("td:eq(" + 3 + ") input").val();
             var matkl = $(this).find("td:eq(" + 4 + ") input").val();
-            var matkl_id = $(this).find("td:eq(" + 5 + ") input").text();
+            var matkl_id = $(this).find("td:eq(" + 5 + ") input").val();
             var costo_unitario = $(this).find("td:eq(" + 6 + ") input").val();
             var porc_apoyo = $(this).find("td:eq(" + 7 + ") input").val();
             var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
@@ -1061,8 +1070,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
             item["MATNR"] = matnr;
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

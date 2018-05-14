@@ -295,7 +295,7 @@ namespace TAT001.Controllers
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
                     d.DOCUMENTO_REF = rel;
-
+                    ViewBag.TSOL_ANT = d.TSOL_ID;
                     if (d != null)
                     {
 
@@ -349,6 +349,7 @@ namespace TAT001.Controllers
                     ViewBag.TSOL_IDI = "";
                     ViewBag.GALL_IDI = "";
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
+                    ViewBag.TSOL_ANT = "";
                 }
 
                 ViewBag.files = archivos;
@@ -519,16 +520,16 @@ namespace TAT001.Controllers
                         ViewBag.pais = "mx.svg";
                         //return RedirectToAction("Pais", "Home");
                     }
-                    try
-                    {
-                        decimal refe = Convert.ToDecimal(Session["rel"].ToString());
-                        dOCUMENTO.DOCUMENTO_REF = refe;
-                        Session["rel"] = null;
-                    }
-                    catch (Exception e)
-                    {
-                        dOCUMENTO.DOCUMENTO_REF = null;
-                    }
+                    //try
+                    //{
+                    //    decimal refe = Convert.ToDecimal(Session["rel"].ToString());
+                    //    dOCUMENTO.DOCUMENTO_REF = refe;
+                    //    Session["rel"] = null;
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    dOCUMENTO.DOCUMENTO_REF = null;
+                    //}
                     DOCUMENTO d = new DOCUMENTO();
                     if (dOCUMENTO.DOCUMENTO_REF > 0)
                     {
@@ -655,51 +656,65 @@ namespace TAT001.Controllers
                     }
 
                     //Guardar los documentos p para el documento guardado
-                    for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                    try
                     {
-                        try
+                        for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
                         {
-                            DOCUMENTOP docP = new DOCUMENTOP();
-                            docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
-                            docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
-                            docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
-                            docP.CANTIDAD = 1;
-                            docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
-                            docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
-                            docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
-                            docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
-                            docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
-                            docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
-                            docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+                            try
+                            {
+                                DOCUMENTOP docP = new DOCUMENTOP();
+                                docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
+                                docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                                docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
+                                docP.CANTIDAD = 1;
+                                docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
+                                docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
+                                docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                                docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
+                                docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                                docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
+                                docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
+                                docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
 
-                            db.DOCUMENTOPs.Add(docP);
-                            db.SaveChanges();//RSG
-                        }
-                        catch (Exception e)
-                        {
+                                db.DOCUMENTOPs.Add(docP);
+                                db.SaveChanges();//RSG
+                            }
+                            catch (Exception e)
+                            {
 
+                            }
                         }
+                    }
+                    catch (Exception e)
+                    {
+
                     }
 
                     //Guardar los documentos f para el documento guardado
-                    for (int j = 0; j < dOCUMENTO.DOCUMENTOF.Count; j++)
+                    try
                     {
-                        try
+                        for (int j = 0; j < dOCUMENTO.DOCUMENTOF.Count; j++)
                         {
-                            DOCUMENTOF docF = new DOCUMENTOF();
-                            docF = dOCUMENTO.DOCUMENTOF[j];
-                            docF.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            try
+                            {
+                                DOCUMENTOF docF = new DOCUMENTOF();
+                                docF = dOCUMENTO.DOCUMENTOF[j];
+                                docF.NUM_DOC = dOCUMENTO.NUM_DOC;
 
-                            db.DOCUMENTOFs.Add(docF);
-                            db.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
+                                db.DOCUMENTOFs.Add(docF);
+                                db.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
 
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
 
+                    }
 
 
                     //Guardar los documentos cargados en la sección de soporte
@@ -707,15 +722,22 @@ namespace TAT001.Controllers
                     string errorMessage = "";
                     int numFiles = 0;
                     //Checar si hay archivos para subir
-                    foreach (HttpPostedFileBase file in files_soporte)
+                    try
                     {
-                        if (file != null)
+                        foreach (HttpPostedFileBase file in files_soporte)
                         {
-                            if (file.ContentLength > 0)
+                            if (file != null)
                             {
-                                numFiles++;
+                                if (file.ContentLength > 0)
+                                {
+                                    numFiles++;
+                                }
                             }
                         }
+                    }
+                    catch (Exception e)
+                    {
+
                     }
 
                     if (numFiles > 0)
@@ -856,15 +878,7 @@ namespace TAT001.Controllers
 
                 }
             }
-            //ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION");
-            //ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION");
-            //ViewBag.USUARIOC_ID = new SelectList(db.USUARIOs, "ID", "NOMBRE");
-            //ViewBag.VKORG = new SelectList(db.CLIENTEs, "VKORG", "NAME1");
-            //ViewBag.VTWEG = new SelectList(db.CLIENTEs, "VTWEG", "NAME1");
-            //ViewBag.SPART = new SelectList(db.CLIENTEs, "SPART", "NAME1");
-            //ViewBag.PAYER_ID = new SelectList(db.CLIENTEs, "KUNNR", "NAME1");
-            //ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "SPRAS");
-            //ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT");
+
             int pagina = 202; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -1050,6 +1064,7 @@ namespace TAT001.Controllers
                 rel = Convert.ToDecimal(id_d);
                 ViewBag.relacionada = "prelacionada";
                 ViewBag.relacionadan = rel + "";
+                ViewBag.TSOL_ANT = dOCUMENTO.TSOL_ID;
 
             }
             catch
@@ -1057,6 +1072,7 @@ namespace TAT001.Controllers
                 rel = 0;
                 ViewBag.relacionada = "";
                 ViewBag.relacionadan = "";
+                ViewBag.TSOL_ANT = dOCUMENTO.TSOL_ID;
             }
 
             return View(dOCUMENTO);
