@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -229,11 +230,16 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
 
-                Session["rel"] = id_d;
+                //Session["rel"] = id_d;
                 decimal rel = 0;
                 try
                 {
-                    rel = Convert.ToDecimal(Session["rel"].ToString());
+                    //rel = Convert.ToDecimal(Session["rel"].ToString());
+                    if (id_d == null || id_d.Equals(""))
+                    {
+                        throw new Exception();
+                    }
+                    rel = Convert.ToDecimal(id_d);
                     ViewBag.relacionada = "prelacionada";
                     ViewBag.relacionadan = rel + "";
 
@@ -455,23 +461,23 @@ namespace TAT001.Controllers
 
             //Prueba para agregar soporte a la tabla ahora información
 
-            DOCUMENTOF DF1 = new DOCUMENTOF();
+            //DOCUMENTOF DF1 = new DOCUMENTOF();
 
-            DF1.POS = 1;
-            DF1.FACTURA = "FF1";
-            DF1.PROVEEDOR = "PP1";
-            DF1.FACTURAK = "FFK1";
+            //DF1.POS = 1;
+            //DF1.FACTURA = "FF1";
+            //DF1.PROVEEDOR = "PP1";
+            //DF1.FACTURAK = "FFK1";
 
-            DOCUMENTOF DF2 = new DOCUMENTOF();
+            //DOCUMENTOF DF2 = new DOCUMENTOF();
 
-            DF2.POS = 2;
-            DF2.FACTURA = "FF2";
-            DF2.PROVEEDOR = "1000000001";
-            DF2.FACTURAK = "FFK2";
+            //DF2.POS = 2;
+            //DF2.FACTURA = "FF2";
+            //DF2.PROVEEDOR = "1000000001";
+            //DF2.FACTURAK = "FFK2";
 
-            List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
+            //List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
 
-            d.DOCUMENTOF = LD;
+            //d.DOCUMENTOF = LD;
 
             return View(d);
         }
@@ -488,9 +494,9 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO, 
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact)
-            {
+        {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
@@ -972,10 +978,11 @@ namespace TAT001.Controllers
 
                 try
                 {
+
+
                     //Obtener y dar formato a fecha
                     var fecha = dOCUMENTO.FECHAD.ToString();
                     string[] words = fecha.Split(' ');
-
                     //DateTime theTime = DateTime.ParseExact(fecha, //"06/04/2018 12:00:00 a.m."
                     //                        "dd/MM/yyyy hh:mm:ss t.t.",
                     //                        System.Globalization.CultureInfo.InvariantCulture,
@@ -986,17 +993,38 @@ namespace TAT001.Controllers
                                             System.Globalization.CultureInfo.InvariantCulture,
                                             System.Globalization.DateTimeStyles.None);
                     ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
-                    ViewBag.PERIODO = dOCUMENTO.PERIODO;
-                    ViewBag.EJERCICIO = dOCUMENTO.EJERCICIO;
+
                 }
                 catch (Exception e)
                 {
                     ViewBag.FECHAD = "";
                 }
 
+                ViewBag.PERIODO = dOCUMENTO.PERIODO;
+                ViewBag.EJERCICIO = dOCUMENTO.EJERCICIO;
 
 
                 ViewBag.PAYER_ID = new SelectList(id_clientes, "KUNNR", dataTextField: "NAME1", selectedValue: dOCUMENTO.PAYER_ID);
+
+                //Distribución
+                //Información de categorías
+
+                var id_cat = db.CATEGORIAs.Where(c => c.ACTIVO == true)
+                                .Join(
+                                db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                                c => c.ID,
+                                ct => ct.CATEGORIA_ID,
+                                (c, ct) => new
+                                {
+                                    ct.CATEGORIA_ID,
+                                    TEXT = ct.TXT50
+                                }).ToList();
+
+
+
+                ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
+                List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
+                ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
             }
 
             ViewBag.tcambio = dOCUMENTO.TIPO_CAMBIO;
@@ -1007,6 +1035,29 @@ namespace TAT001.Controllers
             }
             ViewBag.notas_soporte = notas_soporte;
             ViewBag.UNAFACTURA = unafact;
+
+
+            //Relacionada
+            string id_d = "" + dOCUMENTO.DOCUMENTO_REF;
+            decimal rel = 0;
+            try
+            {
+                //rel = Convert.ToDecimal(Session["rel"].ToString());
+                if (id_d == null || id_d.Equals(""))
+                {
+                    throw new Exception();
+                }
+                rel = Convert.ToDecimal(id_d);
+                ViewBag.relacionada = "prelacionada";
+                ViewBag.relacionadan = rel + "";
+
+            }
+            catch
+            {
+                rel = 0;
+                ViewBag.relacionada = "";
+                ViewBag.relacionadan = "";
+            }
 
             return View(dOCUMENTO);
         }
@@ -1767,7 +1818,7 @@ namespace TAT001.Controllers
 
                 for (int i = rows; i < rowsc; i++)
                 {
-                                   
+
                     DOCUMENTOF_MOD doc = new DOCUMENTOF_MOD();
 
                     doc.POS = pos;
@@ -1790,7 +1841,7 @@ namespace TAT001.Controllers
                     try
                     {
                         var provs = dt.Rows[i][2];
-                        doc.PROVEEDOR = provs+""; //Proveedor
+                        doc.PROVEEDOR = provs + ""; //Proveedor
                         PROVEEDOR prov = proveedor(doc.PROVEEDOR);
                         if (prov != null)//Validar si el proveedor existe
                         {
@@ -1880,7 +1931,7 @@ namespace TAT001.Controllers
         [AllowAnonymous]
         public JsonResult LoadConfigSoporte(string sociedad, string pais, string tsol, string nulos)
         {
-            if(nulos == null)
+            if (nulos == null)
             {
                 nulos = "";
             }
@@ -1890,7 +1941,7 @@ namespace TAT001.Controllers
             {
                 FACTURASCONF f = db.FACTURASCONFs.Where(fi => fi.SOCIEDAD_ID.Equals(sociedad) && fi.PAIS_ID.Equals(pais) && fi.TSOL.Equals(tsol)).FirstOrDefault();
 
-                if(f != null)
+                if (f != null)
                 {
                     fc.NUM_DOC = null;
                     fc.POS = true;
@@ -1908,7 +1959,7 @@ namespace TAT001.Controllers
                     fc.EJERCICIOK = f.EJERCICIOK;
                     fc.BILL_DOC = f.BILL_DOC;
                     fc.BELNR = f.BELNR;
-    }
+                }
             }
             catch
             {
@@ -1917,7 +1968,7 @@ namespace TAT001.Controllers
 
             if (nulos.Equals("X"))
             {
-                
+
                 fc.PROVEEDOR_TXT = null;
                 fc.NUM_DOC = 0;
                 fc.SOCIEDAD_ID = null;
@@ -1930,7 +1981,7 @@ namespace TAT001.Controllers
             return jl;
         }
 
-        
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -2174,9 +2225,10 @@ namespace TAT001.Controllers
                 proveedor = "";
 
             PROVEEDOR pro = db.PROVEEDORs.Where(p => p.ID == proveedor).FirstOrDefault();
-            
+
             return pro;
         }
+
 
         [HttpPost]
         public JsonResult getMaterial(string mat)

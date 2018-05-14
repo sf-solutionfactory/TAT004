@@ -800,6 +800,7 @@
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
+
     //una factura
     var check = $("#check_facturas").val();
     if (check == "true") {
@@ -840,6 +841,17 @@ $(window).on('load', function () {
     var footeri = convertI(total_dis);
     $('#monto_dis').val(footeri);
     $("label[for='monto_dis']").addClass("active");
+
+    //Validar si es una solicitud relacionada
+    //Activar bloqueos
+    //if ($("#txt_rel").length) {
+    //    var relacionada = $('#txt_rel').val();
+    //    if (relacionada != "") {
+
+    //    }
+    //}
+    
+    
 });
 
 function copiarTableVista() {
@@ -878,7 +890,7 @@ function copiarTableVista() {
             var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
 
             var vol = 0;
-            if (tsol == "estimada") {
+            if (tsol == "estimado") {
                 vol = volumen_est;
             } else {
                 vol = volumen_real;
@@ -1003,7 +1015,7 @@ function copiarTableVistaSop() {
 
 function copiarTableControl() {
 
-    var lengthT = $("table#table_dis tbody tr").length;
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
 
     if (lengthT > 0) {
         //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
@@ -1167,7 +1179,7 @@ function copiarTableControl() {
 //Copiar la tabla de soporte a la de control ahora en información
 function copiarSopTableControl() {
 
-    var lengthT = $("table#table_sop tbody tr").length;
+    var lengthT = $("table#table_sop tbody tr[role='row']").length;
 
     if (lengthT > 0) {
         //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json

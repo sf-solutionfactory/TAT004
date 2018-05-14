@@ -39,7 +39,7 @@ function selectMaterial(val, desc, tr) {
     desc = $.trim(desc);
     //Categoría
     var cat = getCategoria(val);
-    tr.find("td:eq(" + (6 + index) + ")").text(cat);
+    tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
     //Descripción
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
 
