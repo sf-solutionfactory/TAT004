@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1b8a88ce0be6453989eb3ef02dcd7702" Name="Diagram1" ZoomLevel="82">
+      <Diagram DiagramId="1b8a88ce0be6453989eb3ef02dcd7702" Name="Diagram1" ZoomLevel="53">
         <EntityTypeShape EntityType="TAT001Model.ACCION" Width="1.5" PointX="18" PointY="68.625" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CAMPOS" Width="1.5" PointX="6.75" PointY="34.125" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CANAL" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
@@ -203,6 +203,10 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.TAX_LAND" Width="1.5" PointX="3.75" PointY="64" />
+        <AssociationConnector Association="TAT001Model.FK_PAIS_SOCIEDAD" />
+        <AssociationConnector Association="TAT001Model.FK_TAX_LAND_PAIS" />
+        <EntityTypeShape EntityType="TAT001Model.DET_TAX" Width="1.5" PointX="16.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

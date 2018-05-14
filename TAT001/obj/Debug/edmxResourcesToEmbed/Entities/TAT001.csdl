@@ -696,6 +696,7 @@
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_FLUJO_USUARIO" FromRole="FLUJO" ToRole="USUARIO" />
     <NavigationProperty Name="USUARIO1" Relationship="Self.FK_FLUJO_USUARIO1" FromRole="FLUJO" ToRole="USUARIO" />
     <NavigationProperty Name="WORKFP" Relationship="Self.FK_FLUJO_WORKFP" FromRole="FLUJO" ToRole="WORKFP" />
+    <Property Name="DETVER" Type="Int32" />
   </EntityType>
   <EntityType Name="GALL">
     <Key>
@@ -865,6 +866,8 @@
     <NavigationProperty Name="IIMPUESTOes" Relationship="Self.FK_IIMPUESTO_PAIS" FromRole="PAIS" ToRole="IIMPUESTO" />
     <NavigationProperty Name="LEYENDAs" Relationship="Self.FK_LEYENDA_PAIS" FromRole="PAIS" ToRole="LEYENDA" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="TAT001Model.FK_PAIS_SOCIEDAD" FromRole="PAI" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="TAX_LAND" Relationship="TAT001Model.FK_TAX_LAND_PAIS" FromRole="PAI" ToRole="TAX_LAND" />
   </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
@@ -1003,6 +1006,7 @@
     <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_PROVEEDOR" FromRole="PROVEEDOR" ToRole="CLIENTE" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="PUESTO">
     <Key>
@@ -1097,6 +1101,7 @@
     <NavigationProperty Name="MONEDA" Relationship="Self.FK_SOCIEDAD_MONEDA" FromRole="SOCIEDAD" ToRole="MONEDA" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TS_FORM" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="USUARIO" />
+    <NavigationProperty Name="PAIS" Relationship="TAT001Model.FK_PAIS_SOCIEDAD" FromRole="SOCIEDAD" ToRole="PAI" />
   </EntityType>
   <EntityType Name="SPRA">
     <Key>
@@ -1385,7 +1390,7 @@
     <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-    <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="ESTATUS" Type="Boolean" />
     <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="FECHAC" Type="DateTime" Precision="3" />
     <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
@@ -1439,7 +1444,7 @@
     <Property Name="ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="VERSION" Type="Int32" Nullable="false" />
     <Property Name="DESCRIPCION" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
-    <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="ESTATUS" Type="Boolean" />
     <Property Name="FECHAI" Type="DateTime" Precision="0" />
     <Property Name="FECHAF" Type="DateTime" Precision="0" />
     <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
@@ -3547,6 +3552,16 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="TAX_LAND" EntityType="TAT001Model.TAX_LAND" />
+    <AssociationSet Name="FK_PAIS_SOCIEDAD" Association="TAT001Model.FK_PAIS_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="PAI" EntitySet="PAIS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAX_LAND_PAIS" Association="TAT001Model.FK_TAX_LAND_PAIS">
+      <End Role="PAI" EntitySet="PAIS" />
+      <End Role="TAX_LAND" EntitySet="TAX_LAND" />
+    </AssociationSet>
+    <EntitySet Name="DET_TAX" EntityType="TAT001Model.DET_TAX" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -3654,4 +3669,53 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="TAX_LAND">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="PAI" Relationship="TAT001Model.FK_TAX_LAND_PAIS" FromRole="TAX_LAND" ToRole="PAI" />
+  </EntityType>
+  <Association Name="FK_PAIS_SOCIEDAD">
+    <End Type="TAT001Model.SOCIEDAD" Role="SOCIEDAD" Multiplicity="0..1" />
+    <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="PAI">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAX_LAND_PAIS">
+    <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="1" />
+    <End Type="TAT001Model.TAX_LAND" Role="TAX_LAND" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAI">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="TAX_LAND">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DET_TAX">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="PAIS_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" />
+    <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+  </EntityType>
 </Schema>

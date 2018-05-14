@@ -593,6 +593,7 @@
     <EntitySetMapping Name="FLUJOes">
       <EntityTypeMapping TypeName="TAT001Model.FLUJO">
         <MappingFragment StoreEntitySet="FLUJO">
+          <ScalarProperty Name="DETVER" ColumnName="DETVER" />
           <ScalarProperty Name="WORKF_ID" ColumnName="WORKF_ID" />
           <ScalarProperty Name="WF_VERSION" ColumnName="WF_VERSION" />
           <ScalarProperty Name="WF_POS" ColumnName="WF_POS" />
@@ -872,6 +873,7 @@
     <EntitySetMapping Name="PROVEEDORs">
       <EntityTypeMapping TypeName="TAT001Model.PROVEEDOR">
         <MappingFragment StoreEntitySet="PROVEEDOR">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
@@ -1568,5 +1570,27 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="TAX_LAND">
+      <EntityTypeMapping TypeName="TAT001Model.TAX_LAND">
+        <MappingFragment StoreEntitySet="TAX_LAND">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_TAX">
+      <EntityTypeMapping TypeName="TAT001Model.DET_TAX">
+        <MappingFragment StoreEntitySet="DET_TAX">
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+          <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

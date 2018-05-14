@@ -307,7 +307,7 @@ namespace TAT001.Controllers
                 flujo.FECHAM = DateTime.Now;
                 flujo.COMENTARIO = "";
                 flujo.USUARIOA_ID = User.Identity.Name;
-                ProcesaFlujo pf = new ProcesaFlujo();
+                ProcesaFlujo2 pf = new ProcesaFlujo2();
                 string c = pf.procesa(flujo);
                 if (c.Equals("0"))//Aprobado
                 {
@@ -908,7 +908,7 @@ namespace TAT001.Controllers
                         //Guardar número de documento creado
                         Session["ERROR_FILES"] = errorMessage;
                     }
-                    ProcesaFlujo pf = new ProcesaFlujo();
+                    ProcesaFlujo2 pf = new ProcesaFlujo2();
                     //db.DOCUMENTOes.Add(dOCUMENTO);
                     //db.SaveChanges();
 

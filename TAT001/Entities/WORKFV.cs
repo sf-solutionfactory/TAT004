@@ -24,7 +24,7 @@ namespace TAT001.Entities
         public string ID { get; set; }
         public int VERSION { get; set; }
         public string DESCRIPCION { get; set; }
-        public string ESTATUS { get; set; }
+        public Nullable<bool> ESTATUS { get; set; }
         public Nullable<System.DateTime> FECHAI { get; set; }
         public Nullable<System.DateTime> FECHAF { get; set; }
         public string USUARIO_ID { get; set; }
