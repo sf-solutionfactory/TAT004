@@ -658,33 +658,99 @@ namespace TAT001.Controllers
                     //Guardar los documentos p para el documento guardado
                     try
                     {
-                        for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                        //Agregar materiales existentes para evitar que en la vista se hayan agregado o quitado
+                        List<DOCUMENTOP> docpl = new List<DOCUMENTOP>();
+                        if (dOCUMENTO.DOCUMENTO_REF > 0)
                         {
-                            try
-                            {
-                                DOCUMENTOP docP = new DOCUMENTOP();
-                                docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
-                                docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
-                                docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
-                                docP.CANTIDAD = 1;
-                                docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
-                                docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
-                                docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
-                                docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
-                                docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
-                                docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
-                                docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
-                                docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+                            docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
 
-                                db.DOCUMENTOPs.Add(docP);
-                                db.SaveChanges();//RSG
-                            }
-                            catch (Exception e)
+                            for (int j = 0; j < docpl.Count; j++)
                             {
+                                try
+                                { 
+                                    DOCUMENTOP_MOD docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == docpl[j].MATNR).FirstOrDefault();
+                                    DOCUMENTOP docP = new DOCUMENTOP();
+                                    //Si lo encuentra meter valores de la base de datos y vista
+                                    if (docmod != null)
+                                    {
+                                        docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.POS = docmod.POS;
+                                        docP.MATNR = docmod.MATNR;
+                                        docP.MATKL = docmod.MATKL_ID;
+                                        docP.CANTIDAD = 1;
+                                        docP.MONTO = docmod.MONTO;
+                                        docP.PORC_APOYO = docmod.PORC_APOYO;
+                                        //docP.MONTO_APOYO = docmod.MONTO_APOYO;
+                                        docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
+                                        docP.PRECIO_SUG = docmod.PRECIO_SUG;
+                                        docP.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                        docP.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                        docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                        docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                        
 
+                                    }
+                                    else
+                                    {
+                                        docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.POS = docpl[j].POS;
+                                        docP.MATNR = docpl[j].MATNR;
+                                        docP.MATKL = docpl[j].MATKL;
+                                        docP.CANTIDAD = 1;
+                                        docP.MONTO = docpl[j].MONTO;
+                                        //docP.PORC_APOYO = docpl[j].PORC_APOYO;
+                                        docP.MONTO_APOYO = docP.MONTO * (docpl[j].PORC_APOYO / 100);
+                                        docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
+                                        docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
+                                        docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                        docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
+                                        docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                        docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                    }
+
+                                    //Agregarlo a la bd
+                                    db.DOCUMENTOPs.Add(docP);
+                                    db.SaveChanges();//RSG
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+
+                            }                               
+                        }
+                        else
+                        {
+                            for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                            {
+                                try
+                                {
+                                    DOCUMENTOP docP = new DOCUMENTOP();
+                                    
+                                    docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
+                                    docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                                    docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
+                                    docP.CANTIDAD = 1;
+                                    docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
+                                    docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
+                                    docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                                    docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
+                                    docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                                    docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
+                                    docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
+                                    docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+
+                                    db.DOCUMENTOPs.Add(docP);
+                                    db.SaveChanges();//RSG
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
                             }
                         }
+
                     }
                     catch (Exception e)
                     {

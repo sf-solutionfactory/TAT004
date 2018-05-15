@@ -120,31 +120,6 @@
         event.cancel = true;
     });
 
-    //$('#addRowSoporte').on('click', function () {
-    //    var t = $('#table_sop').DataTable();
-    //    //Obtener el tipo de solicitud NC
-    //    var sol = $("#tsol_id").val();
-    //    if (sol == "NC") {
-
-    //        t.row.add([
-    //            "", //Selección
-    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-    //            "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-    //            //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
-    //            ""
-    //        ]).draw(false);
-    //    } else {
-    //        M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
-    //    }
-
-    //    event.returnValue = false;
-    //    event.cancel = true;
-
-    //});
-
-
     //Evaluar la extensión y tamaño del archivo a cargar
     $('.file_soporte').change(function () {
         var length = $(this).length;
@@ -182,9 +157,7 @@
                 //Nombre duplicado
                 M.toast({ html: 'Ya existe un archivo con ese mismo nombre' });
             }
-
         }
-
     });
     //Negociación
     if ($('#notas_soporte').val() != "") {
@@ -250,14 +223,6 @@
         event.returnValue = false;
         event.cancel = true;
     });
-    //$('#addRowhtml').click(function (e) {
-    //    copiarTableVista();
-    //    event.returnValue = false;
-    //    event.cancel = true;
-    //});
-
-    //Copiar los valores de la tabla oculta a la tabla de la vista
-
 
     //Mostrar los materiales (detalle) de la categoria 
     $('#table_dis tbody').on('click', 'td.detail_row', function () {
@@ -301,8 +266,8 @@
                                 cat + "", //col0
                                 "", //col1
                                 "", ////col2
-                                "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "", //Material
                                 opt + "",
                                 opt + "",
@@ -324,9 +289,9 @@
                             "",
                             "",
                             "",
-                            "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
                             "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -799,8 +764,8 @@
 
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
-    $(".prelacionada").prop('disabled', true);
-
+   
+    
     //una factura
     var check = $("#check_facturas").val();
     if (check == "true") {
@@ -851,6 +816,8 @@ $(window).on('load', function () {
     //    }
     //}
     
+    $(".prelacionada").prop('disabled', true);
+    $('.prelacionada').trigger('click');
     
 });
 
@@ -912,9 +879,9 @@ function copiarTableVista() {
                 matkl_id + "", //col0 ID
                 "", //col1
                 "", ////col2
-                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-                "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+                "<input class=\"prelacionada input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
                 matkl + "",
                 matkl + "",
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
@@ -1325,6 +1292,10 @@ function asignarPresupuesto(kunnr) {
 
 }
 
+$('body').on('click', '.prelacionada', function () {
+    $(this).prop('disabled', true);
+});
+
 $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
@@ -1661,9 +1632,9 @@ function loadExcelDis(file) {
                         dataj.POS,
                         "",
                         "",
-                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                        "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                         dataj.MATKL,
                         dataj.DESC,
                         "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
