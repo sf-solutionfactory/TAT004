@@ -102,18 +102,6 @@
         ]
     });
 
-    //$('#table_sop tbody').on('click', 'td.select_row', function () {
-    //    var tr = $(this).closest('tr');
-    //    $(tr).toggleClass('selected');
-    //});
-
-    //$('#delRowSop').click(function (e) {
-    //    var t = $('#table_sop').DataTable();
-    //    t.rows('.selected').remove().draw(false);
-    //    event.returnValue = false;
-    //    event.cancel = true;
-    //});
-
     $('#sendTable').click(function (e) {
         
         event.returnvalue = false;
@@ -405,7 +393,7 @@
 
     $('#tab_soporte').on("click", function (e) {
 
-        //evalTempTab(false, e);
+        evalTempTab(false, e);
 
     });
 
@@ -430,8 +418,6 @@
                     M.toast({ html: msg });
                     e.preventDefault();
                     e.stopPropagation();
-                    //var active = $('ul.tabs .active').attr('href');
-                    //$('ul.tabs').tabs('select_tab', active);
                     var ell = document.getElementById("tabs");
                     var instances = M.Tabs.getInstance(ell);
                     instances.select('Informacion_cont');
@@ -441,8 +427,6 @@
                 M.toast({ html: msg });
                 e.preventDefault();
                 e.stopPropagation();
-                //    //var active = $('ul.tabs .active').attr('href');
-                //    //$('ul.tabs').tabs('select_tab', active);
                 var ell = document.getElementById("tabs");
                 var instances = M.Tabs.getInstance(ell);
                 instances.select('Temporalidad_cont');
@@ -452,8 +436,6 @@
             M.toast({ html: msg });
             e.preventDefault();
             e.stopPropagation();
-            //var active = $('ul.tabs .active').attr('href');
-            //$('ul.tabs').tabs('select_tab', active);
             var ell = document.getElementById("tabs");
             var instances = M.Tabs.getInstance(ell);
             instances.select('Soporte_cont');
@@ -532,10 +514,6 @@
 
     //Financiera   
     $('#monto_doc_md').focusout(function (e) {
-
-        //e.preventDefault(); //stops default action: submitting form
-        //var msg = 'Enter';
-        //M.toast({ html: msg })
 
         var monto_doc_md = $('#monto_doc_md').val();
         var is_num = $.isNumeric(monto_doc_md);
@@ -664,20 +642,8 @@
         $('#monto_doc_ml2').val(monto_doc_md);
         $('#montos_doc_ml2').val(monto_doc_md);
         $("label[for='montos_doc_ml2']").addClass("active");
-        //var msg = 'Monto incorrecto';
-        //M.toast({ html: msg });
-        //e.preventDefault();
     }
 
-
-    //Termina financiera
-
-    //$('#cargar').click(function () {
-    //    M.toast({ html: 'Load' })
-    //    loadExcel();
-    //});
-    //Enter en el monto
-    //$('#monto_doc_md').keypress(keypressHandler);
 
     $('#btn_guardarh').on("click", function (e) {
         document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
@@ -1062,71 +1028,6 @@ function copiarTableControl() {
 
         });
 
-        //item = {};
-        //item["NUM_DOC"] = 0;
-        //item["POS"] = i;
-        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
-        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
-        //item["MATNR"] = 123;
-        //item["MATKL"] = "001";
-        //item["CANTIDAD"] = 0;
-        //item["MONTO"] = 200.22;
-        //item["PORC_APOYO"] = 10;
-        //item["MONTO_APOYO"] = 20.22;
-        //item["PRECIO_SUG"] = 100;
-        //item["VOLUMEN_EST"] = 300.25;
-
-        //jsonObjDocs.push(item);
-        //i++;
-
-        //item = "";
-        //item = {};
-        //item["NUM_DOC"] = 0;
-        //item["POS"] = i;
-        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
-        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
-        //item["MATNR"] = 456;
-        //item["MATKL"] = "001";
-        //item["CANTIDAD"] = 0;
-        //item["MONTO"] = 200.22;
-        //item["PORC_APOYO"] = 10;
-        //item["MONTO_APOYO"] = 20.22;
-        //item["PRECIO_SUG"] = 100;
-        //item["VOLUMEN_EST"] = 300.25;
-
-        //jsonObjDocs.push(item);
-
-        //var docs = [
-        //    {
-        //        NUM_DOC: 0,
-        //        POS: 1,
-        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-        //        MATNR: 123,
-        //        MATKL: "001",
-        //        CANTIDAD: 0,
-        //        MONTO: 200.22,
-        //        PORC_APOYO: 10,
-        //        MONTO_APOYO: 20.22,
-        //        PRECIO_SUG: 100,
-        //        VOLUMEN_EST: 300.25
-        //    },
-        //    {
-        //        NUM_DOC: 0,
-        //        POS: 2,
-        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-        //        MATNR: 456,
-        //        MATKL: "001",
-        //        CANTIDAD: 0,
-        //        MONTO: 200.22,
-        //        PORC_APOYO: 10,
-        //        MONTO_APOYO: 20.22,
-        //        PRECIO_SUG: 100,
-        //        VOLUMEN_EST: 300.25
-        //    }
-        //];  
-
         docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
 
         $.ajax({
@@ -1347,25 +1248,6 @@ $('body').on('focusout', '.input_sop_f', function () {
     }
 
 });
-
-////Validar el patrón para dos decimales en los campos editables de la tabla
-//$('body').on('keypress keydown', '.input_oper', function () {
-
-//    ////Si está escribiendo en campos de fecha, aceptar numeros y diagonal
-//    //if ($(this).hasClass("format_date")) {
-
-
-//    //} else if ($(this).hasClass("number")) {
-//    //    //Si es material, acepta puros numeros
-//    //} else if ($(this).hasClass("numberd")) {
-//    //    //Si es cantidad, acepta numeros y punto
-//    //    $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-//    //    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-//    //        event.preventDefault();
-//    //    }  
-//    //}
-
-//});
 
 //Variables globales
 var detail = "";
@@ -1751,7 +1633,6 @@ function selectTsol(sol) {
 }
 
 function addRowSop() {
-   
     addRowSopl(
         "1", //POS
         "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -1766,7 +1647,6 @@ function addRowSop() {
         "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
     );
-
 }
 
 function addRowSopl(pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr) {
@@ -2076,7 +1956,6 @@ function evaluarInfoTab() {
     var res = true;
 
     //Obtiene el id de la lista id solicitud, default envía vacío
-
     if (!$('#txt_rel').length) {
         var tsol_id = $('#tsol_id').val();
 
@@ -2222,15 +2101,6 @@ function evaluarTempTab() {
 }
 
 function evaluarSoporteTab() {
-    //var res = true;
-
-    //var filecarta = "#file_carta";
-
-    //if (!evaluarFile(filecarta)) {
-    //    return false;
-    //}
-
-    //return res;
 
     return evaluarFiles();
 }
@@ -2319,14 +2189,7 @@ function evaluarFile(id) {
         var file = document.getElementById(id).files[0];
         var filename = file.name;
         return true;
-        //if (evaluarExt(filename)) {
-        //    M.toast({ html: 'Uploading' + filename });
-        //    loadExcel(file);
-        //} else {
-        //    M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
-        //}
     } else {
-        //M.toast({ html: 'Seleccione un archivo' });
         return false;
     }
 }
@@ -2595,7 +2458,6 @@ function asignCity(valu) {
     }
 }
 
-
 function selectCliente(valu) {
     if (valu != "") {
         $.ajax({
@@ -2715,7 +2577,6 @@ function selectMoneda(valu) {
             M.toast({ html: msg })
         }
     }
-
 }
 
 function selectTcambio(MONEDA_ID, monto_doc_md) {
@@ -2742,7 +2603,6 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
                         M.toast({ html: data });
                     }
                 }
-
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
                 M.toast({ html: msg });
@@ -2896,7 +2756,6 @@ function valProveedor(prov) {
             url: 'getProveedor',
             dataType: "json",
             data: { "prov": prov },
-
             success: function (data) {
 
                 if (data !== null || data !== "") {

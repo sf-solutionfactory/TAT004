@@ -505,10 +505,6 @@ namespace TAT001.Controllers
             {
                 try
                 {
-                    //Provisional tipo de cambio
-                    //dOCUMENTO.TIPO_CAMBIO = dOCUMENTO.TIPO_CAMBIO / 60000000000;
-                    //dOCUMENTO.MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2 / 60000000000;
-
                     //Obtener datos ocultos o deshabilitados                    
                     try
                     {
@@ -807,9 +803,7 @@ namespace TAT001.Controllers
                     }
 
                     if (numFiles > 0)
-                    {
-                        //Obtener la clase de los archivos de los archivos                                                
-
+                    {                                             
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
