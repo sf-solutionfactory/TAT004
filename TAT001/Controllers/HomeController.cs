@@ -134,7 +134,7 @@ namespace TAT001.Controllers
                 //ViewBag.creador = db.CREADORs.Where(a => a.ID.Equals(u) & a.ACTIVO == true).ToList();
 
                 var p = from P in db.PAIS
-                    join C in db.CREADORs on P.LAND equals C.LAND
+                    join C in db.CREADOR2 on P.LAND equals C.LAND
                     where P.ACTIVO == true
                     & C.ID == u & C.ACTIVO == true
                     select P;

@@ -414,6 +414,7 @@ namespace TAT001.Controllers
 
 
                 SOCIEDAD id_bukrs = new SOCIEDAD();
+                var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
                 var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
 
                 List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
@@ -490,7 +491,8 @@ namespace TAT001.Controllers
                     ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
                     ViewBag.TSOL_IDI = "";
                     ViewBag.GALL_IDI = "";
-                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();
+                    //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
                 }
 
                 ViewBag.files = archivos;
@@ -508,7 +510,7 @@ namespace TAT001.Controllers
                 ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50");
 
                 //Datos del país
-                var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();
+                //var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();//RSG 15.05.2018
 
                 var id_states = (from st in db.STATES
                                  join co in db.COUNTRIES
