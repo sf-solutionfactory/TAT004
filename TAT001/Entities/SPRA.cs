@@ -32,6 +32,9 @@ namespace TAT001.Entities
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
+            this.RETENCIONTs = new HashSet<RETENCIONT>();
+            this.TX_CONCEPTOT = new HashSet<TX_CONCEPTOT>();
+            this.TX_NOTAT = new HashSet<TX_NOTAT>();
         }
     
         public string ID { get; set; }
@@ -67,5 +70,11 @@ namespace TAT001.Entities
         public virtual ICollection<WARNING> WARNINGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RETENCIONT> RETENCIONTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TX_NOTAT> TX_NOTAT { get; set; }
     }
 }

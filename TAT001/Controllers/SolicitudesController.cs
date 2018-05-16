@@ -161,7 +161,7 @@ namespace TAT001.Controllers
             ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P")).FirstOrDefault();
             ViewBag.acciones = f;
-            List<DOCUMENTOA> archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(id)).ToList();
+            List<DOCUMENTOA> archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(id) & x.ACTIVO == true).ToList();//RSG 15.05.2018
             ViewBag.files = archivos;
             if (f != null)
                 if (f.USUARIOA_ID != null)
@@ -217,6 +217,7 @@ namespace TAT001.Controllers
 
                     int i = 0;
                     int indexlabel = 0;
+                    int max = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(num_doc)).Max(a => a.POS);//RSG 15.05.2018
                     foreach (HttpPostedFileBase file in files_soporte)
                     {
                         string errorfiles = "";
@@ -255,6 +256,16 @@ namespace TAT001.Controllers
                                     {
                                         doc.CLASE = "";
                                     }
+                                    if (max > 0)
+                                    {
+                                        doc.POS = max + 1;
+                                        DOCUMENTOA da = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(num_doc) & a.CLASE.Equals(doc.CLASE)).FirstOrDefault();
+                                        if (da != null)
+                                        {
+                                            da.ACTIVO = false;
+                                            db.Entry(da).State = EntityState.Modified;
+                                        }
+                                    }
                                     doc.STEP_WF = 1;
                                     doc.USUARIO_ID = User.Identity.Name;
                                     doc.PATH = path;
@@ -266,15 +277,7 @@ namespace TAT001.Controllers
                                     }
                                     catch (Exception e)
                                     {
-                                        try
-                                        {
-                                            db.Entry(doc).State = EntityState.Modified;
-                                            db.SaveChanges();
-                                        }
-                                        catch (Exception ee)
-                                        {
-                                            errorfiles = "" + filename;
-                                        }
+                                        errorfiles = "" + filename;
                                     }
                                 }
                             }
@@ -335,6 +338,26 @@ namespace TAT001.Controllers
 
             return RedirectToAction("Details");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Taxeo()
+        {
+            decimal num_doc = decimal.Parse(Request.Form["D.NUM_DOC"].ToString());
+            string conc = Request.Form["txt_concepto"].ToString();
+            DOCUMENTO d = db.DOCUMENTOes.Find(num_doc);
+            d.CONCEPTO_ID = int.Parse(conc);
+            db.Entry(d).State = EntityState.Modified;
+            db.SaveChanges();
+
+            FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
+            ProcesaFlujo2 p = new ProcesaFlujo2();
+            f.ESTATUS = "A";
+            p.procesa(f);
+
+
+            return RedirectToAction("Details",new { id = num_doc});
+        }
         // GET: Solicitudes/Create
         [HttpGet]
         public ActionResult Create(string id_d, string tsol)
@@ -356,16 +379,6 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                try
-                {
-                    p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
-                }
-                catch
-                {
-                    //ViewBag.pais = "mx.svg";
-                    return RedirectToAction("Pais", "Home");//
-                }
                 //Tipo de solicitud
                 //try
                 //{
@@ -393,6 +406,19 @@ namespace TAT001.Controllers
                     ViewBag.relacionadan = "";
                 }
 
+                if (rel == 0)
+                {
+                    try//RSG 15.05.2018
+                    {
+                        p = Session["pais"].ToString();
+                        ViewBag.pais = p + ".svg";
+                    }
+                    catch
+                    {
+                        //ViewBag.pais = "mx.svg";
+                        return RedirectToAction("Pais", "Home");//
+                    }
+                }
 
                 Session["spras"] = user.SPRAS_ID;
 
@@ -414,7 +440,7 @@ namespace TAT001.Controllers
 
 
                 SOCIEDAD id_bukrs = new SOCIEDAD();
-                var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
+                var id_pais = new PAI();
                 var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
 
                 List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
@@ -437,6 +463,7 @@ namespace TAT001.Controllers
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
+                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(d.PAIS_ID)).FirstOrDefault();//RSG 15.05.2018
                     d.DOCUMENTO_REF = rel;
 
                     if (d != null)
@@ -492,6 +519,7 @@ namespace TAT001.Controllers
                     ViewBag.TSOL_IDI = "";
                     ViewBag.GALL_IDI = "";
                     //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
+                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
                 }
 
@@ -668,10 +696,14 @@ namespace TAT001.Controllers
                         dOCUMENTO.PAYER_EMAIL = d.PAYER_EMAIL;
                         dOCUMENTO.TIPO_CAMBIO = d.TIPO_CAMBIO;
                         dOCUMENTO.GALL_ID = d.GALL_ID;
+                        //Obtener el país
+                        dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                     }
                     else
                     {
                         id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                        //Obtener el país
+                        dOCUMENTO.PAIS_ID = p.ToUpper();//RSG 15.05.2018
                     }
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
@@ -680,8 +712,8 @@ namespace TAT001.Controllers
                     //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
 
-                    //Obtener el país
-                    dOCUMENTO.PAIS_ID = p.ToUpper();
+                    ////Obtener el país
+                    //dOCUMENTO.PAIS_ID = p.ToUpper();
 
                     //CANTIDAD_EV > 1 si son recurrentes
                     dOCUMENTO.CANTIDAD_EV = 1;

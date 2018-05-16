@@ -207,6 +207,27 @@
         <AssociationConnector Association="TAT001Model.FK_PAIS_SOCIEDAD" />
         <AssociationConnector Association="TAT001Model.FK_TAX_LAND_PAIS" />
         <EntityTypeShape EntityType="TAT001Model.DET_TAX" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="TAT001Model.RETENCION" Width="1.5" PointX="17.25" PointY="30.875" />
+        <EntityTypeShape EntityType="TAT001Model.RETENCIONT" Width="1.5" PointX="19.5" PointY="42" />
+        <EntityTypeShape EntityType="TAT001Model.TAXEOH" Width="1.5" PointX="17.25" PointY="34.375" />
+        <EntityTypeShape EntityType="TAT001Model.TAXEOP" Width="1.5" PointX="19.5" PointY="35.125" />
+        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTO" Width="1.5" PointX="15" PointY="34.625" />
+        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTOT" Width="1.5" PointX="20.25" PointY="48.875" />
+        <EntityTypeShape EntityType="TAT001Model.TX_NOTAT" Width="1.5" PointX="22.25" PointY="42.25" />
+        <EntityTypeShape EntityType="TAT001Model.TX_TNOTA" Width="1.5" PointX="15" PointY="31.375" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_CLIENTE" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_PAIS" />
+        <AssociationConnector Association="TAT001Model.FK_RETENCIONT_RETENCION" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOP_RETENCION" />
+        <AssociationConnector Association="TAT001Model.FK_RETENCIONT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_SOCIEDAD" />
+        <AssociationConnector Association="TAT001Model.FK_TX_CONCEPTOT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TX_NOTAT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_TX_CONCEPTO" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_TX_TNOTA" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOP_TAXEOH" />
+        <AssociationConnector Association="TAT001Model.FK_TX_CONCEPTOT_TX_CONCEPTO" />
+        <AssociationConnector Association="TAT001Model.FK_TX_NOTAT_TX_TNOTA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

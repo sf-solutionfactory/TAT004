@@ -24,6 +24,7 @@ namespace TAT001.Entities
             this.LEYENDAs = new HashSet<LEYENDA>();
             this.TS_FORM = new HashSet<TS_FORM>();
             this.TAX_LAND = new HashSet<TAX_LAND>();
+            this.TAXEOHs = new HashSet<TAXEOH>();
         }
     
         public string LAND { get; set; }
@@ -48,5 +49,7 @@ namespace TAT001.Entities
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TAX_LAND> TAX_LAND { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TAXEOH> TAXEOHs { get; set; }
     }
 }

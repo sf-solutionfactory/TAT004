@@ -112,7 +112,7 @@ namespace TAT001.Services
                             next_step_r = (int)paso_a.NS_REJECT;
 
                         WORKFP next = new WORKFP();
-                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R")//Si está en proceso de aprobación
+                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R" | paso_a.ACCION.TIPO == "T")//Si está en proceso de aprobación
                         {
                             if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
                             {
@@ -731,7 +731,7 @@ namespace TAT001.Services
 
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);
             //GAUTORIZACION gg = u.GAUTORIZACIONs.Where(a => a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
-            long gaa = db.CREADORs.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
+            long gaa = db.CREADOR2.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
             int ppos = 0;
 
             if (pos.Equals(0))

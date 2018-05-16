@@ -524,6 +524,7 @@
     <Property Name="SPART" Type="nchar" MaxLength="2" />
     <Property Name="PUESTO_ID" Type="int" />
     <Property Name="GALL_ID" Type="varchar" MaxLength="5" />
+    <Property Name="CONCEPTO_ID" Type="int" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -937,6 +938,24 @@
     <Property Name="REGION" Type="nchar" MaxLength="6" Nullable="false" />
     <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" />
   </EntityType>
+  <EntityType Name="RETENCION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DESCRIPCIÓN" Type="nvarchar" MaxLength="50" />
+    <Property Name="PORC" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RETENCIONT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="RETENCION_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="RETENCION_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="ROL">
     <Key>
       <PropertyRef Name="ID" />
@@ -1024,6 +1043,56 @@
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="TAXEOH">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="CONCEPTO_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="CONCEPTO_ID" Type="int" Nullable="false" />
+    <Property Name="TNOTA_ID" Type="int" />
+    <Property Name="FECHAC" Type="date" />
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="FECHAM" Type="date" />
+    <Property Name="USUARIOM_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="IMPUESTO_ID" Type="nchar" MaxLength="2" />
+    <Property Name="PORC" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PAY_T" Type="nchar" MaxLength="4" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TAXEOP">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="CONCEPTO_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="CONCEPTO_ID" Type="int" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="RETENCION_ID" Type="int" />
+    <Property Name="PORC" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TCAMBIO">
     <Key>
@@ -1140,6 +1209,40 @@
     <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TXT020" Type="nvarchar" MaxLength="20" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TX_CONCEPTO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="TX_CONCEPTOT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="CONCEPTO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CONCEPTO_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TX_NOTAT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="TNOTA_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="TNOTA_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TX_TNOTA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" />
   </EntityType>
   <EntityType Name="UMEDIDA">
     <Key>
@@ -2367,6 +2470,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_RETENCIONT_RETENCION">
+    <End Role="RETENCION" Type="Self.RETENCION" Multiplicity="1" />
+    <End Role="RETENCIONT" Type="Self.RETENCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RETENCION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RETENCIONT">
+        <PropertyRef Name="RETENCION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RETENCIONT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="RETENCIONT" Type="Self.RETENCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RETENCIONT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ROLT_ROL">
     <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
     <End Role="ROLT" Type="Self.ROLT" Multiplicity="*" />
@@ -2460,6 +2587,108 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="TAX_LAND">
         <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOH_CLIENTE">
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="TAXEOH">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOH_PAIS">
+    <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAIS">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="TAXEOH">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOH_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="TAXEOH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOH_TX_CONCEPTO">
+    <End Role="TX_CONCEPTO" Type="Self.TX_CONCEPTO" Multiplicity="1" />
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TX_CONCEPTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TAXEOH">
+        <PropertyRef Name="CONCEPTO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOH_TX_TNOTA">
+    <End Role="TX_TNOTA" Type="Self.TX_TNOTA" Multiplicity="0..1" />
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TX_TNOTA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TAXEOH">
+        <PropertyRef Name="TNOTA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOP_RETENCION">
+    <End Role="RETENCION" Type="Self.RETENCION" Multiplicity="0..1" />
+    <End Role="TAXEOP" Type="Self.TAXEOP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RETENCION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TAXEOP">
+        <PropertyRef Name="RETENCION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOP_TAXEOH">
+    <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="1" />
+    <End Role="TAXEOP" Type="Self.TAXEOP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TAXEOH">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PAIS_ID" />
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+        <PropertyRef Name="CONCEPTO_ID" />
+      </Principal>
+      <Dependent Role="TAXEOP">
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="PAIS_ID" />
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+        <PropertyRef Name="CONCEPTO_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2630,6 +2859,54 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="TSOLT">
         <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TX_CONCEPTOT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TX_CONCEPTOT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TX_CONCEPTOT_TX_CONCEPTO">
+    <End Role="TX_CONCEPTO" Type="Self.TX_CONCEPTO" Multiplicity="1" />
+    <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TX_CONCEPTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TX_CONCEPTOT">
+        <PropertyRef Name="CONCEPTO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TX_NOTAT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="TX_NOTAT" Type="Self.TX_NOTAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TX_NOTAT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TX_NOTAT_TX_TNOTA">
+    <End Role="TX_TNOTA" Type="Self.TX_TNOTA" Multiplicity="1" />
+    <End Role="TX_NOTAT" Type="Self.TX_NOTAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TX_TNOTA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TX_NOTAT">
+        <PropertyRef Name="TNOTA_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2967,6 +3244,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PUESTOT" EntityType="Self.PUESTOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RANGO" EntityType="Self.RANGO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="REGION" EntityType="Self.REGION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RETENCION" EntityType="Self.RETENCION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RETENCIONT" EntityType="Self.RETENCIONT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROLT" EntityType="Self.ROLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
@@ -2976,6 +3255,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TAXEOH" EntityType="Self.TAXEOH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TAXEOP" EntityType="Self.TAXEOP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCAMBIO" EntityType="Self.TCAMBIO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCLIENTE" EntityType="Self.TCLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCLIENTET" EntityType="Self.TCLIENTET" Schema="dbo" store:Type="Tables" />
@@ -2986,6 +3267,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="TS_FORMT" EntityType="Self.TS_FORMT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TSOL" EntityType="Self.TSOL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TSOLT" EntityType="Self.TSOLT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TX_CONCEPTO" EntityType="Self.TX_CONCEPTO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TX_CONCEPTOT" EntityType="Self.TX_CONCEPTOT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TX_NOTAT" EntityType="Self.TX_NOTAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TX_TNOTA" EntityType="Self.TX_TNOTA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UMEDIDA" EntityType="Self.UMEDIDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UMEDIDAT" EntityType="Self.UMEDIDAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
@@ -3427,6 +3712,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="PUESTOT" EntitySet="PUESTOT" />
     </AssociationSet>
+    <AssociationSet Name="FK_RETENCIONT_RETENCION" Association="Self.FK_RETENCIONT_RETENCION">
+      <End Role="RETENCION" EntitySet="RETENCION" />
+      <End Role="RETENCIONT" EntitySet="RETENCIONT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RETENCIONT_SPRAS" Association="Self.FK_RETENCIONT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="RETENCIONT" EntitySet="RETENCIONT" />
+    </AssociationSet>
     <AssociationSet Name="FK_ROLT_ROL" Association="Self.FK_ROLT_ROL">
       <End Role="ROL" EntitySet="ROL" />
       <End Role="ROLT" EntitySet="ROLT" />
@@ -3458,6 +3751,34 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_TAX_LAND_PAIS" Association="Self.FK_TAX_LAND_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="TAX_LAND" EntitySet="TAX_LAND" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOH_CLIENTE" Association="Self.FK_TAXEOH_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOH_PAIS" Association="Self.FK_TAXEOH_PAIS">
+      <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOH_SOCIEDAD" Association="Self.FK_TAXEOH_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOH_TX_CONCEPTO" Association="Self.FK_TAXEOH_TX_CONCEPTO">
+      <End Role="TX_CONCEPTO" EntitySet="TX_CONCEPTO" />
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOH_TX_TNOTA" Association="Self.FK_TAXEOH_TX_TNOTA">
+      <End Role="TX_TNOTA" EntitySet="TX_TNOTA" />
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOP_RETENCION" Association="Self.FK_TAXEOP_RETENCION">
+      <End Role="RETENCION" EntitySet="RETENCION" />
+      <End Role="TAXEOP" EntitySet="TAXEOP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOP_TAXEOH" Association="Self.FK_TAXEOP_TAXEOH">
+      <End Role="TAXEOH" EntitySet="TAXEOH" />
+      <End Role="TAXEOP" EntitySet="TAXEOP" />
     </AssociationSet>
     <AssociationSet Name="FK_TCAMBIO_MONEDA" Association="Self.FK_TCAMBIO_MONEDA">
       <End Role="MONEDA" EntitySet="MONEDA" />
@@ -3514,6 +3835,22 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
       <End Role="TSOL" EntitySet="TSOL" />
       <End Role="TSOLT" EntitySet="TSOLT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TX_CONCEPTOT_SPRAS" Association="Self.FK_TX_CONCEPTOT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="TX_CONCEPTOT" EntitySet="TX_CONCEPTOT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TX_CONCEPTOT_TX_CONCEPTO" Association="Self.FK_TX_CONCEPTOT_TX_CONCEPTO">
+      <End Role="TX_CONCEPTO" EntitySet="TX_CONCEPTO" />
+      <End Role="TX_CONCEPTOT" EntitySet="TX_CONCEPTOT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TX_NOTAT_SPRAS" Association="Self.FK_TX_NOTAT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="TX_NOTAT" EntitySet="TX_NOTAT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TX_NOTAT_TX_TNOTA" Association="Self.FK_TX_NOTAT_TX_TNOTA">
+      <End Role="TX_TNOTA" EntitySet="TX_TNOTA" />
+      <End Role="TX_NOTAT" EntitySet="TX_NOTAT" />
     </AssociationSet>
     <AssociationSet Name="FK_UMEDIDAT_SPRAS" Association="Self.FK_UMEDIDAT_SPRAS">
       <End Role="SPRAS" EntitySet="SPRAS" />

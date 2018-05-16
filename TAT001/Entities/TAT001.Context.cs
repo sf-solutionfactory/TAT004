@@ -120,6 +120,14 @@ namespace TAT001.Entities
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
         public virtual DbSet<TAX_LAND> TAX_LAND { get; set; }
         public virtual DbSet<DET_TAX> DET_TAX { get; set; }
+        public virtual DbSet<RETENCION> RETENCIONs { get; set; }
+        public virtual DbSet<RETENCIONT> RETENCIONTs { get; set; }
+        public virtual DbSet<TAXEOH> TAXEOHs { get; set; }
+        public virtual DbSet<TAXEOP> TAXEOPs { get; set; }
+        public virtual DbSet<TX_CONCEPTO> TX_CONCEPTO { get; set; }
+        public virtual DbSet<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
+        public virtual DbSet<TX_NOTAT> TX_NOTAT { get; set; }
+        public virtual DbSet<TX_TNOTA> TX_TNOTA { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

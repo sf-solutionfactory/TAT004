@@ -570,6 +570,154 @@
                     </div>
                 </div>*@
         </div>
+        @if (ViewBag.acciones != null)
+        {
+            if (ViewBag.accion == "T")
+            {
+                <div class="row">
+                    @using (Html.BeginForm("Taxeo", "Solicitudes"))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.D.NUM_DOC)
+                        <div class="card-panel">
+                            <h5>Taxeo</h5>
+                            <div class="row">
+                                <div class="col s12 m12 l12">
+                                    <div id="lbl_taxeo">
+                                        <div class="input-field col s6 m4 l4">
+                                            <select id="txt_concepto" name="txt_concepto" onchange="selConcepto(this.value)">
+                                                <option value=""></option>
+                                            </select>
+                                            <label for="txt_concepto">Concepto</label>
+                                        </div>
+                                        <div class="input-field col s6 m4 l4">
+                                            <input id="txt_nota" name="txt_nota" disabled="disabled" />
+                                            <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
+                                        </div>
+                                        <div class="col s6 m4 l4">
+                                            <div>
+                                                <table class="table" id="tab_conc">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Concepto</th>
+                                                            <th>Porcenaje</th>
+                                                            <th>Código</th>
+                                                            <th>Totales</th>
+                                                        </tr>
+                                                    <thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                    taxeo("txt_concepto");
+
+                                    function taxeo(id) {
+                                        var campo = document.getElementById(id);
+                                        $("#"+id).find('option').remove();
+                                        //$("#lbl_puestos").empty();
+
+                                        var soci = '@Model.D.SOCIEDAD_ID';
+                                        var pais = '@Model.D.PAIS_ID';
+                                        var vkorg = '@Model.D.VKORG';
+                                        var vtweg = '@Model.D.VTWEG';
+                                        var spart = '@Model.D.SPART';
+                                        var kunnr = '@Model.D.PAYER_ID';
+                                        var spras = '@Session["spras"].ToString()';
+                                            $.ajax({
+                                                url: "../../Listas/selectTaxeo",
+                                                type: "GET",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, spras: spras },
+                                                success: function (data) {
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { label: item.TXT50, value: item.CONCEPTO_ID };
+                                                    }))
+                                                    $("#" +id)
+                                                        .append($("<option></option>")
+                                                            .attr("value", "")
+                                                            .text(""));
+                                                    for (var i = 0; i < pp.length; i++) {
+                                                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
+                                                        //$("#txt_pai").append(div);
+                                                        $("#" + id)
+                                                            .append($("<option></option>")
+                                                                .attr("value", pp[i].value)
+                                                                .text(pp[i].label));
+                                                    }
+                                                    var el = document.getElementById(id);
+                                                    var instances = M.Select.init(el, []);
+                                                }
+                                            });
+                                    }
+
+                                    function selConcepto(value) {
+                                        //$("#lbl_puestos").empty();
+                                        var soci = '@Model.D.SOCIEDAD_ID';
+                                        var pais = '@Model.D.PAIS_ID';
+                                        var vkorg = '@Model.D.VKORG';
+                                        var vtweg = '@Model.D.VTWEG';
+                                        var spart = '@Model.D.SPART';
+                                        var kunnr = '@Model.D.PAYER_ID';
+                                        var concepto_id = value;
+                                        var spras = '@Session["spras"].ToString()';
+                                            $.ajax({
+                                                url: "../../Listas/selectConcepto",
+                                                type: "POST",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                success: function (data) {
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { label: item.TXT50, value: item.CONCEPTO_ID };
+                                                    }))
+                                                    if (pp.length > 0) {
+                                                        $("#txt_nota").val(pp[0].label);
+                                                        $("#lbl_nota").addClass("active");
+                                                    } else {
+                                                        $("#txt_nota").val("");
+                                                        $("#lbl_nota").removeClass("active");
+                                                    }
+                                                }
+                                        });
+                                            $.ajax({
+                                                url: "../../Listas/selectImpuesto",
+                                                type: "POST",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                success: function (data) {
+                                                    $("#tab_conc tbody").empty();
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC };
+                                                    }))
+                                                    for (var i = 0; i < pp.length; i++) {
+                                                        var cod = pp[i].IMPUESTO_ID;
+                                                        var por = pp[i].PORC;
+                                                        var tot = @Model.D.MONTO_DOC_ML;
+                                                        var sub = tot * por / 100;
+
+                                                        $("#tab_conc tbody").append("<tr><td>IVA</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                    }
+                                                }
+                                            });
+                                    }
+                                    </script>
+                                </div>
+                                <div class="col s12 right-align">
+                                    <input type="submit" class="btn" value="Enviar" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
     </div>
     @*<div id="dist" class="col s12">Test 4</div>*@
 </div>

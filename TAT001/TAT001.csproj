@@ -434,6 +434,12 @@
     <Compile Include="Entities\REGION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RETENCION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RETENCIONT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ROL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -482,6 +488,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TAXEOH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TAXEOP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TAX_LAND.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -513,6 +525,18 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TS_FORMT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_CONCEPTO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_CONCEPTOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_NOTAT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_TNOTA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UMEDIDA.cs">
@@ -773,6 +797,7 @@
     <Content Include="Views\Materiales\Edit.cshtml" />
     <Content Include="Views\Materiales\Index.cshtml" />
     <Content Include="Views\Listas\Paises.cshtml" />
+    <Content Include="Views\Listas\selectTaxeo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

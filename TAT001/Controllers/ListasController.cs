@@ -192,5 +192,62 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+
+        [HttpGet]
+        public JsonResult selectTaxeo(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from T in db.TAXEOHs
+                     join TX in db.TX_CONCEPTOT
+                     on T.CONCEPTO_ID equals TX.CONCEPTO_ID
+                     where T.SOCIEDAD_ID == bukrs
+                     & T.PAIS_ID == pais
+                     & T.VKORG == vkorg
+                     & T.VTWEG == vtweg
+                     & T.SPART == spart
+                     & T.KUNNR == kunnr
+                     & TX.SPRAS_ID == spras
+                     select new { T.CONCEPTO_ID, TX.TXT50 });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+        [HttpPost]
+        public JsonResult selectConcepto(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string concepto, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int co = int.Parse(concepto);
+            var c = (from T in db.TAXEOHs
+                     join TX in db.TX_NOTAT
+                     on T.TNOTA_ID equals TX.TNOTA_ID
+                     where T.SOCIEDAD_ID == bukrs
+                     & T.PAIS_ID == pais
+                     & T.VKORG == vkorg
+                     & T.VTWEG == vtweg
+                     & T.SPART == spart
+                     & T.KUNNR == kunnr
+                     & T.CONCEPTO_ID == co
+                     & TX.SPRAS_ID == spras
+                     select new { T.TNOTA_ID, TX.TXT50 });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+        [HttpPost]
+        public JsonResult selectImpuesto(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string concepto, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int co = int.Parse(concepto);
+            var c = (from T in db.TAXEOHs
+                     where T.SOCIEDAD_ID == bukrs
+                     & T.PAIS_ID == pais
+                     & T.VKORG == vkorg
+                     & T.VTWEG == vtweg
+                     & T.SPART == spart
+                     & T.KUNNR == kunnr
+                     & T.CONCEPTO_ID == co
+                     select new { T.IMPUESTO_ID, T.PORC });
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
     }
 }
