@@ -374,6 +374,12 @@
                         <div class="lbl_rejected">Rechazada</div>
                     </td>
                 }
+                else if (item.ESTATUS_WF.Equals("T"))
+                {
+                    <td class="yellow darken-2 white-text">
+                        <div class="lbl_tax">Pendiente Tax</div>
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.CONCEPTO)
                 </td>

@@ -17,173 +17,175 @@
 <script>
     var auto = $.noConflict(true);
 </script>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="col s12 l12 right-align">
-            <a class="btn" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>
-            <a class="btn" href="@Url.Action("Edit", new { id = Model.ID})">Editar</a>
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()*@
+<div class="row">
+    <div class="col s12 l12 right-align">
+        <a class="btn" href="@Url.Action("Pass", new { id = Model.ID})">Cambiar contraseña</a>
+        <a class="btn" href="@Url.Action("Edit", new { id = Model.ID})">Editar</a>
+    </div>
+</div>
+<div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.PASS)
+    @*<div class="input-field col s6">
+                    @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
+                    @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
+                <div class="input-field col s6">
+                    <div style="height:54px;"></div>
+                </div>
+        </div>*@
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
+                    @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @id = "lbl_appPat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @id = "lbl_appMat" })
+                    @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @id = "lbl_email" })
+                    @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                </div>
+                <div class="input-field col s6">
+                    @Html.EditorFor(model => model.SPRAS_ID, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    <label id="lbl_spras">SPRAS</label>
+                    @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
-        @Html.HiddenFor(model => model.PASS)
-        @*<div class="input-field col s6">
-                        @Html.PasswordFor(model => model.PASS, new { htmlAttributes = new { @disabled= "disabled" } })
-                        @Html.LabelFor(model => model.PASS, htmlAttributes: new { @class = "control-label col-md-2" })
-                        @Html.ValidationMessageFor(model => model.PASS, "", new { @class = "text-danger" })
-                    <div class="input-field col s6">
-                        <div style="height:54px;"></div>
-                    </div>
-            </div>*@
-        <div class="col l6 s12">
-            <div class="card-panel">
-                <div class="row">
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @id = "lbl_nombre" })
-                        @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.APELLIDO_P, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.APELLIDO_P, htmlAttributes: new { @id = "lbl_appPat" })
-                        @Html.ValidationMessageFor(model => model.APELLIDO_P, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.APELLIDO_M, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.APELLIDO_M, htmlAttributes: new { @id = "lbl_appMat" })
-                        @Html.ValidationMessageFor(model => model.APELLIDO_M, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @id = "lbl_email" })
-                        @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="input-field col s6">
-                        @Html.EditorFor(model => model.SPRAS_ID, null, new { htmlAttributes = new { @disabled = "disabled" } })
-                        <label id="lbl_spras">SPRAS</label>
-                        @Html.ValidationMessageFor(model => model.SPRAS_ID, "", new { @class = "text-danger" })
-                    </div>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
+                    @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
+                </div>
+                @*<div class="input-field col s12">
+                        @Html.EditorFor(model => model.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
+                        @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
+                    </div>*@
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @id = "lbl_bukrs" })
+                    @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
-        <div class="col l6 s12">
-            <div class="card-panel">
-                <div class="row">
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.PUESTO_ID, "PUESTO_ID", htmlAttributes: new { @id = "lbl_puesto" })
-                        @Html.ValidationMessageFor(model => model.PUESTO_ID, "", new { @class = "text-danger" })
-                    </div>
-                    @*<div class="input-field col s12">
-                            @Html.EditorFor(model => model.MIEMBROS.FirstOrDefault().ROL.ROLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50, null, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.MIEMBROS, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.ValidationMessageFor(model => model.MIEMBROS, "", new { @class = "text-danger" })
-                        </div>*@
-                    <div class="input-field col s12">
-                        @Html.EditorFor(model => model.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
-                        @Html.LabelFor(model => model.BUNIT, htmlAttributes: new { @id = "lbl_bukrs" })
-                        @Html.ValidationMessageFor(model => model.BUNIT, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-            var elem = document.querySelectorAll('select');
-            var options = [];
-            var instance = M.Select.init(elem, options);
-        </script>
-        <div class="col l6 s12">
-            <div class="card-panel">
-                <div class="row">
-                    <h5>Grupos</h5>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Solciedad</th>
-                                <th>País</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.GAUTORIZACIONs)
+    </div>
+    <script>
+        var elem = document.querySelectorAll('select');
+        var options = [];
+        var instance = M.Select.init(elem, options);
+    </script>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <h5>Grupos</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Solciedad</th>
+                            <th>País</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.GAUTORIZACIONs)
+                        {
+                            TAT001.Entities.DET_AGENTEH dah = item.DET_AGENTEH.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID)).FirstOrDefault();
+                            //TAT001.Entities.DET_AGENTE ss = item.DET_AGENTE.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID)).FirstOrDefault();
+                            if (dah != null)
                             {
-                                TAT001.Entities.DET_AGENTE ss = item.DET_AGENTE.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID)).FirstOrDefault();
-                                if (ss != null)
+                                if (dah.PUESTOC_ID == Model.PUESTO_ID)
                                 {
-                                    if (ss.PUESTOC_ID == Model.PUESTO_ID)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.BUKRS)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.LAND)
-                                            </td>
-                                            <td class="right-align">
-                                                <a class="btn-small modal-trigger" href="#@item.BUKRS@item.LAND">Editar</a>
-                                                @using (Html.BeginForm("ModificarRol", "Usuarios"))
-                                                {
-                                                    @Html.AntiForgeryToken()
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BUKRS)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LAND)
+                                        </td>
+                                        <td class="right-align">
+                                            <a class="btn-small modal-trigger" href="#@item.BUKRS@item.LAND">Editar</a>
+                                            @using (Html.BeginForm("ModificarRol", "Usuarios"))
+                                            {
+                                                @Html.AntiForgeryToken()
 
-                                                    <div id="@item.BUKRS@item.LAND" class="modal modal-fixed-footer left-align">
-                                                        <div class="modal-content">
-                                                            <h4>Agregar Rol</h4>
-                                                            <div class="row">
-                                                                @Html.HiddenFor(model => model.ID)
-                                                                @Html.HiddenFor(model => model.PUESTO_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_puestoid" })
-                                                                @Html.HiddenFor(itemm => item.BUKRS)
-                                                                @Html.HiddenFor(itemm => item.LAND)
-                                                                <div class="input-field col s6">
-                                                                    <select id="@item.BUKRS-@item.LAND-txt_rol" name="@item.BUKRS-@item.LAND-txt_rol" required="required">
-                                                                        @foreach (var itemm in ViewBag.ROLES)
-                                                                        {
-                                                                            <option value="@itemm.ROL_ID">@itemm.TXT50</option>
-                                                                            break;
-                                                                        }
-                                                                    </select>
-                                                                    <label for="txt_rol">Rol</label>
-                                                                </div>
+                                                <div id="@item.BUKRS@item.LAND" class="modal modal-fixed-footer left-align">
+                                                    <div class="modal-content">
+                                                        <h4>Modificar Rol</h4>
+                                                        <div class="row">
+                                                            @Html.HiddenFor(model => model.ID)
+                                                            @Html.HiddenFor(model => model.PUESTO_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_puestoid" })
+                                                            @Html.HiddenFor(itemm => item.BUKRS, new { @id = item.BUKRS + "-" + item.LAND + "-txt_soc" })
+                                                            @Html.HiddenFor(itemm => item.LAND, new { @id = item.BUKRS + "-" + item.LAND + "-txt_pai" })
+                                                            <input type="hidden" value="@dah.AGROUP_ID" name="txt_agroup" />
+                                                            <div class="input-field col s6">
+                                                                <select id="@item.BUKRS-@item.LAND-txt_rol" name="@item.BUKRS-@item.LAND-txt_rol" required="required">
+                                                                    @foreach (var itemm in ViewBag.ROLES)
+                                                                    {
+                                                                        <option value="@itemm.ROL_ID">@itemm.TXT50</option>
+                                                                        break;
+                                                                    }
+                                                                </select>
+                                                                <label for="txt_rol">Rol</label>
                                                             </div>
-                                                            <script>
+                                                        </div>
+                                                        <script>
                                                             var elem2 = document.getElementById('@item.BUKRS-@item.LAND-txt_rol');
                                                             var instance2 = M.Select.init(elem2, []);
-                                                            </script>
-                                                            <div class="row" id="div_crea">
-                                                                <div class="input-field col s6">
-                                                                    <input type="text" id="mtxt_soc" name="txt_soc" disabled="disabled" value="@item.BUKRS" />
-                                                                    <label for="mtxt_soc">Sociedad</label>
-                                                                </div>
-                                                                <div class="input-field col s6">
-                                                                    <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.LAND" />
-                                                                    <label for="mtxt_pai">País</label>
-                                                                </div>
+                                                        </script>
+                                                        <div class="row" id="div_crea">
+                                                            <div class="input-field col s6">
+                                                                <input type="text" id="mtxt_soc" name="txt_soc" disabled="disabled" value="@item.BUKRS" />
+                                                                <label for="mtxt_soc">Sociedad</label>
+                                                            </div>
+                                                            <div class="input-field col s6">
+                                                                <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.LAND" />
+                                                                <label for="mtxt_pai">País</label>
+                                                            </div>
 
-                                                                <div id="q">
-                                                                    @foreach (var input in item.USUARIOs)
-                                                                    {
-                                                                        if (input.ID != Model.ID)
-                                                                        {
+                                                            <div id="q">
+                                                                @foreach (var input in dah.DET_AGENTEP)
+                                                                {
+                                                                    //if (dah.USUARIOC_ID != Model.ID)
+                                                                    //{
 
-                                                                            <div class="input-field col s6">
-                                                                                <input type="text" value="@input.ID" id="@item.BUKRS-@item.LAND-@input.PUESTO_ID" />
-                                                                                <label for="@item.BUKRS-@item.LAND-@input.PUESTO_ID">@input.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
-                                                                            </div>
-                                                                            <script>
-                                                                            //var a = autocompletar("@item.BUKRS-@item.LAND-@input.PUESTO_ID", "@input.PUESTO_ID");
-                                                                                //var a = autocompletar("@item.BUKRS@input.PUESTO_ID", "@input.PUESTO_ID");
-                                                                            </script>
+                                                                    <div class="input-field col s6">
+                                                                        <input type="text" value="@input.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" />
+                                                                        <label for="@item.BUKRS-@item.LAND-@input.PUESTOA_ID">@input.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
+                                                                    </div>
+                                                                    <script>
+                                                                            //var a = autocompletar("@item.BUKRS-@item.LAND-@input.PUESTOA_ID", "@input.PUESTOA_ID");
+                                                                                //var a = autocompletar("@item.BUKRS@input.PUESTOA_ID", "@input.PUESTOA_ID");
+                                                                    </script>
 
-                                                                            <script>
-                                                                    auto("#" + "@item.BUKRS-@item.LAND-@input.PUESTO_ID").autocomplete({
+                                                                    <script>
+                                                                    auto("#" + "@item.BUKRS-@item.LAND-@input.PUESTOA_ID").autocomplete({
                                                                         source: function (request, response) {
                                                                             auto.ajax({
                                                                                 url: "../../Listas/UsuariosPuesto",
                                                                                 type: "GET",
                                                                                 dataType: "json",
-                                                                                data: { puesto: '@input.PUESTO_ID', Prefix: request.term },
+                                                                                data: { puesto: '@input.PUESTOA_ID', Prefix: request.term },
                                                                                 success: function (data) {
                                                                                     response($.map(data, function (item) {
                                                                                         return { label: item.ID, value: item.ID };
@@ -203,7 +205,7 @@
                                                                                 e.target.value = "";
                                                                             }
 
-                                                                                for (var i = 1; i <= @input.PUESTO_ID; i++) {
+                                                                                for (var i = 1; i <= @input.PUESTOA_ID; i++) {
                                                                                     try {
                                                                                         var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
                                                                                 if (value != "") {
@@ -220,64 +222,64 @@
                                                                         minLength: 1
                                                                     });
 
-                                                                            </script>
-                                                                        }
-                                                                    }
-                                                                </div>
-                                                                @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
-                                                                    {
-                                                                        <div class="input-field col s6">
-                                                                            <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
-                                                                            <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
-                                                                        </div>
-                                                                    }*@
+                                                                    </script>
+                                                                }
+                                                                @*}*@
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <input type="submit" class="modal-action modal-close btn-flat" value="Agregar" id="btn_submit2" />
+                                                            @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
+                                                                {
+                                                                    <div class="input-field col s6">
+                                                                        <input id="@("PP"+item.PUESTOA_ID)" type="text" value="" />
+                                                                        <label for="@("PP"+item.PUESTOA_ID)"> @item.PUESTO1.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).First().TXT50</label>
+                                                                    </div>
+                                                                }*@
                                                         </div>
                                                     </div>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
+                                                    <div class="modal-footer">
+                                                        <input type="submit" class="modal-action modal-close btn-flat" value="Guardar" id="btn_submit2" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </td>
+                                    </tr>
                                 }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col l6 s12">
+        <div class="card-panel">
+            <div class="row">
+                <h5>Roles</h5>
+                <div class="col s12">
+                    <table class="table">
+                        <thead><tr><th>Rol</th></tr></thead>
+                        <tbody>
+                            @foreach (var item in Model.MIEMBROS)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-        <div class="col l6 s12">
-            <div class="card-panel">
-                <div class="row">
-                    <h5>Roles</h5>
-                    <div class="col s12">
-                        <table class="table">
-                            <thead><tr><th>Rol</th></tr></thead>
-                            <tbody>
-                                @foreach (var item in Model.MIEMBROS)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 right-align">
-                        <a class="btn modal-trigger" href="#modal1">Agregar</a>
-                        @*<a class="btn modal-trigger" href="@Url.Action("AgregarRol", new { id = Model.ID })">Agregar</a>*@
-                    </div>
+            <div class="row">
+                <div class="col s12 right-align">
+                    <a class="btn modal-trigger" href="#modal1">Agregar</a>
+                    @*<a class="btn modal-trigger" href="@Url.Action("AgregarRol", new { id = Model.ID })">Agregar</a>*@
                 </div>
             </div>
         </div>
     </div>
-}
+</div>
+@*  *@}
 @using (Html.BeginForm("AgregarRol", "Usuarios"))
 {
     @Html.AntiForgeryToken()
@@ -310,12 +312,12 @@
                     <label for="txt_soc">Sociedad</label>
                 </div>
                 <div class="input-field col s6">
-                    <select id="txt_pai" name="txt_pai" required="required" onchange="selSoci('txt_soc')">
+                    <select id="txt_pai" name="txt_pai" required="required" onchange="selPais('txt_soc')">
                         <option value=""></option>
-                        @foreach (var item in ViewBag.PAISES)
+                        @*@foreach (var item in ViewBag.PAISES)
                         {
                             <option value="@item.LAND">@item.LANDX</option>
-                        }
+                        }*@
                     </select>
                     <label for="txt_pai">País</label>
                 </div>
@@ -375,18 +377,56 @@
     var campos_p = [];
     function selSoci(id) {
         var campo = document.getElementById(id);
+        $('#txt_pai').find('option').remove();
+        $("#lbl_puestos").empty();
+
+        var soc = campo.value;
+        if (soc != "") {
+            $.ajax({
+                url: "../../Listas/Paises",
+                type: "GET",
+                async: false,
+                timeout: 30000,
+                dataType: "json",
+                data: { bukrs: campo.value },
+                success: function (data) {
+                    var pp = ($.map(data, function (item) {
+                        return { label: item.LANDX, value: item.LAND };
+                    }))
+                    $('#txt_pai')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text("")); 
+                    for (var i = 0; i < pp.length; i++) {
+                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
+                        //$("#txt_pai").append(div);
+                        $('#txt_pai')
+                            .append($("<option></option>")
+                                .attr("value", pp[i].value)
+                                .text(pp[i].label)); 
+                    }
+                    var el = document.getElementById("txt_pai");
+                    var instances = M.Select.init(el, []);
+                }
+            });
+        }
+    }
+
+    var campos_p = [];
+    function selPais(id) {
+        var campo = document.getElementById(id);
         var pais = document.getElementById("txt_pai").value;
         $("#lbl_puestos").empty();
         if (pais != "") {
             var soc = campo.value;
             var pu = document.getElementById("txt_puestoid").value;
             $.ajax({
-                url: "../../Listas/Det_Aprob",
+                url: "../../Listas/Det_Aprob2",
                 type: "GET",
                 async: false,
                 timeout: 30000,
                 dataType: "json",
-                data: { bukrs: campo.value, puesto: pu, spras: '@Session["spras"].ToString()' },
+                data: { bukrs: campo.value, puesto: pu, spras: 'ES' },
                 success: function (data) {
                     var pp = ($.map(data, function (item) {
                         return { label: item.TXT50, value: item.PUESTOA_ID };
@@ -408,22 +448,22 @@
                 var s = soc;
                 var u = '@Model.ID'
                 $.ajax({
-                url: "../../Listas/Grupos",
-                type: "GET",
-                async: false,
-                timeout: 30000,
-                dataType: "json",
-                data: { bukrs: s, pais: p, user: u },
-                success: function (data) {
-                    var pp = ($.map(data, function (item) {
-                        return { label: item.AGROUP_ID, value: item.AGROUP_ID };
-                    }));
-                    if (pp.length > 0) {
-                        $("#lbl_puestos").empty();
-                        M.toast({ html: 'No se puede elegir!' })
+                    url: "../../Listas/Grupos",
+                    type: "GET",
+                    async: false,
+                    timeout: 30000,
+                    dataType: "json",
+                    data: { bukrs: s, pais: p, user: u },
+                    success: function (data) {
+                        var pp = ($.map(data, function (item) {
+                            return { label: item.AGROUP_ID, value: item.AGROUP_ID };
+                        }));
+                        if (pp.length > 0) {
+                            $("#lbl_puestos").empty();
+                            M.toast({ html: 'No se puede elegir!' })
+                        }
                     }
-                }
-            });
+                });
             }
         }
     }

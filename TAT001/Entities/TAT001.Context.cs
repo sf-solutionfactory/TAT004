@@ -128,6 +128,7 @@ namespace TAT001.Entities
         public virtual DbSet<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
         public virtual DbSet<TX_NOTAT> TX_NOTAT { get; set; }
         public virtual DbSet<TX_TNOTA> TX_TNOTA { get; set; }
+        public virtual DbSet<DET_TAXEO> DET_TAXEO { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

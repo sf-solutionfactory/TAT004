@@ -217,7 +217,9 @@ namespace TAT001.Controllers
 
                     int i = 0;
                     int indexlabel = 0;
-                    int max = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(num_doc)).Max(a => a.POS);//RSG 15.05.2018
+                    int max = 0;
+                    if (db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(num_doc)).Count() > 0)
+                        max = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(num_doc)).Max(a => a.POS);//RSG 15.05.2018
                     foreach (HttpPostedFileBase file in files_soporte)
                     {
                         string errorfiles = "";
@@ -356,7 +358,7 @@ namespace TAT001.Controllers
             p.procesa(f);
 
 
-            return RedirectToAction("Details",new { id = num_doc});
+            return RedirectToAction("Details", new { id = num_doc });
         }
         // GET: Solicitudes/Create
         [HttpGet]

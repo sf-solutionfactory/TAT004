@@ -389,6 +389,23 @@
           <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DET_TAXEO">
+          <Key>
+            <PropertyRef Name="SOCIEDAD_ID" />
+            <PropertyRef Name="PAIS_ID" />
+            <PropertyRef Name="PUESTOC_ID" />
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="PUESTOC_ID" Type="int" Nullable="false" />
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="PUESTOA_ID" Type="int" />
+          <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="DOCUMENTBORR">
           <Key>
             <PropertyRef Name="USUARIOC_ID" />
@@ -1204,6 +1221,7 @@
           <Property Name="TSOLR" Type="nvarchar" MaxLength="10" />
           <Property Name="RANGO_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="ESTATUS" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="FACTURA" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -3216,6 +3234,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="DET_APROBH" EntityType="Self.DET_APROBH" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_APROBP" EntityType="Self.DET_APROBP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_TAX" EntityType="Self.DET_TAX" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DET_TAXEO" EntityType="Self.DET_TAXEO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
@@ -5223,6 +5242,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
           <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+          <Property Name="FACTURA" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -7551,6 +7571,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="TX_TNOTA" EntitySet="TX_TNOTA" />
             <End Role="TX_NOTAT" EntitySet="TX_NOTAT" />
           </AssociationSet>
+          <EntitySet Name="DET_TAXEO" EntityType="TAT001Model.DET_TAXEO" />
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -8003,6 +8024,23 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DET_TAXEO">
+          <Key>
+            <PropertyRef Name="SOCIEDAD_ID" />
+            <PropertyRef Name="PAIS_ID" />
+            <PropertyRef Name="PUESTOC_ID" />
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+          <Property Name="USUARIOC_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="PUESTOA_ID" Type="Int32" />
+          <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9111,6 +9149,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="TAT001Model.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
@@ -9692,6 +9731,20 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DET_TAXEO">
+            <EntityTypeMapping TypeName="TAT001Model.DET_TAXEO">
+              <MappingFragment StoreEntitySet="DET_TAXEO">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+                <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+                <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+                <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

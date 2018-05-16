@@ -228,6 +228,7 @@
         <AssociationConnector Association="TAT001Model.FK_TAXEOP_TAXEOH" />
         <AssociationConnector Association="TAT001Model.FK_TX_CONCEPTOT_TX_CONCEPTO" />
         <AssociationConnector Association="TAT001Model.FK_TX_NOTAT_TX_TNOTA" />
+        <EntityTypeShape EntityType="TAT001Model.DET_TAXEO" Width="1.5" PointX="16.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
