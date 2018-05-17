@@ -29,8 +29,7 @@ namespace TAT001.Models
                     }
                     else
                     {
-                        tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == "PR"
-                        && x.SOCIEDAD == doc.SOCIEDAD_ID
+                        tab = db.CONPOSAPHs.Where(x => x.SOCIEDAD == doc.SOCIEDAD_ID
                         && x.FECHA_FINVIG >= doc.FECHAF_VIG
                         && x.CONSECUTIVO == relacion
                         ).Single();
@@ -46,11 +45,14 @@ namespace TAT001.Models
                 string msj = "";
                 string[] cc;
                 string cta = "";
-                if (tab.TIPO_DOC == "RN")
+                if (tab.TIPO_DOC == "RN" || tab.TIPO_DOC == "KR")
                 {
                     dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + docum.ToString() + "_2.txt";
                 }
-
+                else if (tab.TIPO_DOC == "KG")
+                {
+                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + docum.ToString() + "_3.txt";
+                }
                 else
                 {
                     dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + docum.ToString() + "_1.txt";
@@ -58,12 +60,36 @@ namespace TAT001.Models
                 cta = doc.GALL_ID;
                 doc.GALL_ID = db.GALLs.Where(x => x.ID == doc.GALL_ID).Select(x => x.GRUPO_ALL).Single();
                 var ppd = doc.GetType().GetProperties();
+                tab.HEADER_TEXT.Trim();
                 if (String.IsNullOrEmpty(tab.HEADER_TEXT) == false)
                 {
                     cc = tab.HEADER_TEXT.Trim().Split('+');
-                    foreach (string c in cc)
+                    try
                     {
-                        txt += ppd.Where(x => x.Name == c).Single().GetValue(doc).ToString();
+                        foreach (string c in cc)
+                        {
+                            txt += ppd.Where(x => x.Name == c).Single().GetValue(doc).ToString();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        try
+                        {
+                            List<DOCUMENTOF> docf = db.DOCUMENTOFs.Where(x => x.NUM_DOC == docum).ToList();
+                            var ppdf = docf[0].GetType().GetProperties();
+                            foreach (string c in cc)
+                            {
+                                for (int i = 0; i < docf.Count; i++)
+                                {
+                                    txt += ppdf.Where(x => x.Name == c).Single().GetValue(docf[i]).ToString();
+                                    break;
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            txt = tab.REFERENCIA.Trim();
+                        }
                     }
                 }
                 else
@@ -72,12 +98,53 @@ namespace TAT001.Models
                 }
                 tab.HEADER_TEXT = txt;
                 txt = "";
+                tab.REFERENCIA.Trim();
                 if (String.IsNullOrEmpty(tab.REFERENCIA) == false)
                 {
                     cc = tab.REFERENCIA.Trim().Split('+');
-                    foreach (string c in cc)
+                    try
                     {
-                        txt += ppd.Where(x => x.Name == c).Single().GetValue(doc).ToString();
+                        foreach (string c in cc)
+                        {
+                            txt += ppd.Where(x => x.Name == c).Single().GetValue(doc).ToString();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        try
+                        {
+                            List<DOCUMENTOF> docf = db.DOCUMENTOFs.Where(x => x.NUM_DOC == docum).ToList();
+                            var ppdf = docf[0].GetType().GetProperties();
+                            foreach (string c in cc)
+                            {
+                                for (int i = 0; i < docf.Count; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                        txt += ppdf.Where(x => x.Name == c).Single().GetValue(docf[i]).ToString();
+                                    }
+                                    else
+                                    {
+                                        if (doc.PAIS_ID == "MX")
+                                        {
+                                            tab.NOTA += ppdf.Where(x => x.Name == c).Single().GetValue(docf[i]).ToString();
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if (doc.PAIS_ID == "MX")
+                            {
+                                tab.CORRESPONDENCIA = docf[0].EJERCICIOK;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            txt = tab.REFERENCIA.Trim();
+                        }
                     }
                 }
                 else
@@ -152,7 +219,7 @@ namespace TAT001.Models
                     }
                     sw.Close();
                 }
-                if (relacion == 0 && tab.RELACION != 0 && tab.RELACION != null)
+                if (tab.RELACION != 0 && tab.RELACION != null)
                 {
                     return generarArchivo(docum, Convert.ToInt32(tab.RELACION));
                 }
@@ -188,7 +255,7 @@ namespace TAT001.Models
             List<CONPOSAPP> conp = new List<CONPOSAPP>();
             CLIENTE clien;
             CUENTA cuent;
-            CLIENTEI cliei = new CLIENTEI();
+            TAXEOH tax = new TAXEOH();
             try
             {
                 try
@@ -215,6 +282,10 @@ namespace TAT001.Models
                 {
                     return "No se encontro datos de cuenta para detalle contable";
                 }
+                if (doc.PAIS_ID == "CO")
+                {
+                    tax = db.TAXEOHs.Where(x => x.PAIS_ID == doc.PAIS_ID && x.SOCIEDAD_ID == doc.SOCIEDAD_ID && x.KUNNR == clien.KUNNR && x.CONCEPTO_ID == doc.CONCEPTO_ID).Single();
+                }
                 for (int i = 0; i < conp.Count; i++)
                 {
                     if (conp[i].POSICION == 1)
@@ -229,13 +300,32 @@ namespace TAT001.Models
                         conta.TEXT = doc.CONCEPTO;
                         if (conp[i].POSTING_KEY == "11")
                         {
-                            conta.REF_KEY1 = conp[i].REF_KEY1;
-                            conta.REF_KEY3 = conp[i].REF_KEY3;
+                            if (enca.TIPO_DOC == "BB")
+                            {
+                                conta.BALANCE = (doc.MONTO_DOC_MD + (doc.MONTO_DOC_MD * tax.PORC / 100)).ToString();
+                                conta.REF_KEY1 = clien.STCD1;
+                                conta.REF_KEY3 = clien.NAME1;
+                                conta.TAX_CODE = conp[i].TAX_CODE;
+                            }
+                            else
+                            {
+                                conta.REF_KEY1 = conp[i].REF_KEY1;
+                                conta.REF_KEY3 = conp[i].REF_KEY3;
+                            }
                             conta.ACCOUNT = clien.PAYER;
                         }
                         if (conp[i].POSTING_KEY == "31")
                         {
                             conta.ACCOUNT = clien.PROVEEDOR_ID;
+                            if (enca.TIPO_DOC == "KR" && doc.PAIS_ID == "CO")
+                            {
+                                conta.ASSIGNMENT = clien.PAYER;
+                                conta.TAX_CODE = tax.IMPUESTO_ID;
+                            }
+                            if (enca.TIPO_DOC == "KG" && doc.PAIS_ID == "CO")
+                            {
+                                conta.BALANCE = (doc.MONTO_DOC_MD + (doc.MONTO_DOC_MD * tax.PORC / 100)).ToString();
+                            }
                         }
                         contas.Add(conta);
                     }
@@ -251,15 +341,28 @@ namespace TAT001.Models
                             conta.BUS_AREA = conp[i].BUS_AREA;
                             conta.POST_KEY = conp[i].POSTING_KEY;
                             conta.TEXT = doc.CONCEPTO;
-                            if (enca.TIPO_DOC != "RN")
+                            if (enca.TIPO_DOC != "RN" && doc.PAIS_ID != "CO")
                             {
                                 conta.SALES_ORG = clien.VKORG;
                                 conta.DIST_CHANEL = clien.VTWEG;
                                 conta.DIVISION = clien.SPART;
                                 conta.CUSTOMER = doc.PAYER_ID;
                                 conta.PRODUCT = docp[j].MATNR;
+                                if (conp[i].QUANTITY != null && conp[i].QUANTITY != 0)
+                                {
+                                    conta.QTY = conp[i].QUANTITY.ToString();
+                                }
+                                conta.AMOUNT_LC = conp[i].BASE_UNIT;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
+                                if (enca.TIPO_DOC != "BB")
+                                {
+                                    conta.BALANCE = (docp[j].VOLUMEN_REAL * docp[j].MONTO_APOYO).ToString();
+                                }
+                                else
+                                {
+                                    conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
+                                }
                             }
                             else
                             {
@@ -270,13 +373,54 @@ namespace TAT001.Models
                                 conta.PRODUCT = "";
                                 conta.ACCOUNT = cuent.ABONO.ToString();
                                 conta.BALANCE = doc.MONTO_DOC_MD.ToString();
+                                if (enca.TIPO_DOC == "BB" && doc.PAIS_ID == "CO")
+                                {
+                                    conta.SALES_ORG = clien.VKORG;
+                                    conta.DIST_CHANEL = clien.VTWEG;
+                                    conta.DIVISION = clien.SPART;
+                                    conta.CUSTOMER = doc.PAYER_ID;
+                                    conta.PRODUCT = docp[j].MATNR;
+                                    conta.REF_KEY1 = clien.STCD1;
+                                    conta.REF_KEY3 = clien.NAME1;
+                                    conta.ACCOUNT = cuent.CARGO.ToString();
+                                }
+                                if (enca.TIPO_DOC != "KG" && doc.PAIS_ID == "CO")
+                                {
+                                    conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
+                                }
+                                if (enca.TIPO_DOC == "KG" && doc.PAIS_ID == "CO")
+                                {
+                                    conta.BALANCE = (doc.MONTO_DOC_MD + (doc.MONTO_DOC_MD * tax.PORC / 100)).ToString();
+                                }
                             }
-                            conta.TAX_CODE = conp[i].TAX_CODE;
+                            if (enca.TIPO_DOC == "KR" && doc.PAIS_ID == "CO")
+                            {
+                                conta.TAX_CODE = tax.IMPUESTO_ID;
+                                conta.ASSIGNMENT = clien.PAYER;
+                            }
+                            else
+                            {
+                                conta.TAX_CODE = conp[i].TAX_CODE;
+                            }
                             contas.Add(conta);
-                            if (enca.TIPO_DOC == "RN")
+                            if (enca.TIPO_DOC == "RN" || enca.TIPO_DOC == "KR" || enca.TIPO_DOC == "KG")
                             {
                                 break;
                             }
+                        }
+                        if (enca.TIPO_DOC == "BB" && doc.PAIS_ID == "CO")
+                        {
+                            DetalleContab conta = new DetalleContab();
+                            conta.POS_TYPE = conp[i].KEY;
+                            conta.ACCOUNT = cuent.ABONO.ToString();
+                            conta.BALANCE = (doc.MONTO_DOC_MD * tax.PORC / 100).ToString();
+                            conta.COMP_CODE = doc.SOCIEDAD_ID;
+                            conta.BUS_AREA = conp[i].BUS_AREA;
+                            conta.POST_KEY = conp[i].POSTING_KEY;
+                            conta.TEXT = doc.CONCEPTO;
+                            conta.REF_KEY1 = clien.STCD1;
+                            conta.REF_KEY3 = clien.NAME1;
+                            contas.Add(conta);
                         }
                     }
                 }

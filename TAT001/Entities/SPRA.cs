@@ -22,21 +22,21 @@ namespace TAT001.Entities
             this.GALLTs = new HashSet<GALLT>();
             this.PAGINATs = new HashSet<PAGINAT>();
             this.PUESTOTs = new HashSet<PUESTOT>();
+            this.RETENCIONTs = new HashSet<RETENCIONT>();
             this.ROLTs = new HashSet<ROLT>();
             this.TALLTs = new HashSet<TALLT>();
             this.TCLIENTETs = new HashSet<TCLIENTET>();
             this.TEXTOes = new HashSet<TEXTO>();
+            this.TRETENCIONTs = new HashSet<TRETENCIONT>();
+            this.TREVERSATs = new HashSet<TREVERSAT>();
             this.TS_FORMT = new HashSet<TS_FORMT>();
             this.TSOLTs = new HashSet<TSOLT>();
+            this.TX_CONCEPTOT = new HashSet<TX_CONCEPTOT>();
+            this.TX_NOTAT = new HashSet<TX_NOTAT>();
             this.UMEDIDATs = new HashSet<UMEDIDAT>();
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
-            this.RETENCIONTs = new HashSet<RETENCIONT>();
-            this.TX_CONCEPTOT = new HashSet<TX_CONCEPTOT>();
-            this.TX_NOTAT = new HashSet<TX_NOTAT>();
-            this.TRETENCIONTs = new HashSet<TRETENCIONT>();
-            this.TREVERSATs = new HashSet<TREVERSAT>();
         }
     
         public string ID { get; set; }
@@ -53,6 +53,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PUESTOT> PUESTOTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RETENCIONT> RETENCIONTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ROLT> ROLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALLT> TALLTs { get; set; }
@@ -61,9 +63,17 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TEXTO> TEXTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRETENCIONT> TRETENCIONTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TREVERSAT> TREVERSATs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_FORMT> TS_FORMT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TX_NOTAT> TX_NOTAT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UMEDIDAT> UMEDIDATs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -72,15 +82,5 @@ namespace TAT001.Entities
         public virtual ICollection<WARNING> WARNINGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RETENCIONT> RETENCIONTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TX_NOTAT> TX_NOTAT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRETENCIONT> TRETENCIONTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TREVERSAT> TREVERSATs { get; set; }
     }
 }

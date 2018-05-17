@@ -21,9 +21,9 @@ namespace TAT001.Entities
             this.DOCUMENTOAs = new HashSet<DOCUMENTOA>();
             this.DOCUMENTONs = new HashSet<DOCUMENTON>();
             this.DOCUMENTOPs = new HashSet<DOCUMENTOP>();
+            this.DOCUMENTORs = new HashSet<DOCUMENTOR>();
             this.DOCUMENTOTS = new HashSet<DOCUMENTOT>();
             this.FLUJOes = new HashSet<FLUJO>();
-            this.DOCUMENTORs = new HashSet<DOCUMENTOR>();
         }
     
         public decimal NUM_DOC { get; set; }
@@ -113,10 +113,10 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOP> DOCUMENTOPs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOR> DOCUMENTORs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOT> DOCUMENTOTS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLUJO> FLUJOes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTOR> DOCUMENTORs { get; set; }
     }
 }

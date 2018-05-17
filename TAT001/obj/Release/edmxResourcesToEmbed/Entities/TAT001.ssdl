@@ -234,8 +234,8 @@
     <Property Name="REF_KEY1" Type="nchar" MaxLength="12" />
     <Property Name="REF_KEY3" Type="nchar" MaxLength="12" />
     <Property Name="ASSIGNACION" Type="bit" />
-    <Property Name="QUANTITY" Type="bit" />
-    <Property Name="BASE_UNIT" Type="bit" />
+    <Property Name="QUANTITY" Type="int" />
+    <Property Name="BASE_UNIT" Type="nchar" MaxLength="3" />
   </EntityType>
   <EntityType Name="CONTACTOC">
     <Key>
@@ -970,7 +970,7 @@
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="DESCRIPCIÓN" Type="nvarchar" MaxLength="50" />
     <Property Name="PORC" Type="decimal" Precision="13" Scale="2" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />

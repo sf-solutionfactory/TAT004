@@ -49,12 +49,15 @@ namespace TAT001.Entities
         public virtual DbSet<DET_APROB> DET_APROB { get; set; }
         public virtual DbSet<DET_APROBH> DET_APROBH { get; set; }
         public virtual DbSet<DET_APROBP> DET_APROBP { get; set; }
+        public virtual DbSet<DET_TAX> DET_TAX { get; set; }
+        public virtual DbSet<DET_TAXEO> DET_TAXEO { get; set; }
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
         public virtual DbSet<DOCUMENTOF> DOCUMENTOFs { get; set; }
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
+        public virtual DbSet<DOCUMENTOR> DOCUMENTORs { get; set; }
         public virtual DbSet<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual DbSet<FACTURASCONF> FACTURASCONFs { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
@@ -82,6 +85,8 @@ namespace TAT001.Entities
         public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
         public virtual DbSet<RANGO> RANGOes { get; set; }
         public virtual DbSet<REGION> REGIONs { get; set; }
+        public virtual DbSet<RETENCION> RETENCIONs { get; set; }
+        public virtual DbSet<RETENCIONT> RETENCIONTs { get; set; }
         public virtual DbSet<ROL> ROLs { get; set; }
         public virtual DbSet<ROLT> ROLTs { get; set; }
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
@@ -90,16 +95,27 @@ namespace TAT001.Entities
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
+        public virtual DbSet<TAX_LAND> TAX_LAND { get; set; }
+        public virtual DbSet<TAXEOH> TAXEOHs { get; set; }
+        public virtual DbSet<TAXEOP> TAXEOPs { get; set; }
         public virtual DbSet<TCAMBIO> TCAMBIOs { get; set; }
         public virtual DbSet<TCLIENTE> TCLIENTEs { get; set; }
         public virtual DbSet<TCLIENTET> TCLIENTETs { get; set; }
         public virtual DbSet<TEXTO> TEXTOes { get; set; }
         public virtual DbSet<TEXTOCARTAF> TEXTOCARTAFs { get; set; }
         public virtual DbSet<TEXTOCARTAV> TEXTOCARTAVs { get; set; }
+        public virtual DbSet<TRETENCION> TRETENCIONs { get; set; }
+        public virtual DbSet<TRETENCIONT> TRETENCIONTs { get; set; }
+        public virtual DbSet<TREVERSA> TREVERSAs { get; set; }
+        public virtual DbSet<TREVERSAT> TREVERSATs { get; set; }
         public virtual DbSet<TS_FORM> TS_FORM { get; set; }
         public virtual DbSet<TS_FORMT> TS_FORMT { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
         public virtual DbSet<TSOLT> TSOLTs { get; set; }
+        public virtual DbSet<TX_CONCEPTO> TX_CONCEPTO { get; set; }
+        public virtual DbSet<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
+        public virtual DbSet<TX_NOTAT> TX_NOTAT { get; set; }
+        public virtual DbSet<TX_TNOTA> TX_TNOTA { get; set; }
         public virtual DbSet<UMEDIDA> UMEDIDAs { get; set; }
         public virtual DbSet<UMEDIDAT> UMEDIDATs { get; set; }
         public virtual DbSet<USUARIO> USUARIOs { get; set; }
@@ -118,22 +134,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<TAX_LAND> TAX_LAND { get; set; }
-        public virtual DbSet<DET_TAX> DET_TAX { get; set; }
-        public virtual DbSet<RETENCION> RETENCIONs { get; set; }
-        public virtual DbSet<RETENCIONT> RETENCIONTs { get; set; }
-        public virtual DbSet<TAXEOH> TAXEOHs { get; set; }
-        public virtual DbSet<TAXEOP> TAXEOPs { get; set; }
-        public virtual DbSet<TX_CONCEPTO> TX_CONCEPTO { get; set; }
-        public virtual DbSet<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
-        public virtual DbSet<TX_NOTAT> TX_NOTAT { get; set; }
-        public virtual DbSet<TX_TNOTA> TX_TNOTA { get; set; }
-        public virtual DbSet<DET_TAXEO> DET_TAXEO { get; set; }
-        public virtual DbSet<DOCUMENTOR> DOCUMENTORs { get; set; }
-        public virtual DbSet<TRETENCION> TRETENCIONs { get; set; }
-        public virtual DbSet<TRETENCIONT> TRETENCIONTs { get; set; }
-        public virtual DbSet<TREVERSA> TREVERSAs { get; set; }
-        public virtual DbSet<TREVERSAT> TREVERSATs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

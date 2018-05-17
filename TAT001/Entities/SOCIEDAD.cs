@@ -24,10 +24,10 @@ namespace TAT001.Entities
             this.DET_APROBH = new HashSet<DET_APROBH>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
-            this.TS_FORM = new HashSet<TS_FORM>();
-            this.USUARIOs = new HashSet<USUARIO>();
             this.PAIS = new HashSet<PAI>();
             this.TAXEOHs = new HashSet<TAXEOH>();
+            this.TS_FORM = new HashSet<TS_FORM>();
+            this.USUARIOs = new HashSet<USUARIO>();
         }
     
         public string BUKRS { get; set; }
@@ -58,12 +58,12 @@ namespace TAT001.Entities
         public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
         public virtual MONEDA MONEDA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TS_FORM> TS_FORM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<USUARIO> USUARIOs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAI> PAIS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TAXEOH> TAXEOHs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TS_FORM> TS_FORM { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<USUARIO> USUARIOs { get; set; }
     }
 }

@@ -17,9 +17,9 @@ namespace TAT001.Entities
         public string SOCIEDAD_ID { get; set; }
         public int PUESTOC_ID { get; set; }
         public int VERSION { get; set; }
+        public string PAIS_ID { get; set; }
         public Nullable<int> PUESTOA_ID { get; set; }
         public string USUARIOA_ID { get; set; }
         public bool ACTIVO { get; set; }
-        public string PAIS_ID { get; set; }
     }
 }

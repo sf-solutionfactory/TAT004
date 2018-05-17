@@ -233,6 +233,23 @@
 
     $('#addRow').on('click', function () {
 
+        var relacionada = "";
+
+        if ($("#txt_rel").length) {
+            var vrelacionada = $('#txt_rel').val();
+            if (vrelacionada != "") {
+                relacionada = "prelacionada";
+            }
+        }
+
+        var reversa = "";
+        if ($("#txt_rev").length) {
+            var vreversa = $('#txt_rev').val();
+            if (vreversa == "preversa") {
+                reversa = vreversa;
+            }
+        }
+
         //Obtener el tipo de negociación
         var neg = $("#select_neg").val();
 
@@ -254,17 +271,17 @@
                                 cat + "", //col0
                                 "", //col1
                                 "", ////col2
-                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "", //Material
                                 opt + "",
                                 opt + "",
-                                "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
-                                "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "",
                             ]).draw(false);
                         } else {
@@ -277,20 +294,17 @@
                             "",
                             "",
                             "",
-                            //"<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            //"<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            //"<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
-                            "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
-                            "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                         ]).draw(false);
 
@@ -729,6 +743,86 @@
 
     });
 
+    $('#btn_guardarr').on("click", function (e) {
+        document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
+        var msg = 'Verificar valores en los campos de ';
+        var res = true;
+        //Evaluar TabInfo values
+        var InfoTab = evalInfoTab(true, e);
+        if (!InfoTab) {
+            msg += 'Información';
+            res = InfoTab;
+        }
+        //Evaluar TempTab values
+        var TempTab = evalTempTab(true, e);
+        if (!TempTab) {
+            msg += ' ,Temporalidad';
+            res = TempTab;
+        }
+        //Evaluar SoporteTab values
+        var SoporteTab = evalSoporteTab(true, e);
+        if (!SoporteTab) {
+            msg += ' ,Soporte';
+            res = SoporteTab;
+        }
+
+        //Evaluar SoporteTab values
+        var FinancieraTab = evalFinancieraTab(true, e);
+        if (!FinancieraTab) {
+            msg += ' ,Financiera';
+            res = FinancieraTab;
+        }
+
+        msg += '!';
+        if (res) {
+            //loadFilesf();
+            //Provisional
+            var tipo_cambio = $('#tipo_cambio').val();
+            //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+
+            if (iNum > 0) {
+                //var num = "" + iNum;
+                //num = num.replace('.', ',');
+                //var numexp = num;//* 60000000000;
+                //$('#tipo_cambio').val(numexp);
+            } else {
+                $('#tipo_cambio').val(0);
+            }
+            var tipo_cambio = $('#monto_doc_ml2').val();
+            //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+            var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+            //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
+            if (iNum2 > 0) {
+                //var nums = "" + iNum2;
+                //nums = nums.replace('.', ',');
+                //var numexp2 = nums;// * 60000000000;
+                //$('#monto_doc_ml2').val(numexp2);
+            } else {
+                $('#monto_doc_ml2').val(0);
+            }
+
+            //Monto
+            var monto = $('#monto_doc_md').val();
+            //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+            var numm = parseFloat(monto.replace(',', ''));
+            if (numm > 0) {
+                $('#MONTO_DOC_MD').val(numm);
+            } else {
+                $('#MONTO_DOC_MD').val(0);
+                $('#monto_doc_md').val(0);
+            }
+            //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+            copiarTableControl();//Distribución
+            copiarSopTableControl(); //Soporte ahora en información
+            //Termina provisional
+            $('#btn_guardar').click();
+        } else {
+            M.toast({ html: msg })
+            document.getElementById("loader").style.display = "none";//RSG 26.04.2018
+        }
+
+    });
 });
 
 //Cuando se termina de cargar la página
@@ -788,6 +882,9 @@ $(window).on('load', function () {
     $(".prelacionada").prop('disabled', true);
     $('.prelacionada').trigger('click');
 
+    $(".preversa").prop('disabled', true);
+    $('.preversa').trigger('click');
+
 });
 
 function copiarTableVista() {
@@ -844,21 +941,38 @@ function copiarTableVista() {
 
             var t = $('#table_dis').DataTable();
 
+            var relacionada = "";
+
+            if ($("#txt_rel").length) {
+                var vrelacionada = $('#txt_rel').val();
+                if (vrelacionada != "") {
+                    relacionada = "prelacionada";
+                }
+            }
+
+            var reversa = "";
+            if ($("#txt_rev").length) {
+                var vreversa = $('#txt_rev').val();
+                if (vreversa == "preversa") {
+                    reversa = vreversa;
+                }
+            }
+
             t.row.add([
                 matkl_id + "", //col0 ID
                 "", //col1
                 "", ////col2
-                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-                "<input class=\"prelacionada input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+                "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+                "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
                 matkl + "",
                 matkl + "",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
+                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
+                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
+                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
                 "",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
+                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
+                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
                 "",
             ]).draw(false);
 
@@ -1200,6 +1314,10 @@ $('body').on('click', '.prelacionada', function () {
     $(this).prop('disabled', true);
 });
 
+$('body').on('click', '.preversa', function () {
+    $(this).prop('disabled', true);
+});
+
 $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
@@ -1509,6 +1627,24 @@ function loadExcelDis(file) {
 
             if (data !== null || data !== "") {
                 var index = getIndex();
+
+                var relacionada = "";
+
+                if ($("#txt_rel").length) {
+                    var vrelacionada = $('#txt_rel').val();
+                    if (vrelacionada != "") {
+                        relacionada = "prelacionada";
+                    }
+                }
+
+                var reversa = "";
+                if ($("#txt_rev").length) {
+                    var vreversa = $('#txt_rev').val();
+                    if (vreversa == "preversa") {
+                        reversa = vreversa;
+                    }
+                }
+
                 $.each(data, function (i, dataj) {
 
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
@@ -1517,17 +1653,17 @@ function loadExcelDis(file) {
                         dataj.POS,
                         "",
                         "",
-                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                        "<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                        "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                        "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                         dataj.MATKL,
                         dataj.DESC,
-                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
-                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",
-                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",
+                        "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
+                        "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",
+                        "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",
                         dataj.MONTOC_APOYO,
-                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",
-                        "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",
+                        "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",
+                        "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",
                         dataj.PORC_APOYOEST
                     ]).draw(false).node();
 
@@ -1633,6 +1769,17 @@ function selectTsol(sol) {
         $('#ref_soporte').css("display", "none");
     }
     $('.file_sop').val('');
+}
+
+function selectTsolr(sol) {
+
+    //Obtener el tipo de reversa
+    var rev = $("#treversa_id").val();
+    if (rev != "") {
+        $('#btn_guardarr').removeClass("disabled");
+    } else {
+        $('#btn_guardarr').addClass("disabled");
+    }
 }
 
 function addRowSop() {
@@ -2105,7 +2252,20 @@ function evaluarTempTab() {
 
 function evaluarSoporteTab() {
 
-    return evaluarFiles();
+    var res = true;
+
+    if ($("#treversa_id").length) {
+        var trev = $('#treversa_id').val();
+        if (trev == "") {
+            res = false;
+        }
+    }
+
+    if (res) {
+        res = evaluarFiles();
+    }
+
+    return res
 }
 
 function evaluarDisTab() {

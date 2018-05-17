@@ -124,8 +124,9 @@
             }
             else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL_ID == "PR" | Model.D.TSOL_ID == "PR1"))
             {
-                if (Model.D.USUARIO.MIEMBROS.Where(a => a.ROL_ID.Equals(1)).ToList().Count > 0)
+                if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                 {
+                    <a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversa</a>
                     <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
                     <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
                     <ul id='list_rela' class='dropdown-content'>

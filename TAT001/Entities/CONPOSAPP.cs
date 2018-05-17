@@ -44,7 +44,7 @@ namespace TAT001.Entities
         public string REF_KEY1 { get; set; }
         public string REF_KEY3 { get; set; }
         public Nullable<bool> ASSIGNACION { get; set; }
-        public Nullable<bool> QUANTITY { get; set; }
-        public Nullable<bool> BASE_UNIT { get; set; }
+        public Nullable<int> QUANTITY { get; set; }
+        public string BASE_UNIT { get; set; }
     }
 }
