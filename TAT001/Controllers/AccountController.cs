@@ -61,6 +61,15 @@ namespace TAT001.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            try
+            {
+                Session["pais"] = null;
+                FormsAuthentication.SignOut();
+            }
+            catch
+            {
+
+            }
             LoginViewModel m = new LoginViewModel();
             m.ID = "admin";
             //m.Password = "admin";
@@ -144,9 +153,16 @@ namespace TAT001.Controllers
         public ActionResult LogOff()
         {
             //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            Session["pais"] = null;
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                Session["pais"] = null;
+                FormsAuthentication.SignOut();
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         //
