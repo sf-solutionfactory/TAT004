@@ -981,6 +981,7 @@ function copiarTableVista() {
         });
 
         $('.input_oper').trigger('focusout');
+
     }
 
 }
@@ -1070,6 +1071,9 @@ function copiarTableVistaSop() {
         $('.input_sop_f').trigger('focusout');
     }
 
+    var sol = $("#tsol_id").val();
+
+    selectTsol(sol);
 }
 
 function copiarTableControl() {
