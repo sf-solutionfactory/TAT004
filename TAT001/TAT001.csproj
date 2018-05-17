@@ -329,6 +329,9 @@
     <Compile Include="Entities\DET_TAX.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_TAXEO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTBORR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -345,6 +348,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOT.cs">
@@ -515,6 +521,18 @@
     <Compile Include="Entities\TEXTOCARTAV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TRETENCION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TRETENCIONT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TREVERSA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TREVERSAT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TSOL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -590,12 +608,15 @@
     <Compile Include="Models\Cryptography.cs" />
     <Compile Include="Models\Det_Aprob.cs" />
     <Compile Include="Models\DocumentoComparer.cs" />
+    <Compile Include="Models\DOCUMENTOF_MOD.cs" />
     <Compile Include="Models\DOCUMENTOP_MOD.cs" />
+    <Compile Include="Models\FACTURASCONF_MOD.cs" />
     <Compile Include="Models\GALL_MOD.cs" />
     <Compile Include="Models\Impuesto.cs" />
     <Compile Include="Models\MaterialVal.cs" />
     <Compile Include="Models\PRESUPUESTO_MOD.cs" />
     <Compile Include="Models\ArchivoContable.cs" />
+    <Compile Include="Models\ProveedorVal.cs" />
     <Compile Include="Models\TSOLT_MOD.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
@@ -607,6 +628,7 @@
     <Compile Include="Models\PresupuestoModels.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Email.cs" />
     <Compile Include="Services\ProcesaFlujo2.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
     <Compile Include="Startup.cs" />
@@ -798,6 +820,8 @@
     <Content Include="Views\Materiales\Index.cshtml" />
     <Content Include="Views\Listas\Paises.cshtml" />
     <Content Include="Views\Listas\selectTaxeo.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialSopTr.cshtml" />
+    <Content Include="Views\Solicitudes\Reversa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

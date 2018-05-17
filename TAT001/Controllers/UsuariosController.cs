@@ -614,6 +614,22 @@ namespace TAT001.Controllers
                     ////}
 
                 }
+
+                TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(soc)).FirstOrDefault();
+                if (tl != null)
+                {
+                    DET_TAXEO dt = new DET_TAXEO();
+                    dt.SOCIEDAD_ID = soc;
+                    dt.PAIS_ID = pais;
+                    dt.PUESTOC_ID = dah.PUESTOC_ID;
+                    dt.USUARIOC_ID = dah.USUARIOC_ID;
+                    dt.VERSION = dah.VERSION;
+                    dt.PUESTOA_ID = 9;
+                    dt.USUARIOA_ID = Request.Form["txt_p-9"].ToString();
+                    dt.ACTIVO = true;
+                    db.DET_TAXEO.Add(dt);
+                }
+
                 db.SaveChanges();
             }
             return RedirectToAction("Details", new { id = u.ID });

@@ -25,8 +25,10 @@ namespace TAT001.Entities
         public Nullable<int> RETENCION_ID { get; set; }
         public Nullable<decimal> PORC { get; set; }
         public bool ACTIVO { get; set; }
+        public string TRETENCION_ID { get; set; }
     
         public virtual RETENCION RETENCION { get; set; }
         public virtual TAXEOH TAXEOH { get; set; }
+        public virtual TRETENCION TRETENCION { get; set; }
     }
 }

@@ -97,7 +97,17 @@ namespace TAT001.Controllers
                      on N.PUESTOA_ID equals St.PUESTO_ID
                      where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
                      //where N.BUKRS.Equals(bukrs) 
-                     select new { N.PUESTOA_ID, St.TXT50 });
+                     select new { N.PUESTOA_ID.Value, St.TXT50 }).ToList();
+
+            TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs)).FirstOrDefault();
+            if (tl != null)
+            {
+                var col = (from  St in db.PUESTOTs
+                           where St.PUESTO_ID== 9 &  St.SPRAS_ID.Equals(spras)
+                           //where N.BUKRS.Equals(bukrs) 
+                           select new { Value = St.PUESTO_ID, St.TXT50 });
+                c.AddRange(col);
+            }
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
@@ -188,7 +198,7 @@ namespace TAT001.Controllers
 
             var c = (from D in db.PAIS
                      where D.SOCIEDAD_ID == bukrs
-                     select new { D.LAND, D.LANDX});
+                     select new { D.LAND, D.LANDX });
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
@@ -245,7 +255,23 @@ namespace TAT001.Controllers
                      & T.SPART == spart
                      & T.KUNNR == kunnr
                      & T.CONCEPTO_ID == co
-                     select new { T.IMPUESTO_ID, T.PORC });
+                     select new { T.IMPUESTO_ID, T.PORC, TXT50 = "IVA" }).ToList();
+
+            var c2 = (from T in db.TAXEOPs
+                      join R in db.TRETENCIONTs
+                      on T.TRETENCION_ID equals R.TRETENCION_ID
+                      where T.SOCIEDAD_ID == bukrs
+                      & T.PAIS_ID == pais
+                      & T.VKORG == vkorg
+                      & T.VTWEG == vtweg
+                      & T.SPART == spart
+                      & T.KUNNR == kunnr
+                      & T.CONCEPTO_ID == co
+                      & R.SPRAS_ID == spras
+                      select new { IMPUESTO_ID = T.RETENCION_ID.ToString(), T.PORC, R.TXT50 }).ToList();
+
+            c.AddRange(c2);
+
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }

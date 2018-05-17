@@ -34,8 +34,8 @@
     //Soporte
     $('#table_sop').DataTable({
         "language": {
-            "zeroRecords": "No hay registros",
-            "infoEmpty": "Registros no disponibles",
+            "zerorecords": "no hay registros",
+            "infoempty": "registros no disponibles",
             "decimal": ".",
             "thousands": ","
         },
@@ -44,56 +44,69 @@
         "info": false,
         "searching": false,
         "columns": [
+            //{
+            //    "classname": 'select_row',
+            //    "orderable": false,
+            //    "data": null,
+            //    "defaultcontent": ''
+            //},
             {
-                "className": 'select_row',
-                "orderable": false,
-                "data": null,
-                "defaultContent": ''
+                "name": 'POS',
+                "className": 'POS',
             },
-            {},
-            {},
-            {},
-            {},
-            {}
+            {
+                "name": 'FACTURA',
+                "className": 'FACTURA'
+            },
+            {
+                "name": 'FECHA',
+                "className": 'FECHA'
+            },
+            {
+                "name": 'PROVEEDOR',
+                "className": 'PROVEEDOR'
+            },
+            {
+                "name": 'PROVEEDOR_TXT',
+                "className": 'PROVEEDOR_TXT'
+            },
+            {
+                "name": 'CONTROL',
+                "className": 'CONTROL'
+
+            },
+            {
+                "name": 'AUTORIZACION',
+                "className": 'AUTORIZACION'
+            },
+            {
+                "name": 'VENCIMIENTO',
+                "className": 'VENCIMIENTO'
+            },
+            {
+                "name": 'FACTURAK',
+                "className": 'FACTURAK'
+            },
+            {
+                "name": 'EJERCICIOK',
+                "className": 'EJERCICIOK'
+            },
+            {
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
+            },
+            {
+                "name": 'BELNR',
+                "className": 'BELNR'
+            }
         ]
     });
 
-    $('#table_sop tbody').on('click', 'td.select_row', function () {
-        var tr = $(this).closest('tr');
-        $(tr).toggleClass('selected');
-    });
+    $('#sendTable').click(function (e) {
 
-    $('#delRowSoporte').click(function (e) {
-        var t = $('#table_sop').DataTable();
-        t.rows('.selected').remove().draw(false);
-        event.returnValue = false;
+        event.returnvalue = false;
         event.cancel = true;
     });
-
-    $('#addRowSoporte').on('click', function () {
-        var t = $('#table_sop').DataTable();
-        //Obtener el tipo de solicitud NC
-        var sol = $("#tsol_id").val();
-        if (sol == "NC") {
-
-            t.row.add([
-                "", //Selección
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                "<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                //"<input class=\"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",                          
-                ""
-            ]).draw(false);
-        } else {
-            M.toast({ html: 'Tiene que ser un tipo de solicitud NC' });
-        }
-
-        event.returnValue = false;
-        event.cancel = true;
-
-    });
-
 
     //Evaluar la extensión y tamaño del archivo a cargar
     $('.file_soporte').change(function () {
@@ -132,9 +145,7 @@
                 //Nombre duplicado
                 M.toast({ html: 'Ya existe un archivo con ese mismo nombre' });
             }
-
         }
-
     });
     //Negociación
     if ($('#notas_soporte').val() != "") {
@@ -200,14 +211,6 @@
         event.returnValue = false;
         event.cancel = true;
     });
-    //$('#addRowhtml').click(function (e) {
-    //    copiarTableVista();
-    //    event.returnValue = false;
-    //    event.cancel = true;
-    //});
-
-    //Copiar los valores de la tabla oculta a la tabla de la vista
-
 
     //Mostrar los materiales (detalle) de la categoria 
     $('#table_dis tbody').on('click', 'td.detail_row', function () {
@@ -251,8 +254,8 @@
                                 cat + "", //col0
                                 "", //col1
                                 "", ////col2
-                                "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
+                                "<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                                 "", //Material
                                 opt + "",
                                 opt + "",
@@ -274,6 +277,9 @@
                             "",
                             "",
                             "",
+                            //"<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            //"<input class=\"prelacionada input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            //"<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -316,16 +322,55 @@
     $('#select_neg').change();
     $('#select_dis').change();
 
-
+    //Archivo para tabla de distribución
     $("#file_dis").change(function () {
         var filenum = $('#file_dis').get(0).files.length;
         if (filenum > 0) {
             var file = document.getElementById("file_dis").files[0];
             var filename = file.name;
             if (evaluarExt(filename)) {
-                M.toast({ html: 'Uploading' + filename });
-                loadExcel(file);
+                M.toast({ html: 'Cargando ' + filename });
+                loadExcelDis(file);
                 updateFooter();
+            } else {
+                M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
+            }
+        } else {
+            M.toast({ html: 'Seleccione un archivo' });
+        }
+    });
+
+    $('#check_factura').change(function () {
+        var table = $('#table_sop').DataTable();
+        table.clear().draw(true);
+        if ($(this).is(":checked")) {
+            $(".table_sop").css("display", "table");
+            $("#file_facturat").css("display", "none");
+            //Add row 
+            addRowSop();
+            //Hide columns
+            ocultarColumnasTablaSoporteDatos();
+        } else {
+            $(".table_sop").css("display", "none");
+            $("#file_facturat").css("display", "block");
+        }
+
+        $('.file_sop').val('');
+    });
+
+    $('#file_sop').on('click touchstart', function () {
+        $('.file_sop').val('');
+    });
+
+    //Archivo para facturas en soporte ahora información
+    $("#file_sop").change(function () {
+        var filenum = $('#file_sop').get(0).files.length;
+        if (filenum > 0) {
+            var file = document.getElementById("file_sop").files[0];
+            var filename = file.name;
+            if (evaluarExt(filename)) {
+                M.toast({ html: 'Cargando ' + filename });
+                loadExcelSop(file);
             } else {
                 M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
             }
@@ -344,7 +389,7 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
@@ -352,17 +397,6 @@
     $('#tab_soporte').on("click", function (e) {
 
         evalTempTab(false, e);
-
-        //Obtener el tipo de solicitud NC
-        var sol = $("#tsol_id").val();
-
-        if (sol == "NC" | sol == "NCI" | sol == "OP") {
-            $('#ref_soporte').css("display", "table");
-        } else {
-            var table = $('#table_sop').DataTable();
-            table.clear().draw();
-            $('#ref_soporte').css("display", "none");
-        }
 
     });
 
@@ -387,8 +421,6 @@
                     M.toast({ html: msg });
                     e.preventDefault();
                     e.stopPropagation();
-                    //var active = $('ul.tabs .active').attr('href');
-                    //$('ul.tabs').tabs('select_tab', active);
                     var ell = document.getElementById("tabs");
                     var instances = M.Tabs.getInstance(ell);
                     instances.select('Informacion_cont');
@@ -398,8 +430,6 @@
                 M.toast({ html: msg });
                 e.preventDefault();
                 e.stopPropagation();
-                //    //var active = $('ul.tabs .active').attr('href');
-                //    //$('ul.tabs').tabs('select_tab', active);
                 var ell = document.getElementById("tabs");
                 var instances = M.Tabs.getInstance(ell);
                 instances.select('Temporalidad_cont');
@@ -409,8 +439,6 @@
             M.toast({ html: msg });
             e.preventDefault();
             e.stopPropagation();
-            //var active = $('ul.tabs .active').attr('href');
-            //$('ul.tabs').tabs('select_tab', active);
             var ell = document.getElementById("tabs");
             var instances = M.Tabs.getInstance(ell);
             instances.select('Soporte_cont');
@@ -471,7 +499,6 @@
             //$('#cli_name').val();
             $('#p_kunnr').text(kunnr);
 
-
             asignarPresupuesto(kunnr);
 
         } else {
@@ -490,10 +517,6 @@
 
     //Financiera   
     $('#monto_doc_md').focusout(function (e) {
-
-        //e.preventDefault(); //stops default action: submitting form
-        //var msg = 'Enter';
-        //M.toast({ html: msg })
 
         var monto_doc_md = $('#monto_doc_md').val();
         var is_num = $.isNumeric(monto_doc_md);
@@ -622,20 +645,8 @@
         $('#monto_doc_ml2').val(monto_doc_md);
         $('#montos_doc_ml2').val(monto_doc_md);
         $("label[for='montos_doc_ml2']").addClass("active");
-        //var msg = 'Monto incorrecto';
-        //M.toast({ html: msg });
-        //e.preventDefault();
     }
 
-
-    //Termina financiera
-
-    //$('#cargar').click(function () {
-    //    M.toast({ html: 'Load' })
-    //    loadExcel();
-    //});
-    //Enter en el monto
-    //$('#monto_doc_md').keypress(keypressHandler);
 
     $('#btn_guardarh').on("click", function (e) {
         document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
@@ -707,7 +718,8 @@
                 $('#monto_doc_md').val(0);
             }
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-            copiarTableControl();
+            copiarTableControl();//Distribución
+            copiarSopTableControl(); //Soporte ahora en información
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -721,7 +733,17 @@
 
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
-    $(".prelacionada").prop('disabled', true);
+
+
+    //una factura
+    var check = $("#check_facturas").val();
+    if (check == "true") {
+        $('#check_factura').prop('checked', true);
+    } else {
+        $('#check_factura').prop('checked', false);
+    }
+
+
     $('#gall_id').change(); //Cambio en allowance
     if ($('#gall_idt').hasClass("prelacionada")) {
         selectTall($('#gall_idt').val());
@@ -743,6 +765,8 @@ $(window).on('load', function () {
         $('#fechaf_vig').val($.trim(ff[0]));
     }
 
+    //Valores en información antes soporte
+    copiarTableVistaSop();
     //Valores en  distribución    
     copiarTableVista();
 
@@ -751,10 +775,22 @@ $(window).on('load', function () {
     var footeri = convertI(total_dis);
     $('#monto_dis').val(footeri);
     $("label[for='monto_dis']").addClass("active");
+
+    //Validar si es una solicitud relacionada
+    //Activar bloqueos
+    //if ($("#txt_rel").length) {
+    //    var relacionada = $('#txt_rel').val();
+    //    if (relacionada != "") {
+
+    //    }
+    //}
+
+    $(".prelacionada").prop('disabled', true);
+    $('.prelacionada').trigger('click');
+
 });
 
 function copiarTableVista() {
-
 
     var lengthT = $("table#table_dish tbody tr").length;
 
@@ -763,6 +799,22 @@ function copiarTableVista() {
         //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
         $('#table_dis').css("font-size", "12px");
         $('#table_dis').css("display", "table");
+        var tsol = "";
+        var sol = "";
+        //Obtener el tipo de solución a partir de la anterior
+        if ($("#tsolant_id").length) {
+            sol = $('#tsolant_id').val();
+
+        } else {
+            sol = $("#tsol_id").val();
+        }
+
+
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+            tsol = "real";
+        } else {
+            tsol = "estimado";
+        }
         var i = 1;
         $('#table_dish > tbody  > tr').each(function () {
 
@@ -774,12 +826,20 @@ function copiarTableVista() {
 
             var matnr = $(this).find("td:eq(" + 3 + ") input").val();
             var matkl = $(this).find("td:eq(" + 4 + ") input").val();
-            var matkl_id = $(this).find("td:eq(" + 5 + ") input").text();
+            var matkl_id = $(this).find("td:eq(" + 5 + ") input").val();
             var costo_unitario = $(this).find("td:eq(" + 6 + ") input").val();
             var porc_apoyo = $(this).find("td:eq(" + 7 + ") input").val();
             var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
             var precio_sug = $(this).find("td:eq(" + 9 + ") input").val();
             var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
+            var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
+
+            var vol = 0;
+            if (tsol == "estimado") {
+                vol = volumen_est;
+            } else {
+                vol = volumen_real;
+            }
 
 
             var t = $('#table_dis').DataTable();
@@ -788,9 +848,9 @@ function copiarTableVista() {
                 matkl_id + "", //col0 ID
                 "", //col1
                 "", ////col2
-                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-                "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-                "<input class=\"input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+                "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+                "<input class=\"prelacionada input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
                 matkl + "",
                 matkl + "",
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
@@ -798,7 +858,7 @@ function copiarTableVista() {
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
                 "",
                 "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + volumen_est + "\">",
+                "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
                 "",
             ]).draw(false);
 
@@ -811,9 +871,96 @@ function copiarTableVista() {
 
 }
 
+function copiarTableVistaSop() {
+
+    var lengthT = $("table#table_soph tbody tr").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla de la vista en información
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        $('#check_factura').trigger('change');
+        $(".table_sop").css("display", "table");
+        var rowsn = 0;
+        if ($("#check_factura").is(':checked')) {
+            //Tabla con inputs
+            rowsn = 1;
+        } else {
+            //Tabla desde excel
+            rowsn = lengthT;
+        }
+
+
+        var tsol = "";
+        var sol = $("#tsol_id").val();
+
+        var i = 1;
+        $('#table_soph > tbody  > tr').each(function () {
+
+            //var pos = $(this).find("td.POS").text();
+            var pos = $(this).find("td:eq(0)").text();
+            //var factura = $(this).find("td.FACTURA").text();
+            var factura = $(this).find("td:eq(1)").text();
+            //var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td:eq(2)").text();
+
+            var ffecha = fecha.split(' ');
+
+            //var prov = $(this).find("td.PROVEEDOR").text();
+            var prov = $(this).find("td:eq(3)").text();
+            var prov_txt = "";
+            //var control = $(this).find("td.CONTROL").text();
+            var control = $(this).find("td:eq(5)").text();
+            // var autorizacion = $(this).find("td.AUTORIZACION").text();
+            var autorizacion = $(this).find("td:eq(6)").text();
+            //var vencimiento = $(this).find("td.VENCIMIENTO").text();
+            var vencimiento = $(this).find("td:eq(7)").text();
+
+            var vven = vencimiento.split(' ');
+
+            //var facturak = $(this).find("td.FACTURAK").text();
+            var facturak = $(this).find("td:eq(8)").text();
+            //var ejerciciok = $(this).find("td.EJERCICIOK").text();
+            var ejerciciok = $(this).find("td:eq(9)").text();
+            //var bill_doc = $(this).find("td.BILL_DOC").text();
+            var bill_doc = $(this).find("td:eq(10)").text();
+            //var belnr = $(this).find("td.BELNR").text();
+            var belnr = $(this).find("td:eq(11)").text();
+
+            if ($("#check_factura").is(':checked')) {
+
+                factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
+                ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
+                prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
+                control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
+                autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion + "\">";
+                vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0] + "\">";
+                facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak + "\">";
+                ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok + "\">";
+                bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
+                belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
+
+            }
+
+            var t = $('#table_dis').DataTable();
+
+            addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+
+            //Quitar el row
+            $(this).remove();
+            if (i > rowsn) {
+
+            }
+        });
+        //Hide columns
+        ocultarColumnasTablaSoporteDatos();
+        $('.input_sop_f').trigger('focusout');
+    }
+
+}
+
 function copiarTableControl() {
 
-    var lengthT = $("table#table_dis tbody tr").length;
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
 
     if (lengthT > 0) {
         //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
@@ -821,6 +968,14 @@ function copiarTableControl() {
         var indext = getIndex();
         jsonObjDocs = [];
         var i = 1;
+        var vol = "";
+        var sol = $("#tsol_id").val();
+        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+            vol = "real";
+        } else {
+            vol = "estimado";
+        }
+
         $('#table_dis > tbody  > tr').each(function () {
 
             //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
@@ -861,7 +1016,12 @@ function copiarTableControl() {
             item["PORC_APOYO"] = porc_apoyo;
             item["MONTO_APOYO"] = monto_apoyo;
             item["PRECIO_SUG"] = precio_sug;
-            item["VOLUMEN_EST"] = volumen_est;
+            if (vol == "estimado") {
+                item["VOLUMEN_EST"] = volumen_est;
+            } else {
+                item["VOLUMEN_EST"] = 0;
+                item["VOLUMEN_REAL"] = volumen_est;
+            }
 
             jsonObjDocs.push(item);
             i++;
@@ -870,71 +1030,6 @@ function copiarTableControl() {
             $(this).addClass('selected');
 
         });
-
-        //item = {};
-        //item["NUM_DOC"] = 0;
-        //item["POS"] = i;
-        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
-        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
-        //item["MATNR"] = 123;
-        //item["MATKL"] = "001";
-        //item["CANTIDAD"] = 0;
-        //item["MONTO"] = 200.22;
-        //item["PORC_APOYO"] = 10;
-        //item["MONTO_APOYO"] = 20.22;
-        //item["PRECIO_SUG"] = 100;
-        //item["VOLUMEN_EST"] = 300.25;
-
-        //jsonObjDocs.push(item);
-        //i++;
-
-        //item = "";
-        //item = {};
-        //item["NUM_DOC"] = 0;
-        //item["POS"] = i;
-        //item["VIGENCIA_DE"] = "06/04/2018 12:00:00 a.m.";
-        //item["VIGENCIA_AL"] = "06/04/2018 12:00:00 a.m.";
-        //item["MATNR"] = 456;
-        //item["MATKL"] = "001";
-        //item["CANTIDAD"] = 0;
-        //item["MONTO"] = 200.22;
-        //item["PORC_APOYO"] = 10;
-        //item["MONTO_APOYO"] = 20.22;
-        //item["PRECIO_SUG"] = 100;
-        //item["VOLUMEN_EST"] = 300.25;
-
-        //jsonObjDocs.push(item);
-
-        //var docs = [
-        //    {
-        //        NUM_DOC: 0,
-        //        POS: 1,
-        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-        //        MATNR: 123,
-        //        MATKL: "001",
-        //        CANTIDAD: 0,
-        //        MONTO: 200.22,
-        //        PORC_APOYO: 10,
-        //        MONTO_APOYO: 20.22,
-        //        PRECIO_SUG: 100,
-        //        VOLUMEN_EST: 300.25
-        //    },
-        //    {
-        //        NUM_DOC: 0,
-        //        POS: 2,
-        //        VIGENCIA_DE: "06/04/2018 12:00:00 a.m.",
-        //        VIGENCIA_AL: "06/04/2018 12:00:00 a.m.",
-        //        MATNR: 456,
-        //        MATKL: "001",
-        //        CANTIDAD: 0,
-        //        MONTO: 200.22,
-        //        PORC_APOYO: 10,
-        //        MONTO_APOYO: 20.22,
-        //        PRECIO_SUG: 100,
-        //        VOLUMEN_EST: 300.25
-        //    }
-        //];  
 
         docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
 
@@ -949,6 +1044,110 @@ function copiarTableControl() {
 
                     $("table#table_dish tbody").append(data);
                     $('#delRow').click();
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+}
+
+//Copiar la tabla de soporte a la de control ahora en información
+function copiarSopTableControl() {
+
+    var lengthT = $("table#table_sop tbody tr[role='row']").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+
+        jsonObjDocs = [];
+        var i = 1;
+
+        var check = false;
+        if ($("#check_factura").is(':checked')) {
+            //Tabla con inputs
+            check = true;
+        }//} else {
+        //  //Tabla desde excel
+        //}
+
+        //Obtener la configuración de las columnas
+        var sociedad = $('#sociedad_id').val();
+        //Obtener el país ID
+        var pais = $('#pais_id').val();
+        //Obtener el tipo de solicitud
+        var tsol_id = $('#tsol_id').val();
+        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X");
+
+        $('#table_sop > tbody  > tr').each(function () {
+
+            //Tabla desde excel
+            var item = {};
+            //if (check) {
+
+            //Llenar los valores para meterlos en el json
+            if (data !== null || data !== "") {
+                //True son los visibles
+                //var prov_txt = true;;
+                var i;
+                for (i in data) {
+
+                    if (data.hasOwnProperty(i)) {
+                        //Valores en la tabla
+                        if (data[i] != null) {
+                            if (data[i] == true) {
+
+                                //Obtener el valor guardado en la tabla
+                                var rowcl = 'td.' + i;
+                                //Obtener los valores como textos en la celda
+                                if (!check | i == "POS") {
+                                    var valtd = $(this).find(rowcl).text();
+                                    item[i] = valtd;
+                                } else {
+                                    //Obtener los valores como textos de los inputs
+                                    var valtd = $(this).find(rowcl + " input").val();
+                                    item[i] = valtd;
+                                }
+
+
+                            } else if (data[i] == false) {
+                                //Valores que no están en la tabla mandarlos como 0
+                                item[i] = 0;
+                            } else {
+                                item[i] = "";
+                            }
+                        }
+                    }
+                }
+            }
+
+            //}
+
+            jsonObjDocs.push(item);
+            item = "";
+            $(this).addClass('selected');
+
+        });
+
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+        $.ajax({
+            type: "POST",
+            url: 'getPartialSop',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    var t = $('#table_sop').DataTable();
+                    t.rows('.selected').remove().draw(false);
+                    $("table#table_soph tbody").append(data);
+
                 }
 
             },
@@ -997,6 +1196,10 @@ function asignarPresupuesto(kunnr) {
 
 }
 
+$('body').on('click', '.prelacionada', function () {
+    $(this).prop('disabled', true);
+});
+
 $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
@@ -1025,30 +1228,37 @@ $('body').on('focusout', '.input_oper', function () {
 
 });
 
-////Validar el patrón para dos decimales en los campos editables de la tabla
-//$('body').on('keypress keydown', '.input_oper', function () {
+$('body').on('focusout', '.input_sop_f', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
 
-//    ////Si está escribiendo en campos de fecha, aceptar numeros y diagonal
-//    //if ($(this).hasClass("format_date")) {
+    //Validar si el focusout fue en la columna de proveedor
+    if ($(this).hasClass("input_proveedor")) {
+        //Validar el material
+        var pro = $(this).val();
+        var val = valProveedor(pro);
 
+        if (val.ID == null || val.ID == "") {
+            tr.find("td.PROVEEDOR").addClass("errorProveedor");
+        } else if (val.ID == pro) {
 
-//    //} else if ($(this).hasClass("number")) {
-//    //    //Si es material, acepta puros numeros
-//    //} else if ($(this).hasClass("numberd")) {
-//    //    //Si es cantidad, acepta numeros y punto
-//    //    $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-//    //    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-//    //        event.preventDefault();
-//    //    }  
-//    //}
+            selectProveedor(val.ID, val.NOMBRE, tr);
 
-//});
+        } else {
+            tr.find("td.PROVEEDOR").addClass("errorProveedor");
+        }
+
+    }
+
+});
 
 //Variables globales
 var detail = "";
 var montocambio = 0;
 var categoriamaterial = "";
 var materialVal = "";
+var proveedorVal = "";
+var dataConfig = null;
 
 function updateTotalRow(t, tr) {
 
@@ -1279,7 +1489,7 @@ function loadFilesf() {
 
 }
 
-function loadExcel(file) {
+function loadExcelDis(file) {
 
     var formData = new FormData();
 
@@ -1307,9 +1517,9 @@ function loadExcel(file) {
                         dataj.POS,
                         "",
                         "",
-                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                        "<input class=\"input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                        "<input class=\"input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
+                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
+                        "<input class=\"prelacionada input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"prelacionada input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                         dataj.MATKL,
                         dataj.DESC,
                         "<input class=\"input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
@@ -1348,6 +1558,183 @@ function loadExcel(file) {
     //Actualizar los valores en la tabla
     updateTable();
 
+}
+
+function loadExcelSop(file) {
+
+    var formData = new FormData();
+
+    formData.append("FileUpload", file);
+
+    var table = $('#table_sop').DataTable();
+    table.clear().draw();
+    $.ajax({
+        type: "POST",
+        url: 'LoadExcelSop',
+        data: formData,
+        dataType: "json",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+
+                $.each(data, function (i, dataj) {
+
+                    var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
+                    var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
+                    var addedRow = table.row.add([
+                        dataj.POS,
+                        dataj.FACTURA,
+                        "" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.PROVEEDOR,
+                        dataj.PROVEEDOR_TXT,
+                        dataj.CONTROL,
+                        dataj.AUTORIZACION,
+                        "" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
+                        dataj.FACTURAK,
+                        dataj.EJERCICIOK,
+                        dataj.BILL_DOC,
+                        dataj.BELNR
+                    ]).draw(false).node();
+
+                    if (dataj.PROVEEDOR_ACTIVO == false) {
+                        $(addedRow).find('td.PROVEEDOR').addClass("errorProveedor");
+                    }
+
+                });
+                //Aplicar configuración de columnas en las tablas
+                ocultarColumnasTablaSoporteDatos();
+                $(".table_sop").css("display", "table");
+                $("#table_sop").css("display", "table");
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+        },
+        async: false
+    });
+
+}
+
+function selectTsol(sol) {
+
+    //Obtener el tipo de solicitud NC
+    //var sol = $("#tsol_id").val();
+    var table = $('#table_sop').DataTable();
+    if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        $('#ref_soporte').css("display", "table");
+        //Checar si mostrar la tabla o el archivo
+        $('#check_factura').trigger('change');
+    } else {
+
+        table.clear().draw();
+        $('#ref_soporte').css("display", "none");
+    }
+    $('.file_sop').val('');
+}
+
+function addRowSop() {
+    addRowSopl(
+        "1", //POS
+        "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "",
+        "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PEJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+    );
+}
+
+function addRowSopl(pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr) {
+    var t = $('#table_sop').DataTable();
+
+    t.row.add([
+        pos, //POS
+        fac,
+        fecha,
+        prov,
+        provt,
+        control,
+        aut,
+        ven,
+        fack,
+        eje,
+        bill,
+        belnr
+    ]).draw(false);
+
+}
+
+function ocultarColumnasTablaSoporteDatos() {
+    //Obtener la sociedad
+    var sociedad = $('#sociedad_id').val();
+    //Obtener el país ID
+    var pais = $('#pais_id').val();
+    //Obtener el tipo de solicitud
+    var tsol_id = $('#tsol_id').val();
+    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
+
+}
+
+function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+    var table = $('#table_sop').DataTable();
+
+    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "");
+
+    if (data !== null || data !== "") {
+        //True son los visibles
+        //var prov_txt = true;;
+        var i;
+        for (i in data) {
+            //if (i == "PROVEEDOR") {
+            //    prov_txt = data[i];
+            //}
+            if (data[i] == true | data[i] == false) {
+                if (data.hasOwnProperty(i)) {
+                    //alert(i + " -- " + data[i]);
+                    table.column(i + ':name').visible(data[i]);
+                }
+            }
+        }
+        //table.column('PROVEEDOR_TXT:name').visible(prov_txt);
+    }
+}
+
+function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
+
+    dataConfig = null;
+    var localdataConfig = null;
+    $.ajax({
+        type: "POST",
+        url: 'LoadConfigSoporte',
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu },
+
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+                asignardataConfig(data)
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+        },
+        async: false
+    });
+
+    localdataConfig = dataConfig;
+    return localdataConfig;
+}
+
+function asignardataConfig(val) {
+    dataConfig = null;
+    dataConfig = val;
 }
 
 function loadFile(f_carta) {//, f_contratos, f_factura, f_jbp) {
@@ -1572,7 +1959,6 @@ function evaluarInfoTab() {
     var res = true;
 
     //Obtiene el id de la lista id solicitud, default envía vacío
-
     if (!$('#txt_rel').length) {
         var tsol_id = $('#tsol_id').val();
 
@@ -1718,15 +2104,6 @@ function evaluarTempTab() {
 }
 
 function evaluarSoporteTab() {
-    //var res = true;
-
-    //var filecarta = "#file_carta";
-
-    //if (!evaluarFile(filecarta)) {
-    //    return false;
-    //}
-
-    //return res;
 
     return evaluarFiles();
 }
@@ -1815,14 +2192,7 @@ function evaluarFile(id) {
         var file = document.getElementById(id).files[0];
         var filename = file.name;
         return true;
-        //if (evaluarExt(filename)) {
-        //    M.toast({ html: 'Uploading' + filename });
-        //    loadExcel(file);
-        //} else {
-        //    M.toast({ html: 'Tipo de archivo incorrecto: ' + filename });
-        //}
     } else {
-        //M.toast({ html: 'Seleccione un archivo' });
         return false;
     }
 }
@@ -2091,7 +2461,6 @@ function asignCity(valu) {
     }
 }
 
-
 function selectCliente(valu) {
     if (valu != "") {
         $.ajax({
@@ -2211,7 +2580,6 @@ function selectMoneda(valu) {
             M.toast({ html: msg })
         }
     }
-
 }
 
 function selectTcambio(MONEDA_ID, monto_doc_md) {
@@ -2238,7 +2606,6 @@ function selectTcambio(MONEDA_ID, monto_doc_md) {
                         M.toast({ html: data });
                     }
                 }
-
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
                 M.toast({ html: msg });
@@ -2368,7 +2735,7 @@ function valMaterial(mat) {
 
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: httpStatusMessage });
+                M.toast({ html: "Valor no encontrado" });
             },
             async: false
         });
@@ -2380,4 +2747,36 @@ function valMaterial(mat) {
 
 function asignarValMat(val) {
     materialVal = val;
+}
+
+
+function valProveedor(prov) {
+    proveedorVal = "";
+    var localval = "";
+    if (prov != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getProveedor',
+            dataType: "json",
+            data: { "prov": prov },
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarValProv(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: "Valor no encontrado" });
+            },
+            async: false
+        });
+    }
+
+    localval = proveedorVal;
+    return localval;
+}
+
+function asignarValProv(val) {
+    proveedorVal = val;
 }

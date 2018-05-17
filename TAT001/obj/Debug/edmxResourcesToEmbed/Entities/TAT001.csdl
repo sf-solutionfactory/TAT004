@@ -574,6 +574,7 @@
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
     <Property Name="CONCEPTO_ID" Type="Int32" />
+    <NavigationProperty Name="DOCUMENTORs" Relationship="TAT001Model.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -1131,6 +1132,8 @@
     <NavigationProperty Name="RETENCIONTs" Relationship="TAT001Model.FK_RETENCIONT_SPRAS" FromRole="SPRA" ToRole="RETENCIONT" />
     <NavigationProperty Name="TX_CONCEPTOT" Relationship="TAT001Model.FK_TX_CONCEPTOT_SPRAS" FromRole="SPRA" ToRole="TX_CONCEPTOT" />
     <NavigationProperty Name="TX_NOTAT" Relationship="TAT001Model.FK_TX_NOTAT_SPRAS" FromRole="SPRA" ToRole="TX_NOTAT" />
+    <NavigationProperty Name="TRETENCIONTs" Relationship="TAT001Model.FK_TRETENCIONT_SPRAS" FromRole="SPRA" ToRole="TRETENCIONT" />
+    <NavigationProperty Name="TREVERSATs" Relationship="TAT001Model.FK_TREVERSAT_SPRAS" FromRole="SPRA" ToRole="TREVERSAT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -1301,6 +1304,7 @@
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
     <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+    <Property Name="FACTURA" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -3629,6 +3633,40 @@
       <End Role="TX_TNOTA" EntitySet="TX_TNOTA" />
       <End Role="TX_NOTAT" EntitySet="TX_NOTAT" />
     </AssociationSet>
+    <EntitySet Name="DET_TAXEO" EntityType="TAT001Model.DET_TAXEO" />
+    <EntitySet Name="DOCUMENTORs" EntityType="TAT001Model.DOCUMENTOR" />
+    <EntitySet Name="TRETENCIONs" EntityType="TAT001Model.TRETENCION" />
+    <EntitySet Name="TRETENCIONTs" EntityType="TAT001Model.TRETENCIONT" />
+    <EntitySet Name="TREVERSAs" EntityType="TAT001Model.TREVERSA" />
+    <EntitySet Name="TREVERSATs" EntityType="TAT001Model.TREVERSAT" />
+    <AssociationSet Name="FK_DOCUMENTOR_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOR_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOR" EntitySet="DOCUMENTORs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOR_TREVERSA" Association="TAT001Model.FK_DOCUMENTOR_TREVERSA">
+      <End Role="TREVERSA" EntitySet="TREVERSAs" />
+      <End Role="DOCUMENTOR" EntitySet="DOCUMENTORs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TRETENCIONT_SPRAS" Association="TAT001Model.FK_TRETENCIONT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="TRETENCIONT" EntitySet="TRETENCIONTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TREVERSAT_SPRAS" Association="TAT001Model.FK_TREVERSAT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="TREVERSAT" EntitySet="TREVERSATs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAXEOP_TRETENCION" Association="TAT001Model.FK_TAXEOP_TRETENCION">
+      <End Role="TRETENCION" EntitySet="TRETENCIONs" />
+      <End Role="TAXEOP" EntitySet="TAXEOPs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TRETENCIONT_TRETENCION" Association="TAT001Model.FK_TRETENCIONT_TRETENCION">
+      <End Role="TRETENCION" EntitySet="TRETENCIONs" />
+      <End Role="TRETENCIONT" EntitySet="TRETENCIONTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TREVERSAT_TREVERSA" Association="TAT001Model.FK_TREVERSAT_TREVERSA">
+      <End Role="TREVERSA" EntitySet="TREVERSAs" />
+      <End Role="TREVERSAT" EntitySet="TREVERSATs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -3864,6 +3902,8 @@
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="RETENCION" Relationship="TAT001Model.FK_TAXEOP_RETENCION" FromRole="TAXEOP" ToRole="RETENCION" />
     <NavigationProperty Name="TAXEOH" Relationship="TAT001Model.FK_TAXEOP_TAXEOH" FromRole="TAXEOP" ToRole="TAXEOH" />
+    <Property Name="TRETENCION_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="TRETENCION" Relationship="TAT001Model.FK_TAXEOP_TRETENCION" FromRole="TAXEOP" ToRole="TRETENCION" />
   </EntityType>
   <EntityType Name="TX_CONCEPTO">
     <Key>
@@ -4078,6 +4118,164 @@
       </Principal>
       <Dependent Role="TX_NOTAT">
         <PropertyRef Name="TNOTA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DET_TAXEO">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="PUESTOC_ID" />
+      <PropertyRef Name="USUARIOC_ID" />
+      <PropertyRef Name="VERSION" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PUESTOC_ID" Type="Int32" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="PUESTOA_ID" Type="Int32" />
+    <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DOCUMENTOR">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="TREVERSA_ID" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="TREVERSA_ID" Type="Int32" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAC" Type="DateTime" Precision="0" />
+    <Property Name="COMENTARIO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTOR" ToRole="DOCUMENTO" />
+    <NavigationProperty Name="TREVERSA" Relationship="TAT001Model.FK_DOCUMENTOR_TREVERSA" FromRole="DOCUMENTOR" ToRole="TREVERSA" />
+  </EntityType>
+  <EntityType Name="TRETENCION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="TAXEOPs" Relationship="TAT001Model.FK_TAXEOP_TRETENCION" FromRole="TRETENCION" ToRole="TAXEOP" />
+    <NavigationProperty Name="TRETENCIONTs" Relationship="TAT001Model.FK_TRETENCIONT_TRETENCION" FromRole="TRETENCION" ToRole="TRETENCIONT" />
+  </EntityType>
+  <EntityType Name="TRETENCIONT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="TRETENCION_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="TRETENCION_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_TRETENCIONT_SPRAS" FromRole="TRETENCIONT" ToRole="SPRA" />
+    <NavigationProperty Name="TRETENCION" Relationship="TAT001Model.FK_TRETENCIONT_TRETENCION" FromRole="TRETENCIONT" ToRole="TRETENCION" />
+  </EntityType>
+  <EntityType Name="TREVERSA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAC" Type="DateTime" Precision="0" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="DOCUMENTORs" Relationship="TAT001Model.FK_DOCUMENTOR_TREVERSA" FromRole="TREVERSA" ToRole="DOCUMENTOR" />
+    <NavigationProperty Name="TREVERSATs" Relationship="TAT001Model.FK_TREVERSAT_TREVERSA" FromRole="TREVERSA" ToRole="TREVERSAT" />
+  </EntityType>
+  <EntityType Name="TREVERSAT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="TREVERSA_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="TREVERSA_ID" Type="Int32" Nullable="false" />
+    <Property Name="TXT100" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_TREVERSAT_SPRAS" FromRole="TREVERSAT" ToRole="SPRA" />
+    <NavigationProperty Name="TREVERSA" Relationship="TAT001Model.FK_TREVERSAT_TREVERSA" FromRole="TREVERSAT" ToRole="TREVERSA" />
+  </EntityType>
+  <Association Name="FK_DOCUMENTOR_DOCUMENTO">
+    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOR" Role="DOCUMENTOR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOR">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOR_TREVERSA">
+    <End Type="TAT001Model.TREVERSA" Role="TREVERSA" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOR" Role="DOCUMENTOR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TREVERSA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTOR">
+        <PropertyRef Name="TREVERSA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TRETENCIONT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.TRETENCIONT" Role="TRETENCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TRETENCIONT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TREVERSAT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.TREVERSAT" Role="TREVERSAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TREVERSAT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TAXEOP_TRETENCION">
+    <End Type="TAT001Model.TRETENCION" Role="TRETENCION" Multiplicity="0..1" />
+    <End Type="TAT001Model.TAXEOP" Role="TAXEOP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TRETENCION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TAXEOP">
+        <PropertyRef Name="TRETENCION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TRETENCIONT_TRETENCION">
+    <End Type="TAT001Model.TRETENCION" Role="TRETENCION" Multiplicity="1" />
+    <End Type="TAT001Model.TRETENCIONT" Role="TRETENCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TRETENCION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TRETENCIONT">
+        <PropertyRef Name="TRETENCION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TREVERSAT_TREVERSA">
+    <End Type="TAT001Model.TREVERSA" Role="TREVERSA" Multiplicity="1" />
+    <End Type="TAT001Model.TREVERSAT" Role="TREVERSAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TREVERSA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TREVERSAT">
+        <PropertyRef Name="TREVERSA_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

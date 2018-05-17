@@ -1103,6 +1103,7 @@
     <EntitySetMapping Name="TSOLs">
       <EntityTypeMapping TypeName="TAT001Model.TSOL">
         <MappingFragment StoreEntitySet="TSOL">
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
@@ -1637,6 +1638,7 @@
     <EntitySetMapping Name="TAXEOPs">
       <EntityTypeMapping TypeName="TAT001Model.TAXEOP">
         <MappingFragment StoreEntitySet="TAXEOP">
+          <ScalarProperty Name="TRETENCION_ID" ColumnName="TRETENCION_ID" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="PORC" ColumnName="PORC" />
           <ScalarProperty Name="RETENCION_ID" ColumnName="RETENCION_ID" />
@@ -1684,6 +1686,69 @@
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DET_TAXEO">
+      <EntityTypeMapping TypeName="TAT001Model.DET_TAXEO">
+        <MappingFragment StoreEntitySet="DET_TAXEO">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+          <ScalarProperty Name="PUESTOA_ID" ColumnName="PUESTOA_ID" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTORs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOR">
+        <MappingFragment StoreEntitySet="DOCUMENTOR">
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="TREVERSA_ID" ColumnName="TREVERSA_ID" />
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TRETENCIONs">
+      <EntityTypeMapping TypeName="TAT001Model.TRETENCION">
+        <MappingFragment StoreEntitySet="TRETENCION">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TRETENCIONTs">
+      <EntityTypeMapping TypeName="TAT001Model.TRETENCIONT">
+        <MappingFragment StoreEntitySet="TRETENCIONT">
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="TRETENCION_ID" ColumnName="TRETENCION_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TREVERSAs">
+      <EntityTypeMapping TypeName="TAT001Model.TREVERSA">
+        <MappingFragment StoreEntitySet="TREVERSA">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TREVERSATs">
+      <EntityTypeMapping TypeName="TAT001Model.TREVERSAT">
+        <MappingFragment StoreEntitySet="TREVERSAT">
+          <ScalarProperty Name="TXT100" ColumnName="TXT100" />
+          <ScalarProperty Name="TREVERSA_ID" ColumnName="TREVERSA_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

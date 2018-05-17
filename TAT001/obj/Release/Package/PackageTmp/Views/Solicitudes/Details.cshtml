@@ -122,22 +122,25 @@
                     <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
                 }
             }
-            else if (Model.D.ESTATUS.Equals("P") && (Model.D.TSOL_ID == "PR" | Model.D.TSOL_ID == "PR1"))
+            else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL_ID == "PR" | Model.D.TSOL_ID == "PR1"))
             {
-                <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
-                <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
-                <ul id='list_rela' class='dropdown-content'>
-                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
-                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
-                    <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>
-                </ul>
-                <script>
-                    var elem = document.getElementById('btn_rela');
-                    var options = {
-                        hover: true
-                    };
-                    var instance = M.Dropdown.init(elem, options);
-                </script>
+                if (Model.D.USUARIO.MIEMBROS.Where(a => a.ROL_ID.Equals(1)).ToList().Count > 0)
+                {
+                    <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
+                    <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
+                    <ul id='list_rela' class='dropdown-content'>
+                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
+                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
+                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>
+                    </ul>
+                    <script>
+                        var elem = document.getElementById('btn_rela');
+                        var options = {
+                            hover: true
+                        };
+                        var instance = M.Dropdown.init(elem, options);
+                    </script>
+                }
             }
             @*//else
                 //{*@
@@ -180,7 +183,14 @@
                 <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
             }
             <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
-            <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
+            @if (ViewBag.acciones != null & ViewBag.accion == "T")
+            {
+                <li class="tab col s2"><a href="#fina" id="lbl_fina" class="active">Financiera</a></li>
+            }
+            else
+            {
+                <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
+            }
         </ul>
     </div>
     <div id="info" class="col s12" style="font-size:12px;">
@@ -233,6 +243,110 @@
                         </div>
                     </div>
                 </div>
+                @if (Model.D.DOCUMENTOF != null)
+                {
+                    if (Model.D.DOCUMENTOF.Count > 0)
+                    {
+                        <div class="card-panel">
+                            <h5>Facturas</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                @if (Model.D.DOCUMENTOF[0].FACTURA != "0")
+                                                {
+                                                    <th>Factura</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].FECHA != null)
+                                                {
+                                                    <th>Fecha</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].PROVEEDOR != "0         ")
+                                                {
+                                                    <th>Proveedor</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].CONTROL != "0")
+                                                {
+                                                    <th>Control</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].AUTORIZACION != "0")
+                                                {
+                                                    <th>Autorización</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].VENCIMIENTO != null)
+                                                {
+                                                    <th>Vencimiento</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].FACTURAK != "0")
+                                                {
+                                                    <th>Factura k</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].EJERCICIOK != "0")
+                                                {
+                                                    <th>Ejercicio</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
+                                                {
+                                                    <th>No fat</th>
+                                                }
+                                                @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
+                                                {
+                                                    <th>No documento</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        @foreach (var item in Model.D.DOCUMENTOF)
+                                        {
+                                            <tr>
+                                                @if (item.FACTURA != "0")
+                                                {
+                                                    <td>@item.FACTURA</td>
+                                                }
+                                                @if (item.FECHA != null)
+                                                {
+                                                    <td>@item.FECHA</td>
+                                                }
+                                                @if (item.PROVEEDOR != "0         ")
+                                                {
+                                                    <td>@item.PROVEEDOR</td>
+                                                }
+                                                @if (item.CONTROL != "0")
+                                                {
+                                                    <td>@item.CONTROL</td>
+                                                }
+                                                @if (item.AUTORIZACION != "0")
+                                                {
+                                                    <td>@item.AUTORIZACION</td>
+                                                }
+                                                @if (item.VENCIMIENTO != null)
+                                                {
+                                                    <td>@item.VENCIMIENTO</td>
+                                                }
+                                                @if (item.FACTURAK != "0")
+                                                {
+                                                    <td>@item.FACTURAK</td>
+                                                }
+                                                @if (item.EJERCICIOK != "0")
+                                                {
+                                                    <td>@item.EJERCICIOK</td>
+                                                }
+                                                @if (item.BILL_DOC != "0         ")
+                                                {
+                                                    <td>@item.BILL_DOC</td>
+                                                }
+                                                @if (item.BELNR != "0         ")
+                                                {
+                                                    <td>@item.BELNR</td>
+                                                }
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
             <div class="col s12 m6 l6">
                 <div class="row" style="margin-bottom:0">
@@ -399,8 +513,16 @@
                                     <th>% apoyo</th>
                                     <th>Apoyo por pieza</th>
                                     <th>Precio sugerido</th>
-                                    <th>Volumen estimado</th>
-                                    <th>Estimado apoyo</th>
+                                    @if (Model.D.TSOL.FACTURA == false)
+                                    {
+                                        <th>Volumen estimado</th>
+                                        <th>Estimado apoyo</th>
+                                    }
+                                    else
+                                    {
+                                        <th>Volumen real</th>
+                                        <th>Apoyo real</th>
+                                    }
                                 </tr>
                                 @foreach (var item in Model.D.DOCUMENTOPs)
                                 {
@@ -426,8 +548,17 @@
                                         <td>@Math.Round(item.PORC_APOYO, 2)</td>
                                         <td>@Math.Round(item.MONTO_APOYO, 2)</td>
                                         <td>@Math.Round(item.PRECIO_SUG, 2)</td>
-                                        <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
-                                        <td>@Math.Round(item.VOLUMEN_EST * item.MONTO_APOYO, 2)</td>
+
+                                        @if (Model.D.TSOL.FACTURA == false)
+                                        {
+                                            <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
+                                            <td>@Math.Round(item.VOLUMEN_EST * item.MONTO_APOYO, 2)</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
+                                            <td>@Math.Round(((decimal)item.VOLUMEN_REAL) * item.MONTO_APOYO, 2)</td>
+                                        }
                                     </tr>
 
                                 }
@@ -440,6 +571,155 @@
     </div>
     <div id="fina" class="col s12">
         <div class="row">
+            @if (ViewBag.acciones != null)
+            {
+                if (ViewBag.accion == "T")
+                {
+                    <div class="col s12 m12 l12">
+                        @using (Html.BeginForm("Taxeo", "Solicitudes"))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(model => model.D.NUM_DOC)
+                            <div class="card-panel">
+                                <h5>Taxeo</h5>
+                                <div class="row">
+                                    <div class="col s12 m12 l12">
+                                        <div class="row" id="lbl_taxeo">
+                                            <div class="input-field col s6 m6 l3">
+                                                <select id="txt_concepto" name="txt_concepto" onchange="selConcepto(this.value)">
+                                                    <option value=""></option>
+                                                </select>
+                                                <label for="txt_concepto">Concepto</label>
+                                            </div>
+                                            <div class="input-field col s6 m6 l3">
+                                                <input id="txt_nota" name="txt_nota" disabled="disabled" />
+                                                <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
+                                            </div>
+                                            <div class="col s12 m12 l6">
+                                                <div>
+                                                    <table class="table" id="tab_conc">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Concepto</th>
+                                                                <th>Porcenaje</th>
+                                                                <th>Código</th>
+                                                                <th>Totales</th>
+                                                            </tr>
+                                                        <thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                    taxeo("txt_concepto");
+
+                                    function taxeo(id) {
+                                        var campo = document.getElementById(id);
+                                        $("#"+id).find('option').remove();
+                                        //$("#lbl_puestos").empty();
+
+                                        var soci = '@Model.D.SOCIEDAD_ID';
+                                        var pais = '@Model.D.PAIS_ID';
+                                        var vkorg = '@Model.D.VKORG';
+                                        var vtweg = '@Model.D.VTWEG';
+                                        var spart = '@Model.D.SPART';
+                                        var kunnr = '@Model.D.PAYER_ID';
+                                        var spras = '@Session["spras"].ToString()';
+                                            $.ajax({
+                                                url: "../../Listas/selectTaxeo",
+                                                type: "GET",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, spras: spras },
+                                                success: function (data) {
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { label: item.TXT50, value: item.CONCEPTO_ID };
+                                                    }))
+                                                    $("#" +id)
+                                                        .append($("<option></option>")
+                                                            .attr("value", "")
+                                                            .text(""));
+                                                    for (var i = 0; i < pp.length; i++) {
+                                                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
+                                                        //$("#txt_pai").append(div);
+                                                        $("#" + id)
+                                                            .append($("<option></option>")
+                                                                .attr("value", pp[i].value)
+                                                                .text(pp[i].label));
+                                                    }
+                                                    var el = document.getElementById(id);
+                                                    var instances = M.Select.init(el, []);
+                                                }
+                                            });
+                                    }
+
+                                    function selConcepto(value) {
+                                        //$("#lbl_puestos").empty();
+                                        var soci = '@Model.D.SOCIEDAD_ID';
+                                        var pais = '@Model.D.PAIS_ID';
+                                        var vkorg = '@Model.D.VKORG';
+                                        var vtweg = '@Model.D.VTWEG';
+                                        var spart = '@Model.D.SPART';
+                                        var kunnr = '@Model.D.PAYER_ID';
+                                        var concepto_id = value;
+                                        var spras = '@Session["spras"].ToString()';
+                                            $.ajax({
+                                                url: "../../Listas/selectConcepto",
+                                                type: "POST",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                success: function (data) {
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { label: item.TXT50, value: item.CONCEPTO_ID };
+                                                    }))
+                                                    if (pp.length > 0) {
+                                                        $("#txt_nota").val(pp[0].label);
+                                                        $("#lbl_nota").addClass("active");
+                                                    } else {
+                                                        $("#txt_nota").val("");
+                                                        $("#lbl_nota").removeClass("active");
+                                                    }
+                                                }
+                                        });
+                                            $.ajax({
+                                                url: "../../Listas/selectImpuesto",
+                                                type: "POST",
+                                                async: false,
+                                                timeout: 30000,
+                                                dataType: "json",
+                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                success: function (data) {
+                                                    $("#tab_conc tbody").empty();
+                                                    var pp = ($.map(data, function (item) {
+                                                        return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC };
+                                                    }))
+                                                    for (var i = 0; i < pp.length; i++) {
+                                                        var cod = pp[i].IMPUESTO_ID;
+                                                        var por = pp[i].PORC;
+                                                        var tot = @Model.D.MONTO_DOC_ML;
+                                                        var sub = tot * por / 100;
+
+                                                        $("#tab_conc tbody").append("<tr><td>IVA</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                    }
+                                                }
+                                            });
+                                    }
+                                        </script>
+                                    </div>
+                                    <div class="col s12 right-align">
+                                        <input type="submit" class="btn" value="Enviar" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+
             <div class="col s12 m6 l6">
                 <div class="card-panel">
                     <h5>Detalle de solicitud</h5>
@@ -559,100 +839,43 @@
                     </div>
                 </div>
             </div>
-            @*<div class="col s12 m6 l6">
+            @if (Model.D.CONCEPTO_ID != null)
+            {<div class="col s12 m12 l12">
+
                     <div class="card-panel">
-                        <div class="row" style="margin-bottom:0">
-                            <h5>Análisis presupuesto</h5>
-                            <p>Presupuesto canal: 25,000.00</p>
-                            <h5>Análisis solicitud</h5>
-                            <p>importe Solicitud</p>
-                        </div>
-                    </div>
-                </div>*@
-        </div>
-        @if (ViewBag.acciones != null)
-        {
-            if (ViewBag.accion == "T")
-            {
-                <div class="row">
-                    @using (Html.BeginForm("Taxeo", "Solicitudes"))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model => model.D.NUM_DOC)
-                        <div class="card-panel">
-                            <h5>Taxeo</h5>
-                            <div class="row">
-                                <div class="col s12 m12 l12">
-                                    <div id="lbl_taxeo">
-                                        <div class="input-field col s6 m4 l4">
-                                            <select id="txt_concepto" name="txt_concepto" onchange="selConcepto(this.value)">
-                                                <option value=""></option>
-                                            </select>
-                                            <label for="txt_concepto">Concepto</label>
-                                        </div>
-                                        <div class="input-field col s6 m4 l4">
-                                            <input id="txt_nota" name="txt_nota" disabled="disabled" />
-                                            <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
-                                        </div>
-                                        <div class="col s6 m4 l4">
-                                            <div>
-                                                <table class="table" id="tab_conc">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Concepto</th>
-                                                            <th>Porcenaje</th>
-                                                            <th>Código</th>
-                                                            <th>Totales</th>
-                                                        </tr>
-                                                    <thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
+                        <h5>Taxeo</h5>
+                        <div class="row">
+                            <div class="col s12 m12 l12">
+                                <div class="row" id="lbl_taxeo">
+                                    <div class="input-field col s6 m6 l3">
+                                        <input type="text" id="txt_concepto" name="txt_concepto" value="@Model.D.CONCEPTO_ID" disabled="disabled" />
+                                        <label for="txt_concepto">Concepto</label>
+                                    </div>
+                                    <div class="input-field col s6 m6 l3">
+                                        <input id="txt_nota" name="txt_nota" disabled="disabled" />
+                                        <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
+                                    </div>
+                                    <div class="col s12 m12 l6">
+                                        <div>
+                                            <table class="table" id="tab_conc">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Concepto</th>
+                                                        <th>Porcenaje</th>
+                                                        <th>Código</th>
+                                                        <th>Totales</th>
+                                                    </tr>
+                                                <thead>
+                                                <tbody></tbody>
+                                                <tfoot>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
-                                    <script>
-                                    taxeo("txt_concepto");
+                                </div>
+                                <script>
+                                    selConcepto(document.getElementById("txt_concepto").value);
 
-                                    function taxeo(id) {
-                                        var campo = document.getElementById(id);
-                                        $("#"+id).find('option').remove();
-                                        //$("#lbl_puestos").empty();
-
-                                        var soci = '@Model.D.SOCIEDAD_ID';
-                                        var pais = '@Model.D.PAIS_ID';
-                                        var vkorg = '@Model.D.VKORG';
-                                        var vtweg = '@Model.D.VTWEG';
-                                        var spart = '@Model.D.SPART';
-                                        var kunnr = '@Model.D.PAYER_ID';
-                                        var spras = '@Session["spras"].ToString()';
-                                            $.ajax({
-                                                url: "../../Listas/selectTaxeo",
-                                                type: "GET",
-                                                async: false,
-                                                timeout: 30000,
-                                                dataType: "json",
-                                                data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, spras: spras },
-                                                success: function (data) {
-                                                    var pp = ($.map(data, function (item) {
-                                                        return { label: item.TXT50, value: item.CONCEPTO_ID };
-                                                    }))
-                                                    $("#" +id)
-                                                        .append($("<option></option>")
-                                                            .attr("value", "")
-                                                            .text(""));
-                                                    for (var i = 0; i < pp.length; i++) {
-                                                        //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
-                                                        //$("#txt_pai").append(div);
-                                                        $("#" + id)
-                                                            .append($("<option></option>")
-                                                                .attr("value", pp[i].value)
-                                                                .text(pp[i].label));
-                                                    }
-                                                    var el = document.getElementById(id);
-                                                    var instances = M.Select.init(el, []);
-                                                }
-                                            });
-                                    }
 
                                     function selConcepto(value) {
                                         //$("#lbl_puestos").empty();
@@ -694,30 +917,34 @@
                                                 success: function (data) {
                                                     $("#tab_conc tbody").empty();
                                                     var pp = ($.map(data, function (item) {
-                                                        return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC };
+                                                        return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC, label: item.TXT50 };
                                                     }))
+                                                    var foot = @Model.D.MONTO_DOC_ML;
                                                     for (var i = 0; i < pp.length; i++) {
                                                         var cod = pp[i].IMPUESTO_ID;
                                                         var por = pp[i].PORC;
                                                         var tot = @Model.D.MONTO_DOC_ML;
                                                         var sub = tot * por / 100;
+                                                        foot = foot + sub;
 
-                                                        $("#tab_conc tbody").append("<tr><td>IVA</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                        $("#tab_conc tbody").append("<tr><td>" + pp[i].label + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
                                                     }
+
+                                                    $("#tab_conc tfoot").append("<tr><td></td><td></td><td></td><th>" + foot + "</th><tr>");
                                                 }
                                             });
                                     }
-                                    </script>
-                                </div>
-                                <div class="col s12 right-align">
-                                    <input type="submit" class="btn" value="Enviar" />
-                                </div>
+                                </script>
                             </div>
+
                         </div>
-                    }
+                    </div>
+
                 </div>
+
             }
-        }
+        </div>
+
     </div>
     @*<div id="dist" class="col s12">Test 4</div>*@
 </div>

@@ -228,6 +228,19 @@
         <AssociationConnector Association="TAT001Model.FK_TAXEOP_TAXEOH" />
         <AssociationConnector Association="TAT001Model.FK_TX_CONCEPTOT_TX_CONCEPTO" />
         <AssociationConnector Association="TAT001Model.FK_TX_NOTAT_TX_TNOTA" />
+        <EntityTypeShape EntityType="TAT001Model.DET_TAXEO" Width="1.5" PointX="16.375" PointY="4.75" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOR" Width="1.5" PointX="25.5" PointY="56.5" />
+        <EntityTypeShape EntityType="TAT001Model.TRETENCION" Width="1.5" PointX="6.75" PointY="65" />
+        <EntityTypeShape EntityType="TAT001Model.TRETENCIONT" Width="1.5" PointX="9" PointY="62" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSA" Width="1.5" PointX="23.25" PointY="48.5" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSAT" Width="1.5" PointX="14" PointY="60" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOR_DOCUMENTO" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOR_TREVERSA" />
+        <AssociationConnector Association="TAT001Model.FK_TRETENCIONT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TREVERSAT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOP_TRETENCION" />
+        <AssociationConnector Association="TAT001Model.FK_TRETENCIONT_TRETENCION" />
+        <AssociationConnector Association="TAT001Model.FK_TREVERSAT_TREVERSA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

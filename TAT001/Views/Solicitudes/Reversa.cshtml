@@ -1,0 +1,27 @@
+﻿@model TAT001.Entities.DOCUMENTO
+@{
+    ViewBag.Title = "Reversa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 201;
+    ViewBag.carpeta_r = 200;
+}
+
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Cerrar provisión</h4>
+        <p>¿Se desea cerrar la provisión?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="@Url.Action("Index")" class="btn-flat">NO</a>
+        <a href="@Url.Action("Create",new { id_d = Model.NUM_DOC, tsol="CPR"})" class="btn-flat">SI</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.getElementById('modal1');
+        var instances = M.Modal.init(elems, { dismissible: false });
+        instances.open();
+    });
+</script>

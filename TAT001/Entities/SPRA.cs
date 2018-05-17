@@ -35,6 +35,8 @@ namespace TAT001.Entities
             this.RETENCIONTs = new HashSet<RETENCIONT>();
             this.TX_CONCEPTOT = new HashSet<TX_CONCEPTOT>();
             this.TX_NOTAT = new HashSet<TX_NOTAT>();
+            this.TRETENCIONTs = new HashSet<TRETENCIONT>();
+            this.TREVERSATs = new HashSet<TREVERSAT>();
         }
     
         public string ID { get; set; }
@@ -76,5 +78,9 @@ namespace TAT001.Entities
         public virtual ICollection<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TX_NOTAT> TX_NOTAT { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRETENCIONT> TRETENCIONTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TREVERSAT> TREVERSATs { get; set; }
     }
 }

@@ -429,7 +429,7 @@
                 data: { bukrs: campo.value, puesto: pu, spras: 'ES' },
                 success: function (data) {
                     var pp = ($.map(data, function (item) {
-                        return { label: item.TXT50, value: item.PUESTOA_ID };
+                        return { label: item.TXT50, value: item.Value };
                     }))
                     for (var i = 0; i < pp.length; i++) {
                         //var div = "<div class='input-field col s6'>" + formaInpPuestos(pp[i]) + "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"

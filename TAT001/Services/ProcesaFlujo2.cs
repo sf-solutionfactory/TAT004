@@ -192,7 +192,7 @@ namespace TAT001.Services
                                                 nuevo.WF_POS = nuevo.WF_POS + 1;
                                                 nuevo.USUARIOA_ID = null;
                                                 d.ESTATUS_WF = "A";
-                                                d.ESTATUS = "C";
+                                                d.ESTATUS_SAP = "P";
                                             }
                                         }
                                         else
@@ -201,7 +201,7 @@ namespace TAT001.Services
                                             {
                                                 nuevo.USUARIOA_ID = null;
                                                 d.ESTATUS_WF = "A";
-                                                d.ESTATUS = "C";
+                                                d.ESTATUS_SAP = "P";
                                             }
                                         }
                                         nuevo.ESTATUS = "P";
@@ -262,7 +262,7 @@ namespace TAT001.Services
                                     nuevo.FECHAC = DateTime.Now;
                                     nuevo.FECHAM = DateTime.Now;
 
-                                    d.ESTATUS = "P";
+                                    d.ESTATUS = "A";
                                     correcto = file;
 
                                     db.FLUJOes.Add(nuevo);
@@ -352,7 +352,7 @@ namespace TAT001.Services
                                         {
                                             nuevo.USUARIOA_ID = null;
                                             d.ESTATUS_WF = "A";
-                                            d.ESTATUS = "C";
+                                            d.ESTATUS_SAP = "P";
                                         }
                                         nuevo.ESTATUS = "P";
                                         nuevo.FECHAC = DateTime.Now;
