@@ -355,7 +355,7 @@ namespace TAT001.Models
                                 conta.AMOUNT_LC = conp[i].BASE_UNIT;
                                 conta.ACCOUNT = cuent.CARGO.ToString();
                                 conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
-                                if (enca.TIPO_DOC != "BB")
+                                if (enca.TIPO_DOC == "BB")
                                 {
                                     conta.BALANCE = (docp[j].VOLUMEN_REAL * docp[j].MONTO_APOYO).ToString();
                                 }
