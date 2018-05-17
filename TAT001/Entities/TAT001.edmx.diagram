@@ -188,6 +188,14 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOR" Width="1.5" PointX="19.5" PointY="57.25" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSA" Width="1.5" PointX="17.25" PointY="46.25" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSAT" Width="1.5" PointX="9" PointY="59.25" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOR_DOCUMENTO" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOR_TREVERSA" />
+        <AssociationConnector Association="TAT001Model.FK_PAIS_SOCIEDAD" />
+        <AssociationConnector Association="TAT001Model.FK_TREVERSAT_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TREVERSAT_TREVERSA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

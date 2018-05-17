@@ -44,5 +44,6 @@ namespace TAT001.Entities
         public virtual ICollection<LEYENDA> LEYENDAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
+        public virtual SOCIEDAD SOCIEDAD { get; set; }
     }
 }

@@ -29,8 +29,7 @@
 }
 
 <div class="row" style="margin-bottom:0">
-    @{
-        TAT001.Entities.USUARIO us = ViewBag.usuario;
+    @{TAT001.Entities.USUARIO us = ViewBag.usuario;
 
         <div class="col s12 m5 l5">
             <div class="row" style="margin-bottom:0">
@@ -133,7 +132,10 @@
 
     <div class="div_right">
         <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
+        @*@if (ViewBag.reversan != "X")
+        {*@
         <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
+        @*}*@
     </div>
     <div class="div_bottom">
         <hr class="hr_bw" />
@@ -498,7 +500,7 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>
+                            @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
                             <table id="table_soph" class="display" cellspacing="0" style="display:none">
                                 <thead>
                                     <tr>
@@ -657,74 +659,74 @@
         <div id="Soporte_cont">
             <div class="row">
                 <div class="col s12 m6 l6">
-                    <div class="card-panel">
-                        <h5>Documentos de Soporte</h5>
-                        <label>* Campos obligatorios</label>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="col s12">
-                                <form action="#">
-                                    <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
-                                    <input type="text" value="Carta" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small" style="float:left;">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
+                    @if (ViewBag.reversan != "X")
+                    {
+                        <div class="card-panel">
+                            <h5>Documentos de Soporte</h5>
+                            <label>* Campos obligatorios</label>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                    <form action="#">
+                                        <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
+                                        <input type="text" value="Carta" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
                                         </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                        <label name="labels_soporte2">Contratos</label><label class="lbl_nec"></label>
+                                        <input type="text" value="Contratos" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <label name="labels_soporte2">Contratos</label><label class"lbl_nec"></label>
-                                    <input type="text" value="Contratos" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small" style="float:left;">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
+                                        <label name="labels_soporte2">Facturas Cliente</label>
+                                        <input type="text" value="Facturas Cliente" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
                                         </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                        <label name="files_soportel">JBP</label>
+                                        <input type="text" value="JBP" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <label name="labels_soporte2">Facturas Cliente</label>
-                                    <input type="text" value="Facturas Cliente" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small" style="float:left;">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
+                                        <label name="files_soportel">Otros</label>
+                                        <input type="text" value="Otros" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
                                         </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                    <label name="files_soportel">JBP</label>
-                                    <input type="text" value="JBP" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small" style="float:left;">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                    <label name="files_soportel">Otros</label>
-                                    <input type="text" value="Otros" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small" style="float:left;">
-                                            <span>Examinar</span>
-                                            <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                    <script>
-                                        //Validar tamaño y extensión de archivos cargados
-                                    </script>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                     @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
@@ -757,29 +759,89 @@
                     }
                 </div>
                 <div class="col s12 m6 l6">
-                    <div class="card-panel">
-                        <h5>Notas</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
-                                    <label for="notas_soporte"></label>
+                    @if (ViewBag.reversan != "X")
+                    {
+                        <div class="card-panel">
+                            <h5>Notas</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+                                        <label for="notas_soporte"></label>
+                                    </div>
                                 </div>
-                            </div>
-                            <script>
-                                function maxchar_notas() {
-                                    var maxLength = 500;
-                                    var text = $('#notas_soporte').val();
-                                    var textLength = text.length;
-                                    if (textLength > (maxLength)) {
-                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
-                                        var msg = 'Número máximo para la nota es ' + maxLength;
-                                        M.toast({ html: msg });
+                                <script>
+                                    function maxchar_notas() {
+                                        var maxLength = 500;
+                                        var text = $('#notas_soporte').val();
+                                        var textLength = text.length;
+                                        if (textLength > (maxLength)) {
+                                            $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                            var msg = 'Número máximo para la nota es ' + maxLength;
+                                            M.toast({ html: msg });
+                                        }
                                     }
-                                }
-                            </script>
+                                </script>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    @if (ViewBag.reversan == "X")
+                    {
+                        <input type="hidden" id="txt_rev" name="txt_rev" value="@ViewBag.reversa" disabled="disabled" />
+                        <div class="card-panel">
+                            <h5>Soporte de reverso</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                  
+                                        <label name="labels_soporte2" hidden>Carta</label><label class="lbl_nec" hidden></label>
+                                        <input type="text" value="Reversa" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small" style="float:left;">
+                                                <span>Examinar</span>
+                                                <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
+                                        </div>
+                                  
+                                </div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">date_range</i>
+                                    @Html.Hidden("FECHAD_REV")
+                                    <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <label for="fechad">Fecha</label>
+                                </div>                                
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+                                        <label for="notas_soporte">Razón del reverso</label>
+                                    </div>
+                                </div>
+                                <script>
+                                    function maxchar_notas() {
+                                        var maxLength = 500;
+                                        var text = $('#notas_soporte').val();
+                                        var textLength = text.length;
+                                        if (textLength > (maxLength)) {
+                                            $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                            var msg = 'Número máximo para la nota es ' + maxLength;
+                                            M.toast({ html: msg });
+                                        }
+                                    }
+                                </script>
+                                <div class="form-group col s12">
+                                    @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
+                                    </div>
+                                </div>
+
+                                @*<a id="btn_guardarr" class="btn waves-effect waves-light btn-small disabled">Enviar</a>*@
+
+                            </div>
+                        </div>
+                    }
                 </div>                
             </div>
         </div>
@@ -823,8 +885,8 @@
                     <div class="card-panel">
                         <h5>Monto Base</h5>
                         <div class="row" style="margin-bottom:0">
-                            <div class="input-field col s6">
-                                <input value="" id="monto_dis" type="text" class="validate" />
+                            <div class="input-field col s6">                                
+                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa"/>
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">

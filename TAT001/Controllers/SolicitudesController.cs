@@ -193,6 +193,12 @@ namespace TAT001.Controllers
         public ActionResult Create(string id_d, string tsol)
         {
 
+            string dates = DateTime.Now.ToString("dd/MM/yyyy");
+            DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
+                                        "dd/MM/yyyy",
+                                        System.Globalization.CultureInfo.InvariantCulture,
+                                        System.Globalization.DateTimeStyles.None);
+
             DOCUMENTO d = new DOCUMENTO();
             string errorString = "";
             int pagina = 202; //ID EN BASE DE DATOS
@@ -230,7 +236,12 @@ namespace TAT001.Controllers
                 //    return RedirectToAction("Index", "Solicitudes");
                 //}
 
+                id_d = "1000000288";
+                tsol = "CPR";
+
+                              
                 //Session["rel"] = id_d;
+                List<TREVERSAT> ldocr = new List<TREVERSAT>();
                 decimal rel = 0;
                 try
                 {
@@ -251,25 +262,92 @@ namespace TAT001.Controllers
                     ViewBag.relacionadan = "";
                 }
 
+                //Validar si es una reversa
+                string isrn = "";
+                string isr = "";
+                var freversa = (dynamic)null;
+                try
+                {
+                    if (tsol == null || tsol.Equals(""))
+                    {
+                        throw new Exception();
+                    } 
+                    TSOL ts = db.TSOLs.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
+                    if (ts != null)
+                    {
+                        isrn = "X";
+                        isr = "preversa";
+                        freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        //Obtener los tipos de reversas
+                        try
+                        {
+                            //ldocr = db.TREVERSAs.Where(t => t.ACTIVO == true)
+                            //    .Join(
+                            //    db.TREVERSATs.Where(tt => tt.SPRAS_ID == user.SPRAS_ID),
+                            //    t => t.ID,
+                            //    tt => tt.TREVERSA_ID,
+                            //    (t, tt) => new TREVERSAT
+                            //    {
+                            //        SPRAS_ID = tt.SPRAS_ID,
+                            //        TREVERSA_ID = tt.TREVERSA_ID,
+                            //        TXT100 = tt.TXT100
+                            //    }).ToList();
+                            ldocr = db.TREVERSATs.Where(tt => tt.SPRAS_ID == user.SPRAS_ID).ToList();
+                        }catch(Exception e)
+                        {
+
+                        }
+                    }
+                }catch(Exception e)
+                {
+                    isrn = "";
+                    isr = "";
+                    freversa = "";
+                }
+
+                ViewBag.reversa = isr;
+                ViewBag.reversan = isrn;
+                ViewBag.FECHAD_REV = freversa;
+                ViewBag.TREVERSA = new SelectList(ldocr, "TREVERSA_ID", "TXT100");
 
                 Session["spras"] = user.SPRAS_ID;
 
-                List<TAT001.Models.TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
+                List<TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
                 //tipo de solicitud
                 //var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
-                list_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
-                                    .Join(
-                                    db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
-                                    sol => sol.ID,
-                                    solt => solt.TSOL_ID,
-                                    (sol, solt) => new TSOLT_MOD
-                                    {
-                                        SPRAS_ID = solt.SPRAS_ID,
-                                        TSOL_ID = solt.TSOL_ID,
-                                        TEXT = solt.TSOL_ID + " " + solt.TXT020
-                                    })
-                                .ToList();
+                if (ViewBag.reversa == "preversa")
+                {
+                    list_sol = db.TSOLs.Where(sol => sol.TSOLR == null)
+                                        .Join(
+                                        db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
+                                        sol => sol.ID,
+                                        solt => solt.TSOL_ID,
+                                        (sol, solt) => new TSOLT_MOD
+                                        {
+                                            SPRAS_ID = solt.SPRAS_ID,
+                                            TSOL_ID = solt.TSOL_ID,
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                        })
+                                    .ToList();
+                }
+                else
+                {
+                    list_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                                        .Join(
+                                        db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
+                                        sol => sol.ID,
+                                        solt => solt.TSOL_ID,
+                                        (sol, solt) => new TSOLT_MOD
+                                        {
+                                            SPRAS_ID = solt.SPRAS_ID,
+                                            TSOL_ID = solt.TSOL_ID,
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                        })
+                                    .ToList();
+                }
 
+                //Obtener los documentos relacionados
+                List<DOCUMENTO> docsrel = new List<DOCUMENTO>();
 
                 SOCIEDAD id_bukrs = new SOCIEDAD();
                 var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
@@ -293,22 +371,60 @@ namespace TAT001.Controllers
                 if (rel > 0)
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
+                    docsrel = db.DOCUMENTOes.Where(docr => docr.DOCUMENTO_REF == rel).ToList();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
                     d.DOCUMENTO_REF = rel;
                     ViewBag.TSOL_ANT = d.TSOL_ID;
                     if (d != null)
                     {
-
+                        
                         d.TSOL_ID = tsol;
                         ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
                         ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
-                        ViewBag.TSOL_IDI = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault().TEXT;
+                        TSOLT_MOD tsmod = new TSOLT_MOD();
+                        try
+                        {
+                            tsmod = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();
+                            
+                        }
+                        catch
+                        {
+                            tsmod.TEXT = "";
+                        }
+                        ViewBag.TSOL_IDI = tsmod.TEXT.ToString();
                         TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
                         ViewBag.GALL_IDI = gall_mod.TEXT;
                         ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
                         archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
 
-                        List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();
+                        List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();//Documentos que se obtienen de la provisión
+                        List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();
+                        //Obtener los documentos de la relacionada
+                        if (docsrel.Count > 0)
+                        {
+                            docsrelp = docsrel
+                                .Join(
+                                db.DOCUMENTOPs,
+                                docsl => docsl.NUM_DOC,
+                                docspl => docspl.NUM_DOC,
+                                (docsl, docspl) => new DOCUMENTOP
+                                {
+                                    NUM_DOC = docspl.NUM_DOC,
+                                    POS = docspl.POS,
+                                    MATNR = docspl.MATNR,
+                                    MATKL = docspl.MATKL,
+                                    CANTIDAD = docspl.CANTIDAD,
+                                    MONTO = docspl.MONTO,
+                                    PORC_APOYO = docspl.PORC_APOYO,
+                                    MONTO_APOYO = docspl.MONTO_APOYO,
+                                    PRECIO_SUG = docspl.PRECIO_SUG,
+                                    VOLUMEN_EST = docspl.VOLUMEN_EST,
+                                    VOLUMEN_REAL = docspl.VOLUMEN_REAL,
+                                    APOYO_REAL = docspl.APOYO_REAL,
+                                    VIGENCIA_DE = docspl.VIGENCIA_DE,
+                                    VIGENCIA_AL = docspl.VIGENCIA_AL
+                                }).ToList();
+                        }
                         d.NUM_DOC = 0;
                         List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
 
@@ -316,6 +432,7 @@ namespace TAT001.Controllers
                         {
                             try
                             {
+                                //Documentos de la provisión
                                 DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
                                 docP.NUM_DOC = d.NUM_DOC;
                                 docP.POS = docpl[j].POS;
@@ -330,6 +447,25 @@ namespace TAT001.Controllers
                                 docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
                                 docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                                 docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+
+                                //Verificar si hay materiales en las relacionadas
+                                if (docsrelp.Count > 0)
+                                {
+                                    List<DOCUMENTOP> docrel = docsrelp.Where(docrell => docrell.MATNR == docP.MATNR).ToList();
+                                    for (int k = 0; k < docrel.Count; k++)
+                                    {
+                                        //Relacionada se obtiene el 
+                                        decimal docr_vr = Convert.ToDecimal(docrel[k].VOLUMEN_REAL);
+
+                                        docP.VOLUMEN_EST -= docr_vr;
+                                    }
+                                }
+
+                                //Siempre tiene que ser igual a 0
+                                if(docP.VOLUMEN_EST < 0)
+                                {
+                                    docP.VOLUMEN_EST = 0;
+                                }
 
                                 docsp.Add(docP);
                             }
@@ -443,11 +579,8 @@ namespace TAT001.Controllers
 
             d.PERIODO = DateTime.Now.ToString("MM");
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
-            string dates = DateTime.Now.ToString("dd/MM/yyyy");
-            DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
-                                            "dd/MM/yyyy",
-                                            System.Globalization.CultureInfo.InvariantCulture,
-                                            System.Globalization.DateTimeStyles.None);
+            
+            
             d.FECHAD = theTime;
             ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
             ViewBag.PERIODO = d.PERIODO;
@@ -496,7 +629,7 @@ namespace TAT001.Controllers
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO,
-                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact)
+                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA)
         {
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -548,6 +681,7 @@ namespace TAT001.Controllers
                     {
                         id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
                     }
+                    
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
@@ -637,18 +771,74 @@ namespace TAT001.Controllers
                     //Guardar número de documento creado
                     Session["NUM_DOC"] = dOCUMENTO.NUM_DOC;
 
-                    //Guardar las notas
-                    if (notas_soporte != null && notas_soporte != "")
+                    
+                    //Validar si es una reversa
+                    var revn = "";
+                    try
                     {
-                        DOCUMENTON doc_notas = new DOCUMENTON();
-                        doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
-                        doc_notas.POS = 1;
-                        doc_notas.STEP = 1;
-                        doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
-                        doc_notas.TEXTO = notas_soporte.ToString();
+                        if (dOCUMENTO.TSOL_ID == null || dOCUMENTO.TSOL_ID.Equals(""))
+                        {
+                            throw new Exception();
+                        }
+                        
+                        TSOL ts = db.TSOLs.Where(tsb => tsb.ID == dOCUMENTO.TSOL_ID).FirstOrDefault();
+                        if (ts != null)
+                        {
+                            revn = "X";
+                            //DateTime theTime = (dynamic)null;
+                            DateTime dates = DateTime.Now;
+                            try
+                            {
+                                //dates = DateTime.Now;
+                                //theTime  = DateTime.ParseExact(FECHAD_REV, //"06/04/2018 12:00:00 a.m."
+                                //            "yyyy-MM-dd",
+                                //            System.Globalization.CultureInfo.InvariantCulture,
+                                //            System.Globalization.DateTimeStyles.None);
+                            }catch(Exception e)
+                            {
 
-                        db.DOCUMENTONs.Add(doc_notas);
-                        db.SaveChanges();
+                            }
+                            //Si es una reversa
+                            try
+                            {
+                                DOCUMENTOR docr = new DOCUMENTOR();
+                                docr.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                docr.TREVERSA_ID = Convert.ToInt32(TREVERSA);
+                                docr.USUARIOC_ID = User.Identity.Name;
+                                docr.FECHAC = dates;
+                                docr.COMENTARIO = notas_soporte.ToString();
+
+                                db.DOCUMENTORs.Add(docr);
+                                db.SaveChanges();
+
+                                revn = "X";
+
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
+                    if(revn == "")
+                    {
+                        //Guardar las notas
+                        if (notas_soporte != null && notas_soporte != "")
+                        {
+                            DOCUMENTON doc_notas = new DOCUMENTON();
+                            doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            doc_notas.POS = 1;
+                            doc_notas.STEP = 1;
+                            doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
+                            doc_notas.TEXTO = notas_soporte.ToString();
+
+                            db.DOCUMENTONs.Add(doc_notas);
+                            db.SaveChanges();
+                        }
                     }
 
                     //Guardar los documentos p para el documento guardado

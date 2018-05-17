@@ -24,6 +24,7 @@ namespace TAT001.Entities
         public string NOMBRE { get; set; }
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
+        public bool ACTIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTEs { get; set; }
