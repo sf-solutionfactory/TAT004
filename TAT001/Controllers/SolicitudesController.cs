@@ -1,4 +1,5 @@
 ﻿using ExcelDataReader;
+using Newtonsoft.Json;
 using SimpleImpersonation;
 using System;
 using System.Collections.Generic;
@@ -424,23 +425,10 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                //Tipo de solicitud
-                //try
-                //{
-                //    string st = Session["sol_tipo"].ToString();
-                //    ViewBag.soltipo = st;
-                //}
-                //catch
-                //{
-                //    return RedirectToAction("Index", "Solicitudes");
-                //}
-
-                //Session["rel"] = id_d; 
                 List<TREVERSAT> ldocr = new List<TREVERSAT>();
                 decimal rel = 0;
                 try
                 {
-                    //rel = Convert.ToDecimal(Session["rel"].ToString());
                     if (id_d == null || id_d.Equals(""))
                     {
                         throw new Exception();
@@ -457,6 +445,25 @@ namespace TAT001.Controllers
                     ViewBag.relacionadan = "";
                 }
 
+                //Obtener los valores de tsols
+                List<TSOL> tsols_val = new List<TSOL>();
+                List<TSOLT_MODBD> tsols_valbd = new List<TSOLT_MODBD>();
+                try
+                {
+                    tsols_val = db.TSOLs.ToList();
+                    tsols_valbd = tsols_val.Select(tsv => new TSOLT_MODBD
+                    {
+                        ID = tsv.ID,
+                        FACTURA = tsv.FACTURA
+                    }).ToList();
+                }
+                catch (Exception e)
+                {
+
+                }
+                var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+                ViewBag.TSOL_VALUES = tsols_valbdjs;
+
                 //Validar si es una reversa
                 string isrn = "";
                 string isr = "";
@@ -467,7 +474,7 @@ namespace TAT001.Controllers
                     {
                         throw new Exception();
                     }
-                    TSOL ts = db.TSOLs.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
+                    TSOL ts = tsols_val.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
                     if (ts != null)
                     {
                         isrn = "X";
@@ -525,10 +532,9 @@ namespace TAT001.Controllers
 
                 List<TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
                 //tipo de solicitud
-                //var id_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
                 if (ViewBag.reversa == "preversa")
                 {
-                    list_sol = db.TSOLs.Where(sol => sol.TSOLR == null)
+                    list_sol = tsols_val.Where(sol => sol.TSOLR == null)
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,
@@ -543,7 +549,7 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    list_sol = db.TSOLs.Where(sol => sol.ESTATUS != "X")
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,
@@ -557,6 +563,7 @@ namespace TAT001.Controllers
                                     .ToList();
                 }
 
+                
 
                 //Obtener los documentos relacionados
                 List<DOCUMENTO> docsrel = new List<DOCUMENTO>();
@@ -567,7 +574,6 @@ namespace TAT001.Controllers
 
                 List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
                 //Grupos de solicitud
-                //var id_grupo = db.GALLs.Where(g => g.ACTIVO == true)
                 list_grupo = db.GALLs.Where(g => g.ACTIVO == true)
                                 .Join(
                                 db.GALLTs.Where(gt => gt.SPRAS_ID == user.SPRAS_ID),
@@ -737,7 +743,6 @@ namespace TAT001.Controllers
 
                 List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
 
-                //ViewBag.BUKRS = id_bukrs;
                 ViewBag.SOCIEDAD_ID = id_bukrs;
                 ViewBag.PAIS_ID = id_pais;
                 ViewBag.STATE_ID = "";// new SelectList(id_states, "ID", dataTextField: "NAME");
@@ -750,7 +755,6 @@ namespace TAT001.Controllers
                 ViewBag.PAYER_ID = new SelectList(id_clientes, "KUNNR", dataTextField: "NAME1");
 
                 //Información de categorías
-
                 var id_cat = db.CATEGORIAs.Where(c => c.ACTIVO == true)
                                 .Join(
                                 db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
@@ -761,9 +765,6 @@ namespace TAT001.Controllers
                                     ct.CATEGORIA_ID,
                                     TEXT = ct.TXT50
                                 }).ToList();
-
-
-
 
                 ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
                 List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
@@ -797,7 +798,6 @@ namespace TAT001.Controllers
 
             d.PERIODO = DateTime.Now.ToString("MM");
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
-
 
             d.FECHAD = theTime;
             ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
@@ -2205,7 +2205,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.MATNR = (string)dt.Rows[i][2]; //Material
+                        doc.MATNR = dt.Rows[i][2].ToString(); //Material
                         MATERIAL mat = material(doc.MATNR);
                         if (mat != null)//Validar si el material existe
                         {
@@ -2492,6 +2492,18 @@ namespace TAT001.Controllers
                     fc.EJERCICIOK = f.EJERCICIOK;
                     fc.BILL_DOC = f.BILL_DOC;
                     fc.BELNR = f.BELNR;
+
+                    //fc.FACTURA = true; 
+                    //fc.FECHA = true; 
+                    //fc.PROVEEDOR = true;
+                    //fc.PROVEEDOR_TXT = true; 
+                    //fc.CONTROL = true;
+                    //fc.AUTORIZACION = true;
+                    //fc.VENCIMIENTO = true;
+                    //fc.FACTURAK = true;
+                    //fc.EJERCICIOK = true;
+                    //fc.BILL_DOC = true;
+                    //fc.BELNR = true;
                 }
             }
             catch

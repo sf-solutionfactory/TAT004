@@ -618,6 +618,7 @@
     <Compile Include="Models\ArchivoContable.cs" />
     <Compile Include="Models\ProveedorVal.cs" />
     <Compile Include="Models\TSOLT_MOD.cs" />
+    <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Models\UsuariosNuevo.cs" />
     <Compile Include="Models\DocumentoFlujo.cs" />
     <Compile Include="Models\EncabezadoMateriales.cs" />

@@ -63,7 +63,6 @@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
             }
-
         </div>
     }
     <style>
@@ -131,10 +130,10 @@
     </style>
 
     <div class="div_right">
-        <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
+        <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
             {*@
-        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
+        <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         @*}*@
     </div>
     <div class="div_bottom">
@@ -192,6 +191,9 @@
                                     }
                                 </div>
                                 @Html.HiddenFor(model => model.DOCUMENTO_REF)
+                                @{string jval = ViewBag.TSOL_VALUES;
+                                    @Html.Hidden("TSOL_VALUES", jval)
+                                 }
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })

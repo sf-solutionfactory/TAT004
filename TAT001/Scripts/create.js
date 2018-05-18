@@ -415,9 +415,11 @@
     });
 
     $('#tab_dis').on("click", function (e) {
-
         var sol = $("#tsol_id").val();
-        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        var mostrar = isFactura(sol);
+        
+        //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        if (mostrar) {
             $('#lbl_volumen').html("Volumen real");
             $('#lbl_apoyo').html("Apoyo real");
         } else {
@@ -827,7 +829,12 @@
 
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
+    //Encriptar valores del json para el tipo de solicitud
+    var tsol_valn = $('#TSOL_VALUES').val();
 
+    var jsval = $.parseJSON(tsol_valn)
+    var docsenviar = JSON.stringify(jsval);
+    $('#TSOL_VALUES').val(docsenviar);
 
     //una factura
     var check = $("#check_facturas").val();
@@ -906,8 +913,9 @@ function copiarTableVista() {
             sol = $("#tsol_id").val();
         }
 
-
-        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        var mostrar = isFactura(sol);
+        //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        if (mostrar) {
             tsol = "real";
         } else {
             tsol = "estimado";
@@ -1088,7 +1096,9 @@ function copiarTableControl() {
         var i = 1;
         var vol = "";
         var sol = $("#tsol_id").val();
-        if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        var mostrar = isFactura(sol);
+        //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        if (mostrar) {
             vol = "real";
         } else {
             vol = "estimado";
@@ -1762,8 +1772,13 @@ function selectTsol(sol) {
 
     //Obtener el tipo de solicitud NC
     //var sol = $("#tsol_id").val();
+    //El valor de sol se obtiene de la vista
+    //Obtener el valor de la configuración almacenada en la columna FACTURA
+    //de la tabla TSOL en bd
+    var mostrar = isFactura(sol);
     var table = $('#table_sop').DataTable();
-    if (sol == "NC" | sol == "NCI" | sol == "OP") {
+    //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+    if (mostrar) {
         $('#ref_soporte').css("display", "table");
         //Checar si mostrar la tabla o el archivo
         $('#check_factura').trigger('change');
@@ -1786,18 +1801,37 @@ function selectTsolr(sol) {
     }
 }
 
+function isFactura(tsol) {
+
+    var res = false;   
+
+    if (tsol != "") {
+        var tsol_val = $('#TSOL_VALUES').val();
+        var jsval = $.parseJSON(tsol_val)
+        $.each(jsval, function (i, dataj) {
+
+            if (dataj.ID == tsol) {
+                res = dataj.FACTURA;
+                return false;
+            }
+        });
+    }
+
+    return res;
+}
+
 function addRowSop() {
     addRowSopl(
         "1", //POS
         "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PROVEEDOR input_sop_f input_proveedor prv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "",
         "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"VENCIMIENTO input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"PEJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PEJERCICIOK input_sop_f prv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
     );
