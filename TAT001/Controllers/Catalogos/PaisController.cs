@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 
-namespace TAT001.Controllers
+namespace TAT001.Controllers.Catalogos
 {
     public class PaisController : Controller
     {

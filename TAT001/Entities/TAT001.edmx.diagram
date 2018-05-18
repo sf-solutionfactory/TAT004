@@ -241,6 +241,15 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.CONSOPORTE" Width="1.5" PointX="18" PointY="71.875" />
+        <EntityTypeShape EntityType="TAT001Model.TSOPORTE" Width="1.5" PointX="15.75" PointY="72.375" />
+        <EntityTypeShape EntityType="TAT001Model.TSOPORTET" Width="1.5" PointX="24" PointY="72.875" />
+        <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_PAIS" />
+        <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_SOCIEDAD" />
+        <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_TSOL" />
+        <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_TSOPORTE" />
+        <AssociationConnector Association="TAT001Model.FK_TSOPORTET_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_TSOPORTET_TSOPORTE" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

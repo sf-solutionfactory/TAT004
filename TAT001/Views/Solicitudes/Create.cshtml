@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
+<script src="~/Scripts/soporte.js"></script>
 <script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
@@ -182,7 +183,7 @@
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
-                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value)" })
+                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "');" })
                                     }
                                     else
                                     {
@@ -659,7 +660,7 @@
                 <div class="col s12 m6 l6">
                     @if (ViewBag.reversan != "X")
                     {
-                        <div class="card-panel">
+                        @*<div class="card-panel">
                             <h5>Documentos de Soporte</h5>
                             <label>* Campos obligatorios</label>
                             <div class="row" style="margin-bottom:0">
@@ -723,7 +724,21 @@
                                     </form>
                                 </div>
                             </div>
+                        </div>*@
+
+                    <div class="card-panel">
+                        <h5>Documentos de Soporte2</h5>
+                        <label>* Campos obligatorios</label>
+                        <div class="row" style="margin-bottom:0">
+                            <div class="col s12">
+                                <form action="#">
+                                    <div class="row" id="div_soportes">
+
+                                    </div>
+                                </form>
+                            </div>
                         </div>
+                    </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)

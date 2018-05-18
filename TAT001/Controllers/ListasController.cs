@@ -275,5 +275,22 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+        [HttpPost]
+        public JsonResult soportes(string bukrs, string land, string tsol, string spras)
+        {
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from C in db.CONSOPORTEs
+                     join T in db.TSOPORTETs
+                     on C.TSOPORTE_ID equals T.TSOPORTE_ID
+                     where C.SOCIEDAD_ID == bukrs
+                     & C.PAIS_ID == land
+                     & C.TSOL_ID == tsol
+                     & T.SPRAS_ID == spras
+                     select new { C.TSOPORTE_ID, C.OBLIGATORIO, T.TXT50 });
+
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
     }
 }

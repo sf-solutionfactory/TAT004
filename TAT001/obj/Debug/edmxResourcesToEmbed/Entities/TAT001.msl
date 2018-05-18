@@ -573,6 +573,7 @@
     <EntitySetMapping Name="DOCUMENTOPs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOP">
         <MappingFragment StoreEntitySet="DOCUMENTOP">
+          <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="POS" ColumnName="POS" />
           <ScalarProperty Name="MATNR" ColumnName="MATNR" />
@@ -1752,5 +1753,36 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="CONSOPORTEs">
+      <EntityTypeMapping TypeName="TAT001Model.CONSOPORTE">
+        <MappingFragment StoreEntitySet="CONSOPORTE">
+          <ScalarProperty Name="OBLIGATORIO" ColumnName="OBLIGATORIO" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSOPORTEs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOPORTE">
+        <MappingFragment StoreEntitySet="TSOPORTE">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSOPORTETs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOPORTET">
+        <MappingFragment StoreEntitySet="TSOPORTET">
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

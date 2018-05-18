@@ -204,28 +204,34 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
-    <Compile Include="Controllers\ClienteController.cs" />
-    <Compile Include="Controllers\ClientesController.cs" />
-    <Compile Include="Controllers\ContactoController.cs" />
+    <Compile Include="Controllers\Catalogos\ClienteController.cs" />
+    <Compile Include="Controllers\Catalogos\ClientesController.cs" />
+    <Compile Include="Controllers\Catalogos\ContactoController.cs" />
+    <Compile Include="Controllers\Catalogos\LeyendaController.cs" />
+    <Compile Include="Controllers\Catalogos\ProveedorController.cs" />
+    <Compile Include="Controllers\Catalogos\trvController.cs" />
+    <Compile Include="Controllers\Catalogos\TxcController.cs" />
+    <Compile Include="Controllers\Catalogos\TxlController.cs" />
+    <Compile Include="Controllers\Catalogos\TxnController.cs" />
     <Compile Include="Controllers\Det_AprobsController.cs" />
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ImpuestoController.cs" />
+    <Compile Include="Controllers\Catalogos\ImpuestoController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\MaterialesController.cs" />
-    <Compile Include="Controllers\PaginasController.cs" />
-    <Compile Include="Controllers\PaisController.cs" />
+    <Compile Include="Controllers\Catalogos\MaterialesController.cs" />
+    <Compile Include="Controllers\Catalogos\PaginasController.cs" />
+    <Compile Include="Controllers\Catalogos\PaisController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
-    <Compile Include="Controllers\PuestosController.cs" />
-    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\Catalogos\PuestosController.cs" />
+    <Compile Include="Controllers\Catalogos\RolesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
-    <Compile Include="Controllers\TCambioController.cs" />
-    <Compile Include="Controllers\TextosController.cs" />
-    <Compile Include="Controllers\UsuariosController.cs" />
-    <Compile Include="Controllers\WarningsController.cs" />
+    <Compile Include="Controllers\Catalogos\TCambioController.cs" />
+    <Compile Include="Controllers\Catalogos\TextosController.cs" />
+    <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
+    <Compile Include="Controllers\Catalogos\WarningsController.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Entities\ACCION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
@@ -267,6 +273,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CONPOSAPP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CONSOPORTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CONTACTOC.cs">
@@ -539,6 +548,12 @@
     <Compile Include="Entities\TSOLT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TSOPORTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOPORTET.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TS_FORM.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -720,9 +735,12 @@
     <Content Include="Scripts\materialize.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\sideMenu.js" />
+    <Content Include="Scripts\soporte.js" />
     <Content Include="Scripts\tableHeadFixer.js" />
     <Content Include="Scripts\ValidarEdC.js" />
+    <Content Include="Scripts\ValidarLeyenda.js" />
     <Content Include="Scripts\ValidarNumero.js" />
+    <Content Include="Scripts\ValidarProv.js" />
     <Content Include="Scripts\ValidarTCambio.js" />
     <Content Include="Views\Mails\logo_kellogg.png" />
     <Content Include="Web.config">
@@ -822,6 +840,34 @@
     <Content Include="Views\Listas\selectTaxeo.cshtml" />
     <Content Include="Views\Solicitudes\_PartialSopTr.cshtml" />
     <Content Include="Views\Solicitudes\Reversa.cshtml" />
+    <Content Include="Views\Txn\Index.cshtml" />
+    <Content Include="Views\Txn\Create.cshtml" />
+    <Content Include="Views\Txn\Delete.cshtml" />
+    <Content Include="Views\Txn\Details.cshtml" />
+    <Content Include="Views\Txn\Edit.cshtml" />
+    <Content Include="Views\Txc\Index.cshtml" />
+    <Content Include="Views\Txc\Create.cshtml" />
+    <Content Include="Views\Txc\Delete.cshtml" />
+    <Content Include="Views\Txc\Details.cshtml" />
+    <Content Include="Views\Txc\Edit.cshtml" />
+    <Content Include="Views\trv\Index.cshtml" />
+    <Content Include="Views\trv\Create.cshtml" />
+    <Content Include="Views\trv\Delete.cshtml" />
+    <Content Include="Views\trv\Details.cshtml" />
+    <Content Include="Views\trv\Edit.cshtml" />
+    <Content Include="Views\Txl\Index.cshtml" />
+    <Content Include="Views\Txl\Create.cshtml" />
+    <Content Include="Views\Txl\Delete.cshtml" />
+    <Content Include="Views\Leyenda\Index.cshtml" />
+    <Content Include="Views\Leyenda\Create.cshtml" />
+    <Content Include="Views\Leyenda\Delete.cshtml" />
+    <Content Include="Views\Leyenda\Details.cshtml" />
+    <Content Include="Views\Leyenda\Edit.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
+    <Content Include="Views\Proveedor\Create.cshtml" />
+    <Content Include="Views\Proveedor\Delete.cshtml" />
+    <Content Include="Views\Proveedor\Details.cshtml" />
+    <Content Include="Views\Proveedor\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

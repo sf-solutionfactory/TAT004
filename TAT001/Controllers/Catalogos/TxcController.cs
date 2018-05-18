@@ -8,22 +8,22 @@ using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 
-namespace TAT001.Controllers
+namespace TAT001.Controllers.Catalogos
 {
-    [Authorize]
-    public class PuestosController : Controller
+    public class TxcController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
 
-        // GET: Puestos
+        // GET: Txc
         public ActionResult Index()
         {
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -43,19 +43,21 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
-            return View(db.PUESTOes.ToList());
+            return View(db.TX_CONCEPTO.ToList());
         }
 
-        // GET: Puestos/Details/5
+        // GET: Txc/Details/5
         public ActionResult Details(int? id)
         {
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -75,28 +77,30 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PUESTO pUESTO = db.PUESTOes.Find(id);
-            if (pUESTO == null)
+            TX_CONCEPTO tX_CONCEPTO = db.TX_CONCEPTO.Find(id);
+            if (tX_CONCEPTO == null)
             {
                 return HttpNotFound();
             }
-            return View(pUESTO);
+            return View(tX_CONCEPTO);
         }
 
-        // GET: Puestos/Create
+        // GET: Txc/Create
         public ActionResult Create()
         {
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -116,42 +120,63 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
             return View();
         }
 
-        // POST: Puestos/Create
+        // POST: Txc/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PUESTO_ID,TXT50")] PUESTOT pUESTOT)
+        public ActionResult Create([Bind(Include = "ID,DESCRIPCION,ACTIVO")] TX_CONCEPTO tX_CONCEPTO)
         {
-            if (ModelState.IsValid)
+            try
             {
-                PUESTO p = new PUESTO();
-                p.ACTIVO = true;
-                db.PUESTOes.Add(p);
-                db.SaveChanges();
-                List<SPRA> ss = db.SPRAS.ToList();
-                foreach (SPRA s in ss)
+                if (tX_CONCEPTO.DESCRIPCION != null)
                 {
-                    PUESTOT pt = new PUESTOT();
-                    pt.PUESTO_ID = p.ID;
-                    pt.SPRAS_ID = s.ID;
-                    pt.TXT50 = pUESTOT.TXT50;
-                    db.PUESTOTs.Add(pt);
+                    if (ModelState.IsValid)
+                    {
+                        tX_CONCEPTO.ACTIVO = true;
+                        db.TX_CONCEPTO.Add(tX_CONCEPTO);
+                        db.SaveChanges();
+                        //Posterior a la insercion del registro, insertar en treversat
+                        TX_CONCEPTO trvi = db.TX_CONCEPTO.Where(x => x.DESCRIPCION == tX_CONCEPTO.DESCRIPCION).FirstOrDefault();
+                        //si trae registros entra
+                        if (trvi != null)
+                        {
+                            List<SPRA> ss = db.SPRAS.ToList();
+                            foreach (SPRA s in ss)
+                            {
+                                TX_CONCEPTOT trvt = new TX_CONCEPTOT();
+                                trvt.SPRAS_ID = s.ID;
+                                trvt.CONCEPTO_ID = trvi.ID;
+                                trvt.TXT50 = tX_CONCEPTO.DESCRIPCION;
+                                db.TX_CONCEPTOT.Add(trvt);
+                                db.SaveChanges();
+                            }
+                        }
+                        return RedirectToAction("Index");
+                    }
                 }
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                else
+                {
+                    ViewBag.error = "Sin Texto";
+                }
 
+            }
+            catch (Exception e)
+            {
+                var x = e.ToString();
+            }
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -171,19 +196,22 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
-            return View(pUESTOT);
+            return View(tX_CONCEPTO);
+
         }
 
-        // GET: Puestos/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: Txc/Edit/5
+        public ActionResult Edit(int id)
         {
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -203,53 +231,63 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PUESTO pUESTO = db.PUESTOes.Find(id);
-            if (pUESTO == null)
+            TX_CONCEPTO tX_CONCEPTO = db.TX_CONCEPTO.Find(id);
+            if (tX_CONCEPTO == null)
             {
                 return HttpNotFound();
             }
-            return View(pUESTO);
+            return View(tX_CONCEPTO);
         }
 
-        // POST: Puestos/Edit/5
+        // POST: Txc/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ACTIVO")] PUESTO pUESTO)
+        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,ACTIVO")] TX_CONCEPTO tX_CONCEPTO)
         {
             if (ModelState.IsValid)
             {
+                //Recuperamos todas las descripciones en sus lenguajes
                 List<SPRA> ss = db.SPRAS.ToList();
                 foreach (SPRA s in ss)
                 {
                     try
                     {
-                        PUESTOT p = new PUESTOT();
-                        p.PUESTO_ID = pUESTO.ID;
-                        p.SPRAS_ID = s.ID;
-                        p.TXT50 = Request.Form[s.ID].ToString();
-                        db.Entry(p).State = EntityState.Modified;
+                        TX_CONCEPTOT txt = new TX_CONCEPTOT();
+                        txt.SPRAS_ID = s.ID;
+                        txt.TXT50 = Request.Form[s.ID].ToString();
+                        txt.CONCEPTO_ID = tX_CONCEPTO.ID;
+                        db.Entry(txt).State = EntityState.Modified;
                         db.SaveChanges();
-                    }
-                    catch
-                    {
 
+                    }
+                    catch (Exception e)
+                    {
+                        var ex = e.ToString();
                     }
                 }
                 return RedirectToAction("Index");
             }
+            return View(tX_CONCEPTO);
+        }
+
+        // GET: Txc/Delete/5
+        public ActionResult Delete(int id)
+        {
             int pagina = 621; //ID EN BASE DE DATOS
+            USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
                 //string u = "admin";
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
@@ -269,34 +307,35 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
+                ViewBag.lan = user.SPRAS_ID;
             }
-            return View(pUESTO);
-        }
-
-        // GET: Puestos/Delete/5
-        public ActionResult Delete(int? id)
-        {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PUESTO pUESTO = db.PUESTOes.Find(id);
-            if (pUESTO == null)
+            TX_CONCEPTO tX_CONCEPTO = db.TX_CONCEPTO.Find(id);
+            if (tX_CONCEPTO == null)
             {
                 return HttpNotFound();
             }
-            return View(pUESTO);
+            return View(tX_CONCEPTO);
         }
 
-        // POST: Puestos/Delete/5
+        // POST: Txc/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PUESTO pUESTO = db.PUESTOes.Find(id);
-            db.PUESTOes.Remove(pUESTO);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                TX_CONCEPTO txc = db.TX_CONCEPTO.Where(x => x.ID == id).FirstOrDefault();
+                txc.ACTIVO = false;
+                db.Entry(txc).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception e) { var x = e.ToString(); }
+            return View();
         }
 
         protected override void Dispose(bool disposing)

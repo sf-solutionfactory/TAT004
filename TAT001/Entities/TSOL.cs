@@ -20,6 +20,7 @@ namespace TAT001.Entities
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.TSOL1 = new HashSet<TSOL>();
             this.TSOLTs = new HashSet<TSOLT>();
+            this.CONSOPORTEs = new HashSet<CONSOPORTE>();
         }
     
         public string ID { get; set; }
@@ -37,5 +38,7 @@ namespace TAT001.Entities
         public virtual TSOL TSOL2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
     }
 }

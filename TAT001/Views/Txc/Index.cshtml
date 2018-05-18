@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TAT001.Entities.TX_CONCEPTO>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 502;
+    ViewBag.carpeta_r = 500;
+}
+<div class="row">
+    <div class="col s12 right-align">
+        @* Texto, pagina a ligar "NOMBRE", View *@
+        @Html.ActionLink("Crear Nuevo", "Create", "Txc", null, new { @class = "btn-small" })
+    </div>
+</div>
+<div class="col 12 s12 ">
+    <div class="card-panel">
+        <div class="row">
+            <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DESCRIPCION)
+                    </th>
+
+                    <th></th>
+                </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DESCRIPCION)
+                            </td>
+                            <td>
+                                <a data-form-method="post" href="@Url.Action("Edit", "Txc", new { id = item.ID })">
+                                    <i class='material-icons green-text'>edit</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Details", "Txc", new { id = item.ID })">
+                                    <i class='material-icons blue-text'>search</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Delete", "Txc", new { id = item.ID })">
+                                    <i class='material-icons red-text'>delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

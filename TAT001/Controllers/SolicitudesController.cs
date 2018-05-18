@@ -770,6 +770,7 @@ namespace TAT001.Controllers
                 ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
 
                 d.SOCIEDAD_ID = id_bukrs.BUKRS;
+                d.PAIS_ID = id_pais.LAND;//RSG 18.05.2018
                 d.MONEDA_ID = id_bukrs.WAERS;
                 var date = DateTime.Now.Date;
                 TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO();
@@ -830,6 +831,11 @@ namespace TAT001.Controllers
             //List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
 
             //d.DOCUMENTOF = LD;
+
+            //----------------------------RSG 18.05.2018
+            //ViewBag.form_soporte = db.CONSOPORTEs.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) 
+            //                        & a.TSOL_ID.Equals(d.TSOL_ID) & a.ACTIVO == true).ToList();
+            //----------------------------RSG 18.05.2018
 
             return View(d);
         }
@@ -2205,7 +2211,8 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.MATNR = (string)dt.Rows[i][2]; //Material
+                        //doc.MATNR = (string)dt.Rows[i][2]; //Material
+                        doc.MATNR = dt.Rows[i][2].ToString(); //Material
                         MATERIAL mat = material(doc.MATNR);
                         if (mat != null)//Validar si el material existe
                         {

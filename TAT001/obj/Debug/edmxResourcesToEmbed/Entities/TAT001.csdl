@@ -673,6 +673,7 @@
     <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
     <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
+    <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOR">
     <Key>
@@ -917,6 +918,7 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_PAIS" FromRole="PAI" ToRole="CONSOPORTE" />
   </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
@@ -1174,6 +1176,7 @@
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TS_FORM" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="USUARIO" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CONSOPORTE" />
   </EntityType>
   <EntityType Name="SPRA">
     <Key>
@@ -1201,6 +1204,7 @@
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+    <NavigationProperty Name="TSOPORTETs" Relationship="TAT001Model.FK_TSOPORTET_SPRAS" FromRole="SPRA" ToRole="TSOPORTET" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -1486,6 +1490,7 @@
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
     <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -4172,6 +4177,33 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="CONSOPORTEs" EntityType="TAT001Model.CONSOPORTE" />
+    <EntitySet Name="TSOPORTEs" EntityType="TAT001Model.TSOPORTE" />
+    <EntitySet Name="TSOPORTETs" EntityType="TAT001Model.TSOPORTET" />
+    <AssociationSet Name="FK_CONSOPORTE_PAIS" Association="TAT001Model.FK_CONSOPORTE_PAIS">
+      <End Role="PAI" EntitySet="PAIS" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONSOPORTE_SOCIEDAD" Association="TAT001Model.FK_CONSOPORTE_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONSOPORTE_TSOL" Association="TAT001Model.FK_CONSOPORTE_TSOL">
+      <End Role="TSOL" EntitySet="TSOLs" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONSOPORTE_TSOPORTE" Association="TAT001Model.FK_CONSOPORTE_TSOPORTE">
+      <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TSOPORTET_SPRAS" Association="TAT001Model.FK_TSOPORTET_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TSOPORTET_TSOPORTE" Association="TAT001Model.FK_TSOPORTET_TSOPORTE">
+      <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+      <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4279,4 +4311,116 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="CONSOPORTE">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="TSOL_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="TSOL_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PAI" Relationship="TAT001Model.FK_CONSOPORTE_PAIS" FromRole="CONSOPORTE" ToRole="PAI" />
+    <NavigationProperty Name="SOCIEDAD" Relationship="TAT001Model.FK_CONSOPORTE_SOCIEDAD" FromRole="CONSOPORTE" ToRole="SOCIEDAD" />
+    <NavigationProperty Name="TSOL" Relationship="TAT001Model.FK_CONSOPORTE_TSOL" FromRole="CONSOPORTE" ToRole="TSOL" />
+    <NavigationProperty Name="TSOPORTE" Relationship="TAT001Model.FK_CONSOPORTE_TSOPORTE" FromRole="CONSOPORTE" ToRole="TSOPORTE" />
+    <Property Name="OBLIGATORIO" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TSOPORTE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_TSOPORTE" FromRole="TSOPORTE" ToRole="CONSOPORTE" />
+    <NavigationProperty Name="TSOPORTETs" Relationship="TAT001Model.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTE" ToRole="TSOPORTET" />
+  </EntityType>
+  <EntityType Name="TSOPORTET">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="TSOPORTE_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="TSOPORTE_ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_TSOPORTET_SPRAS" FromRole="TSOPORTET" ToRole="SPRA" />
+    <NavigationProperty Name="TSOPORTE" Relationship="TAT001Model.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTET" ToRole="TSOPORTE" />
+  </EntityType>
+  <Association Name="FK_CONSOPORTE_PAIS">
+    <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="1" />
+    <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAI">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONSOPORTE_SOCIEDAD">
+    <End Type="TAT001Model.SOCIEDAD" Role="SOCIEDAD" Multiplicity="1" />
+    <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONSOPORTE_TSOL">
+    <End Type="TAT001Model.TSOL" Role="TSOL" Multiplicity="1" />
+    <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONSOPORTE_TSOPORTE">
+    <End Type="TAT001Model.TSOPORTE" Role="TSOPORTE" Multiplicity="0..1" />
+    <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOPORTE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="TSOPORTE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TSOPORTET_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.TSOPORTET" Role="TSOPORTET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TSOPORTET">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TSOPORTET_TSOPORTE">
+    <End Type="TAT001Model.TSOPORTE" Role="TSOPORTE" Multiplicity="1" />
+    <End Type="TAT001Model.TSOPORTET" Role="TSOPORTET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOPORTE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TSOPORTET">
+        <PropertyRef Name="TSOPORTE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

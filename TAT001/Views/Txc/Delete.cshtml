@@ -1,0 +1,44 @@
+﻿@model TAT001.Entities.TX_CONCEPTO
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 502;
+    ViewBag.carpeta_r = 500;
+}
+
+<div>
+    <div class="row">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s6 m6 l6">
+                    <div class="col l12 m12 s12">
+                        <div class="input-field col l10 m10" style="margin-bottom:0;">
+                            @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6 m6 l6">
+                    <div class="col l12 m12 s12">
+                        <div class="input-field col l10 m10" style="margin-bottom:0;">
+                            @Html.EditorFor(model => model.DESCRIPCION, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.LabelFor(model => model.DESCRIPCION, htmlAttributes: new { @class = "control-label col-md-2" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

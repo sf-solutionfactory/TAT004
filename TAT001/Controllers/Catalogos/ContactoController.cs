@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using TAT001.Entities;
 using TAT001.Models;
 
-namespace TAT001.Controllers
+namespace TAT001.Controllers.Catalogos
 {
     public class ContactoController : Controller
     {

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TAT001.Entities.LEYENDA>
+
+@{
+    ViewBag.pagina_r = 502;
+    ViewBag.carpeta_r = 500;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col s12 right-align">
+        @Html.ActionLink("Agregar Pagina", "Create", "Proveedor", new { @class = "btn-small" })
+    </div>
+</div>
+
+<div class="col 12 s12 ">
+    <div class="card-panel">
+        <div class="row">
+            <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LEYENDA1)
+                    </th>   
+                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.PAI.LAND)
+                    </th>
+                    <th></th>
+                </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LEYENDA1)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PAI.LAND)
+                            </td>
+                            <td>
+                                <a data-form-method="post" href="@Url.Action("Edit", "Leyenda", new { id = item.ID})">
+                                    <i class='material-icons green-text'>edit</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Details", "Leyenda", new { id = item.ID})">
+                                    <i class='material-icons blue-text'>search</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Delete", "Leyenda",new { id = item.ID})">
+                                    <i class='material-icons red-text'>delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

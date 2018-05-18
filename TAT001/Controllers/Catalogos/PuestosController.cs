@@ -8,17 +8,17 @@ using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 
-namespace TAT001.Controllers
+namespace TAT001.Controllers.Catalogos
 {
     [Authorize]
-    public class RolesController : Controller
+    public class PuestosController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
 
-        // GET: Roles
+        // GET: Puestos
         public ActionResult Index()
         {
-            int pagina = 611; //ID EN BASE DE DATOS
+            int pagina = 621; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -44,14 +44,13 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
-            return View(db.ROLs.ToList());
+            return View(db.PUESTOes.ToList());
         }
 
-        // GET: Roles/Details/5
+        // GET: Puestos/Details/5
         public ActionResult Details(int? id)
         {
-
-            int pagina = 613; //ID EN BASE DE DATOS
+            int pagina = 621; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -81,18 +80,18 @@ namespace TAT001.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ROL rOL = db.ROLs.Find(id);
-            if (rOL == null)
+            PUESTO pUESTO = db.PUESTOes.Find(id);
+            if (pUESTO == null)
             {
                 return HttpNotFound();
             }
-            return View(rOL);
+            return View(pUESTO);
         }
 
-        // GET: Roles/Create
+        // GET: Puestos/Create
         public ActionResult Create()
         {
-            int pagina = 612; //ID EN BASE DE DATOS
+            int pagina = 621; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -121,90 +120,181 @@ namespace TAT001.Controllers
             return View();
         }
 
-        // POST: Roles/Create
+        // POST: Puestos/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,CLAVE,NOMBRE,ACTIVO")] ROL rOL)
+        public ActionResult Create([Bind(Include = "PUESTO_ID,TXT50")] PUESTOT pUESTOT)
         {
             if (ModelState.IsValid)
             {
-                rOL.ACTIVO = true;
-                db.ROLs.Add(rOL);
+                PUESTO p = new PUESTO();
+                p.ACTIVO = true;
+                db.PUESTOes.Add(p);
                 db.SaveChanges();
-
-                List<ROLT> tt = new List<ROLT>();
-                List<SPRA> ll = db.SPRAS.ToList();
-                foreach(SPRA l in ll)
+                List<SPRA> ss = db.SPRAS.ToList();
+                foreach (SPRA s in ss)
                 {
-                    ROLT t = new ROLT();
-                    t.SPRAS_ID = l.ID;
-                    t.ROL_ID = rOL.ID;
-                    t.TXT50 = rOL.NOMBRE;
-                    tt.Add(t);
+                    PUESTOT pt = new PUESTOT();
+                    pt.PUESTO_ID = p.ID;
+                    pt.SPRAS_ID = s.ID;
+                    pt.TXT50 = pUESTOT.TXT50;
+                    db.PUESTOTs.Add(pt);
                 }
-                db.ROLTs.AddRange(tt);
                 db.SaveChanges();
-                return RedirectToAction("Details", new { id = rOL.ID });
+                return RedirectToAction("Index");
             }
 
-            return View(rOL);
+            int pagina = 621; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    //ViewBag.pais = "mx.svg";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            return View(pUESTOT);
         }
 
-        // GET: Roles/Edit/5
+        // GET: Puestos/Edit/5
         public ActionResult Edit(int? id)
         {
+            int pagina = 621; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    //ViewBag.pais = "mx.svg";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ROL rOL = db.ROLs.Find(id);
-            if (rOL == null)
+            PUESTO pUESTO = db.PUESTOes.Find(id);
+            if (pUESTO == null)
             {
                 return HttpNotFound();
             }
-            return View(rOL);
+            return View(pUESTO);
         }
 
-        // POST: Roles/Edit/5
+        // POST: Puestos/Edit/5
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,CLAVE,NOMBRE,ACTIVO")] ROL rOL)
+        public ActionResult Edit([Bind(Include = "ID,ACTIVO")] PUESTO pUESTO)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(rOL).State = EntityState.Modified;
-                db.SaveChanges();
+                List<SPRA> ss = db.SPRAS.ToList();
+                foreach (SPRA s in ss)
+                {
+                    try
+                    {
+                        PUESTOT p = new PUESTOT();
+                        p.PUESTO_ID = pUESTO.ID;
+                        p.SPRAS_ID = s.ID;
+                        p.TXT50 = Request.Form[s.ID].ToString();
+                        db.Entry(p).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch
+                    {
+
+                    }
+                }
                 return RedirectToAction("Index");
             }
-            return View(rOL);
+            int pagina = 621; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".svg";
+                }
+                catch
+                {
+                    //ViewBag.pais = "mx.svg";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            return View(pUESTO);
         }
 
-        // GET: Roles/Delete/5
+        // GET: Puestos/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ROL rOL = db.ROLs.Find(id);
-            if (rOL == null)
+            PUESTO pUESTO = db.PUESTOes.Find(id);
+            if (pUESTO == null)
             {
                 return HttpNotFound();
             }
-            return View(rOL);
+            return View(pUESTO);
         }
 
-        // POST: Roles/Delete/5
+        // POST: Puestos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            ROL rOL = db.ROLs.Find(id);
-            db.ROLs.Remove(rOL);
+            PUESTO pUESTO = db.PUESTOes.Find(id);
+            db.PUESTOes.Remove(pUESTO);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
