@@ -1,0 +1,68 @@
+﻿@model IEnumerable<TAT001.Entities.TSOL>
+
+@{
+    ViewBag.pagina_r = 641;
+    ViewBag.carpeta_r = 500;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lan = ViewBag.lan;
+}
+
+<div class="col 12 s12 ">
+    <div class="card-panel">
+        <div class="row">
+
+
+            <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                <thead>
+                    <tr class="header">
+                        <th>
+                            @Html.DisplayNameFor(model => model.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.RANGO.ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TSOL2.DESCRIPCION)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var tslt = "";
+                        try
+                        {
+                            List<TAT001.Entities.TSOLT> tst = item.TSOLTs.ToList();
+                            tslt = tst.Where(x => x.SPRAS_ID == lan).FirstOrDefault().TXT020;
+                        }
+                        catch (Exception e)
+                        {
+                            tslt = "";
+                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RANGO.ID)
+                            </td>
+                            <td>
+                                @tslt.ToString()
+                            </td>
+                            <td>
+                                <a data-form-method="post" href="@Url.Action("Edit", "TSol", new { id = item.ID })">
+                                    <i class='material-icons green-text'>edit</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Details", "TSol", new { id = item.ID })">
+                                    <i class='material-icons blue-text'>search</i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -210,6 +210,7 @@
     <Compile Include="Controllers\Catalogos\LeyendaController.cs" />
     <Compile Include="Controllers\Catalogos\ProveedorController.cs" />
     <Compile Include="Controllers\Catalogos\trvController.cs" />
+    <Compile Include="Controllers\Catalogos\TSOLController.cs" />
     <Compile Include="Controllers\Catalogos\TxcController.cs" />
     <Compile Include="Controllers\Catalogos\TxlController.cs" />
     <Compile Include="Controllers\Catalogos\TxnController.cs" />
@@ -868,6 +869,9 @@
     <Content Include="Views\Proveedor\Delete.cshtml" />
     <Content Include="Views\Proveedor\Details.cshtml" />
     <Content Include="Views\Proveedor\Edit.cshtml" />
+    <Content Include="Views\TSOL\Details.cshtml" />
+    <Content Include="Views\TSOL\Edit.cshtml" />
+    <Content Include="Views\TSOL\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
