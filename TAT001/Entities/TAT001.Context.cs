@@ -40,6 +40,7 @@ namespace TAT001.Entities
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
         public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
         public virtual DbSet<CONPOSAPP> CONPOSAPPs { get; set; }
+        public virtual DbSet<CONSOPORTE> CONSOPORTEs { get; set; }
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
         public virtual DbSet<CUENTA> CUENTAs { get; set; }
@@ -112,6 +113,8 @@ namespace TAT001.Entities
         public virtual DbSet<TS_FORMT> TS_FORMT { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
         public virtual DbSet<TSOLT> TSOLTs { get; set; }
+        public virtual DbSet<TSOPORTE> TSOPORTEs { get; set; }
+        public virtual DbSet<TSOPORTET> TSOPORTETs { get; set; }
         public virtual DbSet<TX_CONCEPTO> TX_CONCEPTO { get; set; }
         public virtual DbSet<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
         public virtual DbSet<TX_NOTAT> TX_NOTAT { get; set; }
@@ -134,9 +137,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<CONSOPORTE> CONSOPORTEs { get; set; }
-        public virtual DbSet<TSOPORTE> TSOPORTEs { get; set; }
-        public virtual DbSet<TSOPORTET> TSOPORTETs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

@@ -17,10 +17,10 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TSOL()
         {
+            this.CONSOPORTEs = new HashSet<CONSOPORTE>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.TSOL1 = new HashSet<TSOL>();
             this.TSOLTs = new HashSet<TSOLT>();
-            this.CONSOPORTEs = new HashSet<CONSOPORTE>();
         }
     
         public string ID { get; set; }
@@ -31,6 +31,8 @@ namespace TAT001.Entities
         public bool FACTURA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual RANGO RANGO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -38,7 +40,5 @@ namespace TAT001.Entities
         public virtual TSOL TSOL2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace TAT001.Models
                         tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == doc.TSOL_ID
                         && x.SOCIEDAD == doc.SOCIEDAD_ID
                         && x.FECHA_FINVIG >= doc.FECHAF_VIG
+                        && x.TIPO_DOC != "KG"
                         ).Single();
                     }
                     else

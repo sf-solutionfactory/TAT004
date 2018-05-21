@@ -27,6 +27,7 @@ namespace TAT001.Entities
             this.PERMISO_PAGINA = new HashSet<PERMISO_PAGINA>();
             this.PUESTOTs = new HashSet<PUESTOT>();
             this.USUARIOs = new HashSet<USUARIO>();
+            this.DET_TAXEO = new HashSet<DET_TAXEO>();
         }
     
         public int ID { get; set; }
@@ -52,5 +53,7 @@ namespace TAT001.Entities
         public virtual ICollection<PUESTOT> PUESTOTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_TAXEO> DET_TAXEO { get; set; }
     }
 }

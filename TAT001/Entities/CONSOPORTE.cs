@@ -14,16 +14,11 @@ namespace TAT001.Entities
     
     public partial class CONSOPORTE
     {
-        public string SOCIEDAD_ID { get; set; }
-        public string PAIS_ID { get; set; }
         public string TSOL_ID { get; set; }
-        public int POS { get; set; }
         public string TSOPORTE_ID { get; set; }
-        public bool ACTIVO { get; set; }
         public bool OBLIGATORIO { get; set; }
+        public bool ACTIVO { get; set; }
     
-        public virtual PAI PAI { get; set; }
-        public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TSOL TSOL { get; set; }
         public virtual TSOPORTE TSOPORTE { get; set; }
     }

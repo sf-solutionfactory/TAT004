@@ -158,7 +158,7 @@
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont">Financiera</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();">Financiera</a></li>
         </ul>
     </div>
 </div>
@@ -199,7 +199,7 @@
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
-                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
+                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value);getClearing(this.value);" })
                                     }
                                     else
                                     {
@@ -591,16 +591,20 @@
                     <div class="row" style="margin-bottom:0">
                         <div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active" })
+                            @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
+                            @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
                         </div>
                         <div class="input-field col s6">
                             <i class="material-icons prefix">date_range</i>
-                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active" })
+                            @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
+                            @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
                         </div>
                         <script>
-                            var elemth = document.querySelector('#fechai_vig');
+                            var elemth = document.querySelector('#fechai_vig2');
                             var optionsth = {
                                 format: 'dd/mm/yyyy',
                                 i18n: {
@@ -618,16 +622,16 @@
                             };
                             var instanceth = M.Datepicker.init(elemth, optionsth);
 
-                            var elemtd = document.querySelector('#fechaf_vig');
+                            var elemtd = document.querySelector('#fechaf_vig2');
                             var optionstd = {
                                 format: 'dd/mm/yyyy',
                                 onClose: function (e) {
-                                    var datei = $('#fechai_vig').val();
-                                    var datef = $('#fechaf_vig').val();
+                                    var datei = $('#fechai_vig2').val();
+                                    var datef = $('#fechaf_vig2').val();
                                     var res = validar_fechas(datei, datef);
 
                                     if (!res) {
-                                        $('#fechaf_vig').val("");
+                                        $('#fechaf_vig2').val("");
                                         M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
                                     }
                                 },
@@ -661,84 +665,84 @@
                     @if (ViewBag.reversan != "X")
                     {
                         @*<div class="card-panel">
-                            <h5>Documentos de Soporte</h5>
+                                <h5>Documentos de Soporte</h5>
+                                <label>* Campos obligatorios</label>
+                                <div class="row" style="margin-bottom:0">
+                                    <div class="col s12">
+                                        <form action="#">
+                                            <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
+                                            <input type="text" value="Carta" name="labels_soporte" hidden />
+                                            <div class="file-field input-field">
+                                                <div class="btn-small" style="float:left;">
+                                                    <span>Examinar</span>
+                                                    <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                            </div>
+                                            <label name="labels_soporte2">Contratos</label><label class="lbl_nec"></label>
+                                            <input type="text" value="Contratos" name="labels_soporte" hidden />
+                                            <div class="file-field input-field">
+                                                <div class="btn-small" style="float:left;">
+                                                    <span>Examinar</span>
+                                                    <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                            </div>
+                                            <label name="labels_soporte2">Facturas Cliente</label>
+                                            <input type="text" value="Facturas Cliente" name="labels_soporte" hidden />
+                                            <div class="file-field input-field">
+                                                <div class="btn-small" style="float:left;">
+                                                    <span>Examinar</span>
+                                                    <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                            </div>
+                                            <label name="files_soportel">JBP</label>
+                                            <input type="text" value="JBP" name="labels_soporte" hidden />
+                                            <div class="file-field input-field">
+                                                <div class="btn-small" style="float:left;">
+                                                    <span>Examinar</span>
+                                                    <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                            </div>
+                                            <label name="files_soportel">Otros</label>
+                                            <input type="text" value="Otros" name="labels_soporte" hidden />
+                                            <div class="file-field input-field">
+                                                <div class="btn-small" style="float:left;">
+                                                    <span>Examinar</span>
+                                                    <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
+                                                </div>
+                                                <div class="file-path-wrapper">
+                                                    <input class="file-path validate" type="text">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        <div class="card-panel">
+                            <h5>Documentos de Soporte2</h5>
                             <label>* Campos obligatorios</label>
                             <div class="row" style="margin-bottom:0">
                                 <div class="col s12">
                                     <form action="#">
-                                        <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
-                                        <input type="text" value="Carta" name="labels_soporte" hidden />
-                                        <div class="file-field input-field">
-                                            <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
-                                                <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
-                                            </div>
-                                        </div>
-                                        <label name="labels_soporte2">Contratos</label><label class="lbl_nec"></label>
-                                        <input type="text" value="Contratos" name="labels_soporte" hidden />
-                                        <div class="file-field input-field">
-                                            <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
-                                                <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
-                                            </div>
-                                        </div>
-                                        <label name="labels_soporte2">Facturas Cliente</label>
-                                        <input type="text" value="Facturas Cliente" name="labels_soporte" hidden />
-                                        <div class="file-field input-field">
-                                            <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
-                                                <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
-                                            </div>
-                                        </div>
-                                        <label name="files_soportel">JBP</label>
-                                        <input type="text" value="JBP" name="labels_soporte" hidden />
-                                        <div class="file-field input-field">
-                                            <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
-                                                <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
-                                            </div>
-                                        </div>
-                                        <label name="files_soportel">Otros</label>
-                                        <input type="text" value="Otros" name="labels_soporte" hidden />
-                                        <div class="file-field input-field">
-                                            <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
-                                                <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
-                                            </div>
-                                            <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
-                                            </div>
+                                        <div class="row" id="div_soportes">
+
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                        </div>*@
-
-                    <div class="card-panel">
-                        <h5>Documentos de Soporte2</h5>
-                        <label>* Campos obligatorios</label>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="col s12">
-                                <form action="#">
-                                    <div class="row" id="div_soportes">
-
-                                    </div>
-                                </form>
-                            </div>
                         </div>
-                    </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
@@ -944,6 +948,7 @@
                                     <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                                 </div>
                             }
+                            <div id="div_picker"></div>
 
                             <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                 <thead>
@@ -1173,6 +1178,78 @@
                 </div>
                 <div>
                     <div class="col s12 m6 l6">
+
+                        <div class="card-panel">
+                            <div class="row">
+                                <h5>Cuentas</h5>
+                                <div class="col s12">
+                                    <div id="div_clearing">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+    var clearing = [];
+    function getClearing(gall) {
+        $("#div_clearing").empty();
+        clearing = [];
+        var bukrs = '@Model.SOCIEDAD_ID';
+        var land = '@Model.PAIS_ID';
+        var ejercicio = '@Model.EJERCICIO';
+        $.ajax({
+            type: "POST",
+            url: '../../Listas/clearing',
+            dataType: "json",
+            data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    //RSG 26.04.2018----------------
+                    clearing.push(data.ABONO);
+                    clearing.push(data.CARGO);
+                    clearing.push(data.CLEARING);
+                    clearing.push(data.LIMITE);
+                    //RSG 26.04.2018----------------
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+
+    }
+    function formaClearing() {
+        $("#div_clearing").empty();
+        var monto = document.getElementById("monto_dis").value;
+        var div = "<ul class='collection'><li class='collection-item'>";
+        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+        div += "</li><li class='collection-item'>";
+
+        if (clearing[3] == null) {
+            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+        }else {
+            if (clearing[2] != null) {
+                if (monto <= clearing[3]) {
+                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                    div += "</li><li class='collection-item'>";
+                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                    div += "</li>";
+                } else {
+                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                    div += "</li><li class='collection-item'>";
+                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                    div += "</li>";
+                }
+            }
+        }
+        div += "</li>";
+        div += "</ul>";
+        $("#div_clearing").append(div);
+    }
+                            </script>
+                        </div>
                         <div class="card-panel">
                             <h5>Análisis Solicitud</h5>
                             <div class="row" style="margin-bottom:0">

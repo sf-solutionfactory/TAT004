@@ -22,5 +22,8 @@ namespace TAT001.Entities
         public Nullable<int> PUESTOA_ID { get; set; }
         public string USUARIOA_ID { get; set; }
         public bool ACTIVO { get; set; }
+    
+        public virtual USUARIO USUARIO { get; set; }
+        public virtual PUESTO PUESTO { get; set; }
     }
 }

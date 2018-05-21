@@ -99,11 +99,11 @@ namespace TAT001.Controllers
                      //where N.BUKRS.Equals(bukrs) 
                      select new { N.PUESTOA_ID.Value, St.TXT50 }).ToList();
 
-            TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs)).FirstOrDefault();
+            TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.ACTIVO == true).FirstOrDefault();
             if (tl != null)
             {
-                var col = (from  St in db.PUESTOTs
-                           where St.PUESTO_ID== 9 &  St.SPRAS_ID.Equals(spras)
+                var col = (from St in db.PUESTOTs
+                           where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
                            //where N.BUKRS.Equals(bukrs) 
                            select new { Value = St.PUESTO_ID, St.TXT50 });
                 c.AddRange(col);
@@ -283,11 +283,26 @@ namespace TAT001.Controllers
             var c = (from C in db.CONSOPORTEs
                      join T in db.TSOPORTETs
                      on C.TSOPORTE_ID equals T.TSOPORTE_ID
-                     where C.SOCIEDAD_ID == bukrs
-                     & C.PAIS_ID == land
-                     & C.TSOL_ID == tsol
+                     where C.TSOL_ID == tsol
                      & T.SPRAS_ID == spras
                      select new { C.TSOPORTE_ID, C.OBLIGATORIO, T.TXT50 });
+
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
+        [HttpPost]
+        public JsonResult clearing(string bukrs, string land, string gall, string ejercicio)
+        {
+            TAT001Entities db = new TAT001Entities();
+            decimal ejer = decimal.Parse(ejercicio);
+
+            var c = (from C in db.CUENTAs
+                     where C.SOCIEDAD_ID == bukrs
+                     & C.PAIS_ID == land
+                     & C.GALL_ID == gall
+                     & C.EJERCICIO == ejer
+                     select new { C.ABONO, C.CARGO, C.CLEARING, C.LIMITE }).FirstOrDefault();
 
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;

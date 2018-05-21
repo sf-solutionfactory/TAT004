@@ -31,13 +31,13 @@ namespace TAT001.Entities
             this.TREVERSATs = new HashSet<TREVERSAT>();
             this.TS_FORMT = new HashSet<TS_FORMT>();
             this.TSOLTs = new HashSet<TSOLT>();
+            this.TSOPORTETs = new HashSet<TSOPORTET>();
             this.TX_CONCEPTOT = new HashSet<TX_CONCEPTOT>();
             this.TX_NOTAT = new HashSet<TX_NOTAT>();
             this.UMEDIDATs = new HashSet<UMEDIDAT>();
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
-            this.TSOPORTETs = new HashSet<TSOPORTET>();
         }
     
         public string ID { get; set; }
@@ -72,6 +72,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TSOPORTET> TSOPORTETs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TX_CONCEPTOT> TX_CONCEPTOT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TX_NOTAT> TX_NOTAT { get; set; }
@@ -83,7 +85,5 @@ namespace TAT001.Entities
         public virtual ICollection<WARNING> WARNINGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TSOPORTET> TSOPORTETs { get; set; }
     }
 }

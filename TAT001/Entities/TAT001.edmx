@@ -244,16 +244,11 @@
         </EntityType>
         <EntityType Name="CONSOPORTE">
           <Key>
-            <PropertyRef Name="SOCIEDAD_ID" />
-            <PropertyRef Name="PAIS_ID" />
             <PropertyRef Name="TSOL_ID" />
-            <PropertyRef Name="POS" />
+            <PropertyRef Name="TSOPORTE_ID" />
           </Key>
-          <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
-          <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
-          <Property Name="POS" Type="int" Nullable="false" />
-          <Property Name="TSOPORTE_ID" Type="nchar" MaxLength="3" />
+          <Property Name="TSOPORTE_ID" Type="nchar" MaxLength="3" Nullable="false" />
           <Property Name="OBLIGATORIO" Type="bit" Nullable="false" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
@@ -294,7 +289,7 @@
           <Property Name="EJERCICIO" Type="numeric" Precision="4" Scale="0" Nullable="false" />
           <Property Name="ABONO" Type="numeric" Precision="10" Scale="0" />
           <Property Name="CARGO" Type="numeric" Precision="10" Scale="0" />
-          <Property Name="CARGO_FV" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="CLEARING" Type="numeric" Precision="10" Scale="0" />
           <Property Name="LIMITE" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DET_AGENTE">
@@ -1836,30 +1831,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CONSOPORTE_PAIS">
-          <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
-          <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PAIS">
-              <PropertyRef Name="LAND" />
-            </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="PAIS_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CONSOPORTE_SOCIEDAD">
-          <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
-          <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SOCIEDAD">
-              <PropertyRef Name="BUKRS" />
-            </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="SOCIEDAD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CONSOPORTE_TSOL">
           <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
           <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
@@ -1873,7 +1844,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CONSOPORTE_TSOPORTE">
-          <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="0..1" />
+          <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="1" />
           <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TSOPORTE">
@@ -2137,6 +2108,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               <PropertyRef Name="SOCIEDAD_ID" />
               <PropertyRef Name="PUESTOC_ID" />
               <PropertyRef Name="VERSION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_TAXEO_PUESTO">
+          <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="0..1" />
+          <End Role="DET_TAXEO" Type="Self.DET_TAXEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PUESTO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_TAXEO">
+              <PropertyRef Name="PUESTOA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DET_TAXEO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DET_TAXEO" Type="Self.DET_TAXEO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DET_TAXEO">
+              <PropertyRef Name="USUARIOC_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3745,14 +3740,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
             <End Role="CONPOSAPH" EntitySet="CONPOSAPH" />
           </AssociationSet>
-          <AssociationSet Name="FK_CONSOPORTE_PAIS" Association="Self.FK_CONSOPORTE_PAIS">
-            <End Role="PAIS" EntitySet="PAIS" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTE" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CONSOPORTE_SOCIEDAD" Association="Self.FK_CONSOPORTE_SOCIEDAD">
-            <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTE" />
-          </AssociationSet>
           <AssociationSet Name="FK_CONSOPORTE_TSOL" Association="Self.FK_CONSOPORTE_TSOL">
             <End Role="TSOL" EntitySet="TSOL" />
             <End Role="CONSOPORTE" EntitySet="CONSOPORTE" />
@@ -3840,6 +3827,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_DET_APROBP_DET_APROBH" Association="Self.FK_DET_APROBP_DET_APROBH">
             <End Role="DET_APROBH" EntitySet="DET_APROBH" />
             <End Role="DET_APROBP" EntitySet="DET_APROBP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_TAXEO_PUESTO" Association="Self.FK_DET_TAXEO_PUESTO">
+            <End Role="PUESTO" EntitySet="PUESTO" />
+            <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DET_TAXEO_USUARIO" Association="Self.FK_DET_TAXEO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
           </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTO_CLIENTE" Association="Self.FK_DOCUMENTO_CLIENTE">
             <End Role="CLIENTE" EntitySet="CLIENTE" />
@@ -4504,6 +4499,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="QUANTITY" Type="Int32" />
           <Property Name="BASE_UNIT" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
         </EntityType>
+        <EntityType Name="CONSOPORTE">
+          <Key>
+            <PropertyRef Name="TSOL_ID" />
+            <PropertyRef Name="TSOPORTE_ID" />
+          </Key>
+          <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="OBLIGATORIO" Type="Boolean" Nullable="false" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TSOL" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="CONSOPORTE" ToRole="TSOL" />
+          <NavigationProperty Name="TSOPORTE" Relationship="Self.FK_CONSOPORTE_TSOPORTE" FromRole="CONSOPORTE" ToRole="TSOPORTE" />
+        </EntityType>
         <EntityType Name="CONTACTOC">
           <Key>
             <PropertyRef Name="ID" />
@@ -4543,11 +4550,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="EJERCICIO" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
           <Property Name="ABONO" Type="Decimal" Precision="10" Scale="0" />
           <Property Name="CARGO" Type="Decimal" Precision="10" Scale="0" />
-          <Property Name="CARGO_FV" Type="Decimal" Precision="10" Scale="0" />
           <Property Name="LIMITE" Type="Decimal" Precision="13" Scale="5" />
           <NavigationProperty Name="GALL" Relationship="Self.FK_CUENTA_GALL" FromRole="CUENTA" ToRole="GALL" />
           <NavigationProperty Name="PAI" Relationship="Self.FK_CUENTA_PAIS" FromRole="CUENTA" ToRole="PAIS" />
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="CUENTA" ToRole="SOCIEDAD" />
+          <Property Name="CLEARING" Type="Decimal" Precision="10" Scale="0" />
         </EntityType>
         <EntityType Name="DET_AGENTE">
           <Key>
@@ -4690,6 +4697,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PUESTOA_ID" Type="Int32" />
           <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="DET_TAXEO" ToRole="USUARIO" />
+          <NavigationProperty Name="PUESTO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="DET_TAXEO" ToRole="PUESTO" />
         </EntityType>
         <EntityType Name="DOCUMENTBORR">
           <Key>
@@ -4910,8 +4919,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
           <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
           <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
           <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
+          <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
         </EntityType>
         <EntityType Name="DOCUMENTOR">
           <Key>
@@ -5156,7 +5165,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
           <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
           <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
-          <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_PAIS" FromRole="PAI" ToRole="CONSOPORTE" />
         </EntityType>
         <EntityType Name="PERMISO_PAGINA">
           <Key>
@@ -5313,6 +5321,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PUESTO" ToRole="PERMISO_PAGINA" />
           <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_PUESTO" FromRole="PUESTO" ToRole="PUESTOT" />
           <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_PUESTO" FromRole="PUESTO" ToRole="USUARIO" />
+          <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="PUESTO" ToRole="DET_TAXEO" />
         </EntityType>
         <EntityType Name="PUESTOT">
           <Key>
@@ -5414,7 +5423,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TAXEOH" />
           <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_SOCIEDAD" FromRole="SOCIEDAD" ToRole="TS_FORM" />
           <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="SOCIEDAD" ToRole="USUARIO" />
-          <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CONSOPORTE" />
         </EntityType>
         <EntityType Name="SPRA">
           <Key>
@@ -5436,13 +5444,13 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TREVERSATs" Relationship="Self.FK_TREVERSAT_SPRAS" FromRole="SPRAS" ToRole="TREVERSAT" />
           <NavigationProperty Name="TS_FORMT" Relationship="Self.FK_TS_FORMT_SPRAS" FromRole="SPRAS" ToRole="TS_FORMT" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_SPRAS" FromRole="SPRAS" ToRole="TSOLT" />
+          <NavigationProperty Name="TSOPORTETs" Relationship="Self.FK_TSOPORTET_SPRAS" FromRole="SPRAS" ToRole="TSOPORTET" />
           <NavigationProperty Name="TX_CONCEPTOT" Relationship="Self.FK_TX_CONCEPTOT_SPRAS" FromRole="SPRAS" ToRole="TX_CONCEPTOT" />
           <NavigationProperty Name="TX_NOTAT" Relationship="Self.FK_TX_NOTAT_SPRAS" FromRole="SPRAS" ToRole="TX_NOTAT" />
           <NavigationProperty Name="UMEDIDATs" Relationship="Self.FK_UMEDIDAT_SPRAS" FromRole="SPRAS" ToRole="UMEDIDAT" />
           <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
           <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
           <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
-          <NavigationProperty Name="TSOPORTETs" Relationship="TAT001Model.FK_TSOPORTET_SPRAS" FromRole="SPRA" ToRole="TSOPORTET" />
         </EntityType>
         <EntityType Name="STATE">
           <Key>
@@ -5723,12 +5731,12 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="RANGO_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="FACTURA" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
           <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
           <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
           <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
           <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
-          <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -5741,6 +5749,27 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOLT_SPRAS" FromRole="TSOLT" ToRole="SPRAS" />
           <NavigationProperty Name="TSOL" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOLT" ToRole="TSOL" />
+        </EntityType>
+        <EntityType Name="TSOPORTE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOPORTE" FromRole="TSOPORTE" ToRole="CONSOPORTE" />
+          <NavigationProperty Name="TSOPORTETs" Relationship="Self.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTE" ToRole="TSOPORTET" />
+        </EntityType>
+        <EntityType Name="TSOPORTET">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="TSOPORTE_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOPORTET_SPRAS" FromRole="TSOPORTET" ToRole="SPRAS" />
+          <NavigationProperty Name="TSOPORTE" Relationship="Self.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTET" ToRole="TSOPORTE" />
         </EntityType>
         <EntityType Name="TX_CONCEPTO">
           <Key>
@@ -5836,6 +5865,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
           <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+          <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="USUARIO" ToRole="DET_TAXEO" />
         </EntityType>
         <EntityType Name="USUARIOSAP">
           <Key>
@@ -6396,6 +6426,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Principal>
             <Dependent Role="CONPOSAPH">
               <PropertyRef Name="SOCIEDAD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSOPORTE_TSOL">
+          <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
+          <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSOPORTE">
+              <PropertyRef Name="TSOL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONSOPORTE_TSOPORTE">
+          <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="1" />
+          <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOPORTE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CONSOPORTE">
+              <PropertyRef Name="TSOPORTE_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -7413,6 +7467,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TSOPORTET_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="TSOPORTET" Type="Self.TSOPORTET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOPORTET">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TX_CONCEPTOT_SPRAS">
           <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
           <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
@@ -7629,6 +7695,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TSOPORTET_TSOPORTE">
+          <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="1" />
+          <End Role="TSOPORTET" Type="Self.TSOPORTET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TSOPORTE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TSOPORTET">
+              <PropertyRef Name="TSOPORTE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TX_CONCEPTOT_TX_CONCEPTO">
           <End Role="TX_CONCEPTO" Type="Self.TX_CONCEPTO" Multiplicity="1" />
           <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
@@ -7723,6 +7801,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="CLIENTEIs" EntityType="Self.CLIENTEI" />
           <EntitySet Name="CONPOSAPHs" EntityType="Self.CONPOSAPH" />
           <EntitySet Name="CONPOSAPPs" EntityType="Self.CONPOSAPP" />
+          <EntitySet Name="CONSOPORTEs" EntityType="Self.CONSOPORTE" />
           <EntitySet Name="CONTACTOCs" EntityType="Self.CONTACTOC" />
           <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRy" />
           <EntitySet Name="CUENTAs" EntityType="Self.CUENTA" />
@@ -7795,6 +7874,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="TS_FORMT" EntityType="Self.TS_FORMT" />
           <EntitySet Name="TSOLs" EntityType="Self.TSOL" />
           <EntitySet Name="TSOLTs" EntityType="Self.TSOLT" />
+          <EntitySet Name="TSOPORTEs" EntityType="Self.TSOPORTE" />
+          <EntitySet Name="TSOPORTETs" EntityType="Self.TSOPORTET" />
           <EntitySet Name="TX_CONCEPTO" EntityType="Self.TX_CONCEPTO" />
           <EntitySet Name="TX_CONCEPTOT" EntityType="Self.TX_CONCEPTOT" />
           <EntitySet Name="TX_NOTAT" EntityType="Self.TX_NOTAT" />
@@ -7904,6 +7985,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_CONPOSAPH_SOCIEDAD" Association="Self.FK_CONPOSAPH_SOCIEDAD">
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
             <End Role="CONPOSAPH" EntitySet="CONPOSAPHs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSOPORTE_TSOL" Association="Self.FK_CONSOPORTE_TSOL">
+            <End Role="TSOL" EntitySet="TSOLs" />
+            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONSOPORTE_TSOPORTE" Association="Self.FK_CONSOPORTE_TSOPORTE">
+            <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
           </AssociationSet>
           <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
             <End Role="COUNTRIES" EntitySet="COUNTRIES" />
@@ -8237,6 +8326,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="SPRAS" EntitySet="SPRAS" />
             <End Role="TSOLT" EntitySet="TSOLTs" />
           </AssociationSet>
+          <AssociationSet Name="FK_TSOPORTET_SPRAS" Association="Self.FK_TSOPORTET_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
+          </AssociationSet>
           <AssociationSet Name="FK_TX_CONCEPTOT_SPRAS" Association="Self.FK_TX_CONCEPTOT_SPRAS">
             <End Role="SPRAS" EntitySet="SPRAS" />
             <End Role="TX_CONCEPTOT" EntitySet="TX_CONCEPTOT" />
@@ -8304,6 +8397,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
             <End Role="TSOL" EntitySet="TSOLs" />
             <End Role="TSOLT" EntitySet="TSOLTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TSOPORTET_TSOPORTE" Association="Self.FK_TSOPORTET_TSOPORTE">
+            <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+            <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
           </AssociationSet>
           <AssociationSet Name="FK_TX_CONCEPTOT_TX_CONCEPTO" Association="Self.FK_TX_CONCEPTOT_TX_CONCEPTO">
             <End Role="TX_CONCEPTO" EntitySet="TX_CONCEPTO" />
@@ -8415,32 +8512,13 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="CONSOPORTEs" EntityType="TAT001Model.CONSOPORTE" />
-          <EntitySet Name="TSOPORTEs" EntityType="TAT001Model.TSOPORTE" />
-          <EntitySet Name="TSOPORTETs" EntityType="TAT001Model.TSOPORTET" />
-          <AssociationSet Name="FK_CONSOPORTE_PAIS" Association="TAT001Model.FK_CONSOPORTE_PAIS">
-            <End Role="PAI" EntitySet="PAIS" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+          <AssociationSet Name="FK_DET_TAXEO_USUARIO" Association="TAT001Model.FK_DET_TAXEO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
           </AssociationSet>
-          <AssociationSet Name="FK_CONSOPORTE_SOCIEDAD" Association="TAT001Model.FK_CONSOPORTE_SOCIEDAD">
-            <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CONSOPORTE_TSOL" Association="TAT001Model.FK_CONSOPORTE_TSOL">
-            <End Role="TSOL" EntitySet="TSOLs" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CONSOPORTE_TSOPORTE" Association="TAT001Model.FK_CONSOPORTE_TSOPORTE">
-            <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
-            <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TSOPORTET_SPRAS" Association="TAT001Model.FK_TSOPORTET_SPRAS">
-            <End Role="SPRA" EntitySet="SPRAS" />
-            <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TSOPORTET_TSOPORTE" Association="TAT001Model.FK_TSOPORTET_TSOPORTE">
-            <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
-            <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
+          <AssociationSet Name="FK_DET_TAXEO_PUESTO" Association="TAT001Model.FK_DET_TAXEO_PUESTO">
+            <End Role="PUESTO" EntitySet="PUESTOes" />
+            <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
           </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
@@ -8549,115 +8627,27 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="CONSOPORTE">
-          <Key>
-            <PropertyRef Name="SOCIEDAD_ID" />
-            <PropertyRef Name="PAIS_ID" />
-            <PropertyRef Name="TSOL_ID" />
-            <PropertyRef Name="POS" />
-          </Key>
-          <Property Name="SOCIEDAD_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
-          <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="TSOL_ID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="POS" Type="Int32" Nullable="false" />
-          <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
-          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="PAI" Relationship="TAT001Model.FK_CONSOPORTE_PAIS" FromRole="CONSOPORTE" ToRole="PAI" />
-          <NavigationProperty Name="SOCIEDAD" Relationship="TAT001Model.FK_CONSOPORTE_SOCIEDAD" FromRole="CONSOPORTE" ToRole="SOCIEDAD" />
-          <NavigationProperty Name="TSOL" Relationship="TAT001Model.FK_CONSOPORTE_TSOL" FromRole="CONSOPORTE" ToRole="TSOL" />
-          <NavigationProperty Name="TSOPORTE" Relationship="TAT001Model.FK_CONSOPORTE_TSOPORTE" FromRole="CONSOPORTE" ToRole="TSOPORTE" />
-          <Property Name="OBLIGATORIO" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TSOPORTE">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
-          <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ACTIVO" Type="Boolean" />
-          <NavigationProperty Name="CONSOPORTEs" Relationship="TAT001Model.FK_CONSOPORTE_TSOPORTE" FromRole="TSOPORTE" ToRole="CONSOPORTE" />
-          <NavigationProperty Name="TSOPORTETs" Relationship="TAT001Model.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTE" ToRole="TSOPORTET" />
-        </EntityType>
-        <EntityType Name="TSOPORTET">
-          <Key>
-            <PropertyRef Name="SPRAS_ID" />
-            <PropertyRef Name="TSOPORTE_ID" />
-          </Key>
-          <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="TSOPORTE_ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
-          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_TSOPORTET_SPRAS" FromRole="TSOPORTET" ToRole="SPRA" />
-          <NavigationProperty Name="TSOPORTE" Relationship="TAT001Model.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTET" ToRole="TSOPORTE" />
-        </EntityType>
-        <Association Name="FK_CONSOPORTE_PAIS">
-          <End Type="TAT001Model.PAI" Role="PAI" Multiplicity="1" />
-          <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+        <Association Name="FK_DET_TAXEO_USUARIO">
+          <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="PAI">
-              <PropertyRef Name="LAND" />
-            </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="PAIS_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CONSOPORTE_SOCIEDAD">
-          <End Type="TAT001Model.SOCIEDAD" Role="SOCIEDAD" Multiplicity="1" />
-          <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SOCIEDAD">
-              <PropertyRef Name="BUKRS" />
-            </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="SOCIEDAD_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CONSOPORTE_TSOL">
-          <End Type="TAT001Model.TSOL" Role="TSOL" Multiplicity="1" />
-          <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TSOL">
+            <Principal Role="USUARIO">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="TSOL_ID" />
+            <Dependent Role="DET_TAXEO">
+              <PropertyRef Name="USUARIOC_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CONSOPORTE_TSOPORTE">
-          <End Type="TAT001Model.TSOPORTE" Role="TSOPORTE" Multiplicity="0..1" />
-          <End Type="TAT001Model.CONSOPORTE" Role="CONSOPORTE" Multiplicity="*" />
+        <Association Name="FK_DET_TAXEO_PUESTO">
+          <End Type="TAT001Model.PUESTO" Role="PUESTO" Multiplicity="0..1" />
+          <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="TSOPORTE">
+            <Principal Role="PUESTO">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="CONSOPORTE">
-              <PropertyRef Name="TSOPORTE_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TSOPORTET_SPRAS">
-          <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
-          <End Type="TAT001Model.TSOPORTET" Role="TSOPORTET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SPRA">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TSOPORTET">
-              <PropertyRef Name="SPRAS_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TSOPORTET_TSOPORTE">
-          <End Type="TAT001Model.TSOPORTE" Role="TSOPORTE" Multiplicity="1" />
-          <End Type="TAT001Model.TSOPORTET" Role="TSOPORTET" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TSOPORTE">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TSOPORTET">
-              <PropertyRef Name="TSOPORTE_ID" />
+            <Dependent Role="DET_TAXEO">
+              <PropertyRef Name="PUESTOA_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8902,6 +8892,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CONSOPORTEs">
+            <EntityTypeMapping TypeName="TAT001Model.CONSOPORTE">
+              <MappingFragment StoreEntitySet="CONSOPORTE">
+                <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+                <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+                <ScalarProperty Name="OBLIGATORIO" ColumnName="OBLIGATORIO" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CONTACTOCs">
             <EntityTypeMapping TypeName="TAT001Model.CONTACTOC">
               <MappingFragment StoreEntitySet="CONTACTOC">
@@ -8931,13 +8931,13 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CUENTAs">
             <EntityTypeMapping TypeName="TAT001Model.CUENTA">
               <MappingFragment StoreEntitySet="CUENTA">
+                <ScalarProperty Name="CLEARING" ColumnName="CLEARING" />
                 <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
                 <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
                 <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
                 <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
                 <ScalarProperty Name="ABONO" ColumnName="ABONO" />
                 <ScalarProperty Name="CARGO" ColumnName="CARGO" />
-                <ScalarProperty Name="CARGO_FV" ColumnName="CARGO_FV" />
                 <ScalarProperty Name="LIMITE" ColumnName="LIMITE" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -9239,7 +9239,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOPs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOP">
               <MappingFragment StoreEntitySet="DOCUMENTOP">
-                <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
                 <ScalarProperty Name="MATNR" ColumnName="MATNR" />
@@ -9254,6 +9253,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
                 <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
                 <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+                <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9933,6 +9933,24 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TSOPORTEs">
+            <EntityTypeMapping TypeName="TAT001Model.TSOPORTE">
+              <MappingFragment StoreEntitySet="TSOPORTE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TSOPORTETs">
+            <EntityTypeMapping TypeName="TAT001Model.TSOPORTET">
+              <MappingFragment StoreEntitySet="TSOPORTET">
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+                <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TX_CONCEPTO">
             <EntityTypeMapping TypeName="TAT001Model.TX_CONCEPTO">
               <MappingFragment StoreEntitySet="TX_CONCEPTO">
@@ -10419,37 +10437,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="CONSOPORTEs">
-            <EntityTypeMapping TypeName="TAT001Model.CONSOPORTE">
-              <MappingFragment StoreEntitySet="CONSOPORTE">
-                <ScalarProperty Name="OBLIGATORIO" ColumnName="OBLIGATORIO" />
-                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
-                <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
-                <ScalarProperty Name="POS" ColumnName="POS" />
-                <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
-                <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
-                <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TSOPORTEs">
-            <EntityTypeMapping TypeName="TAT001Model.TSOPORTE">
-              <MappingFragment StoreEntitySet="TSOPORTE">
-                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
-                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TSOPORTETs">
-            <EntityTypeMapping TypeName="TAT001Model.TSOPORTET">
-              <MappingFragment StoreEntitySet="TSOPORTET">
-                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
-                <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
-                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
