@@ -832,9 +832,16 @@ namespace TAT001.Controllers
 
             //d.DOCUMENTOF = LD;
 
+            string spras = Session["spras"].ToString();
             //----------------------------RSG 18.05.2018
-            //ViewBag.form_soporte = db.CONSOPORTEs.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) 
-            //                        & a.TSOL_ID.Equals(d.TSOL_ID) & a.ACTIVO == true).ToList();
+            ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
+            List<string> anios = new List<string>();
+            int mas = 10;
+            for(int i = 0; i< mas; i++)
+            {
+                anios.Add((DateTime.Now.Year + i).ToString());
+            }
+            ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
             //----------------------------RSG 18.05.2018
 
             return View(d);

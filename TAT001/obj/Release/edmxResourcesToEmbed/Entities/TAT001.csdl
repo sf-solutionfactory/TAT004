@@ -266,6 +266,18 @@
     <Property Name="QUANTITY" Type="Int32" />
     <Property Name="BASE_UNIT" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
   </EntityType>
+  <EntityType Name="CONSOPORTE">
+    <Key>
+      <PropertyRef Name="TSOL_ID" />
+      <PropertyRef Name="TSOPORTE_ID" />
+    </Key>
+    <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="OBLIGATORIO" Type="Boolean" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="TSOL" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="CONSOPORTE" ToRole="TSOL" />
+    <NavigationProperty Name="TSOPORTE" Relationship="Self.FK_CONSOPORTE_TSOPORTE" FromRole="CONSOPORTE" ToRole="TSOPORTE" />
+  </EntityType>
   <EntityType Name="CONTACTOC">
     <Key>
       <PropertyRef Name="ID" />
@@ -305,11 +317,11 @@
     <Property Name="EJERCICIO" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ABONO" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="CARGO" Type="Decimal" Precision="10" Scale="0" />
-    <Property Name="CARGO_FV" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="LIMITE" Type="Decimal" Precision="13" Scale="5" />
     <NavigationProperty Name="GALL" Relationship="Self.FK_CUENTA_GALL" FromRole="CUENTA" ToRole="GALL" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_CUENTA_PAIS" FromRole="CUENTA" ToRole="PAIS" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="CUENTA" ToRole="SOCIEDAD" />
+    <Property Name="CLEARING" Type="Decimal" Precision="10" Scale="0" />
   </EntityType>
   <EntityType Name="DET_AGENTE">
     <Key>
@@ -452,6 +464,8 @@
     <Property Name="PUESTOA_ID" Type="Int32" />
     <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="DET_TAXEO" ToRole="USUARIO" />
+    <NavigationProperty Name="PUESTO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="DET_TAXEO" ToRole="PUESTO" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
     <Key>
@@ -672,6 +686,7 @@
     <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
     <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
+    <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOR">
@@ -1073,6 +1088,7 @@
     <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PUESTO" ToRole="PERMISO_PAGINA" />
     <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_PUESTO" FromRole="PUESTO" ToRole="PUESTOT" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_PUESTO" FromRole="PUESTO" ToRole="USUARIO" />
+    <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="PUESTO" ToRole="DET_TAXEO" />
   </EntityType>
   <EntityType Name="PUESTOT">
     <Key>
@@ -1195,6 +1211,7 @@
     <NavigationProperty Name="TREVERSATs" Relationship="Self.FK_TREVERSAT_SPRAS" FromRole="SPRAS" ToRole="TREVERSAT" />
     <NavigationProperty Name="TS_FORMT" Relationship="Self.FK_TS_FORMT_SPRAS" FromRole="SPRAS" ToRole="TS_FORMT" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_SPRAS" FromRole="SPRAS" ToRole="TSOLT" />
+    <NavigationProperty Name="TSOPORTETs" Relationship="Self.FK_TSOPORTET_SPRAS" FromRole="SPRAS" ToRole="TSOPORTET" />
     <NavigationProperty Name="TX_CONCEPTOT" Relationship="Self.FK_TX_CONCEPTOT_SPRAS" FromRole="SPRAS" ToRole="TX_CONCEPTOT" />
     <NavigationProperty Name="TX_NOTAT" Relationship="Self.FK_TX_NOTAT_SPRAS" FromRole="SPRAS" ToRole="TX_NOTAT" />
     <NavigationProperty Name="UMEDIDATs" Relationship="Self.FK_UMEDIDAT_SPRAS" FromRole="SPRAS" ToRole="UMEDIDAT" />
@@ -1481,6 +1498,7 @@
     <Property Name="RANGO_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="FACTURA" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
     <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
@@ -1498,6 +1516,27 @@
     <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOLT_SPRAS" FromRole="TSOLT" ToRole="SPRAS" />
     <NavigationProperty Name="TSOL" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOLT" ToRole="TSOL" />
+  </EntityType>
+  <EntityType Name="TSOPORTE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOPORTE" FromRole="TSOPORTE" ToRole="CONSOPORTE" />
+    <NavigationProperty Name="TSOPORTETs" Relationship="Self.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTE" ToRole="TSOPORTET" />
+  </EntityType>
+  <EntityType Name="TSOPORTET">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="TSOPORTE_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="TSOPORTE_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOPORTET_SPRAS" FromRole="TSOPORTET" ToRole="SPRAS" />
+    <NavigationProperty Name="TSOPORTE" Relationship="Self.FK_TSOPORTET_TSOPORTE" FromRole="TSOPORTET" ToRole="TSOPORTE" />
   </EntityType>
   <EntityType Name="TX_CONCEPTO">
     <Key>
@@ -1593,6 +1632,7 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="USUARIO" ToRole="DET_TAXEO" />
   </EntityType>
   <EntityType Name="USUARIOSAP">
     <Key>
@@ -2153,6 +2193,30 @@
       </Principal>
       <Dependent Role="CONPOSAPH">
         <PropertyRef Name="SOCIEDAD" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONSOPORTE_TSOL">
+    <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
+    <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONSOPORTE_TSOPORTE">
+    <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="1" />
+    <End Role="CONSOPORTE" Type="Self.CONSOPORTE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOPORTE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONSOPORTE">
+        <PropertyRef Name="TSOPORTE_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3170,6 +3234,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TSOPORTET_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+    <End Role="TSOPORTET" Type="Self.TSOPORTET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TSOPORTET">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TX_CONCEPTOT_SPRAS">
     <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
     <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
@@ -3386,6 +3462,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TSOPORTET_TSOPORTE">
+    <End Role="TSOPORTE" Type="Self.TSOPORTE" Multiplicity="1" />
+    <End Role="TSOPORTET" Type="Self.TSOPORTET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOPORTE">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TSOPORTET">
+        <PropertyRef Name="TSOPORTE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TX_CONCEPTOT_TX_CONCEPTO">
     <End Role="TX_CONCEPTO" Type="Self.TX_CONCEPTO" Multiplicity="1" />
     <End Role="TX_CONCEPTOT" Type="Self.TX_CONCEPTOT" Multiplicity="*" />
@@ -3480,6 +3568,7 @@
     <EntitySet Name="CLIENTEIs" EntityType="Self.CLIENTEI" />
     <EntitySet Name="CONPOSAPHs" EntityType="Self.CONPOSAPH" />
     <EntitySet Name="CONPOSAPPs" EntityType="Self.CONPOSAPP" />
+    <EntitySet Name="CONSOPORTEs" EntityType="Self.CONSOPORTE" />
     <EntitySet Name="CONTACTOCs" EntityType="Self.CONTACTOC" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRy" />
     <EntitySet Name="CUENTAs" EntityType="Self.CUENTA" />
@@ -3552,6 +3641,8 @@
     <EntitySet Name="TS_FORMT" EntityType="Self.TS_FORMT" />
     <EntitySet Name="TSOLs" EntityType="Self.TSOL" />
     <EntitySet Name="TSOLTs" EntityType="Self.TSOLT" />
+    <EntitySet Name="TSOPORTEs" EntityType="Self.TSOPORTE" />
+    <EntitySet Name="TSOPORTETs" EntityType="Self.TSOPORTET" />
     <EntitySet Name="TX_CONCEPTO" EntityType="Self.TX_CONCEPTO" />
     <EntitySet Name="TX_CONCEPTOT" EntityType="Self.TX_CONCEPTOT" />
     <EntitySet Name="TX_NOTAT" EntityType="Self.TX_NOTAT" />
@@ -3661,6 +3752,14 @@
     <AssociationSet Name="FK_CONPOSAPH_SOCIEDAD" Association="Self.FK_CONPOSAPH_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="CONPOSAPH" EntitySet="CONPOSAPHs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONSOPORTE_TSOL" Association="Self.FK_CONSOPORTE_TSOL">
+      <End Role="TSOL" EntitySet="TSOLs" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONSOPORTE_TSOPORTE" Association="Self.FK_CONSOPORTE_TSOPORTE">
+      <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+      <End Role="CONSOPORTE" EntitySet="CONSOPORTEs" />
     </AssociationSet>
     <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
       <End Role="COUNTRIES" EntitySet="COUNTRIES" />
@@ -3994,6 +4093,10 @@
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="TSOLT" EntitySet="TSOLTs" />
     </AssociationSet>
+    <AssociationSet Name="FK_TSOPORTET_SPRAS" Association="Self.FK_TSOPORTET_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
+    </AssociationSet>
     <AssociationSet Name="FK_TX_CONCEPTOT_SPRAS" Association="Self.FK_TX_CONCEPTOT_SPRAS">
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="TX_CONCEPTOT" EntitySet="TX_CONCEPTOT" />
@@ -4061,6 +4164,10 @@
     <AssociationSet Name="FK_TSOLT_TSOL" Association="Self.FK_TSOLT_TSOL">
       <End Role="TSOL" EntitySet="TSOLs" />
       <End Role="TSOLT" EntitySet="TSOLTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TSOPORTET_TSOPORTE" Association="Self.FK_TSOPORTET_TSOPORTE">
+      <End Role="TSOPORTE" EntitySet="TSOPORTEs" />
+      <End Role="TSOPORTET" EntitySet="TSOPORTETs" />
     </AssociationSet>
     <AssociationSet Name="FK_TX_CONCEPTOT_TX_CONCEPTO" Association="Self.FK_TX_CONCEPTOT_TX_CONCEPTO">
       <End Role="TX_CONCEPTO" EntitySet="TX_CONCEPTO" />
@@ -4172,6 +4279,14 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <AssociationSet Name="FK_DET_TAXEO_USUARIO" Association="TAT001Model.FK_DET_TAXEO_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_TAXEO_PUESTO" Association="TAT001Model.FK_DET_TAXEO_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4279,4 +4394,28 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <Association Name="FK_DET_TAXEO_USUARIO">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_TAXEO">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_TAXEO_PUESTO">
+    <End Type="TAT001Model.PUESTO" Role="PUESTO" Multiplicity="0..1" />
+    <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_TAXEO">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

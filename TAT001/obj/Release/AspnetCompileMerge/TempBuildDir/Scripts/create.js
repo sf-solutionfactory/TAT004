@@ -272,7 +272,8 @@
                                 "", //col1
                                 "", ////col2
                                 "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //"<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">" + pickerFecha(".format_date"),// RSG 21.05.2018
                                 "", //Material
                                 opt + "",
                                 opt + "",
@@ -295,7 +296,8 @@
                             "",
                             "",
                             "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            //"<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">" + pickerFecha(".format_date"),// RSG 21.05.2018
                             "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
                             "",
                             "",
@@ -1654,7 +1656,7 @@ function loadExcelDis(file) {
                         "",
                         "",
                         "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                        "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+                        "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018",
                         "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
                         dataj.MATKL,
                         dataj.DESC,

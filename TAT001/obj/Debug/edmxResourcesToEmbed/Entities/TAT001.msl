@@ -1781,5 +1781,25 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="PERIODOes">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODO">
+        <MappingFragment StoreEntitySet="PERIODO">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERIODOTs">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODOT">
+        <MappingFragment StoreEntitySet="PERIODOT">
+          <ScalarProperty Name="TXT01" ColumnName="TXT01" />
+          <ScalarProperty Name="TXT03" ColumnName="TXT03" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="PERIODO_ID" ColumnName="PERIODO_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

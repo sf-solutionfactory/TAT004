@@ -250,6 +250,10 @@
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_USUARIO" />
         <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_PUESTO" />
+        <EntityTypeShape EntityType="TAT001Model.PERIODO" Width="1.5" PointX="6.75" PointY="82.625" />
+        <EntityTypeShape EntityType="TAT001Model.PERIODOT" Width="1.5" PointX="9" PointY="71.375" />
+        <AssociationConnector Association="TAT001Model.FK_PERIODOT_PERIODO" />
+        <AssociationConnector Association="TAT001Model.FK_PERIODOT_SPRAS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

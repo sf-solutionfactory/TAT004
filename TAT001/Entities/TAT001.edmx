@@ -820,6 +820,25 @@
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
           <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
         </EntityType>
+        <EntityType Name="PERIODO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="nchar" MaxLength="10" />
+          <Property Name="ACTIVO" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PERIODOT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="PERIODO_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="PERIODO_ID" Type="int" Nullable="false" />
+          <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+          <Property Name="TXT03" Type="nvarchar" MaxLength="3" />
+          <Property Name="TXT01" Type="nchar" MaxLength="1" />
+        </EntityType>
         <EntityType Name="PERMISO_PAGINA">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -2541,6 +2560,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PERIODOT_PERIODO">
+          <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="1" />
+          <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERIODOT">
+              <PropertyRef Name="PERIODO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERIODOT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERIODOT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PERMISO_PAGINA_PAGINA">
           <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
           <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
@@ -3491,6 +3534,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERIODOT" EntityType="Self.PERIODOT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="POSICION" EntityType="Self.POSICION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PRESUPSAPH" EntityType="Self.PRESUPSAPH" Schema="dbo" store:Type="Tables" />
@@ -3967,6 +4012,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_PAIS_SOCIEDAD" Association="Self.FK_PAIS_SOCIEDAD">
             <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
             <End Role="PAIS" EntitySet="PAIS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERIODOT_PERIODO" Association="Self.FK_PERIODOT_PERIODO">
+            <End Role="PERIODO" EntitySet="PERIODO" />
+            <End Role="PERIODOT" EntitySet="PERIODOT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERIODOT_SPRAS" Association="Self.FK_PERIODOT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="PERIODOT" EntitySet="PERIODOT" />
           </AssociationSet>
           <AssociationSet Name="FK_PERMISO_PAGINA_PAGINA" Association="Self.FK_PERMISO_PAGINA_PAGINA">
             <End Role="PAGINA" EntitySet="PAGINA" />
@@ -5451,6 +5504,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
           <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
           <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+          <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="SPRA" ToRole="PERIODOT" />
         </EntityType>
         <EntityType Name="STATE">
           <Key>
@@ -8520,6 +8574,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="PUESTO" EntitySet="PUESTOes" />
             <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
           </AssociationSet>
+          <EntitySet Name="PERIODOes" EntityType="TAT001Model.PERIODO" />
+          <EntitySet Name="PERIODOTs" EntityType="TAT001Model.PERIODOT" />
+          <AssociationSet Name="FK_PERIODOT_PERIODO" Association="TAT001Model.FK_PERIODOT_PERIODO">
+            <End Role="PERIODO" EntitySet="PERIODOes" />
+            <End Role="PERIODOT" EntitySet="PERIODOTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERIODOT_SPRAS" Association="TAT001Model.FK_PERIODOT_SPRAS">
+            <End Role="SPRA" EntitySet="SPRAS" />
+            <End Role="PERIODOT" EntitySet="PERIODOTs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -8648,6 +8712,52 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Principal>
             <Dependent Role="DET_TAXEO">
               <PropertyRef Name="PUESTOA_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PERIODO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ACTIVO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODO" ToRole="PERIODOT" />
+        </EntityType>
+        <EntityType Name="PERIODOT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="PERIODO_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="PERIODO_ID" Type="Int32" Nullable="false" />
+          <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TXT03" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="TXT01" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PERIODO" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODOT" ToRole="PERIODO" />
+          <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="PERIODOT" ToRole="SPRA" />
+        </EntityType>
+        <Association Name="FK_PERIODOT_PERIODO">
+          <End Type="TAT001Model.PERIODO" Role="PERIODO" Multiplicity="1" />
+          <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERIODOT">
+              <PropertyRef Name="PERIODO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERIODOT_SPRAS">
+          <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+          <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PERIODOT">
+              <PropertyRef Name="SPRAS_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -10437,6 +10547,26 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="PERIODOes">
+            <EntityTypeMapping TypeName="TAT001Model.PERIODO">
+              <MappingFragment StoreEntitySet="PERIODO">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODOTs">
+            <EntityTypeMapping TypeName="TAT001Model.PERIODOT">
+              <MappingFragment StoreEntitySet="PERIODOT">
+                <ScalarProperty Name="TXT01" ColumnName="TXT01" />
+                <ScalarProperty Name="TXT03" ColumnName="TXT03" />
+                <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+                <ScalarProperty Name="PERIODO_ID" ColumnName="PERIODO_ID" />
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

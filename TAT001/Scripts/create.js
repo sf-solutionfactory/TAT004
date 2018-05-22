@@ -2817,18 +2817,26 @@ function asignarMonto(monto) {
     montocambio = monto;
 }
 
-function validar_fechas(ini_date, fin_date) {
+function validar_fechas(ini_date, fin_date) {//RSG 22.05.2018
 
     var DateToValue = new Date();
     var DateFromValue = new Date();
 
     var idate = ini_date.split('/');
-    DateFromValue.setFullYear(idate[0], idate[1], idate[2], 0, 0, 0, 0);
+    //DateFromValue.setFullYear(idate[0], idate[1], idate[2], 0, 0, 0, 0);
+    DateFromValue.setDate(idate[0]);
+    DateFromValue.setMonth(idate[1]-1);
+    DateFromValue.setFullYear(idate[2]);
 
     var fdate = fin_date.split('/');
-    DateToValue.setFullYear(fdate[0], fdate[1], fdate[2], 0, 0, 0, 0);
+    //DateToValue.setFullYear(fdate[0], fdate[1], fdate[2], 0, 0, 0, 0);
+    DateToValue.setDate(fdate[0]);
+    DateToValue.setMonth(fdate[1]-1);
+    DateToValue.setFullYear(fdate[2]);
 
-    if (Date.parse(DateFromValue) <= Date.parse(DateToValue)) {
+    var d1 = Date.parse(DateFromValue);
+    var d2 = Date.parse(DateToValue);
+    if (d1 <= d2) {
         return true;
     }
     return false;

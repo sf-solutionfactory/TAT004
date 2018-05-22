@@ -417,6 +417,12 @@
     <Compile Include="Entities\PAI.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PERIODO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERIODOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\PERMISO_PAGINA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

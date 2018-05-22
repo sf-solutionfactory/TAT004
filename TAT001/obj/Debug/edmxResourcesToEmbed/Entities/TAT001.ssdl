@@ -815,6 +815,25 @@
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
   </EntityType>
+  <EntityType Name="PERIODO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nchar" MaxLength="10" />
+    <Property Name="ACTIVO" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="PERIODOT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="PERIODO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="PERIODO_ID" Type="int" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+    <Property Name="TXT03" Type="nvarchar" MaxLength="3" />
+    <Property Name="TXT01" Type="nchar" MaxLength="1" />
+  </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -2536,6 +2555,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_PERIODOT_PERIODO">
+    <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="1" />
+    <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="PERIODO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PERIODOT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PERMISO_PAGINA_PAGINA">
     <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
     <End Role="PERMISO_PAGINA" Type="Self.PERMISO_PAGINA" Multiplicity="*" />
@@ -3486,6 +3529,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERIODOT" EntityType="Self.PERIODOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="POSICION" EntityType="Self.POSICION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PRESUPSAPH" EntityType="Self.PRESUPSAPH" Schema="dbo" store:Type="Tables" />
@@ -3962,6 +4007,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_PAIS_SOCIEDAD" Association="Self.FK_PAIS_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
       <End Role="PAIS" EntitySet="PAIS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PERIODOT_PERIODO" Association="Self.FK_PERIODOT_PERIODO">
+      <End Role="PERIODO" EntitySet="PERIODO" />
+      <End Role="PERIODOT" EntitySet="PERIODOT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PERIODOT_SPRAS" Association="Self.FK_PERIODOT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="PERIODOT" EntitySet="PERIODOT" />
     </AssociationSet>
     <AssociationSet Name="FK_PERMISO_PAGINA_PAGINA" Association="Self.FK_PERMISO_PAGINA_PAGINA">
       <End Role="PAGINA" EntitySet="PAGINA" />

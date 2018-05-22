@@ -1218,6 +1218,7 @@
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+    <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="SPRA" ToRole="PERIODOT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -4287,6 +4288,16 @@
       <End Role="PUESTO" EntitySet="PUESTOes" />
       <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
     </AssociationSet>
+    <EntitySet Name="PERIODOes" EntityType="TAT001Model.PERIODO" />
+    <EntitySet Name="PERIODOTs" EntityType="TAT001Model.PERIODOT" />
+    <AssociationSet Name="FK_PERIODOT_PERIODO" Association="TAT001Model.FK_PERIODOT_PERIODO">
+      <End Role="PERIODO" EntitySet="PERIODOes" />
+      <End Role="PERIODOT" EntitySet="PERIODOTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PERIODOT_SPRAS" Association="TAT001Model.FK_PERIODOT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="PERIODOT" EntitySet="PERIODOTs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4415,6 +4426,52 @@
       </Principal>
       <Dependent Role="DET_TAXEO">
         <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PERIODO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODO" ToRole="PERIODOT" />
+  </EntityType>
+  <EntityType Name="PERIODOT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="PERIODO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PERIODO_ID" Type="Int32" Nullable="false" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TXT03" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="TXT01" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PERIODO" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODOT" ToRole="PERIODO" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="PERIODOT" ToRole="SPRA" />
+  </EntityType>
+  <Association Name="FK_PERIODOT_PERIODO">
+    <End Type="TAT001Model.PERIODO" Role="PERIODO" Multiplicity="1" />
+    <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="PERIODO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PERIODOT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="SPRAS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

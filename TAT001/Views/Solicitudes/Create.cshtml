@@ -13,19 +13,20 @@
 @if (ViewBag.error != "")
 {
     <script>
-        $(document).ready(function () {
-            function errorMessage(msg) {
-                M.toast({ html: msg });
-            }
+    $(document).ready(function () {
+        function errorMessage(msg) {
+            M.toast({ html: msg });
+        }
 
-            var message = '@ViewBag.error';
+        /**/
+        var message = '@ViewBag.error';
+    /**/
 
-            if (message != "")
-            {
-                // do drop down loic
-                errorMessage(message);
-            }
-        });
+    if (message != "") {
+        // do drop down loic
+        errorMessage(message);
+    }
+});
     </script>
 }
 
@@ -132,7 +133,7 @@
     </style>
 
     <div class="div_right">
-        <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn waves-effect waves-light btn-small">Cancelar</a>
+        <a href="@Url.Action(" Cancelar", "Solicitudes" )" class="btn waves-effect waves-light btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
             {*@
         <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
@@ -245,33 +246,35 @@
                             <script src="~/Scripts/autocomplete1.10.2.js"></script>
                             <script src="~/Scripts/autocomplete1.11.4.js"></script>
                             <script>
-                                var auto = $.noConflict(true);
-                                auto(document).ready(function () {
-                                    var pais = '@ViewBag.pais';
-                                    auto("#state_id").autocomplete({
-                                        source: function (request, response) {
-                                            auto.ajax({
-                                                url: "../Listas/Estados",
-                                                type: "GET",
-                                                dataType: "json",
-                                                data: { pais: pais, Prefix: request.term },
-                                                success: function (data) {
-                                                    response($.map(data, function (item) {
-                                                        return { label: item.NAME, value: item.NAME };
-                                                    }))
-                                                }
-                                            })
-                                        },
-                                        messages: {
-                                            noResults: '',
-                                            results: function (resultsCount) { }
-                                        },
-                                        change: function (e, ui) {
-                                            if (!( ui.item)) {
-                                            }
+                            var auto = $.noConflict(true);
+                            auto(document).ready(function () {
+                                /**/
+                                var pais = '@ViewBag.pais';
+                            /**/
+                            auto("#state_id").autocomplete({
+                                source: function (request, response) {
+                                    auto.ajax({
+                                        url: "../Listas/Estados",
+                                        type: "GET",
+                                        dataType: "json",
+                                        data: { pais: pais, Prefix: request.term },
+                                        success: function (data) {
+                                            response($.map(data, function (item) {
+                                                return { label: item.NAME, value: item.NAME };
+                                            }))
                                         }
-                                    });
-                                })
+                                    })
+                                },
+                                messages: {
+                                    noResults: '',
+                                    results: function (resultsCount) { }
+                                },
+                                change: function (e, ui) {
+                                    if (!(ui.item)) {
+                                    }
+                                }
+                            });
+                        })
                             </script>
                             <script src="~/Scripts/createa.js"></script>
                             <div class="input-field col s12">
@@ -586,74 +589,149 @@
         @*Temporalidad*@
         <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
             <div class="row">
-                <div class="card-panel">
-                    <h5>Vigencia</h5>
-                    <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix">date_range</i>
-                            @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
-                            @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
-                        </div>
-                        <div class="input-field col s6">
-                            <i class="material-icons prefix">date_range</i>
-                            @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
-                            @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
-                        </div>
-                        <script>
-                            var elemth = document.querySelector('#fechai_vig2');
-                            var optionsth = {
-                                format: 'dd/mm/yyyy',
-                                i18n: {
-                                    clear: 'Limpiar',
-                                    today: 'Hoy',
-                                    done: 'Seleccionar',
-                                    previousMonth: '‹',
-                                    nextMonth: '›',
-                                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                    weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                    weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                }
-                            };
-                            var instanceth = M.Datepicker.init(elemth, optionsth);
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5>Vigencia</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <!--RSG 22.05.2018-->
+                            <div class="col s12">
+                                <label class="col s6">
+                                    <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+                                    <span>Por fecha</span>
+                                </label>
+                                <label class="col s6">
+                                    <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                    <span>Por periodo</span>
+                                </label>
+                            </div>
+                            <script>
+                                function cambiaTemp(id) {
+                                    var tipo = id.split('-')[1];
+                                    if (tipo == "date") {
+                                        document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                        document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                        document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                        document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                            var elemtd = document.querySelector('#fechaf_vig2');
-                            var optionstd = {
-                                format: 'dd/mm/yyyy',
-                                onClose: function (e) {
-                                    var datei = $('#fechai_vig2').val();
-                                    var datef = $('#fechaf_vig2').val();
-                                    var res = validar_fechas(datei, datef);
+                                        document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                        document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                    } else {
+                                        document.getElementById("periodoi_id").removeAttribute("disabled");
+                                        document.getElementById("anioi_id").removeAttribute("disabled");
+                                        document.getElementById("periodof_id").removeAttribute("disabled");
+                                        document.getElementById("aniof_id").removeAttribute("disabled");
 
-                                    if (!res) {
-                                        $('#fechaf_vig2').val("");
-                                        M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                        document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                        document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+
                                     }
-                                },
-                                i18n: {
-                                    clear: 'Limpiar',
-                                    today: 'Hoy',
-                                    done: 'Seleccionar',
-                                    previousMonth: '‹',
-                                    nextMonth: '›',
-                                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                    weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                    weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                    setDates(tipo);
+                                    var elem = document.querySelectorAll('select');
+                                    var instance = M.Select.init(elem, []);
                                 }
-                            };
-                            var instancetd = M.Datepicker.init(elemtd, optionstd);
+                                function setDates(tipo) {
+                                    if (tipo == "date") {
+                                        document.getElementById('fechai_vig').value = document.getElementById('fechai_vig2').value;
+                                        document.getElementById('fechaf_vig').value = document.getElementById('fechaf_vig2').value;
+                                    } else {
+                                        var firstDay = new Date(document.getElementById('anioi_id').value, document.getElementById('periodoi_id').value - 1, 1);
+                                        var lastDay = new Date(document.getElementById('aniof_id').value, document.getElementById('periodof_id').value, 0);
 
-                            function borrar(field) {
-                                field.value = "";
-                            }
-                        </script>
+                                        var fechai = firstDay.getDate() + "/" + (firstDay.getMonth() + 1) + "/" + firstDay.getFullYear();
+                                        var fechaf = lastDay.getDate() + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
+
+                                        document.getElementById('fechai_vig').value = fechai;
+                                        document.getElementById('fechaf_vig').value = fechaf;
+                                    }
+                                }
+                            </script>
+                            <div class="col s6">
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">date_range</i>
+                                    @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
+                                    @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                    <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                    @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                </div>
+                                <div class="input-field col s12">
+                                    <i class="material-icons prefix">date_range</i>
+                                    @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
+                                    @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                    <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                    @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="col s12">
+                                    <div class="input-field col s6">
+                                        @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                        <label>De</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                    </div>
+                                </div><div class="col s12">
+                                    <div class="input-field col s6">
+                                        @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                        <label>Hasta</label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                var elemth = document.querySelector('#fechai_vig2');
+                                var optionsth = {
+                                    format: 'dd/mm/yyyy',
+                                    i18n: {
+                                        clear: 'Limpiar',
+                                        today: 'Hoy',
+                                        done: 'Seleccionar',
+                                        previousMonth: '‹',
+                                        nextMonth: '›',
+                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                    }
+                                };
+                                var instanceth = M.Datepicker.init(elemth, optionsth);
+
+                                var elemtd = document.querySelector('#fechaf_vig2');
+                                var optionstd = {
+                                    format: 'dd/mm/yyyy',
+                                    onClose: function (e) {
+                                        var datei = $('#fechai_vig2').val();
+                                        var datef = $('#fechaf_vig2').val();
+                                        var res = validar_fechas(datei, datef);
+
+                                        if (!res) {
+                                            $('#fechaf_vig2').val("");
+                                            M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                        }
+                                    },
+                                    i18n: {
+                                        clear: 'Limpiar',
+                                        today: 'Hoy',
+                                        done: 'Seleccionar',
+                                        previousMonth: '‹',
+                                        nextMonth: '›',
+                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                    }
+                                };
+                                var instancetd = M.Datepicker.init(elemtd, optionstd);
+
+                                function borrar(field) {
+                                    field.value = "";
+                                }
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -744,7 +822,9 @@
                             </div>
                         </div>
                     }
-                    @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+                    @{List<TAT001.Entities.DOCUMENTOA>
+                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                    ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1178,6 +1258,7 @@
                 </div>
                 <div>
                     <div class="col s12 m6 l6">
+                        <!--RSG 22.05.2018-->
 
                         <div class="card-panel">
                             <div class="row">
@@ -1189,65 +1270,71 @@
                                 </div>
                             </div>
                             <script>
-    var clearing = [];
-    function getClearing(gall) {
-        $("#div_clearing").empty();
-        clearing = [];
-        var bukrs = '@Model.SOCIEDAD_ID';
-        var land = '@Model.PAIS_ID';
-        var ejercicio = '@Model.EJERCICIO';
-        $.ajax({
-            type: "POST",
-            url: '../../Listas/clearing',
-            dataType: "json",
-            data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+                            var clearing = [];
+                            function getClearing(gall) {
+                                $("#div_clearing").empty();
+                                clearing = [];
+                                /**/
+                                var bukrs = '@Model.SOCIEDAD_ID';
+                            /**/
+                            /**/
+                            var land = '@Model.PAIS_ID';
+                            /**/
+                            /**/
+                            var ejercicio = '@Model.EJERCICIO';
+                            /**/
+                            $.ajax({
+                                type: "POST",
+                                url: '../Listas/clearing',
+                                dataType: "json",
+                                data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
 
-            success: function (data) {
-                if (data !== null || data !== "") {
-                    //RSG 26.04.2018----------------
-                    clearing.push(data.ABONO);
-                    clearing.push(data.CARGO);
-                    clearing.push(data.CLEARING);
-                    clearing.push(data.LIMITE);
-                    //RSG 26.04.2018----------------
-                }
+                                success: function (data) {
+                                    if (data !== null || data !== "") {
+                                        //RSG 26.04.2018----------------
+                                        clearing.push(data.ABONO);
+                                        clearing.push(data.CARGO);
+                                        clearing.push(data.CLEARING);
+                                        clearing.push(data.LIMITE);
+                                        //RSG 26.04.2018----------------
+                                    }
 
-            },
-            error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: httpStatusMessage });
-            },
-            async: false
-        });
+                                },
+                                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                    M.toast({ html: httpStatusMessage });
+                                },
+                                async: false
+                            });
 
-    }
-    function formaClearing() {
-        $("#div_clearing").empty();
-        var monto = document.getElementById("monto_dis").value;
-        var div = "<ul class='collection'><li class='collection-item'>";
-        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
-        div += "</li><li class='collection-item'>";
+                        }
+                        function formaClearing() {
+                            $("#div_clearing").empty();
+                            var monto = document.getElementById("monto_dis").value;
+                            var div = "<ul class='collection'><li class='collection-item'>";
+                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            div += "</li><li class='collection-item'>";
 
-        if (clearing[3] == null) {
-            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-        }else {
-            if (clearing[2] != null) {
-                if (monto <= clearing[3]) {
-                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-                    div += "</li><li class='collection-item'>";
-                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
-                    div += "</li>";
-                } else {
-                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
-                    div += "</li><li class='collection-item'>";
-                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
-                    div += "</li>";
-                }
-            }
-        }
-        div += "</li>";
-        div += "</ul>";
-        $("#div_clearing").append(div);
-    }
+                            if (clearing[3] == null) {
+                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            } else {
+                                if (clearing[2] != null) {
+                                    if (monto <= clearing[3]) {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                                        div += "</li>";
+                                    } else {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                                        div += "</li>";
+                                    }
+                                }
+                            }
+                            div += "</li>";
+                            div += "</ul>";
+                            $("#div_clearing").append(div);
+                        }
                             </script>
                         </div>
                         <div class="card-panel">

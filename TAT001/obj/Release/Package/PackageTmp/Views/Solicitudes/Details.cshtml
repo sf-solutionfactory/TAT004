@@ -126,8 +126,8 @@
             {
                 if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                 {
-                    <a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversa</a>
-                    <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Solicitud relacionada</button>
+                    <a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversar</a>
+                    <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
                     <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
                     <ul id='list_rela' class='dropdown-content'>
                         <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
@@ -493,6 +493,29 @@
                     </div>
 
                 }
+            }
+            @if (Model.D.DOCUMENTORs.Count() > 0)
+            {
+            <div class="col s12 m12 l6">
+                <div class="card-panel">
+                    <div class="row">
+                        <h5>Reversa</h5>
+                    </div>
+                    <div class="row">
+                        @foreach (var iteem in Model.D.DOCUMENTORs)
+                        {
+                            <div class="input-field col s12">
+                                <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                <label for="txt_trev">Tipo de reversa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
+                                <label for="txt_comm">Comentario</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
             }
         </div>
     </div>
@@ -1139,8 +1162,10 @@
                             <tr>
                                 <th width="">Usuario</th>
                                 <th width="">Evento</th>
-                                <th width="">Fecha</th>
-                                <th width="">Fecha Procesada</th>
+                                <th width="">Fecha inicio</th>
+                                <th width="">Hora inicio</th>
+                                <th width="">Fecha término</th>
+                                <th width="">Hora término</th>
                                 <th width="">Estatus</th>
                                 <th width="30%">Comentario</th>
                             </tr>
@@ -1148,14 +1173,16 @@
                         <tbody>
                             @foreach (TAT001.Entities.FLUJO f in ViewBag.workflow)
                             {
-                                <tr>
-                                    <td width="">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
-                                    <td width="">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
-                                    <td width="">@Html.DisplayFor(modelItem => f.FECHAC)</td>
-                                    <td width="">@Html.DisplayFor(modelItem => f.FECHAM)</td>
-                                    <td width="">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
-                                    <td width="30%">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
-                                </tr>
+                            <tr>
+                                <td width="">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
+                                <td width="">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
+                                <td width="">@f.FECHAC.Value.ToShortDateString()</td>
+                                <td width="">@f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0]</td>
+                                <td width="">@f.FECHAM.Value.ToShortDateString()</td>
+                                <td width="">@f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0]</td>
+                                <td width="">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
+                                <td width="30%">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
+                            </tr>
                             }
                         </tbody>
                     </table>
