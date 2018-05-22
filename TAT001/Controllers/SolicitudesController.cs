@@ -2526,6 +2526,87 @@ namespace TAT001.Controllers
             return jl;
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult categoriaMateriales(string kunnr)
+        {
+            if (kunnr == null)
+            {
+                kunnr = "";
+            }
+            CLIENTE cli = new CLIENTE();
+            List<CLIENTE> clil = new List<CLIENTE>();
+
+            try
+            {
+                cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
+
+                //Saber si el cliente es sold to, payer o un grupo
+                if (cli != null)
+                {
+                    //Es un soldto
+                    if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                    {
+                        clil.Add(cli);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            //Obtener el numero de periodos para obtener el historial
+            int nummonths = 3;
+            int imonths = nummonths * -1;
+            //Obtener el rango de los periodos incluyendo el año
+            DateTime ff = DateTime.Today;
+            DateTime fi = ff.AddMonths(imonths);
+
+            string mi = fi.Month.ToString("MM");
+            string ai = fi.Year.ToString("yyyy");
+
+            string mf = ff.Month.ToString("MM");
+            string af = ff.Year.ToString("yyyy");
+
+            int aii = 0;
+            try
+            {
+                aii = Convert.ToInt32(ai);
+            }catch(Exception e)
+            {
+
+            }
+
+            int mii = 0;
+            try
+            {
+                mii = Convert.ToInt32(mi);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            if (clil.Count > 0)
+            {
+                //Obtener el historial de compras de los clientesd
+                List<PRESUPSAPP> lmsap = clil
+                    .Join(
+                    db.PRESUPSAPPs.Where(psap => psap.ANIO > aii && psap.PERIOD > mii),
+                    cl => cl.KUNNR,
+                    clb => clb.KUNNR,
+                    (clb, cl) => new PRESUPSAPP
+                    {
+                        ID = cl.ID,
+                        ANIO = cl.ANIO
+                    }
+                    ).ToList();
+            }
+
+            JsonResult jl = Json(cli, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
 
 
         [HttpPost]

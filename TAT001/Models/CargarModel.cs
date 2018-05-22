@@ -63,8 +63,12 @@ namespace TAT001.Models
                         }
                         if (material != lines[5])
                         {
+
+                            int an2 = Convert.ToInt16(pRESUPUESTOP.ANIO);
+                            int anmes2 = Convert.ToInt16(pRESUPUESTOP.MES);
+
                             material = lines[5].Trim();
-                            if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedades, periodo, anio, true))
+                            if (filtrocarga(pRESUPUESTOP.REGION, an2, anmes2, sociedades, periodo, anio, true))
                             {
                                 pRESUPUESTOPS.Add(new PRESUPUESTOP
                                 {
@@ -128,7 +132,9 @@ namespace TAT001.Models
                         }
                     }
                 }
-                if (filtrocarga(pRESUPUESTOP.REGION, pRESUPUESTOP.ANIO, pRESUPUESTOP.MES, sociedades, periodo, anio, true))
+                int an = Convert.ToInt16(pRESUPUESTOP.ANIO);
+                int anmes = Convert.ToInt16(pRESUPUESTOP.MES);
+                if (filtrocarga(pRESUPUESTOP.REGION,an,anmes, sociedades, periodo, anio, true))
                 {
                     pRESUPUESTOPS.Add(new PRESUPUESTOP
                     {
@@ -202,9 +208,9 @@ namespace TAT001.Models
                     {
                         lines = strem.ReadLine().Split('|');
 
-                        pRESUPUESTOP.ANIO = lines[0];
+                        pRESUPUESTOP.ANIO = Convert.ToInt16(lines[0]);
                         pRESUPUESTOP.POS = i;
-                        pRESUPUESTOP.PERIOD = lines[1];
+                        pRESUPUESTOP.PERIOD = Convert.ToInt16(lines[1]);
                         pRESUPUESTOP.TYPE = lines[2];
                         pRESUPUESTOP.BUKRS = lines[3];
                         pRESUPUESTOP.VKORG = lines[4];
@@ -256,7 +262,9 @@ namespace TAT001.Models
                         //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
                         //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
                         //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
-                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, pRESUPUESTOP.PERIOD, sociedades, periodo, anio, false))
+                        int an = Convert.ToInt16(pRESUPUESTOP.ANIO);
+                        int anmes = Convert.ToInt16(pRESUPUESTOP.PERIOD);
+                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, anmes, sociedades, periodo, anio, false))
                         {
                             pRESUPUESTOPS.Add(new PRESUPSAPP
                             {
@@ -369,7 +377,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadsap, periodosap, false, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO, soc, pre, usuario, "0", 2).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO+"", soc, pre, usuario, "0", 2).ToList();
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());
@@ -468,7 +476,7 @@ namespace TAT001.Models
                     break;
             }
         }
-        private bool filtrocarga(string sociedad, string anio, string periodo, List<REGION> sociedades, string[] periodos, string[] anioss, bool cpt)
+        private bool filtrocarga(string sociedad, int anio, int periodo, List<REGION> sociedades, string[] periodos, string[] anioss, bool cpt)
         {
             string[] soc;
             string[] pre;
@@ -486,7 +494,7 @@ namespace TAT001.Models
             {
                 anios = anioss[0];
             }
-            if (anio == anios || anio == anios2)
+            if (anio+"" == anios || anio+"" == anios2)
             {
                 if (sociedades != null)
                 {
@@ -506,7 +514,7 @@ namespace TAT001.Models
                             //{
                             //    periodo = mes(periodo);
                             //}
-                            pre = periodos.Where(x => x == periodo).ToArray();
+                            pre = periodos.Where(x => x == periodo+"").ToArray();
                             if (pre.Length > 0)
                             {
                                 return true;

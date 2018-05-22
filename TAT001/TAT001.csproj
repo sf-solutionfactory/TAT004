@@ -269,6 +269,9 @@
     <Compile Include="Entities\CONPOSAPP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CONSOPORTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CONTACTOC.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -407,6 +410,12 @@
     <Compile Include="Entities\PAI.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PERIODO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERIODOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\PERMISO_PAGINA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -537,6 +546,12 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TSOLT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOPORTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOPORTET.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TS_FORM.cs">

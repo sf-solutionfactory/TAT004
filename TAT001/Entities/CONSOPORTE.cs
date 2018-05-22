@@ -12,13 +12,14 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class CONSOPORTE
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
+        public string TSOL_ID { get; set; }
+        public string TSOPORTE_ID { get; set; }
+        public bool OBLIGATORIO { get; set; }
+        public bool ACTIVO { get; set; }
     
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public virtual TSOL TSOL { get; set; }
+        public virtual TSOPORTE TSOPORTE { get; set; }
     }
 }

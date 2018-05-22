@@ -236,6 +236,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CONSOPORTEs">
+      <EntityTypeMapping TypeName="TAT001Model.CONSOPORTE">
+        <MappingFragment StoreEntitySet="CONSOPORTE">
+          <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+          <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+          <ScalarProperty Name="OBLIGATORIO" ColumnName="OBLIGATORIO" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="CONTACTOCs">
       <EntityTypeMapping TypeName="TAT001Model.CONTACTOC">
         <MappingFragment StoreEntitySet="CONTACTOC">
@@ -271,7 +281,7 @@
           <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
           <ScalarProperty Name="ABONO" ColumnName="ABONO" />
           <ScalarProperty Name="CARGO" ColumnName="CARGO" />
-          <ScalarProperty Name="CARGO_FV" ColumnName="CARGO_FV" />
+          <ScalarProperty Name="CLEARING" ColumnName="CLEARING" />
           <ScalarProperty Name="LIMITE" ColumnName="LIMITE" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -587,6 +597,7 @@
           <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
           <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
           <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+          <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -788,6 +799,26 @@
           <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERIODOes">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODO">
+        <MappingFragment StoreEntitySet="PERIODO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERIODOTs">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODOT">
+        <MappingFragment StoreEntitySet="PERIODOT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="PERIODO_ID" ColumnName="PERIODO_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="TXT03" ColumnName="TXT03" />
+          <ScalarProperty Name="TXT01" ColumnName="TXT01" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1266,6 +1297,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TSOPORTEs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOPORTE">
+        <MappingFragment StoreEntitySet="TSOPORTE">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TSOPORTETs">
+      <EntityTypeMapping TypeName="TAT001Model.TSOPORTET">
+        <MappingFragment StoreEntitySet="TSOPORTET">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TSOPORTE_ID" ColumnName="TSOPORTE_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TX_CONCEPTO">
       <EntityTypeMapping TypeName="TAT001Model.TX_CONCEPTO">
         <MappingFragment StoreEntitySet="TX_CONCEPTO">
@@ -1647,6 +1696,7 @@
           <ScalarProperty Name="VVX17" ColumnName="VVX17" />
           <ScalarProperty Name="ALLB" ColumnName="ALLB" />
           <ScalarProperty Name="ALLF" ColumnName="ALLF" />
+          <ScalarProperty Name="PROCESO" ColumnName="PROCESO" />
           <ScalarProperty Name="CONSU" ColumnName="CONSU" />
           <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
         </ComplexTypeMapping>

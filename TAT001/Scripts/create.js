@@ -102,6 +102,15 @@
         ]
     });
 
+    $('#matcat').click(function (e) {
+        
+        var kunnr = $('#payer_id').val();
+        definirTipoCliente(kunnr)
+        event.returnvalue = false;
+        event.cancel = true;
+    });
+    
+
     $('#sendTable').click(function (e) {
 
         event.returnvalue = false;
@@ -260,6 +269,16 @@
                 var dis = $("#select_dis").val();
                 if (dis != "") {
                     var t = $('#table_dis').DataTable();
+                    //Obtener las fechas de temporalidad para agregarlas a los items
+                    var val_de = $('#fechai_vig').val();
+                    var val_al = $('#fechaf_vig').val();
+
+                    var adate = formatDate(val_al);
+                    var ddate = formatDate(val_de);
+
+                    adate = formatDatef(adate);
+                    ddate = formatDatef(ddate);
+
                     //Distribución por categoría
                     if (dis == "C") {
                         //Obtener la categoría
@@ -271,8 +290,8 @@
                                 cat + "", //col0
                                 "", //col1
                                 "", ////col2
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">", //col3
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate +"\">",
                                 "", //Material
                                 opt + "",
                                 opt + "",
@@ -289,8 +308,9 @@
                         }
 
                     } else if (dis == "M") {
-                        //Distribución por material
-                        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, "", "");
+                        //Distribución por material                     
+
+                        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate);
                         //t.row.add([
                         //    "",
                         //    "",
@@ -894,6 +914,59 @@ $(window).on('load', function () {
     $('.preversa').trigger('click');
 
 });
+
+function formatDate(val) {
+    var vdate = "";
+    try {
+        vdate = val.split('/');
+        vdate = new Date(vdate[2] + "-" + vdate[1] + "-" + vdate[0]);
+    }
+    catch (err) {
+        vdate = "";
+    }
+
+    
+
+    return vdate;
+}
+
+function formatDatef(vdate) {
+
+    var dd = "";
+    var mm = "";
+    var yy = "";
+    var de = true;
+    var d = "";
+
+    try {
+        dd = vdate.getDate();
+    }
+    catch (err) {
+        de = false;
+    }
+
+    try {
+        mm = (vdate.getMonth() + 1);
+    }
+    catch (err) {
+        de = false;
+    }
+
+    try {
+        yy = vdate.getFullYear();
+    }
+    catch (err) {
+        de = false;
+    }
+
+    if (de == true) {
+        d = dd + "/" + mm + "/" + yy;
+    } else {
+        d = "";
+    }
+
+    return d;
+}
 
 function copiarTableVista() {
 
@@ -1529,6 +1602,27 @@ function convertP(i) {
             i : 0;
 };
 
+function definirTipoCliente(kunnr) {
+
+    $.ajax({
+        type: "POST",
+        url: 'categoriaMateriales',
+        data: { "kunnr": kunnr },
+
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+               
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+        },
+        async: false
+    });
+
+}
+
 
 function format(catid) {
 
@@ -1688,23 +1782,9 @@ function loadExcelDis(file) {
 
                     var date_de = new Date(parseInt(dataj.VIGENCIA_DE.substr(6)));
                     var date_al = new Date(parseInt(dataj.VIGENCIA_AL.substr(6)));
-                    //var addedRow = table.row.add([
-                    //    dataj.POS,
-                    //    "",
-                    //    "",
-                    //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-                    //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
-                    //    "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MATNR + "\">",
-                    //    dataj.MATKL,
-                    //    dataj.DESC,
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO + "\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYO + "\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.MONTO_APOYO + "\">",
-                    //    dataj.MONTOC_APOYO,
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PRECIO_SUG + "\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.VOLUMEN_EST + "\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + dataj.PORC_APOYOEST + "\">",
-                    //]).draw(false).node();
+
+                    date_de = formatDatef(date_de);
+                    date_al = formatDatef(date_al);
 
                     var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.PORC_APOYOEST, relacionada, reversa, date_de, date_al);
 
@@ -1885,14 +1965,15 @@ function addRowSopl(t,pos, fac, fecha, prov, provt, control, aut, ven, fack, eje
 
 }
 
-function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST,relacionada, reversa,date_de, date_al) {
+function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al) {
+    
     var r = addRowl(
             t,
             POS,
             "",
             "",
-            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de.getDate() + "/" + (date_de.getMonth() + 1) + "/" + date_de.getFullYear() + "\">",
-            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al.getDate() + "/" + (date_al.getMonth() + 1) + "/" + date_al.getFullYear() + "\">",
+            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de + "\">",
+            "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al + "\">",
             "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">",
             MATKL,
             DESC,
