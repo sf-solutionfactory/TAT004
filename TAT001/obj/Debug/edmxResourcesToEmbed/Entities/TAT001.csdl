@@ -317,11 +317,11 @@
     <Property Name="EJERCICIO" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ABONO" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="CARGO" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="CLEARING" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="LIMITE" Type="Decimal" Precision="13" Scale="5" />
     <NavigationProperty Name="GALL" Relationship="Self.FK_CUENTA_GALL" FromRole="CUENTA" ToRole="GALL" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_CUENTA_PAIS" FromRole="CUENTA" ToRole="PAIS" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="CUENTA" ToRole="SOCIEDAD" />
-    <Property Name="CLEARING" Type="Decimal" Precision="10" Scale="0" />
   </EntityType>
   <EntityType Name="DET_AGENTE">
     <Key>
@@ -464,8 +464,8 @@
     <Property Name="PUESTOA_ID" Type="Int32" />
     <Property Name="USUARIOA_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="DET_TAXEO" ToRole="USUARIO" />
-    <NavigationProperty Name="PUESTO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="DET_TAXEO" ToRole="PUESTO" />
+    <NavigationProperty Name="PUESTO" Relationship="Self.FK_DET_TAXEO_PUESTO" FromRole="DET_TAXEO" ToRole="PUESTO" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_DET_TAXEO_USUARIO" FromRole="DET_TAXEO" ToRole="USUARIO" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
     <Key>
@@ -547,7 +547,7 @@
     <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="ESTADO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CIUDAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PERIODO" Type="Int32" />
     <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -933,6 +933,28 @@
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
   </EntityType>
+  <EntityType Name="PERIODO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PERIODOTs" Relationship="Self.FK_PERIODOT_PERIODO" FromRole="PERIODO" ToRole="PERIODOT" />
+  </EntityType>
+  <EntityType Name="PERIODOT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="PERIODO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="PERIODO_ID" Type="Int32" Nullable="false" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TXT03" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Name="TXT01" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="PERIODO" Relationship="Self.FK_PERIODOT_PERIODO" FromRole="PERIODOT" ToRole="PERIODO" />
+    <NavigationProperty Name="SPRA" Relationship="Self.FK_PERIODOT_SPRAS" FromRole="PERIODOT" ToRole="SPRAS" />
+  </EntityType>
   <EntityType Name="PERMISO_PAGINA">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -958,7 +980,7 @@
       <PropertyRef Name="ANIO" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ANIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ANIO" Type="Int32" Nullable="false" />
     <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
     <Property Name="FECHAC" Type="DateTime" Precision="3" />
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_PRESUPSAPH_USUARIO" FromRole="PRESUPSAPH" ToRole="USUARIO" />
@@ -971,9 +993,9 @@
       <PropertyRef Name="POS" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" />
-    <Property Name="ANIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ANIO" Type="Int32" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
-    <Property Name="PERIOD" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+    <Property Name="PERIOD" Type="Int32" />
     <Property Name="TYPE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="VKORG" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
@@ -1085,10 +1107,10 @@
     <NavigationProperty Name="DET_APROB" Relationship="Self.FK_DET_APROB_PUESTO" FromRole="PUESTO" ToRole="DET_APROB" />
     <NavigationProperty Name="DET_APROB1" Relationship="Self.FK_DET_APROB_PUESTO1" FromRole="PUESTO" ToRole="DET_APROB" />
     <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBH_PUESTO1" FromRole="PUESTO" ToRole="DET_APROBH" />
+    <NavigationProperty Name="DET_TAXEO" Relationship="Self.FK_DET_TAXEO_PUESTO" FromRole="PUESTO" ToRole="DET_TAXEO" />
     <NavigationProperty Name="PERMISO_PAGINA" Relationship="Self.FK_PERMISO_PAGINA_PUESTO" FromRole="PUESTO" ToRole="PERMISO_PAGINA" />
     <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_PUESTO" FromRole="PUESTO" ToRole="PUESTOT" />
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_PUESTO" FromRole="PUESTO" ToRole="USUARIO" />
-    <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_PUESTO" FromRole="PUESTO" ToRole="DET_TAXEO" />
   </EntityType>
   <EntityType Name="PUESTOT">
     <Key>
@@ -1201,6 +1223,7 @@
     <NavigationProperty Name="CATEGORIATs" Relationship="Self.FK_CATEGORIAT_SPRAS" FromRole="SPRAS" ToRole="CATEGORIAT" />
     <NavigationProperty Name="GALLTs" Relationship="Self.FK_GALLT_SPRAS" FromRole="SPRAS" ToRole="GALLT" />
     <NavigationProperty Name="PAGINATs" Relationship="Self.FK_PAGINAT_SPRAS" FromRole="SPRAS" ToRole="PAGINAT" />
+    <NavigationProperty Name="PERIODOTs" Relationship="Self.FK_PERIODOT_SPRAS" FromRole="SPRAS" ToRole="PERIODOT" />
     <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_SPRAS" FromRole="SPRAS" ToRole="PUESTOT" />
     <NavigationProperty Name="RETENCIONTs" Relationship="Self.FK_RETENCIONT_SPRAS" FromRole="SPRAS" ToRole="RETENCIONT" />
     <NavigationProperty Name="ROLTs" Relationship="Self.FK_ROLT_SPRAS" FromRole="SPRAS" ToRole="ROLT" />
@@ -1218,7 +1241,6 @@
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
-    <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="SPRA" ToRole="PERIODOT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -1623,6 +1645,7 @@
     <NavigationProperty Name="CARTAs" Relationship="Self.FK_CARTA_USUARIO" FromRole="USUARIO" ToRole="CARTA" />
     <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_USUARIO" FromRole="USUARIO" ToRole="DET_AGENTEH" />
     <NavigationProperty Name="DET_AGENTEP" Relationship="Self.FK_DET_AGENTEP_USUARIO" FromRole="USUARIO" ToRole="DET_AGENTEP" />
+    <NavigationProperty Name="DET_TAXEO" Relationship="Self.FK_DET_TAXEO_USUARIO" FromRole="USUARIO" ToRole="DET_TAXEO" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_USUARIO" FromRole="USUARIO" ToRole="DOCUMENTO" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_USUARIO" FromRole="USUARIO" ToRole="FLUJO" />
     <NavigationProperty Name="FLUJOes1" Relationship="Self.FK_FLUJO_USUARIO1" FromRole="USUARIO" ToRole="FLUJO" />
@@ -1633,7 +1656,6 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
-    <NavigationProperty Name="DET_TAXEO" Relationship="TAT001Model.FK_DET_TAXEO_USUARIO" FromRole="USUARIO" ToRole="DET_TAXEO" />
   </EntityType>
   <EntityType Name="USUARIOSAP">
     <Key>
@@ -1808,7 +1830,7 @@
     <Property Name="TALL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-    <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PERIODO" Type="Int32" />
     <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -2471,6 +2493,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DET_TAXEO_PUESTO">
+    <End Role="PUESTO" Type="Self.PUESTO" Multiplicity="0..1" />
+    <End Role="DET_TAXEO" Type="Self.DET_TAXEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PUESTO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_TAXEO">
+        <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_TAXEO_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="DET_TAXEO" Type="Self.DET_TAXEO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_TAXEO">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTO_PAIS">
     <End Role="PAIS" Type="Self.PAI" Multiplicity="0..1" />
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
@@ -2928,6 +2974,30 @@
       </Principal>
       <Dependent Role="TS_FORM">
         <PropertyRef Name="LAND_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PERIODOT_PERIODO">
+    <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="1" />
+    <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="PERIODO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PERIODOT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+    <End Role="PERIODOT" Type="Self.PERIODOT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="PERIODOT">
+        <PropertyRef Name="SPRAS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3604,6 +3674,8 @@
     <EntitySet Name="PAGINAs" EntityType="Self.PAGINA" />
     <EntitySet Name="PAGINATs" EntityType="Self.PAGINAT" />
     <EntitySet Name="PAIS" EntityType="Self.PAI" />
+    <EntitySet Name="PERIODOes" EntityType="Self.PERIODO" />
+    <EntitySet Name="PERIODOTs" EntityType="Self.PERIODOT" />
     <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" />
     <EntitySet Name="POSICIONs" EntityType="Self.POSICION" />
     <EntitySet Name="PRESUPSAPHs" EntityType="Self.PRESUPSAPH" />
@@ -3842,6 +3914,14 @@
       <End Role="DET_APROBH" EntitySet="DET_APROBH" />
       <End Role="DET_APROBP" EntitySet="DET_APROBP" />
     </AssociationSet>
+    <AssociationSet Name="FK_DET_TAXEO_PUESTO" Association="Self.FK_DET_TAXEO_PUESTO">
+      <End Role="PUESTO" EntitySet="PUESTOes" />
+      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_TAXEO_USUARIO" Association="Self.FK_DET_TAXEO_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
@@ -3993,6 +4073,14 @@
     <AssociationSet Name="FK_TS_FORM_PAIS" Association="Self.FK_TS_FORM_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="TS_FORM" EntitySet="TS_FORM" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PERIODOT_PERIODO" Association="Self.FK_PERIODOT_PERIODO">
+      <End Role="PERIODO" EntitySet="PERIODOes" />
+      <End Role="PERIODOT" EntitySet="PERIODOTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PERIODOT_SPRAS" Association="Self.FK_PERIODOT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="PERIODOT" EntitySet="PERIODOTs" />
     </AssociationSet>
     <AssociationSet Name="FK_PERMISO_PAGINA_PUESTO" Association="Self.FK_PERMISO_PAGINA_PUESTO">
       <End Role="PUESTO" EntitySet="PUESTOes" />
@@ -4229,7 +4317,7 @@
       <Parameter Name="PERIODO" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="CSP_PRESUPUESTO_ADD" ReturnType="Collection(Int32)">
-      <Parameter Name="anio" Mode="In" Type="String" />
+      <Parameter Name="anio" Mode="In" Type="Int32" />
       <Parameter Name="sociedad" Mode="In" Type="String" />
       <Parameter Name="periodo" Mode="In" Type="String" />
       <Parameter Name="usuario_id" Mode="In" Type="String" />
@@ -4280,24 +4368,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <AssociationSet Name="FK_DET_TAXEO_USUARIO" Association="TAT001Model.FK_DET_TAXEO_USUARIO">
-      <End Role="USUARIO" EntitySet="USUARIOs" />
-      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
-    </AssociationSet>
-    <AssociationSet Name="FK_DET_TAXEO_PUESTO" Association="TAT001Model.FK_DET_TAXEO_PUESTO">
-      <End Role="PUESTO" EntitySet="PUESTOes" />
-      <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
-    </AssociationSet>
-    <EntitySet Name="PERIODOes" EntityType="TAT001Model.PERIODO" />
-    <EntitySet Name="PERIODOTs" EntityType="TAT001Model.PERIODOT" />
-    <AssociationSet Name="FK_PERIODOT_PERIODO" Association="TAT001Model.FK_PERIODOT_PERIODO">
-      <End Role="PERIODO" EntitySet="PERIODOes" />
-      <End Role="PERIODOT" EntitySet="PERIODOTs" />
-    </AssociationSet>
-    <AssociationSet Name="FK_PERIODOT_SPRAS" Association="TAT001Model.FK_PERIODOT_SPRAS">
-      <End Role="SPRA" EntitySet="SPRAS" />
-      <End Role="PERIODOT" EntitySet="PERIODOTs" />
-    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4332,6 +4402,7 @@
     <Property Type="Double" Name="VVX17" Nullable="false" />
     <Property Type="Double" Name="ALLB" Nullable="false" />
     <Property Type="Double" Name="ALLF" Nullable="false" />
+    <Property Type="Double" Name="PROCESO" Nullable="false" />
     <Property Type="Double" Name="CONSU" Nullable="false" />
     <Property Type="Double" Name="TOTAL" Nullable="false" />
   </ComplexType>
@@ -4405,74 +4476,4 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
-  <Association Name="FK_DET_TAXEO_USUARIO">
-    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
-    <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="USUARIO">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="DET_TAXEO">
-        <PropertyRef Name="USUARIOC_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_DET_TAXEO_PUESTO">
-    <End Type="TAT001Model.PUESTO" Role="PUESTO" Multiplicity="0..1" />
-    <End Type="TAT001Model.DET_TAXEO" Role="DET_TAXEO" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PUESTO">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="DET_TAXEO">
-        <PropertyRef Name="PUESTOA_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="PERIODO">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" />
-    <Property Name="DESCRIPCION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <Property Name="ACTIVO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="PERIODOTs" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODO" ToRole="PERIODOT" />
-  </EntityType>
-  <EntityType Name="PERIODOT">
-    <Key>
-      <PropertyRef Name="SPRAS_ID" />
-      <PropertyRef Name="PERIODO_ID" />
-    </Key>
-    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
-    <Property Name="PERIODO_ID" Type="Int32" Nullable="false" />
-    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="TXT03" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-    <Property Name="TXT01" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="PERIODO" Relationship="TAT001Model.FK_PERIODOT_PERIODO" FromRole="PERIODOT" ToRole="PERIODO" />
-    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_PERIODOT_SPRAS" FromRole="PERIODOT" ToRole="SPRA" />
-  </EntityType>
-  <Association Name="FK_PERIODOT_PERIODO">
-    <End Type="TAT001Model.PERIODO" Role="PERIODO" Multiplicity="1" />
-    <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PERIODO">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="PERIODOT">
-        <PropertyRef Name="PERIODO_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_PERIODOT_SPRAS">
-    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
-    <End Type="TAT001Model.PERIODOT" Role="PERIODOT" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SPRA">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="PERIODOT">
-        <PropertyRef Name="SPRAS_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

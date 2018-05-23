@@ -24,10 +24,10 @@ namespace TAT001.Entities
             this.DET_APROB = new HashSet<DET_APROB>();
             this.DET_APROB1 = new HashSet<DET_APROB>();
             this.DET_APROBH = new HashSet<DET_APROBH>();
+            this.DET_TAXEO = new HashSet<DET_TAXEO>();
             this.PERMISO_PAGINA = new HashSet<PERMISO_PAGINA>();
             this.PUESTOTs = new HashSet<PUESTOT>();
             this.USUARIOs = new HashSet<USUARIO>();
-            this.DET_TAXEO = new HashSet<DET_TAXEO>();
         }
     
         public int ID { get; set; }
@@ -48,12 +48,12 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_APROBH> DET_APROBH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_TAXEO> DET_TAXEO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PUESTOT> PUESTOTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DET_TAXEO> DET_TAXEO { get; set; }
     }
 }

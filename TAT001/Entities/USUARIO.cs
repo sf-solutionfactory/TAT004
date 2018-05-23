@@ -20,6 +20,7 @@ namespace TAT001.Entities
             this.CARTAs = new HashSet<CARTA>();
             this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.DET_AGENTEP = new HashSet<DET_AGENTEP>();
+            this.DET_TAXEO = new HashSet<DET_TAXEO>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.FLUJOes = new HashSet<FLUJO>();
             this.FLUJOes1 = new HashSet<FLUJO>();
@@ -27,7 +28,6 @@ namespace TAT001.Entities
             this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
-            this.DET_TAXEO = new HashSet<DET_TAXEO>();
         }
     
         public string ID { get; set; }
@@ -50,6 +50,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_AGENTEP> DET_AGENTEP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_TAXEO> DET_TAXEO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLUJO> FLUJOes { get; set; }
@@ -66,7 +68,5 @@ namespace TAT001.Entities
         public virtual SPRA SPRA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DET_TAXEO> DET_TAXEO { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace TAT001.Entities
         public double VVX17 { get; set; }
         public double ALLB { get; set; }
         public double ALLF { get; set; }
+        public double PROCESO { get; set; }
         public double CONSU { get; set; }
         public double TOTAL { get; set; }
     }

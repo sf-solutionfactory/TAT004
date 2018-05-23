@@ -75,6 +75,8 @@ namespace TAT001.Entities
         public virtual DbSet<PAGINA> PAGINAs { get; set; }
         public virtual DbSet<PAGINAT> PAGINATs { get; set; }
         public virtual DbSet<PAI> PAIS { get; set; }
+        public virtual DbSet<PERIODO> PERIODOes { get; set; }
+        public virtual DbSet<PERIODOT> PERIODOTs { get; set; }
         public virtual DbSet<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
         public virtual DbSet<POSICION> POSICIONs { get; set; }
         public virtual DbSet<PRESUPSAPH> PRESUPSAPHs { get; set; }
@@ -137,8 +139,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<PERIODO> PERIODOes { get; set; }
-        public virtual DbSet<PERIODOT> PERIODOTs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
@@ -244,11 +244,11 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESU_CLIENT_Result>("CSP_PRESU_CLIENT", cLIENTEParameter, pERIODOParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(string anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
+        public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(Nullable<int> anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
         {
-            var anioParameter = anio != null ?
+            var anioParameter = anio.HasValue ?
                 new ObjectParameter("anio", anio) :
-                new ObjectParameter("anio", typeof(string));
+                new ObjectParameter("anio", typeof(int));
     
             var sociedadParameter = sociedad != null ?
                 new ObjectParameter("sociedad", sociedad) :

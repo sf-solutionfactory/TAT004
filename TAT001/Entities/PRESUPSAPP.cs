@@ -15,9 +15,9 @@ namespace TAT001.Entities
     public partial class PRESUPSAPP
     {
         public int ID { get; set; }
-        public string ANIO { get; set; }
+        public int ANIO { get; set; }
         public int POS { get; set; }
-        public string PERIOD { get; set; }
+        public Nullable<int> PERIOD { get; set; }
         public string TYPE { get; set; }
         public string BUKRS { get; set; }
         public string VKORG { get; set; }

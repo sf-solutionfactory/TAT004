@@ -21,7 +21,7 @@ namespace TAT001.Entities
         }
     
         public int ID { get; set; }
-        public string ANIO { get; set; }
+        public int ANIO { get; set; }
         public string USUARIO_ID { get; set; }
         public Nullable<System.DateTime> FECHAC { get; set; }
     

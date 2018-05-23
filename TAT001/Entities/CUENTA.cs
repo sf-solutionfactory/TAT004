@@ -20,8 +20,8 @@ namespace TAT001.Entities
         public decimal EJERCICIO { get; set; }
         public Nullable<decimal> ABONO { get; set; }
         public Nullable<decimal> CARGO { get; set; }
-        public Nullable<decimal> LIMITE { get; set; }
         public Nullable<decimal> CLEARING { get; set; }
+        public Nullable<decimal> LIMITE { get; set; }
     
         public virtual GALL GALL { get; set; }
         public virtual PAI PAI { get; set; }

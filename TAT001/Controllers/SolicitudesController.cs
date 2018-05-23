@@ -796,7 +796,7 @@ namespace TAT001.Controllers
 
             }
 
-            d.PERIODO = DateTime.Now.ToString("MM");
+            d.PERIODO = DateTime.Now.Month;// ToString("MM");
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
 
 

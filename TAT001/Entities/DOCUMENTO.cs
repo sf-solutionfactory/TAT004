@@ -33,7 +33,7 @@ namespace TAT001.Entities
         public string PAIS_ID { get; set; }
         public string ESTADO { get; set; }
         public string CIUDAD { get; set; }
-        public string PERIODO { get; set; }
+        public Nullable<int> PERIODO { get; set; }
         public string EJERCICIO { get; set; }
         public string TIPO_TECNICO { get; set; }
         public string TIPO_RECURRENTE { get; set; }

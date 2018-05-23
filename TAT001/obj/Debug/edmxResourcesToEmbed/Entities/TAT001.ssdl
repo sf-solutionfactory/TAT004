@@ -491,7 +491,7 @@
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
-    <Property Name="PERIODO" Type="nchar" MaxLength="2" />
+    <Property Name="PERIODO" Type="int" />
     <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
     <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
     <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
@@ -856,7 +856,7 @@
       <PropertyRef Name="ANIO" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="ANIO" Type="int" Nullable="false" />
     <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="FECHAC" Type="datetime" />
   </EntityType>
@@ -867,9 +867,9 @@
       <PropertyRef Name="POS" />
     </Key>
     <Property Name="ID" Type="int" Nullable="false" />
-    <Property Name="ANIO" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="ANIO" Type="int" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
-    <Property Name="PERIOD" Type="char" MaxLength="2" />
+    <Property Name="PERIOD" Type="int" />
     <Property Name="TYPE" Type="nchar" MaxLength="1" />
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="VKORG" Type="nchar" MaxLength="4" />
@@ -1570,7 +1570,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
     <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" />
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
-    <Property Name="PERIODO" Type="nchar" MaxLength="2" />
+    <Property Name="PERIODO" Type="int" />
     <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
     <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
     <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
@@ -3416,7 +3416,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="PERIODO" Type="nchar" Mode="In" />
   </Function>
   <Function Name="CSP_PRESUPUESTO_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="anio" Type="nvarchar" Mode="In" />
+    <Parameter Name="anio" Type="int" Mode="In" />
     <Parameter Name="sociedad" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="periodo" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="usuario_id" Type="nvarchar" Mode="In" />

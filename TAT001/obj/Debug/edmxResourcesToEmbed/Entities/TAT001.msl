@@ -275,13 +275,13 @@
     <EntitySetMapping Name="CUENTAs">
       <EntityTypeMapping TypeName="TAT001Model.CUENTA">
         <MappingFragment StoreEntitySet="CUENTA">
-          <ScalarProperty Name="CLEARING" ColumnName="CLEARING" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
           <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
           <ScalarProperty Name="GALL_ID" ColumnName="GALL_ID" />
           <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
           <ScalarProperty Name="ABONO" ColumnName="ABONO" />
           <ScalarProperty Name="CARGO" ColumnName="CARGO" />
+          <ScalarProperty Name="CLEARING" ColumnName="CLEARING" />
           <ScalarProperty Name="LIMITE" ColumnName="LIMITE" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -799,6 +799,26 @@
           <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERIODOes">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODO">
+        <MappingFragment StoreEntitySet="PERIODO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERIODOTs">
+      <EntityTypeMapping TypeName="TAT001Model.PERIODOT">
+        <MappingFragment StoreEntitySet="PERIODOT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="PERIODO_ID" ColumnName="PERIODO_ID" />
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="TXT03" ColumnName="TXT03" />
+          <ScalarProperty Name="TXT01" ColumnName="TXT01" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1676,6 +1696,7 @@
           <ScalarProperty Name="VVX17" ColumnName="VVX17" />
           <ScalarProperty Name="ALLB" ColumnName="ALLB" />
           <ScalarProperty Name="ALLF" ColumnName="ALLF" />
+          <ScalarProperty Name="PROCESO" ColumnName="PROCESO" />
           <ScalarProperty Name="CONSU" ColumnName="CONSU" />
           <ScalarProperty Name="TOTAL" ColumnName="TOTAL" />
         </ComplexTypeMapping>
@@ -1781,25 +1802,5 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
-    <EntitySetMapping Name="PERIODOes">
-      <EntityTypeMapping TypeName="TAT001Model.PERIODO">
-        <MappingFragment StoreEntitySet="PERIODO">
-          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
-          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PERIODOTs">
-      <EntityTypeMapping TypeName="TAT001Model.PERIODOT">
-        <MappingFragment StoreEntitySet="PERIODOT">
-          <ScalarProperty Name="TXT01" ColumnName="TXT01" />
-          <ScalarProperty Name="TXT03" ColumnName="TXT03" />
-          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
-          <ScalarProperty Name="PERIODO_ID" ColumnName="PERIODO_ID" />
-          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
