@@ -244,11 +244,11 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_PRESU_CLIENT_Result>("CSP_PRESU_CLIENT", cLIENTEParameter, pERIODOParameter);
         }
     
-        public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(string anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
+        public virtual ObjectResult<Nullable<int>> CSP_PRESUPUESTO_ADD(Nullable<int> anio, string sociedad, string periodo, string usuario_id, string auto, Nullable<int> caso)
         {
-            var anioParameter = anio != null ?
+            var anioParameter = anio.HasValue ?
                 new ObjectParameter("anio", anio) :
-                new ObjectParameter("anio", typeof(string));
+                new ObjectParameter("anio", typeof(int));
     
             var sociedadParameter = sociedad != null ?
                 new ObjectParameter("sociedad", sociedad) :

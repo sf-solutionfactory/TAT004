@@ -1,0 +1,98 @@
+﻿@model IEnumerable<TAT001.Entities.CARTA>
+
+@{
+    //ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 201;
+    ViewBag.carpeta_r = 200;
+}
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+    <a href="@Url.Action("Create", new { id = TempData["id"].ToString()})" class="btn-floating right">
+        <i class="material-icons">add</i>
+    </a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHAC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TIPO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.COMPANY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TAXID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CONCEPTO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CLIENTE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PUESTO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DIRECCION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FOLIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LUGAR)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PAYER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ESTIMADO)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr onclick="document.location = '@Url.Action("Detailss", new { id = item.NUM_DOC, pos = item.POS })'" style="cursor:pointer">
+            <td>
+                @Html.DisplayFor(modelItem => item.FECHAC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TIPO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.COMPANY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TAXID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CONCEPTO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CLIENTE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PUESTO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DIRECCION)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FOLIO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LUGAR)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PAYER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ESTIMADO)
+            </td>
+        </tr>
+    }
+
+</table>

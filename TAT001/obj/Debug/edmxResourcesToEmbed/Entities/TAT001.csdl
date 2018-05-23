@@ -547,7 +547,7 @@
     <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="ESTADO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="CIUDAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PERIODO" Type="Int32" />
     <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -1830,7 +1830,7 @@
     <Property Name="TALL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-    <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="PERIODO" Type="Int32" />
     <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -4317,7 +4317,7 @@
       <Parameter Name="PERIODO" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="CSP_PRESUPUESTO_ADD" ReturnType="Collection(Int32)">
-      <Parameter Name="anio" Mode="In" Type="String" />
+      <Parameter Name="anio" Mode="In" Type="Int32" />
       <Parameter Name="sociedad" Mode="In" Type="String" />
       <Parameter Name="periodo" Mode="In" Type="String" />
       <Parameter Name="usuario_id" Mode="In" Type="String" />

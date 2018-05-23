@@ -496,7 +496,7 @@
           <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
           <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
           <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
-          <Property Name="PERIODO" Type="nchar" MaxLength="2" />
+          <Property Name="PERIODO" Type="int" />
           <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
           <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
           <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
@@ -1575,7 +1575,7 @@ warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key
           <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" />
           <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
           <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
-          <Property Name="PERIODO" Type="nchar" MaxLength="2" />
+          <Property Name="PERIODO" Type="int" />
           <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
           <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
           <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
@@ -3421,7 +3421,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Parameter Name="PERIODO" Type="nchar" Mode="In" />
         </Function>
         <Function Name="CSP_PRESUPUESTO_ADD" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="anio" Type="nvarchar" Mode="In" />
+          <Parameter Name="anio" Type="int" Mode="In" />
           <Parameter Name="sociedad" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="periodo" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="usuario_id" Type="nvarchar" Mode="In" />
@@ -4834,7 +4834,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="ESTADO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CIUDAD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="PERIODO" Type="Int32" />
           <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
           <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -6117,7 +6117,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Property Name="TALL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
           <Property Name="PAIS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
-          <Property Name="PERIODO" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="PERIODO" Type="Int32" />
           <Property Name="EJERCICIO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
           <Property Name="TIPO_TECNICO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <Property Name="TIPO_RECURRENTE" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
@@ -8604,7 +8604,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <Parameter Name="PERIODO" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADD" ReturnType="Collection(Int32)">
-            <Parameter Name="anio" Mode="In" Type="String" />
+            <Parameter Name="anio" Mode="In" Type="Int32" />
             <Parameter Name="sociedad" Mode="In" Type="String" />
             <Parameter Name="periodo" Mode="In" Type="String" />
             <Parameter Name="usuario_id" Mode="In" Type="String" />

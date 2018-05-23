@@ -349,7 +349,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadcpt, periodocpt, true, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoCPT[0].ANIO, soc, pre, usuario, "0", 1).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(Convert.ToInt16(presupuesto.presupuestoCPT[0].ANIO), soc, pre, usuario, "0", 1).ToList();
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());
@@ -377,7 +377,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadsap, periodosap, false, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO+"", soc, pre, usuario, "0", 2).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO, soc, pre, usuario, "0", 2).ToList();
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());

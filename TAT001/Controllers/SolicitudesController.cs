@@ -796,7 +796,7 @@ namespace TAT001.Controllers
 
             }
 
-            d.PERIODO = DateTime.Now.ToString("MM");
+            d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
 
             d.FECHAD = theTime;
@@ -849,9 +849,11 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA)
         {
+            //bool prueba = false; 
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
+            //if (ModelState.IsValid && prueba == true)
             if (ModelState.IsValid)
             {
                 try
@@ -1004,7 +1006,7 @@ namespace TAT001.Controllers
                         TSOL ts = db.TSOLs.Where(tsb => tsb.ID == dOCUMENTO.TSOL_ID).FirstOrDefault();
                         if (ts != null)
                         {
-                            revn = "X";
+                            revn = "";
                             //DateTime theTime = (dynamic)null;
                             DateTime dates = DateTime.Now;
                             try
@@ -1099,6 +1101,8 @@ namespace TAT001.Controllers
                                         docP.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                         docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                                         docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                        docP.APOYO_EST = docmod.APOYO_EST;
+                                        docP.APOYO_REAL = docmod.APOYO_REAL;
 
 
                                     }
@@ -1118,6 +1122,8 @@ namespace TAT001.Controllers
                                         docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
                                         docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                                         docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                        docP.APOYO_EST = docpl[j].APOYO_EST;
+                                        docP.APOYO_REAL = docpl[j].APOYO_REAL;
                                     }
 
                                     //Agregarlo a la bd
@@ -1152,6 +1158,8 @@ namespace TAT001.Controllers
                                     docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
                                     docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
                                     docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+                                    docP.APOYO_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_EST;
+                                    docP.APOYO_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_REAL;
 
                                     db.DOCUMENTOPs.Add(docP);
                                     db.SaveChanges();//RSG
@@ -1591,6 +1599,25 @@ namespace TAT001.Controllers
                 ViewBag.relacionadan = "";
                 ViewBag.TSOL_ANT = dOCUMENTO.TSOL_ID;
             }
+
+            //Obtener los valores de tsols
+            List<TSOL> tsols_val = new List<TSOL>();
+            List<TSOLT_MODBD> tsols_valbd = new List<TSOLT_MODBD>();
+            try
+            {
+                tsols_val = db.TSOLs.ToList();
+                tsols_valbd = tsols_val.Select(tsv => new TSOLT_MODBD
+                {
+                    ID = tsv.ID,
+                    FACTURA = tsv.FACTURA
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+            var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+            ViewBag.TSOL_VALUES = tsols_valbdjs;
 
             return View(dOCUMENTO);
         }
@@ -2547,6 +2574,7 @@ namespace TAT001.Controllers
                     //Es un soldto
                     if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
                     {
+                        cli.KUNNR = "402498";
                         clil.Add(cli);
                     }
                 }
@@ -2562,11 +2590,11 @@ namespace TAT001.Controllers
             DateTime ff = DateTime.Today;
             DateTime fi = ff.AddMonths(imonths);
 
-            string mi = fi.Month.ToString("MM");
-            string ai = fi.Year.ToString("yyyy");
+            string mi = fi.Month.ToString();//.ToString("MM");
+            string ai = fi.Year.ToString();//.ToString("yyyy");
 
-            string mf = ff.Month.ToString("MM");
-            string af = ff.Year.ToString("yyyy");
+            string mf = ff.Month.ToString();// ("MM");
+            string af = ff.Year.ToString();// "yyyy");
 
             int aii = 0;
             try
@@ -2587,23 +2615,57 @@ namespace TAT001.Controllers
 
             }
 
+            int aff = 0;
+            try
+            {
+                aff = Convert.ToInt32(af);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            int mff = 0;
+            try
+            {
+                mff = Convert.ToInt32(mf);
+            }
+            catch (Exception e)
+            {
+
+            }
+            List<PRESUPSAPP> lmsap = new List<PRESUPSAPP>();
+
             if (clil.Count > 0)
             {
                 //Obtener el historial de compras de los clientesd
-                List<PRESUPSAPP> lmsap = clil
-                    .Join(
-                    db.PRESUPSAPPs.Where(psap => psap.ANIO > aii && psap.PERIOD > mii),
-                    cl => cl.KUNNR,
-                    clb => clb.KUNNR,
-                    (clb, cl) => new PRESUPSAPP
-                    {
-                        ID = cl.ID,
-                        ANIO = cl.ANIO
-                    }
-                    ).ToList();
-            }
+                //lmsap = clil
+                //    .Join(
+                //    db.PRESUPSAPPs.Where(psap => (psap.ANIO >= aii && psap.PERIOD >= mii) && (psap.ANIO <=  aff && psap.PERIOD <= mff)),
+                //    cl => cl.KUNNR,
+                //    psap => psap.KUNNR,
+                //    (cl, psap) => new PRESUPSAPP
+                //    {
+                //        ID = psap.ID,
+                //        ANIO = psap.ANIO,
+                //        MATNR = psap.MATNR
+                //    }
+                //    ).ToList();
 
-            JsonResult jl = Json(cli, JsonRequestBehavior.AllowGet);
+                lmsap = (from l in clil
+                         join p in db.PRESUPSAPPs
+                         on l.KUNNR equals p.KUNNR
+                         where (p.ANIO >= aii && p.PERIOD >= mii) && (p.ANIO <= aff && p.PERIOD <= mff)
+                         select new PRESUPSAPP
+                         {
+                             ID = p.ID,
+                             ANIO = p.ANIO,
+                             MATNR = p.MATNR
+                         }
+                        ).ToList();
+                }
+
+            JsonResult jl = Json(lmsap, JsonRequestBehavior.AllowGet);
             return jl;
         }
 

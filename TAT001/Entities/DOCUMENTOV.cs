@@ -20,7 +20,7 @@ namespace TAT001.Entities
         public string TALL_ID { get; set; }
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
-        public string PERIODO { get; set; }
+        public Nullable<int> PERIODO { get; set; }
         public string EJERCICIO { get; set; }
         public string TIPO_TECNICO { get; set; }
         public string TIPO_RECURRENTE { get; set; }

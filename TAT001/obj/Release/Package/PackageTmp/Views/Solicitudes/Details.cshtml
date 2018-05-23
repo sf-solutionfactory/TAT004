@@ -494,6 +494,26 @@
 
                 }
             }
+            <div class="col s12 m12 l6">
+                <div class="card-panel">
+                    <div class="row">
+                        <h5>Reversa</h5>
+                    </div>
+                    <div class="row">
+                        @foreach (var iteem in Model.D.DOCUMENTORs)
+                        {
+                            <div class="input-field col s12">
+                                <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a=>a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                <label for="txt_trev">Tipo de reversa</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
+                                <label for="txt_comm">Comentario</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="dist" class="col s12">

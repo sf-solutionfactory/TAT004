@@ -310,7 +310,7 @@
                     } else if (dis == "M") {
                         //Distribución por material                     
 
-                        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate);
+                        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
                         //t.row.add([
                         //    "",
                         //    "",
@@ -424,7 +424,7 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_tempp').on("click", function (e) {
+    $('#tab_temp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
@@ -435,7 +435,7 @@
 
     });
 
-    $('#tab_diss').on("click", function (e) {
+    $('#tab_dis').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
         
@@ -852,10 +852,15 @@
 $(window).on('load', function () {
     //Encriptar valores del json para el tipo de solicitud
     var tsol_valn = $('#TSOL_VALUES').val();
+    try {
+        var jsval = $.parseJSON(tsol_valn);
+        var docsenviar = JSON.stringify(jsval);
+        $('#TSOL_VALUES').val(docsenviar);
+    } catch (error) {
+        $('#TSOL_VALUES').val("");
+    }
 
-    var jsval = $.parseJSON(tsol_valn)
-    var docsenviar = JSON.stringify(jsval);
-    $('#TSOL_VALUES').val(docsenviar);
+    
 
     //una factura
     var check = $("#check_facturas").val();
@@ -890,7 +895,7 @@ $(window).on('load', function () {
     //Valores en información antes soporte
     copiarTableVistaSop();
     //Valores en  distribución    
-    copiarTableVista();
+    copiarTableVista("");
 
     //Pasar el total de la tabla al total en monto
     var total_dis = $('#total_dis').text();
@@ -968,7 +973,7 @@ function formatDatef(vdate) {
     return d;
 }
 
-function copiarTableVista() {
+function copiarTableVista(update) {
 
     var lengthT = $("table#table_dish tbody tr").length;
 
@@ -1013,11 +1018,17 @@ function copiarTableVista() {
             var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
             var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
 
+            var apoyo_est = $(this).find("td:eq(" + 12 + ") input").val();
+            var apoyo_real = $(this).find("td:eq(" + 13 + ") input").val();
+
             var vol = 0;
+            var total = 0;
             if (tsol == "estimado") {
                 vol = volumen_est;
+                total = apoyo_est;
             } else {
                 vol = volumen_real;
+                total = apoyo_real;
             }
 
 
@@ -1040,29 +1051,78 @@ function copiarTableVista() {
                 }
             }
 
-            t.row.add([
-                matkl_id + "", //col0 ID
-                "", //col1
-                "", ////col2
-                "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-                "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-                "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
-                matkl + "",
-                matkl + "",
-                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
-                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
-                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
-                "",
-                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
-                "",
-            ]).draw(false);
+            var calculo = "";
+            //Definir si los valores van en 0 y nada más poner el total
+            if (costo_unitario == "" || costo_unitario == "0.00" || porc_apoyo == "" || porc_apoyo == "0.00") {
+                //Se mostrara nada más el total
+                calculo = "sc";
+            }
+
+            var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
+
+            //t.row.add([
+            //    matkl_id + "", //col0 ID
+            //    "", //col1
+            //    "", ////col2
+            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+            //    "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+            //    matkl + "",
+            //    matkl + "",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
+            //    "",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
+            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">",
+            //]).draw(false);
 
             //Quitar el row
             $(this).remove();
+
+            if (calculo != "") {
+                //    updateTotalRow(t, addedRow, this, "X", total);
+                $(addedRow).addClass(""+calculo);
+            }
+            
         });
 
-        $('.input_oper').trigger('focusout');
+        if (update == "X") {
+            $('.input_oper').trigger('focusout');
+        } else {
+            //Actualizar campos y renglones
+            var t = $('#table_dis').DataTable();
+            var indext = getIndex();
+            $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+                //Validar el material
+                var mat = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                var val = valMaterial(mat);
+
+                if (val.ID == null || val.ID == "") {
+                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                } else if (val.ID == mat) {
+
+                    selectMaterial(val.ID, val.MAKTX, $(this));
+
+                } else {
+                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                }
+
+                if ($(this).hasClass("sc")) {
+                    var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+                    updateTotalRow(t, $(this), this, "X", total);
+                    $(this).removeClass("sc");
+                }
+
+            });
+
+
+
+        }
+
+        //$('.input_oper').trigger('focusout');
 
     }
 
@@ -1204,6 +1264,8 @@ function copiarTableControl() {
             var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
             var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
 
+            var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+
             var item = {};
 
             item["NUM_DOC"] = 0;
@@ -1218,11 +1280,19 @@ function copiarTableControl() {
             item["PORC_APOYO"] = porc_apoyo;
             item["MONTO_APOYO"] = monto_apoyo;
             item["PRECIO_SUG"] = precio_sug;
+            volumen_est = volumen_est || 0
+            total = parseFloat(total);
             if (vol == "estimado") {
                 item["VOLUMEN_EST"] = volumen_est;
+                item["VOLUMEN_REAL"] = 0;
+                item["APOYO_REAL"] = 0;
+                item["APOYO_EST"] = total;
             } else {
                 item["VOLUMEN_EST"] = 0;
                 item["VOLUMEN_REAL"] = volumen_est;
+                item["APOYO_REAL"] = total;
+                item["APOYO_EST"] = 0;
+                
             }
 
             jsonObjDocs.push(item);
@@ -1410,12 +1480,16 @@ $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
 
-    if ($(this).hasClass("total")) {
-        var total_val = $(this).val();
-        //Agregar los valores a 0 y agregar el total
-        updateTotalRow(t, tr, this, "X", total_val);
-    } else {
-        updateTotalRow(t, tr, this, "", 0);
+    //Solo a cantidades
+    if ($(this).hasClass("numberd")) {
+        
+        if ($(this).hasClass("total")) {
+            var total_val = $(this).val();
+            //Agregar los valores a 0 y agregar el total
+            updateTotalRow(t, tr, this, "X", total_val);
+        } else {
+            updateTotalRow(t, tr, this, "", 0);
+        }
     }
 
     //Validar si el focusout fue en la columna de material
@@ -1786,7 +1860,7 @@ function loadExcelDis(file) {
                     date_de = formatDatef(date_de);
                     date_al = formatDatef(date_al);
 
-                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.PORC_APOYOEST, relacionada, reversa, date_de, date_al);
+                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.PORC_APOYOEST, relacionada, reversa, date_de, date_al,"");
 
                     if (dataj.ACTIVO == false) {
                         $(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
@@ -1965,7 +2039,7 @@ function addRowSopl(t,pos, fac, fecha, prov, provt, control, aut, ven, fack, eje
 
 }
 
-function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al) {
+function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo) {
     
     var r = addRowl(
             t,
@@ -1983,7 +2057,7 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
             MONTOC_APOYO,
             "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
             "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
-            "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
+            "<input class=\"" + reversa + " input_oper numberd input_dc total "+calculo+"\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
     );
 
     return r;
@@ -2384,11 +2458,11 @@ function evaluarInfoTab() {
     }
 
     //Taxt ID
-    var stcd1 = $('#stcd1').val();
+    //var stcd1 = $('#stcd1').val();
 
-    if (!evaluarVal(stcd1)) {
-        return false;
-    }
+    //if (!evaluarVal(stcd1)) {
+    //    return false;
+    //}
 
     //Canal
     var vtweg = $('#vtweg').val();
