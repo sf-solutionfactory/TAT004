@@ -1278,8 +1278,7 @@ namespace TAT001.Controllers
 
             return state;
         }
-
-
+        
         public CLIENTE getCliente(string PAYER_ID)
         {
             CLIENTE payer = new CLIENTE();
@@ -2024,17 +2023,17 @@ namespace TAT001.Controllers
                     fc.SOCIEDAD_ID = f.SOCIEDAD_ID;
                     fc.PAIS_ID = f.PAIS_ID;
                     fc.TSOL = f.TSOL;
-                    fc.FACTURA = f.FACTURA;
-                    fc.FECHA = f.FECHA;
-                    fc.PROVEEDOR = f.PROVEEDOR;
-                    fc.PROVEEDOR_TXT = f.PROVEEDOR;
-                    fc.CONTROL = f.CONTROL;
-                    fc.AUTORIZACION = f.AUTORIZACION;
-                    fc.VENCIMIENTO = f.VENCIMIENTO;
-                    fc.FACTURAK = f.FACTURAK;
-                    fc.EJERCICIOK = f.EJERCICIOK;
-                    fc.BILL_DOC = f.BILL_DOC;
-                    fc.BELNR = f.BELNR;
+                    fc.FACTURA = true;
+                    fc.FECHA = true;
+                    fc.PROVEEDOR = true;
+                    fc.PROVEEDOR_TXT = true;
+                    fc.CONTROL = true;
+                    fc.AUTORIZACION = true;
+                    fc.VENCIMIENTO = true;
+                    fc.FACTURAK = true;
+                    fc.EJERCICIOK = true;
+                    fc.BILL_DOC = true;
+                    fc.BELNR = true;
                 }
             }
             catch
