@@ -231,7 +231,8 @@ namespace TAT001.Models
             }
             catch (Exception e)
             {
-                return "Error al generar el documento contable";
+                //return "Error al generar el documento contable";
+                return e.Message;
             }
         }
         private DateTime Fecha(string id_fecha)

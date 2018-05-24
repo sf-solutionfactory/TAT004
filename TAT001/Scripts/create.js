@@ -291,7 +291,7 @@
                                 "", //col1
                                 "", ////col2
                                 "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">"+ pickerFecha(".format_date"),// RSG 21.05.2018
+                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018
                                 "", //Material
                                 opt + "",
                                 opt + "",
@@ -1610,9 +1610,13 @@ function updateTotalRow(t, tr, tdinput, totals, total_val) {
 function updateTable() {
     var t = $('#table_dis').DataTable();
     $('#table_dis > tbody  > tr').each(function () {
-
-        updateTotalRow(t, $(this), $(this), "", 0);
-
+        if ($(this).hasClass("sc")) {//RSG 24.05.2018----------------
+            var index = getIndex();
+            var total = $(this).find('td').eq((index + 14)).find('input').val();
+            updateTotalRow(t, $(this), $(this), "X", total);
+        } else {//RSG 24.05.2018----------------
+            updateTotalRow(t, $(this), $(this), "", 0);
+        }//RSG 24.05.2018
     });
 
     updateFooter();
@@ -1819,6 +1823,7 @@ function loadFilesf() {
 
 function loadExcelDis(file) {
 
+    document.getElementById("loader").style.display = "initial";//RSG 24.05.2018
     var formData = new FormData();
 
     formData.append("FileUpload", file);
@@ -1863,7 +1868,25 @@ function loadExcelDis(file) {
                     date_de = formatDatef(date_de);
                     date_al = formatDatef(date_al);
 
-                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.PORC_APOYOEST, relacionada, reversa, date_de, date_al, "");
+                    //RSG 24.05.2018---------------------------------
+                    //var calculo = "X";
+                    //if (dataj.VOLUMEN_EST == 0) {
+                    //    calculo = "X";
+                    //}
+                    var calculo = "";
+                    //Definir si los valores van en 0 y nada más poner el total
+                    if (dataj.MONTO == "" || dataj.MONTO == "0.00" || dataj.PORC_APOYO == "" || dataj.PORC_APOYO == "0.00") {
+                        //Se mostrara nada más el total
+                        calculo = "sc";
+                    }
+
+                    //RSG 24.05.2018---------------------------------
+
+                    //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);
+                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);//RSG 24.05.2018
+
+                    if (calculo != "")//RSG 24.05.2018
+                        $(addedRow).addClass(calculo);//RSG 24.05.2018
 
                     if (dataj.ACTIVO == false) {
                         $(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
@@ -1881,10 +1904,12 @@ function loadExcelDis(file) {
                 }
 
                 updateTable();
+                document.getElementById("loader").style.display = "none";//RSG 24.05.2018
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
+            document.getElementById("loader").style.display = "none";//RSG 24.05.2018
         },
         async: false
     });
@@ -2061,12 +2086,13 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
+        "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 24.05.2018
     );
 
     return r;
 }
 
-function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto_a, montoc_a, precio_s, vol_es, porc_apes) {
+function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto_a, montoc_a, precio_s, vol_es, porc_apes, apoyo_est/*RSG 24.05.2018*/) {
 
     var r = t.row.add([
         pos,
@@ -2083,7 +2109,8 @@ function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto
         montoc_a,
         precio_s,
         vol_es,
-        porc_apes
+        //porc_apes,
+        apoyo_est//RSG 24.05.2018
     ]).draw(false).node();
 
     return r;

@@ -2367,6 +2367,17 @@ namespace TAT001.Controllers
                     //}
                     //doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
 
+                    //RSG 24.05.2018--------------------------------- 
+                    try
+                    {
+                        string apoyo = dt.Rows[i][7].ToString();
+                        doc.APOYO_EST = (decimal.Parse(apoyo));//Apoyo
+                    }
+                    catch
+                    {
+                        doc.APOYO_EST = 0;
+                    }
+                    //RSG 24.05.2018----------------------------------
                     ld.Add(doc);
                     pos++;
                 }
