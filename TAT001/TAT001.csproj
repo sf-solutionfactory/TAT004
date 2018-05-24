@@ -212,6 +212,7 @@
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NegociacionesController.cs" />
     <Compile Include="Controllers\PaginasController.cs" />
     <Compile Include="Controllers\PaisController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
@@ -266,6 +267,9 @@
     <Compile Include="Entities\CONPOSAPP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CONSOPORTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CONTACTOC.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -273,6 +277,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CREADOR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CREADOR2.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CSP_CAMBIO_Result.cs">
@@ -302,10 +309,28 @@
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTEH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_AGENTEP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_APROB.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_APROBH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_APROBP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_APROBV.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_TAX.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_TAXEO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTBORR.cs">
@@ -324,6 +349,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOT.cs">
@@ -380,6 +408,12 @@
     <Compile Include="Entities\PAI.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\PERIODO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PERIODOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\PERMISO_PAGINA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -411,6 +445,12 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\REGION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RETENCION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\RETENCIONT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ROL.cs">
@@ -461,6 +501,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TAXEOH.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TAXEOP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TAX_LAND.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TCAMBIO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -479,16 +528,46 @@
     <Compile Include="Entities\TEXTOCARTAV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TRETENCION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TRETENCIONT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TREVERSA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TREVERSAT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TSOL.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TSOLT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TSOPORTE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOPORTET.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TS_FORM.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TS_FORMT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_CONCEPTO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_CONCEPTOT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_NOTAT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TX_TNOTA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\UMEDIDA.cs">
@@ -629,6 +708,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
+    <Content Include="Scripts\CrearTablaCorreo.js" />
     <Content Include="Scripts\create.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
@@ -735,6 +815,11 @@
     <Content Include="Views\TCambio\Details.cshtml" />
     <Content Include="Views\TCambio\Edit.cshtml" />
     <Content Include="Views\Solicitudes\_PartialSopTr.cshtml" />
+    <Content Include="Views\Negociaciones\Create.cshtml" />
+    <Content Include="Views\Negociaciones\Delete.cshtml" />
+    <Content Include="Views\Negociaciones\Details.cshtml" />
+    <Content Include="Views\Negociaciones\Edit.cshtml" />
+    <Content Include="Views\Negociaciones\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

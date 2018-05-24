@@ -441,7 +441,7 @@ namespace TAT001.Controllers
 
             }
 
-            d.PERIODO = DateTime.Now.ToString("MM");
+            d.PERIODO = int.Parse(DateTime.Now.ToString("MM"));
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
             string dates = DateTime.Now.ToString("dd/MM/yyyy");
             DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
@@ -663,7 +663,7 @@ namespace TAT001.Controllers
                             for (int j = 0; j < docpl.Count; j++)
                             {
                                 try
-                                { 
+                                {
                                     DOCUMENTOP_MOD docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == docpl[j].MATNR).FirstOrDefault();
                                     DOCUMENTOP docP = new DOCUMENTOP();
                                     //Si lo encuentra meter valores de la base de datos y vista
@@ -683,7 +683,7 @@ namespace TAT001.Controllers
                                         docP.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                         docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                                         docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                                        
+
 
                                     }
                                     else
@@ -713,7 +713,7 @@ namespace TAT001.Controllers
 
                                 }
 
-                            }                               
+                            }
                         }
                         else
                         {
@@ -722,7 +722,7 @@ namespace TAT001.Controllers
                                 try
                                 {
                                     DOCUMENTOP docP = new DOCUMENTOP();
-                                    
+
                                     docP.NUM_DOC = dOCUMENTO.NUM_DOC;
                                     docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
                                     docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
@@ -803,7 +803,7 @@ namespace TAT001.Controllers
                     }
 
                     if (numFiles > 0)
-                    {                                             
+                    {
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
@@ -1278,7 +1278,7 @@ namespace TAT001.Controllers
 
             return state;
         }
-        
+
         public CLIENTE getCliente(string PAYER_ID)
         {
             CLIENTE payer = new CLIENTE();

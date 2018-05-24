@@ -242,7 +242,7 @@
             table.page.len(this.value).draw();
         });
 
-        $('input.global_filter').on('keyup click', function () {
+        $('#global_filter').on('keyup click', function () {
             filterGlobal();
         });
 
@@ -269,6 +269,7 @@
         $('#table').DataTable().search(
             $('#global_filter').val()).draw();
     }
+
     function format(d, row, tr) {
         $.ajax({
             url: "../Listas/Relacionados",

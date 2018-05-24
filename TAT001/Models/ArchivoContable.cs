@@ -191,7 +191,7 @@ namespace TAT001.Models
                     else
                     {
                         List<DOCUMENTOP> docp = db.DOCUMENTOPs.Where(x => x.NUM_DOC == doc.NUM_DOC).ToList();
-                        if (cuent.CARGO_FV != null)
+                        if (cuent.CARGO != null)
                         {
                             if (cuent.LIMITE < cuent.ABONO)
                             {

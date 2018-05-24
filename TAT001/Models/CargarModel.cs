@@ -202,9 +202,9 @@ namespace TAT001.Models
                     {
                         lines = strem.ReadLine().Split('|');
 
-                        pRESUPUESTOP.ANIO = lines[0];
+                        pRESUPUESTOP.ANIO = int.Parse(lines[0]);
                         pRESUPUESTOP.POS = i;
-                        pRESUPUESTOP.PERIOD = lines[1];
+                        pRESUPUESTOP.PERIOD = int.Parse(lines[1]);
                         pRESUPUESTOP.TYPE = lines[2];
                         pRESUPUESTOP.BUKRS = lines[3];
                         pRESUPUESTOP.VKORG = lines[4];
@@ -256,7 +256,7 @@ namespace TAT001.Models
                         //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
                         //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
                         //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
-                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO, pRESUPUESTOP.PERIOD, sociedades, periodo, anio, false))
+                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO.ToString(), pRESUPUESTOP.PERIOD.ToString(), sociedades, periodo, anio, false))
                         {
                             pRESUPUESTOPS.Add(new PRESUPSAPP
                             {
@@ -341,7 +341,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadcpt, periodocpt, true, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoCPT[0].ANIO, soc, pre, usuario, "0", 1).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(int.Parse(presupuesto.presupuestoCPT[0].ANIO), soc, pre, usuario, "0", 1).ToList();
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());
