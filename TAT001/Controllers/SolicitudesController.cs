@@ -841,8 +841,8 @@ namespace TAT001.Controllers
 
             //d.DOCUMENTOF = LD;
 
-            string spras = Session["spras"].ToString();
             //----------------------------RSG 18.05.2018
+            string spras = Session["spras"].ToString();
             ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
             List<string> anios = new List<string>();
             int mas = 10;
@@ -1643,6 +1643,19 @@ namespace TAT001.Controllers
             }
             var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
             ViewBag.TSOL_VALUES = tsols_valbdjs;
+
+            //----------------------------RSG 18.05.2018
+            string spras = Session["spras"].ToString();
+            ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
+            List<string> anios = new List<string>();
+            int mas = 10;
+            for (int i = 0; i < mas; i++)
+            {
+                anios.Add((DateTime.Now.Year + i).ToString());
+            }
+            ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
+            dOCUMENTO.SOCIEDAD = db.SOCIEDADs.Find(dOCUMENTO.SOCIEDAD_ID);
+            //----------------------------RSG 18.05.2018
 
             return View(dOCUMENTO);
         }
