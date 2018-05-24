@@ -270,9 +270,16 @@ namespace TAT001.Models
                 }
 
                 //APARTIR DE AQUI VA EL MONTO
-                pdfDoc.Add(new Chunk("\n"));
                 miFrase.Clear();
-                miFrase.Add(new Paragraph(cv.MONTO + " " + v.monto + " " + v.moneda, normalPeque));
+                if (v.monto_x == true)
+                {
+                    //pdfDoc.Add(new Chunk("\n"));
+                    miFrase.Add(new Paragraph(cv.MONTO + " " + v.monto + " " + v.moneda, normalPeque));
+                }
+                else
+                {
+                    miFrase.Add("");
+                }
                 pdfDoc.Add(miFrase);
 
                 //APARTIR DE AQUI VAN LAS FIRMAS

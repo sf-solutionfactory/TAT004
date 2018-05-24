@@ -276,7 +276,7 @@ namespace TAT001.Controllers
             return cc;
         }
         [HttpPost]
-        public JsonResult soportes(string bukrs, string land, string tsol, string spras)
+        public JsonResult soportes(string tsol, string spras)
         {
             TAT001Entities db = new TAT001Entities();
 

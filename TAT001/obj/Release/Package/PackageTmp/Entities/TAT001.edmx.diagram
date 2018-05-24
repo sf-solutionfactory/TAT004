@@ -4,117 +4,119 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e1ad75dd8c2743efaf5187369ea60cc7" Name="Diagram1">
-        <EntityTypeShape EntityType="TAT001Model.ACCION" Width="1.5" PointX="24" PointY="53.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CAMPOS" Width="1.5" PointX="3.75" PointY="45.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CANAL" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CARPETA" Width="1.5" PointX="1.5" PointY="41.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CARPETAT" Width="1.5" PointX="3" PointY="62.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CARTA" Width="1.5" PointX="14.25" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CATEGORIA" Width="1.5" PointX="0.75" PointY="67.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CATEGORIAT" Width="1.5" PointX="3" PointY="59.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CITy" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CLIENTE" Width="1.5" PointX="18" PointY="48.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CLIENTEI" Width="1.5" PointX="23.25" PointY="49.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CONPOSAPH" Width="1.5" PointX="12" PointY="72.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CONPOSAPP" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CONSOPORTE" Width="1.5" PointX="12" PointY="49" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CONTACTOC" Width="1.5" PointX="20.25" PointY="50.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.COUNTRy" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CUENTA" Width="1.5" PointX="26" PointY="70" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_AGENTE" Width="1.5" PointX="12" PointY="67.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_AGENTEH" Width="1.5" PointX="17.25" PointY="61.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_AGENTEP" Width="1.5" PointX="25.5" PointY="61.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_APROB" Width="1.5" PointX="12" PointY="77.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_APROBH" Width="1.5" PointX="15" PointY="76" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_APROBP" Width="1.5" PointX="17.25" PointY="75.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_TAX" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_TAXEO" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTBORR" Width="1.5" PointX="4.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTO" Width="1.5" PointX="20.25" PointY="55.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOA" Width="1.5" PointX="22.5" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOF" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTON" Width="1.5" PointX="22.5" PointY="61.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOP" Width="1.5" PointX="22.5" PointY="64.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOR" Width="1.5" PointX="25.5" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOT" Width="1.5" PointX="25.5" PointY="66.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.FACTURASCONF" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.FLUJO" Width="1.5" PointX="28.5" PointY="61.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.GALL" Width="1.5" PointX="15.75" PointY="69.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.GALLT" Width="1.5" PointX="3" PointY="65.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.GAUTORIZACION" Width="1.5" PointX="9.75" PointY="47" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.IIMPUESTO" Width="1.5" PointX="21" PointY="47.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.IMPUESTO" Width="1.5" PointX="18.75" PointY="42.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.LEYENDA" Width="1.5" PointX="18" PointY="44.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.MATERIAL" Width="1.5" PointX="12" PointY="81.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.MENSAJE" Width="1.5" PointX="8.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.MIEMBRO" Width="1.5" PointX="17.25" PointY="58.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.MONEDA" Width="1.5" PointX="7.5" PointY="75.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PAGINA" Width="1.5" PointX="1.5" PointY="44.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PAGINAT" Width="1.5" PointX="6" PointY="62.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PAI" Width="1.5" PointX="15.75" PointY="49.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PERMISO_PAGINA" Width="1.5" PointX="12" PointY="52.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.POSICION" Width="1.5" PointX="9.75" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PRESUPSAPH" Width="1.5" PointX="14.25" PointY="93.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PRESUPSAPP" Width="1.5" PointX="16.5" PointY="90.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PRESUPUESTOH" Width="1.5" PointX="14.25" PointY="102.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PRESUPUESTOP" Width="1.5" PointX="16.5" PointY="99.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PROVEEDOR" Width="1.5" PointX="15.75" PointY="54" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PUESTO" Width="1.5" PointX="3.75" PointY="74.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PUESTOT" Width="1.5" PointX="6" PointY="59.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.RANGO" Width="1.5" PointX="4.5" PointY="41.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.REGION" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.RETENCION" Width="1.5" PointX="3.75" PointY="79.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.RETENCIONT" Width="1.5" PointX="6" PointY="65.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.ROL" Width="1.5" PointX="0.75" PointY="56.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.ROLT" Width="1.5" PointX="3" PointY="56.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.SOCIEDAD" Width="1.5" PointX="9.75" PointY="74.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.SPRA" Width="1.5" PointX="0.75" PointY="60.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.STATE" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.sysdiagram" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TALL" Width="1.5" PointX="18" PointY="69.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TALLT" Width="1.5" PointX="3" PointY="68.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TAX_LAND" Width="1.5" PointX="18" PointY="66" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TAXEOH" Width="1.5" PointX="28.25" PointY="66.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TAXEOP" Width="1.5" PointX="30.5" PointY="73.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TCAMBIO" Width="1.5" PointX="9.75" PointY="80.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TCLIENTE" Width="1.5" PointX="6.75" PointY="53.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TCLIENTET" Width="1.5" PointX="9" PointY="62.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TEXTO" Width="1.5" PointX="6" PointY="56.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TEXTOCARTAF" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TEXTOCARTAV" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TRETENCION" Width="1.5" PointX="3.75" PointY="82.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TRETENCIONT" Width="1.5" PointX="6" PointY="68.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TREVERSA" Width="1.5" PointX="6.75" PointY="45.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TREVERSAT" Width="1.5" PointX="9" PointY="59.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TS_FORM" Width="1.5" PointX="23.25" PointY="70.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TS_FORMT" Width="1.5" PointX="9" PointY="65.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TSOL" Width="1.5" PointX="6.75" PointY="40.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TSOLT" Width="1.5" PointX="9" PointY="56.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TSOPORTE" Width="1.5" PointX="6.75" PointY="79.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TSOPORTET" Width="1.5" PointX="9" PointY="68.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTO" Width="1.5" PointX="0.75" PointY="53.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTOT" Width="1.5" PointX="3" PointY="53.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TX_NOTAT" Width="1.5" PointX="3" PointY="71.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.TX_TNOTA" Width="1.5" PointX="0.75" PointY="71.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.UMEDIDA" Width="1.5" PointX="3.75" PointY="85.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.UMEDIDAT" Width="1.5" PointX="6" PointY="71.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.USUARIO" Width="1.5" PointX="12" PointY="60.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.USUARIOSAP" Width="1.5" PointX="0.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WARNING" Width="1.5" PointX="12" PointY="56.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WORKFH" Width="1.5" PointX="4.5" PointY="49.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WORKFP" Width="1.5" PointX="26.25" PointY="52.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WORKFT" Width="1.5" PointX="9" PointY="53.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WORKFV" Width="1.5" PointX="6.75" PointY="48.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.ZBRAND" Width="1.5" PointX="9.75" PointY="84.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.ZCTGR" Width="1.5" PointX="9.75" PointY="86.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CARPETAV" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CREADOR" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CREADOR2" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DET_APROBV" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOV" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.PAGINAV" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.WARNINGV" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="8021c6aceea04f789a688e552f1437dc" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="TAT001Model.ACCION" Width="1.5" PointX="24.75" PointY="69.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CAMPOS" Width="1.5" PointX="10.5" PointY="77.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CANAL" Width="1.5" PointX="1.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CARPETA" Width="1.5" PointX="1.5" PointY="74" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CARPETAT" Width="1.5" PointX="3.75" PointY="66.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CARTA" Width="1.5" PointX="15" PointY="56" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CATEGORIA" Width="1.5" PointX="1.5" PointY="71.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CATEGORIAT" Width="1.5" PointX="3.75" PointY="63.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CITy" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CLIENTE" Width="1.5" PointX="18.75" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CLIENTEI" Width="1.5" PointX="21" PointY="44.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CONPOSAPH" Width="1.5" PointX="5.25" PointY="34.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CONPOSAPP" Width="1.5" PointX="3.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CONSOPORTE" Width="1.5" PointX="24" PointY="72.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CONTACTOC" Width="1.5" PointX="21" PointY="48.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.COUNTRy" Width="1.5" PointX="1.5" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CUENTA" Width="1.5" PointX="23.75" PointY="48.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_AGENTE" Width="1.5" PointX="12.75" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_AGENTEH" Width="1.5" PointX="18" PointY="59.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_AGENTEP" Width="1.5" PointX="26.25" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_APROB" Width="1.5" PointX="12.75" PointY="44.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_APROBH" Width="1.5" PointX="15.75" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_APROBP" Width="1.5" PointX="18" PointY="42.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_TAX" Width="1.5" PointX="5.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_TAXEO" Width="1.5" PointX="18" PointY="55.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTBORR" Width="1.5" PointX="7.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTO" Width="1.5" PointX="21" PointY="52.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOA" Width="1.5" PointX="23.25" PointY="56" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOF" Width="1.5" PointX="9.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTON" Width="1.5" PointX="23.25" PointY="59.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOP" Width="1.5" PointX="23.25" PointY="62.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOR" Width="1.5" PointX="26.25" PointY="56" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOT" Width="1.5" PointX="26.25" PointY="64.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.FACTURASCONF" Width="1.5" PointX="9.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.FLUJO" Width="1.5" PointX="29.25" PointY="59" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.GALL" Width="1.5" PointX="16.5" PointY="67.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.GALLT" Width="1.5" PointX="3.75" PointY="69.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.GAUTORIZACION" Width="1.5" PointX="10.5" PointY="52.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.IIMPUESTO" Width="1.5" PointX="10.5" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.IMPUESTO" Width="1.5" PointX="8.25" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.LEYENDA" Width="1.5" PointX="7.5" PointY="44.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.MATERIAL" Width="1.5" PointX="12.75" PointY="73.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.MENSAJE" Width="1.5" PointX="11.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.MIEMBRO" Width="1.5" PointX="18" PointY="64.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.MONEDA" Width="1.5" PointX="0.75" PointY="40.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PAGINA" Width="1.5" PointX="4.5" PointY="81.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PAGINAT" Width="1.5" PointX="6.75" PointY="66.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PAI" Width="1.5" PointX="5.25" PointY="40.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PERIODO" Width="1.5" PointX="4.5" PointY="78.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PERIODOT" Width="1.5" PointX="6.75" PointY="63" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PERMISO_PAGINA" Width="1.5" PointX="21.75" PointY="70.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.POSICION" Width="1.5" PointX="10.5" PointY="81" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PRESUPSAPH" Width="1.5" PointX="15" PointY="94.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PRESUPSAPP" Width="1.5" PointX="17.25" PointY="91.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PRESUPUESTOH" Width="1.5" PointX="15" PointY="103.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PRESUPUESTOP" Width="1.5" PointX="17.25" PointY="100.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PROVEEDOR" Width="1.5" PointX="16.5" PointY="49.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PUESTO" Width="1.5" PointX="10.5" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PUESTOT" Width="1.5" PointX="6.75" PointY="69.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.RANGO" Width="1.5" PointX="16.5" PointY="71.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.REGION" Width="1.5" PointX="11.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.RETENCION" Width="1.5" PointX="1.5" PointY="60.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.RETENCIONT" Width="1.5" PointX="3.75" PointY="60.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.ROL" Width="1.5" PointX="15.75" PointY="75.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.ROLT" Width="1.5" PointX="3.75" PointY="72.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.SOCIEDAD" Width="1.5" PointX="3" PointY="39.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.SPRA" Width="1.5" PointX="1.5" PointY="64.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.STATE" Width="1.5" PointX="3.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.sysdiagram" Width="1.5" PointX="11.5" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TALL" Width="1.5" PointX="18.75" PointY="67.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TALLT" Width="1.5" PointX="9.75" PointY="66.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TAX_LAND" Width="1.5" PointX="7.5" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TAXEOH" Width="1.5" PointX="27" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TAXEOP" Width="1.5" PointX="29.25" PointY="54" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TCAMBIO" Width="1.5" PointX="3" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TCLIENTE" Width="1.5" PointX="4.5" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TCLIENTET" Width="1.5" PointX="6.75" PointY="60.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TEXTO" Width="1.5" PointX="6.75" PointY="72" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TEXTOCARTAF" Width="1.5" PointX="9.5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TEXTOCARTAV" Width="1.5" PointX="11.5" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TRETENCION" Width="1.5" PointX="7.5" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TRETENCIONT" Width="1.5" PointX="9.75" PointY="63.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSA" Width="1.5" PointX="24" PointY="52" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TREVERSAT" Width="1.5" PointX="9.75" PointY="69.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TS_FORM" Width="1.5" PointX="7.5" PointY="40.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TS_FORMT" Width="1.5" PointX="9.75" PointY="60.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TSOL" Width="1.5" PointX="18.75" PointY="70.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TSOLT" Width="1.5" PointX="9.75" PointY="72.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TSOPORTE" Width="1.5" PointX="1.5" PointY="57.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TSOPORTET" Width="1.5" PointX="3.75" PointY="57.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTO" Width="1.5" PointX="1.5" PointY="77.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TX_CONCEPTOT" Width="1.5" PointX="3.75" PointY="75.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TX_NOTAT" Width="1.5" PointX="6.75" PointY="57.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.TX_TNOTA" Width="1.5" PointX="4.5" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.UMEDIDA" Width="1.5" PointX="10.5" PointY="75.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.UMEDIDAT" Width="1.5" PointX="12.75" PointY="65.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.USUARIO" Width="1.5" PointX="12.75" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.USUARIOSAP" Width="1.5" PointX="1.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WARNING" Width="1.5" PointX="12.75" PointY="69.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WORKFH" Width="1.5" PointX="5.25" PointY="49.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WORKFP" Width="1.5" PointX="27" PointY="68" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WORKFT" Width="1.5" PointX="9.75" PointY="57" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WORKFV" Width="1.5" PointX="7.5" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.ZBRAND" Width="1.5" PointX="10.5" PointY="84.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.ZCTGR" Width="1.5" PointX="10.5" PointY="86.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CARPETAV" Width="1.5" PointX="3.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CREADOR" Width="1.5" PointX="13.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.CREADOR2" Width="1.5" PointX="13.5" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DET_APROBV" Width="1.5" PointX="13.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOV" Width="1.5" PointX="13.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.PAGINAV" Width="1.5" PointX="15.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TAT001Model.WARNINGV" Width="1.5" PointX="1.5" PointY="14.75" IsExpanded="true" />
         <AssociationConnector Association="TAT001Model.FK_WORKFP_ACCION" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_CAMPOS_PAGINA" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_TEXTO_CAMPOS" ManuallyRouted="false" />
@@ -159,6 +161,8 @@
         <AssociationConnector Association="TAT001Model.FK_DET_APROBH_PUESTO1" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DET_APROBH_SOCIEDAD1" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DET_APROBP_DET_APROBH" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_PUESTO" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_USUARIO" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DOCUMENTO_PAIS" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DOCUMENTO_SOCIEDAD" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_DOCUMENTO_TALL" ManuallyRouted="false" />
@@ -197,6 +201,8 @@
         <AssociationConnector Association="TAT001Model.FK_TAX_LAND_PAIS" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_TAXEOH_PAIS" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_TS_FORM_PAIS" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_PERIODOT_PERIODO" ManuallyRouted="false" />
+        <AssociationConnector Association="TAT001Model.FK_PERIODOT_SPRAS" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_PERMISO_PAGINA_PUESTO" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WARNING_POSICION" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_PRESUPSAPH_USUARIO" ManuallyRouted="false" />
@@ -248,8 +254,6 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
-        <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_USUARIO" />
-        <AssociationConnector Association="TAT001Model.FK_DET_TAXEO_PUESTO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

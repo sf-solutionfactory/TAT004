@@ -11,6 +11,7 @@
 <script type="text/javascript" src="~/Scripts/dataTables.fixedColumns.min.js"></script>
 <script type="text/javascript" src="~/Scripts/dataTables.material.min.js"></script>
 <style>
+
     dataTables_length {
         display: none;
     }
@@ -55,6 +56,7 @@
     }
 </script>
 <style>
+
     .datatable-column-width {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -80,7 +82,6 @@
                     {
                         <option value="" disabled selected></option>
                     }
-
                     @try
                     {
                         for (int i = 0; i < Model.sociedad.Count; i++)
@@ -143,7 +144,6 @@
                                 j++;
                             }
                         }
-
                     </select>
                     <label>Año</label>
                 </div>
@@ -203,7 +203,6 @@
                     {
                         <option value="" disabled selected></option>
                     }
-
                     @try
                     {
                         string cambio = "";
@@ -224,7 +223,6 @@
                     {
                         <option value="">No hay opciones</option>
                     }
-
                 </select>
                 <label id="lbl_waers">Moneda</label>
             </div>
@@ -233,7 +231,7 @@
                     Consultar
                 </button>
                 <p id="fechUlt"><label id="lbl_last">Ultima fecha de carga CPT: </label> @ViewBag.ultMod</p>
-                <p id="fechUlt">Los resultados están representados en miles</p>
+                <p id="fechUlt">$ en miles LC</p>
             </div>
             <div>
                 <p>
@@ -265,10 +263,10 @@
         <li>
             <div class="collapsible-header"><i class="large material-icons">filter_list</i>Filtro</div>
             <div class="collapsible-body row">
-                <label class="col s2">
-                    <input id="chkfiltro" type="checkbox" checked="checked" />
-                    <span>Seleccionar todo</span>
-                </label>
+                @*<label class="col s2">
+                        <input id="chkfiltro" type="checkbox" checked="checked" />
+                        <span>Seleccionar todo</span>
+                    </label>*@
                 <div class="input-field col s2 f" name="canalFltr">
                     <select multiple id="canalFltr" name="filtro" col="0"></select>
                     <label>Canal</label>
@@ -351,12 +349,16 @@
                         <select multiple id="ALLFFltr" name="filtro" col="18"></select>
                         <label>ALLF</label>
                     </div>
+                    <div class="input-field col s2 f" name="PROCESOFltr">
+                        <select multiple id="PROCESOFltr" name="filtro" col="19"></select>
+                        <label>En Proceso en TAT</label>
+                    </div>
                     <div class="input-field col s2 f" name="consumidoFltr">
-                        <select multiple id="consumidoFltr" name="filtro" col="19"></select>
+                        <select multiple id="consumidoFltr" name="filtro" col="20"></select>
                         <label>Consumido</label>
                     </div>
                     <div class="input-field col s2 f" name="disponibleFltr">
-                        <select multiple id="disponibleFltr" name="filtro" col="20"></select>
+                        <select multiple id="disponibleFltr" name="filtro" col="21"></select>
                         <label>PPTO Disponible</label>
                     </div>
                 }
@@ -431,7 +433,9 @@
                         {
                             <th>Allowance Registros Manuales</th>
                             <th>Allowance Facturados</th>
+                            <th>En Proceso en TAT</th>
                             <th>Consumido</th>
+
                             <th>PPTO Disponible</th>
                         }
                     </tr>
@@ -444,9 +448,9 @@
                         {
                             <tr>
                                 <td>@Model.presupuesto[i].CANAL<br>@Model.presupuesto[i].CDESCRIPCION</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTOC)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PPTOC)</td>
                                 <td>@Model.presupuesto[i].BANNER<br>@Model.presupuesto[i].BDESCRIPCION</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PPTO)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PPTO)</td>
                                 <td>@Model.presupuesto[i].PERIODO.Trim().PadLeft(2, '0')</td>
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>*@
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].RECSL)</td>*@
@@ -458,19 +462,19 @@
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDV)</td>*@
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OVHDF)</td>*@
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].DIRLB)</td>*@
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].VVX17)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CSHDC)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].RECUN)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].DSTRB)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].OTHTA)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].ADVER)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CORPM)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].POP)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].PMVAR)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONPR)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].RSRDV)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].SPA)</td>
-                                <td>@String.Format("{0:0,0}", Model.presupuesto[i].FREEG)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].VVX17)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].CSHDC)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].RECUN)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].DSTRB)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].OTHTA)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].ADVER)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].CORPM)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].POP)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PMVAR)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].CONPR)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].RSRDV)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].SPA)</td>
+                                <td>$@String.Format("{0:0,0}", Model.presupuesto[i].FREEG)</td>
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].PKGDS)</td>
                                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].NETLB)</td>
                                     <td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].SLLBS)</td>
@@ -483,29 +487,30 @@
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].OHV)</td>*@
                                 @if (ViewBag.chkcpt == null)
                                 {
-                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLB)</td>
-                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].ALLF)</td>
+                                    <td>$@String.Format("{0:0,0}", Model.presupuesto[i].ALLB)</td>
+                                    <td>$@String.Format("{0:0,0}", Model.presupuesto[i].ALLF)</td>
+                                    <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PROCESO)</td>
                                     if (Model.presupuesto[i].CONSU > 0)
                                     {
-                                        <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
+                                        <td>$-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF + Model.presupuesto[i].PROCESO))</td>
                                     }
                                     else if (Model.presupuesto[i].CONSU == 0)
                                     {
-                                        Model.presupuesto[i].CONSU = Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF);
+                                        Model.presupuesto[i].CONSU = Model.presupuesto[i].CONSU + (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF + Model.presupuesto[i].PROCESO);
                                         if (Model.presupuesto[i].CONSU > 0)
                                         {
-                                            <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                            <td>$-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
                                         }
                                         else
                                         {
-                                            <td>@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
+                                            <td>$@String.Format("{0:0,0}", Model.presupuesto[i].CONSU)</td>
                                         }
                                     }
                                     else
                                     {
-                                        <td>-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
+                                        <td>$-@String.Format("{0:0,0}", Model.presupuesto[i].CONSU - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF + Model.presupuesto[i].PROCESO))</td>
                                     }
-                                    <td>@String.Format("{0:0,0}", Model.presupuesto[i].TOTAL - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF))</td>
+                                    <td>$@String.Format("{0:0,0}", Model.presupuesto[i].TOTAL - (Model.presupuesto[i].ALLB + Model.presupuesto[i].ALLF + Model.presupuesto[i].PROCESO))</td>
                                 }
                             </tr>
                         }
@@ -537,6 +542,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         }
                     </tr>
                 </tfoot>
@@ -549,4 +555,3 @@
     var options = [];
     var instance = M.Select.init(elem, options);
 </script>
-

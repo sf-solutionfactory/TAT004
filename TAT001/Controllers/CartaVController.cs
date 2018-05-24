@@ -242,6 +242,7 @@ namespace TAT001.Controllers
                 cv.compromisoK_x = true;
                 cv.compromisoC = "";
                 cv.compromisoC_x = true;
+                cv.monto_x = true;
                 cv.monto = d.MONTO_DOC_MD.ToString();
                 cv.moneda = d.MONEDA_ID;
                 return View(cv);

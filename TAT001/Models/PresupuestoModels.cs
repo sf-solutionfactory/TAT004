@@ -52,7 +52,16 @@ namespace TAT001.Models
             }
             if (excel != null)
             {
-                generarRepPresuExcel(sociedades.presupuesto, ruta, cpt);
+                string[] moneda = new string[1];
+                if (String.IsNullOrEmpty(cambio) == false)
+                {
+                    moneda = cambio.Split('-');
+                }
+                else if (sociedades.cambio.Count > 0)
+                {
+                    moneda[0] = sociedades.cambio[0].FCURR;
+                }
+                generarRepPresuExcel(sociedades.presupuesto, sociedad, moneda[0], consultarUCarga(), ruta, cpt);
             }
             return sociedades;
         }
@@ -69,31 +78,31 @@ namespace TAT001.Models
             string ms = "";
             switch (mes)
             {
-                case "1":
+                case "01":
                     ms = "Jan";
                     break;
-                case "2":
+                case "02":
                     ms = "Feb";
                     break;
-                case "3":
+                case "03":
                     ms = "Mar";
                     break;
-                case "4":
+                case "04":
                     ms = "Apr";
                     break;
-                case "5":
+                case "05":
                     ms = "May";
                     break;
-                case "6":
+                case "06":
                     ms = "Jun";
                     break;
-                case "7":
+                case "07":
                     ms = "Jul";
                     break;
-                case "8":
+                case "08":
                     ms = "Aug";
                     break;
-                case "9":
+                case "09":
                     ms = "Sep";
                     break;
                 case "10":
@@ -108,17 +117,30 @@ namespace TAT001.Models
             }
             return ms;
         }
-        public void generarRepPresuExcel(List<CSP_CONSULTARPRESUPUESTO_Result> resultado, string ruta, string cpt)
+        public void generarRepPresuExcel(List<CSP_CONSULTARPRESUPUESTO_Result> resultado, string sociedad, string moneda, string fecha, string ruta, string cpt)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            int contador = 2;
+            int contador = 3;
             string index;
+            if (String.IsNullOrEmpty(moneda))
+            {
+                moneda = "LC";
+            }
             if (resultado.Count > 1)
             {
+                worksheet.Cell("A1").Value = new[]
+                {
+                    new
+                    {
+                        SOCIEDAD = "Sociedad: " + sociedad,
+                        MONEDA = "Moneda: " + moneda,
+                        FECHA = "Ultima carga: " + fecha,
+                    }
+                };
                 if (String.IsNullOrEmpty(cpt) == false)
                 {
-                    worksheet.Cell("A1").Value = new[]
+                    worksheet.Cell("A2").Value = new[]
                  {
                   new {
                       CANAL        = "Canal",
@@ -174,7 +196,7 @@ namespace TAT001.Models
                     };
                         contador++;
                     }
-                    worksheet.Range("A1:T1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    worksheet.Range("A2:T2").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
                     for (int i = 1; i < 22; i++)
                     {
                         worksheet.Column(i).AdjustToContents();
@@ -182,7 +204,7 @@ namespace TAT001.Models
                 }
                 else
                 {
-                    worksheet.Cell("A1").Value = new[]
+                    worksheet.Cell("A2").Value = new[]
                  {
                   new {
                       CANAL        = "Canal",
@@ -207,6 +229,7 @@ namespace TAT001.Models
                       FREEG        = "FREEG - Free Goods",
                       ALLB         = "Allowance Registros Manuales",
                       ALLF         = "Allowance Facturados",
+                      PROCE        = "En Proceso TAT",
                       CONSU        = "Consumido",
                       TOTAL        = "PPTO Disponible"
                       },
@@ -240,14 +263,15 @@ namespace TAT001.Models
                       FREEG        = row.FREEG,
                       ALLB        = row.ALLB,
                       ALLF        = row.ALLF,
-                      CONSU        = row.CONSU + row.ALLB + row.ALLF,
-                      TOTAL        = row.TOTAL - ( row.ALLB + row.ALLF )
+                      PROCE       = row.PROCESO,
+                      CONSU        = row.CONSU + row.ALLB + row.ALLF + row.PROCESO,
+                      TOTAL        = row.TOTAL - ( row.ALLB + row.ALLF + row.PROCESO)
                       },
                     };
                         contador++;
                     }
-                    worksheet.Range("A1:X1").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
-                    for (int i = 1; i < 22; i++)
+                    worksheet.Range("A2:Y2").Style.Font.SetFontColor(XLColor.White).Fill.SetBackgroundColor(XLColor.FromHtml("#0B2161")).Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center).Font.SetBold(true);
+                    for (int i = 1; i <= 25; i++)
                     {
                         worksheet.Column(i).AdjustToContents();
                     }

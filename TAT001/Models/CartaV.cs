@@ -46,6 +46,8 @@ namespace TAT001.Models
 
         public string mecanica { get; set; }
         public bool mecanica_x { get; set; }
+        public string monto { get; set; }
+        public bool monto_x { get; set; }
 
         public string nombreE { get; set; }
         public bool nombreE_x { get; set; }
@@ -79,7 +81,6 @@ namespace TAT001.Models
 
         public string compromisoC { get; set; }
         public bool compromisoC_x { get; set; }
-        public string monto { get; set; }
         public string moneda { get; set; }
         //TABLA DE MATERIALES O CATEGORÍAS
         [Key, Column(Order = 2)]

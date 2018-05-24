@@ -202,9 +202,9 @@ namespace TAT001.Models
                     {
                         lines = strem.ReadLine().Split('|');
 
-                        pRESUPUESTOP.ANIO = Int32.Parse(lines[0]);
+                        pRESUPUESTOP.ANIO = Convert.ToInt32(lines[0]);
                         pRESUPUESTOP.POS = i;
-                        pRESUPUESTOP.PERIOD = Int32.Parse(lines[1]);
+                        pRESUPUESTOP.PERIOD = Convert.ToInt32(lines[1]);
                         pRESUPUESTOP.TYPE = lines[2];
                         pRESUPUESTOP.BUKRS = lines[3];
                         pRESUPUESTOP.VKORG = lines[4];
@@ -341,7 +341,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadcpt, periodocpt, true, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(Int32.Parse(presupuesto.presupuestoCPT[0].ANIO), soc, pre, usuario, "0", 1).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(Convert.ToInt32(presupuesto.presupuestoCPT[0].ANIO), soc, pre, usuario, "0", 1).ToList();
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());

@@ -221,6 +221,8 @@
                             @Html.EditorFor(model => model.D.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
                             @Html.LabelFor(model => model.D.TALL, "Tipo de allowance", new { @id = "lbl_tall" })
                         </div>
+                        @Html.HiddenFor(model => model.D.GALL_ID, new { @id = "gall_id" })
+                        @Html.HiddenFor(model => model.D.MONTO_DOC_MD, new { @id = "monto_dis" })
                     </div>
                 </div>
                 <div class="card-panel">
@@ -373,9 +375,10 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row" style="margin-bottom:0">
                     <div class="card-panel">
-                        <h5>Cliente @*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>
+                        <h5>@*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_id" } })
@@ -496,26 +499,26 @@
             }
             @if (Model.D.DOCUMENTORs.Count() > 0)
             {
-            <div class="col s12 m12 l6">
-                <div class="card-panel">
-                    <div class="row">
-                        <h5>Reversa</h5>
-                    </div>
-                    <div class="row">
-                        @foreach (var iteem in Model.D.DOCUMENTORs)
-                        {
-                            <div class="input-field col s12">
-                                <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
-                                <label for="txt_trev">Tipo de reversa</label>
-                            </div>
-                            <div class="input-field col s12">
-                                <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
-                                <label for="txt_comm">Comentario</label>
-                            </div>
-                        }
+                <div class="col s12 m12 l6">
+                    <div class="card-panel">
+                        <div class="row">
+                            <h5>Reversa</h5>
+                        </div>
+                        <div class="row">
+                            @foreach (var iteem in Model.D.DOCUMENTORs)
+                            {
+                                <div class="input-field col s12">
+                                    <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                    <label for="txt_trev">Tipo de reversa</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
+                                    <label for="txt_comm">Comentario</label>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
             }
         </div>
     </div>
@@ -551,8 +554,16 @@
                                 @foreach (var item in Model.D.DOCUMENTOPs)
                                 {
                                     <tr>
-                                        <td>@item.VIGENCIA_DE.Value.ToShortDateString()</td>
-                                        <td>@item.VIGENCIA_AL.Value.ToShortDateString()</td>
+                                        <td>
+                                            @try
+                                            {@item.VIGENCIA_DE.Value.ToShortDateString()}
+                                        catch { }
+                                        </td>
+                                        <td>
+                                            @try
+                                            {@item.VIGENCIA_AL.Value.ToShortDateString()}
+                                        catch { }
+                                        </td>
                                         <td>@item.MATNR.TrimStart('0')</td>
                                         @{
                                             using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
@@ -576,12 +587,12 @@
                                         @if (Model.D.TSOL.FACTURA == false)
                                         {
                                             <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
-                                            <td>@Math.Round(item.VOLUMEN_EST * item.MONTO_APOYO, 2)</td>
+                                            <td>@Math.Round((decimal)item.APOYO_EST, 2)</td>
                                         }
                                         else
                                         {
                                             <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
-                                            <td>@Math.Round(((decimal)item.VOLUMEN_REAL) * item.MONTO_APOYO, 2)</td>
+                                            <td>@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
                                         }
                                     </tr>
 
@@ -776,6 +787,87 @@
                 </div>
             </div>
             <div class="col s12 m6 l6 right">
+
+                <!--RSG 22.05.2018-->
+
+                <div class="card-panel">
+                    <div class="row">
+                        <h5>Cuentas</h5>
+                        <div class="col s12">
+                            <div id="div_clearing">
+
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                            var clearing = [];
+                            function getClearing(gall) {
+                                $("#div_clearing").empty();
+                                clearing = [];
+                                /**/
+                                var bukrs = '@Model.D.SOCIEDAD_ID';
+                            /**/
+                            /**/
+                            var land = '@Model.D.PAIS_ID';
+                            /**/
+                            /**/
+                            var ejercicio = '@Model.D.EJERCICIO';
+                            /**/
+                            $.ajax({
+                                type: "POST",
+                                url: '../../Listas/clearing',
+                                dataType: "json",
+                                data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+
+                                success: function (data) {
+                                    if (data !== null || data !== "") {
+                                        //RSG 26.04.2018----------------
+                                        clearing.push(data.ABONO);
+                                        clearing.push(data.CARGO);
+                                        clearing.push(data.CLEARING);
+                                        clearing.push(data.LIMITE);
+                                        //RSG 26.04.2018----------------
+                                    }
+
+                                },
+                                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                    M.toast({ html: httpStatusMessage });
+                                },
+                                async: false
+                            });
+
+                        }
+                                function formaClearing() {
+                                    getClearing(document.getElementById("gall_id").value);
+                            $("#div_clearing").empty();
+                            var monto = document.getElementById("monto_dis").value;
+                            var div = "<ul class='collection'><li class='collection-item'>";
+                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            div += "</li><li class='collection-item'>";
+
+                            if (clearing[3] == null) {
+                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            } else {
+                                if (clearing[2] != null) {
+                                    if (monto <= clearing[3]) {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                                        div += "</li>";
+                                    } else {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                                        div += "</li>";
+                                    }
+                                }
+                            }
+                            div += "</li>";
+                            div += "</ul>";
+                            $("#div_clearing").append(div);
+                        }
+                    </script>
+                </div>
                 <div class="card-panel">
                     <h5>Análisis Presupuesto</h5>
                     <div class="row" style="margin-bottom:0">
@@ -1173,16 +1265,16 @@
                         <tbody>
                             @foreach (TAT001.Entities.FLUJO f in ViewBag.workflow)
                             {
-                            <tr>
-                                <td width="">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
-                                <td width="">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
-                                <td width="">@f.FECHAC.Value.ToShortDateString()</td>
-                                <td width="">@f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0]</td>
-                                <td width="">@f.FECHAM.Value.ToShortDateString()</td>
-                                <td width="">@f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0]</td>
-                                <td width="">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
-                                <td width="30%">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
-                            </tr>
+                                <tr>
+                                    <td width="">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
+                                    <td width="">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
+                                    <td width="">@f.FECHAC.Value.ToShortDateString()</td>
+                                    <td width="">@f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0]</td>
+                                    <td width="">@f.FECHAM.Value.ToShortDateString()</td>
+                                    <td width="">@f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0]</td>
+                                    <td width="">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
+                                    <td width="30%">@Html.DisplayFor(modelItem => f.COMENTARIO)</td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -1242,7 +1334,10 @@
             async: false
         });
 
-    }                                                                                                                                                                                                                                                                  //M.textareaAutoResize($('#txt_notas'));
+    }
+
+    formaClearing();
+    //M.textareaAutoResize($('#txt_notas'));
 </script>
 @if (TempData["error"] != null)
 {

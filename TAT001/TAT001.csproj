@@ -228,11 +228,13 @@
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
+    <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
     <Compile Include="Controllers\Catalogos\WarningsController.cs" />
+    <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Entities\ACCION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
@@ -720,6 +722,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
+    <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\create.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
@@ -878,6 +881,7 @@
     <Content Include="Views\TSOL\Details.cshtml" />
     <Content Include="Views\TSOL\Edit.cshtml" />
     <Content Include="Views\TSOL\Index.cshtml" />
+    <Content Include="Views\Solicitudes\Create2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

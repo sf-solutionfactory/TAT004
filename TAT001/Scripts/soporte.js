@@ -1,15 +1,13 @@
 ﻿
 function soportes(tsol, spras) {
-    var soci = document.getElementById("sociedad_id").value;
-    var pais = document.getElementById("pais_id").value;
     //alert(tsol + soci + pais);
     $.ajax({
-        url: "../../Listas/Soportes",
+        url: "../Listas/Soportes",
         type: "POST",
         async: false,
         timeout: 30000,
         dataType: "json",
-        data: { bukrs: soci, land: pais, tsol: tsol, spras: spras },
+        data: { tsol: tsol, spras: spras },
         success: function (data) {
             var pp = ($.map(data, function (item) {
                 return { tsoporte: item.TSOPORTE_ID, oblig: item.OBLIGATORIO, txt50: item.TXT50 };
@@ -43,7 +41,7 @@ function soportes(tsol, spras) {
 }
 
 function pickerFecha(clase) {
-   
+
     var script = "";
     script += "<script>";
     script += "var fechai = document.getElementById('fechai_vig').value;";
@@ -54,8 +52,8 @@ function pickerFecha(clase) {
     script += "var options = {";
     script += "container: '#div_picker',";
     script += "format: 'dd/mm/yyyy'," +
-        "minDate: minDate,"+
-        "maxDate: maxDate,"+
+        "minDate: minDate," +
+        "maxDate: maxDate," +
         //"onClose: function (e) {" +
         //"var date = $('#fechad').val(); " +
         //"var periodo = date.split(" / "); " +
@@ -78,4 +76,40 @@ function pickerFecha(clase) {
     script += "var instances = M.Datepicker.init(elems, options); ";
     script += "</script>";
     return script;
+}
+
+
+function pickerFecha2(clase) {
+
+    var fechai = document.getElementById('fechai_vig').value;
+    var fechaf = document.getElementById('fechaf_vig').value;
+    var minDate = new Date(fechai.split('/')[2], fechai.split('/')[1] - 1, fechai.split('/')[0]);
+    var maxDate = new Date(fechaf.split('/')[2], fechaf.split('/')[1] - 1, fechaf.split('/')[0]);
+    var elems = document.querySelectorAll(clase);
+    var options = {
+        container: '#div_picker',
+        format: 'dd/mm/yyyy',
+        minDate: minDate,
+        maxDate: maxDate,
+        onClose: function (e) {
+            var date = $('#fechad').val();
+            var periodo = date.split(" / ");
+
+            $('#periodo').val(periodo[1]);
+        },
+        i18n: {
+            clear: 'Limpiar',
+            today: 'Hoy',
+            done: 'Seleccionar',
+            previousMonth: '‹',
+            nextMonth: '›',
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+
+        }
+    };
+    var instances = M.Datepicker.init(elems, options);
 }

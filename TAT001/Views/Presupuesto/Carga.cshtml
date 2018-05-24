@@ -151,7 +151,7 @@
                                         }
                                         else
                                         {
-                                            <option selected value="@Model.sociedad[i].REGION">@Model.sociedad[i].BUKRS</option>
+                                            <option value="@Model.sociedad[i].REGION">@Model.sociedad[i].BUKRS</option>
                                         }
                                     }
                                 }
@@ -209,6 +209,7 @@
                                     {
                                         <option value="" disabled selected>Seleccione periodos</option>
                                     }
+
                                     @for (int i = 1; i < 13; i++)
                                     {
                                         if (i.ToString() == periodo[j])
@@ -228,18 +229,18 @@
                         {
                             <div class="input-field col s5 f" name="periodo">
                                 <select multiple name="periodocpt">
-                                    <option value="1" selected>Enero</option>
-                                    <option value="2" selected>Febrero</option>
-                                    <option value="3" selected>Marzo</option>
-                                    <option value="4" selected>Abril</option>
-                                    <option value="5" selected>Mayo</option>
-                                    <option value="6" selected>Junio</option>
-                                    <option value="7" selected>Julio</option>
-                                    <option value="8" selected>Agosto</option>
-                                    <option value="9" selected>Septiembre</option>
-                                    <option value="10" selected>Octubre</option>
-                                    <option value="11" selected>Noviembre</option>
-                                    <option value="12" selected>Diciembre</option>
+                                    <option value="1">Enero</option>
+                                    <option value="2">Febrero</option>
+                                    <option value="3">Marzo</option>
+                                    <option value="4">Abril</option>
+                                    <option value="5">Mayo</option>
+                                    <option value="6">Junio</option>
+                                    <option value="7">Julio</option>
+                                    <option value="8">Agosto</option>
+                                    <option value="9">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
                                 </select>
                                 <label>Periodo</label>
                             </div>
@@ -416,7 +417,7 @@
     if (Model.presupuestoCPT.Count > 0)
     {
         <script>
-            M.toast({ html: 'Carga correcta', classes: 'green' });
+            M.toast({ html: 'Carga preliminar efectuada, revisar y guardar', classes: 'green' });
         </script>
         <div class="row">
             @using (Html.BeginForm())
@@ -565,7 +566,7 @@ catch (Exception)
             @using (Html.BeginForm())
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
+                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -573,6 +574,7 @@ catch (Exception)
                         @Html.HiddenFor(m => Model[i])
                         }
                         }*@
+                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
                 </div>
             }
             <div class="row" style="margin-bottom:0;">
