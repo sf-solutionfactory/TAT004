@@ -9,8 +9,6 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
@@ -2593,118 +2591,141 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult categoriaMateriales(string kunnr)
+        public JsonResult categoriaMateriales(string kunnr, string catid, string soc_id)
         {
             if (kunnr == null)
             {
                 kunnr = "";
             }
-            CLIENTE cli = new CLIENTE();
-            List<CLIENTE> clil = new List<CLIENTE>();
 
+            if (catid == null)
+            {
+                catid = "2";
+            }
+
+            var jd = (dynamic)null;
+
+            //Obtener los materiales
+            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
             try
             {
-                cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
+                matl = db.MATERIALs.Where(m => m.MATKL_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            }
+            catch (Exception e)
+            {
 
-                //Saber si el cliente es sold to, payer o un grupo
-                if (cli != null)
+            }
+
+            //Validar si hay materiales
+            if (matl != null)
+            {
+
+                CLIENTE cli = new CLIENTE();
+                List<CLIENTE> clil = new List<CLIENTE>();
+
+                try
                 {
-                    //Es un soldto
-                    if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
+
+                    //Saber si el cliente es sold to, payer o un grupo
+                    if (cli != null)
                     {
-                        cli.KUNNR = "402498";
-                        clil.Add(cli);
+                        //Es un soldto
+                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                        {
+                            cli.KUNNR = "402498";
+                            clil.Add(cli);
+                        }
                     }
                 }
-            }
-            catch (Exception e)
-            {
+                catch (Exception e)
+                {
 
-            }
-            //Obtener el numero de periodos para obtener el historial
-            int nummonths = 3;
-            int imonths = nummonths * -1;
-            //Obtener el rango de los periodos incluyendo el año
-            DateTime ff = DateTime.Today;
-            DateTime fi = ff.AddMonths(imonths);
+                }
 
-            string mi = fi.Month.ToString();//.ToString("MM");
-            string ai = fi.Year.ToString();//.ToString("yyyy");
+                var cie = clil.Cast<CLIENTE>();
+                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+                //Obtener el numero de periodos para obtener el historial
+                int nummonths = 3;
+                int imonths = nummonths * -1;
+                //Obtener el rango de los periodos incluyendo el año
+                DateTime ff = DateTime.Today;
+                DateTime fi = ff.AddMonths(imonths);
 
-            string mf = ff.Month.ToString();// ("MM");
-            string af = ff.Year.ToString();// "yyyy");
+                string mi = fi.Month.ToString();//.ToString("MM");
+                string ai = fi.Year.ToString();//.ToString("yyyy");
 
-            int aii = 0;
-            try
-            {
-                aii = Convert.ToInt32(ai);
-            }
-            catch (Exception e)
-            {
+                string mf = ff.Month.ToString();// ("MM");
+                string af = ff.Year.ToString();// "yyyy");
 
-            }
+                int aii = 0;
+                try
+                {
+                    aii = Convert.ToInt32(ai);
+                }
+                catch (Exception e)
+                {
 
-            int mii = 0;
-            try
-            {
-                mii = Convert.ToInt32(mi);
-            }
-            catch (Exception e)
-            {
+                }
 
-            }
+                int mii = 0;
+                try
+                {
+                    mii = Convert.ToInt32(mi);
+                }
+                catch (Exception e)
+                {
 
-            int aff = 0;
-            try
-            {
-                aff = Convert.ToInt32(af);
-            }
-            catch (Exception e)
-            {
+                }
 
-            }
+                int aff = 0;
+                try
+                {
+                    aff = Convert.ToInt32(af);
+                }
+                catch (Exception e)
+                {
 
-            int mff = 0;
-            try
-            {
-                mff = Convert.ToInt32(mf);
-            }
-            catch (Exception e)
-            {
+                }
 
-            }
-            List<PRESUPSAPP> lmsap = new List<PRESUPSAPP>();
+                int mff = 0;
+                try
+                {
+                    mff = Convert.ToInt32(mf);
+                }
+                catch (Exception e)
+                {
 
-            if (clil.Count > 0)
-            {
-                //Obtener el historial de compras de los clientesd
-                //lmsap = clil
-                //    .Join(
-                //    db.PRESUPSAPPs.Where(psap => (psap.ANIO >= aii && psap.PERIOD >= mii) && (psap.ANIO <=  aff && psap.PERIOD <= mff)),
-                //    cl => cl.KUNNR,
-                //    psap => psap.KUNNR,
-                //    (cl, psap) => new PRESUPSAPP
-                //    {
-                //        ID = psap.ID,
-                //        ANIO = psap.ANIO,
-                //        MATNR = psap.MATNR
-                //    }
-                //    ).ToList();
+                }
 
-                lmsap = (from l in clil
-                         join p in db.PRESUPSAPPs
-                         on l.KUNNR equals p.KUNNR
-                         where (p.ANIO >= aii && p.PERIOD >= mii) && (p.ANIO <= aff && p.PERIOD <= mff)
-                         select new PRESUPSAPP
-                         {
-                             ID = p.ID,
-                             ANIO = p.ANIO,
-                             MATNR = p.MATNR
-                         }
-                        ).ToList();
+                if (cie != null)
+                {
+                    //Obtener el historial de compras de los clientesd
+                    var matt = matl.ToList();
+                    //var pres = db.PRESUPSAPPs.ToList();
+
+                    jd = (from ps in db.PRESUPSAPPs.ToList()
+                          join cl in cie
+                          on ps.KUNNR equals cl.KUNNR
+                          join m in matt
+                          on ps.MATNR equals m.ID
+                          where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                          (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART && ps.VKBUR == cl.VKBUR &&
+                          ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK) && ps.BUKRS == soc_id
+                          select new
+                          {
+                              ps.ID,
+                              ps.ANIO,
+                              ps.POS,
+                              ps.PERIOD,
+                              ps.MATNR
+                          }).ToList();
+                }
             }
 
-            JsonResult jl = Json(lmsap, JsonRequestBehavior.AllowGet);
+            var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString()}).Take(7).ToList();
+
+            JsonResult jl = Json(jll, JsonRequestBehavior.AllowGet);
             return jl;
         }
 
@@ -2726,23 +2747,6 @@ namespace TAT001.Controllers
                     string filename = file.FileName;
                     res = SaveFile(file, url, "100", out error, out path);
                 }
-                //HttpPostedFileBase file1 = Request.Files["f_carta"];
-                //HttpPostedFileBase file2 = Request.Files["f_contratos"];
-                //HttpPostedFileBase file3 = Request.Files["f_factura"];
-                //HttpPostedFileBase file4 = Request.Files["f_jbp"];
-
-                //string filename1 = System.IO.Path.GetExtension(file1.FileName);
-                //string filename2 = System.IO.Path.GetExtension(file2.FileName);
-                //string filename3 = System.IO.Path.GetExtension(file3.FileName);
-                //string filename4 = System.IO.Path.GetExtension(file4.FileName);
-
-                //string url = ConfigurationManager.AppSettings["URL_SAVE"];
-
-                //res = SaveFile(file1, url);
-                //res += " : "+SaveFile(file2, @"C:\Users\EQUIPO\Desktop\files");
-                //res += " : " + SaveFile(file3, @"C:\Users\EQUIPO\Desktop\files");
-                //res += " : " + SaveFile(file4, @"C:\Users\EQUIPO\Desktop\files");
-
             }
 
             return res;

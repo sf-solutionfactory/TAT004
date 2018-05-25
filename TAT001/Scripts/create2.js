@@ -1331,7 +1331,7 @@ $('body').on('focusout', '.input_oper', function () {
     if ($(this).hasClass("input_material")) {
         //Validar el material
         var mat = $(this).val();
-        var val = valMaterial(mat);
+        var val = valMaterial(mat, "X");
         var index = getIndex();
 
         if (val.ID == null || val.ID == "") {
@@ -2887,7 +2887,7 @@ function asignarCategoria(cat) {
     categoriamaterial = cat;
 }
 
-function valMaterial(mat) {
+function valMaterial(mat, message) {
     materialVal = "";
     var localval = "";
     if (mat != "") {
@@ -2905,7 +2905,9 @@ function valMaterial(mat) {
 
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: "Valor no encontrado" });
+                if (message == "X") {
+                    M.toast({ html: "Valor no encontrado" });
+                }
             },
             async: false
         });
