@@ -796,7 +796,7 @@
                                 <tbody></tbody>
                             </table>
                             <a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>
-                            @*<table id="table_rech" class="display" cellspacing="0" style="display:none">
+                            <table id="table_rech" class="display" cellspacing="0" style="display:none">
                                 <thead>
                                     <tr>
                                         <th>NO</th>
@@ -807,39 +807,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.DOCUMENTOREV != null)
+                                    @if (Model.DOCUMENTOREC != null)
                                     {
 
-                                        for (var i = 0; i < Model.DOCUMENTOREV.Count; i++)
+                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
                                         {
                                             <tr>
 
                                                 <td>
-                                                    @Model.DOCUMENTOREV[i].POS
+                                                    @Model.DOCUMENTOREC[i].POS
+                                                </td>
+                                                
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].FECHAF
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOREV[i].TSOL
-                                                </td>
-
-                                                <td>
-                                                    @Model.DOCUMENTOREV[i].FECHA
-                                                </td>
-
-                                                <td>
-                                                    @Model.DOCUMENTOREV[i].MONTO
+                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
                                                 </td>
                                                 <td></td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOREV[i].PORCENTAJE
+                                                    @Model.DOCUMENTOREC[i].PORC
                                                 </td>
 
                                             </tr>
                                         }
                                     }
                                 </tbody>
-                            </table>*@
+                            </table>
                         </div>
                     </div>
                 </div>
