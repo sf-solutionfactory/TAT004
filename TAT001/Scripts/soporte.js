@@ -79,7 +79,7 @@ function pickerFecha(clase) {
 }
 
 
-function pickerFecha2(clase) {
+function pickerFecha2(clase, div) {
 
     var fechai = document.getElementById('fechai_vig').value;
     var fechaf = document.getElementById('fechaf_vig').value;
@@ -87,7 +87,7 @@ function pickerFecha2(clase) {
     var maxDate = new Date(fechaf.split('/')[2], fechaf.split('/')[1] - 1, fechaf.split('/')[0]);
     var elems = document.querySelectorAll(clase);
     var options = {
-        container: '#div_picker',
+        container: '#div_picker' + div,
         format: 'dd/mm/yyyy',
         minDate: minDate,
         maxDate: maxDate,

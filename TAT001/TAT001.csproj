@@ -743,6 +743,7 @@
     <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\materialize.js" />
     <Content Include="Scripts\menu.js" />
+    <Content Include="Scripts\recurrente.js" />
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\soporte.js" />
     <Content Include="Scripts\tableHeadFixer.js" />

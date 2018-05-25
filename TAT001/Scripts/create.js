@@ -1688,7 +1688,7 @@ function definirTipoCliente(kunnr) {
     $.ajax({
         type: "POST",
         url: 'categoriaMateriales',
-        data: { "kunnr": kunnr },
+        data: { "kunnr": kunnr, catid: "1", soc_id: 'KCMX' },
 
         success: function (data) {
 
