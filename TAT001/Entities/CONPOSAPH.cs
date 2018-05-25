@@ -30,6 +30,7 @@ namespace TAT001.Entities
         public string CORRESPONDENCIA { get; set; }
         public string CALC_TAXT { get; set; }
         public Nullable<int> RELACION { get; set; }
+        public string RETENCION { get; set; }
     
         public virtual SOCIEDAD SOCIEDAD1 { get; set; }
     }

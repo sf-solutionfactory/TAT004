@@ -14,6 +14,12 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTOP
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DOCUMENTOP()
+        {
+            this.DOCUMENTOMs = new HashSet<DOCUMENTOM>();
+        }
+    
         public decimal NUM_DOC { get; set; }
         public decimal POS { get; set; }
         public string MATNR { get; set; }
@@ -31,5 +37,7 @@ namespace TAT001.Entities
         public Nullable<decimal> APOYO_EST { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOM> DOCUMENTOMs { get; set; }
     }
 }

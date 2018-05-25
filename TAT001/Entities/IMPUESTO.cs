@@ -19,6 +19,7 @@ namespace TAT001.Entities
         {
             this.CLIENTEIs = new HashSet<CLIENTEI>();
             this.IIMPUESTOes = new HashSet<IIMPUESTO>();
+            this.TAXEOHs = new HashSet<TAXEOH>();
         }
     
         public string MWSKZ { get; set; }
@@ -28,5 +29,7 @@ namespace TAT001.Entities
         public virtual ICollection<CLIENTEI> CLIENTEIs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IIMPUESTO> IIMPUESTOes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TAXEOH> TAXEOHs { get; set; }
     }
 }

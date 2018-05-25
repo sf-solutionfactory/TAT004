@@ -234,8 +234,6 @@
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
     <Compile Include="Controllers\Catalogos\WarningsController.cs" />
-    <Compile Include="Models\TSOLT_MODBD.cs" />
-    <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Entities\ACCION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -356,6 +354,9 @@
     <Compile Include="Entities\DOCUMENTOF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOM.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTON.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -363,6 +364,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOREC.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOT.cs">
@@ -479,16 +483,7 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\STATE.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -617,6 +612,8 @@
     <Compile Include="Entities\ZCTGR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TSOLT_MODBD.cs" />
+    <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -882,6 +879,7 @@
     <Content Include="Views\TSOL\Edit.cshtml" />
     <Content Include="Views\TSOL\Index.cshtml" />
     <Content Include="Views\Solicitudes\Create2.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialRecTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

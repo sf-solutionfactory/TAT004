@@ -51,6 +51,8 @@ namespace TAT001.Entities
         public Nullable<decimal> RSRDV { get; set; }
         public Nullable<decimal> SPA { get; set; }
         public Nullable<decimal> PMVAR { get; set; }
+        public Nullable<decimal> NETLB { get; set; }
+        public Nullable<decimal> GRSLS { get; set; }
     
         public virtual PRESUPSAPH PRESUPSAPH { get; set; }
     }

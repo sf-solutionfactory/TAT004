@@ -38,6 +38,7 @@ namespace TAT001.Entities
         public bool ACTIVO { get; set; }
     
         public virtual CLIENTE CLIENTE { get; set; }
+        public virtual IMPUESTO IMPUESTO { get; set; }
         public virtual PAI PAI { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TX_CONCEPTO TX_CONCEPTO { get; set; }

@@ -3138,11 +3138,11 @@ namespace TAT001.Controllers
         }
 
         [HttpPost]
-        public ActionResult getPartialRev(List<TAT001.Models.DOCUMENTOREV_MOD> docs)
+        public ActionResult getPartialRev(List<DOCUMENTOREC> docs)
         {
             DOCUMENTO doc = new DOCUMENTO();
 
-            doc.DOCUMENTOREV = docs;
+            doc.DOCUMENTOREC = docs;
             return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
         }
     }
