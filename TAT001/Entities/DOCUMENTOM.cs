@@ -12,17 +12,18 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class DET_APROBP
+    public partial class DOCUMENTOM
     {
-        public string SOCIEDAD_ID { get; set; }
-        public int PUESTOC_ID { get; set; }
-        public int VERSION { get; set; }
+        public decimal NUM_DOC { get; set; }
+        public decimal POS_ID { get; set; }
         public int POS { get; set; }
-        public Nullable<int> PUESTOA_ID { get; set; }
-        public Nullable<decimal> MONTO { get; set; }
-        public Nullable<bool> PRESUPUESTO { get; set; }
-        public bool ACTIVO { get; set; }
+        public string MATNR { get; set; }
+        public Nullable<decimal> PORC_APOYO { get; set; }
+        public Nullable<decimal> APOYO_EST { get; set; }
+        public Nullable<decimal> APOYO_REAL { get; set; }
+        public Nullable<System.DateTime> VIGENCIA_DE { get; set; }
+        public Nullable<System.DateTime> VIGENCIA_A { get; set; }
     
-        public virtual DET_APROBH DET_APROBH { get; set; }
+        public virtual DOCUMENTOP DOCUMENTOP { get; set; }
     }
 }

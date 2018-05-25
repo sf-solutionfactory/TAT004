@@ -156,7 +156,7 @@
           <Property Name="SPRAS" Type="nchar" MaxLength="2" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
           <Property Name="BDESCRIPCION" Type="nchar" MaxLength="50" />
-          <Property Name="BANNER" Type="nchar" MaxLength="50" />
+          <Property Name="BANNER" Type="nchar" MaxLength="10" />
           <Property Name="CANAL" Type="nchar" MaxLength="10" />
           <Property Name="BZIRK" Type="nchar" MaxLength="6" />
           <Property Name="KONDA" Type="nchar" MaxLength="2" />
@@ -589,6 +589,22 @@
           <Property Name="EJERCICIOK" Type="nchar" MaxLength="4" />
           <Property Name="BILL_DOC" Type="nchar" MaxLength="10" />
           <Property Name="BELNR" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOM">
+          <Key>
+            <PropertyRef Name="NUM_DOC" />
+            <PropertyRef Name="POS_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="POS_ID" Type="numeric" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="MATNR" Type="nvarchar" MaxLength="18" />
+          <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_EST" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="date" />
+          <Property Name="VIGENCIA_A" Type="date" />
         </EntityType>
         <EntityType Name="DOCUMENTON">
           <Key>
@@ -1051,7 +1067,7 @@
           <Property Name="NAME1" Type="nvarchar" MaxLength="50" />
           <Property Name="KTOPL" Type="nchar" MaxLength="10" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
-          <Property Name="REGION" Type="nchar" MaxLength="6" />
+          <Property Name="REGION" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="SPRAS">
           <Key>
@@ -1501,8 +1517,8 @@
           <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CARPETAV">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1514,8 +1530,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
           <Property Name="ICON" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CREADOR">
           <Key>
             <PropertyRef Name="ID" />
@@ -1531,8 +1547,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
           <Property Name="BUKRS" Type="nchar" MaxLength="4" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CREADOR2">
           <Key>
             <PropertyRef Name="ID" />
@@ -1549,8 +1565,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
           <Property Name="BUKRS" Type="nchar" MaxLength="4" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_APROBV">
           <Key>
             <PropertyRef Name="BUKRS" />
@@ -1562,8 +1578,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DOCUMENTOV">
           <Key>
             <PropertyRef Name="POS" />
@@ -1638,8 +1654,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
           <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
           <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PAGINAV">
           <Key>
             <PropertyRef Name="ID" />
@@ -1659,8 +1675,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="WARNINGV">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -2244,6 +2260,20 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DOCUMENTOM_DOCUMENTOP">
+          <End Role="DOCUMENTOP" Type="Self.DOCUMENTOP" Multiplicity="1" />
+          <End Role="DOCUMENTOM" Type="Self.DOCUMENTOM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTOP">
+              <PropertyRef Name="NUM_DOC" />
+              <PropertyRef Name="POS" />
+            </Principal>
+            <Dependent Role="DOCUMENTOM">
+              <PropertyRef Name="NUM_DOC" />
+              <PropertyRef Name="POS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DOCUMENTON_DOCUMENTO">
           <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
           <End Role="DOCUMENTON" Type="Self.DOCUMENTON" Multiplicity="*" />
@@ -2819,6 +2849,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               <PropertyRef Name="VTWEG" />
               <PropertyRef Name="SPART" />
               <PropertyRef Name="KUNNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAXEOH_IMPUESTO">
+          <End Role="IMPUESTO" Type="Self.IMPUESTO" Multiplicity="0..1" />
+          <End Role="TAXEOH" Type="Self.TAXEOH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IMPUESTO">
+              <PropertyRef Name="MWSKZ" />
+            </Principal>
+            <Dependent Role="TAXEOH">
+              <PropertyRef Name="IMPUESTO_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3515,6 +3557,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOM" EntityType="Self.DOCUMENTOM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOR" EntityType="Self.DOCUMENTOR" Schema="dbo" store:Type="Tables" />
@@ -3909,6 +3952,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
             <End Role="DOCUMENTOA" EntitySet="DOCUMENTOA" />
           </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
+            <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />
+            <End Role="DOCUMENTOM" EntitySet="DOCUMENTOM" />
+          </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTON_DOCUMENTO" Association="Self.FK_DOCUMENTON_DOCUMENTO">
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
             <End Role="DOCUMENTON" EntitySet="DOCUMENTON" />
@@ -4095,6 +4142,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </AssociationSet>
           <AssociationSet Name="FK_TAXEOH_CLIENTE" Association="Self.FK_TAXEOH_CLIENTE">
             <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="TAXEOH" EntitySet="TAXEOH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAXEOH_IMPUESTO" Association="Self.FK_TAXEOH_IMPUESTO">
+            <End Role="IMPUESTO" EntitySet="IMPUESTO" />
             <End Role="TAXEOH" EntitySet="TAXEOH" />
           </AssociationSet>
           <AssociationSet Name="FK_TAXEOH_PAIS" Association="Self.FK_TAXEOH_PAIS">
@@ -4456,7 +4507,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="SPRAS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
           <Property Name="BDESCRIPCION" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="BANNER" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="BANNER" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CANAL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="BZIRK" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
           <Property Name="KONDA" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
@@ -4974,6 +5025,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
           <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTOP" ToRole="DOCUMENTO" />
+          <NavigationProperty Name="DOCUMENTOMs" Relationship="TAT001Model.FK_DOCUMENTOM_DOCUMENTOP" FromRole="DOCUMENTOP" ToRole="DOCUMENTOM" />
         </EntityType>
         <EntityType Name="DOCUMENTOR">
           <Key>
@@ -5105,6 +5157,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="CLIENTEIs" Relationship="Self.FK_CLIENTEI_IMPUESTO" FromRole="IMPUESTO" ToRole="CLIENTEI" />
           <NavigationProperty Name="IIMPUESTOes" Relationship="Self.FK_IIMPUESTO_IMPUESTO" FromRole="IMPUESTO" ToRole="IIMPUESTO" />
+          <NavigationProperty Name="TAXEOHs" Relationship="TAT001Model.FK_TAXEOH_IMPUESTO" FromRole="IMPUESTO" ToRole="TAXEOH" />
         </EntityType>
         <EntityType Name="LEYENDA">
           <Key>
@@ -5485,7 +5538,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="KTOPL" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-          <Property Name="REGION" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
+          <Property Name="REGION" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="CONPOSAPHs" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CONPOSAPH" />
           <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="SOCIEDAD" ToRole="CUENTA" />
           <NavigationProperty Name="DET_AGENTEH" Relationship="Self.FK_DET_AGENTEH_SOCIEDAD" FromRole="SOCIEDAD" ToRole="DET_AGENTEH" />
@@ -5615,6 +5668,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TX_CONCEPTO" Relationship="Self.FK_TAXEOH_TX_CONCEPTO" FromRole="TAXEOH" ToRole="TX_CONCEPTO" />
           <NavigationProperty Name="TX_TNOTA" Relationship="Self.FK_TAXEOH_TX_TNOTA" FromRole="TAXEOH" ToRole="TX_TNOTA" />
           <NavigationProperty Name="TAXEOPs" Relationship="Self.FK_TAXEOP_TAXEOH" FromRole="TAXEOH" ToRole="TAXEOP" />
+          <NavigationProperty Name="IMPUESTO" Relationship="TAT001Model.FK_TAXEOH_IMPUESTO" FromRole="TAXEOH" ToRole="IMPUESTO" />
         </EntityType>
         <EntityType Name="TAXEOP">
           <Key>
@@ -8654,6 +8708,15 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="DOCUMENTOMs" EntityType="TAT001Model.DOCUMENTOM" />
+          <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="TAT001Model.FK_DOCUMENTOM_DOCUMENTOP">
+            <End Role="DOCUMENTOP" EntitySet="DOCUMENTOPs" />
+            <End Role="DOCUMENTOM" EntitySet="DOCUMENTOMs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAXEOH_IMPUESTO" Association="TAT001Model.FK_TAXEOH_IMPUESTO">
+            <End Role="IMPUESTO" EntitySet="IMPUESTOes" />
+            <End Role="TAXEOH" EntitySet="TAXEOHs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -8762,6 +8825,49 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="DOCUMENTOM">
+          <Key>
+            <PropertyRef Name="NUM_DOC" />
+            <PropertyRef Name="POS_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="POS_ID" Type="Decimal" Nullable="false" Precision="5" Scale="0" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="MATNR" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
+          <Property Name="VIGENCIA_A" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="DOCUMENTOP" Relationship="TAT001Model.FK_DOCUMENTOM_DOCUMENTOP" FromRole="DOCUMENTOM" ToRole="DOCUMENTOP" />
+        </EntityType>
+        <Association Name="FK_DOCUMENTOM_DOCUMENTOP">
+          <End Type="TAT001Model.DOCUMENTOP" Role="DOCUMENTOP" Multiplicity="1" />
+          <End Type="TAT001Model.DOCUMENTOM" Role="DOCUMENTOM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTOP">
+              <PropertyRef Name="NUM_DOC" />
+              <PropertyRef Name="POS" />
+            </Principal>
+            <Dependent Role="DOCUMENTOM">
+              <PropertyRef Name="NUM_DOC" />
+              <PropertyRef Name="POS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAXEOH_IMPUESTO">
+          <End Type="TAT001Model.IMPUESTO" Role="IMPUESTO" Multiplicity="0..1" />
+          <End Type="TAT001Model.TAXEOH" Role="TAXEOH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IMPUESTO">
+              <PropertyRef Name="MWSKZ" />
+            </Principal>
+            <Dependent Role="TAXEOH">
+              <PropertyRef Name="IMPUESTO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -10569,6 +10675,21 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="DOCUMENTOMs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOM">
+              <MappingFragment StoreEntitySet="DOCUMENTOM">
+                <ScalarProperty Name="VIGENCIA_A" ColumnName="VIGENCIA_A" />
+                <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
+                <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+                <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
+                <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+                <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
+                <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

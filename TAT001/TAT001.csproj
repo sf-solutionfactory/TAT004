@@ -234,6 +234,9 @@
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
     <Compile Include="Controllers\Catalogos\WarningsController.cs" />
+    <Compile Include="Entities\DOCUMENTOM.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Entities\ACCION.cs">

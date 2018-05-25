@@ -254,6 +254,9 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOM" Width="1.5" PointX="25.5" PointY="76" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOM_DOCUMENTOP" />
+        <AssociationConnector Association="TAT001Model.FK_TAXEOH_IMPUESTO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

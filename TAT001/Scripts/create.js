@@ -232,15 +232,20 @@
             tr.removeClass('details');
         }
         else {
+            document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
             //Obtener el id de la categoría
             var index = t.row(tr).index();
             var catid = t.row(index).data()[0];
-            //Obtener las fechas
-            var val_de = $('#fechai_vig').val();
-            var val_al = $('#fechaf_vig').val();
+            //Obtener las fechas del row de la categoría
+            var indext = getIndex();
+            var vd = (3 + indext);
+            var va = (4 + indext);
+            var vigencia_de = tr.find("td:eq(" + vd + ") input").val();
+            var vigencia_al = tr.find("td:eq(" + va + ") input").val();
 
-            row.child(format(catid, val_de, val_al)).show();
+            row.child(format(catid, vigencia_de, vigencia_al)).show();
             tr.addClass('details');
+            document.getElementById("loader").style.display = "none";//RSG 26.04.2018
         }
     });
 
@@ -285,63 +290,71 @@
 
                     //Distribución por categoría
                     if (dis == "C") {
-                        //Obtener el monto
-                        var montoDistribucion = $('#monto_dis').val();
-                        var mto = parseFloat(montoDistribucion);
-                        //Validar que este un monto
-                        if (mto > 0) {
 
-                            //Obtener la categoría
-                            var cat = $('#select_categoria').val();
+                        //Obtener la categoría
+                        var cat = $('#select_categoria').val();
 
-                            //Validar si la categoría ya había sido agregada
-                            var catExist = valcategoria(cat);
+                        //Validar si la categoría ya había sido agregada
+                        var catExist = valcategoria(cat);
 
-                            if (catExist != true) {
-                                //Obtener el numero de renglones de la tabla
-                                var lengthTable = $("table#table_dis tbody tr[role='row']").length;
+                        if (catExist != true) {
+                            if (cat != "") {
+                                ////Obtener el monto
+                                //var montoDistribucion = $('#monto_dis').val();
+                                //var mto = parseFloat(montoDistribucion);
+                                //////Validar que este un monto
+                                ////if (mto > 0) {
 
-                                var valPor = "";
-                                var valCant = "";
-                                if (lengthTable < 1) {
-                                    valPor = "100";
-                                    valCant = montoDistribucion;
-                                }
 
-                                if (cat != "") {
-                                    var opt = $("#select_categoria option:selected").text();
-                                    t.row.add([
-                                        cat + "", //col0
-                                        "", //col1
-                                        "", ////col2
-                                        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
-                                        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018
-                                        "", //Material
-                                        opt + "",
-                                        opt + "",
-                                        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                        //"<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                        //"",
-                                        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                        //"",
-                                        "",
-                                        "" + valPor,
-                                        "",
-                                        "",
-                                        "",
-                                        "",
-                                        "" + valCant,
-                                    ]).draw(false);
-                                } else {
-                                    M.toast({ html: 'Seleccione una categoría' });
-                                }
+                                //    //Obtener el numero de renglones de la tabla
+                                //    var lengthTable = $("table#table_dis tbody tr[role='row']").length;
+
+                                //    var valPor = "";
+                                //    var valCant = "";
+                                //    if (lengthTable < 1) {
+                                //        valPor = "100";
+                                //        valCant = montoDistribucion;
+                                //    }
+
+                                var opt = $("#select_categoria option:selected").text();
+
+                                var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa);
+
+                                    //t.row.add([
+                                    //    cat + "", //col0
+                                    //    "", //col1
+                                    //    "", ////col2
+                                    //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
+                                    //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018
+                                    //    "", //Material
+                                    //    opt + "",
+                                    //    opt + "",
+                                    //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //    //"<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //    //"",
+                                    //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //    //"",
+                                    //    "",
+                                    //    "", //+ valPor,
+                                    //    "",
+                                    //    "",
+                                    //    "",
+                                    //    "",
+                                    //    //"" + valCant,
+                                    //    "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                    //]).draw(false);
+
+
+                                //} else {
+                                //    M.toast({ html: 'Debe de capturar un monto' });
+                                //}
                             } else {
-                                M.toast({ html: 'La categoría ya había sido agregada' });
+                                M.toast({ html: 'Seleccione una categoría' });
                             }
                         } else {
-                            M.toast({ html: 'Debe de capturar un monto' });
+                            M.toast({ html: 'La categoría ya había sido agregada' });
                         }
 
                     } else if (dis == "M") {
@@ -899,7 +912,21 @@ $(window).on('load', function () {
         $('#TSOL_VALUES').val("");
     }
 
+    //Obtener los valores de los combos de negociación y distribución
+    var sneg = $('#select_negi').val();
+    var sdis = $('#select_disi').val();
 
+    if (sneg != "") {
+
+        //$("#select_neg").val(sneg);
+        //$("#select_neg").trigger('onchange');
+        $('#select_neg').val(sneg).change();
+    }
+    if (sdis != "") {
+        //$("#select_dis").val();
+        //$("#select_dis").trigger('onchange');
+        $('#select_dis').val(sdis).change();
+    }
 
     //una factura
     var check = $("#check_facturas").val();
@@ -1032,6 +1059,8 @@ function copiarTableVista(update) {
             sol = $("#tsol_id").val();
         }
 
+        var dis = $("#select_dis").val();
+
         var mostrar = isFactura(sol);
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
         if (mostrar) {
@@ -1098,26 +1127,33 @@ function copiarTableVista(update) {
                 calculo = "sc";
             }
 
-            var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
+            //Si la distribución es por material
+            if (dis == "M") {
+                var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
 
-            //t.row.add([
-            //    matkl_id + "", //col0 ID
-            //    "", //col1
-            //    "", ////col2
-            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-            //    "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
-            //    matkl + "",
-            //    matkl + "",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
-            //    "",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">",
-            //]).draw(false);
 
+
+                //t.row.add([
+                //    matkl_id + "", //col0 ID
+                //    "", //col1
+                //    "", ////col2
+                //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+                //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+                //    "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                //    matkl + "",
+                //    matkl + "",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
+                //    "",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">",
+                //]).draw(false);
+            } else if (dis == "C") {
+                //Si la distribución es por categoría
+                var addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa);
+            }
             //Quitar el row
             $(this).remove();
 
@@ -1131,35 +1167,37 @@ function copiarTableVista(update) {
         if (update == "X") {
             $('.input_oper').trigger('focusout');
         } else {
-            //Actualizar campos y renglones
-            var t = $('#table_dis').DataTable();
-            var indext = getIndex();
-            $("#table_dis > tbody  > tr[role='row']").each(function () {
 
-                //Validar el material
-                var mat = $(this).find("td:eq(" + (5 + indext) + ") input").val();
-                var val = valMaterial(mat, "X");
+            if (dis == "M") {
+                //Actualizar campos y renglones
+                var t = $('#table_dis').DataTable();
+                var indext = getIndex();
+                $("#table_dis > tbody  > tr[role='row']").each(function () {
 
-                if (val.ID == null || val.ID == "") {
-                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
-                } else if (val.ID == mat) {
+                    //Validar el material
+                    var mat = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                    var val = valMaterial(mat, "X");
 
-                    selectMaterial(val.ID, val.MAKTX, $(this));
+                    if (val.ID == null || val.ID == "") {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                    } else if (val.ID == mat) {
 
-                } else {
-                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
-                }
+                        selectMaterial(val.ID, val.MAKTX, $(this));
 
-                if ($(this).hasClass("sc")) {
-                    var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
-                    updateTotalRow(t, $(this), this, "X", total);
-                    $(this).removeClass("sc");
-                }
+                    } else {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                    }
 
-            });
+                    if ($(this).hasClass("sc")) {
+                        var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+                        updateTotalRow(t, $(this), this, "X", total);
+                        $(this).removeClass("sc");
+                    }
 
-
-
+                });
+            } else if (dis == "C") {
+                $(this).removeClass("sc");
+            }
         }
 
         //$('.input_oper').trigger('focusout');
@@ -1288,7 +1326,8 @@ function copiarTableControl() {
             var vigencia_de = $(this).find("td:eq(" + (3 + indext) + ") input").val();
             var vigencia_al = $(this).find("td:eq(" + (4 + indext) + ") input").val();
 
-            var matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+            var matnr = "";
+                matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
             var matkl = $(this).find("td:eq(" + (6 + indext) + ")").text();
 
             //Obtener el id de la categoría            
@@ -1310,9 +1349,9 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
-            item["MATNR"] = matnr;
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+            item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
             item["CANTIDAD"] = 0; //Siempre 0
@@ -1730,7 +1769,7 @@ function format(catid, idate, fdate) {
         $.ajax({
             type: "POST",
             url: 'categoriaMateriales',
-            data: { "kunnr": kunnr, "catid": id, "soc_id": soc_id},
+            data: { "kunnr": kunnr, "catid": id, "soc_id": soc_id },
             success: function (data) {
                 var rows = "";
                 if (data !== null || data !== "") {
@@ -1743,29 +1782,30 @@ function format(catid, idate, fdate) {
 
                             desc = val.MAKTX;
 
-                        } 
+                        }
 
                         var r =
                             '<tr>' +
+                            '<td style = "display:none">' + id + '</td>' +
                             '<td>' + idate + '</td>' +
                             '<td>' + fdate + '</td>' +
                             '<td>' + dataj.MATNR + '</td>' +
-                            '<td>' + desc +'</td>' +
-                            '<td>Nixon</td>' +
-                            '<td>System Architect</td>' +
-                            '<td>Edinburgh</td>' +
-                            '<td>$320,800</td>' +
-                            '<td>Tiger</td>' +
-                            '<td>Tiger</td>' +
-                            '<td>Tiger</td>' +
-                            '</tr>';
+                            '<td>' + desc + '</td>';
+                            //'<td>Nixon</td>' +
+                            //'<td>System Architect</td>' +
+                            //'<td>Edinburgh</td>' +
+                            //'<td>$320,800</td>' +
+                            //'<td>Tiger</td>' +
+                            //'<td>Tiger</td>' +
+                            //'<td>Tiger</td>' +
+                            //'</tr>';
 
-                        rows += r; 
+                        rows += r;
 
                     }); //Fin de for
                     //var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 65px;\">' +
                     var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
-                                                                                            
+
                     useReturnData(tablamat);
                 }
 
@@ -2053,6 +2093,51 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
         belnr
     ]).draw(false);
 
+}
+
+function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa) {
+    var r = addRowCatl(
+        t,
+        cat,
+        "",
+        "",
+        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
+        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 
+        opt,
+        "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\""+total+"\">"
+    );
+
+    return r;
+}
+
+function addRowCatl(t, cat, exp, sel, ddate, adate, opt, total) {
+    var r = t.row.add([
+        cat + "", //col0
+        exp +"", //col1
+        sel +"", ////col2
+        ddate + "", //col3
+        adate + "",
+        "", //Material
+        opt + "",
+        opt + "",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"",
+        "",
+        "", //+ valPor,
+        "",
+        "",
+        "",
+        "",
+        //"" + valCant,
+        total+""
+    ]).draw(false).node();
+
+        return r;
 }
 
 function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo) {
@@ -3243,7 +3328,6 @@ function valcategoria(cat) {
         var tr = this.node();
         var row = t.row(tr);
 
-
         //Obtener el id de la categoría
         var index = t.row(tr).index();
         //Categoría en el row
@@ -3252,8 +3336,8 @@ function valcategoria(cat) {
         if (cat == catid) {
             res = true;
         }
-        
+
     });
- 
+
     return res;
 }
