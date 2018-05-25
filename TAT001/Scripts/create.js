@@ -921,11 +921,19 @@ $(window).on('load', function () {
         //$("#select_neg").val(sneg);
         //$("#select_neg").trigger('onchange');
         $('#select_neg').val(sneg).change();
+        var elemdpsn = document.querySelector('#select_neg');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        //$('#select_neg').formSelect();
     }
     if (sdis != "") {
         //$("#select_dis").val();
         //$("#select_dis").trigger('onchange');
         $('#select_dis').val(sdis).change();
+        var elemdpsd = document.querySelector('#select_dis');
+        var optionsdpsd = [];
+        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        //$('#select_dis').formSelect();
     }
 
     //una factura
