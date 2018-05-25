@@ -494,7 +494,7 @@ namespace TAT001.Controllers
                             //        TXT100 = tt.TXT100
                             //    }).ToList();
                             //ldocr = db.TREVERSATs.Where(tt => tt.SPRAS_ID == user.SPRAS_ID).ToList();
-                            ldocr = db.TREVERSATs.Where(a=>a.TREVERSA.ACTIVO==true && a.SPRAS_ID == user.SPRAS_ID).ToList();
+                            ldocr = db.TREVERSATs.Where(a => a.TREVERSA.ACTIVO == true && a.SPRAS_ID == user.SPRAS_ID).ToList();
                         }
                         catch (Exception e)
                         {
@@ -2611,10 +2611,10 @@ namespace TAT001.Controllers
                 kunnr = "";
             }
 
-            if (catid == null)
-            {
-                catid = "2";
-            }
+            //if (catid == null)
+            //{
+            catid = "2";
+            //}
 
             var jd = (dynamic)null;
 
@@ -2646,7 +2646,9 @@ namespace TAT001.Controllers
                         //Es un soldto
                         if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
                         {
-                            cli.KUNNR = "402498";
+                            //cli.KUNNR = "402498";
+                            if (cli.VKORG.Length == 3)
+                                cli.VKORG = cli.VKORG + " ";
                             clil.Add(cli);
                         }
                     }
@@ -2713,16 +2715,28 @@ namespace TAT001.Controllers
                 if (clil.Count > 0)
                 {
                     //Obtener el historial de compras de los clientesd
-                    var pres = db.PRESUPSAPPs.ToList();
+                    string cc = clil.FirstOrDefault().KUNNR;
+                    var pres = db.PRESUPSAPPs.Where(a => a.KUNNR == cc).ToList();
                     var matt = matl.ToList();
+                    foreach (MATERIAL m in matt)
+                    {
+                        m.ID = m.ID.TrimStart('0');
+                    }
+                    foreach (CLIENTE m in cie)
+                    {
+                        m.KUNNR = m.KUNNR.TrimStart('0');
+                    }
                     jd = (from ps in pres
                           join cl in cie
                           on ps.KUNNR equals cl.KUNNR
                           join m in matt
                           on ps.MATNR equals m.ID
                           where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                          (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART && ps.VKBUR == cl.VKBUR &&
-                          ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK) && ps.BUKRS == soc_id
+                          (
+                          ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                               // ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                            )
+                        && ps.BUKRS == soc_id
                           select new
                           {
                               ps.ID,
@@ -3121,6 +3135,15 @@ namespace TAT001.Controllers
 
             doc.DOCUMENTOF = docs;
             return PartialView("~/Views/Solicitudes/_PartialSopTr.cshtml", doc);
+        }
+
+        [HttpPost]
+        public ActionResult getPartialRev(List<TAT001.Models.DOCUMENTOREV_MOD> docs)
+        {
+            DOCUMENTO doc = new DOCUMENTO();
+
+            doc.DOCUMENTOREV = docs;
+            return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
         }
     }
 }

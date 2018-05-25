@@ -39,23 +39,37 @@ function cambiaRec(campo) {
     var table = $('#table_rec').DataTable();
     table.clear().draw(true);
     if (campo.checked) {
+
+        //if (montoo > 0) {
         $(".table_rec").css("display", "table");
         //Add row 
         var datei = document.getElementById("fechai_vig").value.split('/');
         var datef = document.getElementById("fechaf_vig").value.split('/');
-        var dateii = new Date(datei[2], datei[1]-1, datei[0]);
+        var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
         var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
 
         var anios = datef[2] - datei[2];
 
         var meses = 1 + (datef[1] - datei[1]) + (anios * 12);
-        for (var i = 1; i <= meses; i++) {
-            addRowRec(table, i);
+        var montoo = document.getElementById("monto_dis").value;
+        if (meses > 1 & montoo > 0) {
+            for (var i = 1; i <= meses; i++) {
+                if (i == 1) {
+                    var date = document.getElementById("fechai_vig").value;
+                    var monto = montoo;
+                }
+                else {
+                    var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                    var date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                    var monto = "";
+                }
+                addRowRec(table, i, date, monto);
+            }
         }
-
-        pickerFecha2(".format_fecha", "2");
-        //Hide columns
-        //ocultarColumnasTablaSoporteDatos();
+        else {
+            $(".table_rec").css("display", "none");
+            campo.checked = false;
+        }
     } else {
         $(".table_rec").css("display", "none");
     }
@@ -64,15 +78,26 @@ function cambiaRec(campo) {
 
 
 
-function addRowRec(t, num) {
-    addRowRecl(
-        t,
-        num, //POS
-        document.getElementById("tsol_id").value,
-        "<input class=\"FECHA input_rec format_fecha\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">" ,// RSG 21.05.2018",,
-        "<input class=\"MONTO input_rec monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"PORCENTAJE input_rec\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
-    );
+function addRowRec(t, num, date, monto) {
+    if (monto != "") {
+        addRowRecl(
+            t,
+            num, //POS
+            document.getElementById("tsol_id").value,
+            date,
+            monto,
+            "<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+        );
+    } else {
+        addRowRecl(
+            t,
+            num, //POS
+            document.getElementById("tsol_id").value,
+            date,
+            "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto + "\">",
+            "<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+        );
+    }
 }
 
 function addRowRecl(t, pos, tsol, fecha, monto, porc) {
@@ -85,4 +110,87 @@ function addRowRecl(t, pos, tsol, fecha, monto, porc) {
         , monto
         , porc
     ]).draw(false);
+}
+
+
+function enviaRec() {
+
+    var lengthT = $("table#table_rec tbody tr[role='row']").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        var indext = 0;
+        jsonObjDocs = [];
+        var i = 1;
+        var vol = "";
+        var sol = $("#tsol_id").val();
+        var mostrar = isFactura(sol);
+        //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        if (mostrar) {
+            vol = "real";
+        } else {
+            vol = "estimado";
+        }
+
+        var pos = 0;
+        $('#table_rec > tbody  > tr').each(function () {
+            pos++;
+
+            var pos = $(this).find("td:eq(" + (0 + indext) + ")").text();
+            var tsol = $(this).find("td:eq(" + (1 + indext) + ")").text();
+            var fecha = $(this).find("td:eq(" + (2 + indext) + ")").text();
+
+            if (pos == 1) {
+                var monto = $(this).find("td:eq(" + (3 + indext) + ")").text();
+            } else {
+                var monto = $(this).find("td:eq(" + (3 + indext) + ") input").val();
+            }
+            var porcentaje = $(this).find("td:eq(" + (4 + indext) + ") input").val();
+
+            
+            //Obtener el id de la categoría            
+            var t = $('#table_rec').DataTable();
+            var tr = $(this);
+
+            var item = {};
+
+            item["NUM_DOC"] = 0;
+            item["POS"] = pos;
+            item["TSOL"] = tsol;
+            item["FECHA"] = fecha + " 12:00:00 p.m.";
+            item["MONTO"] = monto;
+            item["PORC"] = porcentaje;
+            
+            jsonObjDocs.push(item);
+            i++;
+            item = "";
+
+            //$(this).addClass('selected');
+
+        });
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+        $.ajax({
+            type: "POST",
+            url: 'getPartialRec',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+
+                    $("table#table_rech tbody").append(data);
+                    $('#delRow').click();
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
 }

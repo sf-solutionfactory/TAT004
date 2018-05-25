@@ -603,161 +603,170 @@
                         <div class="row" style="margin-bottom:0">
                             <!--RSG 22.05.2018-->
                             @if (ViewBag.relacionada == "")
-            {
-                <div class="col s12">
-                    <label class="col s6">
-                        <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
-                        <span>Por fecha</span>
-                    </label>
-                    <label class="col s6">
-                        <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
-                        <span>Por periodo</span>
-                    </label>
-                </div>
-                <script>
-                    function cambiaTemp(id) {
-                        var tipo = id.split('-')[1];
-                        if (tipo == "date") {
-                            document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
-                            document.getElementById("anioi_id").setAttribute("disabled", "disabled");
-                            document.getElementById("periodof_id").setAttribute("disabled", "disabled");
-                            document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+                            {
+                                <div class="col s12">
+                                    <label class="col s6">
+                                        <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+                                        <span>Por fecha</span>
+                                    </label>
+                                    <label class="col s6">
+                                        <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                        <span>Por periodo</span>
+                                    </label>
+                                </div>
+                                <script>
+                                    function cambiaTemp(id) {
+                                        var tipo = id.split('-')[1];
+                                        if (tipo == "date") {
+                                            document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                            document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                            document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                            document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                            document.getElementById("fechai_vig2").removeAttribute("disabled");
-                            document.getElementById("fechaf_vig2").removeAttribute("disabled");
-                        } else {
-                            document.getElementById("periodoi_id").removeAttribute("disabled");
-                            document.getElementById("anioi_id").removeAttribute("disabled");
-                            document.getElementById("periodof_id").removeAttribute("disabled");
-                            document.getElementById("aniof_id").removeAttribute("disabled");
+                                            document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                            document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                        } else {
+                                            document.getElementById("periodoi_id").removeAttribute("disabled");
+                                            document.getElementById("anioi_id").removeAttribute("disabled");
+                                            document.getElementById("periodof_id").removeAttribute("disabled");
+                                            document.getElementById("aniof_id").removeAttribute("disabled");
 
-                            document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
-                            document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+                                            document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                            document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
 
-                        }
-                        setDates(tipo);
-                        var elem = document.querySelectorAll('select');
-                        var instance = M.Select.init(elem, []);
-                        pickerFecha2(".format_date");
-                    }
-                    function setDates(tipo) {
-                        if (tipo == "date") {
-                            document.getElementById('fechai_vig').value = document.getElementById('fechai_vig2').value;
-                            document.getElementById('fechaf_vig').value = document.getElementById('fechaf_vig2').value;
-                        } else {
-                            var firstDay = new Date(document.getElementById('anioi_id').value, document.getElementById('periodoi_id').value - 1, 1);
-                            var lastDay = new Date(document.getElementById('aniof_id').value, document.getElementById('periodof_id').value, 0);
+                                        }
+                                        setDates(tipo);
+                                        var elem = document.querySelectorAll('select');
+                                        var instance = M.Select.init(elem, []);
+                                        pickerFecha2(".format_date");
+                                    }
+                                    function setDates(tipo) {
+                                        if (tipo == "date") {
+                                            document.getElementById('fechai_vig').value = document.getElementById('fechai_vig2').value;
+                                            document.getElementById('fechaf_vig').value = document.getElementById('fechaf_vig2').value;
+                                        } else {
+                                            var firstDay = new Date(document.getElementById('anioi_id').value, document.getElementById('periodoi_id').value - 1, 1);
+                                            var lastDay = new Date(document.getElementById('aniof_id').value, document.getElementById('periodof_id').value, 0);
 
-                            var fechai = firstDay.getDate() + "/" + (firstDay.getMonth() + 1) + "/" + firstDay.getFullYear();
-                            var fechaf = lastDay.getDate() + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
+                                            var fechai = firstDay.getDate() + "/" + (firstDay.getMonth() + 1) + "/" + firstDay.getFullYear();
+                                            var fechaf = lastDay.getDate() + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
 
-                            document.getElementById('fechai_vig').value = fechai;
-                            document.getElementById('fechaf_vig').value = fechaf;
-                        }
-                        pickerFecha2(".format_date");
-                    }
-                </script>
-                <div class="col s6">
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">date_range</i>
-                        @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
-                        @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                        <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                        @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
-                    </div>
-                    <div class="input-field col s12">
-                        <i class="material-icons prefix">date_range</i>
-                        @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
-                        @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                        <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                        @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
-                    </div>
-                </div>
-                <div class="col s6">
-                    <div class="col s12">
-                        <div class="input-field col s6">
-                            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
-                            <label>De</label>
-                        </div>
-                        <div class="input-field col s3">
-                            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
-                        </div>
-                    </div><div class="col s12">
-                        <div class="input-field col s6">
-                            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
-                            <label>Hasta</label>
-                        </div>
-                        <div class="input-field col s3">
-                            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    var elemth = document.querySelector('#fechai_vig2');
-                    var optionsth = {
-                        format: 'dd/mm/yyyy',
-                        i18n: {
-                            clear: 'Limpiar',
-                            today: 'Hoy',
-                            done: 'Seleccionar',
-                            previousMonth: '‹',
-                            nextMonth: '›',
-                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                        }
-                    };
-                    var instanceth = M.Datepicker.init(elemth, optionsth);
+                                            document.getElementById('fechai_vig').value = fechai;
+                                            document.getElementById('fechaf_vig').value = fechaf;
+                                        }
 
-                    var elemtd = document.querySelector('#fechaf_vig2');
-                    var optionstd = {
-                        format: 'dd/mm/yyyy',
-                        onClose: function (e) {
-                            var datei = $('#fechai_vig2').val();
-                            var datef = $('#fechaf_vig2').val();
-                            var res = validar_fechas(datei, datef);
+                                        var datei = $('#fechai_vig').val();
+                                        var datef = $('#fechaf_vig').val();
+                                        var res = validar_fechas(datei, datef);
+                                        if (!res) {
+                                            //$('#fechaf_vig2').val("");
+                                            M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                        }
 
-                            if (!res) {
-                                $('#fechaf_vig2').val("");
-                                M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                        pickerFecha2(".format_date");
+                                    }
+                                </script>
+                                <div class="col s6">
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">date_range</i>
+                                        @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
+                                        @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                        <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                        @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <i class="material-icons prefix">date_range</i>
+                                        @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
+                                        @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                        <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                        @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                    </div>
+                                </div>
+                                <div class="col s6">
+                                    <div class="col s12">
+                                        <div class="input-field col s6">
+                                            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                            <label>De</label>
+                                        </div>
+                                        <div class="input-field col s3">
+                                            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                        </div>
+                                    </div><div class="col s12">
+                                        <div class="input-field col s6">
+                                            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                            <label>Hasta</label>
+                                        </div>
+                                        <div class="input-field col s3">
+                                            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    var elemth = document.querySelector('#fechai_vig2');
+                                    var optionsth = {
+                                        format: 'dd/mm/yyyy',
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instanceth = M.Datepicker.init(elemth, optionsth);
+
+                                    var elemtd = document.querySelector('#fechaf_vig2');
+                                    var optionstd = {
+                                        format: 'dd/mm/yyyy',
+                                        onClose: function (e) {
+                                            var datei = $('#fechai_vig2').val();
+                                            var datef = $('#fechaf_vig2').val();
+                                            var res = validar_fechas(datei, datef);
+
+                                            if (!res) {
+                                                $('#fechaf_vig2').val("");
+                                                M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                            }
+                                        },
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instancetd = M.Datepicker.init(elemtd, optionstd);
+
+                                    function borrar(field) {
+                                        field.value = "";
+                                    }
+                                </script>
                             }
-                        },
-                        i18n: {
-                            clear: 'Limpiar',
-                            today: 'Hoy',
-                            done: 'Seleccionar',
-                            previousMonth: '‹',
-                            nextMonth: '›',
-                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                        }
-                    };
-                    var instancetd = M.Datepicker.init(elemtd, optionstd);
-
-                    function borrar(field) {
-                        field.value = "";
-                    }
-                </script>
-}
-else
-{ <div class="col s12">
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">date_range</i>
-                        @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                        @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
-                    </div>
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">date_range</i>
-                        @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                        @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
-                    </div>
-                </div>
-}
+                            else
+                            { <div class="col s12">
+                                    <div class="input-field col s6">
+                                        <i class="material-icons prefix">date_range</i>
+                                        @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
+                                        @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <i class="material-icons prefix">date_range</i>
+                                        @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
+                                        @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
 
@@ -786,51 +795,51 @@ else
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
-                            @*<table id="table_soph" class="display" cellspacing="0" style="display:none">
-                    <thead>
-                        <tr>
-                            <th>NO</th>
-                            <th>TSOL</th>
-                            <th>FECHA</th>
-                            <th>Monto</th>
-                            <th>Porcentaje</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.DOCUMENTOR != null)
-                        {
+                            <a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>
+                            @*<table id="table_rech" class="display" cellspacing="0" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.DOCUMENTOREV != null)
+                                    {
 
-                            for (var i = 0; i < Model.DOCUMENTOR.Count; i++)
-                            {
-                                <tr>
+                                        for (var i = 0; i < Model.DOCUMENTOREV.Count; i++)
+                                        {
+                                            <tr>
 
-                                    <td>
-                                        @Model.DOCUMENTOR[i].POS
-                                    </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREV[i].POS
+                                                </td>
 
-                                    <td>
-                                        @Model.DOCUMENTOR[i].TSOL
-                                    </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREV[i].TSOL
+                                                </td>
 
-                                    <td>
-                                        @Model.DOCUMENTOR[i].FECHA
-                                    </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREV[i].FECHA
+                                                </td>
 
-                                    <td>
-                                        @Model.DOCUMENTOR[i].MONTO
-                                    </td>
-                                    <td></td>
+                                                <td>
+                                                    @Model.DOCUMENTOREV[i].MONTO
+                                                </td>
+                                                <td></td>
 
-                                    <td>
-                                        @Model.DOCUMENTOR[i].PORCENTAJE
-                                    </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREV[i].PORCENTAJE
+                                                </td>
 
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>*@
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>*@
                         </div>
                     </div>
                 </div>
