@@ -232,11 +232,20 @@
             tr.removeClass('details');
         }
         else {
+            document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
             //Obtener el id de la categoría
             var index = t.row(tr).index();
             var catid = t.row(index).data()[0];
-            row.child(format(catid)).show();
+            //Obtener las fechas del row de la categoría
+            var indext = getIndex();
+            var vd = (3 + indext);
+            var va = (4 + indext);
+            var vigencia_de = tr.find("td:eq(" + vd + ") input").val();
+            var vigencia_al = tr.find("td:eq(" + va + ") input").val();
+
+            row.child(format(catid, vigencia_de, vigencia_al)).show();
             tr.addClass('details');
+            document.getElementById("loader").style.display = "none";//RSG 26.04.2018
         }
     });
 
@@ -281,30 +290,71 @@
 
                     //Distribución por categoría
                     if (dis == "C") {
+
                         //Obtener la categoría
                         var cat = $('#select_categoria').val();
 
-                        if (cat != "") {
-                            var opt = $("#select_categoria option:selected").text();
-                            t.row.add([
-                                cat + "", //col0
-                                "", //col1
-                                "", ////col2
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
-                                "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018
-                                "", //Material
-                                opt + "",
-                                opt + "",
-                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "",
-                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                                "",
-                            ]).draw(false);
+                        //Validar si la categoría ya había sido agregada
+                        var catExist = valcategoria(cat);
+
+                        if (catExist != true) {
+                            if (cat != "") {
+                                ////Obtener el monto
+                                //var montoDistribucion = $('#monto_dis').val();
+                                //var mto = parseFloat(montoDistribucion);
+                                //////Validar que este un monto
+                                ////if (mto > 0) {
+
+
+                                //    //Obtener el numero de renglones de la tabla
+                                //    var lengthTable = $("table#table_dis tbody tr[role='row']").length;
+
+                                //    var valPor = "";
+                                //    var valCant = "";
+                                //    if (lengthTable < 1) {
+                                //        valPor = "100";
+                                //        valCant = montoDistribucion;
+                                //    }
+
+                                var opt = $("#select_categoria option:selected").text();
+
+                                var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa);
+
+                                //t.row.add([
+                                //    cat + "", //col0
+                                //    "", //col1
+                                //    "", ////col2
+                                //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
+                                //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018
+                                //    "", //Material
+                                //    opt + "",
+                                //    opt + "",
+                                //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //    //"<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //    //"",
+                                //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //    //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //    //"",
+                                //    "",
+                                //    "", //+ valPor,
+                                //    "",
+                                //    "",
+                                //    "",
+                                //    "",
+                                //    //"" + valCant,
+                                //    "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+                                //]).draw(false);
+
+
+                                //} else {
+                                //    M.toast({ html: 'Debe de capturar un monto' });
+                                //}
+                            } else {
+                                M.toast({ html: 'Seleccione una categoría' });
+                            }
                         } else {
-                            M.toast({ html: 'Seleccione una categoría' });
+                            M.toast({ html: 'La categoría ya había sido agregada' });
                         }
 
                     } else if (dis == "M") {
@@ -424,7 +474,7 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
@@ -435,7 +485,7 @@
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -862,7 +912,29 @@ $(window).on('load', function () {
         $('#TSOL_VALUES').val("");
     }
 
+    //Obtener los valores de los combos de negociación y distribución
+    var sneg = $('#select_negi').val();
+    var sdis = $('#select_disi').val();
 
+    if (sneg != "") {
+
+        //$("#select_neg").val(sneg);
+        //$("#select_neg").trigger('onchange');
+        $('#select_neg').val(sneg).change();
+        var elemdpsn = document.querySelector('#select_neg');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        //$('#select_neg').formSelect();
+    }
+    if (sdis != "") {
+        //$("#select_dis").val();
+        //$("#select_dis").trigger('onchange');
+        $('#select_dis').val(sdis).change();
+        var elemdpsd = document.querySelector('#select_dis');
+        var optionsdpsd = [];
+        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        //$('#select_dis').formSelect();
+    }
 
     //una factura
     var check = $("#check_facturas").val();
@@ -995,6 +1067,8 @@ function copiarTableVista(update) {
             sol = $("#tsol_id").val();
         }
 
+        var dis = $("#select_dis").val();
+
         var mostrar = isFactura(sol);
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
         if (mostrar) {
@@ -1061,26 +1135,33 @@ function copiarTableVista(update) {
                 calculo = "sc";
             }
 
-            var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
+            //Si la distribución es por material
+            if (dis == "M") {
+                var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
 
-            //t.row.add([
-            //    matkl_id + "", //col0 ID
-            //    "", //col1
-            //    "", ////col2
-            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
-            //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
-            //    "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
-            //    matkl + "",
-            //    matkl + "",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
-            //    "",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
-            //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">",
-            //]).draw(false);
 
+
+                //t.row.add([
+                //    matkl_id + "", //col0 ID
+                //    "", //col1
+                //    "", ////col2
+                //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(ddate[0]) + "\">", //col3
+                //    "<input class=\"" + relacionada + " input_oper format_date\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + $.trim(adate[0]) + "\">",
+                //    "<input class=\"" + relacionada + " input_oper input_material\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + matnr + "\">", //Material
+                //    matkl + "",
+                //    matkl + "",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + costo_unitario + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc_apoyo + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto_apoyo + "\">",
+                //    "",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + precio_sug + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vol + "\">",
+                //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">",
+                //]).draw(false);
+            } else if (dis == "C") {
+                //Si la distribución es por categoría
+                var addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa);
+            }
             //Quitar el row
             $(this).remove();
 
@@ -1094,35 +1175,37 @@ function copiarTableVista(update) {
         if (update == "X") {
             $('.input_oper').trigger('focusout');
         } else {
-            //Actualizar campos y renglones
-            var t = $('#table_dis').DataTable();
-            var indext = getIndex();
-            $("#table_dis > tbody  > tr[role='row']").each(function () {
 
-                //Validar el material
-                var mat = $(this).find("td:eq(" + (5 + indext) + ") input").val();
-                var val = valMaterial(mat);
+            if (dis == "M") {
+                //Actualizar campos y renglones
+                var t = $('#table_dis').DataTable();
+                var indext = getIndex();
+                $("#table_dis > tbody  > tr[role='row']").each(function () {
 
-                if (val.ID == null || val.ID == "") {
-                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
-                } else if (val.ID == mat) {
+                    //Validar el material
+                    var mat = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                    var val = valMaterial(mat, "X");
 
-                    selectMaterial(val.ID, val.MAKTX, $(this));
+                    if (val.ID == null || val.ID == "") {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                    } else if (val.ID == mat) {
 
-                } else {
-                    $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
-                }
+                        selectMaterial(val.ID, val.MAKTX, $(this));
 
-                if ($(this).hasClass("sc")) {
-                    var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
-                    updateTotalRow(t, $(this), this, "X", total);
-                    $(this).removeClass("sc");
-                }
+                    } else {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                    }
 
-            });
+                    if ($(this).hasClass("sc")) {
+                        var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+                        updateTotalRow(t, $(this), this, "X", total);
+                        $(this).removeClass("sc");
+                    }
 
-
-
+                });
+            } else if (dis == "C") {
+                $(this).removeClass("sc");
+            }
         }
 
         //$('.input_oper').trigger('focusout');
@@ -1251,7 +1334,8 @@ function copiarTableControl() {
             var vigencia_de = $(this).find("td:eq(" + (3 + indext) + ") input").val();
             var vigencia_al = $(this).find("td:eq(" + (4 + indext) + ") input").val();
 
-            var matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+            var matnr = "";
+            matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
             var matkl = $(this).find("td:eq(" + (6 + indext) + ")").text();
 
             //Obtener el id de la categoría            
@@ -1275,7 +1359,7 @@ function copiarTableControl() {
             item["POS"] = i;
             item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
             item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
-            item["MATNR"] = matnr;
+            item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
             item["CANTIDAD"] = 0; //Siempre 0
@@ -1499,7 +1583,7 @@ $('body').on('focusout', '.input_oper', function () {
     if ($(this).hasClass("input_material")) {
         //Validar el material
         var mat = $(this).val();
-        var val = valMaterial(mat);
+        var val = valMaterial(mat, "X");
         var index = getIndex();
 
         if (val.ID == null || val.ID == "") {
@@ -1610,13 +1694,9 @@ function updateTotalRow(t, tr, tdinput, totals, total_val) {
 function updateTable() {
     var t = $('#table_dis').DataTable();
     $('#table_dis > tbody  > tr').each(function () {
-        if ($(this).hasClass("sc")) {//RSG 24.05.2018----------------
-            var index = getIndex();
-            var total = $(this).find('td').eq((index + 14)).find('input').val();
-            updateTotalRow(t, $(this), $(this), "X", total);
-        } else {//RSG 24.05.2018----------------
-            updateTotalRow(t, $(this), $(this), "", 0);
-        }//RSG 24.05.2018
+
+        updateTotalRow(t, $(this), $(this), "", 0);
+
     });
 
     updateFooter();
@@ -1683,81 +1763,58 @@ function convertP(i) {
             i : 0;
 };
 
-function definirTipoCliente(kunnr) {
-
-    $.ajax({
-        type: "POST",
-        url: 'categoriaMateriales',
-        data: { "kunnr": kunnr, catid: "1", soc_id: 'KCMX' },
-
-        success: function (data) {
-
-            if (data !== null || data !== "") {
-
-            }
-        },
-        error: function (xhr, httpStatusMessage, customErrorMessage) {
-            alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-        },
-        async: false
-    });
-
-}
-
-
-function format(catid) {
+function format(catid, idate, fdate) {
 
     detail = "";
     var id = parseInt(catid)
     if (catid != "") {
 
+        //Obtener el cliente
+        var kunnr = $('#payer_id').val();
+        //Obtener la sociedad
+        var soc_id = $('#sociedad_id').val();
+
         $.ajax({
             type: "POST",
-            url: 'selectMatCat',
-            data: { "catid": id },
-
+            url: 'categoriaMateriales',
+            data: { "kunnr": kunnr, "catid": id, "soc_id": soc_id },
             success: function (data) {
-
+                var rows = "";
                 if (data !== null || data !== "") {
-                    var detaill = '<table class=\"display\" style=\"width:100%\">' +
-                        '<tbody>' +
-                        '<tr>' +
-                        '<td></td>' +
-                        '<td></td>' +
-                        '<td></td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Nixon</td>' +
-                        '<td>System Architect</td>' +
-                        '<td>Edinburgh</td>' +
-                        '<td>$320,800</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td></td>' +
-                        '<td></td>' +
-                        '<td></td>' +
-                        '<td>Garrett</td>' +
-                        '<td>Winters</td>' +
-                        '<td>Accountant</td>' +
-                        '<td>Tokyo</td>' +
-                        '<td>$170,250</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '<td>Tiger</td>' +
-                        '</tr>' +
-                        '</tbody>' +
-                        '</table>';
-                    useReturnData(detaill);
+                    $.each(data, function (i, dataj) {
+
+                        //Obtener la descripción del material
+                        var val = valMaterial(dataj.MATNR, "");
+                        var desc = "";
+                        if (val.ID == dataj.MATNR) {
+
+                            desc = val.MAKTX;
+
+                        }
+
+                        var r =
+                            '<tr>' +
+                            '<td style = "display:none">' + id + '</td>' +
+                            '<td>' + idate + '</td>' +
+                            '<td>' + fdate + '</td>' +
+                            '<td>' + dataj.MATNR + '</td>' +
+                            '<td>' + desc + '</td>';
+                        //'<td>Nixon</td>' +
+                        //'<td>System Architect</td>' +
+                        //'<td>Edinburgh</td>' +
+                        //'<td>$320,800</td>' +
+                        //'<td>Tiger</td>' +
+                        //'<td>Tiger</td>' +
+                        //'<td>Tiger</td>' +
+                        //'</tr>';
+
+                        rows += r;
+
+                    }); //Fin de for
+                    //var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 65px;\">' +
+                    var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
+
+                    useReturnData(tablamat);
                 }
 
             },
@@ -1823,7 +1880,6 @@ function loadFilesf() {
 
 function loadExcelDis(file) {
 
-    document.getElementById("loader").style.display = "initial";//RSG 24.05.2018
     var formData = new FormData();
 
     formData.append("FileUpload", file);
@@ -1868,25 +1924,7 @@ function loadExcelDis(file) {
                     date_de = formatDatef(date_de);
                     date_al = formatDatef(date_al);
 
-                    //RSG 24.05.2018---------------------------------
-                    //var calculo = "X";
-                    //if (dataj.VOLUMEN_EST == 0) {
-                    //    calculo = "X";
-                    //}
-                    var calculo = "";
-                    //Definir si los valores van en 0 y nada más poner el total
-                    if (dataj.MONTO == "" || dataj.MONTO == "0.00" || dataj.PORC_APOYO == "" || dataj.PORC_APOYO == "0.00") {
-                        //Se mostrara nada más el total
-                        calculo = "sc";
-                    }
-
-                    //RSG 24.05.2018---------------------------------
-
-                    //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);
-                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);//RSG 24.05.2018
-
-                    if (calculo != "")//RSG 24.05.2018
-                        $(addedRow).addClass(calculo);//RSG 24.05.2018
+                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.PORC_APOYOEST, relacionada, reversa, date_de, date_al, "");
 
                     if (dataj.ACTIVO == false) {
                         $(addedRow).find('td').eq((index + 5)).addClass("errorMaterial");
@@ -1904,12 +1942,10 @@ function loadExcelDis(file) {
                 }
 
                 updateTable();
-                document.getElementById("loader").style.display = "none";//RSG 24.05.2018
             }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             alert("Request couldn't be processed. Please try again later. the reason        " + xhr.status + " : " + httpStatusMessage + " : " + customErrorMessage);
-            document.getElementById("loader").style.display = "none";//RSG 24.05.2018
         },
         async: false
     });
@@ -2067,6 +2103,51 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
 
 }
 
+function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa) {
+    var r = addRowCatl(
+        t,
+        cat,
+        "",
+        "",
+        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
+        "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 
+        opt,
+        "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">"
+    );
+
+    return r;
+}
+
+function addRowCatl(t, cat, exp, sel, ddate, adate, opt, total) {
+    var r = t.row.add([
+        cat + "", //col0
+        exp + "", //col1
+        sel + "", ////col2
+        ddate + "", //col3
+        adate + "",
+        "", //Material
+        opt + "",
+        opt + "",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        //"",
+        "",
+        "", //+ valPor,
+        "",
+        "",
+        "",
+        "",
+        //"" + valCant,
+        total + ""
+    ]).draw(false).node();
+
+    return r;
+}
+
 function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo) {
 
     var r = addRowl(
@@ -2086,13 +2167,12 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 24.05.2018
     );
 
     return r;
 }
 
-function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto_a, montoc_a, precio_s, vol_es, porc_apes, apoyo_est/*RSG 24.05.2018*/) {
+function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto_a, montoc_a, precio_s, vol_es, porc_apes) {
 
     var r = t.row.add([
         pos,
@@ -2109,8 +2189,7 @@ function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto
         montoc_a,
         precio_s,
         vol_es,
-        //porc_apes,
-        apoyo_est//RSG 24.05.2018
+        porc_apes
     ]).draw(false).node();
 
     return r;
@@ -3182,7 +3261,7 @@ function asignarCategoria(cat) {
     categoriamaterial = cat;
 }
 
-function valMaterial(mat) {
+function valMaterial(mat, message) {
     materialVal = "";
     var localval = "";
     if (mat != "") {
@@ -3200,7 +3279,9 @@ function valMaterial(mat) {
 
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: "Valor no encontrado" });
+                if (message == "X") {
+                    M.toast({ html: "Valor no encontrado" });
+                }
             },
             async: false
         });
@@ -3244,4 +3325,27 @@ function valProveedor(prov) {
 
 function asignarValProv(val) {
     proveedorVal = val;
+}
+
+function valcategoria(cat) {
+
+    var res = false;
+    var t = $('#table_dis').DataTable();
+    t.rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        var tr = this.node();
+        var row = t.row(tr);
+
+        //Obtener el id de la categoría
+        var index = t.row(tr).index();
+        //Categoría en el row
+        var catid = t.row(index).data()[0];
+        //Comparar la categoría en la tabla y la agregada
+        if (cat == catid) {
+            res = true;
+        }
+
+    });
+
+    return res;
 }

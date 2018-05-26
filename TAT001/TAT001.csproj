@@ -719,6 +719,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
+    <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\create.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
@@ -878,8 +879,8 @@
     <Content Include="Views\TSOL\Details.cshtml" />
     <Content Include="Views\TSOL\Edit.cshtml" />
     <Content Include="Views\TSOL\Index.cshtml" />
-    <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Solicitudes\_PartialRecTr.cshtml" />
+    <Content Include="Views\Solicitudes\Create2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -7,11 +7,14 @@
     {
         <tr>
             <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].NUM_DOC)
+            </td>
+            <td>
                 @Html.EditorFor(m => m.DOCUMENTOREC[i].POS)
             </td>
 
             <td>
-                @Html.EditorFor(m => m.DOCUMENTOREC[i].FECHAP)
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].FECHAF)
             </td>
 
             <td>
@@ -22,6 +25,32 @@
                 @Html.EditorFor(m => m.DOCUMENTOREC[i].PORC)
             </td>
 
+
+
+
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].DOC_REF)
+            </td>
+
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].EJERCICIO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].ESTATUS)
+            </td>
+
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].MONTO_FIJO)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].MONTO_GRS)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].MONTO_NET)
+            </td>
+            <td>
+                @Html.EditorFor(m => m.DOCUMENTOREC[i].PERIODO)
+            </td>
 
         </tr>
     }

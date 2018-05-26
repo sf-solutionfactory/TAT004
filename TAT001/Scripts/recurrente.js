@@ -54,14 +54,16 @@ function cambiaRec(campo) {
         var montoo = document.getElementById("monto_dis").value;
         if (meses > 1 & montoo > 0) {
             for (var i = 1; i <= meses; i++) {
-                if (i == 1) {
-                    var date = document.getElementById("fechai_vig").value;
-                    var monto = montoo;
+                var date = "";
+                var monto = "";
+                if (i === 1) {
+                    date = document.getElementById("fechai_vig").value;
+                    monto = montoo;
                 }
                 else {
                     var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                    var date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                    var monto = "";
+                    date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                    monto = "";
                 }
                 addRowRec(table, i, date, monto);
             }
@@ -79,7 +81,7 @@ function cambiaRec(campo) {
 
 
 function addRowRec(t, num, date, monto) {
-    if (monto != "") {
+    if (monto !== "") {
         addRowRecl(
             t,
             num, //POS
@@ -133,18 +135,18 @@ function enviaRec() {
             vol = "estimado";
         }
 
-        var pos = 0;
+        var poss = 0;
         $('#table_rec > tbody  > tr').each(function () {
-            pos++;
+            poss++;
 
             var pos = $(this).find("td:eq(" + (0 + indext) + ")").text();
             var tsol = $(this).find("td:eq(" + (1 + indext) + ")").text();
             var fecha = $(this).find("td:eq(" + (2 + indext) + ")").text();
-
-            if (pos == 1) {
-                var monto = $(this).find("td:eq(" + (3 + indext) + ")").text();
+            var monto = "";
+            if (poss === 1) {
+                monto = $(this).find("td:eq(" + (3 + indext) + ")").text();
             } else {
-                var monto = $(this).find("td:eq(" + (3 + indext) + ") input").val();
+                monto = $(this).find("td:eq(" + (3 + indext) + ") input").val();
             }
             var porcentaje = $(this).find("td:eq(" + (4 + indext) + ") input").val();
 
@@ -158,8 +160,8 @@ function enviaRec() {
             item["NUM_DOC"] = 0;
             item["POS"] = pos;
             item["TSOL"] = tsol;
-            item["FECHA"] = fecha + " 12:00:00 p.m.";
-            item["MONTO"] = monto;
+            item["FECHAF"] = fecha + " 12:00:00 p.m.";
+            item["MONTO_BASE"] = monto;
             item["PORC"] = porcentaje;
             
             jsonObjDocs.push(item);

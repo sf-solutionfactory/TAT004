@@ -8,25 +8,25 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
-<script src="~/Scripts/soporte.js"></script>
+<script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
+<script src="~/Scripts/recurrente.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
     <script>
-    $(document).ready(function () {
-        function errorMessage(msg) {
-            M.toast({ html: msg });
-        }
+        $(document).ready(function () {
+            function errorMessage(msg) {
+                M.toast({ html: msg });
+            }
 
-        /**/
-        var message = '@ViewBag.error';
-    /**/
+            var message = '@ViewBag.error';
 
-    if (message != "") {
-        // do drop down loic
-        errorMessage(message);
-    }
-});
+            if (message != "")
+            {
+                // do drop down loic
+                errorMessage(message);
+            }
+        });
     </script>
 }
 
@@ -65,7 +65,6 @@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
             }
-
         </div>
     }
     <style>
@@ -133,10 +132,10 @@
     </style>
 
     <div class="div_right">
-        <a href="@Url.Action(" Cancelar", "Solicitudes" )" class="btn waves-effect waves-light btn-small">Cancelar</a>
+        <a href="@Url.Action("Cancelar", "Solicitudes")" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
             {*@
-        <a id="btn_guardarh" class="btn waves-effect waves-light btn-small disabled">Guardar</a>
+        <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         @*}*@
     </div>
     <div class="div_bottom">
@@ -159,7 +158,7 @@
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();">Financiera</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();"><!--RSG 23.05.2018-->Financiera</a></li>
         </ul>
     </div>
 </div>
@@ -191,17 +190,19 @@
                                         @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id" })
                                         <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
                                         <input type="text" id="tsolant_id" value="@ViewBag.TSOL_ANT" disabled="disabled" hidden />
-
                                     }
                                 </div>
                                 @Html.HiddenFor(model => model.DOCUMENTO_REF)
+                                @{string jval = ViewBag.TSOL_VALUES;
+                                    @Html.Hidden("TSOL_VALUES", jval)
+                                }
                             </div>
                             <div class="form-group col s12">
                                 @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
-                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value);getClearing(this.value);" })
+                                        @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
                                     }
                                     else
                                     {
@@ -240,6 +241,13 @@
                                     </div>
                                 </div>
                             }
+                            <div>
+                                <div class="input-field col s6">
+                                    @Html.EditorFor(model => model.SOCIEDAD.REGION, new { htmlAttributes = new { @id = "region_id", @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.SOCIEDAD.REGION, "Región", htmlAttributes: new { @for = "region_id" })
+
+                                </div>
+                            </div>
                             <div class="input-field col s12">
                                 @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control " + @ViewBag.relacionada } })
                                 @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id" })
@@ -248,35 +256,33 @@
                             <script src="~/Scripts/autocomplete1.10.2.js"></script>
                             <script src="~/Scripts/autocomplete1.11.4.js"></script>
                             <script>
-                            var auto = $.noConflict(true);
-                            auto(document).ready(function () {
-                                /**/
-                                var pais = '@ViewBag.pais';
-                            /**/
-                            auto("#state_id").autocomplete({
-                                source: function (request, response) {
-                                    auto.ajax({
-                                        url: "../Listas/Estados",
-                                        type: "GET",
-                                        dataType: "json",
-                                        data: { pais: pais, Prefix: request.term },
-                                        success: function (data) {
-                                            response($.map(data, function (item) {
-                                                return { label: item.NAME, value: item.NAME };
-                                            }))
+                                var auto = $.noConflict(true);
+                                auto(document).ready(function () {
+                                    var pais = '@ViewBag.pais';
+                                    auto("#state_id").autocomplete({
+                                        source: function (request, response) {
+                                            auto.ajax({
+                                                url: "../Listas/Estados",
+                                                type: "GET",
+                                                dataType: "json",
+                                                data: { pais: pais, Prefix: request.term },
+                                                success: function (data) {
+                                                    response($.map(data, function (item) {
+                                                        return { label: item.NAME, value: item.NAME };
+                                                    }))
+                                                }
+                                            })
+                                        },
+                                        messages: {
+                                            noResults: '',
+                                            results: function (resultsCount) { }
+                                        },
+                                        change: function (e, ui) {
+                                            if (!( ui.item)) {
+                                            }
                                         }
-                                    })
-                                },
-                                messages: {
-                                    noResults: '',
-                                    results: function (resultsCount) { }
-                                },
-                                change: function (e, ui) {
-                                    if (!(ui.item)) {
-                                    }
-                                }
-                            });
-                        })
+                                    });
+                                })
                             </script>
                             <script src="~/Scripts/createa.js"></script>
                             <div class="input-field col s12">
@@ -487,7 +493,7 @@
                             </div>
                             <div class="table_sop" id="" style="display:none">
                             </div>
-                            <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
+                            <table class="table_sop display" id="table_sop" cellspacing="0" style="width:100%;display:none">
                                 <thead>
                                     <tr>
                                         <th>Pos</th>
@@ -648,6 +654,15 @@
                                             document.getElementById('fechai_vig').value = fechai;
                                             document.getElementById('fechaf_vig').value = fechaf;
                                         }
+
+                                        var datei = $('#fechai_vig').val();
+                                        var datef = $('#fechaf_vig').val();
+                                        var res = validar_fechas(datei, datef);
+                                        if (!res) {
+                                            //$('#fechaf_vig2').val("");
+                                            M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                        }
+
                                         pickerFecha2(".format_date");
                                     }
                                 </script>
@@ -754,6 +769,98 @@
                             }
                         </div>
                     </div>
+
+
+
+                    <div id="div_picker2"></div>
+                    <div class="card-panel">
+                        <h5>Recurrente</h5>
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <label>
+                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <span>Documento recurrente</span>
+                                </label>
+                            </p>
+                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>
+                            <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.DOCUMENTOREC != null)
+                                    {
+
+                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                        {
+                                            <tr>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].NUM_DOC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].POS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].FECHAF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PORC
+                                                </td>
+
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].DOC_REF
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].EJERCICIO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].ESTATUS
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_GRS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_NET
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PERIODO
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -763,71 +870,6 @@
                 <div class="col s12 m6 l6">
                     @if (ViewBag.reversan != "X")
                     {
-                        @*<div class="card-panel">
-                                <h5>Documentos de Soporte</h5>
-                                <label>* Campos obligatorios</label>
-                                <div class="row" style="margin-bottom:0">
-                                    <div class="col s12">
-                                        <form action="#">
-                                            <label name="labels_soporte2">Carta</label><label class"lbl_nec"></label>
-                                            <input type="text" value="Carta" name="labels_soporte" hidden />
-                                            <div class="file-field input-field">
-                                                <div class="btn-small" style="float:left;">
-                                                    <span>Examinar</span>
-                                                    <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
-                                                </div>
-                                                <div class="file-path-wrapper">
-                                                    <input class="file-path validate" type="text">
-                                                </div>
-                                            </div>
-                                            <label name="labels_soporte2">Contratos</label><label class="lbl_nec"></label>
-                                            <input type="text" value="Contratos" name="labels_soporte" hidden />
-                                            <div class="file-field input-field">
-                                                <div class="btn-small" style="float:left;">
-                                                    <span>Examinar</span>
-                                                    <input class="file_soporte" name="files_soporte" id="file_contratos" type="file">
-                                                </div>
-                                                <div class="file-path-wrapper">
-                                                    <input class="file-path validate" type="text">
-                                                </div>
-                                            </div>
-                                            <label name="labels_soporte2">Facturas Cliente</label>
-                                            <input type="text" value="Facturas Cliente" name="labels_soporte" hidden />
-                                            <div class="file-field input-field">
-                                                <div class="btn-small" style="float:left;">
-                                                    <span>Examinar</span>
-                                                    <input class="file_soporte" name="files_soporte" id="file_factura" type="file">
-                                                </div>
-                                                <div class="file-path-wrapper">
-                                                    <input class="file-path validate" type="text">
-                                                </div>
-                                            </div>
-                                            <label name="files_soportel">JBP</label>
-                                            <input type="text" value="JBP" name="labels_soporte" hidden />
-                                            <div class="file-field input-field">
-                                                <div class="btn-small" style="float:left;">
-                                                    <span>Examinar</span>
-                                                    <input class="file_soporte" name="files_soporte" id="file_jbp" type="file">
-                                                </div>
-                                                <div class="file-path-wrapper">
-                                                    <input class="file-path validate" type="text">
-                                                </div>
-                                            </div>
-                                            <label name="files_soportel">Otros</label>
-                                            <input type="text" value="Otros" name="labels_soporte" hidden />
-                                            <div class="file-field input-field">
-                                                <div class="btn-small" style="float:left;">
-                                                    <span>Examinar</span>
-                                                    <input class="file_soporte" name="files_soporte" id="file_otros" type="file">
-                                                </div>
-                                                <div class="file-path-wrapper">
-                                                    <input class="file-path validate" type="text">
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>*@
 
                         <div class="card-panel">
                             <h5>Documentos de Soporte2</h5>
@@ -838,7 +880,7 @@
                                         <div class="row" id="div_soportes">
 
                                         </div>
-                                        <!--RSG-->
+                                        <!--RSG 23.05.2018-->
                                         <script>
                                         soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()');
                                         </script>
@@ -847,9 +889,7 @@
                             </div>
                         </div>
                     }
-                    @{List<TAT001.Entities.DOCUMENTOA>
-                                                  archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                      ;
+                    @{List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -974,6 +1014,7 @@
                     <div class="card-panel">
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
+                            <input type="button" id="matcat" value="Get materiales cat" />
                             <div class="input-field col s6">
                                 <select id="select_neg" onchange="selectDis(this.value)">
                                     <option value="M">Monto</option>
@@ -1053,8 +1094,8 @@
                                     <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                                 </div>
                             }
-                            <div id="div_picker"></div>
 
+                            <div id="div_picker"></div>
                             <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                 <thead>
                                     <tr>
@@ -1088,22 +1129,24 @@
                     </div>
                     @*Tabla para ser enviada siempre está oculta*@
                     <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
-                        <thead>
-                            <tr>
-                                <th>Pos</th>
-                                <th>Vigencia De</th>
-                                <th>Vigencia Al</th>
-                                <th>Material</th>
-                                <th>Categoría</th>
-                                <th>Categoría ID</th>
-                                <th>Costo unitario</th>
-                                <th>% Apoyo</th>
-                                <th>Apoyo por pieza</th>
-                                <th>Precio sugerido</th>
-                                <th>Volumen estimado</th>
-                                <th>Volumen real</th>
-                            </tr>
-                        </thead>
+                        @*<thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Vigencia De</th>
+                                    <th>Vigencia Al</th>
+                                    <th>Material</th>
+                                    <th>Categoría</th>
+                                    <th>Categoría ID</th>
+                                    <th>Costo unitario</th>
+                                    <th>% Apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Precio sugerido</th>
+                                    <th>Volumen estimado</th>
+                                    <th>Volumen real</th>
+                                    <th>Apoyo estimado</th>
+                                    <th>Apoyo real</th>
+                                </tr>
+                            </thead>*@
                         <tbody>
                             @if (Model.DOCUMENTOP != null)
                             {
@@ -1145,6 +1188,12 @@
                                         </td>
                                         <td>
                                             @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_REAL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_REAL)
                                         </td>
                                     </tr>
                                 }

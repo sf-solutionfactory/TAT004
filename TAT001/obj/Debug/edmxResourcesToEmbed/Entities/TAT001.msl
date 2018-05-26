@@ -1785,5 +1785,23 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="DOCUMENTORECs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOREC">
+        <MappingFragment StoreEntitySet="DOCUMENTOREC">
+          <ScalarProperty Name="DOC_REF" ColumnName="DOC_REF" />
+          <ScalarProperty Name="PORC" ColumnName="PORC" />
+          <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+          <ScalarProperty Name="MONTO_NET" ColumnName="MONTO_NET" />
+          <ScalarProperty Name="MONTO_GRS" ColumnName="MONTO_GRS" />
+          <ScalarProperty Name="MONTO_FIJO" ColumnName="MONTO_FIJO" />
+          <ScalarProperty Name="MONTO_BASE" ColumnName="MONTO_BASE" />
+          <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
+          <ScalarProperty Name="PERIODO" ColumnName="PERIODO" />
+          <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

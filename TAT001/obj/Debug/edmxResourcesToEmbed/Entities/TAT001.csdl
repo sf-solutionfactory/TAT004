@@ -622,6 +622,7 @@
     <NavigationProperty Name="DOCUMENTORs" Relationship="Self.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+    <NavigationProperty Name="DOCUMENTORECs" Relationship="TAT001Model.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOREC" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -4385,6 +4386,11 @@
       <Parameter Name="ACTIVO" Mode="In" Type="Boolean" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="DOCUMENTORECs" EntityType="TAT001Model.DOCUMENTOREC" />
+    <AssociationSet Name="FK_DOCUMENTOREC_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOREC_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOREC" EntitySet="DOCUMENTORECs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4482,4 +4488,35 @@
     <Property Type="Int32" Name="ID_GR" Nullable="false" />
     <Property Type="String" Name="NOMBRE_GR" Nullable="true" MaxLength="50" />
   </ComplexType>
+  <EntityType Name="DOCUMENTOREC">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="FECHAF" Type="DateTime" Precision="0" />
+    <Property Name="PERIODO" Type="Int32" />
+    <Property Name="EJERCICIO" Type="Int32" />
+    <Property Name="MONTO_BASE" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_FIJO" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_GRS" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_NET" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
+  </EntityType>
+  <Association Name="FK_DOCUMENTOREC_DOCUMENTO">
+    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOREC" Role="DOCUMENTOREC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOREC">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
