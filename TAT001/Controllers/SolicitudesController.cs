@@ -2411,15 +2411,17 @@ namespace TAT001.Controllers
                         volumen_est = 0;
                     }
                     doc.VOLUMEN_EST = Convert.ToDecimal(volumen_est);
-                    //doc.VOLUMEN_EST = Math.Round(doc.VOLUMEN_EST, 2);
-                    //try
-                    //{
-                    //    //porc_apoyoest = (double)dt.Rows[i][12]; //Estimado $ apoyo
-                    //}catch(Exception e)
-                    //{
-                    //    porc_apoyoest = 0;
-                    //}
-                    //doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
+                    //RSG 24.05.2018--------------------------------- 
+                    try
+                    {
+                        string apoyo = dt.Rows[i][7].ToString();
+                        doc.APOYO_EST = (decimal.Parse(apoyo));//Apoyo
+                    }
+                    catch
+                    {
+                        doc.APOYO_EST = 0;
+                    }
+                    //RSG 24.05.2018----------------------------------
 
                     ld.Add(doc);
                     pos++;

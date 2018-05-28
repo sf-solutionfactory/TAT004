@@ -272,25 +272,30 @@
         var neg = $("#select_neg").val();
 
         if (neg != "") {
-            //Monto
-            if (neg == "M") {
-                //Obtener la distribución
-                var dis = $("#select_dis").val();
-                if (dis != "") {
-                    var t = $('#table_dis').DataTable();
-                    //Obtener las fechas de temporalidad para agregarlas a los items
-                    var val_de = $('#fechai_vig').val();
-                    var val_al = $('#fechaf_vig').val();
+            //Obtener los valores que se van a utilizar
+            var t = $('#table_dis').DataTable();
+            //Obtener las fechas de temporalidad para agregarlas a los items
+            var val_de = $('#fechai_vig').val();
+            var val_al = $('#fechaf_vig').val();
 
-                    var adate = formatDate(val_al);
-                    var ddate = formatDate(val_de);
+            var adate = formatDate(val_al);
+            var ddate = formatDate(val_de);
 
-                    adate = formatDatef(adate);
-                    ddate = formatDatef(ddate);
+            adate = formatDatef(adate);
+            ddate = formatDatef(ddate);
 
+            //Obtener la distribución
+            var dis = $("#select_dis").val();
+
+            if (dis == "") {  
+                M.toast({ html: 'Seleccione distribución' });
+                return false;
+            }
+
+            //Negociación Monto
+            if (neg == "M") {                                           
                     //Distribución por categoría
                     if (dis == "C") {
-
                         //Obtener la categoría
                         var cat = $('#select_categoria').val();
 
@@ -390,10 +395,51 @@
                         //}
                     }
                     updateFooter();
-                } else {
-                    M.toast({ html: 'Seleccione distribución' });
-                }
+                
 
+            } else if (neg == "P"){
+                //Negociación porcentaje
+                //Obtener el porcentaje de apoyo base
+                var p_apoyo = $('#bmonto_apoyo').val();
+                p_apoyo = parseFloat(p_apoyo) | 0;
+
+                if (p_apoyo > 0) {
+                    //Distribución por categoría
+                    if (dis == "C") {
+                        //Obtener la categoría
+                        var cat = $('#select_categoria').val();
+
+                        //Validar si la categoría ya había sido agregada
+                        var catExist = valcategoria(cat);
+
+                        if (catExist != true) {
+                            if (cat != "") {
+                                var opt = $("#select_categoria option:selected").text();
+
+                                var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa);
+                            } else {
+                                M.toast({ html: 'Seleccione una categoría' });
+                            }
+                        } else {
+                            M.toast({ html: 'La categoría ya había sido agregada' });
+                        }
+
+                    } else if (dis == "M") {
+                        //Distribución por material    
+                        var por_apoyo = "";
+                        por_apoyo = p_apoyo;
+                        var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "");
+
+                        $('#table_dis').css("font-size", "12px");
+                        $('#table_dis').css("display", "table");
+
+                        t.column(0).visible(false);
+                        t.column(1).visible(false);
+                    }
+                    updateFooter();
+                } else {
+                    M.toast({ html: 'Porcentaje de apoyo base debe de ser mayor a cero' });
+                }
             }
         } else {
             M.toast({ html: 'Seleccione negociación' });
@@ -474,18 +520,18 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -2885,7 +2931,7 @@ function selectDis(val) {
         $('#div_montobase').css("display", "inherit");
     } else if (val == "P") {//Porcentaje
         M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
-        $('#div_montobase').css("display", "none");
+        $('#div_montobase').css("display", "inherit");//none
         $('#div_apoyobase').css("display", "inherit");
     } else {
         $('#div_montobase').css("display", "none");
@@ -2896,7 +2942,7 @@ function selectDis(val) {
 }
 
 function selectMonto(val) {
-
+    message = "X";
     //Siempre inicializar la tabla
     var ta = $('#table_dis').DataTable();
     ta.clear().draw();
@@ -2924,7 +2970,10 @@ function selectMonto(val) {
             $('#div_apoyobase').css("display", "none");
             $('#div_montobase').css("display", "inherit");
         } else if (select_neg == "P") {//Porcentaje
-            $('#div_montobase').css("display", "none");
+            if (message == "X") {
+                M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });//Add
+            }
+            $('#div_montobase').css("display", "inherit");//none
             $('#div_apoyobase').css("display", "inherit");
         } else {
             $('#div_montobase').css("display", "none");
