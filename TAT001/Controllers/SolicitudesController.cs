@@ -2780,9 +2780,9 @@ namespace TAT001.Controllers
                 }
             }
 
-            var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
+            //var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
 
-            JsonResult jl = Json(jll, JsonRequestBehavior.AllowGet);
+            JsonResult jl = Json(jd, JsonRequestBehavior.AllowGet);
             return jl;
         }
 

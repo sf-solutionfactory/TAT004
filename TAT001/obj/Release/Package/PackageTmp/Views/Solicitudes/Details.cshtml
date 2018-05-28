@@ -531,78 +531,170 @@
                         @if (Model.D.DOCUMENTOPs.Count > 0)
                         {
                             <table style="font-size: 12px;">
-                                <tr>
-                                    <th>Vigencia de</th>
-                                    <th>Vigencia a</th>
-                                    <th>Material</th>
-                                    <th>Desc</th>
-                                    <th>Precio unitario</th>
-                                    <th>% apoyo</th>
-                                    <th>Apoyo por pieza</th>
-                                    <th>Precio sugerido</th>
-                                    @if (Model.D.TSOL.FACTURA == false)
-                                    {
-                                        <th>Volumen estimado</th>
-                                        <th>Estimado apoyo</th>
-                                    }
-                                    else
-                                    {
-                                        <th>Volumen real</th>
-                                        <th>Apoyo real</th>
-                                    }
-                                </tr>
-                                @foreach (var item in Model.D.DOCUMENTOPs)
-                                {
+                                <thead>
                                     <tr>
-                                        <td>
-                                            @try
-                                            {@item.VIGENCIA_DE.Value.ToShortDateString()}
-                                        catch { }
-                                        </td>
-                                        <td>
-                                            @try
-                                            {@item.VIGENCIA_AL.Value.ToShortDateString()}
-                                        catch { }
-                                        </td>
-                                        <td>@item.MATNR.TrimStart('0')</td>
-                                        @{
-                                            using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
-                                            {
-                                                var matnr = db.MATERIALs.Find(item.MATNR);
-                                                if (matnr != null)
-                                                {
-                                                    <td>@matnr.MAKTX</td>}
-                                                else
-                                                {
-                                                    <td></td>
-                                                }
-
-                                            }
-                                        }
-                                        <td>@Math.Round(item.MONTO, 2)</td>
-                                        <td>@Math.Round(item.PORC_APOYO, 2)</td>
-                                        <td>@Math.Round(item.MONTO_APOYO, 2)</td>
-                                        <td>@Math.Round(item.PRECIO_SUG, 2)</td>
-
-                                        @if (Model.D.TSOL.FACTURA == false)
+                                        <th>Vigencia de</th>
+                                        <th>Vigencia a</th>
+                                        @if (Model.D.DOCUMENTOPs.First().MATNR != "")
                                         {
-                                            <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
-                                            <td>@Math.Round((decimal)item.APOYO_EST, 2)</td>
+                                            <th>Material</th>
                                         }
                                         else
                                         {
-                                            <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
-                                            <td>@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
+                                            <th>Categoría</th>
+                                        }
+                                        <th>Desc</th>
+                                        <th>Precio unitario</th>
+                                        <th>% apoyo</th>
+                                        <th>Apoyo por pieza</th>
+                                        <th>Precio sugerido</th>
+                                        @if (Model.D.TSOL.FACTURA == false)
+                                        {
+                                            <th>Volumen estimado</th>
+                                            <th>Estimado apoyo</th>
+                                        }
+                                        else
+                                        {
+                                            <th>Volumen real</th>
+                                            <th>Apoyo real</th>
                                         }
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.D.DOCUMENTOPs)
+                                    {
+                                        <tr id="pos-@item.POS" onclick="muestra(this.id)">
+                                            <td>
+                                                @try
+                                                {@item.VIGENCIA_DE.Value.ToShortDateString()}
+                                            catch { }
+                                            </td>
+                                            <td>
+                                                @try
+                                                {@item.VIGENCIA_AL.Value.ToShortDateString()}
+                                            catch { }
+                                            </td>
+                                            @if (item.MATNR != "")
+                                            {
+                                                <td>@item.MATNR.TrimStart('0')</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@item.MATKL</td>
+                                            }
+                                            @{
+                                                using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+                                                {
+                                                    if (item.MATNR != "")
+                                                    {
+                                                        var matnr = db.MATERIALs.Find(item.MATNR);
+                                                        if (matnr != null)
+                                                        {
+                                                            <td>@matnr.MAKTX</td>}
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        var matkl = db.CATEGORIAs.Find(item.MATKL);
+                                                        if (matkl != null)
+                                                        {
+                                                            <td>@matkl.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </td>}
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                    }
 
-                                }
+                                                }
+                                            }
+                                            <td>@Math.Round(item.MONTO, 2)</td>
+                                            <td>@Math.Round(item.PORC_APOYO, 2)</td>
+                                            <td>@Math.Round(item.MONTO_APOYO, 2)</td>
+                                            <td>@Math.Round(item.PRECIO_SUG, 2)</td>
+
+                                            @if (Model.D.TSOL.FACTURA == false)
+                                            {
+                                                <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
+                                                <td>@Math.Round((decimal)item.APOYO_EST, 2)</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
+                                                <td>@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
+                                            }
+                                        </tr>
+                                        foreach (var mat in item.DOCUMENTOMs)
+                                        {
+                                            <tr class="mat-@mat.POS_ID" style="display:none;">
+                                                <td></td>
+                                                <td></td>
+                                                <td>@mat.MATNR</td>
+                                                @{
+                                                    using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+                                                    {
+                                                        if (mat.MATNR != "")
+                                                        {
+                                                            var matnr = db.MATERIALs.Find(mat.MATNR);
+                                                            if (matnr != null)
+                                                            {
+                                                                <td>@matnr.MAKTX</td>}
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                @if (Model.D.TSOL.FACTURA == false)
+                                                {
+                                                    <td>@mat.APOYO_EST</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@mat.APOYO_REAL</td>
+                                                }
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
                             </table>
                         }
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            function muestra(id) {
+                var ii = id.split('-')[1];
+                var clas = $("#" + id).hasClass("m");
+                if (!clas) {
+                    var a = document.getElementsByClassName("mat-" + ii);
+                    var i;
+                    for (i = 0; i < a.length; i++) {
+                        a[i].style.display = "table-row";
+                    }
+                    document.getElementById("pos-" + ii).classList.add("m");
+                } else {
+                    var a = document.getElementsByClassName("mat-" + ii);
+                    var i;
+                    for (i = 0; i < a.length; i++) {
+                        a[i].style.display = "none";
+                    }
+                    document.getElementById("pos-" + ii).classList.remove("m");
+                }
+
+            }
+        </script>
     </div>
     <div id="fina" class="col s12">
         <div class="row">

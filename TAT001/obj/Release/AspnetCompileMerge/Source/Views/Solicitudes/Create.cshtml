@@ -513,23 +513,23 @@
                             </table>
                             @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
                             <table id="table_soph" class="display" cellspacing="0" style="display:none">
-                                <thead>
-                                    <tr>
+                                @*<thead>
+                                        <tr>
 
-                                        <th>Pos</th>
-                                        <th>Factura</th>
-                                        <th>Fecha Factura</th>
-                                        <th>Proveedor</th>
-                                        <th>Proveedor Desc</th>
-                                        <th>Control</th>
-                                        <th>Autorización</th>
-                                        <th>Vencimiento</th>
-                                        <th>Factura k</th>
-                                        <th>Ejercicio k</th>
-                                        <th>Bill doc</th>
-                                        <th>Belnr</th>
-                                    </tr>
-                                </thead>
+                                            <th>Pos</th>
+                                            <th>Factura</th>
+                                            <th>Fecha Factura</th>
+                                            <th>Proveedor</th>
+                                            <th>Proveedor Desc</th>
+                                            <th>Control</th>
+                                            <th>Autorización</th>
+                                            <th>Vencimiento</th>
+                                            <th>Factura k</th>
+                                            <th>Ejercicio k</th>
+                                            <th>Bill doc</th>
+                                            <th>Belnr</th>
+                                        </tr>
+                                    </thead>*@
                                 <tbody>
                                     @if (Model.DOCUMENTOF != null)
                                     {
@@ -913,32 +913,36 @@
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
                             @*<input type="button" id="matcat" value="Get materiales cat"/>*@
+                            <input type="text" id="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
+                            <input type="text" id="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
                             <div class="input-field col s6">
-                                <select id="select_neg" onchange="selectDis(this.value)">
+                                <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
                                     <option value="M">Monto</option>
                                     <option value="P">Porcentaje</option>
                                 </select>
                                 <label>Tipo de negociación</label>
                             </div>
                             <div class="input-field col s6">
-                                <select id="select_dis" onchange="selectMonto(this.value)">
+                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value)">
                                     <option value="M">Material</option>
                                     <option value="C">Categoría</option>
                                 </select>
                                 <label>Distribución</label>
                             </div>
                             <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
+
                                 @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
                                 </div>
                             </div>
-                            <div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none">
-                                @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
-                                </div>
-                            </div>
+                            @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
+                            @*<div id="div_categoria2" class="form-group col s6" style="display:none">
+                                    @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
+                                    </div>
+                                </div>*@
                         </div>
                     </div>
                 </div>

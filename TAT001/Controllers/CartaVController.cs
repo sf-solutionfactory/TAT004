@@ -102,6 +102,10 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
 
+                DOCUMENTO d = new DOCUMENTO();
+                PUESTOT pp = new PUESTOT();
+                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
+
                 List<string> lista = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>();
                 List<int> numfilasTabla = new List<int>();
@@ -129,17 +133,40 @@ namespace TAT001.Controllers
                                           .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
                                           .ToList();
 
-                    foreach (var item2 in con2)
+                    if (con2.Count > 0)
                     {
-                        armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                        armadoCuerpoTab.Add(item2.MATKL);
-                        armadoCuerpoTab.Add(item2.MAKTX);
-                        armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
-                        contadorTabla++;
+                        foreach (var item2 in con2)
+                        {
+                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                            armadoCuerpoTab.Add(item2.MATKL);
+                            armadoCuerpoTab.Add(item2.MAKTX);
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                            contadorTabla++;
+                        }
+                    }
+                    else
+                    {
+                        var con3 = db.DOCUMENTOPs
+                                            .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                            .Join(db.CATEGORIAs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.CATEGORIATs.Where(a=>a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
+                                            .ToList();
+
+                        foreach (var item2 in con3)
+                        {
+                            armadoCuerpoTab.Add("");
+                            armadoCuerpoTab.Add(item2.MATKL);
+                            armadoCuerpoTab.Add(item2.TXT50);
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                            contadorTabla++;
+                        }
                     }
                     numfilasTabla.Add(contadorTabla);
                 }
@@ -165,9 +192,6 @@ namespace TAT001.Controllers
                 encabezado.Add(em.costoap = c.COSTOA);
                 encabezado.Add(em.precio = c.PRECIOSU);
 
-                DOCUMENTO d = new DOCUMENTO();
-                PUESTOT pp = new PUESTOT();
-                d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
                 //var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(doa => doa.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD);
                 if (d != null)
                 {
@@ -277,7 +301,7 @@ namespace TAT001.Controllers
                 List<int> numfilasTab = new List<int>();
 
                 int contadorTabla = 0;
-
+                DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
                 //var con = db.DOCUMENTOPs.Select(x => new { x.VIGENCIA_DE, x.VIGENCIA_AL }).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
@@ -300,22 +324,45 @@ namespace TAT001.Controllers
                                       .ToList();
 
 
-                    foreach (var item in con2)
+                    if (con2.Count > 0)
                     {
-                        armadoCuerpoTab.Add(item.MATNR.TrimStart('0'));
-                        armadoCuerpoTab.Add(item.MATKL);
-                        armadoCuerpoTab.Add(item.MAKTX);
-                        armadoCuerpoTab.Add(Math.Round((decimal)item.MONTO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item.PORC_APOYO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item.MONTO_APOYO, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round((decimal)item.resta, 2).ToString());
-                        armadoCuerpoTab.Add(Math.Round(item.PRECIO_SUG, 2).ToString());
-                        contadorTabla++;
+                        foreach (var item2 in con2)
+                        {
+                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                            armadoCuerpoTab.Add(item2.MATKL);
+                            armadoCuerpoTab.Add(item2.MAKTX);
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                            contadorTabla++;
+                        }
+                    }
+                    else
+                    {
+                        var con3 = db.DOCUMENTOPs
+                                            .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                            .Join(db.CATEGORIAs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG })
+                                            .ToList();
+
+                        foreach (var item2 in con3)
+                        {
+                            armadoCuerpoTab.Add("");
+                            armadoCuerpoTab.Add(item2.MATKL);
+                            armadoCuerpoTab.Add(item2.TXT50);
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                            contadorTabla++;
+                        }
                     }
                     numfilasTab.Add(contadorTabla);
                 }
                 bool aprob = false;
-                DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
+               
                 aprob = (d.ESTATUS_WF.Equals("A") | d.ESTATUS_WF.Equals("S"));
 
                 CartaV carta = v;
