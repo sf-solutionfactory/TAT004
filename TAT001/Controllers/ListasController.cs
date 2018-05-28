@@ -186,7 +186,7 @@ namespace TAT001.Controllers
                      where D.DOCUMENTO_REF == num
                      & T.SPRAS_ID == spras
                      & G.SPRAS_ID == spras
-                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO });
+                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }

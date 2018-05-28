@@ -870,7 +870,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, GALL_ID")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis)
         {
 
@@ -1275,7 +1275,16 @@ namespace TAT001.Controllers
                     {
 
                     }
-
+                    //Guardar registros de recurrencias  RSG 25.05.2018
+                    if(dOCUMENTO.DOCUMENTOREC.Count > 0)
+                    {
+                        foreach(DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
+                        {
+                            drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            dOCUMENTO.DOCUMENTORECs.Add(drec);
+                        }
+                        db.SaveChanges();
+                    }
 
                     //Guardar los documentos cargados en la sección de soporte
                     var res = "";
@@ -2421,6 +2430,17 @@ namespace TAT001.Controllers
                     //}
                     //doc.PORC_APOYOEST = Convert.ToDecimal(porc_apoyoest);
 
+                    //RSG 24.05.2018--------------------------------- 
+                    try
+                    {
+                        string apoyo = dt.Rows[i][7].ToString();
+                        doc.APOYO_EST = (decimal.Parse(apoyo));//Apoyo
+                    }
+                    catch
+                    {
+                        doc.APOYO_EST = 0;
+                    }
+                    //RSG 24.05.2018----------------------------------
                     ld.Add(doc);
                     pos++;
                 }
@@ -3295,6 +3315,26 @@ namespace TAT001.Controllers
 
             doc.DOCUMENTOF = docs;
             return PartialView("~/Views/Solicitudes/_PartialSopTr.cshtml", doc);
+        }
+
+        [HttpPost]
+        public ActionResult getPartialRec(List<DOCUMENTOREC> docs)
+        {
+            DOCUMENTO doc = new DOCUMENTO();
+            foreach (DOCUMENTOREC r in docs)
+            {
+                r.NUM_DOC = 0;
+                r.DOC_REF = 0;
+                r.EJERCICIO = 1;
+                r.ESTATUS = " ";
+                r.MONTO_FIJO = 0;
+                r.MONTO_GRS = 0;
+                r.MONTO_NET = 0;
+                r.PERIODO = 1;
+            }
+
+            doc.DOCUMENTOREC = docs;
+            return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
         }
     }
 }

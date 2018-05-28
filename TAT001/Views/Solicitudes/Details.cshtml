@@ -404,23 +404,74 @@
     </div>
     <div id="temp" class="col s12">
         <div class="row">
-            <div class="card-panel">
-                <div class="row" style="margin-bottom:0">
-                    <h5>Vigencia</h5>
-                    @*<div class="input-field col s12">
-                            @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.NUM_DOC)
-                        </div>*@
-                    <div class="input-field col s6">
-                        @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                        @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
-                    </div>
-                    <div class="input-field col s6">
-                        @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                        @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
+            <div class="col s12 m12 l12">
+                <div class="card-panel">
+                    <div class="row" style="margin-bottom:0">
+                        <h5>Vigencia</h5>
+                        @*<div class="input-field col s12">
+                                @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.NUM_DOC)
+                            </div>*@
+                        <div class="input-field col s6">
+                            @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                            @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
+                        </div>
+                        <div class="input-field col s6">
+                            @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                            @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
+                        </div>
                     </div>
                 </div>
             </div>
+
+            @if (Model.D.DOCUMENTORECs.Count() > 0)
+            {
+                <div class="col s12 m12 l12" style="font-size:12px;">
+                    <div class="card-panel">
+                        <div class="row">
+                            <h5>Recurrencia</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Pos</th>
+                                            <th>Tipo</th>
+                                            <th>Documento</th>
+                                            <th>Fecha</th>
+                                            <th>Monto</th>
+                                            <th>%</th>
+                                            <th>Aplicado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var iteem in Model.D.DOCUMENTORECs)
+                                        {
+                                            <tr>
+                                                <td>@iteem.POS</td>
+                                                <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
+                                                <td>@iteem.DOC_REF</td>
+                                                <td>@iteem.FECHAF.Value.ToShortDateString()</td>
+                                                <td>@iteem.MONTO_BASE</td>
+                                                <td>@Math.Round(iteem.PORC.Value, 2)</td>
+                                                @if (iteem.ESTATUS == "X")
+                                                {
+                                                    <td><i class="material-icons">check</i></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><i class="material-icons">close</i></td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
     <div id="supp" class="col s12">
@@ -561,7 +612,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.D.DOCUMENTOPs)
+                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null))
                                     {
                                         <tr id="pos-@item.POS" onclick="muestra(this.id)">
                                             <td>

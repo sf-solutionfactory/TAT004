@@ -99,7 +99,9 @@ namespace TAT001.Controllers
             }
             dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
             dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
-            
+            ViewBag.Clientes = db.CLIENTEs.ToList();
+            ViewBag.Cuentas = db.CUENTAs.ToList();
+            ViewBag.DOCF = db.DOCUMENTOFs.ToList();
             return View(dOCUMENTOes);
 
         }

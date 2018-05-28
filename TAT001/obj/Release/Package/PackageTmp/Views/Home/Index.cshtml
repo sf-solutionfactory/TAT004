@@ -4,238 +4,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 101;
     ViewBag.carpeta_r = 100;
+    List<TAT001.Entities.CLIENTE> lst = ViewBag.Clientes as List<TAT001.Entities.CLIENTE>;
+    List<TAT001.Entities.CUENTA> lstC = ViewBag.Cuentas as List<TAT001.Entities.CUENTA>;
+    List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
 }
-
-@*<div class="row">
-        @using (Html.BeginForm("Index", "Paginas"))
-        {
-            <label>
-                <input type="radio" name="uno" value="Uno"/>
-            </label>
-            <label>
-                <input type="radio" name="uno" value="Dos" checked="checked"  />
-            </label>
-            <input type="submit" value="nviar" class="btn" />
-        }
-    </div>*@
-@*<div class="row">
-        <form id="form1" runat="server">
-            <div class="row">
-                <div class="input-field col s6 m2 l2">
-                    <input id="documento" type="text" class="validate" />
-                    <label id="lbl_doc" for="documento">No. documento</label>
-                    <script>
-                        document.getElementById('lbl_doc').innerHTML = "@ViewBag.Title";
-                    </script>
-                </div>
-                <div class="input-field col s6 m2 l2">
-                    <input id="date_ini" type="text" class="datepicker" onkeyup="borrar(this);" />
-                    <label for="date_ini">Fecha inicio</label>
-                </div>
-                <script>
-                    function borrar(field) {
-                        field.value = "";
-                    }
-                </script>
-                <div class="input-field col s6 m2 l2">
-                    <input id="date_fin" type="text" class="datepicker2" />
-                    <label for="date_fin">Fecha fin</label>
-                </div>
-                <script>
-                    var elem = document.getElementById('date_ini');
-                    var options = {
-                        //format: 'mmm dd, yyyy'
-                        format: 'dd/mm/yyyy'
-                    };
-                    var instance = M.Datepicker.init(elem, options);
-                    var elem2 = document.getElementById('date_fin');
-                    var instance2 = M.Datepicker.init(elem2, options);
-                </script>
-                <div class="input-field col s6 m3 l3">
-                    <input id="cliente" type="text" class="validate" />
-                    <label for="cliente">Cliente</label>
-                </div>
-                <link href="~/Content/autocomplete.css" rel="stylesheet" />
-                <script src="~/Scripts/autocomplete1.10.2.js"></script>
-                <script src="~/Scripts/autocomplete1.11.4.js"></script>
-                <script>
-                    $(document).ready(function () {
-                        $("#cliente").autocomplete({
-                            source: function (request, response) {
-                                $.ajax({
-                                    url: "../Listas/Clientes",
-                                    type: "GET",
-                                    dataType: "json",
-                                    data: { Prefix: request.term },
-                                    success: function (data) {
-                                        response($.map(data, function (item) {
-                                            return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
-                                        }))
-                                    }
-                                })
-                            },
-                            messages: {
-                                noResults: "", results: ""
-                            }
-                        });
-                    })
-                </script>
-                <div class="input-field col s6 m3 l3">
-                    <input id="agente" type="text" class="validate" />
-                    <label for="agente">Agente</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="row">
-                    <div class="row">
-                    </div>
-                </div>
-            </div>
-
-            <div style="display:none;">
-                <div class="row">
-                    <ul id="coll_1" class="collapsible expandable">
-                        <li class="active">
-                            <div class="collapsible-header">
-                                <i class="material-icons">filter_drama</i>Provisiones
-                                <span class="badge">
-                                    <a id="btn_pro" class="waves-effect waves-light btn-floating btn-small" href="@Url.Action("Index", "Provision")"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a>
-                                </span>
-                            </div>
-                            <div class="collapsible-body">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Documento</th>
-                                            <th>Fecha</th>
-                                            <th>Cliente</th>
-                                            <th>Agente</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>100011</td>
-                                            <td>09/02/2018</td>
-                                            <td>9901 Nueva Walmart de México</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 85 000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100012</td>
-                                            <td>10/02/2018</td>
-                                            <td>8888 Tiendas Chedraui</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 60 000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <ul id="coll_2" class="collapsible expandable">
-                        <li class="active">
-                            <div class="collapsible-header">
-                                <i class="material-icons">place</i>Notas de crédito
-                                <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a></span>
-                            </div>
-                            <div class="collapsible-body">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Documento</th>
-                                            <th>Fecha</th>
-                                            <th>Cliente</th>
-                                            <th>Agente</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>100011</td>
-                                            <td>09/02/2018</td>
-                                            <td>9901 Nueva Walmart de México</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 85 000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100012</td>
-                                            <td>10/02/2018</td>
-                                            <td>8888 Tiendas Chedraui</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 60 000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="row">
-                    <ul id="coll_3" class="collapsible expandable">
-                        <li class="active">
-                            <div class="collapsible-header">
-                                <i class="material-icons">whatshot</i>Ordenes de pago
-                                <span class="badge"><a class="waves-effect waves-light btn-floating btn-small"><i style="width: 2.5rem;margin:0;" class="material-icons">add</i></a></span>
-                            </div>
-                            <div class="collapsible-body">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Documento</th>
-                                            <th>Fecha</th>
-                                            <th>Cliente</th>
-                                            <th>Agente</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>100011</td>
-                                            <td>09/02/2018</td>
-                                            <td>9901 Nueva Walmart de México</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 85 000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100012</td>
-                                            <td>10/02/2018</td>
-                                            <td>8888 Tiendas Chedraui</td>
-                                            <td>G110 Francisco Maldonado</td>
-                                            <td>$ 60 000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <script>
-                var elem = document.getElementById('coll_1');
-                var options = {
-                    accordion: false
-                }
-                var instance = M.Collapsible.init(elem, options);
-                var elem2 = document.getElementById('coll_2');
-                var options = [];
-                var instance2 = M.Collapsible.init(elem2, options);
-                var elem3 = document.getElementById('coll_3');
-                var options = {
-                    accordion: false
-                }
-                var instance3 = M.Collapsible.init(elem3, options);
-            </script>
-        </form>
-    </div>*@
-
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id = "btn_create" })
+        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
     </div>
 </div>
 @if (ViewBag.NUM_DOC != null)
@@ -267,7 +42,7 @@
             <option value="50">50</option>
             <option value="100">100</option>
         </select>
-        <label id="btn_length">Ver por página</label>
+        <label id="lbl_length">Ver por página</label>
     </div>
     <div class="input-field col s5 m3 l3 offset-l6 offset-m6 offset-s4">
         <input type="text" class="global_filter" id="global_filter">
@@ -282,7 +57,6 @@
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
-@*<link href="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />*@
 <link href="~/Content/dataTable.css" rel="stylesheet" />
 <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
 <table class="table mdl-data-table striped" id="table" style="width:100%;">
@@ -292,11 +66,41 @@
             <th class="lbl_num">
                 @Html.DisplayNameFor(model => model.NUM_DOC)
             </th>
+            <th class="lblSociedad">
+                @Html.DisplayNameFor(model => model.SOCIEDAD_ID)
+            </th>
+            <th class="lblPais">
+                @Html.DisplayNameFor(model => model.PAIS_ID)
+            </th>
+            <th id="lblPC">
+                @Html.DisplayName("Periodo Contable")
+            </th>
+            <th id="lbl_estatus">
+                @Html.DisplayNameFor(model => model.ESTATUS)
+            </th>
+            <th id="lblPayId">
+                @Html.DisplayNameFor(model => model.PAYER_ID)
+            </th>
+            <th id="lblCliente">
+                @Html.DisplayName("Cliente")
+            </th>
+            <th id="lblCanal">
+                @Html.DisplayName("Canal")
+            </th>
             <th id="lbl_tsol">
                 @Html.DisplayNameFor(model => model.TSOL)
             </th>
             <th id="lbl_tall">
                 @Html.DisplayNameFor(model => model.TALL)
+            </th>
+            <th id="lblCuentas">
+                @Html.DisplayName("Cuentas")
+            </th>
+            <th id="lbl_concepto">
+                @Html.DisplayNameFor(model => model.CONCEPTO)
+            </th>
+            <th id="lblMo">
+                @Html.DisplayNameFor(model => model.MONTO_DOC_ML)
             </th>
             <th id="lbl_fechad">
                 @Html.DisplayNameFor(model => model.FECHAD)
@@ -304,11 +108,44 @@
             <th id="lbl_horac">
                 @Html.DisplayNameFor(model => model.HORAC)
             </th>
-            <th id="lbl_estatus">
-                @Html.DisplayNameFor(model => model.ESTATUS)
+            <th id="lblFac">
+                @Html.DisplayName("Factura")
             </th>
-            <th id="lbl_concepto">
-                @Html.DisplayNameFor(model => model.CONCEPTO)
+            <th id="lblFack">
+                @Html.DisplayName("FacturaK")
+            </th>
+            <th id="lblUC">
+                @Html.DisplayNameFor(model => model.USUARIOC_ID)
+            </th>
+            <th id="">
+                @Html.DisplayName("Número Nota Crédito/Orden de Pago")
+            </th>
+            <th id="">
+                @Html.DisplayName("Núm. Registro Provisión")
+            </th>
+            <th id="">
+                @Html.DisplayName("Núm. Registro NC/OP")
+            </th>
+            <th id="">
+                @Html.DisplayName("Núm Registro AP")
+            </th>
+            <th id="">
+                @Html.DisplayName("Núm. Registro Reverso")
+            </th>
+            <th id="">
+                @Html.DisplayName("Tipo Documento")
+            </th>
+            <th id="">
+                @Html.DisplayName("Payer")
+            </th>
+            <th id="">
+                @Html.DisplayName("Cliente")
+            </th>
+            <th id="">
+                @Html.DisplayName("$ Importe Moneda Local")
+            </th>
+            <th id="">
+                @Html.DisplayName("Cuenta Contable Gasto")
             </th>
         </tr>
     </thead>
@@ -316,7 +153,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                @if (item.TSOL_ID.Equals("PR") | item.TSOL_ID.Equals("PR1"))
+                @if (item.TSOL_ID.Equals("PR"))
                 {
                     <td class=" details-control" style="cursor:pointer">
                         <i class="material-icons">add</i>
@@ -330,19 +167,15 @@
                     @item.NUM_DOC
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
+                    @Html.DisplayFor(modelItem => item.SOCIEDAD_ID)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
+                    @Html.DisplayFor(modelItem => item.PAIS_ID)
                 </td>
                 <td>
-                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
+                    @item.FECHAC.Value.Month
                 </td>
-                <td>
-                    @*@item.HORAC.Value.Hours:@item.HORAC.Value.Minutes:@item.HORAC.Value.Seconds*@
-                    @item.HORAC.Value.ToString().Split('.')[0]
-                </td>
-                @if (item.ESTATUS_WF.Equals("P") | item.ESTATUS_WF.Equals("S"))
+                @if (item.ESTATUS_WF.Equals("P"))
                 {
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_pending">Pendiente</div>
@@ -375,42 +208,92 @@
                         <div class="lbl_rejected">Rechazada</div>
                     </td>
                 }
-                else if (item.ESTATUS_WF.Equals("T"))
+                else
                 {
-                    <td class="yellow darken-2 white-text">
-                        <div class="lbl_tax">Pendiente Tax</div>
-                    </td>
+                    <td></td>
                 }
+                <td>
+                    @Html.DisplayFor(modelItem => item.PAYER_ID)
+                </td>
+                <td>
+                    @for (int i = 0; i < lst.Count; i++)
+                    {
+                        if (lst[i].KUNNR == item.PAYER_ID)
+                        {
+                            @Html.Label(lst[i].NAME1)
+                        }
+                    }
+                </td>
+                <td>
+                    @for (int i = 0; i < lst.Count; i++)
+                    {
+                        if (lst[i].KUNNR == item.PAYER_ID)
+                        {
+                            @Html.Label(lst[i].CANAL)
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
+                </td>
+                <td>
+                    @for (int i = 0; i < lstC.Count; i++)
+                    {
+                        if (lstC[i].SOCIEDAD_ID == item.SOCIEDAD_ID && lstC[i].GALL_ID == item.TALL.GALL_ID)
+                        {
+                            @Html.Label(lstC[i].CARGO.ToString())
+                        }
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CONCEPTO)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MONTO_DOC_ML)
+                </td>
+                <td>
+                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
+                </td>
+                <td>
+                    @item.HORAC.Value.ToString().Split('.')[0]
+                </td>
+                <td>
+                    @for (int i = 0; i < lstD.Count; i++)
+                    {
+                        if (lstD[i].NUM_DOC == item.NUM_DOC)
+                        {
+                            @Html.Label(lstD[i].FACTURA)
+                        }
+                    }
+                </td>
+                <td>
+                    @for (int i = 0; i < lstD.Count; i++)
+                    {
+                        if (lstD[i].NUM_DOC == item.NUM_DOC)
+                        {
+                            @Html.Label(lstD[i].FACTURAK)
+                        }
+                    }
+                </td>
+                <td>
+                    @item.USUARIOC_ID
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
         }
     </tbody>
-    @*<tfoot>
-            <tr>
-                <th id="lbl_num">
-                    <div class="input-field s12">
-                        @Html.DisplayNameFor(model => model.NUM_DOC)
-                    </div>
-                </th>
-                <th id="lbl_tsol">
-                    @Html.DisplayNameFor(model => model.TSOL)
-                </th>
-                <th id="lbl_tall">
-                    @Html.DisplayNameFor(model => model.TALL)
-                </th>
-                <th id="lbl_fechad">
-                    @Html.DisplayNameFor(model => model.FECHAD)
-                </th>
-                <th id="lbl_estatus">
-                    @Html.DisplayNameFor(model => model.ESTATUS)
-                </th>
-                <th id="lbl_concepto">
-                    @Html.DisplayNameFor(model => model.CONCEPTO)
-                </th>
-            </tr>
-        </tfoot>*@
 </table>
 <script>
     $(document).ready(function () {
@@ -429,9 +312,9 @@
             //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
             //    search: "Buscar"
             //},
-            order: [[4, "desc"], [5, "desc"], [1, "desc"]],
+            order: [[4, "desc"], [1, "desc"]],
             language: {
-                "url": "../Scripts/lang/@Session["spras"].ToString()"+".json"
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
             },
             columnDefs: [
                 {
@@ -516,6 +399,7 @@
                 }))
                 var ret = "<table class='table mdl-data-table striped'>";
                 for (var i = 0; i < uu.length; i++) {
+                    var sum = 0;
                     ret += "<tr onclick='link(" + uu[i].value.NUM_DOC+")' style='cursor:pointer'><td>" + uu[i].value.NUM_DOC + "</td><td>" + uu[i].value.TXT020 + "</td>";
                     ret += "<td>" + uu[i].value.TXT500 + "</td>";
                     ret += "<td>" + uu[i].value.FECHAD + "</td>";
@@ -532,6 +416,11 @@
                     }
                     ret += "<td class='" + uu[i].value.ESTATUS + " white-text'>" + uu[i].value.ESTATUS_WF+"</td>";
                     ret += "<td>" + uu[i].value.CONCEPTO + "</td>";
+                    ret += "<td>" + uu[i].value.MONTO_DOC_ML + "</td>";
+                    for (var aa = 0; aa < uu.length; aa++) {
+                        sum = sum + uu[aa].value.MONTO_DOC_ML;
+                    }
+                    ret += "<td>" + sum.toFixed(2) + "</td>";
                     ret += "</tr>";
                 }
                 ret += "</table>"
