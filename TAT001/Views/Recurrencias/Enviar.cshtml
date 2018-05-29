@@ -1,0 +1,41 @@
+﻿@model TAT001.Entities.DOCUMENTO
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enviar</title>
+</head>
+<body>
+    <div>
+        <a type="button" class="btn-small" id="btn_cancel"
+           style="height: 32.4px;line-height: 32.4px;
+                        font-size: 13px;
+                        text-decoration: none;
+                        color: #fff;
+                        background-color: #26a69a;
+                        text-align: center;
+                        letter-spacing: .5px;
+                        -webkit-transition: background-color .2s ease-out;
+                        transition: background-color .2s ease-out;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 2px;
+                        display: inline-block;
+                        height: 36px;
+                        line-height: 36px;
+                        padding: 0 2rem;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        -webkit-tap-highlight-color: transparent;"
+           href="@ViewBag.url@Url.Action("Create", "Recurrencias", new {id_d= Model.NUM_DOC, tsol=Model.TSOL_ID })">
+            Ver
+        </a>
+    </div>
+</body>
+</html>

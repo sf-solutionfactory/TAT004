@@ -1275,16 +1275,18 @@ namespace TAT001.Controllers
                     {
 
                     }
-                    //Guardar registros de recurrencias  RSG 25.05.2018
+                    //Guardar registros de recurrencias  RSG 25.05.2018------------------
                     if(dOCUMENTO.DOCUMENTOREC.Count > 0)
                     {
                         foreach(DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
                         {
                             drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            if (drec.POS == 1)
+                                drec.DOC_REF = drec.NUM_DOC;
                             dOCUMENTO.DOCUMENTORECs.Add(drec);
                         }
                         db.SaveChanges();
-                    }
+                    }//Guardar registros de recurrencias  RSG 25.05.2018-------------------
 
                     //Guardar los documentos cargados en la sección de soporte
                     var res = "";

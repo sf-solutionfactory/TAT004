@@ -9,6 +9,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
+<script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
@@ -757,6 +758,95 @@
                                     </div>
                                 </div>
                             }
+                        </div>
+                    </div>
+                    <div id="div_picker2"></div><!--RSG 27.05.2017-->
+                    <div class="card-panel">
+                        <h5>Recurrente</h5>
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <label>
+                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <span>Documento recurrente</span>
+                                </label>
+                            </p>
+                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>
+                            <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.DOCUMENTOREC != null)
+                                    {
+
+                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                        {
+                                            <tr>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].NUM_DOC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].POS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].FECHAF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PORC
+                                                </td>
+
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].DOC_REF
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].EJERCICIO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].ESTATUS
+                                                </td>
+
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_GRS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_NET
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PERIODO
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

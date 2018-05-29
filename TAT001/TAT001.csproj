@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
+    <Compile Include="Controllers\RecurrenciasController.cs" />
     <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
@@ -719,6 +720,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
+    <Content Include="Scripts\createRec.js" />
     <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\create.js" />
     <Content Include="Scripts\createa.js" />
@@ -881,6 +883,8 @@
     <Content Include="Views\TSOL\Index.cshtml" />
     <Content Include="Views\Solicitudes\_PartialRecTr.cshtml" />
     <Content Include="Views\Solicitudes\Create2.cshtml" />
+    <Content Include="Views\Recurrencias\Create.cshtml" />
+    <Content Include="Views\Recurrencias\Enviar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
