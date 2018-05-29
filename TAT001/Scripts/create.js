@@ -323,7 +323,7 @@
 
                             var opt = $("#select_categoria option:selected").text();
 
-                            var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa);
+                            var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, "","");
 
                             //t.row.add([
                             //    cat + "", //col0
@@ -411,19 +411,20 @@
 
                         //Validar si la categoría ya había sido agregada
                         var catExist = valcategoria(cat);
-
-                        if (catExist != true) {
-                            if (cat != "") {
-                                var opt = $("#select_categoria option:selected").text();
-
-                                var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa);
+                            if (catExist != true) {
+                                if (cat != "") {
+                                    var opt = $("#select_categoria option:selected").text();
+                                    porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
+                                    var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, porcentaje_cat, "pc");
+                                    $(".pc").prop('disabled', true);
+                                    $('.pc').trigger('click');
+                                } else {
+                                    M.toast({ html: 'Seleccione una categoría' });
+                                    
+                                }
                             } else {
-                                M.toast({ html: 'Seleccione una categoría' });
+                                M.toast({ html: 'La categoría ya había sido agregada' });
                             }
-                        } else {
-                            M.toast({ html: 'La categoría ya había sido agregada' });
-                        }
-
                     } else if (dis == "M") {
                         //Distribución por material  
                         var por_apoyo = "";
@@ -628,8 +629,9 @@
 
                 }
 
-            } else {
+            } else if (select_neg == "P"){
                 //Si no es por monto solo se copia la cantidad
+
                 $('#monto_doc_md').val(basei);
 
             }
@@ -1131,6 +1133,16 @@ function copiarTableVista(update) {
 
         var dis = $("#select_dis").val();
 
+        //Obtener el tipo de negociación
+        var neg = $("#select_neg").val();
+        var monto_apoyo = 0;
+        var pm = "";
+        if (neg == "P") {
+            monto_apoyo = $("#bmonto_apoyo").val();
+            monto_apoyo = parseFloat(monto_apoyo);
+            pm = "pm";
+        }
+
         var mostrar = isFactura(sol);
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
         if (mostrar) {
@@ -1200,7 +1212,7 @@ function copiarTableVista(update) {
             //Si la distribución es por material
             if (dis == "M") {
                 var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
-                    calculo, "");
+                    calculo, pm);
 
 
 
@@ -1223,7 +1235,7 @@ function copiarTableVista(update) {
                 //]).draw(false);
             } else if (dis == "C") {
                 //Si la distribución es por categoría
-                var addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa);
+                var addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa, "");
             }
             //Quitar el row
             $(this).remove();
@@ -1272,7 +1284,11 @@ function copiarTableVista(update) {
         }
 
         //$('.input_oper').trigger('focusout');
-
+        //$('.input_oper').trigger('focusout');
+        if (pm == "pm") {
+            $(".pm").prop('disabled', true);
+            $('.pm').trigger('click');
+        }
     }
 
 }
@@ -1630,6 +1646,10 @@ $('body').on('click', '.pm', function () {
     $(this).prop('disabled', true);
 });
 
+$('body').on('click', '.pc', function () {
+    $(this).prop('disabled', true);
+});
+
 $('body').on('focusout', '.input_oper', function () {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
@@ -1649,7 +1669,25 @@ $('body').on('focusout', '.input_oper', function () {
             } else {
                 updateTotalRow(t, tr, "", "", 0);
             }
-        } else {//if(neg == "C") {
+        } else if (neg == "P" && $(this).hasClass("porc_cat")) {
+            //Modificar el valor del total
+            var mont = $('#monto_dis').val();
+            mont = parseFloat(mont);
+            if (mont > 0) {
+                var val = $(this).val();
+                val = parseFloat(val);
+                if (val > 0) {
+                    var res = (val * mont) / 100;
+                    updateTotalRow(t, tr, "X", "X", res);
+                } else {
+                    $(this).val("0.00");
+                    updateTotalRow(t, tr, "X", "X", 0);
+                }          
+            } else {
+                M.toast({ html: 'El monto debe de ser mayor a 0' });
+                return false;
+            }
+        }else {//if(neg == "C") {
             //if ($(this).hasClass("total")) {
                 var total_val = $(this).val();
                 //Agregar los valores a 0 y agregar el total
@@ -1749,6 +1787,27 @@ $('body').on('focusout', '#bmonto_apoyo', function () {
 
 });
 
+$('body').on('focusout', '#monto_dis', function () {
+
+    //Obtener el tipo de negociación
+    var neg = $("#select_neg").val();
+
+    //Obtener la distribución
+    var dis = $("#select_dis").val();
+
+    if (neg == "P" && dis == "C") {
+        var val = $(this).val();
+        val = parseFloat(val);
+
+        updateTableValIndexPor(9, val);
+    }
+    
+
+
+});
+
+
+
 //Variables globales
 var detail = "";
 var montocambio = 0;
@@ -1843,6 +1902,23 @@ function updateTableValIndex(indexr, val) {
     });
 
     updateTable();
+
+    updateFooter();
+
+}
+
+function updateTableValIndexPor(indexr, val) {
+    var t = $('#table_dis').DataTable();
+    var index = getIndex();
+    var ind = (index + indexr);
+
+    $('#table_dis > tbody  > tr').each(function () {
+
+        var por = $(this).find('td').eq(ind).find('input').val();
+        var res = (por * val) / 100;
+        updateTotalRow(t, $(this), "X", "X", res);
+
+    });
 
     updateFooter();
 
@@ -2290,7 +2366,7 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
 
 }
 
-function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa) {
+function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa, porcentaje, porcentaje_cat) {
     var r = addRowCatl(
         t,
         cat,
@@ -2299,13 +2375,14 @@ function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa) {
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ddate + "\">", //col3
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + adate + "\">" + pickerFecha(".format_date"),// RSG 
         opt,
-        "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">"
+        porcentaje,
+        "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_cat + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + total + "\">"
     );
 
     return r;
 }
 
-function addRowCatl(t, cat, exp, sel, ddate, adate, opt, total) {
+function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
     var r = t.row.add([
         cat + "", //col0
         exp + "", //col1
@@ -2323,7 +2400,7 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, total) {
         //"<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         //"",
         "",
-        "", //+ valPor,
+        porcentaje, //+ valPor,
         "",
         "",
         "",
@@ -2889,7 +2966,19 @@ function evaluarDisTab() {
             }
             //Validar el porcentaje apoyo monto
         } else if (select_neg == "P") {
+            if (select_dis == "C") {
+                var monedadis_id = $('#monedadis_id').val();
+                var monto_dis = $('#monto_dis').val();
+                var total_dis = $('#total_dis').text();
 
+                if ((monto_dis != "" & total_dis != "") & monedadis_id != "") {
+
+                    //Base, monto footer
+                    var res = validar_montos(monto_dis, total_dis);
+                } else {
+                    return false;
+                }
+            }
         }
     }
     return res;
@@ -3090,11 +3179,13 @@ function selectTall(valu) {
 
 function selectDis(val) {
     resetFooter();
+    var message = "X";
     if (val == "M") {//Monto
         $('#div_apoyobase').css("display", "none");
         $('#div_montobase').css("display", "inherit");
     } else if (val == "P") {//Porcentaje
         M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
+        message = "";
         $('#div_montobase').css("display", "none");//none
         $('#div_apoyobase').css("display", "inherit");
     } else {
@@ -3102,14 +3193,19 @@ function selectDis(val) {
         $('#div_apoyobase').css("display", "none");
     }
     var select_dis = $('#select_dis').val();
-    $('#select_dis').val(select_dis).change();
+    //$('#select_dis').val(select_dis).change();
+    selectMonto(select_dis, message);
 }
 
-function selectMonto(val) {
-    message = "X";
+function selectMonto(val, message) {
+    //message = "X";
     //Siempre inicializar la tabla
     var ta = $('#table_dis').DataTable();
     ta.clear().draw();
+
+    //Reset los valores
+    $('#monto_dis').val("");
+    $('#bmonto_apoyo').val("");
 
     //Obtener la negociación
     var select_neg = $('#select_neg').val();
@@ -3144,6 +3240,13 @@ function selectMonto(val) {
             $('#div_apoyobase').css("display", "none");
         }
     }
+
+    //Cuando es negociación por porcentaje y distribución por categoría, mostrar el monto 
+    if (select_neg == "P" && val == "C") {
+        $('#div_montobase').css("display", "inherit");//Mostra el monto
+        $('#div_apoyobase').css("display", "none");//Mostra el monto
+    } 
+
     if (select_neg != "") {
         //Monto
         if (val == "M") {
@@ -3156,6 +3259,7 @@ function selectMonto(val) {
 
         //Categoría
         if (val == "C") {
+            
             $('#cargar_excel').css("display", "none");
             $('.div_categoria').css("display", "inline-block");
             //Mostrar el encabezado de la tabla               

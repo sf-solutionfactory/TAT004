@@ -993,7 +993,7 @@
                                 <label>Tipo de negociación</label>
                             </div>
                             <div class="input-field col s6">
-                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value)">
+                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value,'X')">
                                     <option value="M">Material</option>
                                     <option value="C">Categoría</option>
                                 </select>
@@ -1040,7 +1040,7 @@
                         <h5>Base para aplicar %</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="bmonto_apoyo" type="text" class="validate" />
+                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo"/>
                                 <label for="bmonto_apoyo">% Apoyo</label>
                             </div>
                         </div>

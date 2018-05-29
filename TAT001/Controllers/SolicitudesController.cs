@@ -841,6 +841,7 @@ namespace TAT001.Controllers
 
             ViewBag.SEL_NEG = "";
             ViewBag.SEL_DIS = "";
+            ViewBag.BMONTO_APOYO = "";
 
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
@@ -871,15 +872,15 @@ namespace TAT001.Controllers
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
-                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis)
+                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo)
         {
 
-            //bool prueba = false;
+            bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
-            //if (ModelState.IsValid && prueba == true)
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && prueba == true)
+            //if (ModelState.IsValid)
             {
                 try
                 {
@@ -930,6 +931,9 @@ namespace TAT001.Controllers
                         //Obtener el país
                         dOCUMENTO.PAIS_ID = p.ToUpper();//RSG 15.05.2018
                     }
+                    //Tipo técnico
+                    dOCUMENTO.TIPO_TECNICO = select_neg;
+
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
@@ -1706,6 +1710,7 @@ namespace TAT001.Controllers
 
             ViewBag.SEL_NEG = select_neg;
             ViewBag.SEL_DIS = select_dis;
+            ViewBag.BMONTO_APOYO = bmonto_apoyo;
 
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();

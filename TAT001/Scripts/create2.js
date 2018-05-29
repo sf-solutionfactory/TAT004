@@ -995,6 +995,16 @@ function copiarTableVista(update) {
             sol = $("#tsol_id").val();
         }
 
+        //Obtener el tipo de negociación
+        var neg = $("#select_neg").val();
+        var monto_apoyo = 0;
+        var pm = "";
+        if (neg == "P") {
+            monto_apoyo = $("#bmonto_apoyo").val();
+            monto_apoyo = parseFloat(monto_apoyo);
+            pm = "pm";
+        }
+
         var mostrar = isFactura(sol);
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
         if (mostrar) {
@@ -1061,7 +1071,7 @@ function copiarTableVista(update) {
                 calculo = "sc";
             }
 
-            var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo);
+            var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo, pm);
 
             //t.row.add([
             //    matkl_id + "", //col0 ID
@@ -1126,6 +1136,10 @@ function copiarTableVista(update) {
         }
 
         //$('.input_oper').trigger('focusout');
+        if (pm == "pm") {
+            $(".pm").prop('disabled', true);
+            $('.pm').trigger('click');
+        }
 
     }
 
@@ -2602,7 +2616,19 @@ function evaluarDisTab() {
             }
             //Validar el porcentaje apoyo monto
         } else if (select_neg == "P") {
+            if (select_dis == "C") {
+                var monedadis_id = $('#monedadis_id').val();
+                var monto_dis = $('#monto_dis').val();
+                var total_dis = $('#total_dis').text();
 
+                if ((monto_dis != "" & total_dis != "") & monedadis_id != "") {
+
+                    //Base, monto footer
+                    var res = validar_montos(monto_dis, total_dis);
+                } else {
+                    return false;
+                }
+            } 
         }
     }
     return res;
