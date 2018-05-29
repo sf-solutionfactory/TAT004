@@ -1550,7 +1550,7 @@ var materialVal = "";
 var proveedorVal = "";
 var dataConfig = null;
 
-function updateTotalRow(t, tr, tdinput, totals, total_val) {
+function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
 
     //totals = X cuando nada más se agrega el total
 
@@ -1596,7 +1596,9 @@ function updateTotalRow(t, tr, tdinput, totals, total_val) {
         total_val = parseFloat(total_val);
         var col14 = total_val.toFixed(2);
         tr.find("td:eq(" + (8 + index) + ") input").val("");
-        tr.find("td:eq(" + (9 + index) + ") input").val("");
+        if (tdp_apoyo != "X") {
+            tr.find("td:eq(" + (9 + index) + ") input").val("");
+        }
         tr.find("td:eq(" + (10 + index) + ") input").val("");
         tr.find("td:eq(" + (11 + index) + ")").text("");
         tr.find("td:eq(" + (12 + index) + ") input").val("");
