@@ -258,6 +258,14 @@
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
         <EntityTypeShape EntityType="TAT001Model.DOCUMENTOREC" Width="1.5" PointX="23.25" PointY="75.625" />
         <AssociationConnector Association="TAT001Model.FK_DOCUMENTOREC_DOCUMENTO" />
+        <EntityTypeShape EntityType="TAT001Model.CAMPOZKE24" Width="1.5" PointX="8.375" PointY="32.5" />
+        <EntityTypeShape EntityType="TAT001Model.CAMPOZKE24T" Width="1.5" PointX="15.625" PointY="52.375" />
+        <EntityTypeShape EntityType="TAT001Model.CONFDIST_CAT" Width="1.5" PointX="10.625" PointY="44.25" />
+        <EntityTypeShape EntityType="TAT001Model.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" />
+        <AssociationConnector Association="TAT001Model.FK_CAMPOZKE24T_CAMPOZKE24" />
+        <AssociationConnector Association="TAT001Model.FK_CONFDIST_CAT_CAMPOZKE24" />
+        <AssociationConnector Association="TAT001Model.FK_CAMPOZKE24T_SPRAS" />
+        <AssociationConnector Association="TAT001Model.FK_CONFDIST_CAT_SOCIEDAD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

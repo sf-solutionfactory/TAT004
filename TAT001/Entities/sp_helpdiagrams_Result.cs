@@ -10,15 +10,13 @@
 namespace TAT001.Entities
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class sp_helpdiagrams_Result
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
-    
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

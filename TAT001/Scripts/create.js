@@ -1279,7 +1279,22 @@ function copiarTableVista(update) {
 
                 });
             } else if (dis == "C") {
-                $(this).removeClass("sc");
+                //Actualizar los campos y renglones de la categoría
+                var t = $('#table_dis').DataTable();
+                var indext = getIndex();
+                $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+                    //Validar la categoría
+                    var cat = $(this).find("td:eq(" + (6 + indext) + ")").text();
+                    var val = getCategoriaDesc(cat);
+
+                    if (val.CATEGORIA_ID == cat) {
+
+                        $(this).find("td:eq(" + (6 + indext) + ")").text(val.TXT50);
+                        $(this).find("td:eq(" + (7 + indext) + ")").text(val.TXT50);
+                        $(this).removeClass("sc");
+                    } 
+                });               
             }
         }
 
@@ -1403,7 +1418,7 @@ function copiarTableControl() {
             vol = "estimado";
         }
 
-        $('#table_dis > tbody  > tr').each(function () {
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
 
             //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
             //Columnas 8 * 9 res 10
@@ -1812,6 +1827,7 @@ $('body').on('focusout', '#monto_dis', function () {
 var detail = "";
 var montocambio = 0;
 var categoriamaterial = "";
+var categoriaDesc = "";
 var materialVal = "";
 var proveedorVal = "";
 var dataConfig = null;
@@ -3576,6 +3592,39 @@ function getCategoria(mat) {
 
 function asignarCategoria(cat) {
     categoriamaterial = cat;
+}
+
+function getCategoriaDesc(catid) {
+    categoriaDesc = "";
+    var localcat = "";
+    if (catid != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getCategoriaDesc',
+            data: { "cate": catid },
+            dataType: "json",
+
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+                    asignarCategoriaDesc(data);
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+    localcat = categoriaDesc;
+    return localcat;
+
+}
+
+function asignarCategoriaDesc(cat) {
+    categoriaDesc = cat;
 }
 
 function valMaterial(mat, message) {

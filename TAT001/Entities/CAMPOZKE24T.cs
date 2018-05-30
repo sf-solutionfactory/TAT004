@@ -12,13 +12,13 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class CAMPOZKE24T
     {
         public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
+        public string CAMPO_ID { get; set; }
         public string TXT50 { get; set; }
     
-        public virtual CATEGORIA CATEGORIA { get; set; }
+        public virtual CAMPOZKE24 CAMPOZKE24 { get; set; }
         public virtual SPRA SPRA { get; set; }
     }
 }

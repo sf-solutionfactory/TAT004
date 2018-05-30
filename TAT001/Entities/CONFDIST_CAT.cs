@@ -12,13 +12,15 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class CONFDIST_CAT
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
+        public string SOCIEDAD_ID { get; set; }
+        public string CAMPO { get; set; }
+        public Nullable<bool> PORC_AD { get; set; }
+        public Nullable<int> PERIODOS { get; set; }
+        public Nullable<bool> ACTIVO { get; set; }
     
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public virtual CAMPOZKE24 CAMPOZKE24 { get; set; }
+        public virtual SOCIEDAD SOCIEDAD { get; set; }
     }
 }

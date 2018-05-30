@@ -18,6 +18,23 @@
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
     <Property Name="TIPO" Type="nchar" MaxLength="10" />
   </EntityType>
+  <EntityType Name="CAMPOZKE24">
+    <Key>
+      <PropertyRef Name="CAMPO" />
+    </Key>
+    <Property Name="CAMPO" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="CAMPOZKE24T">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="CAMPO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CAMPO_ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="CANAL">
     <Key>
       <PropertyRef Name="CANAL" />
@@ -174,6 +191,16 @@
     <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CONFDIST_CAT">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="CAMPO" Type="nvarchar" MaxLength="20" />
+    <Property Name="PORC_AD" Type="bit" />
+    <Property Name="PERIODOS" Type="int" />
+    <Property Name="ACTIVO" Type="bit" />
   </EntityType>
   <EntityType Name="CONPOSAPH">
     <Key>
@@ -938,8 +965,8 @@
     <Property Name="RSRDV" Type="decimal" Precision="13" Scale="2" />
     <Property Name="SPA" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PMVAR" Type="decimal" Precision="13" Scale="2" />
-    <Property Name="NETLB" Type="decimal" Precision="13" Scale="2" />
     <Property Name="GRSLS" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="NETLB" Type="decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="PRESUPUESTOH">
     <Key>
@@ -1099,6 +1126,16 @@
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -1523,8 +1560,8 @@
     <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CARPETAV">
     <Key>
       <PropertyRef Name="USUARIO_ID" />
@@ -1536,8 +1573,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="ICON" Type="nvarchar" MaxLength="20" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR">
     <Key>
       <PropertyRef Name="ID" />
@@ -1553,8 +1590,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR2">
     <Key>
       <PropertyRef Name="ID" />
@@ -1571,8 +1608,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DET_APROBV">
     <Key>
       <PropertyRef Name="BUKRS" />
@@ -1584,8 +1621,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DOCUMENTOV">
     <Key>
       <PropertyRef Name="POS" />
@@ -1660,8 +1697,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PAGINAV">
     <Key>
       <PropertyRef Name="ID" />
@@ -1681,8 +1718,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="WARNINGV">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -1707,6 +1744,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CAMPOS">
         <PropertyRef Name="PAGINA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CAMPOZKE24T_CAMPOZKE24">
+    <End Role="CAMPOZKE24" Type="Self.CAMPOZKE24" Multiplicity="1" />
+    <End Role="CAMPOZKE24T" Type="Self.CAMPOZKE24T" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAMPOZKE24">
+        <PropertyRef Name="CAMPO" />
+      </Principal>
+      <Dependent Role="CAMPOZKE24T">
+        <PropertyRef Name="CAMPO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CAMPOZKE24T_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="CAMPOZKE24T" Type="Self.CAMPOZKE24T" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CAMPOZKE24T">
+        <PropertyRef Name="SPRAS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1857,6 +1918,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CLIENTEI">
         <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONFDIST_CAT_CAMPOZKE24">
+    <End Role="CAMPOZKE24" Type="Self.CAMPOZKE24" Multiplicity="0..1" />
+    <End Role="CONFDIST_CAT" Type="Self.CONFDIST_CAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAMPOZKE24">
+        <PropertyRef Name="CAMPO" />
+      </Principal>
+      <Dependent Role="CONFDIST_CAT">
+        <PropertyRef Name="CAMPO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONFDIST_CAT_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="CONFDIST_CAT" Type="Self.CONFDIST_CAT" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CONFDIST_CAT">
+        <PropertyRef Name="SOCIEDAD_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3502,6 +3587,37 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -3517,6 +3633,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
   <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CANAL" EntityType="Self.CANAL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETA" EntityType="Self.CARPETA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETAT" EntityType="Self.CARPETAT" Schema="dbo" store:Type="Tables" />
@@ -3526,6 +3644,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CITIES" EntityType="Self.CITIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONSOPORTE" EntityType="Self.CONSOPORTE" Schema="dbo" store:Type="Tables" />
@@ -3585,6 +3704,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" Schema="dbo" store:Type="Tables" />
@@ -3763,6 +3883,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="PAGINA" EntitySet="PAGINA" />
       <End Role="CAMPOS" EntitySet="CAMPOS" />
     </AssociationSet>
+    <AssociationSet Name="FK_CAMPOZKE24T_CAMPOZKE24" Association="Self.FK_CAMPOZKE24T_CAMPOZKE24">
+      <End Role="CAMPOZKE24" EntitySet="CAMPOZKE24" />
+      <End Role="CAMPOZKE24T" EntitySet="CAMPOZKE24T" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CAMPOZKE24T_SPRAS" Association="Self.FK_CAMPOZKE24T_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="CAMPOZKE24T" EntitySet="CAMPOZKE24T" />
+    </AssociationSet>
     <AssociationSet Name="FK_CARPETAT_CARPETA" Association="Self.FK_CARPETAT_CARPETA">
       <End Role="CARPETA" EntitySet="CARPETA" />
       <End Role="CARPETAT" EntitySet="CARPETAT" />
@@ -3810,6 +3938,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CLIENTEI_IMPUESTO" Association="Self.FK_CLIENTEI_IMPUESTO">
       <End Role="IMPUESTO" EntitySet="IMPUESTO" />
       <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONFDIST_CAT_CAMPOZKE24" Association="Self.FK_CONFDIST_CAT_CAMPOZKE24">
+      <End Role="CAMPOZKE24" EntitySet="CAMPOZKE24" />
+      <End Role="CONFDIST_CAT" EntitySet="CONFDIST_CAT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONFDIST_CAT_SOCIEDAD" Association="Self.FK_CONFDIST_CAT_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CONFDIST_CAT" EntitySet="CONFDIST_CAT" />
     </AssociationSet>
     <AssociationSet Name="FK_CONPOSAPH_SOCIEDAD" Association="Self.FK_CONPOSAPH_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />

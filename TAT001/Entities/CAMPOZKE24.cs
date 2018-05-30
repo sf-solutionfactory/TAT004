@@ -12,18 +12,22 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class ZCTGR
+    public partial class CAMPOZKE24
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ZCTGR()
+        public CAMPOZKE24()
         {
-            this.MATERIALs = new HashSet<MATERIAL>();
+            this.CAMPOZKE24T = new HashSet<CAMPOZKE24T>();
+            this.CONFDIST_CAT = new HashSet<CONFDIST_CAT>();
         }
     
-        public string ID_ZC { get; set; }
+        public string CAMPO { get; set; }
         public string DESCRIPCION { get; set; }
+        public Nullable<bool> ACTIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MATERIAL> MATERIALs { get; set; }
+        public virtual ICollection<CAMPOZKE24T> CAMPOZKE24T { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONFDIST_CAT> CONFDIST_CAT { get; set; }
     }
 }
