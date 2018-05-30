@@ -224,6 +224,7 @@
     <Compile Include="Controllers\Catalogos\MaterialesController.cs" />
     <Compile Include="Controllers\Catalogos\PaginasController.cs" />
     <Compile Include="Controllers\Catalogos\PaisController.cs" />
+    <Compile Include="Controllers\NegociacionesController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
@@ -885,6 +886,12 @@
     <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Recurrencias\Create.cshtml" />
     <Content Include="Views\Recurrencias\Enviar.cshtml" />
+    <Content Include="Views\Presupuesto\Carga.cshtml" />
+    <Content Include="Views\Negociaciones\Index.cshtml" />
+    <Content Include="Views\Negociaciones\Create.cshtml" />
+    <Content Include="Views\Negociaciones\Delete.cshtml" />
+    <Content Include="Views\Negociaciones\Details.cshtml" />
+    <Content Include="Views\Negociaciones\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -899,7 +906,7 @@
     <Content Include="Scripts\materialize.min.js" />
     <Content Include="Views\Home\Pais.cshtml" />
     <Content Include="Views\Presupuesto\Index.cshtml" />
-    <Content Include="Views\Presupuesto\Carga.cshtml" />
+    <Content Include="Views\Presupuesto\Carga1.cshtml" />
     <Content Include="Views\Provision\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

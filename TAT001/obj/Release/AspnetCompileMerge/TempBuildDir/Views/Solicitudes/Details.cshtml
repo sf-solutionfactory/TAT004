@@ -451,7 +451,14 @@
                                             <tr>
                                                 <td>@iteem.POS</td>
                                                 <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
-                                                <td>@iteem.DOC_REF</td>
+                                                @if (iteem.DOC_REF > 0)
+                                                {
+                                                <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
                                                 <td>@iteem.FECHAF.Value.ToShortDateString()</td>
                                                 <td>@iteem.MONTO_BASE</td>
                                                 <td>@Math.Round(iteem.PORC.Value, 2)</td>

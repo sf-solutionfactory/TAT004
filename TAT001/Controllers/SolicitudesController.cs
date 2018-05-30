@@ -315,7 +315,7 @@ namespace TAT001.Controllers
                 flujo.COMENTARIO = "";
                 flujo.USUARIOA_ID = User.Identity.Name;
                 ProcesaFlujo2 pf = new ProcesaFlujo2();
-                string c = pf.procesa(flujo);
+                string c = pf.procesa(flujo, "");
                 if (c.Equals("0"))//Aprobado
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
@@ -357,7 +357,7 @@ namespace TAT001.Controllers
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
             ProcesaFlujo2 p = new ProcesaFlujo2();
             f.ESTATUS = "A";
-            p.procesa(f);
+            p.procesa(f, "");
 
 
             return RedirectToAction("Details", new { id = num_doc });
@@ -773,6 +773,7 @@ namespace TAT001.Controllers
                                     TEXT = ct.TXT50
                                 }).ToList();
 
+                id_cat.RemoveRange(0, id_cat.Count - 1);//RSG 28.05.2018
                 ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
                 List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
                 ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
@@ -1275,18 +1276,30 @@ namespace TAT001.Controllers
                     {
 
                     }
-                    //Guardar registros de recurrencias  RSG 25.05.2018------------------
-                    if(dOCUMENTO.DOCUMENTOREC.Count > 0)
-                    {
-                        foreach(DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
+                    //Guardar registros de recurrencias  RSG 28.05.2018------------------
+                    if (dOCUMENTO.DOCUMENTOREC != null)
+                        if (dOCUMENTO.DOCUMENTOREC.Count > 0)
                         {
-                            drec.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            if (drec.POS == 1)
-                                drec.DOC_REF = drec.NUM_DOC;
-                            dOCUMENTO.DOCUMENTORECs.Add(drec);
-                        }
-                        db.SaveChanges();
-                    }//Guardar registros de recurrencias  RSG 25.05.2018-------------------
+                            foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
+                            {
+                                drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                if (drec.POS == 1)
+                                {
+                                    drec.DOC_REF = drec.NUM_DOC;
+                                    drec.ESTATUS = "P";
+                                    dOCUMENTO.FECHAI_VIG = drec.FECHAF;
+                                    dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);
+                                    dOCUMENTO.TIPO_RECURRENTE = "M";
+                                    foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)
+                                    {
+                                        po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
+                                        po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
+                                    }
+                                }
+                                dOCUMENTO.DOCUMENTORECs.Add(drec);
+                            }
+                            db.SaveChanges();
+                        }//Guardar registros de recurrencias  RSG 28.05.2018-------------------
 
                     //Guardar los documentos cargados en la sección de soporte
                     var res = "";
@@ -1422,7 +1435,7 @@ namespace TAT001.Controllers
                             f.ESTATUS = "I";
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
-                            string c = pf.procesa(f);
+                            string c = pf.procesa(f, "");
                             if (c == "1")
                             {
                                 Email em = new Email();
@@ -2096,6 +2109,7 @@ namespace TAT001.Controllers
                                  {
                                      VKORG = c.VKORG,
                                      VTWEG = c.VTWEG,
+                                     SPART = c.SPART,//RSG 28.05.2018-------------------
                                      NAME1 = c.NAME1,
                                      KUNNR = c.KUNNR,
                                      STCD1 = c.STCD1,
@@ -2114,6 +2128,7 @@ namespace TAT001.Controllers
                          {
                              VKORG = c.VKORG,
                              VTWEG = c.VTWEG,
+                             SPART = c.SPART,//RSG 28.05.2018-------------------
                              NAME1 = c.NAME1,
                              KUNNR = c.KUNNR,
                              STCD1 = c.STCD1,
@@ -2939,7 +2954,7 @@ namespace TAT001.Controllers
                               VIGENCIA_DE = vig_de,
                               VIGENCIA_A = vig_a
                           }).ToList();
-                    
+
                 }
             }
 

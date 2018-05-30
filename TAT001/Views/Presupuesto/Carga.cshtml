@@ -136,9 +136,9 @@
                                     {
                                         if (ViewBag.sociedadcpt != null)
                                         {
-                                            if (defaul[j] == Model.sociedad[i].REGION)
+                                            if (defaul[j] == Model.sociedad[i].BUKRS)
                                             {
-                                                <option value="@Model.sociedad[i].REGION" selected="selected">@Model.sociedad[i].BUKRS</option>
+                                                <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
                                                 if (j < (defaul.Length - 1))
                                                 {
                                                     j++;
@@ -146,12 +146,12 @@
                                             }
                                             else
                                             {
-                                                <option value="@Model.sociedad[i].REGION">@Model.sociedad[i].BUKRS</option>
+                                                <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
                                             }
                                         }
                                         else
                                         {
-                                            <option value="@Model.sociedad[i].REGION">@Model.sociedad[i].BUKRS</option>
+                                            <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
                                         }
                                     }
                                 }

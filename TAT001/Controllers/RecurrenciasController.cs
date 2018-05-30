@@ -604,9 +604,10 @@ namespace TAT001.Controllers
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
-                    
+
 
                     //RSG 28.05.2018----------------------------------------------
+                    string recurrente = "";
                     List<DOCUMENTOREC> ddrec = new List<DOCUMENTOREC>();
                     DOCUMENTOREC drecc = d.DOCUMENTORECs.Where(a => a.ESTATUS == "A").FirstOrDefault();
                     if (drecc == null)
@@ -619,6 +620,8 @@ namespace TAT001.Controllers
                         dOCUMENTO.FECHAI_VIG = primer;
                         dOCUMENTO.FECHAF_VIG = ultimo;
                         dOCUMENTO.MONTO_DOC_MD = drecc.MONTO_BASE;
+                        dOCUMENTO.FECHAD = DateTime.Now;
+                        recurrente = "X";
                     }
                     dOCUMENTO.DOCUMENTO_REF = null;
                     drecc.DOC_REF = dOCUMENTO.NUM_DOC;
@@ -849,7 +852,8 @@ namespace TAT001.Controllers
                                     }
 
                                     //Agregarlo a la bd
-                                    db.DOCUMENTOPs.Add(docP);
+                                    //db.DOCUMENTOPs.Add(docP);
+                                    dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
                                     db.SaveChanges();//RSG
                                 }
                                 catch (Exception e)
@@ -887,7 +891,7 @@ namespace TAT001.Controllers
                                     docP.APOYO_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_EST;
                                     docP.APOYO_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_REAL;
 
-                                    db.DOCUMENTOPs.Add(docP);
+                                    dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
                                     db.SaveChanges();//RSG
 
                                     //If matnr es "" agregar los materiales de la categoría
@@ -947,6 +951,16 @@ namespace TAT001.Controllers
                     {
 
                     }
+
+                    //RSG 28.05.2018-----------------------------------------------------
+                    foreach(DOCUMENTOP dp in dOCUMENTO.DOCUMENTOPs)
+                    {
+                        dp.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
+                        dp.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
+                        db.Entry(dOCUMENTO).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    //RSG 28.05.2018-----------------------------------------------------
 
                     //Guardar los documentos f para el documento guardado
                     try
@@ -1107,12 +1121,19 @@ namespace TAT001.Controllers
                             f.ESTATUS = "I";
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
-                            string c = pf.procesa(f);
-                            if (c == "1")
-                            {
-                                Email em = new Email();
-                                em.enviaMail(f.NUM_DOC, true);
-                            }
+                            string c = pf.procesa(f, recurrente);
+                            //RSG 28.05.2018 -----------------------------------
+                            //if (c == "1")
+                            //{
+                            //    Email em = new Email();
+                            //    em.enviaMail(f.NUM_DOC, true);
+                            //}
+                            FLUJO conta = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+                            conta.USUARIOA_ID = user.ID;
+                            conta.ESTATUS = "A";
+                            conta.FECHAM = DateTime.Now;
+                            pf.procesa(conta, "");
+                            //RSG 28.05.2018 -----------------------------------
                         }
                     }
                     catch (Exception ee)

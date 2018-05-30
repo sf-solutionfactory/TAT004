@@ -47,7 +47,7 @@ namespace TAT001.Controllers
             }
 
             List<DET_AGENTE> dda = db.DET_AGENTE.ToList();
-            foreach(DET_AGENTE da in dda)
+            foreach (DET_AGENTE da in dda)
             {
                 string id = da.GAUTORIZACION.USUARIOs.Where(a => a.PUESTO_ID.Equals(da.PUESTOA_ID)).FirstOrDefault().ID;
                 da.USUARIOA = id;
@@ -133,7 +133,7 @@ namespace TAT001.Controllers
                 f.FECHAC = DateTime.Now;
                 f.FECHAM = DateTime.Now;
                 ProcesaFlujo2 pf = new ProcesaFlujo2();
-                string c = pf.procesa(f);
+                string c = pf.procesa(f, "");
 
                 //WORKFP next = wf.WORKFPs.Where(a => a.POS.Equals(wp.NEXT_STEP)).FirstOrDefault();
                 //FLUJO fn = new FLUJO();
@@ -334,7 +334,7 @@ namespace TAT001.Controllers
             ProcesaFlujo2 pf = new ProcesaFlujo2();
             if (ModelState.IsValid)
             {
-                string res = pf.procesa(flujo);
+                string res = pf.procesa(flujo, "");
                 if (res.Equals("0"))//Aprobado
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });

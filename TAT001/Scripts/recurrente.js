@@ -1,4 +1,36 @@
-﻿$(document).ready(function () {
+﻿
+
+function llenaCat(vkorg, vtweg, spart, kunnr) {
+    document.getElementById("loader").style.display = "initial";
+    var soc = document.getElementById("sociedad_id").value;
+    $.ajax({
+        type: "POST",
+        url: '../Listas/categoriasCliente',
+        dataType: "json",
+        data: { vkorg: vkorg, spart: spart, kunnr: kunnr, soc_id: soc },
+        success: function (data) {
+            $("#select_categoria").find('option').remove().end();
+
+            for (var i = 0; i < data.length; i++) {
+                var num = data[i].CATEGORIA_ID;
+                var cat = data[i].TXT50;
+                $("#select_categoria").append($("<option></option>")
+                    .attr("value", num)
+                    .text(cat));
+            }
+            var elem = document.getElementById("select_categoria");
+            var instance = M.Select.init(elem, []);
+            document.getElementById("loader").style.display = "none";
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+            document.getElementById("loader").style.display = "none";
+        },
+        async: false
+    });
+}
+
+$(document).ready(function () {
     $('#table_rec').DataTable({
         "language": {
             "zerorecords": "no hay registros",
@@ -150,7 +182,7 @@ function enviaRec() {
             }
             var porcentaje = $(this).find("td:eq(" + (4 + indext) + ") input").val();
 
-            
+
             //Obtener el id de la categoría            
             var t = $('#table_rec').DataTable();
             var tr = $(this);
@@ -163,7 +195,7 @@ function enviaRec() {
             item["FECHAF"] = fecha + " 12:00:00 p.m.";
             item["MONTO_BASE"] = monto;
             item["PORC"] = porcentaje;
-            
+
             jsonObjDocs.push(item);
             i++;
             item = "";

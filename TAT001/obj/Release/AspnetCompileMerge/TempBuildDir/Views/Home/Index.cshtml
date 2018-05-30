@@ -12,7 +12,14 @@
     <div class="col s12 right-align">
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
     </div>
+    <div class="col s12 right-align" style="margin-top:5px;">
+        @using (Html.BeginForm("Descargar", "Home", FormMethod.Post))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
+    </div>
 </div>
+@*<script src="~/Scripts/dEX.js"></script>*@
 @if (ViewBag.NUM_DOC != null)
 {
     if (ViewBag.NUM_DOC != "")
@@ -30,6 +37,7 @@
                 // do drop down loic
                 docMessage('Documento ' + message+' fue creado');
             }
+
         });
         </script>
     }
@@ -72,6 +80,12 @@
             <th class="lblPais">
                 @Html.DisplayNameFor(model => model.PAIS_ID)
             </th>
+            <th id="lbl_fechad">
+                @Html.DisplayNameFor(model => model.FECHAD)
+            </th>
+            <th id="lbl_horac">
+                @Html.DisplayNameFor(model => model.HORAC)
+            </th>
             <th id="lblPC">
                 @Html.DisplayName("Periodo Contable")
             </th>
@@ -102,12 +116,6 @@
             <th id="lblMo">
                 @Html.DisplayNameFor(model => model.MONTO_DOC_ML)
             </th>
-            <th id="lbl_fechad">
-                @Html.DisplayNameFor(model => model.FECHAD)
-            </th>
-            <th id="lbl_horac">
-                @Html.DisplayNameFor(model => model.HORAC)
-            </th>
             <th id="lblFac">
                 @Html.DisplayName("Factura")
             </th>
@@ -117,34 +125,37 @@
             <th id="lblUC">
                 @Html.DisplayNameFor(model => model.USUARIOC_ID)
             </th>
-            <th id="">
+            <th id="lblUM">
+                @Html.DisplayName("Modificado por")
+            </th>
+            <th id="lblNC">
                 @Html.DisplayName("Número Nota Crédito/Orden de Pago")
             </th>
-            <th id="">
+            <th id="lblRP">
                 @Html.DisplayName("Núm. Registro Provisión")
             </th>
-            <th id="">
+            <th id="lblRnc">
                 @Html.DisplayName("Núm. Registro NC/OP")
             </th>
-            <th id="">
+            <th id="lblRap">
                 @Html.DisplayName("Núm Registro AP")
             </th>
-            <th id="">
+            <th id="lblRR">
                 @Html.DisplayName("Núm. Registro Reverso")
             </th>
-            <th id="">
+            <th id="lblTDoc">
                 @Html.DisplayName("Tipo Documento")
             </th>
-            <th id="">
+            <th id="lblPayer">
                 @Html.DisplayName("Payer")
             </th>
-            <th id="">
+            <th id="lblCl">
                 @Html.DisplayName("Cliente")
             </th>
-            <th id="">
+            <th id="lblIL">
                 @Html.DisplayName("$ Importe Moneda Local")
             </th>
-            <th id="">
+            <th id="lblCCG">
                 @Html.DisplayName("Cuenta Contable Gasto")
             </th>
         </tr>
@@ -171,6 +182,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PAIS_ID)
+                </td>
+                <td>
+                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
+                </td>
+                <td>
+                    @item.HORAC.Value.ToString().Split('.')[0]
                 </td>
                 <td>
                     @item.FECHAC.Value.Month
@@ -255,12 +272,6 @@
                     @Html.DisplayFor(modelItem => item.MONTO_DOC_ML)
                 </td>
                 <td>
-                    @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
-                </td>
-                <td>
-                    @item.HORAC.Value.ToString().Split('.')[0]
-                </td>
-                <td>
                     @for (int i = 0; i < lstD.Count; i++)
                     {
                         if (lstD[i].NUM_DOC == item.NUM_DOC)
@@ -291,10 +302,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
         }
     </tbody>
 </table>
+<iframe id="txtArea1" style="display:none"></iframe>
 <script>
     $(document).ready(function () {
         var table = $('#table').DataTable({
@@ -312,13 +325,13 @@
             //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
             //    search: "Buscar"
             //},
-            order: [[14, "desc"], [15, "desc"], [1, "desc"]],
+            order: [[4, "desc"], [5, "desc"], [1, "desc"]],
             language: {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
             },
             columnDefs: [
                 {
-                    targets: [ 1, 2, 3, 4, 5,6],
+                    targets: [ 1,2, 3, 4, 5,6],
                     className: 'mdl-data-table__cell--non-numeric'
                 }
             ],
@@ -421,6 +434,45 @@
                         sum = sum + uu[aa].value.MONTO_DOC_ML;
                     }
                     ret += "<td>" + sum.toFixed(2) + "</td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
+                    ret += "<td></td>";
                     ret += "</tr>";
                 }
                 ret += "</table>"

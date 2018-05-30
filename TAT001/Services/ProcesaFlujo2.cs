@@ -10,7 +10,7 @@ namespace TAT001.Services
 {
     public class ProcesaFlujo2
     {
-        public string procesa(FLUJO f)
+        public string procesa(FLUJO f, string recurrente)
         {
             string correcto = String.Empty;
             TAT001Entities db = new TAT001Entities();
@@ -47,7 +47,15 @@ namespace TAT001.Services
                     next_step_a = (int)paso_a.NEXT_STEP;
 
                 WORKFP next = new WORKFP();
-                next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                if (recurrente != "X")
+                {
+                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                }
+                else
+                {
+                    WORKFP autoriza = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.ACCION_ID == 5).FirstOrDefault();
+                    next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == autoriza.NS_ACCEPT).FirstOrDefault();
+                }
                 if (next.NEXT_STEP.Equals(99))//--------FIN DEL WORKFLOW
                 {
                     d.ESTATUS_WF = "A";
@@ -65,10 +73,19 @@ namespace TAT001.Services
                     nuevo.POS = actual.POS + 1;
                     nuevo.LOOP = 1;
 
-                    FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
-                    nuevo.USUARIOA_ID = detA.USUARIOA_ID;
-                    nuevo.DETPOS = detA.DETPOS;
-                    nuevo.DETVER = dah.VERSION;
+                    if (recurrente != "X")
+                    {
+                        FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
+                        nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                        nuevo.DETPOS = detA.DETPOS;
+                        nuevo.DETVER = dah.VERSION;
+                    }
+                    else
+                    {
+                        nuevo.USUARIOA_ID = null;
+                        nuevo.DETPOS = 0;
+                        nuevo.DETVER = 0;
+                    }
 
                     nuevo.ESTATUS = "P";
                     nuevo.FECHAC = DateTime.Now;

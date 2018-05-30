@@ -307,5 +307,167 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult categoriasCliente(string vkorg, string spart, string kunnr, string soc_id)
+        {
+            TAT001Entities db = new TAT001Entities();
+            if (kunnr == null)
+            {
+                kunnr = "";
+            }
+
+            //if (catid == null)
+            //{
+            //    catid = "";
+            //}
+
+            var jd = (dynamic)null;
+
+            //Obtener los materiales
+            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
+            try
+            {
+                matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            //Validar si hay materiales
+            if (matl != null)
+            {
+
+                CLIENTE cli = new CLIENTE();
+                List<CLIENTE> clil = new List<CLIENTE>();
+
+                try
+                {
+                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr & c.VKORG == vkorg & c.SPART == spart).FirstOrDefault();
+
+                    //Saber si el cliente es sold to, payer o un grupo
+                    if (cli != null)
+                    {
+                        //Es un soldto
+                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                        {
+                            //cli.VKORG = cli.VKORG+" ";
+                            clil.Add(cli);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                var cie = clil.Cast<CLIENTE>();
+                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+                //Obtener el numero de periodos para obtener el historial
+                int nummonths = 3;
+                int imonths = nummonths * -1;
+                //Obtener el rango de los periodos incluyendo el año
+                DateTime ff = DateTime.Today;
+                DateTime fi = ff.AddMonths(imonths);
+
+                string mi = fi.Month.ToString();//.ToString("MM");
+                string ai = fi.Year.ToString();//.ToString("yyyy");
+
+                string mf = ff.Month.ToString();// ("MM");
+                string af = ff.Year.ToString();// "yyyy");
+
+                int aii = 0;
+                try
+                {
+                    aii = Convert.ToInt32(ai);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mii = 0;
+                try
+                {
+                    mii = Convert.ToInt32(mi);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int aff = 0;
+                try
+                {
+                    aff = Convert.ToInt32(af);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mff = 0;
+                try
+                {
+                    mff = Convert.ToInt32(mf);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                if (cie != null)
+                {
+                    //Obtener el historial de compras de los clientesd
+                    var matt = matl.ToList();
+                    var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr).ToList();
+                    var spras = Session["spras"].ToString();
+                    var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+
+                    jd = (from ps in pres
+                          join cl in cie
+                          on ps.KUNNR equals cl.KUNNR
+                          join m in matt
+                          on ps.MATNR equals m.ID
+                          join mk in cat
+                          on m.MATKL_ID equals mk.CATEGORIA_ID
+                          where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                          (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                          //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                          ) && ps.BUKRS == soc_id
+                          select new
+                          {
+                              m.MATKL_ID,
+                              mk.TXT50
+                          }).ToList();
+                }
+            }
+
+            //var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
+            var list = new List<CATEGORIAT>();
+            foreach (var line in jd)
+            {
+                bool ban = true;
+                foreach (var line2 in list)
+                {
+                    if (line.MATKL_ID == line2.CATEGORIA_ID)
+                        ban = false;
+                    
+                }
+                if (ban)
+                {
+
+                    CATEGORIAT c = new CATEGORIAT();
+                    c.CATEGORIA_ID = line.MATKL_ID;
+                    c.TXT50 = line.TXT50;
+                    list.Add(c);
+                }
+            }
+
+            JsonResult jl = Json(list, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
     }
 }

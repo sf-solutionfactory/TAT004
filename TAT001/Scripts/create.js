@@ -3050,6 +3050,9 @@ function selectCliente(valu) {
                         $('#payer_email').val(data.PAYER_EMAIL);
                         $("label[for='payer_email']").addClass("active");
                     }
+                    //RSG 28.05.2018------------------------------------------
+                    llenaCat(data.VKORG, data.VTWEG, data.SPART, valu);
+                    //RSG 28.05.2018------------------------------------------
                 } else {
                     $('#cli_name').val("");
                     $("label[for='cli_name']").removeClass("active");

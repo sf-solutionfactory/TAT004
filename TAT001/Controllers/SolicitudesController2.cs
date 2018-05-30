@@ -317,7 +317,7 @@ namespace TAT001.Controllers
                 flujo.COMENTARIO = "";
                 flujo.USUARIOA_ID = User.Identity.Name;
                 ProcesaFlujo2 pf = new ProcesaFlujo2();
-                string c = pf.procesa(flujo);
+                string c = pf.procesa(flujo,"");
                 if (c.Equals("0"))//Aprobado
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
@@ -359,7 +359,7 @@ namespace TAT001.Controllers
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
             ProcesaFlujo2 p = new ProcesaFlujo2();
             f.ESTATUS = "A";
-            p.procesa(f);
+            p.procesa(f, "");
 
 
             return RedirectToAction("Details", new { id = num_doc });
@@ -1360,7 +1360,7 @@ namespace TAT001.Controllers
                             f.ESTATUS = "I";
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
-                            string c = pf.procesa(f);
+                            string c = pf.procesa(f, "");
                             if (c == "1")
                             {
                                 Email em = new Email();
