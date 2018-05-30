@@ -681,7 +681,17 @@ namespace TAT001.Controllers
                                 //Verificar si hay materiales en las relacionadas
                                 if (docsrelp.Count > 0)
                                 {
-                                    List<DOCUMENTOP> docrel = docsrelp.Where(docrell => docrell.MATNR == docP.MATNR).ToList();
+                                    List<DOCUMENTOP> docrel = new List<DOCUMENTOP>();
+
+                                    if (docP.MATNR != null && docP.MATNR != "")
+                                    {
+                                        docrel = docsrelp.Where(docrell => docrell.MATNR == docP.MATNR).ToList();
+                                    }
+                                    else
+                                    {
+                                        docrel = docsrelp.Where(docrell => docrell.MATKL == docP.MATKL_ID).ToList();
+                                    }
+                                   
                                     for (int k = 0; k < docrel.Count; k++)
                                     {
                                         //Relacionada se obtiene el 
