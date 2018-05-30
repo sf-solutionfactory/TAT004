@@ -651,7 +651,7 @@ namespace TAT001.Controllers
                         }
                         d.NUM_DOC = 0;
                         List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
-
+                        var dis = "";
                         for (int j = 0; j < docpl.Count; j++)
                         {
                             try
@@ -690,6 +690,7 @@ namespace TAT001.Controllers
                                     else
                                     {
                                         docrel = docsrelp.Where(docrell => docrell.MATKL == docP.MATKL_ID).ToList();
+                                        dis = "C";
                                     }
                                    
                                     for (int k = 0; k < docrel.Count; k++)
@@ -700,6 +701,13 @@ namespace TAT001.Controllers
 
                                         docP.VOLUMEN_EST -= docr_vr;
                                         docP.APOYO_EST -= docr_ar;
+
+                                        if(dis == "C")
+                                        {
+                                            //decimal docr_vr = Convert.ToDecimal(docrel[k].);
+                                            //decimal docr_ar = Convert.ToDecimal(docrel[k].APOYO_REAL);
+                                        }
+
                                     }
                                 }
 
@@ -1129,6 +1137,7 @@ namespace TAT001.Controllers
                                 try
                                 {
                                     DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+                                    var cat = "";
 
                                     if (docpl[j].MATNR != null && docpl[j].MATNR != "")
                                     {
@@ -1137,6 +1146,7 @@ namespace TAT001.Controllers
                                     else
                                     {
                                         docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATKL_ID == docpl[j].MATKL).FirstOrDefault();
+                                        cat = "C";
                                     }
                                     DOCUMENTOP docP = new DOCUMENTOP();
                                     //Si lo encuentra meter valores de la base de datos y vista
@@ -1144,6 +1154,10 @@ namespace TAT001.Controllers
                                     {
                                         docP.NUM_DOC = dOCUMENTO.NUM_DOC;
                                         docP.POS = docmod.POS;
+                                        if(docmod.MATNR == null || docmod.MATNR == "")
+                                        {
+                                            docmod.MATNR = "";
+                                        }
                                         docP.MATNR = docmod.MATNR;
                                         docP.MATKL = docmod.MATKL_ID;
                                         docP.CANTIDAD = 1;

@@ -537,18 +537,18 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_tempp').on("click", function (e) {
+    $('#tab_temp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soportee').on("click", function (e) {
+    $('#tab_soporte').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_diss').on("click", function (e) {
+    $('#tab_dis').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -1126,7 +1126,7 @@ function copiarTableVista(update) {
         //Obtener el tipo de solución a partir de la anterior
         if ($("#tsolant_id").length) {
             sol = $('#tsolant_id').val();
-
+            //sol = $("#tsol_id").val();
         } else {
             sol = $("#tsol_id").val();
         }
