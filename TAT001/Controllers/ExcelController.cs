@@ -363,7 +363,8 @@ namespace TAT001.Controllers
                 li.Add(doc.NUM_DOC.ToString());
             }
 
-            ViewBag.listaD = li;
+            //JsonResult jr = Json(li, JsonRequestBehavior.AllowGet);
+            TempData["docs_masiva"] = li;
             return RedirectToAction("Index", "Home");
         }
 
