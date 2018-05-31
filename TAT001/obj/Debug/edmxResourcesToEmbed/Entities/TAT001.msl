@@ -1803,5 +1803,34 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CAMPOZKE24">
+      <EntityTypeMapping TypeName="TAT001Model.CAMPOZKE24">
+        <MappingFragment StoreEntitySet="CAMPOZKE24">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="CAMPO" ColumnName="CAMPO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CAMPOZKE24T">
+      <EntityTypeMapping TypeName="TAT001Model.CAMPOZKE24T">
+        <MappingFragment StoreEntitySet="CAMPOZKE24T">
+          <ScalarProperty Name="TXT50" ColumnName="TXT50" />
+          <ScalarProperty Name="CAMPO_ID" ColumnName="CAMPO_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CONFDIST_CAT">
+      <EntityTypeMapping TypeName="TAT001Model.CONFDIST_CAT">
+        <MappingFragment StoreEntitySet="CONFDIST_CAT">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="PERIODOS" ColumnName="PERIODOS" />
+          <ScalarProperty Name="PORC_AD" ColumnName="PORC_AD" />
+          <ScalarProperty Name="CAMPO" ColumnName="CAMPO" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

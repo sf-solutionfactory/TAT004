@@ -514,23 +514,6 @@
                             </table>
                             @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
                             <table id="table_soph" class="display" cellspacing="0" style="display:none">
-                                @*<thead>
-                                        <tr>
-
-                                            <th>Pos</th>
-                                            <th>Factura</th>
-                                            <th>Fecha Factura</th>
-                                            <th>Proveedor</th>
-                                            <th>Proveedor Desc</th>
-                                            <th>Control</th>
-                                            <th>Autorización</th>
-                                            <th>Vencimiento</th>
-                                            <th>Factura k</th>
-                                            <th>Ejercicio k</th>
-                                            <th>Bill doc</th>
-                                            <th>Belnr</th>
-                                        </tr>
-                                    </thead>*@
                                 <tbody>
                                     @if (Model.DOCUMENTOF != null)
                                     {
@@ -555,7 +538,6 @@
                                                     @Model.DOCUMENTOF[i].PROVEEDOR
                                                 </td>
                                                 <td></td>
-
                                                 <td>
                                                     @Model.DOCUMENTOF[i].CONTROL
                                                 </td>
@@ -583,7 +565,6 @@
                                                 <td>
                                                     @Model.DOCUMENTOF[i].BELNR
                                                 </td>
-
                                             </tr>
                                         }
                                     }
@@ -986,9 +967,7 @@
                                         @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
                                     </div>
                                 </div>
-
                                 @*<a id="btn_guardarr" class="btn waves-effect waves-light btn-small disabled">Enviar</a>*@
-
                             </div>
                         </div>
                     }
@@ -1013,7 +992,7 @@
                                 <label>Tipo de negociación</label>
                             </div>
                             <div class="input-field col s6">
-                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value)">
+                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value,'X')">
                                     <option value="M">Material</option>
                                     <option value="C">Categoría</option>
                                 </select>
@@ -1060,8 +1039,8 @@
                         <h5>Base para aplicar %</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="monto_apoyo" type="text" class="validate" />
-                                <label for="monto_apoyo">% Apoyo</label>
+                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                <label for="bmonto_apoyo">% Apoyo</label>
                             </div>
                         </div>
                     </div>

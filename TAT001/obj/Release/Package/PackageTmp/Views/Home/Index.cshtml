@@ -11,12 +11,14 @@
 <div class="row">
     <div class="col s12 right-align">
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
-    </div>
-    <div class="col s12 right-align" style="margin-top:5px;">
-        @using (Html.BeginForm("Descargar", "Home", FormMethod.Post))
+        @using (Html.BeginForm("Descargar", "Home", FormMethod.Post, new { @style = "display:initial;" }))
         {
             <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
         }
+        @Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })
+    </div>
+    <div class="col s12 right-align" style="margin-top:5px;">
+
     </div>
 </div>
 @*<script src="~/Scripts/dEX.js"></script>*@
@@ -38,6 +40,28 @@
                 docMessage('Documento ' + message+' fue creado');
             }
 
+        });
+        </script>
+    }
+}
+
+@if (ViewBag.listaD != null)
+{
+    foreach (var lis in ViewBag.listaD)
+    {
+        <script>
+        $(document).ready(function () {
+            function docMessage(msg) {
+                M.toast({ html: msg });
+            }
+
+            var message = '@lis';
+
+            if (message != "")
+            {
+                // do drop down loic
+                docMessage('Documento ' + message+' fue creado');
+            }
         });
         </script>
     }
@@ -259,9 +283,12 @@
                 <td>
                     @for (int i = 0; i < lstC.Count; i++)
                     {
-                        if (lstC[i].SOCIEDAD_ID == item.SOCIEDAD_ID && lstC[i].GALL_ID == item.TALL.GALL_ID)
+                        if (item.TALL != null)
                         {
-                            @Html.Label(lstC[i].CARGO.ToString())
+                            if (lstC[i].SOCIEDAD_ID == item.SOCIEDAD_ID && lstC[i].GALL_ID == item.TALL.GALL_ID)
+                            {
+                                @Html.Label(lstC[i].CARGO.ToString())
+                            }
                         }
                     }
                 </td>

@@ -140,6 +140,9 @@ namespace TAT001.Entities
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
         public virtual DbSet<DOCUMENTOREC> DOCUMENTORECs { get; set; }
+        public virtual DbSet<CAMPOZKE24> CAMPOZKE24 { get; set; }
+        public virtual DbSet<CAMPOZKE24T> CAMPOZKE24T { get; set; }
+        public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

@@ -18,6 +18,23 @@
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
     <Property Name="TIPO" Type="nchar" MaxLength="10" />
   </EntityType>
+  <EntityType Name="CAMPOZKE24">
+    <Key>
+      <PropertyRef Name="CAMPO" />
+    </Key>
+    <Property Name="CAMPO" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="CAMPOZKE24T">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="CAMPO_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CAMPO_ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="CANAL">
     <Key>
       <PropertyRef Name="CANAL" />
@@ -174,6 +191,16 @@
     <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="MWSKZ" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CONFDIST_CAT">
+    <Key>
+      <PropertyRef Name="SOCIEDAD_ID" />
+    </Key>
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="CAMPO" Type="nvarchar" MaxLength="20" />
+    <Property Name="PORC_AD" Type="bit" />
+    <Property Name="PERIODOS" Type="int" />
+    <Property Name="ACTIVO" Type="bit" />
   </EntityType>
   <EntityType Name="CONPOSAPH">
     <Key>
@@ -938,8 +965,8 @@
     <Property Name="RSRDV" Type="decimal" Precision="13" Scale="2" />
     <Property Name="SPA" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PMVAR" Type="decimal" Precision="13" Scale="2" />
-    <Property Name="NETLB" Type="decimal" Precision="13" Scale="2" />
     <Property Name="GRSLS" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="NETLB" Type="decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="PRESUPUESTOH">
     <Key>
@@ -1710,6 +1737,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CAMPOZKE24T_CAMPOZKE24">
+    <End Role="CAMPOZKE24" Type="Self.CAMPOZKE24" Multiplicity="1" />
+    <End Role="CAMPOZKE24T" Type="Self.CAMPOZKE24T" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAMPOZKE24">
+        <PropertyRef Name="CAMPO" />
+      </Principal>
+      <Dependent Role="CAMPOZKE24T">
+        <PropertyRef Name="CAMPO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CAMPOZKE24T_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="CAMPOZKE24T" Type="Self.CAMPOZKE24T" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CAMPOZKE24T">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CARPETAT_CARPETA">
     <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="1" />
     <End Role="CARPETAT" Type="Self.CARPETAT" Multiplicity="*" />
@@ -1857,6 +1908,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CLIENTEI">
         <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONFDIST_CAT_CAMPOZKE24">
+    <End Role="CAMPOZKE24" Type="Self.CAMPOZKE24" Multiplicity="0..1" />
+    <End Role="CONFDIST_CAT" Type="Self.CONFDIST_CAT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CAMPOZKE24">
+        <PropertyRef Name="CAMPO" />
+      </Principal>
+      <Dependent Role="CONFDIST_CAT">
+        <PropertyRef Name="CAMPO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONFDIST_CAT_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="CONFDIST_CAT" Type="Self.CONFDIST_CAT" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CONFDIST_CAT">
+        <PropertyRef Name="SOCIEDAD_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3517,6 +3592,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
   <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CANAL" EntityType="Self.CANAL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETA" EntityType="Self.CARPETA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CARPETAT" EntityType="Self.CARPETAT" Schema="dbo" store:Type="Tables" />
@@ -3526,6 +3603,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CITIES" EntityType="Self.CITIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONSOPORTE" EntityType="Self.CONSOPORTE" Schema="dbo" store:Type="Tables" />
@@ -3763,6 +3841,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="PAGINA" EntitySet="PAGINA" />
       <End Role="CAMPOS" EntitySet="CAMPOS" />
     </AssociationSet>
+    <AssociationSet Name="FK_CAMPOZKE24T_CAMPOZKE24" Association="Self.FK_CAMPOZKE24T_CAMPOZKE24">
+      <End Role="CAMPOZKE24" EntitySet="CAMPOZKE24" />
+      <End Role="CAMPOZKE24T" EntitySet="CAMPOZKE24T" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CAMPOZKE24T_SPRAS" Association="Self.FK_CAMPOZKE24T_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="CAMPOZKE24T" EntitySet="CAMPOZKE24T" />
+    </AssociationSet>
     <AssociationSet Name="FK_CARPETAT_CARPETA" Association="Self.FK_CARPETAT_CARPETA">
       <End Role="CARPETA" EntitySet="CARPETA" />
       <End Role="CARPETAT" EntitySet="CARPETAT" />
@@ -3810,6 +3896,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CLIENTEI_IMPUESTO" Association="Self.FK_CLIENTEI_IMPUESTO">
       <End Role="IMPUESTO" EntitySet="IMPUESTO" />
       <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONFDIST_CAT_CAMPOZKE24" Association="Self.FK_CONFDIST_CAT_CAMPOZKE24">
+      <End Role="CAMPOZKE24" EntitySet="CAMPOZKE24" />
+      <End Role="CONFDIST_CAT" EntitySet="CONFDIST_CAT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONFDIST_CAT_SOCIEDAD" Association="Self.FK_CONFDIST_CAT_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CONFDIST_CAT" EntitySet="CONFDIST_CAT" />
     </AssociationSet>
     <AssociationSet Name="FK_CONPOSAPH_SOCIEDAD" Association="Self.FK_CONPOSAPH_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
