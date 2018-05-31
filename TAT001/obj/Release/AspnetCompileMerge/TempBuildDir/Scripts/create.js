@@ -873,6 +873,7 @@
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl();//Distribución
             copiarSopTableControl(); //Soporte ahora en información
+            enviaRec();//RSG 28.05.2018
             //Termina provisional
             $('#btn_guardar').click();
         } else {

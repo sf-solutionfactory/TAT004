@@ -274,73 +274,77 @@ namespace TAT001.Controllers
                     {
                         for (int k = 1; k < dsHoja2.Tables[0].Rows.Count; k++)
                         {
-                            DOCUMENTOP docup = new DOCUMENTOP();
-                            int j = k;
-
-                            string mat = dsHoja2.Tables[0].Rows[k][3].ToString();
-                            string mat2 = dsHoja2.Tables[0].Rows[k][4].ToString();
-                            DateTime fechD = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                            DateTime fechA = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                            //var mate = db.MATERIALs.Where(x => x.ID == mat && x.MATKL_ID == mat2);
-                            var mate = db.MATERIALs.Where(x => x.ID == mat);
-
-                            if (mate.Count() > 0 && fechA > fechD)
+                            decimal num = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][0].ToString());
+                            if (num == docu.NUM_DOC)
                             {
-                                if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
-                                {
-                                    docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
-                                    docup.POS = Convert.ToInt32(j + 1);
-                                    docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                                    docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                                    docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
-                                    docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
+                                DOCUMENTOP docup = new DOCUMENTOP();
+                                int j = k;
 
-                                    if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                string mat = dsHoja2.Tables[0].Rows[k][3].ToString();
+                                string mat2 = dsHoja2.Tables[0].Rows[k][4].ToString();
+                                DateTime fechD = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                DateTime fechA = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                //var mate = db.MATERIALs.Where(x => x.ID == mat && x.MATKL_ID == mat2);
+                                var mate = db.MATERIALs.Where(x => x.ID == mat);
+
+                                if (mate.Count() > 0 && fechA > fechD)
+                                {
+                                    if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
                                     {
-                                        docup.APOYO_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
-                                        dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                        docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                        docup.POS = Convert.ToInt32(j + 1);
+                                        docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                        docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                        docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
+                                        docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
+
+                                        if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                        {
+                                            docup.APOYO_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                            dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                        }
+                                        else
+                                        {
+                                            docup.APOYO_EST = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                            dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                        }
+
+                                        docup.CANTIDAD = 0;
+                                        dop.DOCUMENTOPs.Add(docup);
+                                        //db.SaveChanges();
                                     }
                                     else
                                     {
-                                        docup.APOYO_EST = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
-                                        dop.MONTO_DOC_MD += docup.APOYO_EST;
-                                    }
-
-                                    docup.CANTIDAD = 0;
-                                    dop.DOCUMENTOPs.Add(docup);
-                                    //db.SaveChanges();
-                                }
-                                else
-                                {
-                                    docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
-                                    docup.POS = Convert.ToInt32(j + 1);
-                                    docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                                    docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                                    docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
-                                    docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
-                                    docup.MONTO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString());
-                                    docup.PORC_APOYO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString());
-                                    docup.PRECIO_SUG = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][7].ToString());
-                                    docup.VOLUMEN_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString());
-                                    decimal hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) * Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString()));
-                                    hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) - hola) * (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString()));
+                                        docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                        docup.POS = Convert.ToInt32(j + 1);
+                                        docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                        docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                        docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
+                                        docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
+                                        docup.MONTO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString());
+                                        docup.PORC_APOYO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString());
+                                        docup.PRECIO_SUG = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][7].ToString());
+                                        docup.VOLUMEN_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString());
+                                        decimal hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) * Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString()));
+                                        hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) - hola) * (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString()));
 
 
-                                    if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
-                                    {
-                                        docup.APOYO_REAL = hola;
-                                        dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                        if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                        {
+                                            docup.APOYO_REAL = hola;
+                                            dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                        }
+                                        else
+                                        {
+                                            docup.APOYO_EST = hola;
+                                            docup.VOLUMEN_EST = (decimal)docup.VOLUMEN_REAL;
+                                            docup.VOLUMEN_REAL = null;
+                                            dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                        }
+                                        docup.CANTIDAD = 0;
+                                        dop.DOCUMENTOPs.Add(docup);
+                                        //db.SaveChanges();
                                     }
-                                    else
-                                    {
-                                        docup.APOYO_EST = hola;
-                                        docup.VOLUMEN_EST = (decimal)docup.VOLUMEN_REAL;
-                                        docup.VOLUMEN_REAL = null;
-                                        dop.MONTO_DOC_MD += docup.APOYO_EST;
-                                    }
-                                    docup.CANTIDAD = 0;
-                                    dop.DOCUMENTOPs.Add(docup);
-                                    //db.SaveChanges();
                                 }
                             }
                         }

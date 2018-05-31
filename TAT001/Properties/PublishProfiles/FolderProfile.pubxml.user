@@ -16,10 +16,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/31/2018 00:20:04</publishTime>
+      <publishTime>05/31/2018 11:13:08</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/31/2018 00:20:04</publishTime>
+      <publishTime>05/31/2018 11:13:08</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>04/10/2018 16:30:58</publishTime>
@@ -226,10 +226,10 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>02/27/2018 09:43:09</publishTime>
     </File>
     <File Include="bin/TAT001.dll">
-      <publishTime>05/31/2018 00:19:30</publishTime>
+      <publishTime>05/31/2018 11:12:42</publishTime>
     </File>
     <File Include="bin/TAT001.pdb">
-      <publishTime>05/31/2018 00:19:30</publishTime>
+      <publishTime>05/31/2018 11:12:42</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>02/27/2018 09:43:11</publishTime>
@@ -1879,7 +1879,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/31/2018 00:19:50</publishTime>
+      <publishTime>05/31/2018 11:12:53</publishTime>
     </File>
     <File Include="Scripts/autocomplete1.10.2.js">
       <publishTime>05/03/2018 17:51:38</publishTime>
@@ -1894,7 +1894,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/23/2018 18:44:52</publishTime>
     </File>
     <File Include="Scripts/create.js">
-      <publishTime>05/30/2018 19:35:22</publishTime>
+      <publishTime>05/31/2018 10:25:19</publishTime>
     </File>
     <File Include="Scripts/create2.js">
       <publishTime>05/30/2018 19:34:04</publishTime>
@@ -2353,7 +2353,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Views/Solicitudes/Create.cshtml">
-      <publishTime>05/30/2018 19:02:44</publishTime>
+      <publishTime>05/31/2018 10:25:20</publishTime>
     </File>
     <File Include="Views/Solicitudes/Create2.cshtml">
       <publishTime>05/28/2018 12:53:04</publishTime>
@@ -2539,7 +2539,7 @@ edite el archivo MSBuild. Visite https://go.microsoft.com/fwlink/?LinkID=208121 
       <publishTime>05/03/2018 17:51:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/31/2018 00:19:43</publishTime>
+      <publishTime>05/31/2018 11:12:51</publishTime>
     </File>
   </ItemGroup>
 </Project>

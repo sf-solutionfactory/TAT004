@@ -1240,7 +1240,11 @@ namespace TAT001.Controllers
                                     db.SaveChanges();//RSG
 
                                     //If matnr es "" agregar los materiales de la categoría
-                                    List<DOCUMENTOM> docml = addCatItems(dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC, Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL);
+                                    List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
+                                    if (docP.MATNR == "")
+                                    {
+                                        docml = addCatItems(dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC, Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL);
+                                    }
                                     //Obtener el apoyo real o estimado para cada material
                                     var cantmat = docml.Count;
                                     //Obtener apoyo estimado
@@ -3126,6 +3130,7 @@ namespace TAT001.Controllers
                     dm = jdlret.Where(a => a.MATNR == p.MATNR).FirstOrDefault();
                     if (dm == null)
                     {
+                        dm = new DOCUMENTOM();
                         dm.NUM_DOC = numdoc;
                         dm.POS_ID = posid;
                         dm.MATNR = p.MATNR;
