@@ -260,24 +260,21 @@
 }
 @if (ViewBag.listaD != null)
 {
-    foreach (var lis in ViewBag.listaD)
-    {
     <script>
         $(document).ready(function () {
             function docMessage(msg) {
                 M.toast({ html: msg });
             }
 
-            var message = '@lis';
+            var messages = @ViewBag.listaD;
 
-            if (message != "")
+            if (messages != "")
             {
                 // do drop down loic
                 docMessage('Documento ' + message+' fue creado');
             }
         });
     </script>
-    }
 }
 <div class="row" style="margin-bottom:0;">
     <div class="input-field col s3 m3 l3">

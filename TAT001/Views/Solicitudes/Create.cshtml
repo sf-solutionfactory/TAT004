@@ -654,6 +654,20 @@
                                         @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
                                     </div>
                                 </div>
+                                <script>
+                                    asignaFechasInit();
+                                    function asignaFechasInit() {
+                                        var datei = document.getElementById("fechai_vig").value;
+                                        var datef = document.getElementById("fechaf_vig").value;
+
+                                        if (datei != "") {
+                                            document.getElementById("fechai_vig2").value = datei;
+                                        }
+                                        if (datef != "") {
+                                            document.getElementById("fechaf_vig2").value = datef;
+                                        }
+                                    }
+                                </script>
                                 <div class="col s6">
                                     <div class="col s12">
                                         <div class="input-field col s6">
@@ -674,8 +688,11 @@
                                     </div>
                                 </div>
                                 <script>
+                                    var datei = document.getElementById("fechai_vig").value;
+                                    var datef = document.getElementById("fechaf_vig").value;
                                     var elemth = document.querySelector('#fechai_vig2');
                                     var optionsth = {
+                                        defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
                                         format: 'dd/mm/yyyy',
                                         i18n: {
                                             clear: 'Limpiar',
@@ -694,6 +711,7 @@
 
                                     var elemtd = document.querySelector('#fechaf_vig2');
                                     var optionstd = {
+                                        defaultDate: new Date(datef.split('/')[2], datef.split('/')[1]-1, datef.split('/')[0]),
                                         format: 'dd/mm/yyyy',
                                         onClose: function (e) {
                                             var datei = $('#fechai_vig2').val();

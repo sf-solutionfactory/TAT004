@@ -902,12 +902,12 @@ namespace TAT001.Controllers
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo)
         {
 
-            //bool prueba = false;
+            bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
-            //if (ModelState.IsValid && prueba == true)
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && prueba == true)
+                //if (ModelState.IsValid)
             {
                 try
                 {
@@ -3069,13 +3069,19 @@ namespace TAT001.Controllers
                     //var pres = db.PRESUPSAPPs.ToList();
                     kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
+                    List<CLIENTE> ciee = new List<CLIENTE>();
                     foreach (var c in cie)
                     {
-                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                        CLIENTE pa = new CLIENTE();
+                        pa.VKORG = c.VKORG;
+                        pa.VTWEG = c.VTWEG;
+                        pa.SPART = c.SPART;
+                        pa.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                        ciee.Add(pa);
                     }
 
                     jdl = (from ps in pres
-                           join cl in cie
+                           join cl in ciee
                            on ps.KUNNR equals cl.KUNNR
                            join m in matt
                            on ps.MATNR equals m.ID
