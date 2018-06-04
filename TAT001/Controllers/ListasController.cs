@@ -308,6 +308,7 @@ namespace TAT001.Controllers
             return cc;
         }
 
+        
         [HttpPost]
         [AllowAnonymous]
         public JsonResult categoriasCliente(string vkorg, string spart, string kunnr, string soc_id)

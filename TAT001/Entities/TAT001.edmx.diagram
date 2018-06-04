@@ -265,6 +265,12 @@
         <AssociationConnector Association="TAT001Model.FK_CONFDIST_CAT_CAMPOZKE24" />
         <AssociationConnector Association="TAT001Model.FK_CAMPOZKE24T_SPRAS" />
         <AssociationConnector Association="TAT001Model.FK_CONFDIST_CAT_SOCIEDAD" />
+        <EntityTypeShape EntityType="TAT001Model.MATERIALGP" Width="1.5" PointX="4.875" PointY="86.5" />
+        <EntityTypeShape EntityType="TAT001Model.MATERIALGPT" Width="1.5" PointX="7.125" PointY="75.5" />
+        <EntityTypeShape EntityType="TAT001Model.sysdiagram" Width="1.5" PointX="0.75" PointY="6.75" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIAL_MATERIALGP" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIALGPT_MATERIALGP" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIALGPT_SPRAS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

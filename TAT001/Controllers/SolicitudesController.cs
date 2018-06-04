@@ -2734,6 +2734,225 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        public JsonResult grupoMateriales(string kunnr, string gid, string soc_id)
+        {
+            if (kunnr == null)
+            {
+                kunnr = "";
+            }
+
+            if (gid == null)
+            {
+                gid = "";
+            }
+
+            List<PRESUPSAPP> jdl = new List<PRESUPSAPP>();
+
+            //Obtener los materiales
+            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
+            try
+            {
+                matl = db.MATERIALs.Where(m => m.MATERIALGP_ID == gid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            }
+            catch (Exception)
+            {
+
+            }
+
+            //Validar si hay materiales
+            string campoconf = "";
+            if (matl != null)
+            {
+
+                CLIENTE cli = new CLIENTE();
+                List<CLIENTE> clil = new List<CLIENTE>();
+
+                try
+                {
+                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
+
+                    //Saber si el cliente es sold to, payer o un grupo
+                    if (cli != null)
+                    {
+                        //Es un soldto
+                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                        {
+                            //cli.VKORG = cli.VKORG+" ";
+                            clil.Add(cli);
+                        }
+
+                        //Es un payer
+                        if(cli.KUNNR == cli.PAYER)
+                        {
+                            //Obtener todos los clientes de ese payer
+                            clil = db.CLIENTEs.Where(cl => cl.PAYER == cli.PAYER).ToList();
+                        }
+
+                        //Es un banner
+                        if(cli.KUNNR == cli.BANNER)
+                        {
+                            clil = db.CLIENTEs.Where(cl => cl.BANNER == cli.BANNER).ToList();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+
+                var cie = clil.Cast<CLIENTE>();
+                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+                //Obtener el numero de periodos para obtener el historial
+                int nummonths = 0;
+                int imonths = 0;
+
+                try
+                {
+                    CONFDIST_CAT conf = getCatConf(soc_id);
+                    nummonths = (int)conf.PERIODOS;
+                    campoconf = conf.CAMPO.ToString();
+
+                }
+                catch (Exception)
+                {
+
+                }
+                if (nummonths > 0)
+                {
+                    imonths = nummonths * -1;
+                }
+                //Obtener el rango de los periodos incluyendo el año
+                DateTime ff = DateTime.Today;
+                DateTime fi = ff.AddMonths(imonths);
+
+                string mi = fi.Month.ToString();//.ToString("MM");
+                string ai = fi.Year.ToString();//.ToString("yyyy");
+
+                string mf = ff.Month.ToString();// ("MM");
+                string af = ff.Year.ToString();// "yyyy");
+
+                int aii = 0;
+                try
+                {
+                    aii = Convert.ToInt32(ai);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                int mii = 0;
+                try
+                {
+                    mii = Convert.ToInt32(mi);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                int aff = 0;
+                try
+                {
+                    aff = Convert.ToInt32(af);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                int mff = 0;
+                try
+                {
+                    mff = Convert.ToInt32(mf);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                if (cie != null)
+                {
+                    //Obtener el historial de compras de los clientesd
+                    var matt = matl.ToList();
+                    //var pres = db.PRESUPSAPPs.ToList();
+                    kunnr = kunnr.TrimStart('0').Trim();
+                    var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
+                    foreach (var c in cie)
+                    {
+                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    }
+
+                    //jd = (from ps in db.PRESUPSAPPs.ToList()
+                    jdl = (from ps in pres
+                           join cl in cie
+                           on ps.KUNNR equals cl.KUNNR
+                           join m in matt
+                           on ps.MATNR equals m.ID
+                           where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                           (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                 //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                           ) && ps.BUKRS == soc_id
+                           select new PRESUPSAPP
+                           {
+                               ID = ps.ID,
+                               ANIO = ps.ANIO,
+                               POS = ps.POS,
+                               PERIOD = ps.PERIOD,
+                               MATNR = ps.MATNR,
+                               VVX17 = ps.VVX17,
+                               CSHDC = ps.CSHDC,
+                               RECUN = ps.RECUN,
+                               DSTRB = ps.DSTRB,
+                               OTHTA = ps.OTHTA,
+                               ADVER = ps.ADVER,
+                               CORPM = ps.CORPM,
+                               POP = ps.POP,
+                               OTHER = ps.OTHER,
+                               CONPR = ps.CONPR,
+                               OHV = ps.OHV,
+                               FREEG = ps.FREEG,
+                               RSRDV = ps.RSRDV,
+                               SPA = ps.SPA,
+                               PMVAR = ps.PMVAR,
+                               GRSLS = ps.GRSLS,
+                               NETLB = ps.NETLB
+                           }).ToList();
+                }
+            }
+
+            //var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
+
+            //List<PRESUPSAPP> lps = jd;
+
+            List<PRESUPSAPP> jdlret = new List<PRESUPSAPP>();
+
+            foreach (PRESUPSAPP p in jdl)
+            {
+                var pd = p.GetType().GetProperties();
+
+                var v = pd.Where(x => x.Name == campoconf).Single().GetValue(p);
+
+                decimal val = Convert.ToDecimal(v);
+
+                if (val > 0)
+                {
+                    PRESUPSAPP pp = jdlret.Where(a => a.MATNR == p.MATNR).FirstOrDefault();
+                    if (pp == null)
+                    {
+                        jdlret.Add(p);
+                    }
+                }
+            }
+
+
+
+            JsonResult jl = Json(jdlret, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
         public JsonResult categoriaMateriales(string kunnr, string catid, string soc_id)
         {
             if (kunnr == null)
@@ -3283,14 +3502,6 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public string selectMatCat(string catid)
-        {
-
-            return "dfdf";
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
         public string cambioCurr(string fcurr, string tcurr, string monto)
         {
             string p = "";
@@ -3456,8 +3667,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
-
 
         [HttpPost]
         [AllowAnonymous]

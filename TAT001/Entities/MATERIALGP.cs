@@ -12,18 +12,22 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class ZCTGR
+    public partial class MATERIALGP
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ZCTGR()
+        public MATERIALGP()
         {
             this.MATERIALs = new HashSet<MATERIAL>();
+            this.MATERIALGPTs = new HashSet<MATERIALGPT>();
         }
     
-        public string ID_ZC { get; set; }
+        public string ID { get; set; }
         public string DESCRIPCION { get; set; }
+        public bool ACTIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MATERIAL> MATERIALs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALGPT> MATERIALGPTs { get; set; }
     }
 }
