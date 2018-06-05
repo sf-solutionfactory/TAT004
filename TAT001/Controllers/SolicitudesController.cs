@@ -904,7 +904,7 @@ namespace TAT001.Controllers
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo)
         {
 
-            bool prueba = false;
+            bool prueba = true;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
@@ -1197,6 +1197,27 @@ namespace TAT001.Controllers
                                         docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
                                         docP.APOYO_EST = docpl[j].APOYO_EST;
                                         docP.APOYO_REAL = docpl[j].APOYO_REAL;
+                                    }
+
+                                    //RSG 05.06.2018
+                                    if(cat == "C")
+                                    {
+                                        decimal pos = docpl[j].POS;
+                                        List<DOCUMENTOM> mm = db.DOCUMENTOMs.Where(a => a.NUM_DOC == dOCUMENTO.DOCUMENTO_REF & a.POS_ID == pos).ToList();
+                                        foreach(DOCUMENTOM mn in mm)
+                                        {
+                                            DOCUMENTOM ii = new DOCUMENTOM();
+                                            ii.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                            ii.POS_ID = mn.POS_ID;
+                                            ii.POS = mn.POS;
+                                            ii.MATNR = mn.MATNR;
+                                            ii.APOYO_EST = (docP.APOYO_REAL + docP.APOYO_EST) / mm.Count;
+                                            ii.APOYO_REAL = ii.APOYO_EST;
+                                            ii.PORC_APOYO = mn.PORC_APOYO;
+                                            ii.VIGENCIA_A = mn.VIGENCIA_A;
+                                            ii.VIGENCIA_DE = mn.VIGENCIA_DE;
+                                            docP.DOCUMENTOMs.Add(ii);
+                                        }
                                     }
 
                                     //Agregarlo a la bd
@@ -2758,7 +2779,10 @@ namespace TAT001.Controllers
             IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
             try
             {
-                matl = db.MATERIALs.Where(m => m.MATKL_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                if (catid != "000")//RSG 05.06.2018
+                    matl = db.MATERIALs.Where(m => m.MATERIALGP_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                else
+                    matl = db.MATERIALs.Where(m =>  m.ACTIVO == true);//.Select(m => m.ID).ToList();
             }
             catch (Exception)
             {
@@ -2965,7 +2989,10 @@ namespace TAT001.Controllers
             IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
             try
             {
-                matl = db.MATERIALs.Where(m => m.MATKL_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                if (catid != "000")//RSG 05.06.2018
+                    matl = db.MATERIALs.Where(m => m.MATERIALGP_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                else
+                    matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
             }
             catch (Exception)
             {
@@ -3211,8 +3238,8 @@ namespace TAT001.Controllers
 
             try
             {
-                using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
-                {
+                //using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))//RSG 05.06.2018
+                //{
                     if (!System.IO.File.Exists(pathToCheck))
                     {
                         //No existe, se necesita crear
@@ -3221,7 +3248,7 @@ namespace TAT001.Controllers
                         dir.Create();
 
                     }
-                }
+                //}
 
                 //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
                 //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
@@ -3258,8 +3285,8 @@ namespace TAT001.Controllers
 
             //file to domain
             //Parte para guardar archivo en el servidor
-            using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
-            {
+            //using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))//RSG 05.06.2018
+            //{
                 //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
                 try
                 {
@@ -3275,7 +3302,7 @@ namespace TAT001.Controllers
                     ex = "";
                     ex = fileName;
                 }
-            }
+            //}
 
             //Guardarlo en la base de datos
             if (ex == "")
@@ -3517,15 +3544,15 @@ namespace TAT001.Controllers
                 string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                cat = db.CATEGORIAs.Where(c => c.ID == cate && c.ACTIVO == true)
+                cat = db.MATERIALGPs.Where(c => c.ID == cate && c.ACTIVO == true)
                             .Join(
-                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            db.MATERIALGPTs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
                             c => c.ID,
-                            ct => ct.CATEGORIA_ID,
+                            ct => ct.MATERIALGP_ID,
                             (c, ct) => new
                             {
                                 SPRAS_ID = ct.SPRAS_ID.ToString(),
-                                CATEGORIA_ID = ct.CATEGORIA_ID.ToString(),
+                                CATEGORIA_ID = ct.MATERIALGP_ID.ToString(),
                                 TXT50 = ct.TXT50.ToString()
                             })
                         .FirstOrDefault();

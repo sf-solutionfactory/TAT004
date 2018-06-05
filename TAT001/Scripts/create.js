@@ -2005,7 +2005,8 @@ function convertP(i) {
 function format(catid, idate, fdate) {
 
     detail = "";
-    var id = parseInt(catid)
+    var id = parseInt(catid);
+    var id = catid;//RSG 05.06.2018
     if (catid != "") {
 
         //Obtener el cliente
@@ -2051,7 +2052,7 @@ function format(catid, idate, fdate) {
 
                     }); //Fin de for
                     //var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 65px;\">' +
-                    var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
+                    var tablamat = '<table class=\"display\" style=\"width: 90%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
 
                     useReturnData(tablamat);
                 }
@@ -3711,6 +3712,9 @@ function valcategoria(cat) {
         var index = t.row(tr).index();
         //Categoría en el row
         var catid = t.row(index).data()[0];
+        if (catid === "000" | cat === "000" ) {//RSG 05.06.2018
+            res = true;
+        }
         //Comparar la categoría en la tabla y la agregada
         if (cat == catid) {
             res = true;

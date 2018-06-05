@@ -12,7 +12,7 @@ function llenaCat(vkorg, vtweg, spart, kunnr) {
             $("#select_categoria").find('option').remove().end();
 
             for (var i = 0; i < data.length; i++) {
-                var num = data[i].CATEGORIA_ID;
+                var num = data[i].MATERIALGP_ID;
                 var cat = data[i].TXT50;
                 $("#select_categoria").append($("<option></option>")
                     .attr("value", num)

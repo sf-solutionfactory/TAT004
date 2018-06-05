@@ -336,6 +336,7 @@ namespace TAT001.Controllers
 
             }
 
+            var spras = Session["spras"].ToString();
             //Validar si hay materiales
             if (matl != null)
             {
@@ -417,15 +418,15 @@ namespace TAT001.Controllers
                 {
 
                 }
-
                 if (cie != null)
                 {
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
                     kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
-                    var spras = Session["spras"].ToString();
-                    var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+                    
+                    //var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+                    var cat = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
                     foreach (var c in cie)
                     {
                         c.KUNNR = c.KUNNR.TrimStart('0').Trim();
@@ -440,7 +441,7 @@ namespace TAT001.Controllers
                               join m in matt
                               on ps.MATNR equals m.ID
                               join mk in cat
-                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
                               where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
                               (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
                                                                                                     //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
@@ -448,7 +449,7 @@ namespace TAT001.Controllers
                               && ps.GRSLS > 0
                               select new
                               {
-                                  m.MATKL_ID,
+                                  m.MATERIALGP_ID,
                                   mk.TXT50
                               }).ToList();
                     }
@@ -460,7 +461,7 @@ namespace TAT001.Controllers
                               join m in matt
                               on ps.MATNR equals m.ID
                               join mk in cat
-                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
                               where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
                               (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
                                                                                                     //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
@@ -468,7 +469,7 @@ namespace TAT001.Controllers
                               && ps.NETLB > 0
                               select new
                               {
-                                  m.MATKL_ID,
+                                  m.MATERIALGP_ID,
                                   mk.TXT50
                               }).ToList();
                     }
@@ -476,21 +477,30 @@ namespace TAT001.Controllers
             }
 
             //var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
-            var list = new List<CATEGORIAT>();
+            var list = new List<MATERIALGPT>();
+            if (jd.Count > 0)
+            {
+                MATERIALGPT c = db.MATERIALGPTs.Where(a=>a.SPRAS_ID.Equals(spras)& a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
+                MATERIALGPT cc = new MATERIALGPT();
+                cc.SPRAS_ID = c.SPRAS_ID;
+                cc.MATERIALGP_ID = c.MATERIALGP_ID;
+                cc.TXT50 = c.TXT50;
+                list.Add(cc);
+            }
             foreach (var line in jd)
             {
                 bool ban = true;
                 foreach (var line2 in list)
                 {
-                    if (line.MATKL_ID == line2.CATEGORIA_ID)
+                    if (line.MATERIALGP_ID == line2.MATERIALGP_ID)
                         ban = false;
-                    
+
                 }
                 if (ban)
                 {
 
-                    CATEGORIAT c = new CATEGORIAT();
-                    c.CATEGORIA_ID = line.MATKL_ID;
+                    MATERIALGPT c = new MATERIALGPT();
+                    c.MATERIALGP_ID = line.MATERIALGP_ID;
                     c.TXT50 = line.TXT50;
                     list.Add(c);
                 }
