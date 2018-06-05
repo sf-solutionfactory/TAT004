@@ -40,6 +40,7 @@ namespace TAT001.Entities
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
             this.CAMPOZKE24T = new HashSet<CAMPOZKE24T>();
+            this.MATERIALGPTs = new HashSet<MATERIALGPT>();
         }
     
         public string ID { get; set; }
@@ -91,5 +92,7 @@ namespace TAT001.Entities
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CAMPOZKE24T> CAMPOZKE24T { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALGPT> MATERIALGPTs { get; set; }
     }
 }

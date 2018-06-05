@@ -186,6 +186,8 @@ namespace TAT001.Controllers
                 ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
             ViewBag.Title += id;
 
+            ViewBag.Relacionados = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF==DF.D.NUM_DOC).ToList();
+
             return View(DF);
         }
         [HttpPost]
@@ -1345,6 +1347,10 @@ namespace TAT001.Controllers
                                         po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
                                     }
                                 }
+                                if (drec.MONTO_BASE == null) //RSG 31.05.2018-------------------
+                                     drec.MONTO_BASE = 0;
+                                if (drec.PORC == null) //RSG 31.05.2018-------------------
+                                    drec.PORC = 0;
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
@@ -1617,7 +1623,7 @@ namespace TAT001.Controllers
                                 {
                                     gt.SPRAS_ID,
                                     gt.GALL_ID,
-                                    TEXT = g.DESCRIPCION + " " + gt.TXT50
+                                    TEXT = g.ID + " " + gt.TXT50
                                 }).ToList();
 
                 var id_grupo_sel = id_grupo.Where(g => g.GALL_ID == id_clas_sel).FirstOrDefault().GALL_ID;

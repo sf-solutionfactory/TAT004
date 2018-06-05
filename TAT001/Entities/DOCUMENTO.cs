@@ -25,6 +25,7 @@ namespace TAT001.Entities
             this.DOCUMENTOTS = new HashSet<DOCUMENTOT>();
             this.FLUJOes = new HashSet<FLUJO>();
             this.DOCUMENTORECs = new HashSet<DOCUMENTOREC>();
+            this.DOCUMENTOFs = new HashSet<DOCUMENTOF>();
         }
     
         public decimal NUM_DOC { get; set; }
@@ -122,5 +123,8 @@ namespace TAT001.Entities
         public virtual ICollection<FLUJO> FLUJOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOREC> DOCUMENTORECs { get; set; }
+        public virtual GALL GALL { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOF> DOCUMENTOFs { get; set; }
     }
 }

@@ -75,15 +75,6 @@
                     @Html.DisplayNameFor(model => model.CONCEPTO)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.VKORG)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.VTWEG)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SPART)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.PUESTO_ID)
                 </th>
                 <th>
@@ -112,18 +103,15 @@
                     string b = ViewBag.data1.Tables[0].Rows[i][2].ToString();
                     string c = ViewBag.data1.Tables[0].Rows[i][3].ToString();
                     string d = ViewBag.data1.Tables[0].Rows[i][4].ToString();
-                    string k = ViewBag.data1.Tables[0].Rows[i][17].ToString();
+                    string k = ViewBag.data1.Tables[0].Rows[i][14].ToString();
                     var e = db.TSOLs.Where(x => x.ID == a).Select(x => x.ID);
                     var f = db.GALLs.Where(x => x.ID == b).Select(x => x.ID);
                     var g = db.SOCIEDADs.Where(x => x.BUKRS == c).Select(x => x.BUKRS);
                     var h = db.PAIS.Where(x => x.LAND == d).Select(x => x.LAND);
                     var kk = db.MONEDAs.Where(x => x.WAERS == k).Select(x => x.WAERS);
 
-                    string aa = ViewBag.data1.Tables[0].Rows[i][9].ToString();
-                    string bb = ViewBag.data1.Tables[0].Rows[i][10].ToString();
-                    string cc = ViewBag.data1.Tables[0].Rows[i][11].ToString();
-                    string dd = ViewBag.data1.Tables[0].Rows[i][12].ToString();
-                    var ee = db.CLIENTEs.Where(x => x.VKORG == aa & x.VTWEG == bb & x.SPART == cc & x.KUNNR == dd);
+                    string dd = ViewBag.data1.Tables[0].Rows[i][9].ToString();
+                    var ee = db.CLIENTEs.Where(x => x.KUNNR == dd);
 
                     if (e.Count() > 0 && f.Count() > 0 && g.Count() > 0 && h.Count() > 0 & ee.Count() > 0 & kk.Count() > 0)
                     {
@@ -173,15 +161,6 @@
                             <td>
                                 @ViewBag.data1.Tables[0].Rows[i][14].ToString()
                             </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][15].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][16].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][17].ToString()
-                            </td>
                         </tr>
                     }
                     else
@@ -199,29 +178,29 @@
                                 <td>@ViewBag.data1.Tables[0].Rows[i][1].ToString()</td>}
                             else
                             {
-                                <td style="background-color:red">@ViewBag.data1.Tables[0].Rows[i][1].ToString()</td> }
+                                <td class="red white-text">@ViewBag.data1.Tables[0].Rows[i][1].ToString()</td>}
 
                             @if (f.Count() > 0)
                             {
                                 <td>@ViewBag.data1.Tables[0].Rows[i][2].ToString()</td>}
                             else
                             {
-                                <td style="background-color:red">@ViewBag.data1.Tables[0].Rows[i][2].ToString()</td> }
+                                <td class="red white-text">@ViewBag.data1.Tables[0].Rows[i][2].ToString()</td>}
 
                             @if (g.Count() > 0)
                             {
                                 <td>@ViewBag.data1.Tables[0].Rows[i][3].ToString()</td>}
                             else
                             {
-                                <td style="background-color:red">@ViewBag.data1.Tables[0].Rows[i][3].ToString()</td> }
+                                <td class="red white-text">@ViewBag.data1.Tables[0].Rows[i][3].ToString()</td>}
 
                             @if (h.Count() > 0)
                             {
                                 <td>@ViewBag.data1.Tables[0].Rows[i][4].ToString()</td>}
                             else
                             {
-                                <td style="background-color:red">@ViewBag.data1.Tables[0].Rows[i][4].ToString()</td> }
-                         
+                                <td class="red white-text">@ViewBag.data1.Tables[0].Rows[i][4].ToString()</td>}
+
                             <td>
                                 @ViewBag.data1.Tables[0].Rows[i][5].ToString()
                             </td>
@@ -237,50 +216,31 @@
                                 <td>
                                     @ViewBag.data1.Tables[0].Rows[i][9].ToString()
                                 </td>
-                                <td>
-                                    @ViewBag.data1.Tables[0].Rows[i][10].ToString()
-                                </td>
-                                <td>
-                                    @ViewBag.data1.Tables[0].Rows[i][11].ToString()
-                                </td>
-                                <td>
-                                    @ViewBag.data1.Tables[0].Rows[i][12].ToString()
-                                </td>
                             }
                             else
                             {
-                                <td style="background-color:red">
+                                <td class="red white-text">
                                     @ViewBag.data1.Tables[0].Rows[i][9].ToString()
                                 </td>
-                                <td style="background-color:red">
-                                    @ViewBag.data1.Tables[0].Rows[i][10].ToString()
-                                </td>
-                                <td style="background-color:red">
-                                    @ViewBag.data1.Tables[0].Rows[i][11].ToString()
-                                </td>
-                                <td style="background-color:red">
-                                    @ViewBag.data1.Tables[0].Rows[i][12].ToString()
-                                </td>
                             }
-
+                            <td>
+                                @ViewBag.data1.Tables[0].Rows[i][10].ToString()
+                            </td>
+                            <td>
+                                @ViewBag.data1.Tables[0].Rows[i][11].ToString()
+                            </td>
+                            <td>
+                                @ViewBag.data1.Tables[0].Rows[i][12].ToString()
+                            </td>
                             <td>
                                 @ViewBag.data1.Tables[0].Rows[i][13].ToString()
                             </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][14].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][15].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][16].ToString()
-                            </td>
                             @if (kk.Count() > 0)
                             {
-                                <td>@ViewBag.data1.Tables[0].Rows[i][17].ToString()</td>}
+                                <td>@ViewBag.data1.Tables[0].Rows[i][14].ToString()</td>}
                             else
                             {
-                                <td style="background-color:red">@ViewBag.data1.Tables[0].Rows[i][17].ToString()</td> }
+                                <td class="red white-text">@ViewBag.data1.Tables[0].Rows[i][14].ToString()</td>}
                         </tr>
                     }
                 }
@@ -401,24 +361,10 @@
                     var date = data[i].VIGENCIA_DE.replace(/[^0-9 +]/g, '');
                     var fechaJS = new Date(parseInt(data[i].VIGENCIA_DE.replace(/[^0-9 +]/g, '')));
                     var fechaJS2 = new Date(parseInt(data[i].VIGENCIA_AL.replace(/[^0-9 +]/g, '')));
-                    
+
                     ret += "<tr ><td>" + data[i].NUM_DOC + "</td><td>" + data[i].POS + "</td>";
-
-                    if (data[i].MATNR != 0) {
-                        ret += "<td>" + data[i].MATNR + "</td>";
-                    }
-                    else
-                    {
-                        ret += "<td style='background-color:red'>" + data[i].MATKL + "</td>";
-                    }
-
-                    if (data[i].MATKL != 0) {
-                        ret += "<td>" + data[i].MATKL + "</td>";
-                    }
-                    else {
-                        //ret += "<td style='background-color:red'>" + data[i].MATKL + "</td>";
-                        ret += "<td>" + data[i].MATKL + "</td>";
-                    }
+                    ret += data[i].MATNR;
+                    ret += data[i].MATKL;
 
                     ret += "<td>" + data[i].MONTO + "</td>";
                     ret += "<td>" + data[i].PORC_APOYO + "</td>";
@@ -429,8 +375,8 @@
                     if (fechaJS > fechaJS2) {
                         var dd = convert(fechaJS);
                         var dd2 = convert(fechaJS2);
-                        ret += "<td style='background-color:red'>" + dd + "</td>";
-                        ret += "<td style='background-color:red'>" + dd2 + "</td>";
+                        ret += "<td class='red white-text'>" + dd + "</td>";
+                        ret += "<td class='red white-text'>" + dd2 + "</td>";
                     }
                     else {
                         var dd = convert(fechaJS);
@@ -451,8 +397,8 @@
             }
         });
     }
-
 </script>
+
 <style>
     .dataTables_length {
         display: none;

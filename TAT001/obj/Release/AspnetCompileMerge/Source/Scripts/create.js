@@ -873,7 +873,7 @@
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl();//Distribución
             copiarSopTableControl(); //Soporte ahora en información
-            enviaRec();//RSG 28.05.2018
+            enviaRec();//RSG 31.05.2018
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -1035,6 +1035,7 @@ $(window).on('load', function () {
     copiarTableVistaSop();
     //Valores en  distribución    
     copiarTableVista("");
+    copiarTableVistaRec();//RSG 31.05.2018
 
     updateFooter();
     //Pasar el total de la tabla al total en monto

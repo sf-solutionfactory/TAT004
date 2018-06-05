@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Txl
         public ActionResult Index()
         {
-            int pagina = 502; //ID EN BASE DE DATOS
+            int pagina = 811; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -221,6 +222,56 @@ namespace TAT001.Controllers.Catalogos
             db.Entry(tAX_LAND).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var tAX_LAND = db.TAX_LAND.Include(t => t.PAI);
+            generarExcelHome(tAX_LAND.ToList(), Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocTxl" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTxl" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<TAX_LAND> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+                {
+                  new {
+                      BANNER = "SOCIEDAD ID"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+                {
+                    new {
+                        BANNER = "PAIS"
+                    },
+                };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                        new {
+                      BANNER       = lst[i-2].SOCIEDAD_ID
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].PAI.LAND
+                      },
+                    };
+                }
+                var rt = ruta + @"\DocTxl" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
         }
 
         protected override void Dispose(bool disposing)

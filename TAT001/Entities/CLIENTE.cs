@@ -53,6 +53,8 @@ namespace TAT001.Entities
         public string VKBUR { get; set; }
         public string BANNERG { get; set; }
         public string PROVEEDOR_ID { get; set; }
+        public string USUARIO_ID { get; set; }
+        public string EXPORTACION { get; set; }
     
         public virtual PAI PAI { get; set; }
         public virtual PROVEEDOR PROVEEDOR { get; set; }

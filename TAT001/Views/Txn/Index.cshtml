@@ -1,16 +1,18 @@
 ﻿@model IEnumerable<TAT001.Entities.TX_TNOTA>
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 502;
     ViewBag.carpeta_r = 500;
 }
-
 <div class="row">
     <div class="col s12 right-align">
         @* Texto, pagina a ligar "NOMBRE", View *@
         @Html.ActionLink("Crear Nuevo", "Create", "Txn", null, new { @class = "btn-small" })
+        @using (Html.BeginForm("Descargar", "Txn", FormMethod.Post, new { @style = "display:initial;" }))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
     </div>
 </div>
 <div class="col 12 s12 ">
@@ -54,5 +56,4 @@
         </div>
     </div>
 </div>
-
 

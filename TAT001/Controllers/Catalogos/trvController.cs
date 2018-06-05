@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: trv
         public ActionResult Index()
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 781; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -143,7 +144,7 @@ namespace TAT001.Controllers.Catalogos
                 TREVERSA trvi = db.TREVERSAs.Where(x => x.DESCRIPCION == tREVERSA.DESCRIPCION).FirstOrDefault();
                 //si trae registros entra
                 if (trvi != null)
-                {                   
+                {
                     List<SPRA> ss = db.SPRAS.ToList();
                     foreach (SPRA s in ss)
                     {
@@ -262,6 +263,68 @@ namespace TAT001.Controllers.Catalogos
             db.TREVERSAs.Remove(tREVERSA);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var tc = db.TREVERSAs.ToList();
+            generarExcelHome(tc, Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocTrv" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTrv" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<TREVERSA> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+             {
+                  new {
+                      BANNER = "DESCRIPCION"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+            {
+                  new {
+                      BANNER = "ID USUARIO"
+                      },
+                    };
+                worksheet.Cell("C1").Value = new[]
+            {
+                  new {
+                      BANNER = "FECHA"
+                      },
+                    };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                  new {
+                      BANNER       = lst[i-2].DESCRIPCION
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].USUARIOC_ID
+                      },
+                    };
+                    worksheet.Cell("C" + i).Value = new[]
+                    {
+                        new {
+                            BANNER       = lst[i-2].FECHAC
+                        },
+                    };
+                }
+                var rt = ruta + @"\DocTrv" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
         }
 
         protected override void Dispose(bool disposing)

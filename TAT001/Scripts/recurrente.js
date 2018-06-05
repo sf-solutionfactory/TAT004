@@ -228,3 +228,78 @@ function enviaRec() {
     }
 
 }
+
+
+
+
+function copiarTableVistaRec() {
+
+    var lengthT = $("table#table_rech tbody tr").length;
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla de la vista en información
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        //$('#check_recurrente').trigger('change');
+        document.getElementById("check_recurrente").checked = true;
+        $(".table_rec").css("display", "table");
+        var rowsn = 0;
+
+        var tsol = "";
+        var sol = $("#tsol_id").val();
+
+        var i = 1;
+        $('#table_rech > tbody  > tr').each(function () {
+
+            //var pos = $(this).find("td.POS").text();
+            var pos = $(this).find("td:eq(1)").text();
+            //var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td:eq(2)").text().trim();
+
+            var ffecha = fecha.split(' ');
+
+            //var prov = $(this).find("td.PROVEEDOR").text();
+            var monto = $(this).find("td:eq(3)").text();
+            //var control = $(this).find("td.CONTROL").text();
+            var porc = $(this).find("td:eq(4)").text();
+            // var autorizacion = $(this).find("td.AUTORIZACION").text();
+
+            //if ($("#check_factura").is(':checked')) {
+
+            //    factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
+            //    ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
+            //    prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
+            //    control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
+            //    autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion + "\">";
+            //    vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0] + "\">";
+            //    facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak + "\">";
+            //    ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok + "\">";
+            //    bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
+            //    belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
+
+            //}
+            if (pos.trim() == "1") {
+                monto = monto.trim();
+            } else {
+                monto = "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto.trim() + "\">";
+            }
+            porc = "<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + porc.trim() + "\">";
+
+            var t = $('#table_rec').DataTable();
+
+            addRowRecl(t, pos.trim(), sol.trim(), ffecha[0], monto, porc);
+
+            //Quitar el row
+            $(this).remove();
+            if (i > rowsn) {
+
+            }
+        });
+        ////Hide columns
+        //ocultarColumnasTablaSoporteDatos();
+        //$('.input_sop_f').trigger('focusout');
+    }
+
+    //var sol = $("#tsol_id").val();
+
+    //selectTsol(sol);
+}

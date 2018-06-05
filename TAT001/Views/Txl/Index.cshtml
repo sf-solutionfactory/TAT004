@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TAT001.Entities.TAX_LAND>
-
 @{
     ViewBag.pagina_r = 502;
     ViewBag.carpeta_r = 500;
@@ -8,10 +7,13 @@
 }
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Agregar Pagina", "Create", "Txl", new { @class = "btn-small" })
+        @Html.ActionLink("Agregar", "Create", "Txl", new { @class = "btn-small" })
+        @using (Html.BeginForm("Descargar", "Txl", FormMethod.Post, new { @style = "display:initial;" }))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
     </div>
 </div>
-
 <div class="col 12 s12 ">
     <div class="card-panel">
         <div class="row">

@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TAT001.Entities.TX_CONCEPTO>
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +8,11 @@
 <div class="row">
     <div class="col s12 right-align">
         @* Texto, pagina a ligar "NOMBRE", View *@
-        @Html.ActionLink("Crear Nuevo", "Create", "Txc", null, new { @class = "btn-small", @id="btn_create" })
+        @Html.ActionLink("Crear Nuevo", "Create", "Txc", null, new { @class = "btn-small", @id = "btn_create" })
+        @using (Html.BeginForm("Descargar", "Txc", FormMethod.Post, new { @style = "display:initial;" }))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
     </div>
 </div>
 <div class="col 12 s12 ">
@@ -23,7 +26,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.DESCRIPCION)
                     </th>
-
                     <th></th>
                 </tr>
                 <tbody>

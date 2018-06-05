@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Proveedor
         public ActionResult Index()
         {
-            int pagina = 502; //ID EN BASE DE DATOS
+            int pagina = 771; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -359,6 +360,82 @@ namespace TAT001.Controllers.Catalogos
                 var y = e.ToString();
                 return View();
             }
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var pr = db.PROVEEDORs.Where(x => x.ACTIVO == true).ToList();
+            generarExcelHome(pr, Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocPr" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocPr" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<PROVEEDOR> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                //Creamos el encabezado
+                worksheet.Cell("A1").Value = new[]
+             {
+                  new {
+                      BANNER = "ID"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+            {
+                  new {
+                      BANNER = "NOMBRE"
+                      },
+                    };
+                worksheet.Cell("C1").Value = new[]
+            {
+                  new {
+                      BANNER = "Sociedad ID"
+                      },
+                    };
+                worksheet.Cell("D1").Value = new[]
+           {
+                  new {
+                      BANNER = "PAIS"
+                      },
+                    };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                  new {
+                      BANNER       = lst[i-2].ID
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].NOMBRE
+                      },
+                    };
+                    worksheet.Cell("C" + i).Value = new[]
+                 {
+                    new {
+                        BANNER       = lst[i-2].SOCIEDAD_ID
+                        },
+                      };
+                    worksheet.Cell("D" + i).Value = new[]
+                 {
+                    new {
+                        BANNER       = lst[i-2].PAIS_ID
+                        },
+                      };
+                }
+                var rt = ruta + @"\DocPr" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
+
         }
 
         protected override void Dispose(bool disposing)

@@ -238,6 +238,12 @@
                             <div class="lbl_contab">Contabilizar SAP</div>
                         </td>
                     }
+                    else if (item.ESTATUS.Equals("N"))
+                    {
+                        <td class="green darken-1 white-text">
+                            <div class="lbl_contab">Por contabilizar</div>
+                        </td>
+                    }
                     else
                     {
                         <td class="green darken-1 white-text">
@@ -249,6 +255,12 @@
                 {
                     <td class="red darken-1 white-text">
                         <div class="lbl_rejected">Rechazada</div>
+                    </td>
+                }
+                else if (item.ESTATUS_WF.Equals("S"))
+                {
+                    <td class="yellow darken-2 white-text">
+                        <div class="lbl_soporte">Pendiente soporte</div>
                     </td>
                 }
                 else

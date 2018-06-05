@@ -1,0 +1,69 @@
+﻿@model IEnumerable<TAT001.Entities.CONFDIST_CAT>
+
+@{
+    //ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.pagina_r = 871;
+    ViewBag.carpeta_r = 100;
+}
+
+<div class="row">
+    <div class="col s12 right-align">
+        @* Texto, pagina a ligar "NOMBRE", View *@
+        @Html.ActionLink("Agregar Registro", "Create", "ccat", null, new { @class = "btn-small", @id = "lblAreg" })
+        @using (Html.BeginForm("Descargar", "ccat", FormMethod.Post, new { @style = "display:initial;" }))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
+    </div>
+</div>
+
+<div class="col 12 s12 ">
+    <div class="card-panel">
+        <div class="row">
+            <table class="table mdl-data-table striped" id="table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th id="thper">
+                            @Html.DisplayNameFor(model => model.PERIODOS)
+                        </th>
+                        <th id="thdes">
+                            @Html.DisplayNameFor(model => model.CAMPOZKE24.DESCRIPCION)
+                        </th>
+                        <th id="thsoc">
+                            @Html.DisplayNameFor(model => model.SOCIEDAD_ID)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PERIODOS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CAMPOZKE24.DESCRIPCION)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SOCIEDAD_ID)
+                            </td>
+                            <td>
+                                <a data-form-method="post" href="@Url.Action("Edit", "ccat", new { id = item.SOCIEDAD_ID, cp=item.CAMPO, pr=item.PERIODOS })">
+                                    <i class='material-icons green-text'>edit</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Details", "ccat", new { id = item.SOCIEDAD_ID, cp=item.CAMPO, pr=item.PERIODOS })">
+                                    <i class='material-icons blue-text'>search</i>
+                                </a>
+                                <a data-form-method="post" href="@Url.Action("Delete", "ccat", new { id = item.SOCIEDAD_ID, cp = item.CAMPO, pr=item.PERIODOS })">
+                                    <i class='material-icons red-text'>delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

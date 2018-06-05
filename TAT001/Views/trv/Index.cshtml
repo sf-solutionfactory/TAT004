@@ -1,15 +1,19 @@
 ﻿@model IEnumerable<TAT001.Entities.TREVERSA>
 
 @{
-    ViewBag.Title = "Index";
+    //ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 502;
+    ViewBag.pagina_r = 781;
     ViewBag.carpeta_r = 500;
 }
 <div class="row">
     <div class="col s12 right-align">
         @* Texto, pagina a ligar "NOMBRE", View *@
         @Html.ActionLink("Crear Nuevo", "Create", "Trv", null, new { @class = "btn-small" })
+        @using (Html.BeginForm("Descargar", "Trv", FormMethod.Post, new { @style = "display:initial;" }))
+        {
+            <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
+        }
     </div>
 </div>
 <div class="col 12 s12 ">

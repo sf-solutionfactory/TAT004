@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Txc
         public ActionResult Index()
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 801; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -336,6 +337,56 @@ namespace TAT001.Controllers.Catalogos
             }
             catch (Exception e) { var x = e.ToString(); }
             return View();
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var txc = db.TX_CONCEPTO.ToList();
+            generarExcelHome(txc, Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocTxc" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTxc" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<TX_CONCEPTO> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+                {
+                  new {
+                      BANNER = "ID"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+                {
+                    new {
+                        BANNER = "DESCRIPCION"
+                    },
+                };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                        new {
+                      BANNER       = lst[i-2].ID
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].DESCRIPCION
+                      },
+                    };
+                }
+                var rt = ruta + @"\DocTxc" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
         }
 
         protected override void Dispose(bool disposing)

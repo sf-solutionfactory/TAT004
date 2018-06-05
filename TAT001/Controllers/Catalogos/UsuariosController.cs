@@ -615,7 +615,7 @@ namespace TAT001.Controllers.Catalogos
 
                 }
 
-                TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(soc)).FirstOrDefault();
+                TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(soc)& a.ACTIVO == true).FirstOrDefault();
                 if (tl != null)
                 {
                     DET_TAXEO dt = new DET_TAXEO();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: TCambio
         public ActionResult Index()
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 831; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -293,6 +294,80 @@ namespace TAT001.Controllers.Catalogos
             db.TCAMBIOs.Remove(tCAMBIO);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var tc = db.TCAMBIOs.ToList();
+            generarExcelHome(tc, Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocTC" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTC" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<TCAMBIO> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+             {
+                  new {
+                      BANNER = "FCURR"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+            {
+                  new {
+                      BANNER = "TCURR"
+                      },
+                    };
+                worksheet.Cell("C1").Value = new[]
+            {
+                  new {
+                      BANNER = "GDATU"
+                      },
+                    };
+                worksheet.Cell("D1").Value = new[]
+           {
+                  new {
+                      BANNER = "UKURSS"
+                      },
+                    };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                  new {
+                      BANNER       = lst[i-2].FCURR
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].TCURR
+                      },
+                    };
+                    worksheet.Cell("C" + i).Value = new[]
+                 {
+                    new {
+                        BANNER       = lst[i-2].GDATU
+                        },
+                      };
+                    worksheet.Cell("D" + i).Value = new[]
+                    {
+                        new {
+                            BANNER       = lst[i-2].UKURS
+                        },
+                    };
+                }
+                var rt = ruta + @"\DocTC" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
         }
 
         protected override void Dispose(bool disposing)

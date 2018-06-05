@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -17,7 +18,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: TSOL
         public ActionResult Index()
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 791; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -243,6 +244,80 @@ namespace TAT001.Controllers.Catalogos
             db.TSOLs.Remove(tSOL);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public FileResult Descargar()
+        {
+            var tSOLs = db.TSOLs.Include(t => t.RANGO).Include(t => t.TSOL2).Include(x => x.TSOLTs).ToList();
+            generarExcelHome(tSOLs, Server.MapPath("~/pdfTemp/"));
+            return File(Server.MapPath("~/pdfTemp/DocTS" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTS" + DateTime.Now.ToShortDateString() + ".xlsx");
+        }
+
+        public void generarExcelHome(List<TSOL> lst, string ruta)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            try
+            {
+                worksheet.Cell("A1").Value = new[]
+             {
+                  new {
+                      BANNER = "ID"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]
+            {
+                  new {
+                      BANNER = "RANGO"
+                      },
+                    };
+                worksheet.Cell("C1").Value = new[]
+            {
+                  new {
+                      BANNER = "DESCRIPCION"
+                      },
+                    };
+                for (int i = 2; i <= (lst.Count + 1); i++)
+                {
+                    worksheet.Cell("A" + i).Value = new[]
+               {
+                  new {
+                      BANNER       = lst[i-2].ID
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                {
+                  new {
+                      BANNER       = lst[i-2].RANGO.ID
+                      },
+                    };
+                    var tslt = "";
+                    try
+                    {                   
+                        string u = User.Identity.Name;
+                        USUARIO user = null;
+                        user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                        tslt = lst[i - 2].TSOLTs.Where(x => x.SPRAS_ID == user.SPRAS_ID).FirstOrDefault().TXT020;
+                    }
+                    catch (Exception e)
+                    {
+                        tslt = "";
+                    }
+                    worksheet.Cell("C" + i).Value = new[]
+                    {
+                        new {
+                            BANNER       = tslt
+                        },
+                    };
+                }
+                var rt = ruta + @"\DocTS" + DateTime.Now.ToShortDateString() + ".xlsx";
+                workbook.SaveAs(rt);
+            }
+            catch (Exception e)
+            {
+                var ex = e.ToString();
+            }
         }
 
         protected override void Dispose(bool disposing)
