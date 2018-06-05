@@ -186,7 +186,7 @@ namespace TAT001.Controllers
                 ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
             ViewBag.Title += id;
 
-            ViewBag.Relacionados = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF==DF.D.NUM_DOC).ToList();
+            ViewBag.Relacionados = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == DF.D.NUM_DOC).ToList();
 
             return View(DF);
         }
@@ -909,7 +909,7 @@ namespace TAT001.Controllers
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
             if (ModelState.IsValid && prueba == true)
-                //if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
@@ -1348,7 +1348,7 @@ namespace TAT001.Controllers
                                     }
                                 }
                                 if (drec.MONTO_BASE == null) //RSG 31.05.2018-------------------
-                                     drec.MONTO_BASE = 0;
+                                    drec.MONTO_BASE = 0;
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
@@ -2871,7 +2871,7 @@ namespace TAT001.Controllers
                     //var pres = db.PRESUPSAPPs.ToList();
                     kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
-                    foreach(var c in cie)
+                    foreach (var c in cie)
                     {
                         c.KUNNR = c.KUNNR.TrimStart('0').Trim();
                     }
