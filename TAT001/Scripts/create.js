@@ -414,10 +414,12 @@
                             if (catExist != true) {
                                 if (cat != "") {
                                     var opt = $("#select_categoria option:selected").text();
-                                    porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
+                                    porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
                                     var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, porcentaje_cat, "pc");
                                     $(".pc").prop('disabled', true);
                                     $('.pc').trigger('click');
+                                    //Actualizar la tabla con los porcentajes
+                                    updateTableCat();
                                 } else {
                                     M.toast({ html: 'Seleccione una categoría' });
                                     
@@ -1546,7 +1548,7 @@ function copiarSopTableControl() {
         var tsol_id = $('#tsol_id').val();
         var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X");
 
-        $('#table_sop > tbody  > tr').each(function () {
+        $("#table_sop > tbody  > tr[role='row']").each(function () {
 
             //Tabla desde excel
             var item = {};
@@ -1916,6 +1918,131 @@ function updateTable() {
     updateFooter();
 
 }
+
+function updateTableCat() {
+
+    var categorias = GetCategoriasTableCat();
+    var totalmonto = GetTotalTableCat(categorias);
+    var indext = getIndex();
+    var t = $('#table_dis').DataTable();
+    t.rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        var tr = this.node();
+        var row = t.row(tr);
+
+        //Obtener el id de la categoría
+        var index = t.row(tr).index();
+        //Categoría en el row
+        var catid = t.row(index).data()[0];
+        //actualizar la catidad a cada categoría
+        var totalr = 0;
+        totalr = GetTotalCat(catid);
+
+        //total  -- 100
+        //totalr -- ?
+        var rp = (totalr * 100) / totalmonto;
+
+        
+        //t.row(index).data()[7];
+        //t.cell(7, 0).nodes().to$().find('input').val("" + rp).draw();
+        updateTableCathtml(t, index, indext, rp, totalr);
+    });
+
+    updateFooter();
+
+}
+
+function updateTableCathtml(t, j, index, p, v) {
+
+    var vd = (9 + index);
+    var va = (14 + index);
+    var i = 0;
+    $("#table_dis > tbody  > tr[role='row']").each(function () {
+        if (i == j) {
+            $(this).find("td:eq(" + vd + ") input").val(p);
+            $(this).find("td:eq(" + va + ") input").val(v);
+        }
+        i++;
+    });
+
+    updateFooter();
+
+}
+
+function GetTotalTableCat(cats) {
+    //Obtener el total de las categorías agregadas  
+    //
+    var total = 0;
+    for (var i = 0; i < cats.length; ++i) {
+        // do something with `substr[i]`
+        total += GetTotalCat(cats[i]);
+    }
+
+    return total;
+}
+
+//Obtener el total por categoría
+function GetTotalCat(catid) {
+    var vals = $('#catmat').val();
+    try {
+        var jsval = JSON.parse(vals);
+    } catch (error) {
+    }
+
+    var total = 0;
+
+    $.each(jsval, function (i, d) {
+
+        if (catid == d.ID) {
+            total = GetTotalCatDetalle(d.MATERIALES, catid);
+            return false;
+        }
+    }); //Fin de for
+
+    return total;
+}
+
+function GetTotalCatDetalle(jsval, catid) {
+
+
+    var total = 0;
+
+    $.each(jsval, function (i, d) {
+        var t = 0;
+
+        if (catid == d.ID_CAT) {
+            try {
+                t = parseFloat(d.VAL);
+            } catch (error) {
+
+            }
+            total += t;
+        }
+    }); //Fin de for
+
+    return total;
+}
+
+function GetCategoriasTableCat() {
+    var categorias = [];
+    var t = $('#table_dis').DataTable();
+    t.rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        var tr = this.node();
+        var row = t.row(tr);
+
+        //Obtener el id de la categoría
+        var index = t.row(tr).index();
+        //Categoría en el row
+        var catid = t.row(index).data()[0];
+        //Agregar la categoría al arreglo
+        categorias.push(catid);
+    });
+
+    return categorias;
+
+}
+
 
 function updateTableValIndex(indexr, val) {
     var t = $('#table_dis').DataTable();
