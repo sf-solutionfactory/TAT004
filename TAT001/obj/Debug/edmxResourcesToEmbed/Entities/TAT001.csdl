@@ -185,6 +185,8 @@
     <NavigationProperty Name="CONTACTOCs" Relationship="Self.FK_CONTACTOC_CLIENTE" FromRole="CLIENTE" ToRole="CONTACTOC" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="CLIENTE" ToRole="DOCUMENTO" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_CLIENTE" FromRole="CLIENTE" ToRole="TAXEOH" />
+    <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="EXPORTACION" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -872,6 +874,8 @@
     <NavigationProperty Name="ZCTGR" Relationship="Self.FK_MATERIAL_CTGR" FromRole="MATERIAL" ToRole="ZCTGR" />
     <NavigationProperty Name="ZBRAND" Relationship="Self.FK_MATERIAL_MARCA" FromRole="MATERIAL" ToRole="ZBRAND" />
     <NavigationProperty Name="UMEDIDA" Relationship="Self.FK_MATERIAL_UMEDIDA" FromRole="MATERIAL" ToRole="UMEDIDA" />
+    <Property Name="MATERIALGP_ID" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="MATERIALGP" Relationship="TAT001Model.FK_MATERIAL_MATERIALGP" FromRole="MATERIAL" ToRole="MATERIALGP" />
   </EntityType>
   <EntityType Name="MENSAJE">
     <Key>
@@ -1027,7 +1031,7 @@
     <Property Name="BZIRK" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="MATNR" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
     <Property Name="PRDHA" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
-    <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="KUNNR_P" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="BANNER" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="BANNER_CALC" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
@@ -1266,6 +1270,7 @@
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
     <NavigationProperty Name="CAMPOZKE24T" Relationship="TAT001Model.FK_CAMPOZKE24T_SPRAS" FromRole="SPRA" ToRole="CAMPOZKE24T" />
+    <NavigationProperty Name="MATERIALGPTs" Relationship="TAT001Model.FK_MATERIALGPT_SPRAS" FromRole="SPRA" ToRole="MATERIALGPT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -4412,6 +4417,51 @@
       <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
       <End Role="CONFDIST_CAT" EntitySet="CONFDIST_CAT" />
     </AssociationSet>
+    <EntitySet Name="MATERIALGPs" EntityType="TAT001Model.MATERIALGP" />
+    <EntitySet Name="MATERIALGPTs" EntityType="TAT001Model.MATERIALGPT" />
+    <EntitySet Name="sysdiagrams" EntityType="TAT001Model.sysdiagram" />
+    <AssociationSet Name="FK_MATERIAL_MATERIALGP" Association="TAT001Model.FK_MATERIAL_MATERIALGP">
+      <End Role="MATERIALGP" EntitySet="MATERIALGPs" />
+      <End Role="MATERIAL" EntitySet="MATERIALs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIALGPT_MATERIALGP" Association="TAT001Model.FK_MATERIALGPT_MATERIALGP">
+      <End Role="MATERIALGP" EntitySet="MATERIALGPs" />
+      <End Role="MATERIALGPT" EntitySet="MATERIALGPTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIALGPT_SPRAS" Association="TAT001Model.FK_MATERIALGPT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="MATERIALGPT" EntitySet="MATERIALGPTs" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4621,4 +4671,82 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="MATERIALGP">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="DESCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="MATERIALs" Relationship="TAT001Model.FK_MATERIAL_MATERIALGP" FromRole="MATERIALGP" ToRole="MATERIAL" />
+    <NavigationProperty Name="MATERIALGPTs" Relationship="TAT001Model.FK_MATERIALGPT_MATERIALGP" FromRole="MATERIALGP" ToRole="MATERIALGPT" />
+  </EntityType>
+  <EntityType Name="MATERIALGPT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="MATERIALGP_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="MATERIALGP_ID" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MATERIALGP" Relationship="TAT001Model.FK_MATERIALGPT_MATERIALGP" FromRole="MATERIALGPT" ToRole="MATERIALGP" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_MATERIALGPT_SPRAS" FromRole="MATERIALGPT" ToRole="SPRA" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_MATERIAL_MATERIALGP">
+    <End Type="TAT001Model.MATERIALGP" Role="MATERIALGP" Multiplicity="0..1" />
+    <End Type="TAT001Model.MATERIAL" Role="MATERIAL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIALGP">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIAL">
+        <PropertyRef Name="MATERIALGP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIALGPT_MATERIALGP">
+    <End Type="TAT001Model.MATERIALGP" Role="MATERIALGP" Multiplicity="1" />
+    <End Type="TAT001Model.MATERIALGPT" Role="MATERIALGPT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIALGP">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALGPT">
+        <PropertyRef Name="MATERIALGP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIALGPT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.MATERIALGPT" Role="MATERIALGPT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALGPT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>
