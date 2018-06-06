@@ -235,6 +235,8 @@ namespace TAT001.Models
                     { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
                     else if (cols == 9)
                     { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
+                    else if (cols == 10)
+                    { tablasN.SetWidthPercentage(new float[] { tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño, tamaño }, PageSize.A4); }
 
                     //PdfPCell rangoFecha = new PdfPCell(new Paragraph(cv.DE + " " + encabezadoFech[a].Remove(10) + " " + cv.A + " " + (encabezadoFech[a].Remove(0, 24)).Remove(10)));
                     PdfPCell rangoFecha = new PdfPCell(new Paragraph(cv.DE + " " + encabezadoFech[a].Remove(10) + " " + cv.A + " " + (encabezadoFech[a].Remove(0, encabezadoFech[a].Length / 2)).Remove(10)));

@@ -176,6 +176,8 @@
     <Property Name="VKBUR" Type="nchar" MaxLength="4" />
     <Property Name="BANNERG" Type="nchar" MaxLength="50" />
     <Property Name="PROVEEDOR_ID" Type="nchar" MaxLength="10" />
+    <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="EXPORTACION" Type="nchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -226,6 +228,7 @@
     <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
     <Property Name="RELACION" Type="int" />
     <Property Name="RETENCION" Type="nchar" MaxLength="1" />
+    <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -578,7 +581,7 @@
     <Property Name="VTWEG" Type="nchar" MaxLength="2" />
     <Property Name="SPART" Type="nchar" MaxLength="2" />
     <Property Name="PUESTO_ID" Type="int" />
-    <Property Name="GALL_ID" Type="varchar" MaxLength="5" />
+    <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" />
     <Property Name="CONCEPTO_ID" Type="int" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
@@ -815,6 +818,24 @@
     <Property Name="ACTIVO" Type="bit" />
     <Property Name="CTGR" Type="nvarchar" MaxLength="5" />
     <Property Name="BRAND" Type="nvarchar" MaxLength="5" />
+    <Property Name="MATERIALGP_ID" Type="nchar" MaxLength="3" />
+  </EntityType>
+  <EntityType Name="MATERIALGP">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MATERIALGPT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="MATERIALGP_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="MATERIALGP_ID" Type="nchar" MaxLength="3" Nullable="false" />
+    <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="MENSAJES">
     <Key>
@@ -942,7 +963,7 @@
     <Property Name="BZIRK" Type="nchar" MaxLength="4" />
     <Property Name="MATNR" Type="nvarchar" MaxLength="18" />
     <Property Name="PRDHA" Type="nvarchar" MaxLength="18" />
-    <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+    <Property Name="KUNNR" Type="nvarchar" MaxLength="10" />
     <Property Name="KUNNR_P" Type="nchar" MaxLength="10" />
     <Property Name="BANNER" Type="nchar" MaxLength="10" />
     <Property Name="BANNER_CALC" Type="nchar" MaxLength="10" />
@@ -1283,6 +1304,8 @@
     <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
     <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOEST" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOREA" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TRETENCION">
     <Key>
@@ -2269,6 +2292,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTO_GALL">
+    <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GALL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="GALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTO_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="0..1" />
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
@@ -2337,6 +2372,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOA">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOF_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOF">
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2563,18 +2610,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_MATERIAL_CATEGORIA">
-    <End Role="CATEGORIA" Type="Self.CATEGORIA" Multiplicity="0..1" />
-    <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="CATEGORIA">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="MATERIAL">
-        <PropertyRef Name="MATKL_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_MATERIAL_CTGR">
     <End Role="ZCTGR" Type="Self.ZCTGR" Multiplicity="0..1" />
     <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
@@ -2599,6 +2634,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_MATERIAL_MATERIALGP">
+    <End Role="MATERIALGP" Type="Self.MATERIALGP" Multiplicity="0..1" />
+    <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIALGP">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIAL">
+        <PropertyRef Name="MATERIALGP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_MATERIAL_UMEDIDA">
     <End Role="UMEDIDA" Type="Self.UMEDIDA" Multiplicity="0..1" />
     <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="*" />
@@ -2608,6 +2655,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="MATERIAL">
         <PropertyRef Name="MEINS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIALGPT_MATERIALGP">
+    <End Role="MATERIALGP" Type="Self.MATERIALGP" Multiplicity="1" />
+    <End Role="MATERIALGPT" Type="Self.MATERIALGPT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIALGP">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALGPT">
+        <PropertyRef Name="MATERIALGP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIALGPT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="MATERIALGPT" Type="Self.MATERIALGPT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALGPT">
+        <PropertyRef Name="SPRAS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3637,6 +3708,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="IMPUESTO" EntityType="Self.IMPUESTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LEYENDA" EntityType="Self.LEYENDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MATERIALGP" EntityType="Self.MATERIALGP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MATERIALGPT" EntityType="Self.MATERIALGPT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MENSAJES" EntityType="Self.MENSAJES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
@@ -4009,6 +4082,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
     </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_GALL" Association="Self.FK_DOCUMENTO_GALL">
+      <End Role="GALL" EntitySet="GALL" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
@@ -4032,6 +4109,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DOCUMENTOA_DOCUMENTO" Association="Self.FK_DOCUMENTOA_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOA" EntitySet="DOCUMENTOA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
       <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />
@@ -4105,10 +4186,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="LEYENDA" EntitySet="LEYENDA" />
     </AssociationSet>
-    <AssociationSet Name="FK_MATERIAL_CATEGORIA" Association="Self.FK_MATERIAL_CATEGORIA">
-      <End Role="CATEGORIA" EntitySet="CATEGORIA" />
-      <End Role="MATERIAL" EntitySet="MATERIAL" />
-    </AssociationSet>
     <AssociationSet Name="FK_MATERIAL_CTGR" Association="Self.FK_MATERIAL_CTGR">
       <End Role="ZCTGR" EntitySet="ZCTGR" />
       <End Role="MATERIAL" EntitySet="MATERIAL" />
@@ -4117,9 +4194,21 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="ZBRAND" EntitySet="ZBRAND" />
       <End Role="MATERIAL" EntitySet="MATERIAL" />
     </AssociationSet>
+    <AssociationSet Name="FK_MATERIAL_MATERIALGP" Association="Self.FK_MATERIAL_MATERIALGP">
+      <End Role="MATERIALGP" EntitySet="MATERIALGP" />
+      <End Role="MATERIAL" EntitySet="MATERIAL" />
+    </AssociationSet>
     <AssociationSet Name="FK_MATERIAL_UMEDIDA" Association="Self.FK_MATERIAL_UMEDIDA">
       <End Role="UMEDIDA" EntitySet="UMEDIDA" />
       <End Role="MATERIAL" EntitySet="MATERIAL" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIALGPT_MATERIALGP" Association="Self.FK_MATERIALGPT_MATERIALGP">
+      <End Role="MATERIALGP" EntitySet="MATERIALGP" />
+      <End Role="MATERIALGPT" EntitySet="MATERIALGPT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIALGPT_SPRAS" Association="Self.FK_MATERIALGPT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="MATERIALGPT" EntitySet="MATERIALGPT" />
     </AssociationSet>
     <AssociationSet Name="FK_MIEMBROS_ROL" Association="Self.FK_MIEMBROS_ROL">
       <End Role="ROL" EntitySet="ROL" />

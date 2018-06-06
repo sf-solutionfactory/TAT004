@@ -31,6 +31,7 @@ namespace TAT001.Entities
         public string CALC_TAXT { get; set; }
         public Nullable<int> RELACION { get; set; }
         public string RETENCION { get; set; }
+        public string DESCRI_CONFIG { get; set; }
     
         public virtual SOCIEDAD SOCIEDAD1 { get; set; }
     }

@@ -233,6 +233,7 @@
           <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
           <Property Name="RELACION" Type="int" />
           <Property Name="RETENCION" Type="nchar" MaxLength="1" />
+          <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="CONPOSAPP">
           <Key>
@@ -1308,6 +1309,8 @@
           <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
           <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
           <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
+          <Property Name="APOYOEST" Type="nvarchar" MaxLength="50" />
+          <Property Name="APOYOREA" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="TRETENCION">
           <Key>
@@ -4743,6 +4746,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="RELACION" Type="Int32" />
           <Property Name="RETENCION" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+          <Property Name="DESCRI_CONFIG" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CONPOSAPP">
           <Key>
@@ -5979,6 +5983,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PAYER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="MONTO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MARCA_AGUA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APOYOEST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="APOYOREA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TRETENCION">
           <Key>
@@ -9432,6 +9438,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CONPOSAPHs">
             <EntityTypeMapping TypeName="TAT001Model.CONPOSAPH">
               <MappingFragment StoreEntitySet="CONPOSAPH">
+                <ScalarProperty Name="DESCRI_CONFIG" ColumnName="DESCRI_CONFIG" />
                 <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
                 <ScalarProperty Name="TIPO_SOL" ColumnName="TIPO_SOL" />
                 <ScalarProperty Name="TIPO_DOC" ColumnName="TIPO_DOC" />
@@ -10457,6 +10464,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TEXTOCARTAVs">
             <EntityTypeMapping TypeName="TAT001Model.TEXTOCARTAV">
               <MappingFragment StoreEntitySet="TEXTOCARTAV">
+                <ScalarProperty Name="APOYOREA" ColumnName="APOYOREA" />
+                <ScalarProperty Name="APOYOEST" ColumnName="APOYOEST" />
                 <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
                 <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
                 <ScalarProperty Name="ESTIMADO" ColumnName="ESTIMADO" />

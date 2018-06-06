@@ -32,5 +32,7 @@ namespace TAT001.Entities
         public string PAYER { get; set; }
         public string MONTO { get; set; }
         public string MARCA_AGUA { get; set; }
+        public string APOYOEST { get; set; }
+        public string APOYOREA { get; set; }
     }
 }

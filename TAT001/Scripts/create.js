@@ -101,6 +101,7 @@
             }
         ]
     });
+    
 
     $('#matcat').click(function (e) {
 
@@ -203,7 +204,11 @@
             {},
             {},
             {},
-            {}
+            {},//RSG 05.06.2018
+            {
+                "className": 'total'
+            },//RSG 05.06.2018
+            //{}
 
         ]
     });
@@ -366,6 +371,10 @@
                     //Distribución por material                     
 
                     var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
+
+
+                    var mat = $(addedRow).find("td:eq(" + (15) + ")");//RSG 06.06.2018
+                    mat.addClass = 'total;';
                     //t.row.add([
                     //    "",
                     //    "",
@@ -392,6 +401,7 @@
 
                     t.column(0).visible(false);
                     t.column(1).visible(false);
+                    t.column(14).visible(false);//RSG 06.06.2018
                     //}
                 }
                 updateFooter();
@@ -1217,6 +1227,7 @@ function copiarTableVista(update) {
                     calculo, pm);
 
 
+                var mat = $(addedRow).find("td:eq(" + (15) + ")").addClass = 'total';//RSG 06.06.2018
 
                 //t.row.add([
                 //    matkl_id + "", //col0 ID
@@ -1274,7 +1285,8 @@ function copiarTableVista(update) {
                     }
 
                     if ($(this).hasClass("sc")) {
-                        var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+                        //var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();//RSG 05.06.2018
+                        var total = $(this).find("td.total input").val();//RSG 05.06.2018
                         updateTotalRow(t, $(this), "", "X", total);
                         $(this).removeClass("sc");
                     }
@@ -1447,7 +1459,8 @@ function copiarTableControl() {
             var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
             var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
 
-            var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+            //var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();//RSG 05.06.2018
+            var total = $(this).find("td.total input").val();//RSG 05.06.2018
 
             var item = {};
 
@@ -1873,7 +1886,8 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
         var col14 = col10 * col13;
         //col14 = col14.toFixed(2);
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+        //tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));//RSG 05.06.2018
+        tr.find("td.total input").val(col14.toFixed(2));//RSG 05.06.2018
 
         //Agregar nada más el total
     } else {
@@ -1887,7 +1901,8 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         tr.find("td:eq(" + (11 + index) + ")").text("");
         tr.find("td:eq(" + (12 + index) + ") input").val("");
         tr.find("td:eq(" + (13 + index) + ") input").val("");
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+        //tr.find("td:eq(" + (14 + index) + ") input").val(col14);//RSG 05.06.2018
+        tr.find("td.total input").val(col14);//RSG 05.06.2018
     }
 
     updateFooter();
@@ -1898,7 +1913,8 @@ function updateTable() {
     $('#table_dis > tbody  > tr').each(function () {
         if ($(this).hasClass("sc")) {//RSG 24.05.2018----------------
             var index = getIndex();
-            var total = $(this).find('td').eq((index + 14)).find('input').val();
+            //var total = $(this).find('td').eq((index + 14)).find('input').val();//RSG 05.06.2018
+            var total = $(this).find('td.total').find('input').val();//RSG 05.06.2018
             updateTotalRow(t, $(this), "", "X", total);
         } else {//RSG 24.05.2018----------------
             updateTotalRow(t, $(this), "", "", 0);
@@ -1967,13 +1983,14 @@ function getIndex() {
 function updateFooter() {
     resetFooter();
     var index = getIndex();
-    coltotal = (14 + index);
+    //coltotal = (14 + index);//RSG 05.06.2018
+    coltotal = (15 + index);
 
     var t = $('#table_dis').DataTable();
     var total = 0;
 
     $('#table_dis').find("tr").each(function (index) {
-        var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+        var col4 = $(this).find("td.total input").val();//RSG 05.06.2018
 
         col4 = convertI(col4);
 
@@ -2449,7 +2466,8 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         MONTOC_APOYO,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 05.06.2018
+        PORC_APOYOEST,//RSG 05.06.2018
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat +" " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 24.05.2018
     );
 
@@ -2473,7 +2491,7 @@ function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto
         montoc_a,
         precio_s,
         vol_es,
-        //porc_apes,
+        porc_apes,//RSG 05.06.2018
         apoyo_est//RSG 24.05.2018
     ]).draw(false).node();
 
@@ -2506,8 +2524,7 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
             //}
             if (data[i] == true | data[i] == false) {
                 if (data.hasOwnProperty(i)) {
-                    //alert(i + " -- " + data[i]);
-                    table.column(i + ':name').visible(data[i]);
+                    //alert(i + " -- " + data[i]);table_dis
                 }
             }
         }
