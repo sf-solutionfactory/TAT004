@@ -527,6 +527,7 @@
         }
     });
 
+
     //Temporalidad
     if ($('#monto_doc_md').val() != "") {
         $("label[for='monto_doc_md']").addClass("active");
@@ -537,7 +538,7 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
@@ -548,7 +549,7 @@
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -799,6 +800,14 @@
         $('#montos_doc_ml2').val(monto_doc_md);
         $("label[for='montos_doc_ml2']").addClass("active");
     }
+
+
+    
+
+    $('#btn_getmat').on("click", function (e) {
+
+        formatCat();
+    });
 
 
     $('#btn_guardarh').on("click", function (e) {
@@ -2069,6 +2078,29 @@ function format(catid, idate, fdate) {
 function useReturnData(data) {
     detail = data;
 };
+
+function formatCat() {
+
+
+    $('#catmat').val("");
+
+        $.ajax({
+            type: "POST",
+            url: 'grupoMateriales',
+            data: {},
+            success: function (data) {
+                if (data !== null || data !== "") {
+                    $('#catmat').val(JSON.stringify(data));
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: msg });
+            },
+            async: false
+    });
+
+}
 
 function evaluarExt(filename) {
 
