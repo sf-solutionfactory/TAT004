@@ -181,6 +181,7 @@
     <EntitySetMapping Name="CONPOSAPHs">
       <EntityTypeMapping TypeName="TAT001Model.CONPOSAPH">
         <MappingFragment StoreEntitySet="CONPOSAPH">
+          <ScalarProperty Name="DESCRI_CONFIG" ColumnName="DESCRI_CONFIG" />
           <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
           <ScalarProperty Name="TIPO_SOL" ColumnName="TIPO_SOL" />
           <ScalarProperty Name="TIPO_DOC" ColumnName="TIPO_DOC" />
@@ -1206,6 +1207,8 @@
     <EntitySetMapping Name="TEXTOCARTAVs">
       <EntityTypeMapping TypeName="TAT001Model.TEXTOCARTAV">
         <MappingFragment StoreEntitySet="TEXTOCARTAV">
+          <ScalarProperty Name="APOYOREA" ColumnName="APOYOREA" />
+          <ScalarProperty Name="APOYOEST" ColumnName="APOYOEST" />
           <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
           <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
           <ScalarProperty Name="ESTIMADO" ColumnName="ESTIMADO" />

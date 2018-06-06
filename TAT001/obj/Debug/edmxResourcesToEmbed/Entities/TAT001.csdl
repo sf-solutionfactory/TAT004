@@ -230,6 +230,7 @@
     <Property Name="RELACION" Type="Int32" />
     <Property Name="RETENCION" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="SOCIEDAD1" Relationship="Self.FK_CONPOSAPH_SOCIEDAD" FromRole="CONPOSAPH" ToRole="SOCIEDAD" />
+    <Property Name="DESCRI_CONFIG" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -1466,6 +1467,8 @@
     <Property Name="PAYER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="MONTO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="MARCA_AGUA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="APOYOEST" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="APOYOREA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TRETENCION">
     <Key>

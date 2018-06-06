@@ -53,7 +53,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: TSOL/Details/5
         public ActionResult Details(string id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 792; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -65,7 +65,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(791) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -88,6 +88,7 @@ namespace TAT001.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.SPRAS = db.SPRAS.ToList();
             return View(tSOL);
         }
 
@@ -121,7 +122,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: TSOL/Edit/5
         public ActionResult Edit(string id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 793; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -133,7 +134,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(791) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -156,6 +157,7 @@ namespace TAT001.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.SPRAS = db.SPRAS.ToList();
             ViewBag.RANGO_ID = new SelectList(db.RANGOes, "ID", "ID", tSOL.RANGO_ID);
             ViewBag.TSOLR = new SelectList(db.TSOLs, "ID", "DESCRIPCION", tSOL.TSOLR);
             return View(tSOL);
@@ -166,7 +168,7 @@ namespace TAT001.Controllers.Catalogos
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,TSOLR,RANGO_ID,ESTATUS")] TSOL tSOL)
+        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,TSOLR,RANGO_ID,ESTATUS")] TSOL tSOL, string[] txval)
         {
             if (ModelState.IsValid)
             {
@@ -179,6 +181,7 @@ namespace TAT001.Controllers.Catalogos
                         p.TSOL_ID = tSOL.ID;
                         p.SPRAS_ID = s.ID;
                         p.TXT020 = Request.Form[s.ID].ToString();
+                        p.TXT50 = Request.Form[s.ID].ToString();
                         db.Entry(p).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -187,9 +190,119 @@ namespace TAT001.Controllers.Catalogos
                         var x = e.ToString();
                     }
                 }
+                if (txval != null)
+                {
+                    //Posterior a lo ingresado
+                    List<TSOLT> lstc = db.TSOLTs.Where(i => i.TSOL_ID == tSOL.ID).ToList();
+                    //si el arreglo solo incluye 1 dato, significa que ya hay 2 lenguajes
+                    if (txval.Length == 1)
+                    {
+                        var x1 = lstc[0].SPRAS_ID;
+                        var x2 = lstc[1].SPRAS_ID;
+                        if (lstc[0].SPRAS_ID == "EN")
+                        {
+                            if (lstc[1].SPRAS_ID == "ES")
+                            {
+                                // Lleno el primer objeto
+                                TSOLT trvt = new TSOLT();
+                                trvt.SPRAS_ID = "PT";
+                                trvt.TSOL_ID = tSOL.ID;
+                                trvt.TXT020 = txval[0];
+                                trvt.TXT50 = txval[0];
+                                db.TSOLTs.Add(trvt);
+                                db.SaveChanges();
+                            }
+                            if (lstc[1].SPRAS_ID == "PT")
+                            {  //Lleno el primer objeto
+                                TSOLT trvt = new TSOLT();
+                                trvt.SPRAS_ID = "ES";
+                                trvt.TSOL_ID = tSOL.ID;
+                                trvt.TXT020 = txval[0];
+                                trvt.TXT50 = txval[0];
+                                db.TSOLTs.Add(trvt);
+                                db.SaveChanges();
+                            }
+                        }
+                        if (lstc[0].SPRAS_ID == "ES")
+                        {
+                            if (lstc[1].SPRAS_ID == "PT")
+                            {
+                                // Lleno el primer objeto
+                                TSOLT trvt = new TSOLT();
+                                trvt.SPRAS_ID = "EN";
+                                trvt.TSOL_ID = tSOL.ID;
+                                trvt.TXT020 = txval[0];
+                                trvt.TXT50 = txval[0];
+                                db.TSOLTs.Add(trvt);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                    //si el arreglo  incluye 2 datos, significa que ya hay 1 lenguaje
+                    else if (txval.Length == 2)
+                    {
+                        if (lstc[0].SPRAS_ID == "ES")
+                        {
+                            // Lleno el primer objeto
+                            TSOLT trvt = new TSOLT();
+                            trvt.SPRAS_ID = "EN";
+                            trvt.TSOL_ID = tSOL.ID;
+                            trvt.TXT020 = txval[0];
+                            trvt.TXT50 = txval[0];
+                            db.TSOLTs.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TSOLT trvt2 = new TSOLT();
+                            trvt2.SPRAS_ID = "PT";
+                            trvt2.TSOL_ID = tSOL.ID;
+                            trvt2.TXT020 = txval[1];
+                            trvt2.TXT50 = txval[1];
+                            db.TSOLTs.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                        else if (lstc[0].SPRAS_ID == "EN")
+                        {
+                            // Lleno el primer objeto
+                            TSOLT trvt = new TSOLT();
+                            trvt.SPRAS_ID = "ES";
+                            trvt.TSOL_ID = tSOL.ID;
+                            trvt.TXT020 = txval[0];
+                            trvt.TXT50 = txval[0];
+                            db.TSOLTs.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TSOLT trvt2 = new TSOLT();
+                            trvt2.SPRAS_ID = "PT";
+                            trvt2.TSOL_ID = tSOL.ID;
+                            trvt2.TXT020 = txval[1];
+                            trvt2.TXT50 = txval[1];
+                            db.TSOLTs.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                        else if (lstc[0].SPRAS_ID == "PT")
+                        {
+                            // Lleno el primer objeto
+                            TSOLT trvt = new TSOLT();
+                            trvt.SPRAS_ID = "ES";
+                            trvt.TSOL_ID = tSOL.ID;
+                            trvt.TXT020 = txval[0];
+                            trvt.TXT50 = txval[0];
+                            db.TSOLTs.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TSOLT trvt2 = new TSOLT();
+                            trvt2.SPRAS_ID = "EN";
+                            trvt2.TSOL_ID = tSOL.ID;
+                            trvt2.TXT020 = txval[1];
+                            trvt2.TXT50 = txval[1];
+                            db.TSOLTs.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                    }
+                }
                 return RedirectToAction("Index");
             }
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 793; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -201,7 +314,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(791) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -211,7 +324,7 @@ namespace TAT001.Controllers.Catalogos
                 catch
                 {
                     //ViewBag.pais = "mx.svg";
-                    //return RedirectToAction("Pais", "Home");
+                    return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -294,7 +407,7 @@ namespace TAT001.Controllers.Catalogos
                     };
                     var tslt = "";
                     try
-                    {                   
+                    {
                         string u = User.Identity.Name;
                         USUARIO user = null;
                         user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();

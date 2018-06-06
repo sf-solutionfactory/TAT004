@@ -1,9 +1,8 @@
 ﻿@model TAT001.Entities.TCAMBIO
-
 @{
-    ViewBag.Title = "Edit";
+    //ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 621;
+    ViewBag.pagina_r = 833;
     ViewBag.carpeta_r = 500;
 }
 <script src="~/Scripts/ValidarEdC.js"></script>
@@ -11,40 +10,39 @@
 {
     @Html.AntiForgeryToken()
 
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button id="btnEdit" style="float:right;" type="submit" value="Save" class="btn btn-default"></button>
+            </div>
+        </div>
+    </div>
     <div class="form-horizontal">
         <div class="row">
             <div class="card-panel">
                 <div class="row">
-
                     <div class="col s6 m6 l6">
                         <div class="col l12 m12 s12">
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
-                                @Html.EditorFor(model => model.FCURR, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.LabelFor(model => model.FCURR, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_fcurr" })
+                                @Html.EditorFor(model => model.FCURR, new { htmlAttributes = new { @class = "form-control" , @readonly="readonly"} })
+                                @Html.LabelFor(model => model.FCURR, htmlAttributes: new { @class = "control-label col-md-2", @id = "thFcurr" })
                             </div>
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
-                                @Html.EditorFor(model => model.TCURR, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.LabelFor(model => model.TCURR, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tcurr" })
+                                @Html.EditorFor(model => model.TCURR, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.TCURR, htmlAttributes: new { @class = "control-label col-md-2", @id = "thTcurr" })
                             </div>
                         </div>
                     </div>
-
-
                     <div class="col s6 m6 l6">
                         <div class="col l12 m12 s12">
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
-                                @Html.EditorFor(model => model.GDATU, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.LabelFor(model => model.GDATU, htmlAttributes: new { @class = "control-label col-md-2 active", @id = "lbl_gdatu" })
+                                @Html.EditorFor(model => model.GDATU, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.LabelFor(model => model.GDATU, htmlAttributes: new { @class = "control-label col-md-2 active", @id = "thGdatu" })
                             </div>
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
-                                @Html.EditorFor(model => model.UKURS, new { htmlAttributes = new { @class = "form-control", @id = "txteuk", @for = "lbl_ukurs" } })
-                                @Html.LabelFor(model => model.UKURS, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_ukurs"})
+                                @Html.EditorFor(model => model.UKURS, new { htmlAttributes = new { @class = "form-control", @id = "txteuk", @for = "thUkurss" } })
+                                @Html.LabelFor(model => model.UKURS, htmlAttributes: new { @class = "control-label col-md-2", @id = "thUkurss" })
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Save" class="btn btn-default" />
                         </div>
                     </div>
                 </div>
@@ -52,7 +50,6 @@
         </div>
     </div>
 }
-
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { id = "lblRegresar" })
 </div>

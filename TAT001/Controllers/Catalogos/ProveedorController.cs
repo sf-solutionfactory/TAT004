@@ -51,7 +51,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Proveedor/Details/5
         public ActionResult Details(string id)
         {
-            int pagina = 503; //ID EN BASE DE DATOS
+            int pagina = 772; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -64,7 +64,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 pagina = 502;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -94,7 +94,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Proveedor/Create
         public ActionResult Create()
         {
-            int pagina = 502; //ID EN BASE DE DATOS
+            int pagina = 774; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -106,7 +106,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -146,7 +146,7 @@ namespace TAT001.Controllers.Catalogos
                     return RedirectToAction("Index");
                 }
             }
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 774; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -158,7 +158,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.error = "Valores Existentes (" + pROVEEDOR.ID + ")";
                 try
                 {
@@ -177,9 +177,9 @@ namespace TAT001.Controllers.Catalogos
         }
 
         // GET: Proveedor/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, string sc)
         {
-            int pagina = 502; //ID EN BASE DE DATOS
+            int pagina = 773; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -191,7 +191,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -206,12 +206,12 @@ namespace TAT001.Controllers.Catalogos
                 Session["spras"] = user.SPRAS_ID;
                 ViewBag.lan = user.SPRAS_ID;
             }
-            ViewBag.Sociedad = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS");
+            ViewBag.Sociedad = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS",sc);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PROVEEDOR pROVEEDOR = db.PROVEEDORs.Find(id);
+            PROVEEDOR pROVEEDOR = db.PROVEEDORs.Where(x => x.ID == id && x.SOCIEDAD_ID == sc).FirstOrDefault();
             if (pROVEEDOR == null)
             {
                 return HttpNotFound();
@@ -243,7 +243,7 @@ namespace TAT001.Controllers.Catalogos
                 }
                 return RedirectToAction("Index");
             }
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 773; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -255,7 +255,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -270,13 +270,14 @@ namespace TAT001.Controllers.Catalogos
                 Session["spras"] = user.SPRAS_ID;
                 ViewBag.lan = user.SPRAS_ID;
             }
+            ViewBag.Sociedad = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", sociedad);
             return View(pROVEEDOR);
         }
 
         // GET: Proveedor/Delete/5
         public ActionResult Delete(string id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 775; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -288,7 +289,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -326,7 +327,7 @@ namespace TAT001.Controllers.Catalogos
                 pROVEEDOR.ACTIVO = false;
                 db.Entry(pROVEEDOR).State = EntityState.Modified;
                 db.SaveChanges();
-                int pagina = 502; //ID EN BASE DE DATOS
+                int pagina = 775; //ID EN BASE DE DATOS
                 using (TAT001Entities db = new TAT001Entities())
                 {
                     string u = User.Identity.Name;
@@ -338,7 +339,7 @@ namespace TAT001.Controllers.Catalogos
                     ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                     ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                     ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                    ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                    ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(771) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                     try
                     {

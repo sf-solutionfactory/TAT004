@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 
-namespace TAT001.Controllers.Configuracion
+namespace TAT001.Controllers
 {
     public class ccatController : Controller
     {

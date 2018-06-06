@@ -23,28 +23,28 @@
             <div class="row">
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblId" })
                 </div>
 
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.LEYENDA1, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.LEYENDA1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.LEYENDA1, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblLey" })
                 </div>
 
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     <input value="@ac" type="text" class="control-label col-md-2" disabled="disabled" readonly="readonly" />
-                    @Html.LabelFor(model => model.ACTIVO, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ACTIVO, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblAc" })
                 </div>
 
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.PAI.LAND, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.PAI.LAND, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PAI.LAND, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblPais" })
                 </div>
             </div>
         </div>
     </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID },new { id= "lblEditar" }) |
+    @Html.ActionLink("Back to List", "Index",null, new { id= "lblRegresar" })
 </p>

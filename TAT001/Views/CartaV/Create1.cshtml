@@ -14,7 +14,6 @@
     <div class="row">
         <div class="row right">
             <div class="col l12 m12 right">
-                <a href="@Url.Action("Details", "Solicitudes", new { id = Model.num_doc })" class="btn btn-default">Regresar</a>
                 <input type="submit" value="Imprimir" class="btn btn-default" onclick="timer()" />
             </div>
         </div>
@@ -215,104 +214,67 @@
                                     </tr>
                                 </thead>
 
-                                @if (a == 0)
-                                {
-                                    <tr style="background-color:#CCCCCC">
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.material)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.categoria)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.descripcion)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoun)
-                                            <label>
-                                                <input type="checkbox" name="costoun_x" value="true" id="costoun_x" @Html.Raw((Model.costoun_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyo)
-                                            <label>
-                                                <input type="checkbox" name="apoyo_x" value="true" id="apoyo_x" @Html.Raw((Model.apoyo_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyop)
-                                            <label>
-                                                <input type="checkbox" name="apoyop_x" value="true" id="apoyop_x" @Html.Raw((Model.apoyop_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoap)
-                                            <label>
-                                                <input type="checkbox" name="costoap_x" value="true" id="costoap_x" @Html.Raw((Model.costoap_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.precio)
-                                            <label>
-                                                <input type="checkbox" name="precio_x" value="true" id="precio_x" @Html.Raw((Model.precio_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoEst)
-                                            <label>
-                                                <input type="checkbox" name="apoyoEst_x" value="true" id="apoyoEst_x" @Html.Raw((Model.apoyoEst_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoRea)
-                                            <label>
-                                                <input type="checkbox" name="apoyoRea_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyoRea_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                            </label>
-                                        </th>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr style="background-color:#CCCCCC">
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.material)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.categoria)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.descripcion)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoun)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyo)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyop)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoap)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.precio)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoEst)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoRea)
-                                        </th>
-                                    </tr>
-                                }
+                                <tr style="background-color:#CCCCCC">
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.material)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.categoria)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.descripcion)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.costoun)
+                                        <label>
+                                            <input type="checkbox" name="costoun_x" value="true" id="costoun_x" @Html.Raw((Model.costoun_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.apoyo)
+                                        <label>
+                                            <input type="checkbox" name="apoyo_x" value="true" id="apoyo_x" @Html.Raw((Model.apoyo_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.apoyop)
+                                        <label>
+                                            <input type="checkbox" name="apoyop_x" value="true" id="apoyop_x" @Html.Raw((Model.apoyop_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.costoap)
+                                        <label>
+                                            <input type="checkbox" name="costoap_x" value="true" id="costoap_x" @Html.Raw((Model.costoap_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.precio)
+                                        <label>
+                                            <input type="checkbox" name="precio_x" value="true" id="precio_x" @Html.Raw((Model.precio_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.apoyoEst)
+                                        <label>
+                                            <input type="checkbox" name="apoyoEst_x" value="true" id="apoyoEst_x" @Html.Raw((Model.apoyoEst_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.apoyoRea)
+                                        <label>
+                                            <input type="checkbox" name="apoyoRea_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyoRea_x) ? "checked=\"checked\"" : "") />
+                                            <span style="height:1"></span>
+                                        </label>
+                                    </th>
+                                </tr>
+
                                 @*<tr style="background-color:#CCCCCC">
                                     @foreach (var contenido in Model.listaEncabezado)
                                     {

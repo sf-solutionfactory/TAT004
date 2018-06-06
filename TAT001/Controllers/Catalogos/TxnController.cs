@@ -52,7 +52,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Txn/Details/5
         public ActionResult Details(int id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 822; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -65,7 +65,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(821) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -89,13 +89,14 @@ namespace TAT001.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.SPRAS = db.SPRAS.ToList();
             return View(tX_TNOTA);
         }
 
         // GET: Txn/Create
         public ActionResult Create()
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 824; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -108,7 +109,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(821) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -165,7 +166,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Txn/Edit/5
         public ActionResult Edit(int id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 823; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -178,7 +179,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(821) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -202,6 +203,7 @@ namespace TAT001.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            ViewBag.SPRAS = db.SPRAS.ToList();
             return View(tX_TNOTA);
         }
 
@@ -210,7 +212,7 @@ namespace TAT001.Controllers.Catalogos
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,ACTIVO")] TX_TNOTA tX_TNOTA)
+        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,ACTIVO")] TX_TNOTA tX_TNOTA, string[] txval)
         {
             if (ModelState.IsValid)
             {
@@ -218,12 +220,119 @@ namespace TAT001.Controllers.Catalogos
                 List<SPRA> ss = db.SPRAS.ToList();
                 foreach (SPRA s in ss)
                 {
-                    TX_NOTAT txnt = new TX_NOTAT();
-                    txnt.SPRAS_ID = s.ID;
-                    txnt.TNOTA_ID = tX_TNOTA.ID;
-                    txnt.TXT50 = Request.Form[s.ID].ToString();
-                    db.Entry(txnt).State = EntityState.Modified;
-                    db.SaveChanges();
+                    try
+                    {
+                        TX_NOTAT txnt = new TX_NOTAT();
+                        txnt.SPRAS_ID = s.ID;
+                        txnt.TNOTA_ID = tX_TNOTA.ID;
+                        txnt.TXT50 = Request.Form[s.ID].ToString();
+                        db.Entry(txnt).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                    catch (Exception e) {
+                        var ex = e.ToString();
+                    }
+                }
+                if (txval != null)
+                {
+                    //Posterior a lo ingresado
+                    List<TX_NOTAT> lstc = db.TX_NOTAT.Where(i => i.TNOTA_ID == tX_TNOTA.ID).ToList();
+                    //si el arreglo solo incluye 1 dato, significa que ya hay 2 lenguajes
+                    if (txval.Length == 1)
+                    {
+                        var x1 = lstc[0].SPRAS_ID;
+                        var x2 = lstc[1].SPRAS_ID;
+                        if (lstc[0].SPRAS_ID == "EN")
+                        {
+                            if (lstc[1].SPRAS_ID == "ES")
+                            {
+                                // Lleno el primer objeto
+                                TX_NOTAT trvt = new TX_NOTAT();
+                                trvt.SPRAS_ID = "PT";
+                                trvt.TNOTA_ID = tX_TNOTA.ID;
+                                trvt.TXT50 = txval[0];
+                                db.TX_NOTAT.Add(trvt);
+                                db.SaveChanges();
+                            }
+                            if (lstc[1].SPRAS_ID == "PT")
+                            {  //Lleno el primer objeto
+                                TX_NOTAT trvt = new TX_NOTAT();
+                                trvt.SPRAS_ID = "ES";
+                                trvt.TNOTA_ID = tX_TNOTA.ID;
+                                trvt.TXT50 = txval[0];
+                                db.TX_NOTAT.Add(trvt);
+                                db.SaveChanges();
+                            }
+                        }
+                        if (lstc[0].SPRAS_ID == "ES")
+                        {
+                            if (lstc[1].SPRAS_ID == "PT")
+                            {
+                                //Lleno el primer objeto
+                                TX_NOTAT trvt = new TX_NOTAT();
+                                trvt.SPRAS_ID = "EN";
+                                trvt.TNOTA_ID = tX_TNOTA.ID;
+                                trvt.TXT50 = txval[0];
+                                db.TX_NOTAT.Add(trvt);
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                    //si el arreglo  incluye 2 datos, significa que ya hay 1 lenguaje
+                    else if (txval.Length == 2)
+                    {
+                        if (lstc[0].SPRAS_ID == "ES")
+                        {
+                            //Lleno el primer objeto
+                            TX_NOTAT trvt = new TX_NOTAT();
+                            trvt.SPRAS_ID = "EN";
+                            trvt.TNOTA_ID = tX_TNOTA.ID;
+                            trvt.TXT50 = txval[0];
+                            db.TX_NOTAT.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TX_NOTAT trvt2 = new TX_NOTAT();
+                            trvt2.SPRAS_ID = "PT";
+                            trvt2.TNOTA_ID = tX_TNOTA.ID;
+                            trvt2.TXT50 = txval[1];
+                            db.TX_NOTAT.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                        else if (lstc[0].SPRAS_ID == "EN")
+                        {
+                            //Lleno el primer objeto
+                            TX_NOTAT trvt = new TX_NOTAT();
+                            trvt.SPRAS_ID = "ES";
+                            trvt.TNOTA_ID = tX_TNOTA.ID;
+                            trvt.TXT50 = txval[0];
+                            db.TX_NOTAT.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TX_NOTAT trvt2 = new TX_NOTAT();
+                            trvt2.SPRAS_ID = "PT";
+                            trvt2.TNOTA_ID = tX_TNOTA.ID;
+                            trvt2.TXT50 = txval[1];
+                            db.TX_NOTAT.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                        else if (lstc[0].SPRAS_ID == "PT")
+                        {
+                            //Lleno el primer objeto
+                            TX_NOTAT trvt = new TX_NOTAT();
+                            trvt.SPRAS_ID = "ES";
+                            trvt.TNOTA_ID = tX_TNOTA.ID;
+                            trvt.TXT50 = txval[0];
+                            db.TX_NOTAT.Add(trvt);
+                            db.SaveChanges();
+                            //Lleno el segundo objeto
+                            TX_NOTAT trvt2 = new TX_NOTAT();
+                            trvt2.SPRAS_ID = "EN";
+                            trvt2.TNOTA_ID = tX_TNOTA.ID;
+                            trvt2.TXT50 = txval[1];
+                            db.TX_NOTAT.Add(trvt2);
+                            db.SaveChanges();
+                        }
+                    }
                 }
                 return RedirectToAction("Index");
             }
@@ -233,7 +342,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: Txn/Delete/5
         public ActionResult Delete(int id)
         {
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 825; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -246,7 +355,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(821) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -288,7 +397,7 @@ namespace TAT001.Controllers.Catalogos
                 return RedirectToAction("Index");
             }
             catch (Exception e) { var ex = e.ToString(); }
-            int pagina = 621; //ID EN BASE DE DATOS
+            int pagina = 825; //ID EN BASE DE DATOS
             USUARIO user = null;
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -301,7 +410,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(821) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {

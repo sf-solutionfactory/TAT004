@@ -1,5 +1,4 @@
 ﻿@model TAT001.Entities.PROVEEDOR
-
 @{
     /**/
 
@@ -12,7 +11,11 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    <div class="row">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" style="float: right;" />
+        </div>
+    </div>
     <div class="row">
         <div class="card-panel">
             <div class="row">
@@ -20,27 +23,23 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="row">
                         <div class="input-field col l6 m6" style="margin-bottom:0;">
-                            @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control txtIDP", @maxlength = "10" } })
+                            @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblId" })
+                            @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control txtIDP", @maxlength = "10", @readonly = "readonly" } })
                             @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
                         </div>
                         <div class="input-field col l6 m6" style="margin-bottom:0;">
-                            @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.NOMBRE, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblNombre" })
                             @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control pname", @maxlength = "230" } })
                             @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6" style="margin-bottom:0;">
-                            @Html.LabelFor(model => model.SOCIEDAD_ID, "SOCIEDAD", htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.SOCIEDAD_ID, "SOCIEDAD", htmlAttributes: new { @class = "active control-label col-md-2", @id = "lblSociedadId" })
                             @Html.DropDownList("SOCIEDAD", null, htmlAttributes: new { @class = "form-control", @name = "sociedad" })
                             @Html.ValidationMessageFor(model => model.SOCIEDAD_ID, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Save" class="btn btn-default" style="float: right;" />
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -52,5 +51,5 @@
     var instance = M.Select.init(elem, []);
 </script>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { id = "lblRegresar" })
 </div>

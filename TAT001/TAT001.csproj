@@ -816,7 +816,7 @@
     <Content Include="Views\Solicitudes\CreateNew.cshtml" />
     <Content Include="Views\CartaV\Details.cshtml" />
     <Content Include="Views\CartaV\Index.cshtml" />
-    <Content Include="Views\CartaV\Create.cshtml" />
+    <Content Include="Views\CartaV\Create1.cshtml" />
     <Content Include="Views\Solicitudes\DetailsF.cshtml" />
     <Content Include="Views\Puestos\Create.cshtml" />
     <Content Include="Views\Puestos\Delete.cshtml" />
@@ -920,6 +920,7 @@
     <Content Include="Views\ccat\Delete.cshtml" />
     <Content Include="Views\ccat\Details.cshtml" />
     <Content Include="Views\ccat\Edit.cshtml" />
+    <Content Include="Views\CartaV\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -228,6 +228,7 @@
     <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
     <Property Name="RELACION" Type="int" />
     <Property Name="RETENCION" Type="nchar" MaxLength="1" />
+    <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -1303,6 +1304,8 @@
     <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
     <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOEST" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOREA" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TRETENCION">
     <Key>

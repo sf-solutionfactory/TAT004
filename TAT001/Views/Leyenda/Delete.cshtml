@@ -1,9 +1,8 @@
 ﻿@model TAT001.Entities.LEYENDA
-
 @{
-    ViewBag.Title = "Delete";
+    //ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.pagina_r = 621;
+    ViewBag.pagina_r = 755;
     ViewBag.carpeta_r = 500;
     var ac = "";
     if (ViewBag.ac == true)
@@ -15,41 +14,36 @@
         ac = "Inactivo";
     }
 }
-
 <div>
     <div class="card-panel">
         <div class="row">
             <div class="row">
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblId" })
                 </div>
-
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.LEYENDA1, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.LEYENDA1, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.LEYENDA1, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblLey" })
                 </div>
-
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     <input value="@ac" type="text" class="control-label col-md-2" disabled="disabled" readonly="readonly" />
-                    @Html.LabelFor(model => model.ACTIVO, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ACTIVO, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblAc" })
                 </div>
-
                 <div class="input-field col l6 m6" style="margin-bottom:0;">
                     @Html.EditorFor(model => model.PAI.LAND, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    @Html.LabelFor(model => model.PAI.LAND, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PAI.LAND, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblPais" })
                 </div>
             </div>
         </div>
     </div>
-
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <button id="btnDl" type="submit" value="Delete" class="btn btn-default"></button>|
+            @Html.ActionLink("Back to List", "Index",null, new { id= "lblRegresar" })
         </div>
     }
 </div>
