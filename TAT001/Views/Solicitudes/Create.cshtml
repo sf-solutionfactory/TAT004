@@ -997,8 +997,8 @@
             <div class="row">
                 <div class="col s12 m6 l6">
                     <div class="card-panel">
-                        <a class="btn" id="btn_getmat"><i class="material-icons left">add</i>GetMatServer</a>
-                        <input type="text" id="catmat" />
+                        @*<a class="btn" id="btn_getmat"><i class="material-icons left">add</i>GetMatServer</a>*@
+                        <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
                             @*<input type="button" id="matcat" value="Get materiales cat"/>*@
@@ -1040,7 +1040,7 @@
                         <h5>Monto Base</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">

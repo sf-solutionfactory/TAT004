@@ -869,6 +869,8 @@ namespace TAT001.Controllers
             ViewBag.SEL_NEG = relacionada_neg;
             ViewBag.SEL_DIS = relacionada_dis;
             ViewBag.BMONTO_APOYO = "";
+            ViewBag.CATMAT = "";
+            ViewBag.MONTO_DIS = "";
 
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
@@ -899,13 +901,15 @@ namespace TAT001.Controllers
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
-                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo)
+                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact, 
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo, string catmat)
         {
 
             bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
+            decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
             if (ModelState.IsValid && prueba == true)
                 //if (ModelState.IsValid)
             {
@@ -1771,6 +1775,8 @@ namespace TAT001.Controllers
             ViewBag.SEL_NEG = select_neg;
             ViewBag.SEL_DIS = select_dis;
             ViewBag.BMONTO_APOYO = bmonto_apoyo;
+            ViewBag.CATMAT = catmat;
+            ViewBag.MONTO_DIS = monto_ret;
 
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
@@ -2734,8 +2740,286 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult grupoMateriales()//string kunnr, string gid, string soc_id)
-        {
+        public JsonResult grupoMateriales(string vkorg, string spart, string kunnr, string soc_id)//string kunnr, string gid, string soc_id)
+        { 
+            TAT001Entities db = new TAT001Entities();
+            if (kunnr == null)
+            {
+                kunnr = "";
+            }
+
+            //if (catid == null)
+            //{
+            //    catid = "";
+            //}
+
+            //var jd = (dynamic)null;
+
+            List<DOCUMENTOM_MOD> jd = new List<DOCUMENTOM_MOD>();
+
+            //Obtener los materiales
+            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
+            try
+            {
+                matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            //Validar si hay materiales
+            if (matl != null)
+            {
+
+                CLIENTE cli = new CLIENTE();
+                List<CLIENTE> clil = new List<CLIENTE>();
+
+                try
+                {
+                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr & c.VKORG == vkorg & c.SPART == spart).FirstOrDefault();
+
+                    //Saber si el cliente es sold to, payer o un grupo
+                    if (cli != null)
+                    {
+                        //Es un soldto
+                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                        {
+                            //cli.VKORG = cli.VKORG+" ";
+                            clil.Add(cli);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                var cie = clil.Cast<CLIENTE>();
+                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+                //Obtener el numero de periodos para obtener el historial
+                int nummonths = 3;
+                int imonths = nummonths * -1;
+                //Obtener el rango de los periodos incluyendo el año
+                DateTime ff = DateTime.Today;
+                DateTime fi = ff.AddMonths(imonths);
+
+                string mi = fi.Month.ToString();//.ToString("MM");
+                string ai = fi.Year.ToString();//.ToString("yyyy");
+
+                string mf = ff.Month.ToString();// ("MM");
+                string af = ff.Year.ToString();// "yyyy");
+
+                int aii = 0;
+                try
+                {
+                    aii = Convert.ToInt32(ai);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mii = 0;
+                try
+                {
+                    mii = Convert.ToInt32(mi);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int aff = 0;
+                try
+                {
+                    aff = Convert.ToInt32(af);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mff = 0;
+                try
+                {
+                    mff = Convert.ToInt32(mf);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                if (cie != null)
+                {
+                    //Obtener el historial de compras de los clientesd
+                    var matt = matl.ToList();
+                    kunnr = kunnr.TrimStart('0').Trim();
+                    var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
+                    var spras = Session["spras"].ToString();
+                    var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+                    foreach (var c in cie)
+                    {
+                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    }
+
+                    CONFDIST_CAT conf = getCatConf(soc_id);
+                    if (conf.CAMPO == "GRSLS")
+                    {
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                              ) && ps.BUKRS == soc_id
+                              && ps.GRSLS > 0
+                              select new DOCUMENTOM_MOD
+                              {
+                                  ID_CAT = m.MATKL_ID,
+                                  MATNR = ps.MATNR,
+                                  //mk.TXT50
+                                  VAL = Convert.ToDecimal(ps.GRSLS)
+                              }).ToList();
+                    }
+                    else
+                    {
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                              ) && ps.BUKRS == soc_id
+                              && ps.NETLB > 0
+                              select new DOCUMENTOM_MOD
+                              {
+                                  ID_CAT = m.MATKL_ID,
+                                  MATNR = ps.MATNR,
+                                  //mk.TXT50
+
+                                  VAL = Convert.ToDecimal(ps.NETLB)
+                              }).ToList();
+                    }
+                }
+            }
+
+            //Obtener las categorías
+            var categorias = jd.GroupBy(c => c.ID_CAT, c => new { ID = c.ID_CAT.ToString() }).ToList();
+
+            List<CategoriaMaterial> lcatmat = new List<CategoriaMaterial>();
+
+            foreach (var item in categorias)
+            {
+                CategoriaMaterial cm = new CategoriaMaterial();
+                cm.ID = item.Key;
+
+                //Obtener los materiales de la categoría
+                List<DOCUMENTOM_MOD> dl = new List<DOCUMENTOM_MOD>();
+                List<DOCUMENTOM_MOD> dm = new List<DOCUMENTOM_MOD>();
+                dl = jd.Where(c => c.ID_CAT == item.Key).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).ToList();//Falta obtener el groupby
+
+                //Obtener la descripción de los materiales
+                foreach(DOCUMENTOM_MOD d in dl)
+                {
+                    DOCUMENTOM_MOD dcl = new DOCUMENTOM_MOD();
+                    dcl = dm.Where(z => z.MATNR == d.MATNR).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).FirstOrDefault();
+
+                    if(dcl == null)
+                    {
+                        DOCUMENTOM_MOD dcll = new DOCUMENTOM_MOD();
+                        //No se ha agregado
+                        decimal val = dl.Where(y => y.MATNR == d.MATNR).Sum(x => x.VAL);
+                        dcll.ID_CAT = item.Key;
+                        dcll.MATNR = d.MATNR;
+
+                        //Obtener la descripción del material
+                        dcll.DESC = db.MATERIALs.Where(w => w.ID == d.MATNR).FirstOrDefault().MAKTG.ToString();
+                        dcll.VAL = val;
+
+                        dm.Add(dcll);
+                    }
+                }
+
+                cm.MATERIALES = dm;
+                lcatmat.Add(cm);
+            }
+
+
+            
+
+            //CategoriaMaterial cm1 = new CategoriaMaterial();
+            //CategoriaMaterial cm2 = new CategoriaMaterial();
+            //CategoriaMaterial cm3 = new CategoriaMaterial();
+
+            //List<DOCUMENTOM_MOD> d1l = new List<DOCUMENTOM_MOD>();
+            //cm1.ID = "1";
+            //cm1.DESCRIPCION = "Cookies";
+
+            //DOCUMENTOM_MOD dm11 = new DOCUMENTOM_MOD();
+            //dm11.ID_CAT = "1";
+            //dm11.MATNR = "1008010723";
+            //dm11.DESC = "Caja ZUC PowerBalls 24x430g MEX";
+            //dm11.VAL = 4600;
+
+            //DOCUMENTOM_MOD dm12 = new DOCUMENTOM_MOD();
+            //dm12.ID_CAT = "1";
+            //dm12.MATNR = "1008011710";
+            //dm12.DESC = "Caja BaSK Cosecha Roja 40x144g MEX";
+            //dm12.VAL = 3500;
+
+            //d1l.Add(dm11);
+            //d1l.Add(dm12);
+
+            //cm1.MATERIALES = d1l;
+
+
+            //List<DOCUMENTOM_MOD> d2l = new List<DOCUMENTOM_MOD>();
+            //cm2.ID = "2";
+            //cm2.DESCRIPCION = "Otg Cookies";
+
+            //DOCUMENTOM_MOD dm21 = new DOCUMENTOM_MOD();
+            //dm21.ID_CAT = "2";
+            //dm21.MATNR = "1008017251";
+            //dm21.DESC = "Caja BaCK 40x114g LIN";
+            //dm21.VAL = 1208;
+
+            //DOCUMENTOM_MOD dm22 = new DOCUMENTOM_MOD();
+            //dm22.ID_CAT = "2";
+            //dm22.MATNR = "1008010645";
+            //dm22.DESC = "Caja RKT 20x132g Gaudi LIN";
+            //dm22.VAL = 4600;
+
+            //d2l.Add(dm21);
+            //d2l.Add(dm22);
+
+            //cm2.MATERIALES = d2l;
+
+            //List<DOCUMENTOM_MOD> d3l = new List<DOCUMENTOM_MOD>();
+            //cm3.ID = "19";
+            //cm3.DESCRIPCION = "Natural";
+
+            //DOCUMENTOM_MOD dm31 = new DOCUMENTOM_MOD();
+            //dm31.ID_CAT = "19";
+            //dm31.MATNR = "1008015509";
+            //dm31.DESC = "Caja BaFL 40x108g LIN";
+            //dm31.VAL = 6320;
+
+            //d3l.Add(dm31);
+
+            //cm3.MATERIALES = d3l;
+
+            //lcatmat.Add(cm1);
+            //lcatmat.Add(cm2);
+            //lcatmat.Add(cm3);
             //if (kunnr == null)
             //{
             //    kunnr = "";
@@ -2945,72 +3229,72 @@ namespace TAT001.Controllers
             //    }
             //}
 
-            List<CategoriaMaterial> lcatmat = new List<CategoriaMaterial>();
+            //List<CategoriaMaterial> lcatmat = new List<CategoriaMaterial>();
 
-            CategoriaMaterial cm1 = new CategoriaMaterial();
-            CategoriaMaterial cm2 = new CategoriaMaterial();
-            CategoriaMaterial cm3 = new CategoriaMaterial();
+            //CategoriaMaterial cm1 = new CategoriaMaterial();
+            //CategoriaMaterial cm2 = new CategoriaMaterial();
+            //CategoriaMaterial cm3 = new CategoriaMaterial();
 
-            List<DOCUMENTOM_MOD> d1l = new List<DOCUMENTOM_MOD>();
-            cm1.ID = "1";
-            cm1.DESCRIPCION = "Cookies";
+            //List<DOCUMENTOM_MOD> d1l = new List<DOCUMENTOM_MOD>();
+            //cm1.ID = "1";
+            //cm1.DESCRIPCION = "Cookies";
 
-            DOCUMENTOM_MOD dm11 = new DOCUMENTOM_MOD();
-            dm11.ID_CAT = "1";
-            dm11.MATNR = "1008010723";
-            dm11.DESC = "Caja ZUC PowerBalls 24x430g MEX";
-            dm11.VAL = 4600;
+            //DOCUMENTOM_MOD dm11 = new DOCUMENTOM_MOD();
+            //dm11.ID_CAT = "1";
+            //dm11.MATNR = "1008010723";
+            //dm11.DESC = "Caja ZUC PowerBalls 24x430g MEX";
+            //dm11.VAL = 4600;
 
-            DOCUMENTOM_MOD dm12 = new DOCUMENTOM_MOD();
-            dm12.ID_CAT = "1";
-            dm12.MATNR = "1008011710";
-            dm12.DESC = "Caja BaSK Cosecha Roja 40x144g MEX";
-            dm12.VAL = 3500;
+            //DOCUMENTOM_MOD dm12 = new DOCUMENTOM_MOD();
+            //dm12.ID_CAT = "1";
+            //dm12.MATNR = "1008011710";
+            //dm12.DESC = "Caja BaSK Cosecha Roja 40x144g MEX";
+            //dm12.VAL = 3500;
 
-            d1l.Add(dm11);
-            d1l.Add(dm12);
+            //d1l.Add(dm11);
+            //d1l.Add(dm12);
 
-            cm1.MATERIALES = d1l;
+            //cm1.MATERIALES = d1l;
 
 
-            List<DOCUMENTOM_MOD> d2l = new List<DOCUMENTOM_MOD>();
-            cm2.ID = "2";
-            cm2.DESCRIPCION = "Otg Cookies";
+            //List<DOCUMENTOM_MOD> d2l = new List<DOCUMENTOM_MOD>();
+            //cm2.ID = "2";
+            //cm2.DESCRIPCION = "Otg Cookies";
 
-            DOCUMENTOM_MOD dm21 = new DOCUMENTOM_MOD();
-            dm21.ID_CAT = "2";
-            dm21.MATNR = "1008017251";
-            dm21.DESC = "Caja BaCK 40x114g LIN";
-            dm21.VAL = 1208;
+            //DOCUMENTOM_MOD dm21 = new DOCUMENTOM_MOD();
+            //dm21.ID_CAT = "2";
+            //dm21.MATNR = "1008017251";
+            //dm21.DESC = "Caja BaCK 40x114g LIN";
+            //dm21.VAL = 1208;
 
-            DOCUMENTOM_MOD dm22 = new DOCUMENTOM_MOD();
-            dm22.ID_CAT = "2";
-            dm22.MATNR = "1008010645";
-            dm22.DESC = "Caja RKT 20x132g Gaudi LIN";
-            dm22.VAL = 4600;
+            //DOCUMENTOM_MOD dm22 = new DOCUMENTOM_MOD();
+            //dm22.ID_CAT = "2";
+            //dm22.MATNR = "1008010645";
+            //dm22.DESC = "Caja RKT 20x132g Gaudi LIN";
+            //dm22.VAL = 4600;
 
-            d2l.Add(dm21);
-            d2l.Add(dm22);
+            //d2l.Add(dm21);
+            //d2l.Add(dm22);
 
-            cm2.MATERIALES = d2l;
+            //cm2.MATERIALES = d2l;
 
-            List<DOCUMENTOM_MOD> d3l = new List<DOCUMENTOM_MOD>();
-            cm3.ID = "19";
-            cm3.DESCRIPCION = "Natural";
+            //List<DOCUMENTOM_MOD> d3l = new List<DOCUMENTOM_MOD>();
+            //cm3.ID = "19";
+            //cm3.DESCRIPCION = "Natural";
 
-            DOCUMENTOM_MOD dm31 = new DOCUMENTOM_MOD();
-            dm31.ID_CAT = "19";
-            dm31.MATNR = "1008015509";
-            dm31.DESC = "Caja BaFL 40x108g LIN";
-            dm31.VAL = 6320;
+            //DOCUMENTOM_MOD dm31 = new DOCUMENTOM_MOD();
+            //dm31.ID_CAT = "19";
+            //dm31.MATNR = "1008015509";
+            //dm31.DESC = "Caja BaFL 40x108g LIN";
+            //dm31.VAL = 6320;
 
-            d3l.Add(dm31);
+            //d3l.Add(dm31);
 
-            cm3.MATERIALES = d3l;
+            //cm3.MATERIALES = d3l;
 
-            lcatmat.Add(cm1);
-            lcatmat.Add(cm2);
-            lcatmat.Add(cm3);
+            //lcatmat.Add(cm1);
+            //lcatmat.Add(cm2);
+            //lcatmat.Add(cm3);
 
 
             JsonResult jl = Json(lcatmat, JsonRequestBehavior.AllowGet);

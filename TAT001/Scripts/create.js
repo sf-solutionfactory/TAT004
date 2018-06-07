@@ -111,11 +111,11 @@
     });
 
 
-    $('#sendTable').click(function (e) {
+    //$('#sendTable').click(function (e) {
 
-        event.returnvalue = false;
-        event.cancel = true;
-    });
+    //    event.returnvalue = false;
+    //    event.cancel = true;
+    //});
 
     //Evaluar la extensión y tamaño del archivo a cargar
     $('.file_soporte').change(function () {
@@ -216,7 +216,17 @@
     $('#delRow').click(function (e) {
         var t = $('#table_dis').DataTable();
         t.rows('.selected').remove().draw(false);
-        updateFooter();
+        //Validar si es categoría por porcentaje
+        //Obtener el tipo de negociación
+        var neg = $("#select_neg").val();
+        //Obtener la distribución
+        var dis = $("#select_dis").val();
+        if (neg == "P" && dis == "C") {
+            //Actualizar la tabla con los porcentajes
+            updateTableCat();
+        } else {
+            updateFooter();
+        }
         event.returnValue = false;
         event.cancel = true;
     });
@@ -403,30 +413,38 @@
                 var p_apoyo = $('#bmonto_apoyo').val();
                 p_apoyo = parseFloat(p_apoyo) | 0;
 
+                var m_apoyo = $('#monto_dis').val();
+                m_apoyo = parseFloat(m_apoyo) | 0;
+                
+
                 //if (p_apoyo > 0) {
                     //Distribución por categoría
-                    if (dis == "C") {
+                if (dis == "C") {
+                    if (m_apoyo > 0) {
                         //Obtener la categoría
                         var cat = $('#select_categoria').val();
 
                         //Validar si la categoría ya había sido agregada
                         var catExist = valcategoria(cat);
-                            if (catExist != true) {
-                                if (cat != "") {
-                                    var opt = $("#select_categoria option:selected").text();
-                                    porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
-                                    var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, porcentaje_cat, "pc");
-                                    $(".pc").prop('disabled', true);
-                                    $('.pc').trigger('click');
-                                    //Actualizar la tabla con los porcentajes
-                                    updateTableCat();
-                                } else {
-                                    M.toast({ html: 'Seleccione una categoría' });
-                                    
-                                }
+                        if (catExist != true) {
+                            if (cat != "") {
+                                var opt = $("#select_categoria option:selected").text();
+                                porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
+                                var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, porcentaje_cat, "pc");
+                                $(".pc").prop('disabled', true);
+                                $('.pc').trigger('click');
+                                //Actualizar la tabla con los porcentajes
+                                updateTableCat();
                             } else {
-                                M.toast({ html: 'La categoría ya había sido agregada' });
+                                M.toast({ html: 'Seleccione una categoría' });
+
                             }
+                        } else {
+                            M.toast({ html: 'La categoría ya había sido agregada' });
+                        }
+                    }else {
+                        M.toast({ html: 'El monto base debe de ser mayor a cero' });
+                    }
                     } else if (dis == "M") {
                         //Distribución por material  
                         var por_apoyo = "";
@@ -978,6 +996,9 @@
 
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
+
+    var monto = $('#MONTO_DOC_MD').val();
+    monto = parseFloat(monto);
     //Encriptar valores del json para el tipo de solicitud
     var tsol_valn = $('#TSOL_VALUES').val();
     try {
@@ -1041,6 +1062,10 @@ $(window).on('load', function () {
     if (ff[0] != "") {
         $('#fechaf_vig').val($.trim(ff[0]));
     }
+    if (sneg == "P" && sdis == "C") {
+        var m = monto + "";
+        $('#monto_dis').val(m);
+    }
 
     //Valores en información antes soporte
     copiarTableVistaSop();
@@ -1051,7 +1076,9 @@ $(window).on('load', function () {
     //Pasar el total de la tabla al total en monto
     var total_dis = $('#total_dis').text();
     var footeri = convertI(total_dis);
-    $('#monto_dis').val(footeri);
+    if (sneg != "P" && sdis != "C") {
+        $('#monto_dis').val(footeri);
+    }
     $("label[for='monto_dis']").addClass("active");
 
     //Validar si es una solicitud relacionada
@@ -1220,10 +1247,10 @@ function copiarTableVista(update) {
                 //Se mostrara nada más el total
                 calculo = "sc";
             }
-
+            var addedRow = "";
             //Si la distribución es por material
             if (dis == "M") {
-                var addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
+                addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
                     calculo, pm);
 
 
@@ -1247,7 +1274,18 @@ function copiarTableVista(update) {
                 //]).draw(false);
             } else if (dis == "C") {
                 //Si la distribución es por categoría
-                var addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa, "");
+                //Obtener el tipo de negociación
+                var neg = $("#select_neg").val();
+                if (neg == "M") {
+                    addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa,"", "");
+                } else if (neg == "P") {
+                    var porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
+                    addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, "", relacionada, reversa, porcentaje_cat, "pc");
+                    $(".pc").prop('disabled', true);
+                    $('.pc').trigger('click');
+                    //Actualizar la tabla con los porcentajes
+                    updateTableCat();
+                }
             }
             //Quitar el row
             $(this).remove();
@@ -1659,7 +1697,27 @@ function asignarPresupuesto(kunnr) {
         async: false
     });
 
-}
+} 
+
+$('body').on('focusout', '#monto_dis', function () {
+    var neg = $("#select_neg").val();
+    //Obtener la distribución
+    var dis = $("#select_dis").val();
+
+    
+    if (neg == "P" && dis == "C") {
+        var monto = $('#monto_dis').val();
+        monto = parseFloat(monto);
+
+        if (monto > 0) {
+            //Actualizar la tabla con los porcentajes
+            updateTableCat();
+        } else {
+            M.toast({ html: 'El monto debe de ser mayor a 0' });
+            return false;
+        }
+    }
+});
 
 $('body').on('click', '.prelacionada', function () {
     $(this).prop('disabled', true);
@@ -1814,24 +1872,24 @@ $('body').on('focusout', '#bmonto_apoyo', function () {
 
 });
 
-$('body').on('focusout', '#monto_dis', function () {
+//$('body').on('focusout', '#monto_dis', function () {
 
-    //Obtener el tipo de negociación
-    var neg = $("#select_neg").val();
+//    //Obtener el tipo de negociación
+//    var neg = $("#select_neg").val();
 
-    //Obtener la distribución
-    var dis = $("#select_dis").val();
+//    //Obtener la distribución
+//    var dis = $("#select_dis").val();
 
-    if (neg == "P" && dis == "C") {
-        var val = $(this).val();
-        val = parseFloat(val);
+//    if (neg == "P" && dis == "C") {
+//        var val = $(this).val();
+//        val = parseFloat(val);
 
-        updateTableValIndexPor(9, val);
-    }
+//        updateTableValIndexPor(9, val);
+//    }
     
 
 
-});
+//});
 
 
 
@@ -1925,6 +1983,10 @@ function updateTableCat() {
     var totalmonto = GetTotalTableCat(categorias);
     var indext = getIndex();
     var t = $('#table_dis').DataTable();
+
+    var m_base = $('#monto_dis').val();
+    m_base = parseFloat(m_base) | 0;
+
     t.rows().every(function (rowIdx, tableLoop, rowLoop) {
 
         var tr = this.node();
@@ -1942,13 +2004,50 @@ function updateTableCat() {
         //totalr -- ?
         var rp = (totalr * 100) / totalmonto;
 
+        //monto base    ---   100
+        //              ---   rp
+        var totalrow = (rp * m_base) / 100;
         
         //t.row(index).data()[7];
         //t.cell(7, 0).nodes().to$().find('input').val("" + rp).draw();
-        updateTableCathtml(t, index, indext, rp, totalr);
+        updateTableCathtml(t, rowLoop, indext, rp, totalrow);
     });
 
     updateFooter();
+    updateDetailRow();
+
+}
+
+function updateDetailRow() {
+
+    var t = $('#table_dis').DataTable();
+    t.rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        var tr = this.node();
+        var row = t.row(tr);
+
+        if (row.child.isShown()) {
+            //Se debe de actualizar el renglón
+            //Ocultarlo
+            row.child.hide();
+
+            updateTableCathtmlClass(t, rowLoop, "details");
+            ////Mostrarlo nuevamente
+            ////Obtener el id de la categoría
+            //var index = t.row(tr).index();
+            //var catid = t.row(index).data()[0];
+            ////Obtener las fechas del row de la categoría
+            //var indext = getIndex();
+            //var vd = (3 + indext);
+            //var va = (4 + indext);
+            //var vigencia_de = tr.find("td:eq(" + vd + ") input").val();
+            //var vigencia_al = tr.find("td:eq(" + va + ") input").val();
+
+            //row.child(format(catid, vigencia_de, vigencia_al)).show();
+
+        }
+
+    });
 
 }
 
@@ -1959,8 +2058,19 @@ function updateTableCathtml(t, j, index, p, v) {
     var i = 0;
     $("#table_dis > tbody  > tr[role='row']").each(function () {
         if (i == j) {
-            $(this).find("td:eq(" + vd + ") input").val(p);
-            $(this).find("td:eq(" + va + ") input").val(v);
+            $(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));
+            $(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
+        }
+        i++;
+    });
+}
+
+function updateTableCathtmlClass(t, j, clase) {
+
+    var i = 0;
+    $("#table_dis > tbody  > tr[role='row']").each(function () {
+        if (i == j) {
+            $(this).removeClass(clase);
         }
         i++;
     });
@@ -1981,6 +2091,69 @@ function GetTotalTableCat(cats) {
     return total;
 }
 
+//Obtener los materiales por categoría
+function GetMaterialesCat(catid, total, m_base) {
+    var vals = $('#catmat').val();
+    try {
+        var jsval = JSON.parse(vals);
+    } catch (error) {
+    }
+
+    var materiales = [];
+
+    try {
+        $.each(jsval, function (i, d) {
+
+            if (catid == d.ID) {
+                materiales = GetMaterialesCatDetalle(d.MATERIALES, catid, total, m_base);
+                return false;
+            }
+        }); //Fin de for
+    } catch (error) {
+
+    }
+
+    return materiales;
+}
+
+function GetMaterialesCatDetalle(jsval, catid, total, m_base) {
+
+
+    var materiales = [];
+    //total   --   100
+    //m.VAL   --   m.POR??
+
+    //m_base  -- 100
+    //VAL??   -- m.POR
+    $.each(jsval, function (i, d) {
+        var t = 0;
+        var v = 0;
+        if (catid == d.ID_CAT) {
+            
+            var por = 0;
+
+            try {
+                por = (d.VAL * 100) / total;
+            } catch (error) {
+                por = 0;
+            }
+            try {
+                v = (por * m_base) / 100;
+            } catch (error) {
+                v = 0;
+            }
+            var m = {};
+            m["MATNR"] = d.MATNR;
+            m["DESC"] = d.DESC;
+            m['POR'] = por;
+            m["VAL"] = v;
+            materiales.push(m);
+        }
+    }); //Fin de for
+
+    return materiales;
+}
+
 //Obtener el total por categoría
 function GetTotalCat(catid) {
     var vals = $('#catmat').val();
@@ -1990,14 +2163,17 @@ function GetTotalCat(catid) {
     }
 
     var total = 0;
+    try {
+        $.each(jsval, function (i, d) {
 
-    $.each(jsval, function (i, d) {
+            if (catid == d.ID) {
+                total = GetTotalCatDetalle(d.MATERIALES, catid);
+                return false;
+            }
+        }); //Fin de for
+    } catch (error) {
 
-        if (catid == d.ID) {
-            total = GetTotalCatDetalle(d.MATERIALES, catid);
-            return false;
-        }
-    }); //Fin de for
+    }
 
     return total;
 }
@@ -2139,67 +2315,103 @@ function convertP(i) {
 
 function format(catid, idate, fdate) {
 
-    detail = "";
+    //detail = "";
     var id = parseInt(catid)
+    var tablamat = "";
     if (catid != "") {
 
-        //Obtener el cliente
-        var kunnr = $('#payer_id').val();
-        //Obtener la sociedad
-        var soc_id = $('#sociedad_id').val();
+        //Obtener los materiales de la categoría
+        var total = 0;
+        var categorias = GetCategoriasTableCat();
+        total = GetTotalTableCat(categorias);
+        var m_base = $('#monto_dis').val();
+        m_base = parseFloat(m_base) | 0;
 
-        $.ajax({
-            type: "POST",
-            url: 'categoriaMateriales',
-            data: { "kunnr": kunnr, "catid": id, "soc_id": soc_id },
-            success: function (data) {
-                var rows = "";
-                if (data !== null || data !== "") {
-                    $.each(data, function (i, dataj) {
+        var materiales = [];
+        materiales = GetMaterialesCat(catid, total, m_base);
 
-                        //Obtener la descripción del material
-                        var val = valMaterial(dataj.MATNR, "");
-                        var desc = "";
-                        if (val.ID == dataj.MATNR) {
+        var rows = "";
+        for (var j = 0; j < materiales.length; j++) {
 
-                            desc = val.MAKTX;
+            var m = materiales[j];
 
-                        }
+            var r =
+                '<tr>' +
+                '<td style = "display:none">' + id + '</td>' +
+                '<td>' + idate + '</td>' +
+                '<td>' + fdate + '</td>' +
+                '<td>' + m.MATNR + '</td>' +
+                '<td>' + m.DESC + '</td>' +
+                '<td>' + m.POR.toFixed(2) + '</td>' +
+                '<td>' + m.VAL.toFixed(2) + '</td>' +
+                '</tr>';
 
-                        var r =
-                            '<tr>' +
-                            '<td style = "display:none">' + id + '</td>' +
-                            '<td>' + idate + '</td>' +
-                            '<td>' + fdate + '</td>' +
-                            '<td>' + dataj.MATNR + '</td>' +
-                            '<td>' + desc + '</td>';
-                        //'<td>Nixon</td>' +
-                        //'<td>System Architect</td>' +
-                        //'<td>Edinburgh</td>' +
-                        //'<td>$320,800</td>' +
-                        //'<td>Tiger</td>' +
-                        //'<td>Tiger</td>' +
-                        //'<td>Tiger</td>' +
-                        //'</tr>';
+            rows += r;
 
-                        rows += r;
+        }
 
-                    }); //Fin de for
-                    //var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 65px;\">' +
-                    var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
-
-                    useReturnData(tablamat);
-                }
-
-            },
-            error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: msg });
-            },
-            async: false
-        });
+        tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
     }
 
-    return detail;
+        return tablamat;
+
+    //    ////Obtener el cliente
+    //    //var kunnr = $('#payer_id').val();
+    //    ////Obtener la sociedad
+    //    //var soc_id = $('#sociedad_id').val();
+        
+    //    $.ajax({
+    //        type: "POST",
+    //        url: 'categoriaMateriales',
+    //        data: { "kunnr": kunnr, "catid": id, "soc_id": soc_id },
+    //        success: function (data) {
+    //            var rows = "";
+    //            if (data !== null || data !== "") {
+    //                $.each(data, function (i, dataj) {
+
+    //                    //Obtener la descripción del material
+    //                    var val = valMaterial(dataj.MATNR, "");
+    //                    var desc = "";
+    //                    if (val.ID == dataj.MATNR) {
+
+    //                        desc = val.MAKTX;
+
+    //                    }
+
+    //                    var r =
+    //                        '<tr>' +
+    //                        '<td style = "display:none">' + id + '</td>' +
+    //                        '<td>' + idate + '</td>' +
+    //                        '<td>' + fdate + '</td>' +
+    //                        '<td>' + dataj.MATNR + '</td>' +
+    //                        '<td>' + desc + '</td>';
+    //                    //'<td>Nixon</td>' +
+    //                    //'<td>System Architect</td>' +
+    //                    //'<td>Edinburgh</td>' +
+    //                    //'<td>$320,800</td>' +
+    //                    //'<td>Tiger</td>' +
+    //                    //'<td>Tiger</td>' +
+    //                    //'<td>Tiger</td>' +
+    //                    //'</tr>';
+
+    //                    rows += r;
+
+    //                }); //Fin de for
+    //                //var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 65px;\">' +
+    //                var tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
+
+    //                useReturnData(tablamat);
+    //            }
+
+    //        },
+    //        error: function (xhr, httpStatusMessage, customErrorMessage) {
+    //            M.toast({ html: msg });
+    //        },
+    //        async: false
+    //    });
+    //}
+
+    //return detail;
 }
 
 function useReturnData(data) {
@@ -3519,6 +3731,7 @@ function selectCliente(valu) {
                     }
                     //RSG 28.05.2018------------------------------------------
                     llenaCat(data.VKORG, data.VTWEG, data.SPART, valu);
+                    getCatMateriales(data.VKORG, data.VTWEG, data.SPART, valu);
                     //RSG 28.05.2018------------------------------------------
                 } else {
                     $('#cli_name').val("");
@@ -3558,6 +3771,29 @@ function selectCliente(valu) {
         });
     }
 
+}
+
+function getCatMateriales(vkorg, vtweg, spart, kunnr) {
+    document.getElementById("loader").style.display = "initial";
+    var soc = document.getElementById("sociedad_id").value;
+    $('#catmat').val("");
+    $.ajax({
+        type: "POST",
+        url: 'grupoMateriales',
+        dataType: "json",
+        data: { vkorg: vkorg, spart: spart, kunnr: kunnr, soc_id: soc },
+        success: function (data) {
+            if (data !== null || data !== "") {
+                $('#catmat').val(JSON.stringify(data));
+            }
+            document.getElementById("loader").style.display = "none";
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+            document.getElementById("loader").style.display = "none";
+        },
+        async: false
+    });
 }
 
 function selectMoneda(valu) {
