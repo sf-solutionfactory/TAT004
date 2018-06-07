@@ -284,6 +284,9 @@
     <Compile Include="Entities\CONFDIST_CAT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CONMAIL.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CONPOSAPH.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -673,6 +676,7 @@
     <Compile Include="Services\Email.cs" />
     <Compile Include="Services\ProcesaFlujo2.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
+    <Compile Include="Services\Recurrente.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -920,6 +924,7 @@
     <Content Include="Views\ccat\Delete.cshtml" />
     <Content Include="Views\ccat\Details.cshtml" />
     <Content Include="Views\ccat\Edit.cshtml" />
+    <Content Include="Views\CartaV\Create2.cshtml" />
     <Content Include="Views\CartaV\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>

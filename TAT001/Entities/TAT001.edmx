@@ -209,6 +209,18 @@
           <Property Name="PERIODOS" Type="int" />
           <Property Name="ACTIVO" Type="bit" />
         </EntityType>
+        <EntityType Name="CONMAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="HOST" Type="nvarchar" MaxLength="100" />
+          <Property Name="PORT" Type="int" />
+          <Property Name="SSL" Type="bit" Nullable="false" />
+          <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="PASS" Type="nvarchar" MaxLength="100" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="CONPOSAPH">
           <Key>
             <PropertyRef Name="CONSECUTIVO" />
@@ -3680,6 +3692,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CONMAIL" EntityType="Self.CONMAIL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONSOPORTE" EntityType="Self.CONSOPORTE" Schema="dbo" store:Type="Tables" />
@@ -8962,6 +8975,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="SPRA" EntitySet="SPRAS" />
             <End Role="MATERIALGPT" EntitySet="MATERIALGPTs" />
           </AssociationSet>
+          <EntitySet Name="CONMAILs" EntityType="TAT001Model.CONMAIL" />
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -9252,6 +9266,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CONMAIL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="HOST" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PORT" Type="Int32" />
+          <Property Name="SSL" Type="Boolean" Nullable="false" />
+          <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PASS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11110,6 +11136,19 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="TXT50" ColumnName="TXT50" />
                 <ScalarProperty Name="MATERIALGP_ID" ColumnName="MATERIALGP_ID" />
                 <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CONMAILs">
+            <EntityTypeMapping TypeName="TAT001Model.CONMAIL">
+              <MappingFragment StoreEntitySet="CONMAIL">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="PASS" ColumnName="PASS" />
+                <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+                <ScalarProperty Name="SSL" ColumnName="SSL" />
+                <ScalarProperty Name="PORT" ColumnName="PORT" />
+                <ScalarProperty Name="HOST" ColumnName="HOST" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

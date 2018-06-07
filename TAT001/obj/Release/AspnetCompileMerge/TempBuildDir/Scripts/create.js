@@ -2442,6 +2442,7 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
         "",
         "",
         //"" + valCant,
+        "",//RSG 06.06.2018
         total + ""
     ]).draw(false).node();
 

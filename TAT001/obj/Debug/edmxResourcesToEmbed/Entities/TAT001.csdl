@@ -4446,6 +4446,7 @@
       <End Role="SPRA" EntitySet="SPRAS" />
       <End Role="MATERIALGPT" EntitySet="MATERIALGPTs" />
     </AssociationSet>
+    <EntitySet Name="CONMAILs" EntityType="TAT001Model.CONMAIL" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4736,4 +4737,16 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="CONMAIL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="HOST" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PORT" Type="Int32" />
+    <Property Name="SSL" Type="Boolean" Nullable="false" />
+    <Property Name="MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PASS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
 </Schema>

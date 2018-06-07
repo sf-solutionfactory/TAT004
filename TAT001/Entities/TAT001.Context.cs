@@ -145,6 +145,7 @@ namespace TAT001.Entities
         public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
         public virtual DbSet<MATERIALGP> MATERIALGPs { get; set; }
         public virtual DbSet<MATERIALGPT> MATERIALGPTs { get; set; }
+        public virtual DbSet<CONMAIL> CONMAILs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

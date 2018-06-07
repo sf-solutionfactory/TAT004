@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -94,40 +95,46 @@ namespace TAT001.Controllers
             var workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderByDescending(a => a.POS).FirstOrDefault();
             //ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
 
-            MailMessage mail = new MailMessage("rogeliosnchez@gmail.com", "rogelio.sanchez@sf-solutionfactory.com");
-            SmtpClient client = new SmtpClient();
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-            client.Host = "smtp.gmail.com";
-            client.Credentials = new NetworkCredential("rogeliosnchez@gmail.com", "808estoylistO");
+            string mailt = ConfigurationManager.AppSettings["mailt"];
+            CONMAIL conmail = db.CONMAILs.Find(mailt);
+            if (conmail != null)
+            {
+                MailMessage mail = new MailMessage(conmail.MAIL, "rogelio.sanchez@sf-solutionfactory.com");
+                SmtpClient client = new SmtpClient();
+                client.Port = (int)conmail.PORT;
+                client.EnableSsl = conmail.SSL;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Host = conmail.HOST;
+                client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
 
 
-            if (workflow == null)
-                mail.Subject = "N" + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
-            else
-                mail.Subject = workflow.ESTATUS + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
-            mail.IsBodyHtml = true;
-            string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-            //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
-            UrlDirectory = UrlDirectory.Replace("Enviar", "Solicitudes");
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
-            myRequest.Method = "GET";
-            WebResponse myResponse = myRequest.GetResponse();
-            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
-            string result = sr.ReadToEnd();
-            sr.Close();
-            myResponse.Close();
+                if (workflow == null)
+                    mail.Subject = "N" + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
+                else
+                    mail.Subject = workflow.ESTATUS + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
+                mail.IsBodyHtml = true;
+                string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
+                UrlDirectory = UrlDirectory.Replace("Enviar", "Solicitudes");
+                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
+                myRequest.Method = "GET";
+                WebResponse myResponse = myRequest.GetResponse();
+                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+                string result = sr.ReadToEnd();
+                sr.Close();
+                myResponse.Close();
 
-            mail.Body = result;
+                mail.Body = result;
 
-            client.Send(mail);
+                client.Send(mail);
 
+            }
             if (index)
                 return RedirectToAction("Index", "Solicitudes", new { id = id, spras = spras });
             else
                 return RedirectToAction("Details", "Solicitudes", new { id = id, spras = spras });
+
 
             //return View(dOCUMENTO);
         }

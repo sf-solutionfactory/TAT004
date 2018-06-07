@@ -766,7 +766,7 @@
                             <p>
                                 <label>
                                     @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec()" />
                                     <span>Documento recurrente</span>
                                 </label>
                             </p>
@@ -1038,7 +1038,7 @@
                         <h5>Monto Base</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa" onchange="cambiaRec()"/>
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">

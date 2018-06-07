@@ -1906,6 +1906,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
     }
 
     updateFooter();
+    cambiaRec();//RSG 06.06.2018
 }
 
 function updateTable() {
@@ -2442,6 +2443,7 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
         "",
         "",
         //"" + valCant,
+        "",//RSG 06.06.2018
         total + ""
     ]).draw(false).node();
 

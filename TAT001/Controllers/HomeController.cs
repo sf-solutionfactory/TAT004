@@ -9,6 +9,7 @@ using System.Web.Security;
 using TAT001.Entities;
 using TAT001.Models;
 using ClosedXML.Excel;
+using TAT001.Services;
 
 namespace TAT001.Controllers
 {
@@ -103,6 +104,12 @@ namespace TAT001.Controllers
             ViewBag.Clientes = db.CLIENTEs.ToList();
             ViewBag.Cuentas = db.CUENTAs.ToList();
             ViewBag.DOCF = db.DOCUMENTOFs.ToList();
+
+
+
+            ////Recurrente r = new Recurrente();
+            ////int ii = r.creaRecurrente("1000000491", "PR");
+
             return View(dOCUMENTOes);
 
         }

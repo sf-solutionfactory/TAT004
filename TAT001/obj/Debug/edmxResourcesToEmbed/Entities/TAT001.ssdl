@@ -204,6 +204,18 @@
     <Property Name="PERIODOS" Type="int" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
+  <EntityType Name="CONMAIL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="HOST" Type="nvarchar" MaxLength="100" />
+    <Property Name="PORT" Type="int" />
+    <Property Name="SSL" Type="bit" Nullable="false" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+    <Property Name="PASS" Type="nvarchar" MaxLength="100" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="CONPOSAPH">
     <Key>
       <PropertyRef Name="CONSECUTIVO" />
@@ -3675,6 +3687,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONMAIL" EntityType="Self.CONMAIL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONSOPORTE" EntityType="Self.CONSOPORTE" Schema="dbo" store:Type="Tables" />
