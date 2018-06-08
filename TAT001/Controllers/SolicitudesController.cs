@@ -1214,6 +1214,22 @@ namespace TAT001.Controllers
                         }
                         else
                         {
+                            //Si la distribución es categoría se obtienen las categorías
+                            List<string> listcat = new List<string>();
+                            decimal totalcats = 0;
+                            List<CategoriaMaterial> listcatm = new List<CategoriaMaterial>();
+                            if (select_dis == "C")
+                            {
+                                for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                                {
+                                    string cat = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID.ToString();
+                                    listcat.Add(cat);
+                                }
+
+
+                                listcatm  = grupoMaterialesController(listcat, dOCUMENTO.VKORG, dOCUMENTO.SPART, dOCUMENTO.PAYER_ID, dOCUMENTO.SOCIEDAD_ID, out totalcats);
+                            }
+
                             for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
                             {
                                 try
@@ -1247,50 +1263,87 @@ namespace TAT001.Controllers
                                     List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
                                     if (docP.MATNR == "")
                                     {
-                                        docml = addCatItems(dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC, Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL);
+                                        string col = "";
+                                        if(Convert.ToDecimal(docP.APOYO_EST) > 0)
+                                        {
+                                            col = "E";
+                                        }else if(Convert.ToDecimal(docP.APOYO_REAL) > 0)
+                                        {
+                                            col = "R";
+                                        }
+                                        docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
+                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL,select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
                                     }
-                                    //Obtener el apoyo real o estimado para cada material
-                                    var cantmat = docml.Count;
+                                    
                                     //Obtener apoyo estimado
                                     decimal apoyo_esti = 0;
                                     decimal apoyo_real = 0;
-                                    try
+                                    //Categoría por monto
+                                    if (select_neg == "M")
                                     {
-                                        apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_esti = 0;
-                                    }
-
-                                    try
-                                    {
-                                        apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_real = 0;
-                                    }
-                                    for (int k = 0; k < docml.Count; k++)
-                                    {
+                                        //Obtener el apoyo real o estimado para cada material
+                                        var cantmat = docml.Count;
                                         try
                                         {
-                                            DOCUMENTOM docM = new DOCUMENTOM();
-                                            docM = docml[k];
-                                            docM.POS = k + 1;
-                                            docM.APOYO_REAL = apoyo_real;
-                                            docM.APOYO_EST = apoyo_esti;
+                                            apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
 
-                                            db.DOCUMENTOMs.Add(docM);
-                                            db.SaveChanges();//RSG
                                         }
                                         catch (Exception e)
                                         {
+                                            apoyo_esti = 0;
+                                        }
+
+                                        try
+                                        {
+                                            apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
 
                                         }
+                                        catch (Exception e)
+                                        {
+                                            apoyo_real = 0;
+                                        }
+
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+                                                docM.APOYO_REAL = apoyo_real;
+                                                docM.APOYO_EST = apoyo_esti;
+
+                                                db.DOCUMENTOMs.Add(docM);
+                                                db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
                                     }
+                                    else if(select_neg == "P")
+                                    {
+                                        //Categoría por porcentaje
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+
+                                                db.DOCUMENTOMs.Add(docM);
+                                                db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+
+                                    }
+                                    
                                 }
                                 catch (Exception e)
                                 {
@@ -2854,14 +2907,14 @@ namespace TAT001.Controllers
                 {
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
-                    kunnr = kunnr.TrimStart('0').Trim();
+                    //kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
                     var spras = Session["spras"].ToString();
                     var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
-                    foreach (var c in cie)
-                    {
-                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
-                    }
+                    //foreach (var c in cie)
+                    //{
+                    //    c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    //}
 
                     CONFDIST_CAT conf = getCatConf(soc_id);
                     if (conf.CAMPO == "GRSLS")
@@ -3301,6 +3354,227 @@ namespace TAT001.Controllers
             return jl;
         }
 
+        public List<CategoriaMaterial> grupoMaterialesController(List<string> catstabla, string vkorg, string spart, string kunnr, string soc_id, out decimal total)
+        {
+            TAT001Entities db = new TAT001Entities();
+            if (kunnr == null)
+            {
+                kunnr = "";
+            }
+
+            List<DOCUMENTOM_MOD> jd = new List<DOCUMENTOM_MOD>();
+
+            //Obtener los materiales
+            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
+            try
+            {
+                matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            //Validar si hay materiales
+            if (matl != null)
+            {
+
+                CLIENTE cli = new CLIENTE();
+                List<CLIENTE> clil = new List<CLIENTE>();
+
+                try
+                {
+                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr & c.VKORG == vkorg & c.SPART == spart).FirstOrDefault();
+
+                    //Saber si el cliente es sold to, payer o un grupo
+                    if (cli != null)
+                    {
+                        //Es un soldto
+                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+                        {
+                            //cli.VKORG = cli.VKORG+" ";
+                            clil.Add(cli);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                var cie = clil.Cast<CLIENTE>();
+                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+                //Obtener el numero de periodos para obtener el historial
+                int nummonths = 3;
+                int imonths = nummonths * -1;
+                //Obtener el rango de los periodos incluyendo el año
+                DateTime ff = DateTime.Today;
+                DateTime fi = ff.AddMonths(imonths);
+
+                string mi = fi.Month.ToString();//.ToString("MM");
+                string ai = fi.Year.ToString();//.ToString("yyyy");
+
+                string mf = ff.Month.ToString();// ("MM");
+                string af = ff.Year.ToString();// "yyyy");
+
+                int aii = 0;
+                try
+                {
+                    aii = Convert.ToInt32(ai);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mii = 0;
+                try
+                {
+                    mii = Convert.ToInt32(mi);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int aff = 0;
+                try
+                {
+                    aff = Convert.ToInt32(af);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                int mff = 0;
+                try
+                {
+                    mff = Convert.ToInt32(mf);
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                if (cie != null)
+                {
+                    //Obtener el historial de compras de los clientesd
+                    var matt = matl.ToList();
+                    //kunnr = kunnr.TrimStart('0').Trim();
+                    var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
+                    var spras = Session["spras"].ToString();
+                    var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+                    //foreach (var c in cie)
+                    //{
+                    //    c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    //}
+
+                    CONFDIST_CAT conf = getCatConf(soc_id);
+                    if (conf.CAMPO == "GRSLS")
+                    {
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART 
+                              ) && ps.BUKRS == soc_id
+                              && ps.GRSLS > 0
+                              select new DOCUMENTOM_MOD
+                              {
+                                  ID_CAT = m.MATKL_ID,
+                                  MATNR = ps.MATNR,
+                                  //mk.TXT50
+                                  VAL = Convert.ToDecimal(ps.GRSLS)
+                              }).ToList();
+                    }
+                    else
+                    {
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART 
+                              ) && ps.BUKRS == soc_id
+                              && ps.NETLB > 0
+                              select new DOCUMENTOM_MOD
+                              {
+                                  ID_CAT = m.MATKL_ID,
+                                  MATNR = ps.MATNR,
+                                  //mk.TXT50
+                                  VAL = Convert.ToDecimal(ps.NETLB)
+                              }).ToList();
+                    }
+                }
+            }
+
+            //Obtener las categorías
+            var categoriasl = jd.GroupBy(c => c.ID_CAT, c => new{ ID = c.ID_CAT.ToString() }).ToList();
+            List<string> categorias = new List<string>();
+            //Diferencia del método de la vista jquery
+            //Tomar en cuenta nada más las categorías que se agregaron a la tabla y que se enviaron en el submmit 
+            for(int h=0; h < catstabla.Count; h++)
+            {
+                for(int j = 0;j< categoriasl.Count; j++)
+                {
+                    if(catstabla[h].ToString() == categoriasl[j].Key.ToString())
+                    {
+                        categorias.Add(categoriasl[j].Key.ToString());
+                    }
+                }
+            }
+            
+            List<CategoriaMaterial> lcatmat = new List<CategoriaMaterial>();
+            decimal t = 0;
+            foreach (string item in categorias)
+            {
+                CategoriaMaterial cm = new CategoriaMaterial();
+                cm.ID = item;
+
+                //Obtener los materiales de la categoría
+                List<DOCUMENTOM_MOD> dl = new List<DOCUMENTOM_MOD>();
+                List<DOCUMENTOM_MOD> dm = new List<DOCUMENTOM_MOD>();
+                dl = jd.Where(c => c.ID_CAT == item).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).ToList();//Falta obtener el groupby
+
+                //Obtener la descripción de los materiales
+                foreach (DOCUMENTOM_MOD d in dl)
+                {
+                    DOCUMENTOM_MOD dcl = new DOCUMENTOM_MOD();
+                    dcl = dm.Where(z => z.MATNR == d.MATNR).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).FirstOrDefault();
+
+                    if (dcl == null)
+                    {
+                        DOCUMENTOM_MOD dcll = new DOCUMENTOM_MOD();
+                        //No se ha agregado
+                        decimal val = dl.Where(y => y.MATNR == d.MATNR).Sum(x => x.VAL);
+                        dcll.ID_CAT = item;
+                        dcll.MATNR = d.MATNR;
+
+                        //Obtener la descripción del material
+                        dcll.DESC = db.MATERIALs.Where(w => w.ID == d.MATNR).FirstOrDefault().MAKTG.ToString();
+                        dcll.VAL = val;
+                        t += val;
+                        dm.Add(dcll);
+                    }
+                }
+
+                cm.MATERIALES = dm;
+                lcatmat.Add(cm);
+            }
+
+            total = t;
+
+            return lcatmat;
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public JsonResult categoriaMateriales(string kunnr, string catid, string soc_id)
@@ -3508,216 +3782,278 @@ namespace TAT001.Controllers
         }
 
 
-        public List<DOCUMENTOM> addCatItems(string kunnr, string catid, string soc_id, decimal numdoc, int posid, DateTime? vig_de, DateTime? vig_a)
+        public List<DOCUMENTOM> addCatItems(List<CategoriaMaterial> categorias,string kunnr, string catid, 
+            string soc_id, decimal numdoc, int posid, DateTime? vig_de, DateTime? vig_a, string neg, string dis,decimal total, decimal totaldoc, string col)
         {
-            if (kunnr == null)
-            {
-                kunnr = "";
-            }
+            //if (kunnr == null)
+            //{
+            //    kunnr = "";
+            //}
 
-            if (catid == null)
-            {
-                catid = "";
-            }
+            //if (catid == null)
+            //{
+            //    catid = "";
+            //}
 
-            //var jd = (dynamic)null;
+            ////var jd = (dynamic)null;
 
-            //List<DOCUMENTOM> jd = new List<DOCUMENTOM>();
-            List<PRESUPSAPP> jdl = new List<PRESUPSAPP>();
-            //Obtener los materiales
-            IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
-            try
-            {
-                matl = db.MATERIALs.Where(m => m.MATKL_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
-            }
-            catch (Exception)
-            {
+            ////List<DOCUMENTOM> jd = new List<DOCUMENTOM>();
+            //List<PRESUPSAPP> jdl = new List<PRESUPSAPP>();
+            ////Obtener los materiales
+            //IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
+            //try
+            //{
+            //    matl = db.MATERIALs.Where(m => m.MATKL_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
+            //}
+            //catch (Exception)
+            //{
 
-            }
+            //}
 
-            //Validar si hay materiales
-            string campoconf = "";
-            if (matl != null)
-            {
+            ////Validar si hay materiales
+            //string campoconf = "";
+            //if (matl != null)
+            //{
 
-                CLIENTE cli = new CLIENTE();
-                List<CLIENTE> clil = new List<CLIENTE>();
+            //    CLIENTE cli = new CLIENTE();
+            //    List<CLIENTE> clil = new List<CLIENTE>();
 
-                try
-                {
-                    cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
+            //    try
+            //    {
+            //        cli = db.CLIENTEs.Where(c => c.KUNNR == kunnr).FirstOrDefault();
 
-                    //Saber si el cliente es sold to, payer o un grupo
-                    if (cli != null)
-                    {
-                        //Es un soldto
-                        if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
-                        {
-                            clil.Add(cli);
-                        }
-                    }
-                }
-                catch (Exception)
-                {
+            //        //Saber si el cliente es sold to, payer o un grupo
+            //        if (cli != null)
+            //        {
+            //            //Es un soldto
+            //            if (cli.KUNNR != cli.PAYER && cli.KUNNR != cli.BANNER)
+            //            {
+            //                clil.Add(cli);
+            //            }
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
+            //    }
 
-                var cie = clil.Cast<CLIENTE>();
-                //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
-                //Obtener el numero de periodos para obtener el historial
-                int nummonths = 0;
-                int imonths = 0;
-                try
-                {
-                    CONFDIST_CAT conf = getCatConf(soc_id);
-                    nummonths = (int)conf.PERIODOS;
-                    campoconf = conf.CAMPO.ToString();
-                }
-                catch (Exception)
-                {
+            //    var cie = clil.Cast<CLIENTE>();
+            //    //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
+            //    //Obtener el numero de periodos para obtener el historial
+            //    int nummonths = 0;
+            //    int imonths = 0;
+            //    try
+            //    {
+            //        CONFDIST_CAT conf = getCatConf(soc_id);
+            //        nummonths = (int)conf.PERIODOS;
+            //        campoconf = conf.CAMPO.ToString();
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
-                if (nummonths > 0)
-                {
-                    imonths = nummonths * -1;
-                }
-                //Obtener el rango de los periodos incluyendo el año
-                DateTime ff = DateTime.Today;
-                DateTime fi = ff.AddMonths(imonths);
+            //    }
+            //    if (nummonths > 0)
+            //    {
+            //        imonths = nummonths * -1;
+            //    }
+            //    //Obtener el rango de los periodos incluyendo el año
+            //    DateTime ff = DateTime.Today;
+            //    DateTime fi = ff.AddMonths(imonths);
 
-                string mi = fi.Month.ToString();//.ToString("MM");
-                string ai = fi.Year.ToString();//.ToString("yyyy");
+            //    string mi = fi.Month.ToString();//.ToString("MM");
+            //    string ai = fi.Year.ToString();//.ToString("yyyy");
 
-                string mf = ff.Month.ToString();// ("MM");
-                string af = ff.Year.ToString();// "yyyy");
+            //    string mf = ff.Month.ToString();// ("MM");
+            //    string af = ff.Year.ToString();// "yyyy");
 
-                int aii = 0;
-                try
-                {
-                    aii = Convert.ToInt32(ai);
-                }
-                catch (Exception)
-                {
+            //    int aii = 0;
+            //    try
+            //    {
+            //        aii = Convert.ToInt32(ai);
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
+            //    }
 
-                int mii = 0;
-                try
-                {
-                    mii = Convert.ToInt32(mi);
-                }
-                catch (Exception)
-                {
+            //    int mii = 0;
+            //    try
+            //    {
+            //        mii = Convert.ToInt32(mi);
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
+            //    }
 
-                int aff = 0;
-                try
-                {
-                    aff = Convert.ToInt32(af);
-                }
-                catch (Exception)
-                {
+            //    int aff = 0;
+            //    try
+            //    {
+            //        aff = Convert.ToInt32(af);
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
+            //    }
 
-                int mff = 0;
-                try
-                {
-                    mff = Convert.ToInt32(mf);
-                }
-                catch (Exception)
-                {
+            //    int mff = 0;
+            //    try
+            //    {
+            //        mff = Convert.ToInt32(mf);
+            //    }
+            //    catch (Exception)
+            //    {
 
-                }
+            //    }
 
-                if (cie != null)
-                {
-                    //Obtener el historial de compras de los clientesd
-                    var matt = matl.ToList();
-                    //var pres = db.PRESUPSAPPs.ToList();
-                    kunnr = kunnr.TrimStart('0').Trim();
-                    var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
-                    List<CLIENTE> ciee = new List<CLIENTE>();
-                    foreach (var c in cie)
-                    {
-                        CLIENTE pa = new CLIENTE();
-                        pa.VKORG = c.VKORG;
-                        pa.VTWEG = c.VTWEG;
-                        pa.SPART = c.SPART;
-                        pa.KUNNR = c.KUNNR.TrimStart('0').Trim();
-                        ciee.Add(pa);
-                    }
+            //    if (cie != null)
+            //    {
+            //        //Obtener el historial de compras de los clientesd
+            //        var matt = matl.ToList();
+            //        //var pres = db.PRESUPSAPPs.ToList();
+            //        kunnr = kunnr.TrimStart('0').Trim();
+            //        var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
+            //        List<CLIENTE> ciee = new List<CLIENTE>();
+            //        foreach (var c in cie)
+            //        {
+            //            CLIENTE pa = new CLIENTE();
+            //            pa.VKORG = c.VKORG;
+            //            pa.VTWEG = c.VTWEG;
+            //            pa.SPART = c.SPART;
+            //            pa.KUNNR = c.KUNNR.TrimStart('0').Trim();
+            //            ciee.Add(pa);
+            //        }
 
-                    jdl = (from ps in pres
-                           join cl in ciee
-                           on ps.KUNNR equals cl.KUNNR
-                           join m in matt
-                           on ps.MATNR equals m.ID
-                           where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                           (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
-                                                                                                 //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
-                           ) && ps.BUKRS == soc_id
-                           select new PRESUPSAPP
-                           {
-                               ID = ps.ID,
-                               ANIO = ps.ANIO,
-                               POS = ps.POS,
-                               PERIOD = ps.PERIOD,
-                               MATNR = ps.MATNR,
-                               VVX17 = ps.VVX17,
-                               CSHDC = ps.CSHDC,
-                               RECUN = ps.RECUN,
-                               DSTRB = ps.DSTRB,
-                               OTHTA = ps.OTHTA,
-                               ADVER = ps.ADVER,
-                               CORPM = ps.CORPM,
-                               POP = ps.POP,
-                               OTHER = ps.OTHER,
-                               CONPR = ps.CONPR,
-                               OHV = ps.OHV,
-                               FREEG = ps.FREEG,
-                               RSRDV = ps.RSRDV,
-                               SPA = ps.SPA,
-                               PMVAR = ps.PMVAR,
-                               GRSLS = ps.GRSLS,
-                               NETLB = ps.NETLB
-                           }).ToList();
+            //        jdl = (from ps in pres
+            //               join cl in ciee
+            //               on ps.KUNNR equals cl.KUNNR
+            //               join m in matt
+            //               on ps.MATNR equals m.ID
+            //               where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+            //               (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+            //                                                                                     //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+            //               ) && ps.BUKRS == soc_id
+            //               select new PRESUPSAPP
+            //               {
+            //                   ID = ps.ID,
+            //                   ANIO = ps.ANIO,
+            //                   POS = ps.POS,
+            //                   PERIOD = ps.PERIOD,
+            //                   MATNR = ps.MATNR,
+            //                   VVX17 = ps.VVX17,
+            //                   CSHDC = ps.CSHDC,
+            //                   RECUN = ps.RECUN,
+            //                   DSTRB = ps.DSTRB,
+            //                   OTHTA = ps.OTHTA,
+            //                   ADVER = ps.ADVER,
+            //                   CORPM = ps.CORPM,
+            //                   POP = ps.POP,
+            //                   OTHER = ps.OTHER,
+            //                   CONPR = ps.CONPR,
+            //                   OHV = ps.OHV,
+            //                   FREEG = ps.FREEG,
+            //                   RSRDV = ps.RSRDV,
+            //                   SPA = ps.SPA,
+            //                   PMVAR = ps.PMVAR,
+            //                   GRSLS = ps.GRSLS,
+            //                   NETLB = ps.NETLB
+            //               }).ToList();
 
-                }
-            }
+            //    }
+            //}
 
             //var jll = db.PRESUPSAPPs.Select(psl => new { MATNR = psl.MATNR.ToString() }).Take(7).ToList();
 
+            //List<DOCUMENTOM> jdlret = new List<DOCUMENTOM>();
+
+            //foreach (PRESUPSAPP p in jdl)
+            //{
+            //    var pd = p.GetType().GetProperties();
+
+            //    var v = pd.Where(x => x.Name == campoconf).Single().GetValue(p);
+
+            //    decimal val = Convert.ToDecimal(v);
+
+            //    if (val > 0)
+            //    {
+            //        DOCUMENTOM dm = new DOCUMENTOM();
+            //        dm = jdlret.Where(a => a.MATNR == p.MATNR).FirstOrDefault();
+            //        if (dm == null)
+            //        {
+            //            dm = new DOCUMENTOM();
+            //            dm.NUM_DOC = numdoc;
+            //            dm.POS_ID = posid;
+            //            dm.MATNR = p.MATNR;
+            //            dm.VIGENCIA_DE = vig_de;
+            //            dm.VIGENCIA_A = vig_a;
+
+            //            jdlret.Add(dm);
+            //        }
+            //    }
+            //}
             List<DOCUMENTOM> jdlret = new List<DOCUMENTOM>();
 
-            foreach (PRESUPSAPP p in jdl)
-            {
-                var pd = p.GetType().GetProperties();
+            //Negaciación por monto
 
-                var v = pd.Where(x => x.Name == campoconf).Single().GetValue(p);
-
-                decimal val = Convert.ToDecimal(v);
-
-                if (val > 0)
+            
+                //Obtener de la lista de categorias los materiales de la categoría del item
+                CategoriaMaterial categor = categorias.Where(c => c.ID == catid).FirstOrDefault();
+                List<DOCUMENTOM_MOD> materiales = new List<DOCUMENTOM_MOD>();
+                materiales = categor.MATERIALES;
+                foreach(DOCUMENTOM_MOD docm in materiales)
                 {
                     DOCUMENTOM dm = new DOCUMENTOM();
-                    dm = jdlret.Where(a => a.MATNR == p.MATNR).FirstOrDefault();
-                    if (dm == null)
-                    {
-                        dm = new DOCUMENTOM();
-                        dm.NUM_DOC = numdoc;
-                        dm.POS_ID = posid;
-                        dm.MATNR = p.MATNR;
-                        dm.VIGENCIA_DE = vig_de;
-                        dm.VIGENCIA_A = vig_a;
-
-                        jdlret.Add(dm);
+                    dm.NUM_DOC = numdoc;
+                    dm.POS_ID = posid;
+                    dm.MATNR = docm.MATNR;
+                    dm.VIGENCIA_DE = vig_de;
+                    dm.VIGENCIA_A = vig_a;
+                    if (dis == "C")
+                    { 
+                        dm.APOYO_EST = docm.VAL;
                     }
+                    jdlret.Add(dm);
+                }
+            
+
+            if(dis == "C")
+            {
+                foreach(DOCUMENTOM docm in jdlret)
+                {
+                    //Prcentaje
+                    decimal por = 0;
+                    try
+                    {
+                        por = Convert.ToDecimal((docm.APOYO_EST * 100) / total);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    decimal totalmat = 0;
+
+                    try
+                    {
+                        totalmat = Convert.ToDecimal((por * totaldoc) / 100);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                    docm.PORC_APOYO = por;
+                    docm.APOYO_EST = 0;
+                    if(col == "E")
+                    {
+                        docm.APOYO_EST = totalmat;
+                    }
+                    else if(col == "R")
+                    {
+                        docm.APOYO_REAL = totalmat;
+                    }
+                    
                 }
             }
-
-
 
             return jdlret;
         }

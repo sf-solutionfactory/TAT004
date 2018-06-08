@@ -423,14 +423,14 @@ namespace TAT001.Controllers
                 {
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
-                    kunnr = kunnr.TrimStart('0').Trim();
+                    //kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
                     var spras = Session["spras"].ToString();
                     var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
-                    foreach (var c in cie)
-                    {
-                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
-                    }
+                    //foreach (var c in cie)
+                    //{
+                    //    c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    //}
 
                     CONFDIST_CAT conf = getCatConf(soc_id);
                     if (conf.CAMPO == "GRSLS")
