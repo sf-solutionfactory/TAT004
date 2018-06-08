@@ -223,7 +223,7 @@ namespace TAT001.Models
                         pRESUPUESTOP.FECHAP = lines[20].Substring(4, 2) + "-" + lines[20].Substring(6, 2) + "-" + lines[20].Substring(0, 4);
                         pRESUPUESTOP.UNAME = lines[21];
                         pRESUPUESTOP.XBLNR = lines[22];
-                        //pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[23]);
+
                         //pRESUPUESTOP.RECSL = Convert.ToDecimal(lines[24]);
                         //pRESUPUESTOP.INDLB = Convert.ToDecimal(lines[25]);
                         //pRESUPUESTOP.FRGHT = Convert.ToDecimal(lines[26]);
@@ -246,8 +246,9 @@ namespace TAT001.Models
                         pRESUPUESTOP.RSRDV = Convert.ToDecimal(lines[33]);
                         pRESUPUESTOP.SPA = Convert.ToDecimal(lines[34]);
                         pRESUPUESTOP.FREEG = Convert.ToDecimal(lines[35]);
+                        pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[36]);
                         //pRESUPUESTOP.PKGDS = Convert.ToDecimal(lines[38]);
-                        //pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[45]);
+                        pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[37]);
                         //pRESUPUESTOP.SLLBS = Convert.ToDecimal(lines[46]);
                         //pRESUPUESTOP.SLCAS = Convert.ToDecimal(lines[47]);
                         //pRESUPUESTOP.PRCAS = Convert.ToDecimal(lines[48]);
@@ -281,7 +282,7 @@ namespace TAT001.Models
                                 FECHAP = pRESUPUESTOP.FECHAP,
                                 UNAME = pRESUPUESTOP.UNAME,
                                 XBLNR = pRESUPUESTOP.XBLNR,
-                                //GRSLS = pRESUPUESTOP.GRSLS,
+                                GRSLS = pRESUPUESTOP.GRSLS,
                                 //RECSL = pRESUPUESTOP.RECSL,
                                 //INDLB = pRESUPUESTOP.INDLB,
                                 //FRGHT = pRESUPUESTOP.FRGHT,
@@ -303,7 +304,7 @@ namespace TAT001.Models
                                 POP = pRESUPUESTOP.POP,
                                 PMVAR = pRESUPUESTOP.PMVAR,
                                 ADVER = pRESUPUESTOP.ADVER,
-                                //NETLB = pRESUPUESTOP.NETLB,
+                                NETLB = pRESUPUESTOP.NETLB,
                                 //SLLBS = pRESUPUESTOP.SLLBS,
                                 //SLCAS = pRESUPUESTOP.SLCAS,
                                 //PRCAS = pRESUPUESTOP.PRCAS,

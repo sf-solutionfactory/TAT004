@@ -314,25 +314,25 @@
                                     </tr>
                                 }
                                 @*<tr style="background-color:#CCCCCC">
-                                    @foreach (var contenido in Model.listaEncabezado)
-                                    {
-                                        <th>
-                                            @contenido
-                                        </th>
-                                    }
-                                </tr>*@
+                                        @foreach (var contenido in Model.listaEncabezado)
+                                        {
+                                            <th>
+                                                @contenido
+                                            </th>
+                                        }
+                                    </tr>*@
 
                                 @*<tr style="background-color:#CCCCCC">
-                                    @for (int m = 0; m < Model.listaEncabezado.Count(); m++)
-                                    {
-                                        <th>
-                                            <label>
-                                                <input type="checkbox" name="" value="true" id="" @Html.Raw((Model.monto_x) ? "checked=\"checked\"" : "") />
-                                                <span style="height:1"></span>
-                                             </label>
-                                        </th>
-                                    }
-                                </tr>*@
+                                        @for (int m = 0; m < Model.listaEncabezado.Count(); m++)
+                                        {
+                                            <th>
+                                                <label>
+                                                    <input type="checkbox" name="" value="true" id="" @Html.Raw((Model.monto_x) ? "checked=\"checked\"" : "") />
+                                                    <span style="height:1"></span>
+                                                 </label>
+                                            </th>
+                                        }
+                                    </tr>*@
 
                                 @{int columnas = 0; }
                                 @{int filas = 0; }
@@ -353,7 +353,7 @@
                             </table>
                         </div>
                     </div>
-                }
+                                    }
                 <div class="row">
                     <div class="col l8 m8 s12">
                         <div class="col l1 s1">
@@ -371,6 +371,50 @@
                     </div>
                 </div>
                 <br />
+                <br />
+
+                <div class="row">
+                    <div class="col s12">
+                        <div class="col l1 s1">
+                            <label>
+                                <input type="checkbox" name="secondTab_x" value="true" id="secondTab_x" @Html.Raw((Model.secondTab_x) ? "checked=\"checked\"" : "") />
+                                <span style="height:0"></span>
+                            </label>
+                        </div>
+                        <div class="input-field col l11 m11" style="margin-bottom:0;">
+                            <table class="table" style="font-size: 12px;">
+                                <tr style="background-color:#CCCCCC">
+                                    <th>
+                                        POS
+                                    </th>
+                                    <th>
+                                        TIPO
+                                    </th>
+                                    <th>
+                                        FECHA
+                                    </th>
+                                    <th>
+                                        MONTO
+                                    </th>
+                                    <th>
+                                        %
+                                    </th>
+                                </tr>
+                                @{int pos2 = 0; }
+                                @for (int i = 0; i < Model.numfilasTabla2; i++)
+                                {
+                                    <tr>
+                                        @for (int j = 0; j < Model.listaEncabezado2; j++)
+                                        {
+                                            <td style='text-align:center;'>@Model.listaCuerpoRec[pos2]</td>
+                                            pos2++;
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <br />
 
                 <div class="row">
@@ -566,4 +610,4 @@
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
-}
+                                    }

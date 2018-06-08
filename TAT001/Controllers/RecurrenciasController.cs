@@ -45,6 +45,7 @@ namespace TAT001.Controllers
         }
         // GET: Solicitudes/Create
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Create(string id_d, string tsol)
         {
 

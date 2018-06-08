@@ -23,7 +23,7 @@ namespace TAT001.Models
         PdfPTable tablaDatos3 = new PdfPTable(2);
         PdfPTable tabComentarios = new PdfPTable(2);
         public int a, b, r;
-        private int pos = 0;
+        private int pos, pos2 = 0;
 
         public void crearPDF(CartaV v, Entities.TEXTOCARTAV cv, List<string> encabezadoFech, List<string> encabezadoTab, List<int> numFilasTab, List<string> armadoCuerpoTab, bool aprob)
         {
@@ -283,6 +283,53 @@ namespace TAT001.Models
                     miFrase.Add("");
                 }
                 pdfDoc.Add(miFrase);
+
+                //APARTIR DE AQUI VA LA SEGUNDA TABLA
+                if (v.secondTab_x == true)
+                {
+                    int tamaño2 = 600 / v.listaEncabezado2;
+                    PdfPTable tablasN2 = new PdfPTable(v.listaEncabezado2);
+                    tablasN2.SetWidthPercentage(new float[] { tamaño2, tamaño2, tamaño2, tamaño2, tamaño2 }, PageSize.A4);
+
+                    PdfPCell celdaCabeza2 = new PdfPCell();
+                    celdaCabeza2.AddElement(new Paragraph("POS", letraTabNegrita));
+                    celdaCabeza2.BackgroundColor = new BaseColor(204, 204, 204);
+                    tablasN2.AddCell(celdaCabeza2);
+
+                    PdfPCell celdaCabeza3 = new PdfPCell();
+                    celdaCabeza3.AddElement(new Paragraph("TIPO", letraTabNegrita));
+                    celdaCabeza3.BackgroundColor = new BaseColor(204, 204, 204);
+                    tablasN2.AddCell(celdaCabeza3);
+
+                    PdfPCell celdaCabeza5 = new PdfPCell();
+                    celdaCabeza5.AddElement(new Paragraph("FECHA", letraTabNegrita));
+                    celdaCabeza5.BackgroundColor = new BaseColor(204, 204, 204);
+                    tablasN2.AddCell(celdaCabeza5);
+
+                    PdfPCell celdaCabeza6 = new PdfPCell();
+                    celdaCabeza6.AddElement(new Paragraph("MONTO", letraTabNegrita));
+                    celdaCabeza6.BackgroundColor = new BaseColor(204, 204, 204);
+                    tablasN2.AddCell(celdaCabeza6);
+
+                    PdfPCell celdaCabeza7 = new PdfPCell();
+                    celdaCabeza7.AddElement(new Paragraph("%", letraTabNegrita));
+                    celdaCabeza7.BackgroundColor = new BaseColor(204, 204, 204);
+                    tablasN2.AddCell(celdaCabeza7);
+
+
+                    for (int i = 0; i < v.numfilasTabla2; i++)
+                    {
+                        for (int j = 0; j < v.listaEncabezado2; j++)
+                        {
+                            tablasN2.AddCell(new Paragraph(v.listaCuerpoRec[pos2], letraTab));
+                            pos2++;
+                        }
+                    }
+
+                    pdfDoc.Add(tablasN2);
+                    pdfDoc.Add(new Chunk("\n"));
+                }
+
 
                 //APARTIR DE AQUI VAN LAS FIRMAS
                 //LINEAS PARA LA FIRMA EN UNA TABLA

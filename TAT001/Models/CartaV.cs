@@ -102,6 +102,14 @@ namespace TAT001.Models
         public bool apoyoEst_x { get; set; }
         public string apoyoRea { get; set; }
         public bool apoyoRea_x { get; set; }
+        //DATOS PARA LA TABLA SECUNDARIA DOCUMENOREC
+        public bool secondTab_x { get; set; }
+        public int pos2 { get; set; }
+        public string tipoDoc { get; set; }
+        public string fechaF { get; set; }
+        public string montoR { get; set; }
+        public string porcentajeR { get; set; }
+        public string aplicado { get; set; }
 
         //TABLA DE MATERIALES O CATEGORÍAS
         [Key, Column(Order = 2)]
@@ -109,8 +117,11 @@ namespace TAT001.Models
         //ARMADO DE LA CABECERA DE CADA TABLA INDIVIDUAL
         public List<string> listaFechas { get; set; }
         public List<string> listaEncabezado { get; set; }
+        public int listaEncabezado2 { get; set; }
         //ARMADO DEL CUERPO CADA TABLA INDIVIDUAL
         public List<int> numfilasTabla { get; set; }
+        public int numfilasTabla2 { get; set; }
         public List<string> listaCuerpo { get; set; }
+        public List<string> listaCuerpoRec { get; set; }
     }
 }

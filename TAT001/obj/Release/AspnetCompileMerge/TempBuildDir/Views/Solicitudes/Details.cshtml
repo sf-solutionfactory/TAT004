@@ -689,7 +689,7 @@
                                             <tr class="mat-@mat.POS_ID" style="display:none;">
                                                 <td></td>
                                                 <td></td>
-                                                <td>@mat.MATNR</td>
+                                                <td>@mat.MATNR.TrimStart('0')</td>
                                                 @{
                                                     using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
                                                     {

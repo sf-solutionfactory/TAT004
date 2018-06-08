@@ -723,6 +723,7 @@ namespace TAT001.Controllers
                                     docP.APOYO_EST = 0;
                                 }
 
+                                docP.MATNR = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
                                 docsp.Add(docP);
                             }
                             catch (Exception e)
@@ -1144,7 +1145,8 @@ namespace TAT001.Controllers
 
                                     if (docpl[j].MATNR != null && docpl[j].MATNR != "")
                                     {
-                                        docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == docpl[j].MATNR).FirstOrDefault();
+                                        string mmatnr = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
+                                        docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == mmatnr).FirstOrDefault();
                                     }
                                     else
                                     {
@@ -1162,6 +1164,7 @@ namespace TAT001.Controllers
                                             docmod.MATNR = "";
                                         }
                                         docP.MATNR = docmod.MATNR;
+                                        docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
                                         docP.MATKL = docmod.MATKL_ID;
                                         docP.CANTIDAD = 1;
                                         docP.MONTO = docmod.MONTO;
@@ -1200,11 +1203,11 @@ namespace TAT001.Controllers
                                     }
 
                                     //RSG 05.06.2018
-                                    if(cat == "C")
+                                    if (cat == "C")
                                     {
                                         decimal pos = docpl[j].POS;
                                         List<DOCUMENTOM> mm = db.DOCUMENTOMs.Where(a => a.NUM_DOC == dOCUMENTO.DOCUMENTO_REF & a.POS_ID == pos).ToList();
-                                        foreach(DOCUMENTOM mn in mm)
+                                        foreach (DOCUMENTOM mn in mm)
                                         {
                                             DOCUMENTOM ii = new DOCUMENTOM();
                                             ii.NUM_DOC = dOCUMENTO.NUM_DOC;
@@ -1246,6 +1249,7 @@ namespace TAT001.Controllers
                                         dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR = "";
                                     }
                                     docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                                    docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
                                     docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
                                     docP.CANTIDAD = 1;
                                     docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
@@ -1492,7 +1496,7 @@ namespace TAT001.Controllers
                     //db.SaveChanges();
 
                     USUARIO user = db.USUARIOs.Where(a => a.ID.Equals(User.Identity.Name)).FirstOrDefault();
-                    int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
+                    ////int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
                     try
                     {
                         //WORKFV wf = db.WORKFHs.Where(a => a.BUKRS.Equals(dOCUMENTO.SOCIEDAD_ID) & a.ROL_ID == rol).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
@@ -1600,7 +1604,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -2076,7 +2080,7 @@ namespace TAT001.Controllers
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.nombre = user.NOMBRE + " " + user.APELLIDO_P + " " + user.APELLIDO_M;
                 ViewBag.email = user.EMAIL;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.returnUrl = Request.UrlReferrer;
                 ViewBag.usuario = user;
                 try
@@ -2782,7 +2786,7 @@ namespace TAT001.Controllers
                 if (catid != "000")//RSG 05.06.2018
                     matl = db.MATERIALs.Where(m => m.MATERIALGP_ID == catid && m.ACTIVO == true);//.Select(m => m.ID).ToList();
                 else
-                    matl = db.MATERIALs.Where(m =>  m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                    matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
             }
             catch (Exception)
             {
@@ -2893,12 +2897,12 @@ namespace TAT001.Controllers
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
                     //var pres = db.PRESUPSAPPs.ToList();
-                    kunnr = kunnr.TrimStart('0').Trim();
+                    ////kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
-                    foreach (var c in cie)
-                    {
-                        c.KUNNR = c.KUNNR.TrimStart('0').Trim();
-                    }
+                    ////foreach (var c in cie)
+                    ////{
+                    ////    c.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                    ////}
 
                     //jd = (from ps in db.PRESUPSAPPs.ToList()
                     jdl = (from ps in pres
@@ -3100,7 +3104,7 @@ namespace TAT001.Controllers
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
                     //var pres = db.PRESUPSAPPs.ToList();
-                    kunnr = kunnr.TrimStart('0').Trim();
+                    ////kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(cli.VKORG) & a.SPART.Equals(cli.SPART) & a.KUNNR == kunnr).ToList();
                     List<CLIENTE> ciee = new List<CLIENTE>();
                     foreach (var c in cie)
@@ -3109,7 +3113,8 @@ namespace TAT001.Controllers
                         pa.VKORG = c.VKORG;
                         pa.VTWEG = c.VTWEG;
                         pa.SPART = c.SPART;
-                        pa.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                        //pa.KUNNR = c.KUNNR.TrimStart('0').Trim();
+                        pa.KUNNR = c.KUNNR;
                         ciee.Add(pa);
                     }
 
@@ -3240,14 +3245,14 @@ namespace TAT001.Controllers
             {
                 //using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))//RSG 05.06.2018
                 //{
-                    if (!System.IO.File.Exists(pathToCheck))
-                    {
-                        //No existe, se necesita crear
-                        DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+                if (!System.IO.File.Exists(pathToCheck))
+                {
+                    //No existe, se necesita crear
+                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
 
-                        dir.Create();
+                    dir.Create();
 
-                    }
+                }
                 //}
 
                 //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
@@ -3287,21 +3292,21 @@ namespace TAT001.Controllers
             //Parte para guardar archivo en el servidor
             //using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))//RSG 05.06.2018
             //{
-                //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
-                try
-                {
+            //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
+            try
+            {
 
 
-                    //Guardar el archivo
-                    file.SaveAs(savePath);
+                //Guardar el archivo
+                file.SaveAs(savePath);
 
 
-                }
-                catch (Exception e)
-                {
-                    ex = "";
-                    ex = fileName;
-                }
+            }
+            catch (Exception e)
+            {
+                ex = "";
+                ex = fileName;
+            }
             //}
 
             //Guardarlo en la base de datos
@@ -3439,6 +3444,9 @@ namespace TAT001.Controllers
         {
             if (mat == null)
                 mat = "";
+            //RSG 07.06.2018---------------------------------------------
+            mat = completaMaterial(mat);
+            //RSG 07.06.2018---------------------------------------------
 
             MaterialVal matt = db.MATERIALs.Where(m => m.ID == mat && m.ACTIVO == true).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATKL_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
 
@@ -3498,6 +3506,10 @@ namespace TAT001.Controllers
         {
             if (material == null)
                 material = "";
+
+            //RSG 07.06.2018---------------------------------------------
+            material = completaMaterial(material);
+            //RSG 07.06.2018---------------------------------------------
 
             TAT001Entities db = new TAT001Entities();
 
@@ -3630,6 +3642,24 @@ namespace TAT001.Controllers
 
             doc.DOCUMENTOREC = docs;
             return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
+        }
+        private string completaMaterial(string material)//RSG 07.06.2018---------------------------------------------
+        {
+            string m = material;
+            try
+            {
+                long matnr1 = long.Parse(m);
+                int l = 18 - m.Length;
+                for (int i = 0; i < l; i++)
+                {
+                    m = "0" + m;
+                }
+            }
+            catch
+            {
+
+            }
+            return m;
         }
     }
 }

@@ -131,6 +131,7 @@ namespace TAT001.Services
                 dOCUMENTO.PAYER_EMAIL = d.PAYER_EMAIL;
                 dOCUMENTO.TIPO_CAMBIO = d.TIPO_CAMBIO;
                 dOCUMENTO.GALL_ID = d.GALL_ID;
+                dOCUMENTO.TALL_ID = d.TALL_ID;
                 //Obtener el país
                 dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                 dOCUMENTO.TSOL_ID = d.TSOL_ID;
@@ -322,6 +323,8 @@ namespace TAT001.Services
                                     docP.CANTIDAD = 1;
                                     docP.APOYO_EST = (decimal)docmmm.APOYO_EST;
                                     docP.APOYO_REAL = (decimal)docmmm.APOYO_REAL;
+                                    docP.VOLUMEN_EST = 0;
+                                    docP.VOLUMEN_REAL = 0;
 
                                     dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
                                     db.SaveChanges();//RSG
@@ -368,14 +371,88 @@ namespace TAT001.Services
             {
 
             }
-
+            decimal total = 0;
             //RSG 28.05.2018-----------------------------------------------------
             foreach (DOCUMENTOP dp in dOCUMENTO.DOCUMENTOPs)
             {
                 dp.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
                 dp.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
+                if (dOCpADRE.TIPO_TECNICO == "P")
+                {
+                    ////if (!dOCpADRE.TSOL.FACTURA)
+                    ////{
+                    ////    try
+                    ////    {
+                    ////        total += (decimal)dp.APOYO_EST;
+                    ////    }
+                    ////    catch { }
+                    ////}
+                    ////else
+                    ////{
+                    ////    try
+                    ////    {
+                    ////        total += (decimal)dp.APOYO_REAL;
+                    ////    }
+                    ////    catch { }
+                    ////}
+                    dp.MONTO = 0;
+                    dp.CANTIDAD = 0;
+                    dp.MONTO_APOYO = 0;
+                    dp.PORC_APOYO = 0;
+                    dp.PRECIO_SUG = 0;
+                    dp.VOLUMEN_EST = 0;
+                    dp.VOLUMEN_REAL = 0;
+                    try
+                    {
+                        decimal val = (decimal)(from P in db.PRESUPSAPPs
+                                                where P.VKORG == dOCpADRE.VKORG
+                                                & P.VTWEG == dOCpADRE.VTWEG
+                                                & P.SPART == dOCpADRE.SPART
+                                                & P.KUNNR == dOCpADRE.PAYER_ID
+                                                & P.MATNR == dp.MATNR
+                                                & P.PERIOD == DateTime.Now.Month
+                                                select new { P.GRSLS }).Sum(a => a.GRSLS);
+                        total += val;
+                        dp.MONTO = val;
+                    }
+                    catch { }
+                }
+                
                 db.Entry(dOCUMENTO).State = EntityState.Modified;
                 db.SaveChanges();
+            }
+
+            if (dOCpADRE.TIPO_TECNICO == "P")
+            {
+                foreach (DOCUMENTOP dp in dOCUMENTO.DOCUMENTOPs)
+                {
+                    //total = 100%   200 = 100%
+                    //dp.MONTo = ?      50 = 25%
+                    decimal porcentaje = dp.MONTO / total * 100;
+                    decimal nuevo_total = (decimal)drecc.MONTO_BASE;
+
+                    if (!dOCpADRE.TSOL.FACTURA)
+                    {
+                        try
+                        {
+                            dp.APOYO_EST = nuevo_total * porcentaje / 100;
+                        }
+                        catch { }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            dp.APOYO_REAL = nuevo_total * porcentaje / 100; ;
+                        }
+                        catch { }
+                        ////}
+                    }
+                    dp.MONTO = 0;
+
+                    db.Entry(dOCUMENTO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
             }
             //RSG 28.05.2018-----------------------------------------------------
 

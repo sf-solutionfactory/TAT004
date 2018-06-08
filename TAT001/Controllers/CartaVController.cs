@@ -110,6 +110,7 @@ namespace TAT001.Controllers
 
                 List<string> lista = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>();
+                List<string> armadoCuerpoTab2 = new List<string>();
                 List<int> numfilasTabla = new List<int>();
 
                 int contadorTabla = 0;
@@ -177,6 +178,31 @@ namespace TAT001.Controllers
                     numfilasTabla.Add(contadorTabla);
                 }
 
+                var con4 = db.DOCUMENTORECs
+                                            .Where(x => x.NUM_DOC.Equals(id))
+                                            .Join(db.DOCUMENTOes, x => x.NUM_DOC, y => y.NUM_DOC, (x, y) => new { x.POS, y.TSOL_ID, x.FECHAF, x.MONTO_BASE, x.PORC })
+                                            .ToList();
+
+                foreach (var item in con4)
+                {
+                    DateTime a = Convert.ToDateTime(item.FECHAF);
+
+                    armadoCuerpoTab2.Add(item.POS.ToString());
+                    armadoCuerpoTab2.Add(db.TSOLs.Where(x => x.ID == item.TSOL_ID).Select(x => x.DESCRIPCION).First());
+                    armadoCuerpoTab2.Add(a.ToShortDateString());
+                    armadoCuerpoTab2.Add(item.MONTO_BASE.ToString());
+                    armadoCuerpoTab2.Add(item.PORC.ToString());
+                    //if (item.ESTATUS != "")
+                    //{
+                    //    armadoCuerpoTab2.Add("<i class='material-icons green-text'>check</i>");
+                    //}
+                    //else
+                    //{
+                    //    armadoCuerpoTab2.Add("<i class='material-icons red-text'>clear</i>");
+                    //}
+
+                }
+
 
                 HeaderFooter hfc = new HeaderFooter();
                 hfc.eliminaArchivos();
@@ -220,8 +246,11 @@ namespace TAT001.Controllers
                 //CUERPO DE LA CARTA
                 cv.listaFechas = lista;
                 cv.numfilasTabla = numfilasTabla;
+                cv.numfilasTabla2 = con4.Count();
                 //ENCABEZADO DE LA TABLA
                 cv.listaEncabezado = encabezado;
+                cv.listaEncabezado2 = 5;
+                cv.secondTab_x = true;
                 cv.material = c.MATERIAL;
                 cv.categoria = c.CATEGORIA;
                 cv.descripcion = c.DESCRIPCION;
@@ -241,6 +270,7 @@ namespace TAT001.Controllers
                 cv.apoyoRea_x = true;
 
                 cv.listaCuerpo = armadoCuerpoTab;
+                cv.listaCuerpoRec = armadoCuerpoTab2;
                 cv.num_doc = id;
                 cv.company = d.SOCIEDAD.BUTXT;
                 cv.company_x = true;
@@ -328,6 +358,7 @@ namespace TAT001.Controllers
 
                 List<string> encabezadoFech = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>();
+                List<string> armadoCuerpoTab2 = new List<string>();
                 List<int> numfilasTab = new List<int>();
 
                 int contadorTabla = 0;
@@ -395,9 +426,27 @@ namespace TAT001.Controllers
                     }
                     numfilasTab.Add(contadorTabla);
                 }
+
+                var con4 = db.DOCUMENTORECs
+                                            .Where(x => x.NUM_DOC.Equals(v.num_doc))
+                                            .Join(db.DOCUMENTOes, x => x.NUM_DOC, y => y.NUM_DOC, (x, y) => new { x.POS, y.TSOL_ID, x.FECHAF, x.MONTO_BASE, x.PORC })
+                                            .ToList();
+
+                foreach (var item in con4)
+                {
+                    DateTime a = Convert.ToDateTime(item.FECHAF);
+                    armadoCuerpoTab2.Add(item.POS.ToString());
+                    armadoCuerpoTab2.Add(db.TSOLs.Where(x => x.ID == item.TSOL_ID).Select(x => x.DESCRIPCION).First());
+                    armadoCuerpoTab2.Add(a.ToShortDateString());
+                    armadoCuerpoTab2.Add(item.MONTO_BASE.ToString());
+                    armadoCuerpoTab2.Add(item.PORC.ToString());
+                }
+
                 bool aprob = false;
-               
                 aprob = (d.ESTATUS_WF.Equals("A") | d.ESTATUS_WF.Equals("S"));
+                v.numfilasTabla2 = con4.Count();
+                v.listaCuerpoRec = armadoCuerpoTab2;
+                v.listaEncabezado2 = 5;
 
                 CartaV carta = v;
                 CartaVEsqueleto cve = new CartaVEsqueleto();

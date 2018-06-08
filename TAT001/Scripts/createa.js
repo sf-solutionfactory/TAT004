@@ -10,7 +10,8 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
                 data: { "Prefix": request.term },
                 success: function (data) {
                     response(auto.map(data, function (item) {
-                        return { label: item.ID + " - " + item.MAKTX, value: item.ID };
+                        //return { label: item.ID + " - " + item.MAKTX, value: item.ID };
+                        return { label: trimStart('0', item.ID) + " - " + item.MAKTX, value: trimStart('0', item.ID) };//RSG 07.06.2018
                     }))
                 }
             })
@@ -33,6 +34,16 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
         }
     });
 });
+
+function trimStart(character, string) {//RSG 07.06.2018
+    var startIndex = 0;
+
+    while (string[startIndex] === character) {
+        startIndex++;
+    }
+
+    return string.substr(startIndex);
+}
 
 function selectMaterial(val, desc, tr) {
     var index = getIndex();

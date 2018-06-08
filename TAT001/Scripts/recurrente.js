@@ -3,6 +3,7 @@
 function llenaCat(vkorg, vtweg, spart, kunnr) {
     document.getElementById("loader").style.display = "initial";
     var soc = document.getElementById("sociedad_id").value;
+    $("#select_categoria").find('option').remove().end();
     $.ajax({
         type: "POST",
         url: '../Listas/categoriasCliente',
@@ -73,17 +74,17 @@ function cambiaRec() {
     table.clear().draw(true);
     var tipo = document.getElementById("select_neg").value;
     var montoo = document.getElementById("monto_dis").value;
-    
-
 
     if (campo.checked) {
         if (montoo === "") {
             var dist = $('#table_dis').DataTable();
-
+            var montooo = 0.00;
             $('#table_dis > tbody  > tr').each(function () {
                 var montot = $(this).find("td.total input").val();
-                montoo += parseInt(montot);
+                //montoo += parseInt(montot);
+                montooo += parseFloat(montot);
             });
+            montoo = montooo;
         }
         if (montoo > 0) {
 
@@ -103,12 +104,26 @@ function cambiaRec() {
                     var date = "";
                     var monto = "";
                     if (i === 1) {
-                        date = document.getElementById("fechai_vig").value;
+                        if (tipo !== "P") {
+                            date = document.getElementById("fechai_vig").value;
+                        } else {
+                            var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                            //date = date.addDays(-1);
+                            dates.setDate(dates.getDate() - 1);
+                            date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                        }
                         monto = montoo;
                     }
                     else {
-                        var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                        date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                        if (tipo !== "P") {
+                            var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                            date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                        } else {
+                            var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                            //date = date.addDays(-1);
+                            dates.setDate(dates.getDate() - 1);
+                            date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                        }
                         monto = montoo;
                     }
                     addRowRec(table, i, date, monto, tipo);
