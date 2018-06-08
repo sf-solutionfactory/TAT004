@@ -300,7 +300,7 @@ namespace TAT001.Controllers
             var c = (from C in db.CUENTAs
                      where C.SOCIEDAD_ID == bukrs
                      & C.PAIS_ID == land
-                     & C.GALL_ID == gall
+                     & C.TALL_ID == gall
                      & C.EJERCICIO == ejer
                      select new { C.ABONO, C.CARGO, C.CLEARING, C.LIMITE }).FirstOrDefault();
 

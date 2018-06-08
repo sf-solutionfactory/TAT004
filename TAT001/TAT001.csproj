@@ -283,6 +283,9 @@
     <Compile Include="Entities\CONFDIST_CAT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CONMAIL.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CONPOSAPH.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

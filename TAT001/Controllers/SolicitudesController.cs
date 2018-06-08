@@ -905,13 +905,13 @@ namespace TAT001.Controllers
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo, string catmat)
         {
 
-            bool prueba = false;
+            //bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
-            if (ModelState.IsValid && prueba == true)
-                //if (ModelState.IsValid)
+            //if (ModelState.IsValid && prueba == true)
+            if (ModelState.IsValid)
             {
                 try
                 {

@@ -204,6 +204,18 @@
     <Property Name="PERIODOS" Type="int" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
+  <EntityType Name="CONMAIL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="HOST" Type="nvarchar" MaxLength="100" />
+    <Property Name="PORT" Type="int" />
+    <Property Name="SSL" Type="bit" Nullable="false" />
+    <Property Name="MAIL" Type="nvarchar" MaxLength="100" />
+    <Property Name="PASS" Type="nvarchar" MaxLength="100" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="CONPOSAPH">
     <Key>
       <PropertyRef Name="CONSECUTIVO" />
@@ -228,6 +240,7 @@
     <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
     <Property Name="RELACION" Type="int" />
     <Property Name="RETENCION" Type="nchar" MaxLength="1" />
+    <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />
   </EntityType>
   <EntityType Name="CONPOSAPP">
     <Key>
@@ -305,12 +318,12 @@
     <Key>
       <PropertyRef Name="SOCIEDAD_ID" />
       <PropertyRef Name="PAIS_ID" />
-      <PropertyRef Name="GALL_ID" />
+      <PropertyRef Name="TALL_ID" />
       <PropertyRef Name="EJERCICIO" />
     </Key>
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
-    <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" Nullable="false" />
+    <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="EJERCICIO" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ABONO" Type="numeric" Precision="10" Scale="0" />
     <Property Name="CARGO" Type="numeric" Precision="10" Scale="0" />
@@ -580,8 +593,9 @@
     <Property Name="VTWEG" Type="nchar" MaxLength="2" />
     <Property Name="SPART" Type="nchar" MaxLength="2" />
     <Property Name="PUESTO_ID" Type="int" />
-    <Property Name="GALL_ID" Type="varchar" MaxLength="5" />
+    <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" />
     <Property Name="CONCEPTO_ID" Type="int" />
+    <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -1313,6 +1327,8 @@
     <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
     <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOEST" Type="nvarchar" MaxLength="50" />
+    <Property Name="APOYOREA" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="TRETENCION">
     <Key>
@@ -2019,18 +2035,6 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_CUENTA_GALL">
-    <End Role="GALL" Type="Self.GALL" Multiplicity="1" />
-    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="GALL">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="CUENTA">
-        <PropertyRef Name="GALL_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_CUENTA_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
     <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
@@ -2052,6 +2056,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       </Principal>
       <Dependent Role="CUENTA">
         <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_TALL">
+    <End Role="TALL" Type="Self.TALL" Multiplicity="1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TALL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="TALL_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -2299,6 +2315,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTO_GALL">
+    <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GALL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="GALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTO_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="0..1" />
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
@@ -2367,6 +2395,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOA">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOF_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOF">
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3689,6 +3729,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
     <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONMAIL" EntityType="Self.CONMAIL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPP" EntityType="Self.CONPOSAPP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONSOPORTE" EntityType="Self.CONSOPORTE" Schema="dbo" store:Type="Tables" />
@@ -4009,16 +4050,16 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="CONTACTOC" EntitySet="CONTACTOC" />
     </AssociationSet>
-    <AssociationSet Name="FK_CUENTA_GALL" Association="Self.FK_CUENTA_GALL">
-      <End Role="GALL" EntitySet="GALL" />
-      <End Role="CUENTA" EntitySet="CUENTA" />
-    </AssociationSet>
     <AssociationSet Name="FK_CUENTA_PAIS" Association="Self.FK_CUENTA_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="CUENTA" EntitySet="CUENTA" />
     </AssociationSet>
     <AssociationSet Name="FK_CUENTA_SOCIEDAD" Association="Self.FK_CUENTA_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_TALL" Association="Self.FK_CUENTA_TALL">
+      <End Role="TALL" EntitySet="TALL" />
       <End Role="CUENTA" EntitySet="CUENTA" />
     </AssociationSet>
     <AssociationSet Name="FK_DET_AGENTE_GAUTORIZACION" Association="Self.FK_DET_AGENTE_GAUTORIZACION">
@@ -4097,6 +4138,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
     </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_GALL" Association="Self.FK_DOCUMENTO_GALL">
+      <End Role="GALL" EntitySet="GALL" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_PAIS" Association="Self.FK_DOCUMENTO_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
@@ -4120,6 +4165,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
     <AssociationSet Name="FK_DOCUMENTOA_DOCUMENTO" Association="Self.FK_DOCUMENTOA_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOA" EntitySet="DOCUMENTOA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
       <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />
