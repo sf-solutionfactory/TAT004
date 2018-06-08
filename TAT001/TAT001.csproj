@@ -220,6 +220,7 @@
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Catalogos\ImpuestoController.cs" />
+    <Compile Include="Controllers\ListasController2.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -231,10 +232,9 @@
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
-    <Compile Include="Controllers\RecurrenciasController2.cs" />
     <Compile Include="Controllers\RecurrenciasController.cs" />
-    <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\SolicitudesController2.cs" />
+    <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
@@ -506,7 +506,16 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\STATE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\sysdiagram.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -635,7 +644,9 @@
     <Compile Include="Entities\ZCTGR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
+    <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -745,8 +756,6 @@
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\create.js" />
-    <Content Include="Scripts\createRec2.js" />
-    <Content Include="Scripts\createRec.js" />
     <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
@@ -915,7 +924,7 @@
     <Content Include="Views\Negociaciones\Delete.cshtml" />
     <Content Include="Views\Negociaciones\Details.cshtml" />
     <Content Include="Views\Negociaciones\Edit.cshtml" />
-    <Content Include="Views\Solicitudes\Create.cshtml" />
+    <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Recurrencias\Create2.cshtml" />
     <Content Include="Views\Excel\Details.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
@@ -926,6 +935,7 @@
     <Content Include="Views\ccat\Edit.cshtml" />
     <Content Include="Views\CartaV\Create2.cshtml" />
     <Content Include="Views\CartaV\Create.cshtml" />
+    <Content Include="Views\Solicitudes\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -962,7 +972,6 @@
     <Content Include="Views\Listas\Clientes.cshtml" />
     <Content Include="Scripts\autocomplete1.10.2.js" />
     <Content Include="Views\CartaF\Details.cshtml" />
-    <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Solicitudes\Delete.cshtml" />
     <Content Include="Views\Solicitudes\Details.cshtml" />
     <Content Include="Views\Solicitudes\Edit.cshtml" />

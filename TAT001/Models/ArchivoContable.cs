@@ -306,7 +306,7 @@ namespace TAT001.Models
                 }
                 try
                 {
-                    cuent = db.CUENTAs.Where(x => x.PAIS_ID == doc.PAIS_ID && x.SOCIEDAD_ID == doc.SOCIEDAD_ID && x.GALL_ID == doc.GALL_ID).Single();
+                    cuent = db.CUENTAs.Where(x => x.PAIS_ID == doc.PAIS_ID && x.SOCIEDAD_ID == doc.SOCIEDAD_ID && x.TALL_ID == doc.GALL_ID).Single();
                 }
                 catch (Exception h)
                 {

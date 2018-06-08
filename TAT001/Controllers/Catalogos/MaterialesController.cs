@@ -39,7 +39,7 @@ namespace TAT001.Controllers.Catalogos
             }
             Session["spras"] = user.SPRAS_ID;
 
-            var mATERIALs = db.MATERIALs.Include(m => m.CATEGORIA).Include(m => m.ZCTGR).Include(m => m.ZBRAND).Include(m => m.UMEDIDA);
+            var mATERIALs = db.MATERIALs.Include(m => m.MATERIALGP).Include(m => m.ZCTGR).Include(m => m.ZBRAND).Include(m => m.UMEDIDA);
             return View(mATERIALs.Where(x => x.ACTIVO == true).ToList());
         }
 

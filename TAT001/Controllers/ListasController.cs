@@ -300,13 +300,14 @@ namespace TAT001.Controllers
             var c = (from C in db.CUENTAs
                      where C.SOCIEDAD_ID == bukrs
                      & C.PAIS_ID == land
-                     & C.GALL_ID == gall
+                     & C.TALL_ID == gall
                      & C.EJERCICIO == ejer
                      select new { C.ABONO, C.CARGO, C.CLEARING, C.LIMITE }).FirstOrDefault();
 
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -418,14 +419,13 @@ namespace TAT001.Controllers
                 {
 
                 }
+
                 if (cie != null)
                 {
                     //Obtener el historial de compras de los clientesd
                     var matt = matl.ToList();
                     //kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
-                    
-                    //var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
                     var cat = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
                     //foreach (var c in cie)
                     //{
@@ -433,48 +433,45 @@ namespace TAT001.Controllers
                     //}
 
                     CONFDIST_CAT conf = getCatConf(soc_id);
-                    if (conf != null)
+                    if (conf.CAMPO == "GRSLS")
                     {
-                        if (conf.CAMPO == "GRSLS")
-                        {
-                            jd = (from ps in pres
-                                  join cl in cie
-                                  on ps.KUNNR equals cl.KUNNR
-                                  join m in matt
-                                  on ps.MATNR equals m.ID
-                                  join mk in cat
-                                  on m.MATERIALGP_ID equals mk.MATERIALGP_ID
-                                  where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                                  (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
-                                                                                                        //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
-                                  ) && ps.BUKRS == soc_id
-                                  && ps.GRSLS > 0
-                                  select new
-                                  {
-                                      m.MATERIALGP_ID,
-                                      mk.TXT50
-                                  }).ToList();
-                        }
-                        else
-                        {
-                            jd = (from ps in pres
-                                  join cl in cie
-                                  on ps.KUNNR equals cl.KUNNR
-                                  join m in matt
-                                  on ps.MATNR equals m.ID
-                                  join mk in cat
-                                  on m.MATERIALGP_ID equals mk.MATERIALGP_ID
-                                  where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                                  (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
-                                                                                                        //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
-                                  ) && ps.BUKRS == soc_id
-                                  && ps.NETLB > 0
-                                  select new
-                                  {
-                                      m.MATERIALGP_ID,
-                                      mk.TXT50
-                                  }).ToList();
-                        }
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                              ) && ps.BUKRS == soc_id
+                              && ps.GRSLS > 0
+                              select new
+                              {
+                                  m.MATERIALGP_ID,
+                                  mk.TXT50
+                              }).ToList();
+                    }
+                    else
+                    {
+                        jd = (from ps in pres
+                              join cl in cie
+                              on ps.KUNNR equals cl.KUNNR
+                              join m in matt
+                              on ps.MATNR equals m.ID
+                              join mk in cat
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
+                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                              ) && ps.BUKRS == soc_id
+                              && ps.NETLB > 0
+                              select new
+                              {
+                                  m.MATERIALGP_ID,
+                                  mk.TXT50
+                              }).ToList();
                     }
                 }
             }
@@ -483,7 +480,7 @@ namespace TAT001.Controllers
             var list = new List<MATERIALGPT>();
             if (jd.Count > 0)
             {
-                MATERIALGPT c = db.MATERIALGPTs.Where(a=>a.SPRAS_ID.Equals(spras)& a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
+                MATERIALGPT c = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
                 MATERIALGPT cc = new MATERIALGPT();
                 cc.SPRAS_ID = c.SPRAS_ID;
                 cc.MATERIALGP_ID = c.MATERIALGP_ID;

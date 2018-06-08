@@ -26,10 +26,9 @@ namespace TAT001.Entities
         public string BRAND { get; set; }
         public string MATERIALGP_ID { get; set; }
     
-        public virtual CATEGORIA CATEGORIA { get; set; }
         public virtual ZCTGR ZCTGR { get; set; }
         public virtual ZBRAND ZBRAND { get; set; }
-        public virtual UMEDIDA UMEDIDA { get; set; }
         public virtual MATERIALGP MATERIALGP { get; set; }
+        public virtual UMEDIDA UMEDIDA { get; set; }
     }
 }

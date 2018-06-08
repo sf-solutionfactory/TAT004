@@ -17,10 +17,9 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GALL()
         {
-            this.CUENTAs = new HashSet<CUENTA>();
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.GALLTs = new HashSet<GALLT>();
             this.TALLs = new HashSet<TALL>();
-            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
         }
     
         public string ID { get; set; }
@@ -29,12 +28,10 @@ namespace TAT001.Entities
         public string GRUPO_ALL { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CUENTA> CUENTAs { get; set; }
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GALLT> GALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALL> TALLs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }

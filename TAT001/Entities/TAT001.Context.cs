@@ -29,6 +29,8 @@ namespace TAT001.Entities
     
         public virtual DbSet<ACCION> ACCIONs { get; set; }
         public virtual DbSet<CAMPOS> CAMPOS { get; set; }
+        public virtual DbSet<CAMPOZKE24> CAMPOZKE24 { get; set; }
+        public virtual DbSet<CAMPOZKE24T> CAMPOZKE24T { get; set; }
         public virtual DbSet<CANAL> CANALs { get; set; }
         public virtual DbSet<CARPETA> CARPETAs { get; set; }
         public virtual DbSet<CARPETAT> CARPETATs { get; set; }
@@ -38,6 +40,8 @@ namespace TAT001.Entities
         public virtual DbSet<CITy> CITIES { get; set; }
         public virtual DbSet<CLIENTE> CLIENTEs { get; set; }
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
+        public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
+        public virtual DbSet<CONMAIL> CONMAILs { get; set; }
         public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
         public virtual DbSet<CONPOSAPP> CONPOSAPPs { get; set; }
         public virtual DbSet<CONSOPORTE> CONSOPORTEs { get; set; }
@@ -60,6 +64,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
         public virtual DbSet<DOCUMENTOR> DOCUMENTORs { get; set; }
+        public virtual DbSet<DOCUMENTOREC> DOCUMENTORECs { get; set; }
         public virtual DbSet<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual DbSet<FACTURASCONF> FACTURASCONFs { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
@@ -70,6 +75,8 @@ namespace TAT001.Entities
         public virtual DbSet<IMPUESTO> IMPUESTOes { get; set; }
         public virtual DbSet<LEYENDA> LEYENDAs { get; set; }
         public virtual DbSet<MATERIAL> MATERIALs { get; set; }
+        public virtual DbSet<MATERIALGP> MATERIALGPs { get; set; }
+        public virtual DbSet<MATERIALGPT> MATERIALGPTs { get; set; }
         public virtual DbSet<MENSAJE> MENSAJES { get; set; }
         public virtual DbSet<MIEMBRO> MIEMBROS { get; set; }
         public virtual DbSet<MONEDA> MONEDAs { get; set; }
@@ -96,6 +103,7 @@ namespace TAT001.Entities
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
         public virtual DbSet<STATE> STATES { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
         public virtual DbSet<TAX_LAND> TAX_LAND { get; set; }
@@ -139,13 +147,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<DOCUMENTOREC> DOCUMENTORECs { get; set; }
-        public virtual DbSet<CAMPOZKE24> CAMPOZKE24 { get; set; }
-        public virtual DbSet<CAMPOZKE24T> CAMPOZKE24T { get; set; }
-        public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
-        public virtual DbSet<MATERIALGP> MATERIALGPs { get; set; }
-        public virtual DbSet<MATERIALGPT> MATERIALGPTs { get; set; }
-        public virtual DbSet<CONMAIL> CONMAILs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
@@ -328,6 +329,109 @@ namespace TAT001.Entities
                 new ObjectParameter("ACCION", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_USUARIO_Result>("CSP_USUARIO", iDParameter, pASSParameter, nOMBREParameter, aPELLIDO_PParameter, aPELLIDO_MParameter, eMAILParameter, sPRAS_IDParameter, aCTIVOParameter, aCCIONParameter);
+        }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagramdefinition_Result> sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagramdefinition_Result>("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual ObjectResult<sp_helpdiagrams_Result> sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_helpdiagrams_Result>("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
         }
     }
 }

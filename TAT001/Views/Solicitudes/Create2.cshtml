@@ -198,7 +198,7 @@
                                 }
                             </div>
                             <div class="form-group col s12">
-                                @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.GALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
@@ -212,7 +212,23 @@
                                     }
                                 </div>
                             </div>
-                            @Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })
+                            @*@Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })*@
+                            <div class="form-group col s12">
+                                @Html.LabelFor(model => model.TALL_ID, "Clasificación2", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("TALL_ID", null, "", htmlAttributes: new { @id = "tall_id", @class = "form-control  " + @ViewBag.relacionada })
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" value="@Model.TALL_ID" id="tall_id" /><!--RSG 23.05.2018-->
+                                        @*<input type="text" value="@ViewBag.TALL_IDI" disabled="disabled" />
+                                            <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
+                                        *@
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
                     @*Datos del país*@
@@ -232,7 +248,7 @@
                                     <div class="form-group hidden">
                                         @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
                                         <div class="col-md-10">
-                                            @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
+                                            @Html.HiddenFor(model => model.PAIS_ID, new { @id = "pais_id", @class = "form-control", @Value = pais.LAND })
                                         </div>
                                     </div>
                                     <div class="input-field col-md-2">
@@ -514,23 +530,6 @@
                             </table>
                             @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
                             <table id="table_soph" class="display" cellspacing="0" style="display:none">
-                                @*<thead>
-                                        <tr>
-
-                                            <th>Pos</th>
-                                            <th>Factura</th>
-                                            <th>Fecha Factura</th>
-                                            <th>Proveedor</th>
-                                            <th>Proveedor Desc</th>
-                                            <th>Control</th>
-                                            <th>Autorización</th>
-                                            <th>Vencimiento</th>
-                                            <th>Factura k</th>
-                                            <th>Ejercicio k</th>
-                                            <th>Bill doc</th>
-                                            <th>Belnr</th>
-                                        </tr>
-                                    </thead>*@
                                 <tbody>
                                     @if (Model.DOCUMENTOF != null)
                                     {
@@ -555,7 +554,6 @@
                                                     @Model.DOCUMENTOF[i].PROVEEDOR
                                                 </td>
                                                 <td></td>
-
                                                 <td>
                                                     @Model.DOCUMENTOF[i].CONTROL
                                                 </td>
@@ -583,7 +581,6 @@
                                                 <td>
                                                     @Model.DOCUMENTOF[i].BELNR
                                                 </td>
-
                                             </tr>
                                         }
                                     }
@@ -673,6 +670,20 @@
                                         @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
                                     </div>
                                 </div>
+                                <script>
+                                    asignaFechasInit();
+                                    function asignaFechasInit() {
+                                        var datei = document.getElementById("fechai_vig").value;
+                                        var datef = document.getElementById("fechaf_vig").value;
+
+                                        if (datei != "") {
+                                            document.getElementById("fechai_vig2").value = datei;
+                                        }
+                                        if (datef != "") {
+                                            document.getElementById("fechaf_vig2").value = datef;
+                                        }
+                                    }
+                                </script>
                                 <div class="col s6">
                                     <div class="col s12">
                                         <div class="input-field col s6">
@@ -693,8 +704,11 @@
                                     </div>
                                 </div>
                                 <script>
+                                    var datei = document.getElementById("fechai_vig").value;
+                                    var datef = document.getElementById("fechaf_vig").value;
                                     var elemth = document.querySelector('#fechai_vig2');
                                     var optionsth = {
+                                        defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
                                         format: 'dd/mm/yyyy',
                                         i18n: {
                                             clear: 'Limpiar',
@@ -713,6 +727,7 @@
 
                                     var elemtd = document.querySelector('#fechaf_vig2');
                                     var optionstd = {
+                                        defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
                                         format: 'dd/mm/yyyy',
                                         onClose: function (e) {
                                             var datei = $('#fechai_vig2').val();
@@ -767,7 +782,7 @@
                             <p>
                                 <label>
                                     @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec()" />
                                     <span>Documento recurrente</span>
                                 </label>
                             </p>
@@ -783,7 +798,7 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
-                            <a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>
+                            @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
                             <table id="table_rech" class="display" cellspacing="0" style="display:none">
                                 <thead>
                                     <tr>
@@ -986,9 +1001,7 @@
                                         @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
                                     </div>
                                 </div>
-
                                 @*<a id="btn_guardarr" class="btn waves-effect waves-light btn-small disabled">Enviar</a>*@
-
                             </div>
                         </div>
                     }
@@ -1013,7 +1026,7 @@
                                 <label>Tipo de negociación</label>
                             </div>
                             <div class="input-field col s6">
-                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value)">
+                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value,'X')">
                                     <option value="M">Material</option>
                                     <option value="C">Categoría</option>
                                 </select>
@@ -1041,7 +1054,7 @@
                         <h5>Monto Base</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                <input value="" id="monto_dis" type="text" class="validate @ViewBag.reversa" onchange="cambiaRec()" />
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">
@@ -1060,8 +1073,8 @@
                         <h5>Base para aplicar %</h5>
                         <div class="row" style="margin-bottom:0">
                             <div class="input-field col s6">
-                                <input value="" id="monto_apoyo" type="text" class="validate" />
-                                <label for="monto_apoyo">% Apoyo</label>
+                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                <label for="bmonto_apoyo">% Apoyo</label>
                             </div>
                         </div>
                     </div>
@@ -1105,6 +1118,7 @@
                                         <th>Costo con apoyo</th>
                                         <th>Precio sugerido</th>
                                         <th id="lbl_volumen">Volumen estimado</th>
+                                        <th id="lbl_apoyoee">Estimado apoyo</th><!--RSG 05.06.2018-->
                                         <th id="lbl_apoyo">Estimado apoyo</th>
                                     </tr>
                                 </thead>
@@ -1112,7 +1126,8 @@
                                 <tfoot id="tfoot_dis" style="">
                                     @*//display:none*@
                                     <tr>
-                                        <th colspan="14" style="text-align:right">Total:</th>
+                                        @*<th colspan="14" style="text-align:right">Total:</th>*@<!--RSG 05.06.2018-->
+                                        <th colspan="15" style="text-align:right">Total:</th>
                                         <th id="total_dis"></th>
                                     </tr>
                                 </tfoot>

@@ -18,7 +18,6 @@ namespace TAT001.Entities
         public CATEGORIA()
         {
             this.CATEGORIATs = new HashSet<CATEGORIAT>();
-            this.MATERIALs = new HashSet<MATERIAL>();
         }
     
         public string ID { get; set; }
@@ -27,7 +26,5 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CATEGORIAT> CATEGORIATs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MATERIAL> MATERIALs { get; set; }
     }
 }

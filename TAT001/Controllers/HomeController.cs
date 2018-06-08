@@ -518,7 +518,7 @@ namespace TAT001.Controllers
                     var lstC = db.CUENTAs.ToList();
                     for (int y = 0; y < lstC.Count; y++)
                     {
-                        if (lstC[y].SOCIEDAD_ID == lst[i - 2].SOCIEDAD_ID && lstC[y].GALL_ID == lst[i - 2].TALL.GALL_ID)
+                        if (lstC[y].SOCIEDAD_ID == lst[i - 2].SOCIEDAD_ID && lstC[y].TALL_ID == lst[i - 2].TALL.GALL_ID)
                         {
                             worksheet.Cell("M" + i).Value = new[]
                             {

@@ -318,12 +318,12 @@
     <Key>
       <PropertyRef Name="SOCIEDAD_ID" />
       <PropertyRef Name="PAIS_ID" />
-      <PropertyRef Name="GALL_ID" />
+      <PropertyRef Name="TALL_ID" />
       <PropertyRef Name="EJERCICIO" />
     </Key>
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
-    <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" Nullable="false" />
+    <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="EJERCICIO" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ABONO" Type="numeric" Precision="10" Scale="0" />
     <Property Name="CARGO" Type="numeric" Precision="10" Scale="0" />
@@ -595,6 +595,7 @@
     <Property Name="PUESTO_ID" Type="int" />
     <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" />
     <Property Name="CONCEPTO_ID" Type="int" />
+    <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -1159,6 +1160,16 @@
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -2024,18 +2035,6 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_CUENTA_GALL">
-    <End Role="GALL" Type="Self.GALL" Multiplicity="1" />
-    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="GALL">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="CUENTA">
-        <PropertyRef Name="GALL_ID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_CUENTA_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
     <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
@@ -2057,6 +2056,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CUENTA">
         <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_TALL">
+    <End Role="TALL" Type="Self.TALL" Multiplicity="1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TALL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="TALL_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3660,6 +3671,37 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -3749,6 +3791,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" Schema="dbo" store:Type="Tables" />
@@ -4007,16 +4050,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="CONTACTOC" EntitySet="CONTACTOC" />
     </AssociationSet>
-    <AssociationSet Name="FK_CUENTA_GALL" Association="Self.FK_CUENTA_GALL">
-      <End Role="GALL" EntitySet="GALL" />
-      <End Role="CUENTA" EntitySet="CUENTA" />
-    </AssociationSet>
     <AssociationSet Name="FK_CUENTA_PAIS" Association="Self.FK_CUENTA_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="CUENTA" EntitySet="CUENTA" />
     </AssociationSet>
     <AssociationSet Name="FK_CUENTA_SOCIEDAD" Association="Self.FK_CUENTA_SOCIEDAD">
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_TALL" Association="Self.FK_CUENTA_TALL">
+      <End Role="TALL" EntitySet="TALL" />
       <End Role="CUENTA" EntitySet="CUENTA" />
     </AssociationSet>
     <AssociationSet Name="FK_DET_AGENTE_GAUTORIZACION" Association="Self.FK_DET_AGENTE_GAUTORIZACION">

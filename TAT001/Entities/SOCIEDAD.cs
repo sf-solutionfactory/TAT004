@@ -42,6 +42,7 @@ namespace TAT001.Entities
         public bool ACTIVO { get; set; }
         public string REGION { get; set; }
     
+        public virtual CONFDIST_CAT CONFDIST_CAT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONPOSAPH> CONPOSAPHs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -65,6 +66,5 @@ namespace TAT001.Entities
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
-        public virtual CONFDIST_CAT CONFDIST_CAT { get; set; }
     }
 }
