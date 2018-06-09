@@ -185,6 +185,7 @@ namespace TAT001.Controllers
             if (DF.D.DOCUMENTO_REF != null)
                 ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
             ViewBag.Title += id;
+            ViewBag.Relacionados = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == DF.D.NUM_DOC).ToList();
 
             return View(DF);
         }
@@ -2850,6 +2851,7 @@ namespace TAT001.Controllers
 
             }
 
+            var spras = Session["spras"].ToString();//RSG 08.06.2018
             //Validar si hay materiales
             if (matl != null)
             {
@@ -2876,7 +2878,6 @@ namespace TAT001.Controllers
                 {
 
                 }
-
                 var cie = clil.Cast<CLIENTE>();
                 //    IEnumerable<CLIENTE> cie = clil as IEnumerable<CLIENTE>;
                 //Obtener el numero de periodos para obtener el historial
@@ -2938,7 +2939,7 @@ namespace TAT001.Controllers
                     var matt = matl.ToList();
                     //kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
-                    var spras = Session["spras"].ToString();
+
                     var cat = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
                     //foreach (var c in cie)
                     //{
@@ -2962,7 +2963,7 @@ namespace TAT001.Controllers
                               && ps.GRSLS > 0
                               select new DOCUMENTOM_MOD
                               {
-                                  ID_CAT = m.MATKL_ID,
+                                  ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
                                   VAL = Convert.ToDecimal(ps.GRSLS)
@@ -2984,7 +2985,7 @@ namespace TAT001.Controllers
                               && ps.NETLB > 0
                               select new DOCUMENTOM_MOD
                               {
-                                  ID_CAT = m.MATKL_ID,
+                                  ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
 
@@ -3035,7 +3036,27 @@ namespace TAT001.Controllers
                 lcatmat.Add(cm);
             }
 
-
+            if (lcatmat.Count > 0)
+            {
+                CategoriaMaterial nnn = new CategoriaMaterial();
+                nnn.ID = "000";
+                nnn.DESCRIPCION = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals(nnn.ID)).FirstOrDefault().TXT50;
+                nnn.MATERIALES = new List<DOCUMENTOM_MOD>();
+                foreach (var item in lcatmat)
+                {
+                    foreach (var ii in item.MATERIALES)
+                    {
+                        DOCUMENTOM_MOD dm = new DOCUMENTOM_MOD();
+                        dm.ID_CAT = "000";
+                        dm.DESC = ii.DESC;
+                        dm.MATNR = ii.MATNR;
+                        dm.POR = ii.POR;
+                        dm.VAL = ii.VAL;
+                        nnn.MATERIALES.Add(dm);
+                    }
+                }
+                lcatmat.Add(nnn);
+            }
 
 
             //CategoriaMaterial cm1 = new CategoriaMaterial();
