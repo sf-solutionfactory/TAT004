@@ -1503,8 +1503,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

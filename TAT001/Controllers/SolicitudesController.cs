@@ -4473,15 +4473,15 @@ namespace TAT001.Controllers
                 string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                cat = db.CATEGORIAs.Where(c => c.ID == cate && c.ACTIVO == true)
+                cat = db.MATERIALGPs.Where(c => c.ID == cate && c.ACTIVO == true)
                             .Join(
-                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            db.MATERIALGPTs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
                             c => c.ID,
-                            ct => ct.CATEGORIA_ID,
+                            ct => ct.MATERIALGP_ID,
                             (c, ct) => new
                             {
                                 SPRAS_ID = ct.SPRAS_ID.ToString(),
-                                CATEGORIA_ID = ct.CATEGORIA_ID.ToString(),
+                                CATEGORIA_ID = ct.MATERIALGP_ID.ToString(),
                                 TXT50 = ct.TXT50.ToString()
                             })
                         .FirstOrDefault();
