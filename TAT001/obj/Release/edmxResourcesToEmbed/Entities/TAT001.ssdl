@@ -706,6 +706,16 @@
     <Property Name="PORC" Type="decimal" Precision="13" Scale="5" />
     <Property Name="DOC_REF" Type="numeric" Precision="10" Scale="0" />
   </EntityType>
+  <EntityType Name="DOCUMENTOSAP">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="BUKRS" Type="nchar" MaxLength="4" />
+    <Property Name="EJERCICIO" Type="int" />
+    <Property Name="CUENTA_C" Type="nchar" MaxLength="10" />
+    <Property Name="CUENTA_A" Type="nchar" MaxLength="10" />
+  </EntityType>
   <EntityType Name="DOCUMENTOTS">
     <Key>
       <PropertyRef Name="NUM_DOC" />
@@ -918,6 +928,18 @@
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nchar" MaxLength="10" />
     <Property Name="ACTIVO" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="PERIODO445">
+    <Key>
+      <PropertyRef Name="EJERCICIO" />
+      <PropertyRef Name="MES_NATURAL" />
+      <PropertyRef Name="DIA_NATURAL" />
+    </Key>
+    <Property Name="EJERCICIO" Type="int" Nullable="false" />
+    <Property Name="MES_NATURAL" Type="int" Nullable="false" />
+    <Property Name="DIA_NATURAL" Type="int" Nullable="false" />
+    <Property Name="PERIODO" Type="int" />
+    <Property Name="ACTIVO" Type="bit" />
   </EntityType>
   <EntityType Name="PERIODOT">
     <Key>
@@ -2485,6 +2507,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOSAP" Type="Self.DOCUMENTOSAP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOSAP">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTOTS_DOCUMENTO">
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
     <End Role="DOCUMENTOTS" Type="Self.DOCUMENTOTS" Multiplicity="*" />
@@ -3753,6 +3787,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOR" EntityType="Self.DOCUMENTOR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOREC" EntityType="Self.DOCUMENTOREC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOSAP" EntityType="Self.DOCUMENTOSAP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
@@ -3772,6 +3807,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERIODO445" EntityType="Self.PERIODO445" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERIODOT" EntityType="Self.PERIODOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="POSICION" EntityType="Self.POSICION" Schema="dbo" store:Type="Tables" />
@@ -4193,6 +4229,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DOCUMENTOREC_DOCUMENTO" Association="Self.FK_DOCUMENTOREC_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOREC" EntitySet="DOCUMENTOREC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOSAP_DOCUMENTO" Association="Self.FK_DOCUMENTOSAP_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAP" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOTS_DOCUMENTO" Association="Self.FK_DOCUMENTOTS_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />

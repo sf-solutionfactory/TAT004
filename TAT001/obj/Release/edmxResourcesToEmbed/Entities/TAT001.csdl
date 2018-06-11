@@ -673,6 +673,7 @@
     <NavigationProperty Name="DOCUMENTORECs" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOREC" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+    <NavigationProperty Name="DOCUMENTOSAP" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -4676,6 +4677,12 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="DOCUMENTOSAPs" EntityType="TAT001Model.DOCUMENTOSAP" />
+    <EntitySet Name="PERIODO445" EntityType="TAT001Model.PERIODO445" />
+    <AssociationSet Name="FK_DOCUMENTOSAP_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAPs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4784,4 +4791,39 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="DOCUMENTOSAP">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="EJERCICIO" Type="Int32" />
+    <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+  </EntityType>
+  <EntityType Name="PERIODO445">
+    <Key>
+      <PropertyRef Name="EJERCICIO" />
+      <PropertyRef Name="MES_NATURAL" />
+      <PropertyRef Name="DIA_NATURAL" />
+    </Key>
+    <Property Name="EJERCICIO" Type="Int32" Nullable="false" />
+    <Property Name="MES_NATURAL" Type="Int32" Nullable="false" />
+    <Property Name="DIA_NATURAL" Type="Int32" Nullable="false" />
+    <Property Name="PERIODO" Type="Int32" />
+    <Property Name="ACTIVO" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
+    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOSAP" Role="DOCUMENTOSAP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOSAP">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

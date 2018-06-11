@@ -106,27 +106,35 @@ function cambiaRec() {
                     if (i === 1) {
                         if (tipo !== "P") {
                             date = document.getElementById("fechai_vig").value;
+                            monto = montoo;
+                            //addRowRec(table, i, date, monto, tipo);
+                            primerDia(table, i, datei, monto, tipo);
                         } else {
                             var dates = new Date(datei[2], datei[1] - 1 + i, 1);
                             //date = date.addDays(-1);
                             dates.setDate(dates.getDate() - 1);
                             date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            monto = montoo;
+                            //addRowRec(table, i, date, monto, tipo);
+                            ultimoDia(table, i, datei, monto, tipo);
                         }
-                        monto = montoo;
                     }
                     else {
                         if (tipo !== "P") {
-                            var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                            date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            //var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                            //date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            monto = montoo;
+                            primerDia(table, i, datei, monto, tipo);
                         } else {
                             var dates = new Date(datei[2], datei[1] - 1 + i, 1);
                             //date = date.addDays(-1);
                             dates.setDate(dates.getDate() - 1);
                             date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            monto = montoo;
+                            //addRowRec(table, i, date, monto, tipo);
+                            ultimoDia(table, i, datei, monto, tipo);
                         }
-                        monto = montoo;
                     }
-                    addRowRec(table, i, date, monto, tipo);
                 }
 
             }
@@ -360,4 +368,56 @@ function copiarTableVistaRec() {
     //var sol = $("#tsol_id").val();
 
     //selectTsol(sol);
+}
+
+
+function primerDia(t, num, date, monto, tipo) {
+    document.getElementById("loader").style.display = "initial";
+
+
+    $.ajax({
+        type: "POST",
+        url: '../Listas/getPrimerDia',
+        dataType: "json",
+        data: { ejercicio: date[2], periodo: (date[1] - 1 + num) },
+        success: function (data) {
+            document.getElementById("loader").style.display = "none";
+            var dd = data.split('/');
+            var dates = new Date(dd[2], dd[1], dd[0]);
+            datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+
+            addRowRec(t, num, datee, monto, tipo);
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+            document.getElementById("loader").style.display = "none";
+        },
+        async: false
+    });
+}
+
+
+function ultimoDia(t, num, date, monto, tipo) {
+    document.getElementById("loader").style.display = "initial";
+
+
+    $.ajax({
+        type: "POST",
+        url: '../Listas/getUltimoDia',
+        dataType: "json",
+        data: { ejercicio: date[2], periodo: (date[1] - 1 + num) },
+        success: function (data) {
+            document.getElementById("loader").style.display = "none";
+            var dd = data.split('/');
+            var dates = new Date(dd[2], dd[1], dd[0]);
+            datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+
+            addRowRec(t, num, datee, monto, tipo);
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+            document.getElementById("loader").style.display = "none";
+        },
+        async: false
+    });
 }

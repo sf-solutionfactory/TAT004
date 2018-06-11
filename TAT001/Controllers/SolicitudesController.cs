@@ -1427,7 +1427,9 @@ namespace TAT001.Controllers
                                     }
                                     else
                                     {
-                                        dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);
+                                        Calendario445 c4 = new Calendario445();
+                                        dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);
+                                        //dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);
                                         dOCUMENTO.FECHAF_VIG = drec.FECHAF;
                                         dOCUMENTO.TIPO_RECURRENTE = "P";
                                     }

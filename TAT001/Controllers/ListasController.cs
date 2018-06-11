@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 using TAT001.Models;
+using TAT001.Services;
 
 namespace TAT001.Controllers
 {
@@ -525,6 +526,42 @@ namespace TAT001.Controllers
             }
 
             return conf;
+        }
+
+        [HttpPost]
+        public JsonResult getPeriodo(string fecha)
+        {
+            string f = "";
+            Calendario445 c4 = new Calendario445();
+            string[] ff = fecha.Split('/');
+            f = c4.getPeriodo(new DateTime(int.Parse(ff[2]), int.Parse(ff[1]), int.Parse(ff[0]))).ToString();
+
+            JsonResult jl = Json(f, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        public JsonResult getPrimerDia(string ejercicio, string periodo)
+        {
+            int e = int.Parse(ejercicio);
+            int p = int.Parse(periodo);
+            Calendario445 c4 = new Calendario445();
+            DateTime f = c4.getPrimerDia(e, p);
+
+            JsonResult jl = Json(f.ToShortDateString(), JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        public JsonResult getUltimoDia(string ejercicio, string periodo)
+        {
+            int e = int.Parse(ejercicio);
+            int p = int.Parse(periodo);
+            Calendario445 c4 = new Calendario445();
+            DateTime f = c4.getUltimoDia(e, p);
+
+            JsonResult jl = Json(f.ToShortDateString(), JsonRequestBehavior.AllowGet);
+            return jl;
         }
     }
 }
