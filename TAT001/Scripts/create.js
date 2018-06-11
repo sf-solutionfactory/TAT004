@@ -1719,6 +1719,7 @@ $('body').on('focusout', '#monto_dis', function () {
             return false;
         }
     }
+    cambiaRec();//RSG 06.06.2018
 });
 
 $('body').on('click', '.prelacionada', function () {
@@ -1962,6 +1963,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
     }
 
     updateFooter();
+    cambiaRec();//RSG 06.06.2018
 }
 
 function updateTable() {

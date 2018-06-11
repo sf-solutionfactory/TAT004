@@ -1419,9 +1419,18 @@ namespace TAT001.Controllers
                                 {
                                     drec.DOC_REF = drec.NUM_DOC;
                                     drec.ESTATUS = "P";
-                                    dOCUMENTO.FECHAI_VIG = drec.FECHAF;
-                                    dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);
-                                    dOCUMENTO.TIPO_RECURRENTE = "M";
+                                    if (dOCUMENTO.TIPO_TECNICO != "P")
+                                    {
+                                        dOCUMENTO.FECHAI_VIG = drec.FECHAF;
+                                        dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);
+                                        dOCUMENTO.TIPO_RECURRENTE = "M";
+                                    }
+                                    else
+                                    {
+                                        dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);
+                                        dOCUMENTO.FECHAF_VIG = drec.FECHAF;
+                                        dOCUMENTO.TIPO_RECURRENTE = "P";
+                                    }
                                     foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)
                                     {
                                         po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
