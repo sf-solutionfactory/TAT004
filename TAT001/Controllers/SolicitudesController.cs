@@ -2844,7 +2844,7 @@ namespace TAT001.Controllers
             IEnumerable<MATERIAL> matl = Enumerable.Empty<MATERIAL>();
             try
             {
-                    matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
+                matl = db.MATERIALs.Where(m => m.ACTIVO == true);//.Select(m => m.ID).ToList();
             }
             catch (Exception e)
             {
@@ -3514,7 +3514,7 @@ namespace TAT001.Controllers
                     //kunnr = kunnr.TrimStart('0').Trim();
                     var pres = db.PRESUPSAPPs.Where(a => a.VKORG.Equals(vkorg) & a.SPART.Equals(spart) & a.KUNNR == kunnr & (a.GRSLS != null | a.NETLB != null)).ToList();
                     var spras = Session["spras"].ToString();
-                    var cat = db.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
+                    var cat = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).ToList();
                     //foreach (var c in cie)
                     //{
                     //    c.KUNNR = c.KUNNR.TrimStart('0').Trim();
@@ -3529,14 +3529,14 @@ namespace TAT001.Controllers
                               join m in matt
                               on ps.MATNR equals m.ID
                               join mk in cat
-                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
                               where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
                               (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART
                               ) && ps.BUKRS == soc_id
                               && ps.GRSLS > 0
                               select new DOCUMENTOM_MOD
                               {
-                                  ID_CAT = m.MATKL_ID,
+                                  ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
                                   VAL = Convert.ToDecimal(ps.GRSLS)
@@ -3550,14 +3550,14 @@ namespace TAT001.Controllers
                               join m in matt
                               on ps.MATNR equals m.ID
                               join mk in cat
-                              on m.MATKL_ID equals mk.CATEGORIA_ID
+                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
                               where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
                               (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART
                               ) && ps.BUKRS == soc_id
                               && ps.NETLB > 0
                               select new DOCUMENTOM_MOD
                               {
-                                  ID_CAT = m.MATKL_ID,
+                                  ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
                                   VAL = Convert.ToDecimal(ps.NETLB)
@@ -3575,7 +3575,7 @@ namespace TAT001.Controllers
             {
                 for (int j = 0; j < categoriasl.Count; j++)
                 {
-                    if (catstabla[h].ToString() == categoriasl[j].Key.ToString())
+                    if (catstabla[h].ToString() == categoriasl[j].Key.ToString() | catstabla[h].ToString() == "000")
                     {
                         categorias.Add(categoriasl[j].Key.ToString());
                     }
@@ -4050,22 +4050,30 @@ namespace TAT001.Controllers
 
 
             //Obtener de la lista de categorias los materiales de la categoría del item
-            CategoriaMaterial categor = categorias.Where(c => c.ID == catid).FirstOrDefault();
-            List<DOCUMENTOM_MOD> materiales = new List<DOCUMENTOM_MOD>();
-            materiales = categor.MATERIALES;
-            foreach (DOCUMENTOM_MOD docm in materiales)
+            List<CategoriaMaterial> ccategor = new List<CategoriaMaterial>();
+            if (catid == "000")
+                ccategor = categorias.ToList();
+            else
+                ccategor = categorias.Where(c => c.ID == catid).ToList();
+            foreach (CategoriaMaterial categor in ccategor)
             {
-                DOCUMENTOM dm = new DOCUMENTOM();
-                dm.NUM_DOC = numdoc;
-                dm.POS_ID = posid;
-                dm.MATNR = docm.MATNR;
-                dm.VIGENCIA_DE = vig_de;
-                dm.VIGENCIA_A = vig_a;
-                if (dis == "C")
+                //CategoriaMaterial categor = categorias.Where(c => c.ID == catid).FirstOrDefault();
+                List<DOCUMENTOM_MOD> materiales = new List<DOCUMENTOM_MOD>();
+                materiales = categor.MATERIALES;
+                foreach (DOCUMENTOM_MOD docm in materiales)
                 {
-                    dm.APOYO_EST = docm.VAL;
+                    DOCUMENTOM dm = new DOCUMENTOM();
+                    dm.NUM_DOC = numdoc;
+                    dm.POS_ID = posid;
+                    dm.MATNR = docm.MATNR;
+                    dm.VIGENCIA_DE = vig_de;
+                    dm.VIGENCIA_A = vig_a;
+                    if (dis == "C")
+                    {
+                        dm.APOYO_EST = docm.VAL;
+                    }
+                    jdlret.Add(dm);
                 }
-                jdlret.Add(dm);
             }
 
 
@@ -4165,14 +4173,14 @@ namespace TAT001.Controllers
             {
                 ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
                 ////{
-                    if (!System.IO.File.Exists(pathToCheck))
-                    {
-                        //No existe, se necesita crear
-                        DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+                if (!System.IO.File.Exists(pathToCheck))
+                {
+                    //No existe, se necesita crear
+                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
 
-                        dir.Create();
+                    dir.Create();
 
-                    }
+                }
                 ////}
 
                 //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
@@ -4212,21 +4220,21 @@ namespace TAT001.Controllers
             //Parte para guardar archivo en el servidor
             ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
             ////{
-                //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
-                try
-                {
+            //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
+            try
+            {
 
 
-                    //Guardar el archivo
-                    file.SaveAs(savePath);
+                //Guardar el archivo
+                file.SaveAs(savePath);
 
 
-                }
-                catch (Exception e)
-                {
-                    ex = "";
-                    ex = fileName;
-                }
+            }
+            catch (Exception e)
+            {
+                ex = "";
+                ex = fileName;
+            }
             ////}
 
             //Guardarlo en la base de datos

@@ -203,7 +203,11 @@
             {},
             {},
             {},
-            {}
+            //{},//RSG 05.06.2018
+            {
+                "className": 'total'
+            },//RSG 05.06.2018
+            //{}
 
         ]
     });
@@ -365,6 +369,7 @@
                             //} else {
                             //    M.toast({ html: 'Debe de capturar un monto' });
                             //}
+                            ////t.column(14).visible(false);//RSG 06.06.2018
                         } else {
                             M.toast({ html: 'Seleccione una categoría' });
                         }
@@ -402,6 +407,7 @@
 
                     t.column(0).visible(false);
                     t.column(1).visible(false);
+                    ////t.column(14).visible(false);//RSG 06.06.2018
                     //}
                 }
                 updateFooter();
@@ -434,6 +440,7 @@
                                 $(".pc").prop('disabled', true);
                                 $('.pc').trigger('click');
                                 //Actualizar la tabla con los porcentajes
+                                ////t.column(14).visible(false);//RSG 06.06.2018
                                 updateTableCat();
                             } else {
                                 M.toast({ html: 'Seleccione una categoría' });
@@ -472,6 +479,7 @@
 
                     t.column(0).visible(false);
                     t.column(1).visible(false);
+                    ////t.column(14).visible(false);//RSG 06.06.2018
                 }
                 updateFooter();
                 //} else {
@@ -558,7 +566,7 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
@@ -569,7 +577,7 @@
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -1497,7 +1505,8 @@ function copiarTableControl() {
             var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
             var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
 
-            var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+            //var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();//RSG 06.06.2018
+            var total = $(this).find("td.total input").val();//RSG 06.06.2018
 
             var item = {};
 
@@ -1944,7 +1953,8 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
         var col14 = col10 * col13;
         //col14 = col14.toFixed(2);
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+        //tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));//RSG 06.06.2018
+        tr.find("td.total input").val(col14.toFixed(2));//RSG 06.06.2018
 
         //Agregar nada más el total
     } else {
@@ -1958,7 +1968,8 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         tr.find("td:eq(" + (11 + index) + ")").text("");
         tr.find("td:eq(" + (12 + index) + ") input").val("");
         tr.find("td:eq(" + (13 + index) + ") input").val("");
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+        //tr.find("td:eq(" + (14 + index) + ") input").val(col14);//RSG 06.06.2018
+        tr.find("td.total input").val(col14);//RSG 06.06.2018
     }
 
     updateFooter();
@@ -1969,7 +1980,8 @@ function updateTable() {
     $('#table_dis > tbody  > tr').each(function () {
         if ($(this).hasClass("sc")) {//RSG 24.05.2018----------------
             var index = getIndex();
-            var total = $(this).find('td').eq((index + 14)).find('input').val();
+            //var total = $(this).find('td').eq((index + 14)).find('input').val();//RSG 06.06.2018
+            var total = $(this).find('td.total').find('input').val();//RSG 06.06.2018
             updateTotalRow(t, $(this), "", "X", total);
         } else {//RSG 24.05.2018----------------
             updateTotalRow(t, $(this), "", "", 0);
@@ -2062,7 +2074,8 @@ function updateTableCathtml(t, j, index, p, v) {
     $("#table_dis > tbody  > tr[role='row']").each(function () {
         if (i == j) {
             $(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));
-            $(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
+            //$(this).find("td:eq(" + va + ") input").val(v.toFixed(2));//RSG 06.06.2018
+            $(this).find("td.total input").val(v.toFixed(2));//RSG 06.06.2018
         }
         i++;
     });
@@ -2107,8 +2120,13 @@ function GetMaterialesCat(catid, total, m_base) {
     try {
         $.each(jsval, function (i, d) {
 
-            if (catid == d.ID) {
+            if (catid == d.ID) {//RSG 08.06.2018
+                //if (catid == d.ID || catid === "000") {//RSG 08.06.2018
                 materiales = GetMaterialesCatDetalle(d.MATERIALES, catid, total, m_base);
+                //for (var i = 0; i < materiales2.length; i++) {
+                //    materiales.push(materiales2[i]);
+                //}
+                //if (catid !== "000")
                 return false;
             }
         }); //Fin de for
@@ -2132,6 +2150,7 @@ function GetMaterialesCatDetalle(jsval, catid, total, m_base) {
         var t = 0;
         var v = 0;
         if (catid == d.ID_CAT) {
+            //if (catid == d.ID_CAT || catid === "000") {
 
             var por = 0;
 
@@ -2169,8 +2188,10 @@ function GetTotalCat(catid) {
     try {
         $.each(jsval, function (i, d) {
 
-            if (catid == d.ID) {
+            if (catid == d.ID ) {//RSG 08.06.2018
+                //if (catid == d.ID || catid === "000") {//RSG 08.06.2018
                 total = GetTotalCatDetalle(d.MATERIALES, catid);
+                //if (catid !== "000")//RSG 08.06.2018
                 return false;
             }
         }); //Fin de for
@@ -2190,6 +2211,7 @@ function GetTotalCatDetalle(jsval, catid) {
         var t = 0;
 
         if (catid == d.ID_CAT) {
+            //if (catid == d.ID_CAT || catid === "000") {//RSG 08.06.2018
             try {
                 t = parseFloat(d.VAL);
             } catch (error) {
@@ -2287,7 +2309,8 @@ function updateFooter() {
     var total = 0;
 
     $('#table_dis').find("tr").each(function (index) {
-        var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+        //var col4 = $(this).find("td:eq(" + coltotal + ") input").val();//RSG 06.06.2018
+        var col4 = $(this).find("td.total input").val();//RSG 06.06.2018
 
         col4 = convertI(col4);
 
@@ -2798,6 +2821,7 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
         "",
         "",
         //"" + valCant,
+        //"",//RSG 06.06.2018
         total + ""
     ]).draw(false).node();
 
@@ -2822,7 +2846,8 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         MONTOC_APOYO,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
+        //"<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 05.06.2018
+        PORC_APOYOEST,//RSG 05.06.2018
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 24.05.2018
     );
 
@@ -2846,7 +2871,7 @@ function addRowl(t, pos, exp, sel, dd, da, mat, matkl, desc, monto, por_a, monto
         montoc_a,
         precio_s,
         vol_es,
-        //porc_apes,
+        //porc_apes,//RSG 05.06.2018
         apoyo_est//RSG 24.05.2018
     ]).draw(false).node();
 
