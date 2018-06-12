@@ -1421,15 +1421,18 @@ namespace TAT001.Controllers
                                     drec.ESTATUS = "P";
                                     if (dOCUMENTO.TIPO_TECNICO != "P")
                                     {
+                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
                                         dOCUMENTO.FECHAI_VIG = drec.FECHAF;
-                                        dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);
+                                        //dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);//RSG 11.06.2018
+                                        int ppp = c4.getPeriodo(drec.FECHAF.Value);
+                                        dOCUMENTO.FECHAF_VIG = c4.getUltimoDia(drec.FECHAF.Value.Year, ppp);//RSG 11.06.2018
                                         dOCUMENTO.TIPO_RECURRENTE = "M";
                                     }
                                     else
                                     {
-                                        Calendario445 c4 = new Calendario445();
-                                        dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);
-                                        //dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);
+                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
+                                        dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);//RSG 11.06.2018
+                                        //dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);//RSG 11.06.2018
                                         dOCUMENTO.FECHAF_VIG = drec.FECHAF;
                                         dOCUMENTO.TIPO_RECURRENTE = "P";
                                     }
