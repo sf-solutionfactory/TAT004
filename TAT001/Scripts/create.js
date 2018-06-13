@@ -558,18 +558,18 @@
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         $('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -1096,6 +1096,38 @@ $(window).on('load', function () {
     $(".preversa").prop('disabled', true);
     $('.preversa').trigger('click');
 
+    //MGC B20180611
+    if (isRelacionada()) {
+        $('#select_neg').prop('disabled', 'disabled');
+        var elemdpsn = document.querySelector('#select_neg');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        $('#select_dis').prop('disabled', 'disabled');
+        var elemdpsd = document.querySelector('#select_dis');
+        var optionsdpsd = [];
+        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        $('#select_categoria').prop('disabled', 'disabled');
+        var elemdpc = document.querySelector('#select_categoria');
+        var optionsdpc = [];
+        var instancesc = M.Select.init(elemdpc, optionsdpc);
+    }
+
+    //MGC B20180611
+    if (isReversa()) {
+        $('#select_neg').prop('disabled', 'disabled');
+        var elemdpsn = document.querySelector('#select_neg');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        $('#select_dis').prop('disabled', 'disabled');
+        var elemdpsd = document.querySelector('#select_dis');
+        var optionsdpsd = [];
+        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        $('#select_categoria').prop('disabled', 'disabled');
+        var elemdpc = document.querySelector('#select_categoria');
+        var optionsdpc = [];
+        var instancesc = M.Select.init(elemdpc, optionsdpc);
+    }
+
 });
 
 function formatDate(val) {
@@ -1225,20 +1257,23 @@ function copiarTableVista(update) {
             var t = $('#table_dis').DataTable();
 
             var relacionada = "";
-
-            if ($("#txt_rel").length) {
+            //MGC B20180611
+            //if ($("#txt_rel").length) {
+            if (isRelacionada()) {
                 var vrelacionada = $('#txt_rel').val();
-                if (vrelacionada != "") {
+                //if (vrelacionada != "") {
                     relacionada = "prelacionada";
-                }
+                //}
             }
 
             var reversa = "";
-            if ($("#txt_rev").length) {
+            //MGC B20180611
+            //if ($("#txt_rev").length) {
+            if (isReversa()) {
                 var vreversa = $('#txt_rev').val();
-                if (vreversa == "preversa") {
+                //if (vreversa == "preversa") {
                     reversa = vreversa;
-                }
+                //}
             }
 
             var calculo = "";
@@ -3734,8 +3769,12 @@ function selectCliente(valu) {
                         $("label[for='payer_email']").addClass("active");
                     }
                     //RSG 28.05.2018------------------------------------------
-                    llenaCat(data.VKORG, data.VTWEG, data.SPART, valu);
-                    getCatMateriales(data.VKORG, data.VTWEG, data.SPART, valu);
+                    //Aplica nada más para la solicitud, si no es reversa ni relacionada
+                    //MGC B20180611
+                    if (!isRelacionada()) {
+                        llenaCat(data.VKORG, data.VTWEG, data.SPART, valu);
+                        getCatMateriales(data.VKORG, data.VTWEG, data.SPART, valu);
+                    }
                     //RSG 28.05.2018------------------------------------------
                 } else {
                     $('#cli_name').val("");
@@ -4119,5 +4158,30 @@ function valcategoria(cat) {
 
     });
 
+    return res;
+}
+
+//MGC B20180611 Verificar si es relacionada
+function isRelacionada() {
+    var res = false;
+    if ($("#txt_rel").length) {
+        var vrelacionada = $('#txt_rel').val();
+        if (vrelacionada != "") {
+            res = true;
+        }
+    }
+
+    return res;
+}
+
+//MGC B20180611 Verificar si es reversa
+function isReversa() {
+    var res = false;
+    if ($("#txt_rev").length) {
+        var vreversa = $('#txt_rev').val();
+        if (vreversa == "preversa") {
+            res = true;
+        }
+    }
     return res;
 }
