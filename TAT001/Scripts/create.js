@@ -561,7 +561,7 @@
     var instance = M.Select.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
-        $('#gall_id').change();
+        //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 

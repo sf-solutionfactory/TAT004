@@ -333,6 +333,9 @@
     <Compile Include="Entities\CUENTA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DELEGAR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

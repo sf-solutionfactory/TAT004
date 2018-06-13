@@ -561,7 +561,7 @@
     var instance = M.Select.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
-        $('#gall_id').change();
+        //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
@@ -622,7 +622,7 @@
 
     $('#tab_fin').on("click", function (e) {
 
-        var res = evalDistribucionTab(false, e);
+        var res = evalDistribucionTab(true, e);
         if (res) {
 
             //Activar el botón de guardar

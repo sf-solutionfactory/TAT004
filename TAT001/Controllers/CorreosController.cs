@@ -15,11 +15,11 @@ namespace TAT001.Controllers
         private TAT001Entities db = new TAT001Entities();
 
         // GET: Correos
-        public ActionResult Index(int id)
+        public ActionResult Index(decimal id)
         {
             var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
-            //var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
-            //ViewBag.Pos = flujo[0];
+            var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
+            ViewBag.Pos = flujo[0];
             ViewBag.url = "http://localhost:64497";
             ViewBag.url = "http://192.168.1.77";
             ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");
@@ -90,19 +90,12 @@ namespace TAT001.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
-            if (dOCUMENTO == null)
+            var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
+            if (dOCUMENTOes == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.VKORG = new SelectList(db.CLIENTEs, "VKORG", "NAME1", dOCUMENTO.VKORG);
-            ViewBag.GALL_ID = new SelectList(db.GALLs, "ID", "DESCRIPCION", dOCUMENTO.GALL_ID);
-            ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "SPRAS", dOCUMENTO.PAIS_ID);
-            ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT", dOCUMENTO.SOCIEDAD_ID);
-            ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);
-            ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION", dOCUMENTO.TSOL_ID);
-            ViewBag.USUARIOC_ID = new SelectList(db.USUARIOs, "ID", "PASS", dOCUMENTO.USUARIOC_ID);
-            return View(dOCUMENTO);
+            return View(dOCUMENTOes);
         }
 
         // POST: Correos/Edit/5

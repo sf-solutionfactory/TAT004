@@ -28,6 +28,8 @@ namespace TAT001.Entities
             this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
+            this.DELEGARs = new HashSet<DELEGAR>();
+            this.DELEGARs1 = new HashSet<DELEGAR>();
         }
     
         public string ID { get; set; }
@@ -68,5 +70,9 @@ namespace TAT001.Entities
         public virtual SPRA SPRA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELEGAR> DELEGARs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELEGAR> DELEGARs1 { get; set; }
     }
 }

@@ -149,6 +149,7 @@ namespace TAT001.Entities
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
         public virtual DbSet<DOCUMENTOSAP> DOCUMENTOSAPs { get; set; }
         public virtual DbSet<PERIODO445> PERIODO445 { get; set; }
+        public virtual DbSet<DELEGAR> DELEGARs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

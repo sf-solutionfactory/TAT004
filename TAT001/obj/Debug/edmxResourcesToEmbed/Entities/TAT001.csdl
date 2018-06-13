@@ -1779,6 +1779,8 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="DELEGARs" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="USUARIO" ToRole="DELEGAR" />
+    <NavigationProperty Name="DELEGARs1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="USUARIO" ToRole="DELEGAR" />
   </EntityType>
   <EntityType Name="USUARIOSAP">
     <Key>
@@ -4683,6 +4685,15 @@
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
       <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAPs" />
     </AssociationSet>
+    <EntitySet Name="DELEGARs" EntityType="TAT001Model.DELEGAR" />
+    <AssociationSet Name="FK_DELEGAR_USUARIO" Association="TAT001Model.FK_DELEGAR_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DELEGAR" EntitySet="DELEGARs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DELEGAR_USUARIO1" Association="TAT001Model.FK_DELEGAR_USUARIO1">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DELEGAR" EntitySet="DELEGARs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4811,8 +4822,8 @@
     <Property Name="EJERCICIO" Type="Int32" Nullable="false" />
     <Property Name="MES_NATURAL" Type="Int32" Nullable="false" />
     <Property Name="DIA_NATURAL" Type="Int32" Nullable="false" />
-    <Property Name="PERIODO" Type="Int32" />
-    <Property Name="ACTIVO" Type="Boolean" />
+    <Property Name="PERIODO" Type="Int32" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
     <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
@@ -4823,6 +4834,45 @@
       </Principal>
       <Dependent Role="DOCUMENTOSAP">
         <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DELEGAR">
+    <Key>
+      <PropertyRef Name="USUARIO_ID" />
+      <PropertyRef Name="USUARIOD_ID" />
+      <PropertyRef Name="FECHAI" />
+      <PropertyRef Name="FECHAF" />
+    </Key>
+    <Property Name="USUARIO_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIOD_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAI" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="FECHAF" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="DELEGAR" ToRole="USUARIO" />
+    <NavigationProperty Name="USUARIO1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="DELEGAR" ToRole="USUARIO" />
+  </EntityType>
+  <Association Name="FK_DELEGAR_USUARIO">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DELEGAR_USUARIO1">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIOD_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

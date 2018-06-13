@@ -134,7 +134,7 @@
     </style>
 
     <div class="div_right">
-        <a href="@Url.Action(" Cancelar", "Solicitudes" )" class="btn btn-small">Cancelar</a>
+        <a href="@Url.Action(" Index", "Home" )" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
             {*@
         <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
@@ -160,7 +160,7 @@
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing(); analisis();"><!--RSG 23.05.2018-->Financiera</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();"><!--RSG 23.05.2018-->Financiera</a></li>
         </ul>
     </div>
 </div>
@@ -1540,7 +1540,7 @@
                                         <li class="collection-item" id="a4">
                                             <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                 <div class="col s6">
-                                                    Remanente/Exceso
+                                                    Remanente/(Exceso)
                                                 </div>
                                                 <div class="col s6 right-align">
                                                     <span id="s_rema">-</span>

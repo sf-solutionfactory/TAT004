@@ -149,6 +149,13 @@ namespace TAT001.Controllers
                     & C.ID == u & C.ACTIVO == true
                     select P;
 
+                List<TAT001.Entities.DELEGA> del = db.DELEGARs.Where(a => a.).ToList();
+                var pd = from P in db.PAIS
+                        join C in db.CREADOR2 on P.LAND equals C.LAND
+                        where P.ACTIVO == true
+                        & C.ID == u & C.ACTIVO == true
+                        select P;
+
                 return View(p.ToList());
             }
             //return View();

@@ -330,6 +330,19 @@
     <Property Name="CLEARING" Type="numeric" Precision="10" Scale="0" />
     <Property Name="LIMITE" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
+  <EntityType Name="DELEGAR">
+    <Key>
+      <PropertyRef Name="USUARIO_ID" />
+      <PropertyRef Name="USUARIOD_ID" />
+      <PropertyRef Name="FECHAI" />
+      <PropertyRef Name="FECHAF" />
+    </Key>
+    <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="USUARIOD_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="FECHAI" Type="date" Nullable="false" />
+    <Property Name="FECHAF" Type="date" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="DET_AGENTE">
     <Key>
       <PropertyRef Name="PUESTOC_ID" />
@@ -938,8 +951,8 @@
     <Property Name="EJERCICIO" Type="int" Nullable="false" />
     <Property Name="MES_NATURAL" Type="int" Nullable="false" />
     <Property Name="DIA_NATURAL" Type="int" Nullable="false" />
-    <Property Name="PERIODO" Type="int" />
-    <Property Name="ACTIVO" Type="bit" />
+    <Property Name="PERIODO" Type="int" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODOT">
     <Key>
@@ -2090,6 +2103,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CUENTA">
         <PropertyRef Name="TALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DELEGAR_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="DELEGAR" Type="Self.DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DELEGAR_USUARIO1">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="DELEGAR" Type="Self.DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIOD_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3770,6 +3807,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CONTACTOC" EntityType="Self.CONTACTOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CUENTA" EntityType="Self.CUENTA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DELEGAR" EntityType="Self.DELEGAR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTEH" EntityType="Self.DET_AGENTEH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTEP" EntityType="Self.DET_AGENTEP" Schema="dbo" store:Type="Tables" />
@@ -4097,6 +4135,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CUENTA_TALL" Association="Self.FK_CUENTA_TALL">
       <End Role="TALL" EntitySet="TALL" />
       <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DELEGAR_USUARIO" Association="Self.FK_DELEGAR_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DELEGAR" EntitySet="DELEGAR" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DELEGAR_USUARIO1" Association="Self.FK_DELEGAR_USUARIO1">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DELEGAR" EntitySet="DELEGAR" />
     </AssociationSet>
     <AssociationSet Name="FK_DET_AGENTE_GAUTORIZACION" Association="Self.FK_DET_AGENTE_GAUTORIZACION">
       <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />

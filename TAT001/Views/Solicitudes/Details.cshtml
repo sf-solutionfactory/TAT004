@@ -603,7 +603,7 @@
                                         {
                                             <th>Categoría</th>
                                         }
-                                        <th>Desc</th>
+                                        <th>Descripción</th>
                                         <th>Precio unitario</th>
                                         <th>% apoyo</th>
                                         <th>Apoyo por pieza</th>
@@ -621,7 +621,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null))
+                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
                                     {
                                         <tr id="pos-@item.POS" onclick="muestra(this.id)">
                                             <td>
@@ -1088,7 +1088,7 @@
                                                     @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Sociedad")
                                                 </th>
                                                 <th>
-                                                    @Html.LabelFor(model => model.D.PERIODO,"Periodo")
+                                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo")
                                                 </th>
                                                 <th>
                                                     @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio")

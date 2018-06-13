@@ -478,6 +478,10 @@ namespace TAT001.Models
                                     //conta.BALANCE = docm[j].APOYO_REAL.ToString(); //KCMX notacredito
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docm[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
+                                else if (enca.TIPO_DOC == "SA" && hijo)
+                                {
+                                    conta.BALANCE = Conversion(Convert.ToDecimal(docm[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
+                                }
                                 else
                                 {
                                     //conta.BALANCE = docm[j].APOYO_EST.ToString(); //KCMX solic
@@ -601,14 +605,18 @@ namespace TAT001.Models
                                 //conta.BALANCE = (docp[j].MONTO_APOYO * docp[j].VOLUMEN_EST).ToString();
 
                                 //conta.BALANCE = docp[j].APOYO_REAL.ToString();
-                                if (enca.TIPO_DOC == "BB" || enca.TIPO_DOC == "DG" || enca.TIPO_DOC == "SA")
+                                if (enca.TIPO_DOC == "BB" || enca.TIPO_DOC == "DG")
                                 {
                                     //conta.BALANCE = docp[j].APOYO_REAL.ToString(); //KCMX notacredito
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
-                                else
+                                else if (enca.TIPO_DOC == "SA" && hijo)
                                 {
                                     //conta.BALANCE = docp[j].APOYO_EST.ToString(); //KCMX solic
+                                    conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
+                                }
+                                else
+                                {
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
                             }

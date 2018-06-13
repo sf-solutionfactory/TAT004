@@ -101,12 +101,20 @@ namespace TAT001.Controllers
             {
                 MailMessage mail = new MailMessage(conmail.MAIL, "rogelio.sanchez@sf-solutionfactory.com");
                 SmtpClient client = new SmtpClient();
-                client.Port = (int)conmail.PORT;
-                client.EnableSsl = conmail.SSL;
+                if (conmail.SSL)
+                {
+                    client.Port = (int)conmail.PORT;
+                    client.EnableSsl = conmail.SSL;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                }
+                else
+                {
+                    client.UseDefaultCredentials = true;
+                    client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                }
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
                 client.Host = conmail.HOST;
-                client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
 
 
                 if (workflow == null)
