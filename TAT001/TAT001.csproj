@@ -657,6 +657,7 @@
     <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
+    <Compile Include="Models\Delegados.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
@@ -774,6 +775,7 @@
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />
+    <Content Include="files\masiva.xlsx" />
     <EntityDeploy Include="Entities\TAT001.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TAT001.Designer.cs</LastGenOutput>
@@ -781,7 +783,6 @@
     <Content Include="Entities\TAT001.edmx.diagram">
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Content>
-    <Content Include="files\masiva.xlsx" />
     <None Include="Properties\PublishProfiles\SERVER.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />

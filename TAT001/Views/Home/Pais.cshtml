@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<TAT001.Entities.PAI>
-
 @{
     //ViewBag.Title = "Seleccionar país";
     ViewBag.pagina_r = 102;
@@ -34,7 +33,17 @@
                         <input id="btn_ec" type="image" src="~/images/flags/1x1/ec.svg" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new {pais="ec"})';return false;" />
                     </div>*@
             </div>
+
+            <div class="row">
+                @foreach (var item in ViewBag.delegados)
+                {
+                    <div class="col s6 m4 l2 center">
+                        <div class="row">
+                            <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new {pais=item.LAND})';return false;" />
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </form>
-

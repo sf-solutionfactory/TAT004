@@ -48,6 +48,7 @@ namespace TAT001.Entities
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
         public virtual DbSet<COUNTRy> COUNTRIES { get; set; }
         public virtual DbSet<CUENTA> CUENTAs { get; set; }
+        public virtual DbSet<DELEGAR> DELEGARs { get; set; }
         public virtual DbSet<DET_AGENTE> DET_AGENTE { get; set; }
         public virtual DbSet<DET_AGENTEH> DET_AGENTEH { get; set; }
         public virtual DbSet<DET_AGENTEP> DET_AGENTEP { get; set; }
@@ -65,6 +66,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
         public virtual DbSet<DOCUMENTOR> DOCUMENTORs { get; set; }
         public virtual DbSet<DOCUMENTOREC> DOCUMENTORECs { get; set; }
+        public virtual DbSet<DOCUMENTOSAP> DOCUMENTOSAPs { get; set; }
         public virtual DbSet<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual DbSet<FACTURASCONF> FACTURASCONFs { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
@@ -84,6 +86,7 @@ namespace TAT001.Entities
         public virtual DbSet<PAGINAT> PAGINATs { get; set; }
         public virtual DbSet<PAI> PAIS { get; set; }
         public virtual DbSet<PERIODO> PERIODOes { get; set; }
+        public virtual DbSet<PERIODO445> PERIODO445 { get; set; }
         public virtual DbSet<PERIODOT> PERIODOTs { get; set; }
         public virtual DbSet<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
         public virtual DbSet<POSICION> POSICIONs { get; set; }
@@ -147,9 +150,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<DOCUMENTOSAP> DOCUMENTOSAPs { get; set; }
-        public virtual DbSet<PERIODO445> PERIODO445 { get; set; }
-        public virtual DbSet<DELEGAR> DELEGARs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

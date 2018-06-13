@@ -119,10 +119,10 @@ namespace TAT001.Entities
         public virtual ICollection<DOCUMENTOR> DOCUMENTORs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOREC> DOCUMENTORECs { get; set; }
+        public virtual DOCUMENTOSAP DOCUMENTOSAP { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOT> DOCUMENTOTS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FLUJO> FLUJOes { get; set; }
-        public virtual DOCUMENTOSAP DOCUMENTOSAP { get; set; }
     }
 }

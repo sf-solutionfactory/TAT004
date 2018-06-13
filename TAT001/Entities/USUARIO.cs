@@ -18,6 +18,8 @@ namespace TAT001.Entities
         public USUARIO()
         {
             this.CARTAs = new HashSet<CARTA>();
+            this.DELEGARs = new HashSet<DELEGAR>();
+            this.DELEGARs1 = new HashSet<DELEGAR>();
             this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.DET_AGENTEP = new HashSet<DET_AGENTEP>();
             this.DET_TAXEO = new HashSet<DET_TAXEO>();
@@ -28,8 +30,6 @@ namespace TAT001.Entities
             this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
-            this.DELEGARs = new HashSet<DELEGAR>();
-            this.DELEGARs1 = new HashSet<DELEGAR>();
         }
     
         public string ID { get; set; }
@@ -47,6 +47,10 @@ namespace TAT001.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELEGAR> DELEGARs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DELEGAR> DELEGARs1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_AGENTEH> DET_AGENTEH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -70,9 +74,5 @@ namespace TAT001.Entities
         public virtual SPRA SPRA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELEGAR> DELEGARs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DELEGAR> DELEGARs1 { get; set; }
     }
 }

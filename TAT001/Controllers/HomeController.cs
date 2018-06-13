@@ -149,12 +149,24 @@ namespace TAT001.Controllers
                     & C.ID == u & C.ACTIVO == true
                     select P;
 
-                List<TAT001.Entities.DELEGA> del = db.DELEGARs.Where(a => a.).ToList();
-                var pd = from P in db.PAIS
-                        join C in db.CREADOR2 on P.LAND equals C.LAND
-                        where P.ACTIVO == true
-                        & C.ID == u & C.ACTIVO == true
-                        select P;
+                List<Delegados> delegados = new List<Delegados>();
+                List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(u)).ToList();
+                foreach (DELEGAR de in del)
+                {
+                    var pd = (from P in db.PAIS
+                             join C in db.CREADOR2 on P.LAND equals C.LAND
+                             where P.ACTIVO == true
+                             & C.ID == de.USUARIO_ID & C.ACTIVO == true
+                             select P).ToList();
+                    Delegados delegado = new Delegados();
+                    delegado.usuario = de.USUARIO_ID;
+                    delegado.nombre = de.USUARIO.NOMBRE + " " +de.USUARIO.APELLIDO_P + " " +de.USUARIO.APELLIDO_M;
+                    delegado.LISTA = pd;
+                    if (delegado.LISTA.Count > 0)
+                        delegados.Add(delegado);
+                }
+                if (delegados.Count > 0)
+                    ViewBag.delegados = delegados;
 
                 return View(p.ToList());
             }
