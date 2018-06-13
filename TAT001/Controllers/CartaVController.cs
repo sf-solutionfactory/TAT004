@@ -85,6 +85,7 @@ namespace TAT001.Controllers
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.usuario = user;
+                ViewBag.lengu = user.SPRAS_ID;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -343,18 +344,19 @@ namespace TAT001.Controllers
                 c = db.TEXTOCARTAVs
                         .Where(x => x.SPRAS_ID == user.SPRAS_ID)
                         .First();
+
                 EncabezadoMateriales em = new EncabezadoMateriales();
                 var encabezadoTab = new List<string>();
-                encabezadoTab.Add(em.material = c.MATERIAL);
-                encabezadoTab.Add(em.categoria = c.CATEGORIA);
-                encabezadoTab.Add(em.descripcion = c.DESCRIPCION);
-                if (v.costoun_x == true){ encabezadoTab.Add(em.costoun = c.COSTOU); }
-                if (v.apoyo_x == true){ encabezadoTab.Add(em.apoyo = c.APOYOP); }
-                if (v.apoyop_x == true) { encabezadoTab.Add(em.apoyop = c.APOYOPP); }
-                if (v.costoap_x == true) { encabezadoTab.Add(em.costoap = c.COSTOA); }
-                if (v.precio_x == true) { encabezadoTab.Add(em.precio = c.PRECIOSU); }
-                if (v.apoyoEst_x == true) { encabezadoTab.Add(em.apoyoEst = c.APOYOEST); }
-                if (v.apoyoRea_x == true) { encabezadoTab.Add(em.apoyoRea = c.APOYOREA); }
+                encabezadoTab.Add(em.material = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_material").Select(x => x.TEXTOS).First());
+                encabezadoTab.Add(em.categoria = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_categoria").Select(x => x.TEXTOS).First());
+                encabezadoTab.Add(em.descripcion = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_descripcion").Select(x => x.TEXTOS).First());
+                if (v.costoun_x == true){ encabezadoTab.Add(em.costoun = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_costou").Select(x => x.TEXTOS).First()); }
+                if (v.apoyo_x == true){ encabezadoTab.Add(em.apoyo = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_apoyoPorc").Select(x => x.TEXTOS).First()); }
+                if (v.apoyop_x == true) { encabezadoTab.Add(em.apoyop = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_apoyoPieza").Select(x => x.TEXTOS).First()); }
+                if (v.costoap_x == true) { encabezadoTab.Add(em.costoap = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_costoApo").Select(x => x.TEXTOS).First()); }
+                if (v.precio_x == true) { encabezadoTab.Add(em.precio = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_precioSu").Select(x => x.TEXTOS).First()); }
+                if (v.apoyoEst_x == true) { encabezadoTab.Add(em.apoyoEst = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_apoyoEst").Select(x => x.TEXTOS).First()); }
+                if (v.apoyoRea_x == true) { encabezadoTab.Add(em.apoyoRea = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == user.SPRAS_ID & x.CAMPO_ID == "lbl_apoyoRea").Select(x => x.TEXTOS).First()); }
 
                 List<string> encabezadoFech = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>();

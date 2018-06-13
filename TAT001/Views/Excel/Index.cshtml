@@ -8,6 +8,11 @@
 @using (Html.BeginForm("Index", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+    <div class="row">
+        <a href="@Url.Action("Archivo", "Excel")">
+            <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
+        </a>
+    </div>
 
     <div class="row">
         <div class="row" style="height:10px;width:100%;">

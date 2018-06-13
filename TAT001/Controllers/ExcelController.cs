@@ -376,6 +376,16 @@ namespace TAT001.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult Archivo()
+        {
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.AddHeader("Content-Disposition", "attachment; filename=LAYOUT CARGA MASIVA.xlsx");
+            Response.TransmitFile(Server.MapPath("~/files/masiva.xlsx"));
+            Response.End();
+
+            return RedirectToAction("Index");
+        }
         public decimal getSolID(string TSOL_ID)
         {
 

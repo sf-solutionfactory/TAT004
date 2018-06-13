@@ -675,7 +675,12 @@
             //$('#cli_name').val();
             $('#p_kunnr').text(kunnr);
 
+
+            var num = $('#txt_rel').val();//RSG 12.06.2018
+            var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
+
             asignarPresupuesto(kunnr);
+            asignarSolicitud(num, num2);//RSG 12.06.2018
 
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });

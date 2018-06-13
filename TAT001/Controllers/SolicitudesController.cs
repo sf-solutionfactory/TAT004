@@ -4631,5 +4631,83 @@ namespace TAT001.Controllers
             }
             return m;
         }
+
+        [HttpPost]
+        public JsonResult getSolicitud(string num, string num2)//RSG 07.06.2018---------------------------------------------
+        {
+            TAT001.Models.SOLICITUD_MOD sm = new SOLICITUD_MOD();
+
+            //Obtener info solicitud
+            if (num == null | num == "")
+            {
+                sm.S_NUM = num = "";
+            }
+            else
+            {
+                decimal hola = Convert.ToDecimal(num);
+                var rev = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).ToList();
+                ;
+
+                if (rev.Count() == 0)
+                {
+                    //CON UN RELACIONADO 
+                    var rev2 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    decimal? rem2 = (rev2.MONTO_DOC_MD - Convert.ToDecimal(num2));
+
+                    sm.S_MONTOB = num2;
+                    sm.S_MONTOP = rev2.MONTO_DOC_MD.ToString();
+                    sm.S_MONTOA = "-";
+                    sm.S_REMA = rem2.ToString();
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = num2;
+                }
+                else if (rev.Count() == 1)
+                {
+                    //CON DOS RELACIONADOS
+                    var rev3 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    var rev33 = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).FirstOrDefault();
+                    decimal? rem3 = ((rev3.MONTO_DOC_MD - rev33.MONTO_DOC_MD) - (Convert.ToDecimal(num2)));
+
+                    sm.S_MONTOB = num2;
+                    sm.S_MONTOP = rev3.MONTO_DOC_MD.ToString();
+                    sm.S_MONTOA = rev33.MONTO_DOC_MD.ToString();
+                    sm.S_REMA = rem3.ToString();
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = num2;
+                }
+                else if (rev.Count() > 1)
+                {
+                    var rev4 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    var rev44 = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).Select(x => x.MONTO_DOC_MD);
+                    decimal sum = 0;
+
+                    foreach (var k in rev44)
+                    {
+                        sum = sum + k.Value;
+                    }
+                    decimal? rem4 = ((rev4.MONTO_DOC_MD - sum) - (Convert.ToDecimal(num2)));
+
+                    sm.S_MONTOB = num2;
+                    sm.S_MONTOP = rev4.MONTO_DOC_MD.ToString();
+                    sm.S_MONTOA = sum.ToString();
+                    sm.S_REMA = rem4.ToString();
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = num2;
+                }
+            }
+
+            JsonResult cc = Json(sm, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
+
     }
 }

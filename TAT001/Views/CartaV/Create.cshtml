@@ -1,5 +1,5 @@
 ﻿@model TAT001.Models.CartaV
-
+@using TAT001.Entities
 @{
     ViewBag.pagina_r = 232;
     ViewBag.carpeta_r = 100;
@@ -218,59 +218,59 @@
                                 @if (a == 0)
                                 {
                                     <tr style="background-color:#CCCCCC">
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.material)
+                                        <th style="text-align:center">
+                                            <b id="lbl_material"></b>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.categoria)
+                                        <th style="text-align:center">
+                                            <b id="lbl_categoria"></b>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.descripcion)
+                                        <th style="text-align:center">
+                                            <b id="lbl_descripcion"></b>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoun)
+                                        <th style="text-align:center">
+                                            <b id="lbl_costou"></b>
                                             <label>
                                                 <input type="checkbox" name="costoun_x" value="true" id="costoun_x" @Html.Raw((Model.costoun_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyo)
+                                        <th style="text-align:center">
+                                            <b id="lbl_apoyoPorc"></b>
                                             <label>
                                                 <input type="checkbox" name="apoyo_x" value="true" id="apoyo_x" @Html.Raw((Model.apoyo_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyop)
+                                        <th style="text-align:center">
+                                            <b id="lbl_apoyoPieza"></b>
                                             <label>
                                                 <input type="checkbox" name="apoyop_x" value="true" id="apoyop_x" @Html.Raw((Model.apoyop_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoap)
+                                        <th style="text-align:center">
+                                            <b id="lbl_costoApo"></b>
                                             <label>
                                                 <input type="checkbox" name="costoap_x" value="true" id="costoap_x" @Html.Raw((Model.costoap_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.precio)
+                                        <th style="text-align:center">
+                                            <b id="lbl_precioSu"></b>
                                             <label>
                                                 <input type="checkbox" name="precio_x" value="true" id="precio_x" @Html.Raw((Model.precio_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoEst)
+                                        <th style="text-align:center">
+                                            <b id="lbl_apoyoEst"></b>
                                             <label>
                                                 <input type="checkbox" name="apoyoEst_x" value="true" id="apoyoEst_x" @Html.Raw((Model.apoyoEst_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
                                             </label>
                                         </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoRea)
+                                        <th style="text-align:center">
+                                            <b id="lbl_apoyoRea"></b>
                                             <label>
                                                 <input type="checkbox" name="apoyoRea_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyoRea_x) ? "checked=\"checked\"" : "") />
                                                 <span style="height:1"></span>
@@ -280,39 +280,53 @@
                                 }
                                 else
                                 {
-                                    <tr style="background-color:#CCCCCC">
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.material)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.categoria)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.descripcion)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoun)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyo)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyop)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.costoap)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.precio)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoEst)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model.apoyoRea)
-                                        </th>
-                                    </tr>
-                                }
+                                    using (TAT001Entities db = new TAT001Entities())
+                                    {
+                                        string len = ViewBag.lengu;
+                                        <tr style="background-color:#CCCCCC">
+                                            <th style="text-align:center">
+                                                @{ string mat = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_material").Select(x => x.TEXTOS).First();}
+                                                <b>@mat</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string cat = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_categoria").Select(x => x.TEXTOS).First();}
+                                                <b>@cat</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string des = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_descripcion").Select(x => x.TEXTOS).First();}
+                                                <b>@des</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string cosu = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_costou").Select(x => x.TEXTOS).First();}
+                                                <b>@cosu</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string ap = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_apoyoPorc").Select(x => x.TEXTOS).First();}
+                                                <b>@ap</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string app = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_apoyoPieza").Select(x => x.TEXTOS).First();}
+                                                <b>@app</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string ca = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_costoApo").Select(x => x.TEXTOS).First();}
+                                                <b>@ca</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string ps = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_precioSu").Select(x => x.TEXTOS).First();}
+                                                <b>@ps</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string ae = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_apoyoEst").Select(x => x.TEXTOS).First();}
+                                                <b>@ae</b>
+                                            </th>
+                                            <th style="text-align:center">
+                                                @{ string ar = db.TEXTOes.Where(x => x.PAGINA_ID == 232 & x.SPRAS_ID == len & x.CAMPO_ID == "lbl_apoyoRea").Select(x => x.TEXTOS).First();}
+                                                <b>@ar</b>
+                                            </th>
+                                        </tr>
+                                                    }
+                                                    }
                                 @*<tr style="background-color:#CCCCCC">
                                         @foreach (var contenido in Model.listaEncabezado)
                                         {
@@ -383,21 +397,24 @@
                         </div>
                         <div class="input-field col l11 m11" style="margin-bottom:0;">
                             <table class="table" style="font-size: 12px;">
-                                <tr style="background-color:#CCCCCC">
-                                    <th>
-                                        POS
+                                <thead>
+                                    <tr><b style="font-size:x-large" id="lbl_Titulo"></b></tr>
+                                </thead>
+                                <tr style="background-color:#CCCCCC;">
+                                    <th style="text-align:center">
+                                        <b id="lbl_pos"></b>
                                     </th>
-                                    <th>
-                                        TIPO
+                                    <th style="text-align:center">
+                                        <b id="lbl_tipo"></b>
                                     </th>
-                                    <th>
-                                        FECHA
+                                    <th style="text-align:center">
+                                        <b id="lbl_fechaS"></b>
                                     </th>
-                                    <th>
-                                        MONTO
+                                    <th style="text-align:center">
+                                        <b id="lbl_montoS"></b>
                                     </th>
-                                    <th>
-                                        %
+                                    <th style="text-align:center">
+                                        <b id="lbl_porcentaje"></b>
                                     </th>
                                 </tr>
                                 @{int pos2 = 0; }

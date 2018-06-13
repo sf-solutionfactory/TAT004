@@ -654,6 +654,7 @@
     <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
+    <Compile Include="Models\SOLICITUD_MOD.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -760,6 +761,7 @@
     <Content Include="images\logo-kellogg2.png" />
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
+    <Content Include="Scripts\analisis.js" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
@@ -776,6 +778,7 @@
     <Content Include="Entities\TAT001.edmx.diagram">
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Content>
+    <Content Include="files\masiva.xlsx" />
     <None Include="Properties\PublishProfiles\SERVER.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\jquery-3.0.0.js" />
