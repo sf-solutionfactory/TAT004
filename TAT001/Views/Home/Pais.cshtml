@@ -35,13 +35,24 @@
             </div>
 
             <div class="row">
-                @foreach (var item in ViewBag.delegados)
+                @if (ViewBag.delegados != null)
                 {
-                    <div class="col s6 m4 l2 center">
-                        <div class="row">
-                            <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new {pais=item.LAND})';return false;" />
+                    foreach (var del in ViewBag.delegados)
+                    {
+                        <div class="col s12 m12 l12 center">
+                            <div class="col s12 m12 l12 left-align">
+                                <h5>@del.usuario - @del.nombre</h5>
+                            </div>
+                            @foreach (var item in del.LISTA)
+                            {
+                                <div class="col s6 m4 l2 center">
+                                    <div class="row">
+                                        <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new { pais = item.LAND })';return false;" />
+                                    </div>
+                                </div>
+                            }
                         </div>
-                    </div>
+                    }
                 }
             </div>
         </div>

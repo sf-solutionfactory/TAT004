@@ -189,7 +189,6 @@ namespace TAT001.Controllers
             Models.PresupuestoModels carga = new Models.PresupuestoModels();
             ViewBag.ultMod = carga.consultarUCarga();
 
-
             return View(DF);
         }
         [HttpPost]
@@ -911,6 +910,56 @@ namespace TAT001.Controllers
             }
             //----------------------------RSG 12.06.2018
 
+
+            //RSG 13.06.2018--------------------------------------------------------
+            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name)).ToList();
+            if (del.Count > 0)
+            {
+
+                List<Delegados> users = new List<Delegados>();
+                List<PAI> pp = (from P in db.PAIS
+                                join C in db.CREADOR2 on P.LAND equals C.LAND
+                                where P.ACTIVO == true
+                                & C.ID == User.Identity.Name & C.ACTIVO == true
+                                select P).ToList();
+
+                List<Delegados> delegados = new List<Delegados>();
+                foreach (DELEGAR de in del)
+                {
+                    var pd = (from P in db.PAIS
+                              join C in db.CREADOR2 on P.LAND equals C.LAND
+                              where P.ACTIVO == true
+                              & C.ID == de.USUARIO_ID & C.ACTIVO == true
+                              select P).ToList();
+                    Delegados delegado = new Delegados();
+                    delegado.usuario = de.USUARIO_ID;
+                    delegado.nombre = de.USUARIO_ID + " - " + de.USUARIO.NOMBRE + " " + de.USUARIO.APELLIDO_P + " " + de.USUARIO.APELLIDO_M;
+                    delegado.LISTA = pd;
+                    if (delegado.LISTA.Count > 0)
+                        delegados.Add(delegado);
+                }
+                PAI pq = pp.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                if (pq != null)
+                {
+                    Delegados de = new Delegados();
+                    de.usuario = User.Identity.Name;
+                    USUARIO uu = db.USUARIOs.Find(User.Identity.Name);
+                    de.nombre = User.Identity.Name + " - " + uu.NOMBRE + " " + uu.APELLIDO_P + " " + uu.APELLIDO_M;
+                    de.LISTA = new List<PAI>();
+                    de.LISTA.Add(pq);
+                    users.Add(de);
+                }
+                foreach (Delegados de in delegados)
+                {
+                    PAI pqq = de.LISTA.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                    if (pqq != null)
+                        users.Add(de);
+                }
+
+                ViewBag.USUARIOC_ID = new SelectList(users, "usuario", "nombre", users[0].usuario);
+            }
+            //RSG 13.06.2018--------------------------------------------------------
+
             return View(d);
         }
 
@@ -926,18 +975,18 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string bmonto_apoyo, string catmat)
         {
 
-            //bool prueba = false;
+            bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
-            //if (ModelState.IsValid && prueba == true)
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && prueba == true)
+            //if (ModelState.IsValid)
             {
                 try
                 {
