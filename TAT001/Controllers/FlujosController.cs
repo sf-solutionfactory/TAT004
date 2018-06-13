@@ -350,7 +350,8 @@ namespace TAT001.Controllers
                 }
                 else if (res.Equals("3"))//Rechazado
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                    //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
                 }
                 else
                 {

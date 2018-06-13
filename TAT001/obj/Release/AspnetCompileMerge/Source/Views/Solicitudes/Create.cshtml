@@ -10,6 +10,7 @@
 <script src="~/Scripts/create.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
+<script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
 <script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
@@ -898,8 +899,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                    ;
+                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                        ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1435,7 +1436,7 @@
                         }
                             </script>
                         </div>
-                        <div class="card-panel">
+                        @*<div class="card-panel">
                             <h5>Análisis Solicitud</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="col s12">
@@ -1497,7 +1498,151 @@
                                     </ul>
                                 </div>
                             </div>
+                        </div>*@
+
+                        <div class="card-panel">
+                            <h5>Análisis Solicitud</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                    <ul class="collection">
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div class="col s6">
+                                                    Importe solicitud
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montob">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div class="col s6">
+                                                    Monto provisión original
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montop">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div class="col s6">
+                                                    Monto aplicado
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montoa">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="collection-item" id="a4">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div class="col s6">
+                                                    Remanente/Exceso
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_rema">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="collection-item" id="a5">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div class="col s6">
+                                                    Monto total
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_total">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                        @*<div class="card-panel">
+                            <h5>Análisis Solicitud</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <table class="tg">
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Importe solicitud</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Monto provisión original</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Monto aplicado</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr id="s_color">
+                                        <td class="tg-yw4l">
+                                            <label id="">Remanente/(Exceso)</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id=""></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto a</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="s_impa"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto b</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="s_impb"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Impuesto c</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="s_impc"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Retención</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="s_ret"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l">
+                                            <label>Monto total</label>
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id=""></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>*@
+
                     </div>
                 </div>
             </div>
@@ -1509,12 +1654,13 @@
         </div>
     </div>
 }
-@if (ViewBag.original == null)
+@*@if (ViewBag.original == null)
 {
     <script>
         function analisis() {
 
-            var monto = document.getElementById("monto_dis").value;
+            var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
+            var monto = document.getElementById("monto_dis").value;//RSG 12.06.2018
             document.getElementById("analisis1").innerHTML = "$" + monto;
             document.getElementById("analisis4").innerHTML = "$" + monto;
             document.getElementById("analisis5").innerHTML = "$" + monto;
@@ -1526,6 +1672,7 @@ else
     <script>
         function analisis() {
 
+            var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
             var monto = document.getElementById("monto_dis").value;
             var original = @ViewBag.original;
             var aplicado = @ViewBag.sumaRel;
@@ -1540,4 +1687,4 @@ else
             }
         }
     </script>
-}
+}*@

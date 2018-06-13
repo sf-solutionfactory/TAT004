@@ -18,8 +18,8 @@ namespace TAT001.Controllers
         public ActionResult Index(int id)
         {
             var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
-            var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
-            ViewBag.Pos = flujo[0];
+            //var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
+            //ViewBag.Pos = flujo[0];
             ViewBag.url = "http://localhost:64497";
             ViewBag.url = "http://192.168.1.77";
             ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");

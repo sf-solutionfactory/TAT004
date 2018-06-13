@@ -335,7 +335,8 @@ namespace TAT001.Controllers
                 }
                 else if (c.Equals("3"))//Rechazado
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                    //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
                 }
                 else
                 {
@@ -4379,6 +4380,9 @@ namespace TAT001.Controllers
         {
             if (material == null)
                 material = "";
+            //RSG 07.06.2018---------------------------------------------
+            material = completaMaterial(material);
+            //RSG 07.06.2018---------------------------------------------
 
             TAT001Entities db = new TAT001Entities();
 

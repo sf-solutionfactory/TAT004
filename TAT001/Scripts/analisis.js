@@ -35,6 +35,8 @@ function asignarSolicitud(num, num2) {
                     }
                     else {
                         $('#s_rema').text(data.S_REMA);
+                        document.getElementById("a4").classList.remove("red");
+                        document.getElementById("a4").classList.remove("white-text");
                     }
                     $('#s_impa').text(data.S_IMPA);
                     $('#s_impb').text(data.S_IMPB);
