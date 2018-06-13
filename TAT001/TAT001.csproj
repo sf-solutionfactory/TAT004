@@ -215,6 +215,7 @@
     <Compile Include="Controllers\Catalogos\TxcController.cs" />
     <Compile Include="Controllers\Catalogos\TxlController.cs" />
     <Compile Include="Controllers\Catalogos\TxnController.cs" />
+    <Compile Include="Controllers\CorreosController.cs" />
     <Compile Include="Controllers\Det_AprobsController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\FlujosController.cs" />
@@ -945,6 +946,11 @@
     <Content Include="Views\CartaV\Create.cshtml" />
     <Content Include="Views\Solicitudes\Create.cshtml" />
     <Content Include="Views\Listas\getPeriodo.cshtml" />
+    <Content Include="Views\Correos\Index.cshtml" />
+    <Content Include="Views\Correos\Create.cshtml" />
+    <Content Include="Views\Correos\Delete.cshtml" />
+    <Content Include="Views\Correos\Details.cshtml" />
+    <Content Include="Views\Correos\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

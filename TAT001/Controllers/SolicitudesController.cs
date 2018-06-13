@@ -185,7 +185,10 @@ namespace TAT001.Controllers
             if (DF.D.DOCUMENTO_REF != null)
                 ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
             ViewBag.Title += id;
-            ViewBag.Relacionados = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == DF.D.NUM_DOC).ToList();
+
+            Models.PresupuestoModels carga = new Models.PresupuestoModels();
+            ViewBag.ultMod = carga.consultarUCarga();
+
 
             return View(DF);
         }
@@ -323,16 +326,16 @@ namespace TAT001.Controllers
                 }
                 else if (c.Equals("1"))//CORREO
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
 
                 }
                 else if (c.Equals("2"))//CORREO DE FIN DE WORKFLOW
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
                 }
                 else if (c.Equals("3"))//Rechazado
                 {
-                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
                 }
                 else
                 {
@@ -400,6 +403,9 @@ namespace TAT001.Controllers
         [HttpGet]
         public ActionResult Create(string id_d, string tsol)
         {
+
+            Models.PresupuestoModels carga = new Models.PresupuestoModels();
+            ViewBag.ultMod = carga.consultarUCarga();
 
             string dates = DateTime.Now.ToString("dd/MM/yyyy");
             DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
@@ -886,6 +892,23 @@ namespace TAT001.Controllers
             ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
             d.SOCIEDAD = db.SOCIEDADs.Find(d.SOCIEDAD_ID);
             //----------------------------RSG 18.05.2018
+            //----------------------------RSG 12.06.2018
+            if (id_d != null)
+            {
+                decimal numPadre = decimal.Parse(id_d);
+                DOCUMENTO padre = db.DOCUMENTOes.Find(numPadre);
+                if (padre != null)
+                {
+                    ViewBag.original = padre.MONTO_DOC_MD;
+                    List<DOCUMENTO> dd = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == padre.NUM_DOC).ToList();
+                    ViewBag.sumaRel = decimal.Parse("0.00"); ;
+                    foreach (DOCUMENTO dos in dd)
+                    {
+                        ViewBag.sumaRel += (decimal)dos.MONTO_DOC_MD;
+                    }
+                }
+            }
+            //----------------------------RSG 12.06.2018
 
             return View(d);
         }
@@ -955,6 +978,7 @@ namespace TAT001.Controllers
                         dOCUMENTO.PAYER_EMAIL = d.PAYER_EMAIL;
                         dOCUMENTO.TIPO_CAMBIO = d.TIPO_CAMBIO;
                         dOCUMENTO.GALL_ID = d.GALL_ID;
+                        dOCUMENTO.TALL_ID = d.TALL_ID;//RSG 12.06.2018
                         //Obtener el país
                         dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                     }
@@ -1566,7 +1590,7 @@ namespace TAT001.Controllers
                     //db.SaveChanges();
 
                     USUARIO user = db.USUARIOs.Where(a => a.ID.Equals(User.Identity.Name)).FirstOrDefault();
-                    int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
+                    //int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
                     try
                     {
                         //WORKFV wf = db.WORKFHs.Where(a => a.BUKRS.Equals(dOCUMENTO.SOCIEDAD_ID) & a.ROL_ID == rol).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
@@ -1589,7 +1613,8 @@ namespace TAT001.Controllers
                             if (c == "1")
                             {
                                 Email em = new Email();
-                                em.enviaMail(f.NUM_DOC, true);
+                                string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory);
                             }
                         }
                     }
@@ -4411,16 +4436,18 @@ namespace TAT001.Controllers
             //Obtener presupuesto
             try
             {
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: "1").Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+                string mes = DateTime.Now.Month.ToString();
+                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
                 if (presupuesto != null)
                 {
                     pm.P_CANAL = presupuesto[0].VAL;
-                    pm.P_BANNER = presupuesto[1].VAL;
-                    pm.PC_C = presupuesto[4].VAL;
-                    pm.PC_A = presupuesto[5].VAL;
-                    pm.PC_P = presupuesto[6].VAL;
-                    pm.PC_T = presupuesto[7].VAL;
+                    pm.P_BANNER = presupuesto[2].VAL;
+                    pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+                    pm.PC_A = presupuesto[8].VAL;
+                    pm.PC_P = presupuesto[9].VAL;
+                    pm.PC_T = presupuesto[10].VAL;
+                    pm.CONSU = (float.Parse(presupuesto[2].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
                 }
             }
             catch (Exception e)

@@ -74,7 +74,7 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
-        public ActionResult Enviar(decimal id, string spras, bool index)
+        public ActionResult Enviar(decimal id, bool index, string tipo, string spras)
         {
             //int pagina = 203; //ID EN BASE DE DATOS
             ViewBag.Title = "Solicitud";
@@ -116,7 +116,10 @@ namespace TAT001.Controllers
                 mail.IsBodyHtml = true;
                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
                 //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
-                UrlDirectory = UrlDirectory.Replace("Enviar", "Solicitudes");
+                if (tipo == "R")
+                    UrlDirectory = UrlDirectory.Replace("/Mails/Enviar", "/Correos/Details");
+                if (tipo == "A")
+                    UrlDirectory = UrlDirectory.Replace("/Mails/Enviar", "/Correos/Index");
                 HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
                 myRequest.Method = "GET";
                 WebResponse myResponse = myRequest.GetResponse();

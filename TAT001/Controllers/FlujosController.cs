@@ -153,7 +153,7 @@ namespace TAT001.Controllers
 
                 db.SaveChanges();
                 if (wp.EMAIL.Equals("X"))
-                    return RedirectToAction("Enviar", "Mails", new { id = id });
+                    return RedirectToAction("Index", "Correos", new { id = id });
 
                 return RedirectToAction("Details", "Solicitudes", new { id = id });
             }
@@ -341,16 +341,16 @@ namespace TAT001.Controllers
                 }
                 else if (res.Equals("1"))//CORREO
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
 
                 }
                 else if (res.Equals("2"))//CORREO DE FIN DE WORKFLOW
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false });
+                    return RedirectToAction("Index", "Correos", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
                 }
                 else if (res.Equals("3"))//Rechazado
                 {
-                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
                 }
                 else
                 {

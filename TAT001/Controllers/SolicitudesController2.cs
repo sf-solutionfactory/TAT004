@@ -1518,8 +1518,8 @@ namespace TAT001.Controllers
                             string c = pf.procesa(f, "");
                             if (c == "1")
                             {
-                                Email em = new Email();
-                                em.enviaMail(f.NUM_DOC, true);
+                                //Email em = new Email();
+                                //em.enviaMail(f.NUM_DOC, true);
                             }
                         }
                     }

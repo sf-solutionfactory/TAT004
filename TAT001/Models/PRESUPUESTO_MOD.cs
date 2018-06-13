@@ -13,5 +13,6 @@ namespace TAT001.Models
         public string PC_A { get; set; }
         public string PC_P { get; set; }
         public string PC_T { get; set; }
+        public string CONSU { get; set; }
     }
 }

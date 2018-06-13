@@ -1691,6 +1691,7 @@ function asignarPresupuesto(kunnr) {
                 $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
                 $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
                 $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
                 //RSG 26.04.2018----------------
             }
 
