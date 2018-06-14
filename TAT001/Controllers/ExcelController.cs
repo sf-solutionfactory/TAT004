@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Xml;
 using TAT001.Entities;
 using TAT001.Models;
+using TAT001.Services;
 
 namespace TAT001.Controllers
 {
@@ -164,45 +165,61 @@ namespace TAT001.Controllers
                 var h = db.PAIS.Where(x => x.LAND == d).Select(x => x.LAND);
 
                 string dd = dsHoja1.Tables[0].Rows[i][9].ToString();
+                string fec1 = dsHoja1.Tables[0].Rows[i][12].ToString();
+                string fec2 = dsHoja1.Tables[0].Rows[i][13].ToString();
                 string mone = dsHoja1.Tables[0].Rows[i][14].ToString();
                 var ee = db.CLIENTEs.Where(x => x.KUNNR == dd);
                 var monee = db.MONEDAs.Where(x => x.WAERS == mone).Select(x => x.WAERS);
 
+                var per = from P in db.PAIS
+                          join C in db.CREADOR2 on P.LAND equals C.LAND
+                          where P.ACTIVO == true
+                          & C.ID == u & C.ACTIVO == true
+                          select P;
+
+                var perm = per.Where(x => x.SOCIEDAD_ID == c & x.LAND == d).FirstOrDefault();
+
                 if (e.Count() > 0 && f.Count() > 0 && g.Count() > 0 && h.Count() > 0 & ee.Count() > 0 & monee.Count() > 0)
                 {
-                    docu.NUM_DOC = Convert.ToDecimal(dsHoja1.Tables[0].Rows[i][0].ToString());
-                    docu.TSOL_ID = a;
-                    docu.GALL_ID = b;
-                    docu.SOCIEDAD_ID = c;
-                    docu.PAIS_ID = d;
-                    docu.ESTADO = dsHoja1.Tables[0].Rows[i][5].ToString();
-                    docu.CIUDAD = dsHoja1.Tables[0].Rows[i][6].ToString();
-                    docu.PERIODO = Convert.ToInt32(System.DateTime.Now.Month);
-                    docu.EJERCICIO = Convert.ToString(System.DateTime.Now.Year);
-                    docu.CANTIDAD_EV = 1;
-                    docu.USUARIOC_ID = user.ID;
-                    docu.FECHAD = System.DateTime.Today;
-                    docu.FECHAC = System.DateTime.Today;
-                    docu.HORAC = System.DateTime.Now.TimeOfDay;
-                    docu.FECHAC_PLAN = System.DateTime.Today;
-                    docu.FECHAC_USER = System.DateTime.Today;
-                    docu.HORAC_USER = System.DateTime.Now.TimeOfDay;
-                    docu.ESTATUS = "N";
-                    docu.ESTATUS_WF = "P";
-                    docu.CONCEPTO = dsHoja1.Tables[0].Rows[i][7].ToString();
-                    docu.NOTAS = dsHoja1.Tables[0].Rows[i][8].ToString();
-                    docu.VKORG = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.VKORG).First();
-                    docu.VTWEG = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.VTWEG).First();
-                    docu.SPART = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.SPART).First();
-                    docu.PAYER_ID = dd;
-                    docu.PAYER_NOMBRE = dsHoja1.Tables[0].Rows[i][10].ToString();
-                    docu.PAYER_EMAIL = dsHoja1.Tables[0].Rows[i][11].ToString();
-                    docu.FECHAI_VIG = Convert.ToDateTime(dsHoja1.Tables[0].Rows[i][12].ToString());
-                    docu.FECHAF_VIG = Convert.ToDateTime(dsHoja1.Tables[0].Rows[i][13].ToString());
-                    docu.MONEDA_ID = dsHoja1.Tables[0].Rows[i][14].ToString();
-                    docu.MONTO_DOC_MD = 0;
-                    docu.TALL_ID = db.TALLs.Where(x => x.GALL_ID == docu.GALL_ID).FirstOrDefault().ID;
-                    listD.Add(docu);
+                    if (perm != null)
+                    {
+                        fec1 = validaFechI(fec1);
+                        fec2 = validaFechF(fec2);
+
+                        docu.NUM_DOC = Convert.ToDecimal(dsHoja1.Tables[0].Rows[i][0].ToString());
+                        docu.TSOL_ID = a;
+                        docu.GALL_ID = b;
+                        docu.SOCIEDAD_ID = c;
+                        docu.PAIS_ID = d;
+                        docu.ESTADO = dsHoja1.Tables[0].Rows[i][5].ToString();
+                        docu.CIUDAD = dsHoja1.Tables[0].Rows[i][6].ToString();
+                        docu.PERIODO = Convert.ToInt32(System.DateTime.Now.Month);
+                        docu.EJERCICIO = Convert.ToString(System.DateTime.Now.Year);
+                        docu.CANTIDAD_EV = 1;
+                        docu.USUARIOC_ID = user.ID;
+                        docu.FECHAD = System.DateTime.Today;
+                        docu.FECHAC = System.DateTime.Today;
+                        docu.HORAC = System.DateTime.Now.TimeOfDay;
+                        docu.FECHAC_PLAN = System.DateTime.Today;
+                        docu.FECHAC_USER = System.DateTime.Today;
+                        docu.HORAC_USER = System.DateTime.Now.TimeOfDay;
+                        docu.ESTATUS = "N";
+                        docu.ESTATUS_WF = "P";
+                        docu.CONCEPTO = dsHoja1.Tables[0].Rows[i][7].ToString();
+                        docu.NOTAS = dsHoja1.Tables[0].Rows[i][8].ToString();
+                        docu.VKORG = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.VKORG).First();
+                        docu.VTWEG = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.VTWEG).First();
+                        docu.SPART = db.CLIENTEs.Where(x => x.KUNNR == dd).Select(x => x.SPART).First();
+                        docu.PAYER_ID = dd;
+                        docu.PAYER_NOMBRE = dsHoja1.Tables[0].Rows[i][10].ToString();
+                        docu.PAYER_EMAIL = dsHoja1.Tables[0].Rows[i][11].ToString();
+                        docu.FECHAI_VIG = Convert.ToDateTime(fec1);
+                        docu.FECHAF_VIG = Convert.ToDateTime(fec2);
+                        docu.MONEDA_ID = dsHoja1.Tables[0].Rows[i][14].ToString();
+                        docu.MONTO_DOC_MD = 0;
+                        docu.TALL_ID = db.TALLs.Where(x => x.GALL_ID == docu.GALL_ID).FirstOrDefault().ID;
+                        listD.Add(docu);
+                    }
 
                     DOCUMENTO dop = listD.Where(x => x.NUM_DOC == docu.NUM_DOC).FirstOrDefault();
                     if (dop != null)
@@ -224,6 +241,8 @@ namespace TAT001.Controllers
 
                                 if (mate.Count() > 0 && fechA > fechD)
                                 {
+                                    //AQUI VALIDAMOS SI TIENE REAL 
+                                    //DE NO TENERLO HACE EL CALCULO CON COSTO, PORCENTAJE, PRECIO Y VOLUMEN
                                     if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
                                     {
                                         docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
@@ -376,6 +395,48 @@ namespace TAT001.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public string validaFechI(string date)
+        {
+            Calendario445 cale = new Calendario445();
+            DateTime fecha;
+            int anio, mes;
+
+            if (date.Length == 7)
+            {
+                
+                mes = Convert.ToInt32(date.Substring(0, 2));
+                anio = Convert.ToInt32(date.Substring(3, 4));
+
+                fecha = cale.getPrimerDia(anio, mes);
+            }
+            else
+            {
+                fecha = Convert.ToDateTime(date);
+            }
+
+            return Convert.ToString(fecha);
+        }
+
+        public string validaFechF(string date)
+        {
+            Calendario445 cale = new Calendario445();
+            DateTime fecha;
+            int anio, mes;
+
+            if (date.Length == 7)
+            {
+                mes = Convert.ToInt32(date.Substring(0, 2));
+                anio = Convert.ToInt32(date.Substring(3, 4));
+
+                fecha = cale.getUltimoDia(anio, mes);
+            }
+            else
+            {
+                fecha = Convert.ToDateTime(date);
+            }
+
+            return Convert.ToString(fecha);
+        }
         public ActionResult Archivo()
         {
             Response.ContentType = "application/vnd.ms-excel";

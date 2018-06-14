@@ -113,55 +113,121 @@
                     string dd = ViewBag.data1.Tables[0].Rows[i][9].ToString();
                     var ee = db.CLIENTEs.Where(x => x.KUNNR == dd);
 
+                    var u = ViewBag.usuario;
+                    string IdU = u.ID;
+
+                    var per = from P in db.PAIS
+                              join C in db.CREADOR2 on P.LAND equals C.LAND
+                              where P.ACTIVO == true
+                              & C.ID == IdU & C.ACTIVO == true
+                              select P;
+
+                    string mi1 = ViewBag.data1.Tables[0].Rows[i][3].ToString();
+                    string mi2 = ViewBag.data1.Tables[0].Rows[i][4].ToString();
+                    var perm = per.Where(x => x.SOCIEDAD_ID == mi1 & x.LAND == mi2).FirstOrDefault();
+
                     if (e.Count() > 0 && f.Count() > 0 && g.Count() > 0 && h.Count() > 0 & ee.Count() > 0 & kk.Count() > 0)
                     {
-                        <tr>
-                            <td class="details-control" style="cursor:pointer">
-                                <i class="material-icons">add</i>
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][0].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][1].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][2].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][3].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][4].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][5].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][6].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][7].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][9].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][10].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][11].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][12].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][13].ToString()
-                            </td>
-                            <td>
-                                @ViewBag.data1.Tables[0].Rows[i][14].ToString()
-                            </td>
-                        </tr>
+                        if (perm != null)
+                        {
+                            <tr>
+                                <td class="details-control" style="cursor:pointer">
+                                    <i class="material-icons">add</i>
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][0].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][1].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][2].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][3].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][4].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][5].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][6].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][7].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][9].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][10].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][11].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][12].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][13].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][14].ToString()
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="red white-text">
+                                <td class="details-control" style="cursor:pointer">
+                                    <i class="material-icons">add</i>
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][0].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][1].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][2].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][3].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][4].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][5].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][6].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][7].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][9].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][10].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][11].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][12].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][13].ToString()
+                                </td>
+                                <td>
+                                    @ViewBag.data1.Tables[0].Rows[i][14].ToString()
+                                </td>
+                            </tr>
+                        }
                     }
                     else
                     {

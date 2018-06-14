@@ -468,8 +468,8 @@ namespace TAT001.Controllers
                 {
 
                 }
-                var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
-                ViewBag.TSOL_VALUES = tsols_valbdjs;
+                //var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);//RSG 13.06.2018
+                //ViewBag.TSOL_VALUES = tsols_valbdjs;
 
                 //Validar si es una reversa
                 string isrn = "";
@@ -837,129 +837,139 @@ namespace TAT001.Controllers
                 }
 
 
-            }
+                //}//RSG 13.06.2018
 
-            d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
-            d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
+                d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
+                d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
 
-            d.FECHAD = theTime;
-            ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
-            ViewBag.PERIODO = d.PERIODO;
-            ViewBag.EJERCICIO = d.EJERCICIO;
-            ViewBag.STCD1 = "";
-            ViewBag.PARVW = "";
-            ViewBag.UNAFACTURA = "false";
-            ViewBag.MONTO_DOC_ML2 = "";
-            ViewBag.error = errorString;
-            ViewBag.NAME1 = "";
-            ViewBag.notas_soporte = "";
+                d.FECHAD = theTime;
+                ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                ViewBag.PERIODO = d.PERIODO;
+                ViewBag.EJERCICIO = d.EJERCICIO;
+                ViewBag.STCD1 = "";
+                ViewBag.PARVW = "";
+                ViewBag.UNAFACTURA = "false";
+                ViewBag.MONTO_DOC_ML2 = "";
+                ViewBag.error = errorString;
+                ViewBag.NAME1 = "";
+                ViewBag.notas_soporte = "";
 
-            //Prueba para agregar soporte a la tabla ahora información
+                //Prueba para agregar soporte a la tabla ahora información
 
-            //DOCUMENTOF DF1 = new DOCUMENTOF();
+                //DOCUMENTOF DF1 = new DOCUMENTOF();
 
-            //DF1.POS = 1;
-            //DF1.FACTURA = "FF1";
-            //DF1.PROVEEDOR = "PP1";
-            //DF1.FACTURAK = "FFK1";
+                //DF1.POS = 1;
+                //DF1.FACTURA = "FF1";
+                //DF1.PROVEEDOR = "PP1";
+                //DF1.FACTURAK = "FFK1";
 
-            //DOCUMENTOF DF2 = new DOCUMENTOF();
+                //DOCUMENTOF DF2 = new DOCUMENTOF();
 
-            //DF2.POS = 2;
-            //DF2.FACTURA = "FF2";
-            //DF2.PROVEEDOR = "1000000001";
-            //DF2.FACTURAK = "FFK2";
+                //DF2.POS = 2;
+                //DF2.FACTURA = "FF2";
+                //DF2.PROVEEDOR = "1000000001";
+                //DF2.FACTURAK = "FFK2";
 
-            //List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
+                //List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
 
-            //d.DOCUMENTOF = LD;
+                //d.DOCUMENTOF = LD;
 
-            ViewBag.SEL_NEG = relacionada_neg;
-            ViewBag.SEL_DIS = relacionada_dis;
-            ViewBag.BMONTO_APOYO = "";
-            ViewBag.CATMAT = "";
-            ViewBag.MONTO_DIS = "";
+                ViewBag.SEL_NEG = relacionada_neg;
+                ViewBag.SEL_DIS = relacionada_dis;
+                ViewBag.BMONTO_APOYO = "";
+                ViewBag.CATMAT = "";
+                ViewBag.MONTO_DIS = "";
 
-            //----------------------------RSG 18.05.2018
-            string spras = Session["spras"].ToString();
-            ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
-            List<string> anios = new List<string>();
-            int mas = 10;
-            for (int i = 0; i < mas; i++)
-            {
-                anios.Add((DateTime.Now.Year + i).ToString());
-            }
-            ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
-            d.SOCIEDAD = db.SOCIEDADs.Find(d.SOCIEDAD_ID);
-            //----------------------------RSG 18.05.2018
-            //----------------------------RSG 12.06.2018
-            if (id_d != null)
-            {
-                decimal numPadre = decimal.Parse(id_d);
-                DOCUMENTO padre = db.DOCUMENTOes.Find(numPadre);
-                if (padre != null)
+                //----------------------------RSG 18.05.2018
+                string spras = Session["spras"].ToString();
+                ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
+                List<string> anios = new List<string>();
+                int mas = 10;
+                for (int i = 0; i < mas; i++)
                 {
-                    ViewBag.original = padre.MONTO_DOC_MD;
-                    List<DOCUMENTO> dd = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == padre.NUM_DOC).ToList();
-                    ViewBag.sumaRel = decimal.Parse("0.00"); ;
-                    foreach (DOCUMENTO dos in dd)
+                    anios.Add((DateTime.Now.Year + i).ToString());
+                }
+                ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
+                d.SOCIEDAD = db.SOCIEDADs.Find(d.SOCIEDAD_ID);
+                //----------------------------RSG 18.05.2018
+                //----------------------------RSG 12.06.2018
+                if (id_d != null)
+                {
+                    decimal numPadre = decimal.Parse(id_d);
+                    DOCUMENTO padre = db.DOCUMENTOes.Find(numPadre);
+                    if (padre != null)
                     {
-                        ViewBag.sumaRel += (decimal)dos.MONTO_DOC_MD;
+                        ViewBag.original = padre.MONTO_DOC_MD;
+                        List<DOCUMENTO> dd = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == padre.NUM_DOC).ToList();
+                        ViewBag.sumaRel = decimal.Parse("0.00"); ;
+                        foreach (DOCUMENTO dos in dd)
+                        {
+                            ViewBag.sumaRel += (decimal)dos.MONTO_DOC_MD;
+                        }
                     }
                 }
-            }
-            //----------------------------RSG 12.06.2018
+                //----------------------------RSG 12.06.2018
 
 
-            //RSG 13.06.2018--------------------------------------------------------
-            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name)).ToList();
-            if (del.Count > 0)
-            {
-
-                List<Delegados> users = new List<Delegados>();
-                List<PAI> pp = (from P in db.PAIS
-                                join C in db.CREADOR2 on P.LAND equals C.LAND
-                                where P.ACTIVO == true
-                                & C.ID == User.Identity.Name & C.ACTIVO == true
-                                select P).ToList();
-
-                List<Delegados> delegados = new List<Delegados>();
-                foreach (DELEGAR de in del)
+                //RSG 13.06.2018--------------------------------------------------------
+                List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= DateTime.Now & a.FECHAF >= DateTime.Now  & a.ACTIVO == true).ToList();
+                if (del.Count > 0)
                 {
-                    var pd = (from P in db.PAIS
-                              join C in db.CREADOR2 on P.LAND equals C.LAND
-                              where P.ACTIVO == true
-                              & C.ID == de.USUARIO_ID & C.ACTIVO == true
-                              select P).ToList();
-                    Delegados delegado = new Delegados();
-                    delegado.usuario = de.USUARIO_ID;
-                    delegado.nombre = de.USUARIO_ID + " - " + de.USUARIO.NOMBRE + " " + de.USUARIO.APELLIDO_P + " " + de.USUARIO.APELLIDO_M;
-                    delegado.LISTA = pd;
-                    if (delegado.LISTA.Count > 0)
-                        delegados.Add(delegado);
-                }
-                PAI pq = pp.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
-                if (pq != null)
-                {
-                    Delegados de = new Delegados();
-                    de.usuario = User.Identity.Name;
-                    USUARIO uu = db.USUARIOs.Find(User.Identity.Name);
-                    de.nombre = User.Identity.Name + " - " + uu.NOMBRE + " " + uu.APELLIDO_P + " " + uu.APELLIDO_M;
-                    de.LISTA = new List<PAI>();
-                    de.LISTA.Add(pq);
-                    users.Add(de);
-                }
-                foreach (Delegados de in delegados)
-                {
-                    PAI pqq = de.LISTA.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
-                    if (pqq != null)
+
+                    List<Delegados> users = new List<Delegados>();
+                    List<PAI> pp = (from P in db.PAIS
+                                    join C in db.CREADOR2 on P.LAND equals C.LAND
+                                    where P.ACTIVO == true
+                                    & C.ID == User.Identity.Name & C.ACTIVO == true
+                                    select P).ToList();
+
+                    List<Delegados> delegados = new List<Delegados>();
+                    foreach (DELEGAR de in del)
+                    {
+                        var pd = (from P in db.PAIS
+                                  join C in db.CREADOR2 on P.LAND equals C.LAND
+                                  where P.ACTIVO == true
+                                  & C.ID == de.USUARIO_ID & C.ACTIVO == true
+                                  select P).ToList();
+                        Delegados delegado = new Delegados();
+                        delegado.usuario = de.USUARIO_ID;
+                        delegado.nombre = de.USUARIO_ID + " - " + de.USUARIO.NOMBRE + " " + de.USUARIO.APELLIDO_P + " " + de.USUARIO.APELLIDO_M;
+                        delegado.LISTA = pd;
+                        if (delegado.LISTA.Count > 0)
+                            delegados.Add(delegado);
+                    }
+                    PAI pq = pp.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                    if (pq != null)
+                    {
+                        Delegados de = new Delegados();
+                        de.usuario = User.Identity.Name;
+                        USUARIO uu = db.USUARIOs.Find(User.Identity.Name);
+                        de.nombre = User.Identity.Name + " - " + uu.NOMBRE + " " + uu.APELLIDO_P + " " + uu.APELLIDO_M;
+                        de.LISTA = new List<PAI>();
+                        de.LISTA.Add(pq);
                         users.Add(de);
+                    }
+                    foreach (Delegados de in delegados)
+                    {
+                        PAI pqq = de.LISTA.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                        if (pqq != null)
+                            users.Add(de);
+                    }
+
+                    ViewBag.USUARIOC_ID = new SelectList(users, "usuario", "nombre", users[0].usuario);
                 }
 
-                ViewBag.USUARIOC_ID = new SelectList(users, "usuario", "nombre", users[0].usuario);
+                List<FACTURASCONF> ffc = db.FACTURASCONFs.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID)).ToList();
+                foreach (var item in tsols_valbd)
+                {
+                    FACTURASCONF fc = ffc.Where(a => a.TSOL.Equals(item.ID)).FirstOrDefault();
+                    if (fc == null)
+                        item.FACTURA = false;
+                }
+                var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+                ViewBag.TSOL_VALUES = tsols_valbdjs;
+                //RSG 13.06.2018--------------------------------------------------------
             }
-            //RSG 13.06.2018--------------------------------------------------------
-
             return View(d);
         }
 
