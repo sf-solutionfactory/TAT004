@@ -603,7 +603,7 @@
                                         {
                                             <th>Categoría</th>
                                         }
-                                        <th>Desc</th>
+                                        <th>Descripción</th>
                                         <th>Precio unitario</th>
                                         <th>% apoyo</th>
                                         <th>Apoyo por pieza</th>
@@ -621,7 +621,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" & a.MATKL != null)))
+                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
                                     {
                                         <tr id="pos-@item.POS" onclick="muestra(this.id)">
                                             <td>

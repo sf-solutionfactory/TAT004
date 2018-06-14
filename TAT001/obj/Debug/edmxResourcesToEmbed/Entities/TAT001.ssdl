@@ -1430,6 +1430,7 @@
     <Property Name="RANGO_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ESTATUS" Type="nchar" MaxLength="1" Nullable="false" />
     <Property Name="FACTURA" Type="bit" Nullable="false" />
+    <Property Name="PADRE" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
