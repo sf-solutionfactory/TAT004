@@ -12,13 +12,15 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class DELEGAR
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
+        public string USUARIO_ID { get; set; }
+        public string USUARIOD_ID { get; set; }
+        public System.DateTime FECHAI { get; set; }
+        public System.DateTime FECHAF { get; set; }
+        public bool ACTIVO { get; set; }
     
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
+        public virtual USUARIO USUARIO1 { get; set; }
     }
 }

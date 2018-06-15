@@ -673,6 +673,7 @@
     <NavigationProperty Name="DOCUMENTORECs" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOREC" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+    <NavigationProperty Name="DOCUMENTOSAP" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -724,6 +725,7 @@
     <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
     <Property Name="VIGENCIA_A" Type="DateTime" Precision="0" />
     <NavigationProperty Name="DOCUMENTOP" Relationship="Self.FK_DOCUMENTOM_DOCUMENTOP" FromRole="DOCUMENTOM" ToRole="DOCUMENTOP" />
+    <Property Name="VALORH" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
@@ -1649,6 +1651,7 @@
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
     <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+    <Property Name="PADRE" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -1778,6 +1781,8 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="DELEGARs" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="USUARIO" ToRole="DELEGAR" />
+    <NavigationProperty Name="DELEGARs1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="USUARIO" ToRole="DELEGAR" />
   </EntityType>
   <EntityType Name="USUARIOSAP">
     <Key>
@@ -4676,6 +4681,21 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="DELEGARs" EntityType="TAT001Model.DELEGAR" />
+    <EntitySet Name="DOCUMENTOSAPs" EntityType="TAT001Model.DOCUMENTOSAP" />
+    <EntitySet Name="PERIODO445" EntityType="TAT001Model.PERIODO445" />
+    <AssociationSet Name="FK_DELEGAR_USUARIO" Association="TAT001Model.FK_DELEGAR_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DELEGAR" EntitySet="DELEGARs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DELEGAR_USUARIO1" Association="TAT001Model.FK_DELEGAR_USUARIO1">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="DELEGAR" EntitySet="DELEGARs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOSAP_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAPs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4784,4 +4804,78 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="DELEGAR">
+    <Key>
+      <PropertyRef Name="USUARIO_ID" />
+      <PropertyRef Name="USUARIOD_ID" />
+      <PropertyRef Name="FECHAI" />
+      <PropertyRef Name="FECHAF" />
+    </Key>
+    <Property Name="USUARIO_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIOD_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAI" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="FECHAF" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="DELEGAR" ToRole="USUARIO" />
+    <NavigationProperty Name="USUARIO1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="DELEGAR" ToRole="USUARIO" />
+  </EntityType>
+  <EntityType Name="DOCUMENTOSAP">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="EJERCICIO" Type="Int32" />
+    <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+  </EntityType>
+  <EntityType Name="PERIODO445">
+    <Key>
+      <PropertyRef Name="EJERCICIO" />
+      <PropertyRef Name="MES_NATURAL" />
+      <PropertyRef Name="DIA_NATURAL" />
+    </Key>
+    <Property Name="EJERCICIO" Type="Int32" Nullable="false" />
+    <Property Name="MES_NATURAL" Type="Int32" Nullable="false" />
+    <Property Name="DIA_NATURAL" Type="Int32" Nullable="false" />
+    <Property Name="PERIODO" Type="Int32" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_DELEGAR_USUARIO">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DELEGAR_USUARIO1">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DELEGAR">
+        <PropertyRef Name="USUARIOD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
+    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOSAP" Role="DOCUMENTOSAP" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOSAP">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

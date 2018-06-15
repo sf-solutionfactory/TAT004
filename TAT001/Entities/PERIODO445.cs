@@ -12,13 +12,12 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class PERIODO445
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
-    
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public int EJERCICIO { get; set; }
+        public int MES_NATURAL { get; set; }
+        public int DIA_NATURAL { get; set; }
+        public int PERIODO { get; set; }
+        public bool ACTIVO { get; set; }
     }
 }

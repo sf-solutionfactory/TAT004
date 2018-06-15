@@ -273,6 +273,12 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.DELEGAR" Width="1.5" PointX="14.25" PointY="86.25" />
+        <EntityTypeShape EntityType="TAT001Model.DOCUMENTOSAP" Width="1.5" PointX="22.5" PointY="94.25" />
+        <EntityTypeShape EntityType="TAT001Model.PERIODO445" Width="1.5" PointX="7.375" PointY="13.75" />
+        <AssociationConnector Association="TAT001Model.FK_DELEGAR_USUARIO" />
+        <AssociationConnector Association="TAT001Model.FK_DELEGAR_USUARIO1" />
+        <AssociationConnector Association="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

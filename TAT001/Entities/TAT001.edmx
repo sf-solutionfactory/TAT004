@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -335,6 +335,19 @@
           <Property Name="CLEARING" Type="numeric" Precision="10" Scale="0" />
           <Property Name="LIMITE" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
+        <EntityType Name="DELEGAR">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="USUARIOD_ID" />
+            <PropertyRef Name="FECHAI" />
+            <PropertyRef Name="FECHAF" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="USUARIOD_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="FECHAI" Type="date" Nullable="false" />
+          <Property Name="FECHAF" Type="date" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="DET_AGENTE">
           <Key>
             <PropertyRef Name="PUESTOC_ID" />
@@ -649,6 +662,7 @@
           <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
           <Property Name="VIGENCIA_DE" Type="date" />
           <Property Name="VIGENCIA_A" Type="date" />
+          <Property Name="VALORH" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTON">
           <Key>
@@ -710,6 +724,16 @@
           <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
           <Property Name="PORC" Type="decimal" Precision="13" Scale="5" />
           <Property Name="DOC_REF" Type="numeric" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOSAP">
+          <Key>
+            <PropertyRef Name="NUM_DOC" />
+          </Key>
+          <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="BUKRS" Type="nchar" MaxLength="4" />
+          <Property Name="EJERCICIO" Type="int" />
+          <Property Name="CUENTA_C" Type="nchar" MaxLength="10" />
+          <Property Name="CUENTA_A" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="DOCUMENTOTS">
           <Key>
@@ -923,6 +947,18 @@
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="DESCRIPCION" Type="nchar" MaxLength="10" />
           <Property Name="ACTIVO" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PERIODO445">
+          <Key>
+            <PropertyRef Name="EJERCICIO" />
+            <PropertyRef Name="MES_NATURAL" />
+            <PropertyRef Name="DIA_NATURAL" />
+          </Key>
+          <Property Name="EJERCICIO" Type="int" Nullable="false" />
+          <Property Name="MES_NATURAL" Type="int" Nullable="false" />
+          <Property Name="DIA_NATURAL" Type="int" Nullable="false" />
+          <Property Name="PERIODO" Type="int" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PERIODOT">
           <Key>
@@ -1400,6 +1436,7 @@
           <Property Name="RANGO_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="ESTATUS" Type="nchar" MaxLength="1" Nullable="false" />
           <Property Name="FACTURA" Type="bit" Nullable="false" />
+          <Property Name="PADRE" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -1601,8 +1638,8 @@
           <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CARPETAV">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1614,8 +1651,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
           <Property Name="ICON" Type="nvarchar" MaxLength="20" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CREADOR">
           <Key>
             <PropertyRef Name="ID" />
@@ -1631,8 +1668,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
           <Property Name="BUKRS" Type="nchar" MaxLength="4" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="CREADOR2">
           <Key>
             <PropertyRef Name="ID" />
@@ -1649,8 +1686,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
           <Property Name="BUKRS" Type="nchar" MaxLength="4" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DET_APROBV">
           <Key>
             <PropertyRef Name="BUKRS" />
@@ -1662,8 +1699,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DOCUMENTOV">
           <Key>
             <PropertyRef Name="POS" />
@@ -1738,8 +1775,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
           <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
           <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PAGINAV">
           <Key>
             <PropertyRef Name="ID" />
@@ -1759,8 +1796,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="WARNINGV">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -2073,6 +2110,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Principal>
             <Dependent Role="CUENTA">
               <PropertyRef Name="TALL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELEGAR_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DELEGAR" Type="Self.DELEGAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DELEGAR">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELEGAR_USUARIO1">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="DELEGAR" Type="Self.DELEGAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DELEGAR">
+              <PropertyRef Name="USUARIOD_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2486,6 +2547,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               <PropertyRef Name="NUM_DOC" />
             </Principal>
             <Dependent Role="DOCUMENTOREC">
+              <PropertyRef Name="NUM_DOC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
+          <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+          <End Role="DOCUMENTOSAP" Type="Self.DOCUMENTOSAP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTO">
+              <PropertyRef Name="NUM_DOC" />
+            </Principal>
+            <Dependent Role="DOCUMENTOSAP">
               <PropertyRef Name="NUM_DOC" />
             </Dependent>
           </ReferentialConstraint>
@@ -3741,6 +3814,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="CONTACTOC" EntityType="Self.CONTACTOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CUENTA" EntityType="Self.CUENTA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DELEGAR" EntityType="Self.DELEGAR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_AGENTEH" EntityType="Self.DET_AGENTEH" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_AGENTEP" EntityType="Self.DET_AGENTEP" Schema="dbo" store:Type="Tables" />
@@ -3758,6 +3832,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOR" EntityType="Self.DOCUMENTOR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOREC" EntityType="Self.DOCUMENTOREC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOSAP" EntityType="Self.DOCUMENTOSAP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
@@ -3777,6 +3852,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERIODO445" EntityType="Self.PERIODO445" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERIODOT" EntityType="Self.PERIODOT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERMISO_PAGINA" EntityType="Self.PERMISO_PAGINA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="POSICION" EntityType="Self.POSICION" Schema="dbo" store:Type="Tables" />
@@ -4067,6 +4143,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="TALL" EntitySet="TALL" />
             <End Role="CUENTA" EntitySet="CUENTA" />
           </AssociationSet>
+          <AssociationSet Name="FK_DELEGAR_USUARIO" Association="Self.FK_DELEGAR_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="DELEGAR" EntitySet="DELEGAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELEGAR_USUARIO1" Association="Self.FK_DELEGAR_USUARIO1">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="DELEGAR" EntitySet="DELEGAR" />
+          </AssociationSet>
           <AssociationSet Name="FK_DET_AGENTE_GAUTORIZACION" Association="Self.FK_DET_AGENTE_GAUTORIZACION">
             <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />
             <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
@@ -4198,6 +4282,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_DOCUMENTOREC_DOCUMENTO" Association="Self.FK_DOCUMENTOREC_DOCUMENTO">
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
             <End Role="DOCUMENTOREC" EntitySet="DOCUMENTOREC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOSAP_DOCUMENTO" Association="Self.FK_DOCUMENTOSAP_DOCUMENTO">
+            <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+            <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAP" />
           </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTOTS_DOCUMENTO" Association="Self.FK_DOCUMENTOTS_DOCUMENTO">
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
@@ -4568,8 +4656,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5246,6 +5333,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DOCUMENTORECs" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOREC" />
           <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+          <NavigationProperty Name="DOCUMENTOSAP" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -5297,6 +5385,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
           <Property Name="VIGENCIA_A" Type="DateTime" Precision="0" />
           <NavigationProperty Name="DOCUMENTOP" Relationship="Self.FK_DOCUMENTOM_DOCUMENTOP" FromRole="DOCUMENTOM" ToRole="DOCUMENTOP" />
+          <Property Name="VALORH" Type="Decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTON">
           <Key>
@@ -6222,6 +6311,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
           <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+          <Property Name="PADRE" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -6351,6 +6441,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
           <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+          <NavigationProperty Name="DELEGARs" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="USUARIO" ToRole="DELEGAR" />
+          <NavigationProperty Name="DELEGARs1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="USUARIO" ToRole="DELEGAR" />
         </EntityType>
         <EntityType Name="USUARIOSAP">
           <Key>
@@ -9173,7 +9265,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImport>
           <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
           <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
-            <Parameter Name="sociedad" Mode="In" Type="String" />
+          <Parameter Name="sociedad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -9206,7 +9298,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="caso" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
-            <Parameter Name="path" Mode="In" Type="String" />
+          <Parameter Name="path" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -9249,6 +9341,21 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="DELEGARs" EntityType="TAT001Model.DELEGAR" />
+          <EntitySet Name="DOCUMENTOSAPs" EntityType="TAT001Model.DOCUMENTOSAP" />
+          <EntitySet Name="PERIODO445" EntityType="TAT001Model.PERIODO445" />
+          <AssociationSet Name="FK_DELEGAR_USUARIO" Association="TAT001Model.FK_DELEGAR_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="DELEGAR" EntitySet="DELEGARs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DELEGAR_USUARIO1" Association="TAT001Model.FK_DELEGAR_USUARIO1">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="DELEGAR" EntitySet="DELEGARs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOSAP_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO">
+            <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+            <End Role="DOCUMENTOSAP" EntitySet="DOCUMENTOSAPs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -9357,6 +9464,80 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="DELEGAR">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="USUARIOD_ID" />
+            <PropertyRef Name="FECHAI" />
+            <PropertyRef Name="FECHAF" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIOD_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAI" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FECHAF" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_DELEGAR_USUARIO" FromRole="DELEGAR" ToRole="USUARIO" />
+          <NavigationProperty Name="USUARIO1" Relationship="TAT001Model.FK_DELEGAR_USUARIO1" FromRole="DELEGAR" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOSAP">
+          <Key>
+            <PropertyRef Name="NUM_DOC" />
+          </Key>
+          <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+          <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="EJERCICIO" Type="Int32" />
+          <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+        </EntityType>
+        <EntityType Name="PERIODO445">
+          <Key>
+            <PropertyRef Name="EJERCICIO" />
+            <PropertyRef Name="MES_NATURAL" />
+            <PropertyRef Name="DIA_NATURAL" />
+          </Key>
+          <Property Name="EJERCICIO" Type="Int32" Nullable="false" />
+          <Property Name="MES_NATURAL" Type="Int32" Nullable="false" />
+          <Property Name="DIA_NATURAL" Type="Int32" Nullable="false" />
+          <Property Name="PERIODO" Type="Int32" Nullable="false" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DELEGAR_USUARIO">
+          <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DELEGAR">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DELEGAR_USUARIO1">
+          <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="TAT001Model.DELEGAR" Role="DELEGAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DELEGAR">
+              <PropertyRef Name="USUARIOD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOSAP_DOCUMENTO">
+          <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
+          <End Type="TAT001Model.DOCUMENTOSAP" Role="DOCUMENTOSAP" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTO">
+              <PropertyRef Name="NUM_DOC" />
+            </Principal>
+            <Dependent Role="DOCUMENTOSAP">
+              <PropertyRef Name="NUM_DOC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9981,6 +10162,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOMs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOM">
               <MappingFragment StoreEntitySet="DOCUMENTOM">
+                <ScalarProperty Name="VALORH" ColumnName="VALORH" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
@@ -10743,6 +10925,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="TAT001Model.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="PADRE" ColumnName="PADRE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
@@ -11267,6 +11450,39 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="DELEGARs">
+            <EntityTypeMapping TypeName="TAT001Model.DELEGAR">
+              <MappingFragment StoreEntitySet="DELEGAR">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+                <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+                <ScalarProperty Name="USUARIOD_ID" ColumnName="USUARIOD_ID" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTOSAPs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOSAP">
+              <MappingFragment StoreEntitySet="DOCUMENTOSAP">
+                <ScalarProperty Name="CUENTA_A" ColumnName="CUENTA_A" />
+                <ScalarProperty Name="CUENTA_C" ColumnName="CUENTA_C" />
+                <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
+                <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
+                <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODO445">
+            <EntityTypeMapping TypeName="TAT001Model.PERIODO445">
+              <MappingFragment StoreEntitySet="PERIODO445">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="PERIODO" ColumnName="PERIODO" />
+                <ScalarProperty Name="DIA_NATURAL" ColumnName="DIA_NATURAL" />
+                <ScalarProperty Name="MES_NATURAL" ColumnName="MES_NATURAL" />
+                <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

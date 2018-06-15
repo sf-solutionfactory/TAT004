@@ -198,7 +198,8 @@
                             @Html.Hidden("TSOL_VALUES", jval)
                             }
                         </div>
-                        <div class="form-group col s12">
+                        @*//MGC B20180611 se elimina clasificación*@
+                        @*<div class="form-group col s12">
                             @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @if (ViewBag.relacionada == "")
@@ -212,21 +213,23 @@
                                 <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
                                 }
                             </div>
-                        </div>
-                        @*@Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })*@
+                        </div>*@
+   
                         <div class="form-group col s12">
                             @Html.LabelFor(model => model.TALL_ID, "Clasificación2", htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
                                 @if (ViewBag.relacionada == "")
                                 {
-                                @Html.DropDownList("TALL_ID", null, "", htmlAttributes: new { @id = "tall_id", @class = "form-control  " + @ViewBag.relacionada })
+                                    @Html.DropDownList("TALL_ID", null, "", htmlAttributes: new { @id = "tall_id", @class = "form-control  " + @ViewBag.relacionada })
                                 }
                                 else
                                 {
-                                <input type="hidden" value="@Model.TALL_ID" id="tall_id" /><!--RSG 23.05.2018-->
-                                @*<input type="text" value="@ViewBag.TALL_IDI" disabled="disabled" />
-                                <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
-                                *@
+                                    @*//MGC B20180611 se elimina clasificación*@
+                                    <input type="hidden" value="@Model.TALL_ID" id="tall_id" /><!--RSG 23.05.2018-->
+                                    <input type="text" value="@ViewBag.TALL_IDI" disabled="disabled" />
+                                    @*<input type="text" value="@ViewBag.TALL_IDI" disabled="disabled" />
+            <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
+                                    *@
                                 }
                             </div>
                         </div>

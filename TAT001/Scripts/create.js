@@ -997,6 +997,18 @@
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
 
+    //MGC B20180611 Obtener los materiales por categoría en la relacionada
+    var jsoncat = $('#catmat').val();
+    try {
+        var jsvalcat = $.parseJSON(jsoncat);
+        var materiales = JSON.stringify(jsvalcat);
+        $('#catmat').val("");
+        $('#catmat').val(materiales);    
+        
+    } catch (error) {
+        $('#catmat').val("");
+    }
+
     var monto = $('#MONTO_DOC_MD').val();
     monto = parseFloat(monto);
     //Encriptar valores del json para el tipo de solicitud
@@ -1065,6 +1077,7 @@ $(window).on('load', function () {
     if (sneg == "P" && sdis == "C") {
         var m = monto + "";
         $('#monto_dis').val(m);
+        updateTableCat();
     }
 
     //Valores en información antes soporte
