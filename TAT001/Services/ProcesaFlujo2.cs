@@ -73,20 +73,28 @@ namespace TAT001.Services
                     nuevo.POS = actual.POS + 1;
                     nuevo.LOOP = 1;
 
-                    if (recurrente != "X")
-                    {
-                        FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
-                        nuevo.USUARIOA_ID = detA.USUARIOA_ID;
-                        nuevo.DETPOS = detA.DETPOS;
-                        nuevo.DETVER = dah.VERSION;
-                    }
-                    else
+                    if (next.ACCION.TIPO == "E")
                     {
                         nuevo.USUARIOA_ID = null;
                         nuevo.DETPOS = 0;
                         nuevo.DETVER = 0;
                     }
-
+                    else
+                    {
+                        if (recurrente != "X")
+                        {
+                            FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
+                            nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                            nuevo.DETPOS = detA.DETPOS;
+                            nuevo.DETVER = dah.VERSION;
+                        }
+                        else
+                        {
+                            nuevo.USUARIOA_ID = null;
+                            nuevo.DETPOS = 0;
+                            nuevo.DETVER = 0;
+                        }
+                    }
                     nuevo.ESTATUS = "P";
                     nuevo.FECHAC = DateTime.Now;
                     nuevo.FECHAM = DateTime.Now;
@@ -129,7 +137,7 @@ namespace TAT001.Services
                             next_step_r = (int)paso_a.NS_REJECT;
 
                         WORKFP next = new WORKFP();
-                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R" | paso_a.ACCION.TIPO == "T")//Si está en proceso de aprobación
+                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R" | paso_a.ACCION.TIPO == "T" | paso_a.ACCION.TIPO == "E")//Si está en proceso de aprobación
                         {
                             if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
                             {
@@ -197,8 +205,8 @@ namespace TAT001.Services
                                         d.ESTATUS_WF = "P";
                                         if (next.ACCION.TIPO.Equals("T"))
                                         {
-                                            TAX_LAND tl = db.TAX_LAND.Where(a=>a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID)& a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault();
-                                            if(tl != null)
+                                            TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault();
+                                            if (tl != null)
                                             {
                                                 //nuevo.USUARIOA_ID = db.DET_TAX.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
                                                 nuevo.USUARIOA_ID = db.DET_TAXEO.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
@@ -211,6 +219,10 @@ namespace TAT001.Services
                                                 d.ESTATUS_WF = "A";
                                                 d.ESTATUS_SAP = "P";
                                             }
+                                        }
+                                        else if (paso_a.ACCION.TIPO == "E")
+                                        {
+                                            nuevo.USUARIOA_ID = null;
                                         }
                                         else
                                         {
@@ -745,7 +757,7 @@ namespace TAT001.Services
             DET_AGENTEP dap = new DET_AGENTEP();
             FLUJO f_actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).FirstOrDefault();
             DET_AGENTEH dah = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID &
-                                a.USUARIOC_ID.Equals(d.USUARIOC_ID)& a.VERSION == f_actual.DETVER).FirstOrDefault();
+                                a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.VERSION == f_actual.DETVER).FirstOrDefault();
 
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);
             //GAUTORIZACION gg = u.GAUTORIZACIONs.Where(a => a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();

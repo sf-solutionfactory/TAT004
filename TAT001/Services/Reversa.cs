@@ -26,7 +26,7 @@ namespace TAT001.Services
             string errorString = "";
             TAT001Entities db = new TAT001Entities();
 
-                     string p = "";
+            string p = "";
             List<TREVERSAT> ldocr = new List<TREVERSAT>();
             decimal rel = 0;
             try
@@ -272,6 +272,28 @@ namespace TAT001.Services
             //----------------------------RSG 18.05.2018
 
 
+            dOCUMENTO.MONTO_DOC_MD = decimal.Parse("0.00");
+            foreach (DOCUMENTOP_MOD dpm in dOCUMENTO.DOCUMENTOP)
+            {
+                DOCUMENTOP ddp = new DOCUMENTOP();
+                ddp.MATKL = dpm.MATKL_ID;
+                ddp.MATNR = completaMaterial(dpm.MATNR);
+                ddp.MONTO = dpm.MONTO;
+                ddp.MONTO_APOYO = dpm.MONTO_APOYO;
+                ddp.PORC_APOYO = dpm.PORC_APOYO;
+                ddp.POS = dpm.POS;
+                ddp.PRECIO_SUG = dpm.PRECIO_SUG;
+                ddp.VIGENCIA_AL = dpm.VIGENCIA_AL;
+                ddp.VIGENCIA_DE = dpm.VIGENCIA_DE;
+                ddp.VOLUMEN_EST = dpm.VOLUMEN_EST;
+                ddp.VOLUMEN_REAL = dpm.VOLUMEN_REAL;
+                ddp.APOYO_EST = dpm.APOYO_EST;
+                ddp.APOYO_REAL = dpm.APOYO_REAL;
+                ddp.CANTIDAD = dpm.CANTIDAD;
+                dOCUMENTO.DOCUMENTOPs.Add(ddp);
+                dOCUMENTO.MONTO_DOC_MD += ddp.APOYO_EST;
+            }
+
 
             ////HTTPPOST
             DOCUMENTO d = new DOCUMENTO();
@@ -294,7 +316,7 @@ namespace TAT001.Services
                 dOCUMENTO.TALL_ID = d.TALL_ID;
                 //Obtener el país
                 dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
-                dOCUMENTO.TSOL_ID = d.TSOL_ID;
+                //dOCUMENTO.TSOL_ID = d.TSOL_ID;
             }
 
             //Tipo técnico
@@ -304,7 +326,6 @@ namespace TAT001.Services
             //Obtener el número de documento
             decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
             dOCUMENTO.NUM_DOC = N_DOC;
-
 
             //Obtener SOCIEDAD_ID                     
             dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
@@ -378,219 +399,21 @@ namespace TAT001.Services
             dOCUMENTO.VTWEG = payer.VTWEG;
             dOCUMENTO.SPART = payer.SPART;
 
-            dOCUMENTO.DOCUMENTO_REF = null;
+            //dOCUMENTO.DOCUMENTO_REF = null;
+            dOCUMENTO.TSOL_ID = tsol;
+            //Guardar el documento
+            db.DOCUMENTOes.Add(dOCUMENTO);
+            db.SaveChanges();
 
-            //////Guardar el documento
-            ////db.DOCUMENTOes.Add(dOCUMENTO);
-            ////db.SaveChanges();
-
-            //////Actualizar el rango
-            ////updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
+            //Actualizar el rango
+            updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
 
+            DOCUMENTO referencia = db.DOCUMENTOes.Find(dOCUMENTO.DOCUMENTO_REF);
+            referencia.ESTATUS = "C";
+            db.Entry(referencia).State = EntityState.Modified;
+            db.SaveChanges();
             //Guardar los documentos p para el documento guardado
-            try
-            {
-                //Agregar materiales existentes para evitar que en la vista se hayan agregado o quitado
-                List<DOCUMENTOP> docpl = new List<DOCUMENTOP>();
-
-                docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCpADRE.NUM_DOC).ToList();
-
-                for (int j = 0; j < docpl.Count; j++)
-                {
-                    try
-                    {
-                        //DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-                        var cat = "";
-
-                        if (docpl[j].MATNR != null && docpl[j].MATNR != "")
-                        {
-                            //docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == docpl[j].MATNR).FirstOrDefault();
-                        }
-                        else
-                        {
-                            //docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATKL_ID == docpl[j].MATKL).FirstOrDefault();
-                            cat = "C";
-                        }
-                        //Si lo encuentra meter valores de la base de datos y vista
-                        if (docpl[j] != null)
-                        {
-                            if (cat != "C")
-                            {
-                                DOCUMENTOP docP = new DOCUMENTOP();
-                                docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                docP.POS = docpl[j].POS;
-                                if (docpl[j].MATNR == null || docpl[j].MATNR == "")
-                                {
-                                    docpl[j].MATNR = "";
-                                }
-                                docP.MATNR = docpl[j].MATNR;
-                                docP.MATKL = docpl[j].MATKL;
-                                docP.CANTIDAD = 1;
-                                docP.MONTO = docpl[j].MONTO;
-                                docP.PORC_APOYO = docpl[j].PORC_APOYO;
-                                //docP.MONTO_APOYO = docmod.MONTO_APOYO;
-                                docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
-                                docP.MONTO_APOYO = Math.Round(docP.MONTO_APOYO, 2);//RSG 16.05.2018
-                                docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
-                                docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
-                                docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
-                                docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
-                                docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                                docP.APOYO_EST = docpl[j].APOYO_EST;
-                                docP.APOYO_REAL = docpl[j].APOYO_REAL;
-                                dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
-                                db.SaveChanges();//RSG
-                            }
-                            else
-                            {
-                                foreach (DOCUMENTOM docmmm in docpl[j].DOCUMENTOMs)
-                                {
-                                    DOCUMENTOP docP = new DOCUMENTOP();
-                                    docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    docP.POS = (docpl[j].POS * 10) + docmmm.POS;
-
-                                    docP.MATNR = docmmm.MATNR;
-                                    docP.MATKL = null;
-                                    //docP.MONTO = (decimal)docmmm.APOYO_EST;
-                                    docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
-                                    docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                                    docP.CANTIDAD = 1;
-                                    docP.APOYO_EST = (decimal)docmmm.APOYO_EST;
-                                    docP.APOYO_REAL = (decimal)docmmm.APOYO_REAL;
-                                    docP.VOLUMEN_EST = 0;
-                                    docP.VOLUMEN_REAL = 0;
-
-                                    dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
-                                    db.SaveChanges();//RSG
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            DOCUMENTOP docP = new DOCUMENTOP();
-                            docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            docP.POS = docpl[j].POS;
-                            docP.MATNR = docpl[j].MATNR;
-                            docP.MATKL = docpl[j].MATKL;
-                            docP.CANTIDAD = 1;
-                            docP.MONTO = docpl[j].MONTO;
-                            //docP.PORC_APOYO = docpl[j].PORC_APOYO;
-                            docP.MONTO_APOYO = docP.MONTO * (docpl[j].PORC_APOYO / 100);
-                            docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
-                            docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
-                            docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
-                            docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
-                            docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
-                            docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                            docP.APOYO_EST = docpl[j].APOYO_EST;
-                            docP.APOYO_REAL = docpl[j].APOYO_REAL;
-                            dOCUMENTO.DOCUMENTOPs.Add(docP);//RSG 28.05.2018
-                            db.SaveChanges();//RSG
-                        }
-
-                        //Agregarlo a la bd
-                        //db.DOCUMENTOPs.Add(docP);
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-
-                }
-
-
-            }
-            catch (Exception e)
-            {
-
-            }
-            decimal total = 0;
-            //RSG 28.05.2018-----------------------------------------------------
-            foreach (DOCUMENTOP dp in dOCUMENTO.DOCUMENTOPs)
-            {
-                dp.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
-                dp.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
-                if (dOCpADRE.TIPO_TECNICO == "P")
-                {
-                    ////if (!dOCpADRE.TSOL.FACTURA)
-                    ////{
-                    ////    try
-                    ////    {
-                    ////        total += (decimal)dp.APOYO_EST;
-                    ////    }
-                    ////    catch { }
-                    ////}
-                    ////else
-                    ////{
-                    ////    try
-                    ////    {
-                    ////        total += (decimal)dp.APOYO_REAL;
-                    ////    }
-                    ////    catch { }
-                    ////}
-                    dp.MONTO = 0;
-                    dp.CANTIDAD = 0;
-                    dp.MONTO_APOYO = 0;
-                    dp.PORC_APOYO = 0;
-                    dp.PRECIO_SUG = 0;
-                    dp.VOLUMEN_EST = 0;
-                    dp.VOLUMEN_REAL = 0;
-                    try
-                    {
-                        decimal val = (decimal)(from P in db.PRESUPSAPPs
-                                                where P.VKORG == dOCpADRE.VKORG
-                                                & P.VTWEG == dOCpADRE.VTWEG
-                                                & P.SPART == dOCpADRE.SPART
-                                                & P.KUNNR == dOCpADRE.PAYER_ID
-                                                & P.MATNR == dp.MATNR
-                                                & P.PERIOD == DateTime.Now.Month
-                                                select new { P.GRSLS }).Sum(a => a.GRSLS);
-                        total += val;
-                        dp.MONTO = val;
-                    }
-                    catch { }
-                }
-                
-                db.Entry(dOCUMENTO).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            if (dOCpADRE.TIPO_TECNICO == "P")
-            {
-                foreach (DOCUMENTOP dp in dOCUMENTO.DOCUMENTOPs)
-                {
-                    //total = 100%   200 = 100%
-                    //dp.MONTo = ?      50 = 25%
-                    decimal porcentaje = dp.MONTO / total * 100;
-                    decimal nuevo_total = (decimal)0;
-                    //decimal nuevo_total = (decimal)drecc.MONTO_BASE;
-
-                    if (!dOCpADRE.TSOL.FACTURA)
-                    {
-                        try
-                        {
-                            dp.APOYO_EST = nuevo_total * porcentaje / 100;
-                        }
-                        catch { }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            dp.APOYO_REAL = nuevo_total * porcentaje / 100; ;
-                        }
-                        catch { }
-                        ////}
-                    }
-                    dp.MONTO = 0;
-
-                    db.Entry(dOCUMENTO).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
-            //RSG 28.05.2018-----------------------------------------------------
 
             ProcesaFlujo2 pf = new ProcesaFlujo2();
             //db.DOCUMENTOes.Add(dOCUMENTO);
@@ -616,18 +439,18 @@ namespace TAT001.Services
                     f.ESTATUS = "I";
                     f.FECHAC = DateTime.Now;
                     f.FECHAM = DateTime.Now;
-                    ////string c = pf.procesa(f, recurrente);
+                    string c = pf.procesa(f, "");
                     //RSG 28.05.2018 -----------------------------------
                     //if (c == "1")
                     //{
                     //    Email em = new Email();
                     //    em.enviaMail(f.NUM_DOC, true);
                     //}
-                    FLUJO conta = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
-                    conta.USUARIOA_ID = user.ID;
-                    conta.ESTATUS = "A";
-                    conta.FECHAM = DateTime.Now;
-                    pf.procesa(conta, "");
+                    ////FLUJO conta = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+                    ////conta.USUARIOA_ID = user.ID;
+                    ////conta.ESTATUS = "A";
+                    ////conta.FECHAM = DateTime.Now;
+                    ////pf.procesa(conta, "");
                     //RSG 28.05.2018 -----------------------------------
                 }
             }
@@ -786,6 +609,24 @@ namespace TAT001.Services
             db.Entry(rango).State = EntityState.Modified;
             db.SaveChanges();
 
+        }
+        private string completaMaterial(string material)//RSG 07.06.2018---------------------------------------------
+        {
+            string m = material;
+            try
+            {
+                long matnr1 = long.Parse(m);
+                int l = 18 - m.Length;
+                for (int i = 0; i < l; i++)
+                {
+                    m = "0" + m;
+                }
+            }
+            catch
+            {
+
+            }
+            return m;
         }
     }
 }
