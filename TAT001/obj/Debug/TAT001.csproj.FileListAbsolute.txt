@@ -281,6 +281,7 @@ C:\Users\SF0006\Documents\GitHub\TAT004-20180503-RSG\TAT001\bin\es\Microsoft.Owi
 C:\Users\SF0006\Documents\GitHub\TAT004-20180503-RSG\TAT001\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
 C:\Users\SF0006\Documents\GitHub\TAT004-20180503-RSG\TAT001\obj\Debug\TAT001.dll
 C:\Users\SF0006\Documents\GitHub\TAT004-20180503-RSG\TAT001\obj\Debug\TAT001.pdb
+C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CoreCompileInputs.cache
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\roslyn\csc.exe
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
@@ -385,6 +386,5 @@ C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.F
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.Google.resources.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.Twitter.resources.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\bin\es\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
-C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CoreCompileInputs.cache
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.dll
 C:\Users\SF-0022\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.pdb

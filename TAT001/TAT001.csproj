@@ -700,6 +700,7 @@
     <Compile Include="Services\Email.cs" />
     <Compile Include="Services\ProcesaFlujo2.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
+    <Compile Include="Services\Reversa.cs" />
     <Compile Include="Services\Recurrente.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

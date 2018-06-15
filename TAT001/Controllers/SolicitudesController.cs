@@ -400,6 +400,13 @@ namespace TAT001.Controllers
             DOCUMENTO d = db.DOCUMENTOes.Find(id);
             return View(d);
         }
+        
+        public ActionResult Reversar(decimal id, decimal resto)
+        {
+            Services.Reversa r = new Services.Reversa();
+            //r.cr
+            return View(id);
+        }
         // GET: Solicitudes/Create
         [HttpGet]
         public ActionResult Create(string id_d, string tsol)
