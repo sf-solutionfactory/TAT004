@@ -42,68 +42,27 @@
             <input type="submit" value="Subir carga" class="btn btn-default btn-large" />
         </div>
     </div>
-
-    @*<table class="table mdl-data-table striped" id="table" style="width:100%;">
-        <thead>
-            <tr class="header" style="background-color:#CCCCCC">
-                <th>
-                    @Html.DisplayNameFor(model => model.NUM_DOC)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MATNR)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MATKL)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MONTO)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PORC_APOYO)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PRECIO_SUG)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.VOLUMEN_EST)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MONTO_APOYO)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NUM_DOC)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MATNR)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MATKL)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MONTO)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PORC_APOYO)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PRECIO_SUG)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.VOLUMEN_EST)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MONTO_APOYO)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
 }
-@*<input type="file" name="file" class="btn btn-default" />
-    <input type="submit" value="Subir carga" class="btn btn-default" />*@
+
+@using (Html.BeginForm("Soportes", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+<div class="row">
+    <div class="row col s10 m10 l10">
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>Seleccionar archivo</span>
+                <input id="file2" type="file" multiple name="file2">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Archivo a subir">
+            </div>
+        </div>
+    </div>
+    <div class="row col s2 m2 l2">
+        <input type="submit" value="Subir carga" class="btn btn-default btn-large" />
+    </div>
+</div>
+}
+
+
+
