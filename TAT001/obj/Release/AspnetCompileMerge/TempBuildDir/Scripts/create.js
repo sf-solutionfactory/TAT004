@@ -693,7 +693,7 @@
             instances.select('Distribucion_cont');
         }
 
-
+        formaClearing();//RSG 18.06.2018
     });
 
     //Financiera   

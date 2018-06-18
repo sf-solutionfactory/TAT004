@@ -161,7 +161,7 @@
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();"><!--RSG 23.05.2018-->Financiera</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
         </ul>
     </div>
 </div>
@@ -1429,7 +1429,8 @@
                         function formaClearing() {
                             getClearing(document.getElementById("tall_id").value);
                             $("#div_clearing").empty();
-                            var monto = document.getElementById("monto_dis").value;
+                                //var monto = document.getElementById("monto_dis").value;
+                                var monto = $('#monto_doc_md').val();
                             var div = "<ul class='collection'><li class='collection-item'>";
                             div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
                             div += "</li><li class='collection-item'>";
