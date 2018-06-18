@@ -630,6 +630,7 @@
     <EntitySetMapping Name="DOCUMENTOMs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOM">
         <MappingFragment StoreEntitySet="DOCUMENTOM">
+          <ScalarProperty Name="VALORH" ColumnName="VALORH" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
           <ScalarProperty Name="POS" ColumnName="POS" />

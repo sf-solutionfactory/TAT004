@@ -1153,7 +1153,8 @@ function formatDate(val) {
     var vdate = "";
     try {
         vdate = val.split('/');
-        vdate = new Date(vdate[2] + "-" + vdate[1] + "-" + vdate[0]);
+        //vdate = new Date(vdate[2] + "-" + vdate[1] + "-" + vdate[0]);
+        vdate = new Date(vdate[2], vdate[1], vdate[0]);
     }
     catch (err) {
         vdate = "";
@@ -2424,7 +2425,7 @@ function format(catid, idate, fdate) {
 
         }
 
-        tablamat = '<table class=\"display\" style=\"width: 100%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
+        tablamat = '<table class=\"display\" style=\"width: 90%; margin-left: 60px;\"><tbody>' + rows + '</tbody></table>';
     }
 
     return tablamat;
@@ -2745,7 +2746,7 @@ function selectTsol(sol) {
     //El valor de sol se obtiene de la vista
     //Obtener el valor de la configuración almacenada en la columna FACTURA
     //de la tabla TSOL en bd
-    var mostrar = isFactura(sol);
+    var mostrar = isFactura2(sol);
     var table = $('#table_sop').DataTable();
     //if (sol == "NC" | sol == "NCI" | sol == "OP") {
     if (mostrar) {
@@ -2777,6 +2778,25 @@ function isFactura(tsol) {
 
     if (tsol != "") {
         var tsol_val = $('#TSOL_VALUES').val();
+        var jsval = $.parseJSON(tsol_val)
+        $.each(jsval, function (i, dataj) {
+
+            if (dataj.ID == tsol) {
+                res = dataj.FACTURA;
+                return false;
+            }
+        });
+    }
+
+    return res;
+}
+
+function isFactura2(tsol) {//RSG 18.06.2018
+
+    var res = false;
+
+    if (tsol != "") {
+        var tsol_val = $('#TSOL_VALUES2').val();
         var jsval = $.parseJSON(tsol_val)
         $.each(jsval, function (i, dataj) {
 
@@ -2893,7 +2913,7 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",//RSG 24.05.2018
+        "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">"//RSG 24.05.2018
     );
 
     return r;
@@ -3570,16 +3590,19 @@ function evaluarFiles() {
 //function evaluarExt(filename) {
 function evaluarExtSoporte(filename) {
 
-    var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];
+    //var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];//RSG 18.06.2018
+    var exts = ['exe', 'bak'];//RSG 18.06.2018
     // split file name at dot
     var get_ext = filename.split('.');
     // reverse name to check extension
     get_ext = get_ext.reverse();
     // check file type is valid as given in 'exts' array
     if ($.inArray(get_ext[0].toLowerCase(), exts) > -1) {
-        return true;
+        //return true;//RSG 18.06.2018
+        return false;//RSG 18.06.2018
     } else {
-        return false;
+        //return false;//RSG 18.06.2018
+        return true;//RSG 18.06.2018
     }
 }
 

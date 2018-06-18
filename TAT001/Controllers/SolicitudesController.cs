@@ -1026,6 +1026,8 @@ namespace TAT001.Controllers
                 ViewBag.USUARIOC_ID = new SelectList(users, "usuario", "nombre", users[0].usuario);
             }
 
+            var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+            ViewBag.TSOL_VALUES = tsols_valbdjs;
             List<FACTURASCONF> ffc = db.FACTURASCONFs.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID)).ToList();
             foreach (var item in tsols_valbd)
             {
@@ -1033,8 +1035,7 @@ namespace TAT001.Controllers
                 if (fc == null)
                     item.FACTURA = false;
             }
-            var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
-            ViewBag.TSOL_VALUES = tsols_valbdjs;
+            ViewBag.TSOL_VALUES2 = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
             //RSG 13.06.2018--------------------------------------------------------
             //}//RSG 13.06.2018--------------------------------------------------------
             return View(d);

@@ -212,6 +212,10 @@
                                 @{string jval = ViewBag.TSOL_VALUES;
                                     @Html.Hidden("TSOL_VALUES", jval)
                                 }
+                                @Html.HiddenFor(model => model.DOCUMENTO_REF)
+                                @{string jval2 = ViewBag.TSOL_VALUES2;
+                                    @Html.Hidden("TSOL_VALUES2", jval2)
+                                }
                             </div>
                             @*<div class="form-group col s12">
                                     @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -230,7 +234,7 @@
                                 </div>*@
                             @*@Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })*@
                             <div class="form-group col s12">
-                                @Html.LabelFor(model => model.TALL_ID, "Clasificación2", htmlAttributes: new { @class = "control-label col-md-2" })
+                                @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
                                     {
@@ -460,7 +464,8 @@
                                                 e.target.value = "";
                                             }
                                         },
-                                        select(event, ui) {
+
+                                        select: function (event, ui) {
 
                                             var label = ui.item.label;
                                             var value = ui.item.value;
@@ -915,8 +920,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                    ;
+                                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                        ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1084,12 +1089,12 @@
                                 <label for="monto_dis">Monto</label>
                             </div>
                             <div class="input-field col s6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
-                                    </div>
-                                </div>
+                                @*<div class="form-group">*@
+                                @*<div class="col-md-10">*@
+                                @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
+                                @*</div>
+        </div>*@
                             </div>
                         </div>
                     </div>
@@ -1251,12 +1256,12 @@
                                     @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                 </div>
                                 <div class="input-field col s6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
-                                        </div>
-                                    </div>
+                                    @*<div class="form-group">*@
+                                    @*<div class="col-md-10">*@
+                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
+                                    @*</div>
+        </div>*@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-10">
@@ -1415,7 +1420,7 @@
 
                                 },
                                 error: function (xhr, httpStatusMessage, customErrorMessage) {
-                                    M.toast({ html: httpStatusMessage });
+                                    //M.toast({ html: httpStatusMessage });
                                 },
                                 async: false
                             });
