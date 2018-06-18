@@ -906,6 +906,10 @@
                 $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
+
+            $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+     
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl();//Distribución
             copiarSopTableControl(); //Soporte ahora en información
@@ -1571,8 +1575,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

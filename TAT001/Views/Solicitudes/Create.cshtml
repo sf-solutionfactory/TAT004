@@ -1046,9 +1046,10 @@
                         <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
+
                             @*<input type="button" id="matcat" value="Get materiales cat" />*@
-                            <input type="text" id="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
-                            <input type="text" id="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
+                            <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
+                            <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
                             <div class="input-field col s6">
                                 <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
                                     <option value="M">Monto</option>
