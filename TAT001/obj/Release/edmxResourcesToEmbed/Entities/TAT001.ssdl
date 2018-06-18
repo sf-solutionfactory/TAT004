@@ -657,6 +657,7 @@
     <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
     <Property Name="VIGENCIA_DE" Type="date" />
     <Property Name="VIGENCIA_A" Type="date" />
+    <Property Name="VALORH" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
@@ -1062,7 +1063,7 @@
     <Property Name="REGION" Type="nvarchar" MaxLength="15" />
     <Property Name="MONEDA" Type="nchar" MaxLength="2" />
     <Property Name="MATERIAL" Type="nvarchar" MaxLength="18" />
-    <Property Name="BANNER" Type="nvarchar" MaxLength="8" />
+    <Property Name="BANNER" Type="nvarchar" MaxLength="10" />
     <Property Name="ADVER" Type="float" />
     <Property Name="CONPR" Type="float" />
     <Property Name="CSHDC" Type="float" />

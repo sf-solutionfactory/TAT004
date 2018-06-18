@@ -659,6 +659,7 @@
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
+    <Compile Include="Models\TALLT_MOD.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
     <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Global.asax.cs">

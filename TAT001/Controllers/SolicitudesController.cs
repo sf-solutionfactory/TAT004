@@ -428,6 +428,7 @@ namespace TAT001.Controllers
             DOCUMENTO d = new DOCUMENTO();
             string errorString = "";
             int pagina = 202; //ID EN BASE DE DATOS
+            String res = "";//B20180611
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -602,6 +603,21 @@ namespace TAT001.Controllers
                                     GALL_ID = gt.GALL_ID,
                                     TEXT = g.ID + " " + gt.TXT50
                                 }).ToList();
+                //clasificación
+                //MGC B20180611
+                List<TALLT_MOD> id_clas = new List<TALLT_MOD>();
+                id_clas = db.TALLs.Where(t => t.ACTIVO == true)
+                                .Join(
+                                db.TALLTs.Where(tallt => tallt.SPRAS_ID == user.SPRAS_ID),
+                                tall => tall.ID,
+                                tallt => tallt.TALL_ID,
+                                (tall, tallt) => new TALLT_MOD
+                                {
+                                    SPRAS_ID = tallt.SPRAS_ID,
+                                    TALL_ID = tallt.TALL_ID,
+                                    TXT50 = tallt.TXT50
+                                })
+                            .ToList();
 
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
                 if (rel > 0)
@@ -637,7 +653,17 @@ namespace TAT001.Controllers
                         archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
 
                         List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();//Documentos que se obtienen de la provisión
+                        //List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();//MGC B20180611
+
+                        List<DOCUMENTOM> docml = new List<DOCUMENTOM>();//MGC B20180611----------------------------
+                        decimal totalcatrel = 0;//MGC B20180611
+                        if (docpl.Count > 0)
+                        {
+                            docml = db.DOCUMENTOMs.Where(docm => docm.NUM_DOC == d.NUM_DOC).ToList();
+                        }
+
                         List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();
+                        List<DOCUMENTOM> docsrelm = new List<DOCUMENTOM>();//MGC B20180611----------------------------
                         //Obtener los documentos de la relacionada
                         if (docsrel.Count > 0)
                         {
@@ -664,6 +690,29 @@ namespace TAT001.Controllers
                                     VIGENCIA_DE = docspl.VIGENCIA_DE,
                                     VIGENCIA_AL = docspl.VIGENCIA_AL
                                 }).ToList();
+
+                            //MGC B20180611 Obtener los documentos en caso de distribución por categoría
+                            if (docsrelp.Count > 0)
+                            {
+                                docsrelm = docsrelp
+                                    .Join(
+                                    db.DOCUMENTOMs,
+                                    docspl => docspl.NUM_DOC,
+                                    docsml => docsml.NUM_DOC,
+                                    (docspl, docsml) => new DOCUMENTOM
+                                    {
+                                        NUM_DOC = docsml.NUM_DOC,
+                                        POS_ID = docsml.POS_ID,
+                                        POS = docsml.POS,
+                                        MATNR = docsml.MATNR,
+                                        PORC_APOYO = docsml.PORC_APOYO,
+                                        APOYO_EST = docsml.APOYO_EST,
+                                        APOYO_REAL = docsml.APOYO_REAL,
+                                        VIGENCIA_DE = docsml.VIGENCIA_DE,
+                                        VIGENCIA_A = docsml.VIGENCIA_A
+                                    }).ToList();
+                            }
+
                         }
                         d.NUM_DOC = 0;
                         List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
@@ -720,6 +769,7 @@ namespace TAT001.Controllers
 
                                         if (dis == "C")
                                         {
+                                            totalcatrel += Convert.ToDecimal(docrel[k].APOYO_REAL); //MGC B20180611
                                             //decimal docr_vr = Convert.ToDecimal(docrel[k].);
                                             //decimal docr_ar = Convert.ToDecimal(docrel[k].APOYO_REAL);
                                         }
@@ -745,6 +795,14 @@ namespace TAT001.Controllers
 
                             }
                         }
+                        //MGC B20180611 Obtener las categorias con el detalle de cada material
+                        if (docml.Count > 0)
+                        {
+                            res = grupoMaterialesRel(docpl, docml);
+                        }
+
+                        //Restar el valor del documento menos los relacionados
+                        d.MONTO_DOC_MD = d.MONTO_DOC_MD - totalcatrel;//MGC B20180611
 
                         d.DOCUMENTOP = docsp;
                     }
@@ -772,7 +830,7 @@ namespace TAT001.Controllers
                 //                (tall, tallt) => tallt)
                 //            .ToList();
 
-                List<TAT001.Entities.GALL> id_clas = new List<TAT001.Entities.GALL>();
+                //List<TAT001.Entities.GALL> id_clas = new List<TAT001.Entities.GALL>();//MGC B20180611
                 ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50");
 
                 //Datos del país
@@ -2935,6 +2993,65 @@ namespace TAT001.Controllers
             JsonResult jl = Json(fc, JsonRequestBehavior.AllowGet);
             return jl;
         }
+        public string grupoMaterialesRel(List<DOCUMENTOP> cats, List<DOCUMENTOM> docsrelm)
+        {
+            TAT001Entities db = new TAT001Entities();
+
+            List<MATERIAL> lmat = new List<MATERIAL>();
+            //Obtener la descripción del material
+            lmat = (from m in docsrelm
+                    join mt in db.MATERIALs
+                    on m.MATNR equals mt.ID into jjcont
+                    from co in jjcont.DefaultIfEmpty()
+                    select new MATERIAL
+                    {
+                        ID = m.MATNR,
+                        //MTART = co.MTART,
+                        //MATKL_ID = co.MATKL_ID,
+                        MAKTX = co == null ? String.Empty : co.MAKTX,
+                        MAKTG = co == null ? String.Empty : co.MAKTG,
+                        //MEINS = co.MEINS,
+                        //PUNIT = co.PUNIT,
+                        //ACTIVO = co.ACTIVO,
+                        //CTGR = co.CTGR,
+                        //BRAND = co.BRAND,
+                        //MATERIALGP_ID = co.MATERIALGP_ID
+                    }).ToList();
+
+            //Obtener las categorías
+            var categorias = cats.GroupBy(c => c.MATKL, c => new { ID = c.MATKL.ToString() }).ToList();
+
+            List<CategoriaMaterial> lcatmat = new List<CategoriaMaterial>();
+
+            foreach (DOCUMENTOP item in cats)
+            {
+                CategoriaMaterial cm = new CategoriaMaterial();
+                cm.ID = item.MATKL;
+
+                //Obtener los materiales de la categoría
+                List<DOCUMENTOM_MOD> dl = new List<DOCUMENTOM_MOD>();
+                dl = docsrelm.Where(c => c.POS_ID == item.POS).Select(c => new DOCUMENTOM_MOD { ID_CAT = item.MATKL, MATNR = c.MATNR, VAL = Convert.ToDecimal(c.VALORH), POR = Convert.ToDecimal(c.PORC_APOYO) }).ToList();
+
+                foreach (DOCUMENTOM_MOD doc in dl)
+                {
+                    //Buscar la desc
+                    string desc = "";
+                    desc = lmat.Where(m => m.ID == doc.MATNR).FirstOrDefault().MAKTX;
+                    if (desc == "")
+                    {
+                        desc = lmat.Where(m => m.ID == doc.MATNR).FirstOrDefault().MAKTG;
+                    }
+                    doc.DESC = desc;
+                }
+                cm.MATERIALES = dl;
+                lcatmat.Add(cm);
+            }
+
+            //JsonResult jl = Json(lcatmat,"application/json",Encoding.UTF8, JsonRequestBehavior.AllowGet);
+            string d = "";
+            d = JsonConvert.SerializeObject(lcatmat, Formatting.Indented);
+            return d;
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -4185,7 +4302,8 @@ namespace TAT001.Controllers
                     dm.VIGENCIA_A = vig_a;
                     if (dis == "C")
                     {
-                        dm.APOYO_EST = docm.VAL;
+                        //dm.APOYO_EST = docm.VAL;
+                        dm.VALORH = docm.VAL; //MGC B20180611 Se agregó el valor del material del historico de la provisión
                     }
                     jdlret.Add(dm);
                 }

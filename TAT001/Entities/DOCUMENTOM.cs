@@ -23,6 +23,7 @@ namespace TAT001.Entities
         public Nullable<decimal> APOYO_REAL { get; set; }
         public Nullable<System.DateTime> VIGENCIA_DE { get; set; }
         public Nullable<System.DateTime> VIGENCIA_A { get; set; }
+        public Nullable<decimal> VALORH { get; set; }
     
         public virtual DOCUMENTOP DOCUMENTOP { get; set; }
     }
