@@ -24,7 +24,7 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {

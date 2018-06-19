@@ -169,11 +169,11 @@ namespace TAT001.Controllers
             ////        try//RSG 15.05.2018
             ////        {
             ////            p = Session["pais"].ToString();
-            ////            ViewBag.pais = p + ".svg";
+            ////            ViewBag.pais = p + ".png";
             ////        }
             ////        catch
             ////        {
-            ////            //ViewBag.pais = "mx.svg";
+            ////            //ViewBag.pais = "mx.png";
             ////            return RedirectToAction("Pais", "Home");//
             ////        }
             ////    }
@@ -589,11 +589,11 @@ namespace TAT001.Controllers
                     try
                     {
                         p = Session["pais"].ToString();
-                        ViewBag.pais = p + ".svg";
+                        ViewBag.pais = p + ".png";
                     }
                     catch
                     {
-                        ViewBag.pais = "mx.svg";
+                        ViewBag.pais = "mx.png";
                         //return RedirectToAction("Pais", "Home");
                     }
                     //try
@@ -1280,11 +1280,11 @@ namespace TAT001.Controllers
                 try
                 {
                     p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
-                    ViewBag.pais = "mx.svg";
+                    ViewBag.pais = "mx.png";
                     //return RedirectToAction("Pais", "Home");
                 }
                 string u = User.Identity.Name;
@@ -1775,7 +1775,7 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -1795,7 +1795,7 @@ namespace TAT001.Controllers
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".svg";
+                ViewBag.pais = p + ".png";
             }
             catch
             {

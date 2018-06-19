@@ -1158,7 +1158,7 @@ function formatDate(val) {
     try {
         vdate = val.split('/');
         //vdate = new Date(vdate[2] + "-" + vdate[1] + "-" + vdate[0]);
-        vdate = new Date(vdate[2], vdate[1], vdate[0]);
+        vdate = new Date(vdate[2], vdate[1]-1, vdate[0]);
     }
     catch (err) {
         vdate = "";
@@ -1575,8 +1575,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

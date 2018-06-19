@@ -108,21 +108,21 @@
         }
 
         td.select_row {
-            background: url('../images/playb.svg') no-repeat center center;
+            background: url('../images/playb.png') no-repeat center center;
             cursor: pointer;
         }
 
         tr.selected td.select_row {
-            background: url('../images/play.svg') no-repeat center center;
+            background: url('../images/play.png') no-repeat center center;
         }
 
         td.detail_row {
-            background: url('../images/expandm.svg') no-repeat center center;
+            background: url('../images/expandm.png') no-repeat center center;
             cursor: pointer;
         }
 
         tr.details td.detail_row {
-            background: url('../images/expandl.svg') no-repeat center center;
+            background: url('../images/expandl.png') no-repeat center center;
         }
 
         .errorMaterial {
@@ -660,22 +660,6 @@
                                         setDates(tipo);
                                         var elem = document.querySelectorAll('select');
                                         var instance = M.Select.init(elem, []);
-                                        pickerFecha2(".format_date");
-                                    }
-                                    function setDates(tipo) {
-                                        if (tipo == "date") {
-                                            document.getElementById('fechai_vig').value = document.getElementById('fechai_vig2').value;
-                                            document.getElementById('fechaf_vig').value = document.getElementById('fechaf_vig2').value;
-                                        } else {
-                                            var firstDay = new Date(document.getElementById('anioi_id').value, document.getElementById('periodoi_id').value - 1, 1);
-                                            var lastDay = new Date(document.getElementById('aniof_id').value, document.getElementById('periodof_id').value, 0);
-
-                                            var fechai = firstDay.getDate() + "/" + (firstDay.getMonth() + 1) + "/" + firstDay.getFullYear();
-                                            var fechaf = lastDay.getDate() + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
-
-                                            document.getElementById('fechai_vig').value = fechai;
-                                            document.getElementById('fechaf_vig').value = fechaf;
-                                        }
                                         pickerFecha2(".format_date");
                                     }
                                 </script>

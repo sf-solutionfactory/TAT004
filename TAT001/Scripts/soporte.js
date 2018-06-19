@@ -27,7 +27,7 @@ function soportes(tsol, spras) {
                 if (pp[i].oblig) {
                     input += ' nec';
                 }
-                input += '" name="files_soporte" id="file_' + pp[i].tsoporte + '" type= "file"> ' +
+                input += '" name="files_soporte" id="file_' + pp[i].tsoporte + '" type= "file" onchange="changeFile(this)"> ' +
                     '</div>' +
                     '<div class="file-path-wrapper"> ' +
                     '<input class="file-path validate" type="text"> ' +

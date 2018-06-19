@@ -108,21 +108,21 @@
         }
 
         td.select_row {
-            background: url('../images/playb.svg') no-repeat center center;
+            background: url('../images/playb.png') no-repeat center center;
             cursor: pointer;
         }
 
         tr.selected td.select_row {
-            background: url('../images/play.svg') no-repeat center center;
+            background: url('../images/play.png') no-repeat center center;
         }
 
         td.detail_row {
-            background: url('../images/expandm.svg') no-repeat center center;
+            background: url('../images/expandm.png') no-repeat center center;
             cursor: pointer;
         }
 
         tr.details td.detail_row {
-            background: url('../images/expandl.svg') no-repeat center center;
+            background: url('../images/expandl.png') no-repeat center center;
         }
 
         .errorMaterial {
@@ -161,7 +161,7 @@
             <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont" onclick="formaClearing();"><!--RSG 23.05.2018-->Financiera</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
         </ul>
     </div>
 </div>
@@ -662,22 +662,6 @@
                                         var instance = M.Select.init(elem, []);
                                         pickerFecha2(".format_date");
                                     }
-                                    function setDates(tipo) {
-                                        if (tipo == "date") {
-                                            document.getElementById('fechai_vig').value = document.getElementById('fechai_vig2').value;
-                                            document.getElementById('fechaf_vig').value = document.getElementById('fechaf_vig2').value;
-                                        } else {
-                                            var firstDay = new Date(document.getElementById('anioi_id').value, document.getElementById('periodoi_id').value - 1, 1);
-                                            var lastDay = new Date(document.getElementById('aniof_id').value, document.getElementById('periodof_id').value, 0);
-
-                                            var fechai = firstDay.getDate() + "/" + (firstDay.getMonth() + 1) + "/" + firstDay.getFullYear();
-                                            var fechaf = lastDay.getDate() + "/" + (lastDay.getMonth() + 1) + "/" + lastDay.getFullYear();
-
-                                            document.getElementById('fechai_vig').value = fechai;
-                                            document.getElementById('fechaf_vig').value = fechaf;
-                                        }
-                                        pickerFecha2(".format_date");
-                                    }
                                 </script>
                                 <div class="col s6">
                                     <div class="input-field col s12">
@@ -1046,9 +1030,10 @@
                         <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
+
                             @*<input type="button" id="matcat" value="Get materiales cat" />*@
-                            <input type="text" id="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
-                            <input type="text" id="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
+                            <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
+                            <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
                             <div class="input-field col s6">
                                 <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
                                     <option value="M">Monto</option>
@@ -1429,7 +1414,8 @@
                         function formaClearing() {
                             getClearing(document.getElementById("tall_id").value);
                             $("#div_clearing").empty();
-                            var monto = document.getElementById("monto_dis").value;
+                                //var monto = document.getElementById("monto_dis").value;
+                                var monto = $('#monto_doc_md').val();
                             var div = "<ul class='collection'><li class='collection-item'>";
                             div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
                             div += "</li><li class='collection-item'>";

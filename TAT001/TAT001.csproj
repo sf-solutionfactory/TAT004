@@ -771,9 +771,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
-    <Content Include="Scripts\create1.js" />
     <Content Include="Scripts\create.js" />
-    <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />

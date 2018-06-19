@@ -693,7 +693,7 @@
             instances.select('Distribucion_cont');
         }
 
-
+        formaClearing();//RSG 18.06.2018
     });
 
     //Financiera   
@@ -906,6 +906,10 @@
                 $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
+
+            $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+     
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl();//Distribución
             copiarSopTableControl(); //Soporte ahora en información
@@ -1154,7 +1158,7 @@ function formatDate(val) {
     try {
         vdate = val.split('/');
         //vdate = new Date(vdate[2] + "-" + vdate[1] + "-" + vdate[0]);
-        vdate = new Date(vdate[2], vdate[1], vdate[0]);
+        vdate = new Date(vdate[2], vdate[1]-1, vdate[0]);
     }
     catch (err) {
         vdate = "";

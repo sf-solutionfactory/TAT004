@@ -34,7 +34,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -74,7 +74,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -113,7 +113,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -168,7 +168,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -201,7 +201,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -255,7 +255,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -286,7 +286,7 @@ ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGI
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {

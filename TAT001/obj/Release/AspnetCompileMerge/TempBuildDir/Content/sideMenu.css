@@ -23,11 +23,11 @@
 }
 
 
-/*.ie9 input[src$=".svg"] {
+/*.ie9 input[src$=".png"] {
     width: 100%;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    input[src$=".svg"] {
+    input[src$=".png"] {
         width: 100%;
     }
 }*/

@@ -30,7 +30,7 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -61,7 +61,7 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
@@ -139,7 +139,7 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {

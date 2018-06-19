@@ -35,11 +35,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.svg";
+                    //ViewBag.pais = "mx.png";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -69,11 +69,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.svg";
+                    //ViewBag.pais = "mx.png";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -133,11 +133,11 @@ namespace TAT001.Controllers.Catalogos
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".svg";
+                ViewBag.pais = p + ".png";
             }
             catch
             {
-                //ViewBag.pais = "mx.svg";
+                //ViewBag.pais = "mx.png";
                 //return RedirectToAction("Pais", "Home");
             }
             Session["spras"] = user.SPRAS_ID;
@@ -201,11 +201,11 @@ namespace TAT001.Controllers.Catalogos
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".svg";
+                ViewBag.pais = p + ".png";
             }
             catch
             {
-                //ViewBag.pais = "mx.svg";
+                //ViewBag.pais = "mx.png";
                 //return RedirectToAction("Pais", "Home");
             }
             Session["spras"] = user.SPRAS_ID;
