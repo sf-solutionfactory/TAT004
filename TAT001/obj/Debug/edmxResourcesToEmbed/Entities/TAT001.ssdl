@@ -759,6 +759,17 @@
     <Property Name="BILL_DOC" Type="bit" Nullable="false" />
     <Property Name="BELNR" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="FLUJNEGO">
+    <Key>
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+    <Property Name="FECHAC" Type="datetime" />
+    <Property Name="FECHAM" Type="datetime" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="FLUJO">
     <Key>
       <PropertyRef Name="WORKF_ID" />
@@ -3830,6 +3841,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOSAP" EntityType="Self.DOCUMENTOSAP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FLUJNEGO" EntityType="Self.FLUJNEGO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />

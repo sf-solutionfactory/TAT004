@@ -4770,6 +4770,7 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="FLUJNEGOes" EntityType="TAT001Model.FLUJNEGO" />
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -4878,4 +4879,15 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
+  <EntityType Name="FLUJNEGO">
+    <Key>
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="FECHAC" Type="DateTime" Precision="3" />
+    <Property Name="FECHAM" Type="DateTime" Precision="3" />
+    <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

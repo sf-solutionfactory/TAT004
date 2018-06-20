@@ -1,15 +1,13 @@
 ﻿@model IEnumerable<TAT001.Entities.DOCUMENTO>
-
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <style>
+
         .texto {
             text-align: left;
         }
@@ -42,56 +40,142 @@
     </style>
 </head>
 <body>
-    <div style="height:50px; background-color:#d11d53; width:100%; z-index:1000;top:0px;left:0px; position:fixed;">
+    <div style="height:48px; background-color:#d11d53; width:76%; z-index:1000;top:0px;left:0px; position:fixed; margin-bottom:30px;">
     </div>
-    <div>
-        <br />
-        <p>
-            Estimado/a @Model.FirstOrDefault().PAYER_NOMBRE,<br />
-            A continuación compartimos con usted listado de todas las negociaciones de descuentos vigentes y comprometidas con usted por parte de Kellogg’s en el periodo comprendido del @ViewBag.first al @ViewBag.last
-            La presente conciliación se comparte con fines de validación y aprobación de su parte. En caso de detectar alguna omisión o desviación, le solicitamos que nos envíe sus comentarios en un plazo no mayor de 3 días hábiles contados a partir de la fecha de recepción del presente correo. En el supuesto de no recibir ningún comentario, se entenderá que usted está de acuerdo con la información señalada.
-        </p>
+    <div style="text-align:right; margin-top:65px; width:75%">
+        <p>@ViewBag.cd,@ViewBag.edo,@ViewBag.FechaH</p>
     </div>
-    <div style="margin-top:90px; width:75%; margin-left:20px;">
-        <table style="width:100%;" id="table1" class="table borde">
-            <thead>
-                <tr>
-                    <th class="texto th borde">
-                        @Html.DisplayNameFor(model => model.NUM_DOC)
-                    </th>
-                    <th class="texto th borde">
-                        @Html.DisplayNameFor(model => model.CONCEPTO)
-                    </th>
-                    <th class="texto th borde">
-                        @Html.DisplayNameFor(model => model.TSOL.DESCRIPCION)
-                    </th>
-                    <th class="texto th borde">
-                        @Html.DisplayNameFor(model => model.FECHAC)
-                    </th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    <div style="width:75%;">
+        <div style="width:60%; float:left;">
+            <p>
+                @ViewBag.clName<br>
+                POSICION<br>
+                @ViewBag.clDir<br>
+            </p>
+        </div>
+
+        <div style="width:40%; float:left;">
+            <table style="width:100%;" id="table2;" class="table borde;">
+                <thead>
                     <tr>
-                        <td class="borde">
-                            @item.NUM_DOC
-                        </td>
-                        <td class="borde">
-                            @Html.DisplayFor(modelItem => item.CONCEPTO)
-                        </td>
-                        <td class="borde">
-                            @Html.DisplayFor(modelItem => item.TSOL.DESCRIPCION)
-                        </td>
-                        <td class="borde">
-                            @Html.DisplayFor(modelItem => item.FECHAC)
-                        </td>
+                        <th class="th borde" style="text-align:center;">Para Control Interno Kellogg’s</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="borde">@ViewBag.clPayId</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="width:75%; float:left;">
+        <div style="margin-top:20px; width:100%">
+            <br />
+            <p>
+                Estimado/a @ViewBag.clCon,<br /><br />
+                A continuación compartimos con usted listado de todas las negociaciones de descuentos vigentes y comprometidas con usted por parte de Kellogg’s en el periodo comprendido del @ViewBag.first al @ViewBag.last .
+                La presente conciliación se comparte con fines de validación y aprobación de su parte. En caso de detectar alguna omisión o desviación, le solicitamos que nos envíe sus comentarios en un plazo no mayor de 3 días hábiles contados a partir de la fecha de recepción del presente correo. En el supuesto de no recibir ningún comentario, se entenderá que usted está de acuerdo con la información señalada.
+            </p>
+        </div>
+        <div style="margin-top:90px; width:100%; margin-left:20px;">
+            <table style="width:100%;" id="table1" class="table borde">
+                <thead>
+                    <tr>
+                        <th class="texto th borde">
+                            @Html.DisplayNameFor(model => model.NUM_DOC)
+                        </th>
+                        <th class="texto th borde">
+                            @Html.DisplayNameFor(model => model.FECHAC)
+                        </th>
+                        <th class="texto th borde">
+                            @Html.DisplayNameFor(model => model.CONCEPTO)
+                        </th>
+                        <th class="texto th borde">
+                            @Html.DisplayNameFor(model => model.TSOL.DESCRIPCION)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="borde">
+                                @item.NUM_DOC
+                            </td>
+                            <td class="borde">
+                                @item.FECHAC.Value.Day/@item.FECHAC.Value.Month/@item.FECHAC.Value.Year
+                            </td>
+                            <td class="borde">
+                                @Html.DisplayFor(modelItem => item.CONCEPTO)
+                            </td>
+                            <td class="borde">
+                                @Html.DisplayFor(modelItem => item.TSOL.DESCRIPCION)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="width:100%; margin-top:60px;">
+            <hr style="width:400px" />
+            <p style="text-align:center;">
+                @ViewBag.clFunci<br /><br />
+                @ViewBag.clPos <br /><br />
+                @ViewBag.KellCom
+            </p>
+        </div>
+        <div style="width:100%; margin-top:20px;">
+            <a type="button" class="btn-small" id="btn_Ok"
+               style="height: 32.4px;line-height: 32.4px;
+                        font-size: 13px;
+                        text-decoration: none;
+                        color: #fff;
+                        background-color: #26a69a;
+                        text-align: center;
+                        letter-spacing: .5px;
+                        -webkit-transition: background-color .2s ease-out;
+                        transition: background-color .2s ease-out;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 2px;
+                        display: inline-block;
+                        height: 36px;
+                        line-height: 36px;
+                        padding: 0 2rem;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        margin-right:5px;
+                        -webkit-tap-highlight-color: transparent;"
+               href="mailto:@ViewBag.clCorreo?Subject=De%20Acuerdo-@ViewBag.clPayId&cc=LA_TAT@kellogg.com" target="_top">
+                De Acuerdo
+            </a>
+            <a type="button" class="btn-small" id="btn_Ok"
+                   style="height: 32.4px;line-height: 32.4px;
+                        font-size: 13px;
+                        text-decoration: none;
+                        color: #fff;
+                        background-color: #f89406;
+                        text-align: center;
+                        letter-spacing: .5px;
+                        -webkit-transition: background-color .2s ease-out;
+                        transition: background-color .2s ease-out;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 2px;
+                        display: inline-block;
+                        height: 36px;
+                        line-height: 36px;
+                        padding: 0 2rem;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        margin-right:5px;
+                        -webkit-tap-highlight-color: transparent;"
+                   href="mailto:@ViewBag.clCorreo?Subject=Tengo%20Observaciones-@ViewBag.clPayId&body=Tengo%20Observaciones&cc=LA_TAT@kellogg.com" target="_top">
+                Tengo Observaciones
+            </a>
+        </div>
     </div>
 </body>
-
 </html>

@@ -65,15 +65,15 @@ namespace TAT001.Models
 
                 if (tab.TIPO_DOC == "RN" || tab.TIPO_DOC == "KR")
                 {
-                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString() + "-2.txt";
+                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString().PadLeft(10, '0') + "-2.txt";
                 }
                 else if (tab.TIPO_DOC == "KG")
                 {
-                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString() + "-3.txt";
+                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString().PadLeft(10, '0') + "-3.txt";
                 }
                 else
                 {
-                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString() + "-1.txt";
+                    dirFile = ConfigurationManager.AppSettings["URL_SAVE"] + @"POSTING\INBOUND_" + tab.TIPO_SOL.Substring(0, 2) + docum.ToString().PadLeft(10, '0') + "-1.txt";
                 }
                 cta = doc.GALL_ID;
                 doc.GALL_ID = db.GALLs.Where(x => x.ID == doc.GALL_ID).Select(x => x.GRUPO_ALL).Single();
@@ -516,6 +516,10 @@ namespace TAT001.Models
                                             conta.BALANCE = Conversion(Convert.ToDecimal(docm[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                             conta.ASSIGNMENT = doc.PAYER_ID;
                                         }
+                                        if (enca.TIPO_DOC == "BB")
+                                        {
+                                            conta.BALANCE = Conversion(Convert.ToDecimal(docm[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
+                                        }
                                     }
 
                                 }
@@ -646,6 +650,10 @@ namespace TAT001.Models
                                         {
                                             conta.ASSIGNMENT = doc.PAYER_ID;
                                             conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
+                                        }
+                                        if (enca.TIPO_DOC == "BB")
+                                        {
+                                            conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_REAL), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                         }
                                     }
 

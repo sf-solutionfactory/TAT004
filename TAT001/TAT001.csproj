@@ -402,6 +402,9 @@
     <Compile Include="Entities\FACTURASCONF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FLUJNEGO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FLUJO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

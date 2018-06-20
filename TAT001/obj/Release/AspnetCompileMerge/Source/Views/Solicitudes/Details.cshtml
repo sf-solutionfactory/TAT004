@@ -46,128 +46,183 @@
     </div>
     <div class="col s12 m5 l5">
         <div class="row right">
-            @if (ViewBag.acciones != null)
+            @if (Model.D.ESTATUS_C != "C")
             {
-                if (ViewBag.accion == "A" | ViewBag.accion == "R")
+                if (ViewBag.acciones != null)
                 {
-                    @*<button type="button" class="btn-small  " id="btn_workf">Acciones</button>*@
-                    <div class="fixed-action-btn" id="lbl_wf">
-                        <a class="btn-floating btn-large blue">
-                            <i class="large material-icons">work</i>
-                        </a>
-                        <ul>
-                            <li><a id="lbl_wfa" class="btn-floating green modal-trigger" href="#modal1" onclick="aprobar()"><i class="material-icons">check</i></a></li>
-                            <li><a id="lbl_wfr" class="btn-floating red modal-trigger" href="#modal1" onclick="rechazar()"><i class="material-icons">close</i></a></li>
-                        </ul>
-                    </div>
-                    <script>
+                    if (ViewBag.accion == "A" | ViewBag.accion == "R")
+                    {
+                        @*<button type="button" class="btn-small  " id="btn_workf">Acciones</button>*@
+                        <div class="fixed-action-btn" id="lbl_wf">
+                            <a class="btn-floating btn-large blue">
+                                <i class="large material-icons">work</i>
+                            </a>
+                            <ul>
+                                <li><a id="lbl_wfa" class="btn-floating green modal-trigger" href="#modal1" onclick="aprobar()"><i class="material-icons">check</i></a></li>
+                                <li><a id="lbl_wfr" class="btn-floating red modal-trigger" href="#modal1" onclick="rechazar()"><i class="material-icons">close</i></a></li>
+                            </ul>
+                        </div>
+                        <script>
 
-                        var elem = document.querySelector('.fixed-action-btn');
-                        var options = {
-                            direction: 'left',
-                            hoverEnabled: false,
-                            toolbarEnabled: false
-                        };
-                        var instance = M.FloatingActionButton.init(elem, options);
-                    </script>
-                    @*<a id="lbl_wfa" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="A" })">Aprobar</a>
-                        <a id="lbl_wfr" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="R" })">Rechazar</a>*@
-                    <a class="btn-small modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
-                    <a class="btn-small modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
+                            var elem = document.querySelector('.fixed-action-btn');
+                            var options = {
+                                direction: 'left',
+                                hoverEnabled: false,
+                                toolbarEnabled: false
+                            };
+                            var instance = M.FloatingActionButton.init(elem, options);
+                        </script>
+                        @*<a id="lbl_wfa" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="A" })">Aprobar</a>
+                            <a id="lbl_wfr" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="R" })">Rechazar</a>*@
+                        <a class="btn-small modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
+                        <a class="btn-small modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
+                    }
+                    else if (ViewBag.accion == "N")
+                    {
+                        <div class="fixed-action-btn" id="lbl_wf">
+                            <a class="btn-floating btn-large blue">
+                                <i class="large material-icons">work</i>
+                            </a>
+                            <ul>
+                                <li><a id="lbl_wfn" class="btn-floating yellow darken-1 modal-trigger" href="#modal1" onclick="siguiente()"><i class="material-icons">play_arrow</i></a></li>
+                            </ul>
+                        </div>
+                        <script>
+
+                            var elem = document.querySelector('.fixed-action-btn');
+                            var options = {
+                                direction: 'left',
+                                hoverEnabled: false,
+                                toolbarEnabled: false
+                            };
+                            var instance = M.FloatingActionButton.init(elem, options);
+                        </script>
+                        @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                        <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="siguiente()">Siguiente</a>
+                    }
+                    else if (ViewBag.accion == "P")
+                    {
+
+                        <div class="fixed-action-btn" id="lbl_wf">
+                            <a class="btn-floating btn-large blue">
+                                <i class="large material-icons">work</i>
+                            </a>
+                            <ul>
+                                <li><a id="lbl_wfn" class="btn-floating yellow darken-1 modal-trigger" href="#modal1" onclick="contabilizar()"><i class="material-icons">send</i></a></li>
+                            </ul>
+                        </div>
+                        <script>
+
+                            var elem = document.querySelector('.fixed-action-btn');
+                            var options = {
+                                direction: 'left',
+                                hoverEnabled: false,
+                                toolbarEnabled: false
+                            };
+                            var instance = M.FloatingActionButton.init(elem, options);
+                        </script>
+                        @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                        <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
+                    }
+                    else if (!Model.D.ESTATUS.Equals("A"))
+                    {
+                        if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
+                        {
+                            <a class="btn-small modal-trigger" id="btn_cancel" href="#modal2">Cancelar</a>
+                            <div id="modal2" class="modal">
+                                <div class="modal-content">
+                                    <div class="row">
+                                        <h4 id="txt_can">Cancelar solicitud</h4>
+                                        <br />
+                                    </div>
+                                    <div class="row" style="">
+                                        <div class="col s12 m12 l12">
+                                            <div class="row" style="margin-bottom:0">
+                                                ¿Está seguro de cancelar esta solicitud?
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer right">
+                                    <a href="#!" class="modal-action modal-close btn-flat">No</a>
+                                    <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes", new { id = Model.D.NUM_DOC })">Si</a>
+                                </div>
+                            </div>
+                        }
+                    }
                 }
-                else if (ViewBag.accion == "N")
+                else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL.PADRE))
                 {
-                    <div class="fixed-action-btn" id="lbl_wf">
-                        <a class="btn-floating btn-large blue">
-                            <i class="large material-icons">work</i>
-                        </a>
-                        <ul>
-                            <li><a id="lbl_wfn" class="btn-floating yellow darken-1 modal-trigger" href="#modal1" onclick="siguiente()"><i class="material-icons">play_arrow</i></a></li>
+                    if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
+                    {
+                        <a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "CPR" })" class="btn-small">Reversar</a>
+                        <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
+                        @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
+                        <ul id='list_rela' class='dropdown-content'>
+                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
+                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
+                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP" })" id="lbl_op">Orden de pago</a></li>
                         </ul>
-                    </div>
-                    <script>
-
-                        var elem = document.querySelector('.fixed-action-btn');
-                        var options = {
-                            direction: 'left',
-                            hoverEnabled: false,
-                            toolbarEnabled: false
-                        };
-                        var instance = M.FloatingActionButton.init(elem, options);
-                    </script>
-                    @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
-                    <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="siguiente()">Siguiente</a>
+                        <script>
+                            var elem = document.getElementById('btn_rela');
+                            var options = {
+                                hover: true
+                            };
+                            var instance = M.Dropdown.init(elem, options);
+                        </script>
+                    }
                 }
-                else if (ViewBag.accion == "P")
+                else if (!Model.D.ESTATUS.Equals("A"))
                 {
-
-                    <div class="fixed-action-btn" id="lbl_wf">
-                        <a class="btn-floating btn-large blue">
-                            <i class="large material-icons">work</i>
-                        </a>
-                        <ul>
-                            <li><a id="lbl_wfn" class="btn-floating yellow darken-1 modal-trigger" href="#modal1" onclick="contabilizar()"><i class="material-icons">send</i></a></li>
-                        </ul>
-                    </div>
-                    <script>
-
-                        var elem = document.querySelector('.fixed-action-btn');
-                        var options = {
-                            direction: 'left',
-                            hoverEnabled: false,
-                            toolbarEnabled: false
-                        };
-                        var instance = M.FloatingActionButton.init(elem, options);
-                    </script>
-                    @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
-                    <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
+                    if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
+                    {
+                        <a class="btn-small modal-trigger" id="btn_cancel" href="#modal2">Cancelar</a>
+                        <div id="modal2" class="modal">
+                            <div class="modal-content">
+                                <div class="row">
+                                    <h4 id="txt_can">Cancelar solicitud</h4>
+                                    <br />
+                                </div>
+                                <div class="row" style="">
+                                    <div class="col s12 m12 l12">
+                                        <div class="row" style="margin-bottom:0">
+                                            ¿Está seguro de cancelar esta solicitud?
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer right">
+                                <a href="#!" class="modal-action modal-close btn-flat">No</a>
+                                <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes", new { id = Model.D.NUM_DOC })">Si</a>
+                            </div>
+                        </div>
+                    }
                 }
+                @*//else
+                    //{*@
+                <button type="button" class="btn-small  " data-target="list_carta" id="btn_carta">Carta</button>
+                @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
+                <ul id='list_carta' class='dropdown-content'>
+                    <li><a href="@Url.Action("Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
+                    @if (Model.D.DOCUMENTOPs.Count().Equals(0))
+                    {
+                        <li><a href="@Url.Action("Create", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                    }
+                </ul>
+                <script>
+                    var elem = document.getElementById('btn_carta');
+                    var options = {
+                        constrainWidth: false
+                        //,hover: true
+                    };
+                    var instance = M.Dropdown.init(elem, options);
+                </script>
+                @* } *@
             }
-            else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL_ID == "PR" | Model.D.TSOL_ID == "PR1"))
-            {
-                if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
-                {
-                    <a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversar</a>
-                    <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
-                    <button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>
-                    <ul id='list_rela' class='dropdown-content'>
-                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
-                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
-                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>
-                    </ul>
-                    <script>
-                        var elem = document.getElementById('btn_rela');
-                        var options = {
-                            hover: true
-                        };
-                        var instance = M.Dropdown.init(elem, options);
-                    </script>
-                }
-            }
-            @*//else
-                //{*@
-            <button type="button" class="btn-small  " data-target="list_carta" id="btn_carta">Carta</button>
-            @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
-            <ul id='list_carta' class='dropdown-content'>
-                <li><a href="@Url.Action("Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
-                @if (Model.D.DOCUMENTOPs.Count().Equals(0))
-                {
-                    <li><a href="@Url.Action("Create", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
-                }
-                else
-                {
-                    <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
-                }
-            </ul>
-            <script>
-                var elem = document.getElementById('btn_carta');
-                var options = {
-                    constrainWidth: false
-                    //,hover: true
-                };
-                var instance = M.Dropdown.init(elem, options);
-            </script>
-            @* } *@
         </div>
     </div>
 </div>
@@ -892,8 +947,8 @@
                                                     data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
                                                     success: function(data) {
                                                         $("#tab_conc tbody").empty();
-                                                        var pp = ($.map(data, function(item) {
-                                                            return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC };
+                                                        var pp = ($.map(data, function (item) {
+                                                            return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC, TEXT: item.TXT50 };
                                                         }))
                                                         for (var i = 0; i < pp.length; i++)
                                                         {
@@ -902,7 +957,7 @@
                                                             var tot = @Model.D.MONTO_DOC_ML;
                                                             var sub = tot * por / 100;
 
-                                                            $("#tab_conc tbody").append("<tr><td>IVA</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                            $("#tab_conc tbody").append("<tr><td>" + pp[i].TEXT + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
                                                         }
                                                     }
                                                 });
@@ -1532,6 +1587,9 @@
 
             var elem = document.getElementById('modal1');
             var instance = M.Modal.init(elem, []);
+            var elem2 = document.getElementById('modal2');
+            if (elem2 != undefined)
+                var instance2 = M.Modal.init(elem2, []);
 
             function aprobar() {
                 document.getElementById("txt_app").style.display = 'initial';

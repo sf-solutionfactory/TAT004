@@ -5,8 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Index", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Masiva", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    int? contMas = ViewBag.contenidoMas;
     @Html.AntiForgeryToken()
     <div class="row">
         <a href="@Url.Action("Archivo", "Excel")">
@@ -26,42 +27,88 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="row col s10 m10 l10">
-            <div class="file-field input-field">
-                <div class="btn">
-                    <span>Seleccionar archivo</span>
-                    <input type="file" name="file">
-                </div>
-                <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Archivo a subir">
+    if (contMas == 1)
+    {
+        <div class="row">
+            <div class="row col s10 m10 l10">
+                <div class="file-field input-field">
+                    <div class="btn red white-text">
+                        <span>Seleccionar archivo</span>
+                        <input type="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <span style='font-weight:bold; color:red; text-align:center;'></span><input type=text size=10 disabled value="ARCHIVOS CARGADOS" style='color:red;' id="disabled">
+                    </div>
                 </div>
             </div>
+            <div class="row col s2 m2 l2">
+                <input type="submit" value="Subir layout" class="btn btn-default btn-large red white-text" />
+            </div>
         </div>
-        <div class="row col s2 m2 l2">
-            <input type="submit" value="Subir carga" class="btn btn-default btn-large" />
+    }
+    else
+    {
+        <div class="row">
+            <div class="row col s10 m10 l10">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Seleccionar archivo</span>
+                        <input type="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Archivo a subir">
+                    </div>
+                </div>
+            </div>
+            <div class="row col s2 m2 l2">
+                <input type="submit" value="Subir layout" class="btn btn-default btn-large" />
+            </div>
         </div>
-    </div>
+    }
 }
 
 @using (Html.BeginForm("Soportes", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-<div class="row">
-    <div class="row col s10 m10 l10">
-        <div class="file-field input-field">
-            <div class="btn">
-                <span>Seleccionar archivo</span>
-                <input id="file2" type="file" multiple name="file2">
+    int? cont = ViewBag.contenidoSop;
+
+    if (cont == 1)
+    {
+        <div class="row">
+            <div class="row col s10 m10 l10">
+                <div class="file-field input-field">
+                    <div class="btn red white-text">
+                        <span>Seleccionar archivo</span>
+                        <input id="file2" type="file" multiple name="file2">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <span style='font-weight:bold; color:red; text-align:center;'></span><input type=text size=10 disabled value="ARCHIVOS CARGADOS" style='color:red;' id="disabled">
+                    </div>
+                </div>
             </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Archivo a subir">
+            <div class="row col s2 m2 l2">
+                <input type="submit" value="Subir soporte" class="btn btn-default btn-large red white-text" />
             </div>
         </div>
-    </div>
-    <div class="row col s2 m2 l2">
-        <input type="submit" value="Subir carga" class="btn btn-default btn-large" />
-    </div>
-</div>
+    }
+    else if (cont == 0 | cont == null)
+    {
+        <div class="row">
+            <div class="row col s10 m10 l10">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Seleccionar archivo</span>
+                        <input id="file2" type="file" multiple name="file2">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Archivo a subir">
+                    </div>
+                </div>
+            </div>
+            <div class="row col s2 m2 l2">
+                <input type="submit" value="Subir soporte" class="btn btn-default btn-large" />
+            </div>
+        </div>
+    }
 }
 
 

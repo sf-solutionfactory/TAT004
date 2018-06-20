@@ -33,17 +33,31 @@ namespace TAT001.Services
                     //ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
 
                     string mailt = ConfigurationManager.AppSettings["mailt"];
+                    string mtest = ConfigurationManager.AppSettings["mailtest"];
+                    string mailTo = "";
+                    if (mtest == "X")
+                        mailTo = "rogelio.sanchez@sf-solutionfactory.com";
+                    else
+                        mailTo = workflow.USUARIO.EMAIL;
                     CONMAIL conmail = db.CONMAILs.Find(mailt);
                     if (conmail != null)
                     {
-                        MailMessage mail = new MailMessage(conmail.MAIL, "rogelio.sanchez@sf-solutionfactory.com");
+                        System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage(conmail.MAIL, mailTo);
                         SmtpClient client = new SmtpClient();
-                        client.Port = (int)conmail.PORT;
-                        client.EnableSsl = conmail.SSL;
+                        if (conmail.SSL)
+                        {
+                            client.Port = (int)conmail.PORT;
+                            client.EnableSsl = conmail.SSL;
+                            client.UseDefaultCredentials = false;
+                            client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                        }
+                        else
+                        {
+                            client.UseDefaultCredentials = true;
+                            client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                        }
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.UseDefaultCredentials = false;
                         client.Host = conmail.HOST;
-                        client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
 
 
                         if (workflow == null)

@@ -159,7 +159,27 @@ namespace TAT001.Controllers
                                                     & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
             dOCUMENTO.DOCUMENTOF = db.DOCUMENTOFs.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).ToList();
 
-            ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
+            //ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
+            var vbFl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
+            FLUJO fvbfl = new FLUJO();
+            //recuperamos si existe algun valor en fljunegoc
+            var flng = db.FLUJNEGOes.Where(a => a.NUM_DOC.Equals(id)).ToList();
+            if (flng.Count > 0)
+            {
+                for (int i = 0; i < flng.Count; i++)
+                {
+                    var kn = flng[i].KUNNR;
+                    var clName = db.CLIENTEs.Where(c => c.KUNNR == kn).Select(s => s.NAME1).FirstOrDefault();
+                    fvbfl = new FLUJO();
+                    fvbfl.NUM_DOC = flng[i].NUM_DOC;
+                    fvbfl.FECHAC = flng[i].FECHAC;
+                    fvbfl.FECHAM = flng[i].FECHAM;
+                    fvbfl.USUARIOA_ID = clName + "(Cliente)";
+                    fvbfl.COMENTARIO = flng[i].COMENTARIO;
+                    vbFl.Add(fvbfl);
+                }
+            }
+            ViewBag.workflow = vbFl;
 
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P")).FirstOrDefault();
             ViewBag.acciones = f;
@@ -1296,10 +1316,11 @@ namespace TAT001.Controllers
                         }
                     }
                     //B20180618 v1 MGC 2018.06.18
-                    if (select_neg == "" || select_neg == null) {
+                    if (select_neg == "" || select_neg == null)
+                    {
                         select_neg = select_negi;
                     }
-                    if(select_dis == "" || select_dis == null)
+                    if (select_dis == "" || select_dis == null)
                     {
                         select_dis = select_disi;
                     }
@@ -1516,7 +1537,7 @@ namespace TAT001.Controllers
                         }
                         else
                         {
-                            
+
                             for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
                             {
                                 try
@@ -2470,11 +2491,39 @@ namespace TAT001.Controllers
             }
         }
 
-        public ActionResult Cancelar()
+        public ActionResult Cancelar(decimal id)
         {
-            Session["sol_tipo"] = null;
+            //Session["sol_tipo"] = null;
+            DOCUMENTO d = db.DOCUMENTOes.Find(id);
+            d.ESTATUS_C = "C";
+            FLUJO actual = db.FLUJOes.Where(a => a.NUM_DOC == id).OrderByDescending(a => a.POS).FirstOrDefault();
+            db.Entry(d).State = EntityState.Modified;
 
-            return RedirectToAction("Index", "Solicitudes");
+            if (actual != null)
+            {
+                FLUJO nuevo = new FLUJO();
+                WORKFP fin = db.WORKFPs.Where(a => a.ID == actual.WORKF_ID & a.VERSION == actual.WF_VERSION & a.NEXT_STEP == 99).FirstOrDefault();
+                if (fin != null)
+                {
+                    nuevo.COMENTARIO = "";
+                    nuevo.DETPOS = 0;
+                    nuevo.DETVER = 0;
+                    nuevo.ESTATUS = "A";
+                    nuevo.FECHAC = DateTime.Now;
+                    nuevo.FECHAM = nuevo.FECHAC;
+                    nuevo.LOOP = 0;
+                    nuevo.NUM_DOC = actual.NUM_DOC;
+                    nuevo.POS = actual.POS + 1;
+                    nuevo.USUARIOA_ID = User.Identity.Name;
+                    nuevo.WF_POS = fin.POS;
+                    nuevo.WF_VERSION = fin.VERSION;
+                    nuevo.WORKF_ID = fin.ID;
+                    db.FLUJOes.Add(nuevo);
+                }
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

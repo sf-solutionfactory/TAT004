@@ -22,7 +22,7 @@ namespace TAT001.Controllers
     {
         private TAT001Entities db = new TAT001Entities();
         // GET: Excel
-        public ActionResult Index()
+        public ActionResult Index(int? miSop, int? miMas)
         {
             int pagina = 221; //ID EN BASE DE DATOS
             string u = User.Identity.Name;
@@ -38,7 +38,7 @@ namespace TAT001.Controllers
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".png";
+                ViewBag.pais = p + ".svg";
             }
             catch
             {
@@ -46,13 +46,39 @@ namespace TAT001.Controllers
             }
             Session["spras"] = user.SPRAS_ID;
 
-            var doc = db.DOCUMENTOPs;
+            if (miSop == 1 & miMas == 1)
+            {
+                Session["indSop"] = 0;
+                Session["indMas"] = 0;
+                return RedirectToAction("Index2", new { hola = "hola" });
+            }
+            else
+            {
+                if (miSop == 1)
+                {
+                    ViewBag.contenidoSop = 1;
+                }
+                else if (miSop == 0 | miSop == null)
+                {
+                    ViewBag.contenidoSop = 0;
+                }
+
+                if (miMas == 1)
+                {
+                    ViewBag.contenidoMas = 1;
+                }
+                else if (miMas == 0 | miMas == null)
+                {
+                    ViewBag.contenidoMas = 0;
+                }
+
+                return View();
+            }
+            //var doc = db.DOCUMENTOPs;
             //return View(doc.ToList());
-            return View();
         }
 
-        [HttpPost]
-        public ActionResult Index(HttpPostedFileBase file)
+        public ActionResult Index2(string hola)
         {
             int pagina = 221; //ID EN BASE DE DATOS
             string u = User.Identity.Name;
@@ -68,7 +94,7 @@ namespace TAT001.Controllers
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".png";
+                ViewBag.pais = p + ".svg";
             }
             catch
             {
@@ -76,42 +102,62 @@ namespace TAT001.Controllers
             }
             Session["spras"] = user.SPRAS_ID;
 
-            DataSet dsHoja1 = new DataSet();
-            DataSet dsHoja2 = new DataSet();
-            string excelConnectionString = string.Empty;
-            if (Request.Files["file"].ContentLength > 0)
+            HttpPostedFileBase file;
+            if (hola != null)
             {
-                string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
-
-                if (fileExtension == ".xls" || fileExtension == ".xlsx")
-                {
-                    string extension = System.IO.Path.GetExtension(file.FileName);
-                    IExcelDataReader reader = ExcelReaderFactory.CreateReader(file.InputStream);
-                    DataSet result = reader.AsDataSet();
-
-                    DataSet dt = new DataSet();
-                    DataTable dtt = result.Tables[0].Copy();
-                    dt.Tables.Add(dtt);
-
-                    DataSet dt1 = new DataSet();
-                    DataTable dtt1 = result.Tables[1].Copy();
-                    dt1.Tables.Add(dtt1);
-
-                    DataSet dt3 = new DataSet();
-                    DataTable dtt3 = result.Tables[2].Copy();
-                    dt3.Tables.Add(dtt3);
-
-                    DataSet dt4 = new DataSet();
-                    DataTable dtt4 = result.Tables[3].Copy();
-                    dt4.Tables.Add(dtt4);
-
-                    Session["ds1"] = dt;
-                    Session["ds2"] = dt1;
-                    Session["ds3"] = dt3;
-                    Session["ds4"] = dt4;
-                }
+                file = (HttpPostedFileBase)Session["archivoMas"];
             }
-            return RedirectToAction("Details");
+            else
+            {
+                file = null;
+            }
+
+
+            if (file != null)
+            {
+                DataSet dsHoja1 = new DataSet();
+                DataSet dsHoja2 = new DataSet();
+                string excelConnectionString = string.Empty;
+                //if (Request.Files["file"].ContentLength > 0)
+                if (file.ContentLength > 0)
+                {
+                    //string fileExtension = System.IO.Path.GetExtension(Request.Files["file"].FileName);
+                    string fileExtension = System.IO.Path.GetExtension(file.FileName);
+
+                    if (fileExtension == ".xls" || fileExtension == ".xlsx")
+                    {
+                        string extension = System.IO.Path.GetExtension(file.FileName);
+                        IExcelDataReader reader = ExcelReaderFactory.CreateReader(file.InputStream);
+                        DataSet result = reader.AsDataSet();
+
+                        DataSet dt = new DataSet();
+                        DataTable dtt = result.Tables[0].Copy();
+                        dt.Tables.Add(dtt);
+
+                        DataSet dt1 = new DataSet();
+                        DataTable dtt1 = result.Tables[1].Copy();
+                        dt1.Tables.Add(dtt1);
+
+                        DataSet dt3 = new DataSet();
+                        DataTable dtt3 = result.Tables[2].Copy();
+                        dt3.Tables.Add(dtt3);
+
+                        DataSet dt4 = new DataSet();
+                        DataTable dtt4 = result.Tables[3].Copy();
+                        dt4.Tables.Add(dtt4);
+
+                        Session["ds1"] = dt;
+                        Session["ds2"] = dt1;
+                        Session["ds3"] = dt3;
+                        Session["ds4"] = dt4;
+                    }
+                }
+                return RedirectToAction("Details");
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult Details()
@@ -130,7 +176,7 @@ namespace TAT001.Controllers
             try
             {
                 string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".png";
+                ViewBag.pais = p + ".svg";
             }
             catch
             {
@@ -160,7 +206,7 @@ namespace TAT001.Controllers
             DataSet dsHoja2 = (DataSet)(Session["ds2"]);
             DataSet dsHoja3 = (DataSet)(Session["ds3"]);
             DataSet dsHoja4 = (DataSet)(Session["ds4"]);
-            IEnumerable<HttpPostedFileBase> archivos = (IEnumerable<HttpPostedFileBase>)(Session["archivos"]);
+            IEnumerable<HttpPostedFileBase> archivos = (IEnumerable<HttpPostedFileBase>)(Session["archivosSop"]);
 
             List<DOCUMENTO> listD = new List<DOCUMENTO>();
             List<DOCUMENTOF> listF = new List<DOCUMENTOF>();
@@ -173,8 +219,11 @@ namespace TAT001.Controllers
                 DOCUMENTO docu = new DOCUMENTO();
                 string a = dsHoja1.Tables[0].Rows[i][1].ToString();
                 string b = dsHoja1.Tables[0].Rows[i][2].ToString();
+                string bbb = dsHoja1.Tables[0].Rows[i][2].ToString();
+                b = db.TALLs.Where(x => x.DESCRIPCION == b).Select(x => x.GALL_ID).FirstOrDefault();
                 string c = dsHoja1.Tables[0].Rows[i][3].ToString();
                 string d = dsHoja1.Tables[0].Rows[i][4].ToString();
+                d = db.PAIS.Where(x => x.LANDX == d).Select(x => x.LAND).FirstOrDefault();
                 var e = db.TSOLs.Where(x => x.ID == a).Select(x => x.ID);
                 var f = db.GALLs.Where(x => x.ID == b).Select(x => x.ID);
                 var g = db.SOCIEDADs.Where(x => x.BUKRS == c).Select(x => x.BUKRS);
@@ -213,6 +262,7 @@ namespace TAT001.Controllers
                         docu.EJERCICIO = Convert.ToString(System.DateTime.Now.Year);
                         docu.CANTIDAD_EV = 1;
                         docu.USUARIOC_ID = user.ID;
+                        docu.PUESTO_ID = user.PUESTO_ID;
                         docu.FECHAD = System.DateTime.Today;
                         docu.FECHAC = System.DateTime.Today;
                         docu.HORAC = System.DateTime.Now.TimeOfDay;
@@ -233,7 +283,7 @@ namespace TAT001.Controllers
                         docu.FECHAF_VIG = Convert.ToDateTime(fec2);
                         docu.MONEDA_ID = dsHoja1.Tables[0].Rows[i][14].ToString();
                         docu.MONTO_DOC_MD = 0;
-                        docu.TALL_ID = db.TALLs.Where(x => x.GALL_ID == docu.GALL_ID).FirstOrDefault().ID;
+                        docu.TALL_ID = db.TALLs.Where(x => x.DESCRIPCION == bbb).FirstOrDefault().ID;
                         listD.Add(docu);
                     }
                     DOCUMENTO dop = listD.Where(x => x.NUM_DOC == docu.NUM_DOC).FirstOrDefault();
@@ -242,6 +292,8 @@ namespace TAT001.Controllers
                     //SI LOS DATOS DE CABECERA FUERON CORRECTOS PASA LA CONDICION
                     if (dop != null)
                     {
+                        int ind1 = 0;
+                        int ind2 = 0;
                         //SECCION 2.- VALIDACION DE DATOS DE LA SEGUNDA HOJA DEL EXCEL (DISTRIBUCION)
                         for (int k = 1; k < dsHoja2.Tables[0].Rows.Count; k++)
                         {
@@ -253,67 +305,167 @@ namespace TAT001.Controllers
 
                                 string mat = dsHoja2.Tables[0].Rows[k][3].ToString();
                                 string mat2 = dsHoja2.Tables[0].Rows[k][4].ToString();
-                                DateTime fechD = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                                DateTime fechA = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                                var mate = db.MATERIALs.Where(x => x.ID == mat);
 
-                                if (mate.Count() > 0 && fechA > fechD)
+                                //if (k == 1)
+                                if (docu.DOCUMENTOPs.Count == 0)
                                 {
-                                    //AQUI VALIDAMOS SI TIENE REAL 
-                                    //DE NO TENERLO HACE EL CALCULO CON COSTO, PORCENTAJE, PRECIO Y VOLUMEN
-                                    if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
+                                    if ((mat != null | mat != "") & (mat2 != null | mat2 != ""))
                                     {
-                                        docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
-                                        docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
-                                        docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                                        docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                                        docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
-                                        docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
-
-                                        if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
-                                        {
-                                            docup.APOYO_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
-                                            dop.MONTO_DOC_MD += docup.APOYO_REAL;
-                                        }
-                                        else
-                                        {
-                                            docup.APOYO_EST = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
-                                            dop.MONTO_DOC_MD += docup.APOYO_EST;
-                                        }
-
-                                        docup.CANTIDAD = 0;
-                                        dop.DOCUMENTOPs.Add(docup);
+                                        ind1 = 1;
+                                        ind2 = 0;
                                     }
-                                    else
+                                    else if ((mat != null | mat != "") & (mat2 == null | mat2 == ""))
                                     {
-                                        docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
-                                        docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
-                                        docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
-                                        docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
-                                        docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
-                                        docup.MATKL = dsHoja2.Tables[0].Rows[k][4].ToString();
-                                        docup.MONTO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString());
-                                        docup.PORC_APOYO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString());
-                                        docup.PRECIO_SUG = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][7].ToString());
-                                        docup.VOLUMEN_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString());
-                                        decimal hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) * Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString()));
-                                        hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) - hola) * (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString()));
+                                        ind1 = 1;
+                                        ind2 = 0;
+                                    }
+                                    else if ((mat == null | mat == "") & (mat2 != null | mat2 != ""))
+                                    {
+                                        ind1 = 0;
+                                        ind2 = 1;
+                                    }
+                                }
 
+                                if (ind1 == 1)
+                                {
+                                    DateTime fechD = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                    DateTime fechA = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                    var mate = db.MATERIALs.Where(x => x.ID == mat);
 
-                                        if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                    if (mate.Count() > 0 && fechA > fechD)
+                                    {
+                                        //AQUI VALIDAMOS SI TIENE REAL 
+                                        //DE NO TENERLO HACE EL CALCULO CON COSTO, PORCENTAJE, PRECIO Y VOLUMEN
+                                        if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
                                         {
-                                            docup.APOYO_REAL = hola;
-                                            dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                            docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                            docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
+                                            docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                            docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                            docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
+                                            docup.MATKL = "";
+
+                                            if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                            {
+                                                docup.APOYO_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                                dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                                docup.VOLUMEN_REAL = 0;
+                                            }
+                                            else
+                                            {
+                                                docup.APOYO_EST = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                                dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                                docup.VOLUMEN_EST = 0;
+                                            }
+
+                                            docup.CANTIDAD = 0;
+                                            dop.DOCUMENTOPs.Add(docup);
                                         }
                                         else
                                         {
-                                            docup.APOYO_EST = hola;
-                                            docup.VOLUMEN_EST = (decimal)docup.VOLUMEN_REAL;
-                                            docup.VOLUMEN_REAL = null;
-                                            dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                            docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                            docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
+                                            docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                            docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                            docup.MATNR = dsHoja2.Tables[0].Rows[k][3].ToString();
+                                            docup.MATKL = "";
+                                            docup.MONTO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString());
+                                            docup.PORC_APOYO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString());
+                                            docup.PRECIO_SUG = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][7].ToString());
+                                            docup.VOLUMEN_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString());
+                                            if (docup.VOLUMEN_REAL == null)
+                                                docup.VOLUMEN_REAL = 0;
+                                            decimal hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) * Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString()));
+                                            hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) - hola) * (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString()));
+
+
+                                            if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                            {
+                                                docup.APOYO_REAL = hola;
+                                                dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                            }
+                                            else
+                                            {
+                                                docup.APOYO_EST = hola;
+                                                docup.VOLUMEN_EST = (decimal)docup.VOLUMEN_REAL;
+                                                docup.VOLUMEN_REAL = 0;
+                                                dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                            }
+                                            docup.CANTIDAD = 0;
+                                            dop.DOCUMENTOPs.Add(docup);
                                         }
-                                        docup.CANTIDAD = 0;
-                                        dop.DOCUMENTOPs.Add(docup);
+                                    }
+                                }
+                                else
+                                {
+                                    DateTime fechD = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                    DateTime fechA = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                    var mate = db.MATERIALs.Where(x => x.ID == mat);
+
+                                    if (mate.Count() > 0 && fechA > fechD)
+                                    {
+                                        //AQUI VALIDAMOS SI TIENE REAL 
+                                        //DE NO TENERLO HACE EL CALCULO CON COSTO, PORCENTAJE, PRECIO Y VOLUMEN
+                                        if (dsHoja2.Tables[0].Rows[k][9].ToString() != "")
+                                        {
+                                            docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                            docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
+                                            docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                            docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                            docup.MATNR = "";
+                                            string desMat = mat2;
+                                            desMat = db.MATERIALGPs.Where(x => x.DESCRIPCION == desMat).Select(x => x.ID).FirstOrDefault();
+                                            docup.MATKL = desMat;
+
+                                            if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                            {
+                                                docup.APOYO_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                                dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                                docup.VOLUMEN_REAL = 0;
+                                            }
+                                            else
+                                            {
+                                                docup.APOYO_EST = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][9].ToString());
+                                                dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                                docup.VOLUMEN_REAL = 0;
+                                            }
+
+                                            docup.CANTIDAD = 0;
+                                            dop.DOCUMENTOPs.Add(docup);
+                                        }
+                                        else
+                                        {
+                                            docup.NUM_DOC = Convert.ToInt32(dsHoja2.Tables[0].Rows[k][0].ToString());
+                                            docup.POS = Convert.ToInt32(dop.DOCUMENTOPs.Count() + 1);
+                                            docup.VIGENCIA_DE = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][1].ToString());
+                                            docup.VIGENCIA_AL = Convert.ToDateTime(dsHoja2.Tables[0].Rows[k][2].ToString());
+                                            docup.MATNR = "";
+                                            string desMat = mat2;
+                                            desMat = db.MATERIALGPs.Where(x => x.DESCRIPCION == desMat).Select(x => x.ID).FirstOrDefault();
+                                            docup.MATKL = desMat;
+                                            docup.MONTO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString());
+                                            docup.PORC_APOYO = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString());
+                                            docup.PRECIO_SUG = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][7].ToString());
+                                            docup.VOLUMEN_REAL = Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString());
+                                            decimal hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) * Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][6].ToString()));
+                                            hola = (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][5].ToString()) - hola) * (Convert.ToDecimal(dsHoja2.Tables[0].Rows[k][8].ToString()));
+
+
+                                            if (db.TSOLs.Where(ar => ar.ID == dop.TSOL_ID).FirstOrDefault().FACTURA == true)
+                                            {
+                                                docup.APOYO_REAL = hola;
+                                                dop.MONTO_DOC_MD += docup.APOYO_REAL;
+                                            }
+                                            else
+                                            {
+                                                docup.APOYO_EST = hola;
+                                                docup.VOLUMEN_EST = (decimal)docup.VOLUMEN_REAL;
+                                                docup.VOLUMEN_REAL = null;
+                                                dop.MONTO_DOC_MD += docup.APOYO_EST;
+                                            }
+                                            docup.CANTIDAD = 0;
+                                            dop.DOCUMENTOPs.Add(docup);
+                                        }
                                     }
                                 }
                             }
@@ -414,8 +566,43 @@ namespace TAT001.Controllers
                 doc.NUM_DOC = N_DOC;
                 db1.DOCUMENTOes.Add(doc);
                 db1.SaveChanges();
+                //AQUI SE ALMACENAN LOS SOPORTES
                 updateRango(doc.TSOL_ID, doc.NUM_DOC);
+                guardaArchivos(N_DOC);
                 li.Add(doc.NUM_DOC.ToString());
+                ProcesaFlujo2 pf = new ProcesaFlujo2();
+
+                ////USUARIO user = db.USUARIOs.Where(a => a.ID.Equals(User.Identity.Name)).FirstOrDefault();
+                try
+                {
+                    WORKFV wf = db.WORKFHs.Where(a => a.TSOL_ID.Equals(doc.TSOL_ID)).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
+                    if (wf != null)
+                    {
+                        WORKFP wp = wf.WORKFPs.OrderBy(a => a.POS).FirstOrDefault();
+                        FLUJO f = new FLUJO();
+                        f.WORKF_ID = wf.ID;
+                        f.WF_VERSION = wf.VERSION;
+                        f.WF_POS = wp.POS;
+                        f.NUM_DOC = doc.NUM_DOC;
+                        f.POS = 1;
+                        f.LOOP = 1;
+                        f.USUARIOA_ID = doc.USUARIOC_ID;
+                        f.ESTATUS = "I";
+                        f.FECHAC = DateTime.Now;
+                        f.FECHAM = DateTime.Now;
+                        string c = pf.procesa(f, "");
+                        if (c == "1")
+                        {
+                            Email em = new Email();
+                            string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                            em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory);
+                        }
+                    }
+                }
+                catch (Exception ee)
+                {
+                }
+
             }
 
             //JsonResult jr = Json(li, JsonRequestBehavior.AllowGet);
@@ -619,13 +806,12 @@ namespace TAT001.Controllers
 
         public List<DOCUMENTOA> subeArchivo(IEnumerable<HttpPostedFileBase> files_soporte, string u, string tso, DataSet ds4, decimal numDo)
         {
+            List<HttpPostedFileBase> archiArr = new List<HttpPostedFileBase>();
+            //IEnumerable<HttpPostedFileBase> archiArr;
             List<DOCUMENTOA> docupA = new List<DOCUMENTOA>();
             SolicitudesController sc = new SolicitudesController();
-            string errorString = "";
-            //Guardar los documentos cargados en la sección de soporte
-            var res = "";
-            string errorMessage = "";
             int numFiles = 0;
+
             //Checar si hay archivos para subir
             try
             {
@@ -652,157 +838,221 @@ namespace TAT001.Controllers
                 {
                     if (numFiles > 0)
                     {
-                        //Obtener las variables con los datos de sesión y ruta
-                        string url = ConfigurationManager.AppSettings["URL_SAVE"];
-                        //Crear el directorio
-                        decimal N_DOC = getSolID(tso);
-                        string nomNum = N_DOC.ToString();
-                        var dir = sc.createDir(url, nomNum);
-
-                        //Evaluar que se creo el directorio
-                        if (dir.Equals(""))
+                        foreach (HttpPostedFileBase file in files_soporte)
                         {
-                            int i = 0;
-                            int indexlabel = 0;
-
-                            foreach (HttpPostedFileBase file in files_soporte)
+                            var clasefile = "";
+                            try
                             {
-                                string errorfiles = "";
-                                var clasefile = "";
-                                try
-                                {
-                                    clasefile = descrip;
-                                }
-                                catch (Exception ex)
-                                {
-                                    clasefile = "";
-                                }
+                                clasefile = descrip;
+                            }
+                            catch (Exception ex)
+                            {
+                                clasefile = "";
+                            }
 
-                                if (file != null)
+                            if (file != null)
+                            {
+                                if (file.ContentLength > 0)
                                 {
-                                    if (file.ContentLength > 0)
+                                    string nombreV = file.FileName.ToUpper();
+
+                                    if (nombreV == ruta.ToUpper())
                                     {
-                                        string nombreV = file.FileName.ToUpper();
-
-                                        if (nombreV == ruta.ToUpper())
+                                        string miDes = clasefile.ToUpper().Substring(0, 3);
+                                        //VERIFICAMOS EL TIPO DE SOPORTE
+                                        if (miDes == "FAC")
                                         {
-                                            string miDes = clasefile.ToUpper().Substring(0, 3);
-                                            //VERIFICAMOS EL TIPO DE SOPORTE
-                                            if (miDes == "FAC")
-                                            {
-                                                var exist = docupA.Where(x => x.NUM_DOC == Convert.ToDecimal(num) & x.CLASE == miDes).FirstOrDefault();
+                                            var exist = docupA.Where(x => x.NUM_DOC == Convert.ToDecimal(num) & x.CLASE == miDes).FirstOrDefault();
 
-                                                //SI YA EXISTE UN TIPO DE SOPORTE FACTURA NO INSERTAMOS UNO NUEVO
-                                                if (exist == null)
-                                                {
-                                                    string path = "";
-                                                    string filename = file.FileName;
-                                                    errorfiles = "";
-                                                    res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
-
-                                                   // if (errorfiles == "")
-                                                   // {
-                                                        DOCUMENTOA doc = new DOCUMENTOA();
-                                                        var ext = Path.GetExtension(filename);
-                                                        i++;
-                                                        doc.NUM_DOC = Convert.ToInt32(num);
-                                                        doc.POS = i;
-                                                        doc.TIPO = ext.Replace(".", "");
-                                                        try
-                                                        {
-                                                            var clasefileM = clasefile.ToUpper();
-                                                            doc.CLASE = clasefileM.Substring(0, 3);
-                                                        }
-                                                        catch (Exception e)
-                                                        {
-                                                            doc.CLASE = "";
-                                                        }
-
-                                                        doc.STEP_WF = 1;
-                                                        doc.USUARIO_ID = u;
-                                                        doc.PATH = path;
-                                                        doc.ACTIVO = true;
-                                                        try
-                                                        {
-                                                            docupA.Add(doc);
-                                                        }
-                                                        catch (Exception e)
-                                                        {
-                                                            errorfiles = "" + filename;
-                                                        }
-                                                    //}
-                                                }
-                                            }
-                                            else
+                                            //SI YA EXISTE UN TIPO DE SOPORTE FACTURA NO INSERTAMOS UNO NUEVO
+                                            if (exist == null)
                                             {
                                                 string path = "";
-                                                string filename = file.FileName;
-                                                errorfiles = "";
-                                                res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
+                                                DOCUMENTOA doc = new DOCUMENTOA();
+                                                doc.NUM_DOC = Convert.ToInt32(num);
+                                                doc.POS = jj;
+                                                doc.TIPO = Path.GetExtension(nombreV).Replace(".", "");
+                                                try
+                                                {
+                                                    var clasefileM = clasefile.ToUpper();
+                                                    doc.CLASE = clasefileM.Substring(0, 3);
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    doc.CLASE = "";
+                                                }
 
-                                                //if (errorfiles == "")
-                                               // {
-                                                    DOCUMENTOA doc = new DOCUMENTOA();
-                                                    var ext = System.IO.Path.GetExtension(filename);
-                                                    i++;
-                                                    doc.NUM_DOC = Convert.ToInt32(num);
-                                                    doc.POS = i;
-                                                    doc.TIPO = ext.Replace(".", "");
-                                                    try
-                                                    {
-                                                        var clasefileM = clasefile.ToUpper();
-                                                        doc.CLASE = clasefileM.Substring(0, 3);
-                                                    }
-                                                    catch (Exception e)
-                                                    {
-                                                        doc.CLASE = "";
-                                                    }
+                                                doc.STEP_WF = 1;
+                                                doc.USUARIO_ID = u;
+                                                doc.PATH = nombreV;
+                                                doc.ACTIVO = true;
 
-                                                    doc.STEP_WF = 1;
-                                                    doc.USUARIO_ID = u;
-                                                    doc.PATH = path;
-                                                    doc.ACTIVO = true;
-                                                    try
-                                                    {
-                                                        docupA.Add(doc);
-                                                    }
-                                                    catch (Exception e)
-                                                    {
-                                                        errorfiles = "" + filename;
-                                                    }
-                                                //}
+                                                docupA.Add(doc);
+                                                archiArr.Add(file);
                                             }
+                                        }
+                                        else
+                                        {
+                                            string path = "";
+                                            DOCUMENTOA doc = new DOCUMENTOA();
+                                            doc.NUM_DOC = Convert.ToInt32(num);
+                                            doc.POS = jj;
+                                            doc.TIPO = Path.GetExtension(nombreV).Replace(".", "");
+                                            try
+                                            {
+                                                var clasefileM = clasefile.ToUpper();
+                                                doc.CLASE = clasefileM.Substring(0, 3);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                doc.CLASE = "";
+                                            }
+
+                                            doc.STEP_WF = 1;
+                                            doc.USUARIO_ID = u;
+                                            doc.PATH = nombreV;
+                                            doc.ACTIVO = true;
+
+                                            docupA.Add(doc);
+                                            archiArr.Add(file);
                                         }
                                     }
                                 }
-
-                                if (errorfiles != "")
-                                {
-                                    errorMessage += "Error con el archivo " + errorfiles;
-                                }
                             }
-                        }
-                        else
-                        {
-                            errorMessage = dir;
-                        }
+                        }//LLAVE FOREACH
+                    }//IF NUMERO DE ARCHUVOS MAYOR A 0
+                }
+            }//LLAVE DE FOR PARA LOS REGISTROS DEL EXCEL
+            List<HttpPostedFileBase> archivosRENew = (List<HttpPostedFileBase>)Session["arcReales"];
 
-                        errorString = errorMessage;
-                        //Guardar número de documento creado
-                        Session["ERROR_FILES"] = errorMessage;
+            if (archivosRENew == null)
+            {
+                archivosRENew = new List<HttpPostedFileBase>();
+            }
+            archivosRENew.AddRange(archiArr);
+            Session["arcReales"] = archivosRENew;
+            return docupA;
+        }
+
+        public void guardaArchivos(decimal numDoc)
+        {
+            IEnumerable<HttpPostedFileBase> archivosRE = (IEnumerable<HttpPostedFileBase>)Session["arcReales"];
+            SolicitudesController sc = new SolicitudesController();
+            string errorString = "";
+            //Guardar los documentos cargados en la sección de soporte
+            var res = "";
+            string errorMessage = "";
+            int numFiles = 0;
+            //Checar si hay archivos para subir
+            try
+            {
+                foreach (HttpPostedFileBase file in archivosRE)
+                {
+                    if (file != null)
+                    {
+                        if (file.ContentLength > 0)
+                        {
+                            numFiles++;
+                        }
                     }
                 }
             }
+            catch (Exception e) { }
 
-            return docupA;
+            if (numFiles > 0)
+            {
+                //Obtener las variables con los datos de sesión y ruta
+                string url = ConfigurationManager.AppSettings["URL_SAVE"];
+                //Crear el directorio
+                string nomNum = numDoc.ToString();
+                var dir = sc.createDir(url, nomNum);
+
+                //Evaluar que se creo el directorio
+                if (dir.Equals(""))
+                {
+                    foreach (HttpPostedFileBase file in archivosRE)
+                    {
+                        string errorfiles = "";
+                        string path = "";
+                        errorfiles = "";
+                        res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
+                        var cambio = db.DOCUMENTOAs.Where(x => x.NUM_DOC == numDoc & x.PATH == file.FileName).FirstOrDefault();
+                        if (cambio != null)
+                        {
+                            cambio.PATH = path;
+                            db.SaveChanges();
+                        }
+
+                        if (errorfiles != "")
+                        {
+                            errorMessage += "Error con el archivo " + errorfiles;
+                        }
+                    }
+                }
+                else
+                {
+                    errorMessage = dir;
+                }
+
+                errorString = errorMessage;
+                Session["ERROR_FILES"] = errorMessage;
+            }
         }
 
         [HttpPost]
         public ActionResult Soportes(HttpPostedFileBase[] file2)
         {
-            Session["archivos"] = file2;
+            int sop;
 
-            return RedirectToAction("Index");
+            if (file2[0] != null)
+            {
+                Session["archivosSop"] = file2;
+                ViewBag.contenidoSop = 1;
+                sop = 1;
+            }
+            else
+            {
+                ViewBag.contenidoSop = 0;
+                sop = 0;
+            }
+
+            int? masSop = (int?)Session["indMas"];
+
+            if (masSop == null)
+            {
+                masSop = 0;
+            }
+
+            Session["indSop"] = sop;
+            return RedirectToAction("Index", new { miSop = sop, miMas = masSop });
+        }
+
+        [HttpPost]
+        public ActionResult Masiva(HttpPostedFileBase file)
+        {
+            int mas;
+
+            if (file != null)
+            {
+                Session["archivoMas"] = file;
+                ViewBag.contenidoMas = 1;
+                mas = 1;
+            }
+            else
+            {
+                ViewBag.contenidoMas = 0;
+                mas = 0;
+            }
+
+            int? sopMas = (int?)Session["indSop"];
+
+            if (sopMas == null)
+            {
+                sopMas = 0;
+            }
+
+            Session["indMas"] = mas;
+            return RedirectToAction("Index", new { miSop = sopMas, miMas = mas });
         }
     }
 }

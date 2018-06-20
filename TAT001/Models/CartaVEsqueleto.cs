@@ -437,7 +437,7 @@ namespace TAT001.Models
 
                 pdfDoc.Add(tabComentarios);
                 pdfDoc.Close();
-                HttpContext.Current.Session["rutaCompletaV"] = "../PdfTemp/" + nombreArchivo;
+                HttpContext.Current.Session["rutaCompletaV"] = "/PdfTemp/" + nombreArchivo;
             }
             catch (Exception ex)
             {

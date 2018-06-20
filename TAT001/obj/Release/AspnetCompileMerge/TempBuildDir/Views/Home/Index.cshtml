@@ -67,6 +67,7 @@
         });
         </script>
     }
+    TempData["docs_masiva"] = null;
 }
 <div class="row" style="margin-bottom:0;">
     <div class="input-field col s3 m3 l3">
@@ -218,7 +219,14 @@
                 <td>
                     @item.FECHAC.Value.Month
                 </td>
-                @if (item.ESTATUS_WF.Equals("P"))
+
+                @if (item.ESTATUS_C == "C")
+                {
+                    <td class="red darken-1 white-text">
+                        <div class="lbl_pending">Cancelado</div>
+                    </td>
+                }
+                else if (item.ESTATUS_WF.Equals("P"))
                 {
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_pending">Pendiente</div>
@@ -261,6 +269,11 @@
                 {
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_soporte">Pendiente soporte</div>
+                    </td>
+                }                else if (item.ESTATUS_WF.Equals("T"))
+                {
+                    <td class="yellow darken-2 white-text">
+                        <div class="lbl_tax">Pendiente Tax</div>
                     </td>
                 }
                 else

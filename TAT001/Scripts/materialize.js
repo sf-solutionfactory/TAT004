@@ -6628,7 +6628,8 @@ $jscomp.polyfill = function (e, r, p, m) {
          * original height of the textarea
          */
         if ($textarea.data('original-height') <= hiddenDiv.innerHeight()) {
-            $textarea.css('height', hiddenDiv.innerHeight() + 'px');
+            //$textarea.css('height', (hiddenDiv.innerHeight() / 2) + 'px');
+            $textarea.css('height', $textarea.data('original-height') + 'px');
         } else if ($textarea[0].value.length < $textarea.data('previous-length')) {
             /**
              * In case the new height is less than original height, it

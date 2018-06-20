@@ -27,6 +27,7 @@
     <div class="row">
         <div class="row right">
             <div class="col l12 m12 right">
+                <a href="@Url.Action("Index", "Excel")" class="waves-effect waves-light btn">Regresar</a>
                 <a data-form-method="post" href="@Url.Action("Details", "Excel", new { rutaExcel = ViewBag.ruta })" class="waves-effect waves-light btn">Guardar</a>
                 @*<a data-form-method="post" href="@Url.Action("Details", "Excel", new { doc = p, a = "hola" })" class="waves-effect waves-light btn">Guardar</a>*@
                 @*<input type="submit" value="Guardar" class="btn btn-default" />*@
@@ -101,8 +102,10 @@
                 {
                     string a = ViewBag.data1.Tables[0].Rows[i][1].ToString();
                     string b = ViewBag.data1.Tables[0].Rows[i][2].ToString();
+                    b = db.TALLs.Where(x => x.DESCRIPCION == b).Select(x => x.GALL_ID).FirstOrDefault();
                     string c = ViewBag.data1.Tables[0].Rows[i][3].ToString();
                     string d = ViewBag.data1.Tables[0].Rows[i][4].ToString();
+                    d = db.PAIS.Where(x => x.LANDX == d).Select(x => x.LAND).FirstOrDefault();
                     string k = ViewBag.data1.Tables[0].Rows[i][14].ToString();
                     var e = db.TSOLs.Where(x => x.ID == a).Select(x => x.ID);
                     var f = db.GALLs.Where(x => x.ID == b).Select(x => x.ID);
@@ -123,7 +126,7 @@
                               select P;
 
                     string mi1 = ViewBag.data1.Tables[0].Rows[i][3].ToString();
-                    string mi2 = ViewBag.data1.Tables[0].Rows[i][4].ToString();
+                    string mi2 = d;
                     var perm = per.Where(x => x.SOCIEDAD_ID == mi1 & x.LAND == mi2).FirstOrDefault();
 
                     if (e.Count() > 0 && f.Count() > 0 && g.Count() > 0 && h.Count() > 0 & ee.Count() > 0 & kk.Count() > 0)
