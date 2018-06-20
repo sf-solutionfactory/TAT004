@@ -5,12 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 875;
     ViewBag.carpeta_r = 100;
+    var pad = @ViewBag.porcad;
 }
 <div>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-
+        <div class="row">
+            <div class="col l12 m12 s12">
+                <button id="btnEliminar" type="submit" style="float:right;" value="Delete" class="btn btn-default"></button>
+            </div>
+        </div>
         <div class="row">
             <div class="card-panel">
                 <div class="row">
@@ -18,7 +23,7 @@
                         <div class="col l12 m12 s12">
                             <div class="input-field col l10 m10" style="margin-bottom:0;">
                                 @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                @Html.LabelFor(model => model.SOCIEDAD_ID, htmlAttributes: new { @class = "control-label col-md-2", @id= "thsoc" })
+                                @Html.LabelFor(model => model.SOCIEDAD_ID, htmlAttributes: new { @class = "control-label col-md-2", @id = "thsoc" })
                             </div>
                         </div>
                         <div class="col l12 m12 s12">
@@ -36,7 +41,10 @@
                             </div>
                         </div>
                         <div class="col l12 m12 s12">
-                            <button id="btnEliminar" type="submit" style="margin-top:20px;" value="Delete" class="btn btn-default"></button>
+                            <div class="input-field col l10 m10" style="margin-bottom:0;">
+                                <input type="text" class="form-control" value="@pad" readonly />
+                                @Html.LabelFor(model => model.PORC_AD, htmlAttributes: new { @class = "control-label col-md-2", @id = "lblPorcad" })
+                            </div>
                         </div>
                     </div>
                 </div>

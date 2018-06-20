@@ -35,18 +35,18 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
                 ViewBag.lan = user.SPRAS_ID;
             }
             var tAX_LAND = db.TAX_LAND.Include(t => t.PAI);
-            return View(tAX_LAND.ToList());
+            return View(tAX_LAND.Where(a => a.ACTIVO == true).ToList());
         }
 
         // GET: Txl/Details/5
@@ -84,11 +84,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -107,7 +107,9 @@ namespace TAT001.Controllers.Catalogos
                     lstSoc.Add(lstS[y]);
                 }
             }
-            ViewBag.Sociedad = new SelectList(lstSoc, "BUKRS", "BUKRS");
+            //ViewBag.Sociedad = new SelectList(lstSoc, "BUKRS", "BUKRS");
+            ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT");
+            ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "LANDX");
             return View();
         }
 
@@ -116,22 +118,18 @@ namespace TAT001.Controllers.Catalogos
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "SOCIEDAD_ID,PAIS_ID,ACTIVO")] TAX_LAND tAX_LAND, string Sociedad)
+        public ActionResult Create([Bind(Include = "SOCIEDAD_ID,PAIS_ID,ACTIVO")] TAX_LAND tAX_LAND)
         {
             if (ModelState.IsValid)
             {
-                SOCIEDAD sc = db.SOCIEDADs.Where(s => s.BUKRS == Sociedad).FirstOrDefault();
-                if (sc != null)
-                {
-                    tAX_LAND.SOCIEDAD_ID = sc.BUKRS;
-                    tAX_LAND.PAIS_ID = sc.LAND;
-                    tAX_LAND.ACTIVO = true;
-                }
+                tAX_LAND.SOCIEDAD_ID =tAX_LAND.SOCIEDAD_ID;
+                tAX_LAND.PAIS_ID = tAX_LAND.PAIS_ID;
+                tAX_LAND.ACTIVO = true;
                 db.TAX_LAND.Add(tAX_LAND);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT", tAX_LAND.SOCIEDAD_ID);
             ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "LAND", tAX_LAND.PAIS_ID);
             return View(tAX_LAND);
         }
@@ -189,11 +187,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -228,7 +226,7 @@ namespace TAT001.Controllers.Catalogos
         public FileResult Descargar()
         {
             var tAX_LAND = db.TAX_LAND.Include(t => t.PAI);
-            generarExcelHome(tAX_LAND.ToList(), Server.MapPath("~/pdfTemp/"));
+            generarExcelHome(tAX_LAND.Where(a => a.ACTIVO == true).ToList(), Server.MapPath("~/pdfTemp/"));
             return File(Server.MapPath("~/pdfTemp/DocTxl" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTxl" + DateTime.Now.ToShortDateString() + ".xlsx");
         }
 

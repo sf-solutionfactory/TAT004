@@ -36,11 +36,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -70,11 +70,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -139,11 +139,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -319,11 +319,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;

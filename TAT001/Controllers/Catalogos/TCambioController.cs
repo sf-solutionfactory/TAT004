@@ -35,11 +35,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -47,7 +47,7 @@ namespace TAT001.Controllers.Catalogos
             return View(db.TCAMBIOs.ToList());
         }
         // GET: TCambio/Details/5
-        public ActionResult Details(string fcur, string tcur, string gd, string uku)
+        public ActionResult Details(string fcur, string tcur, string gd)
         {
             int pagina = 832; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -65,20 +65,19 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
-                decimal myuku = decimal.Parse(uku);
                 //Para las version de las fechas
                 var arrF = gd.Split('/');
                 var dtgd = arrF[1] + '/' + arrF[0] + '/' + arrF[2];
                 DateTime dt = DateTime.Parse(dtgd);
                 var con = db.TCAMBIOs
-                         .Where(x => x.FCURR == fcur && x.TCURR == tcur && x.UKURS == myuku && x.GDATU == dt).FirstOrDefault();
+                         .Where(x => x.FCURR == fcur && x.TCURR == tcur && x.GDATU == dt).FirstOrDefault();
 
                 TCAMBIO co = new TCAMBIO();
                 co.KURST = con.KURST;
@@ -109,11 +108,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -163,11 +162,11 @@ namespace TAT001.Controllers.Catalogos
                     try
                     {
                         string p = Session["pais"].ToString();
-                        ViewBag.pais = p + ".png";
+                        ViewBag.pais = p + ".svg";
                     }
                     catch
                     {
-                        //ViewBag.pais = "mx.png";
+                        //ViewBag.pais = "mx.svg";
                         //return RedirectToAction("Pais", "Home");
                     }
                     Session["spras"] = user.SPRAS_ID;
@@ -197,11 +196,11 @@ namespace TAT001.Controllers.Catalogos
                     try
                     {
                         string p = Session["pais"].ToString();
-                        ViewBag.pais = p + ".png";
+                        ViewBag.pais = p + ".svg";
                     }
                     catch
                     {
-                        //ViewBag.pais = "mx.png";
+                        //ViewBag.pais = "mx.svg";
                         //return RedirectToAction("Pais", "Home");
                     }
                     Session["spras"] = user.SPRAS_ID;
@@ -212,7 +211,7 @@ namespace TAT001.Controllers.Catalogos
         }
 
         // GET: TCambio/Edit/5
-        public ActionResult Edit(string fcur, string tcur, string gd, string uku)
+        public ActionResult Edit(string fcur, string tcur, string gd)
         {
             int pagina = 833; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -230,20 +229,19 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
-                decimal myuku = decimal.Parse(uku);
+                Session["spras"] = user.SPRAS_ID;    
                 //Para las version de las fechas
                 var arrF = gd.Split('/');
                 var dtgd = arrF[1] + '/' + arrF[0] + '/' + arrF[2];
                 DateTime dt = DateTime.Parse(dtgd);
                 var con = db.TCAMBIOs
-                          .Where(x => x.FCURR == fcur && x.TCURR == tcur && x.UKURS == myuku && x.GDATU == dt).FirstOrDefault();
+                          .Where(x => x.FCURR == fcur && x.TCURR == tcur && x.GDATU == dt).FirstOrDefault();
                 TCAMBIO co = new TCAMBIO();
                 co.KURST = con.KURST;
                 co.FCURR = con.FCURR;

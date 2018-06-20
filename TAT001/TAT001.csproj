@@ -204,6 +204,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
+    <Compile Include="Controllers\Catalogos\GALLController.cs" />
+    <Compile Include="Controllers\Catalogos\IimpuestoController.cs" />
+    <Compile Include="Controllers\Catalogos\ImpuestosController.cs" />
     <Compile Include="Controllers\Configuracion\ccatController.cs" />
     <Compile Include="Controllers\Catalogos\ClienteController.cs" />
     <Compile Include="Controllers\Catalogos\ClientesController.cs" />
@@ -215,6 +218,9 @@
     <Compile Include="Controllers\Catalogos\TxcController.cs" />
     <Compile Include="Controllers\Catalogos\TxlController.cs" />
     <Compile Include="Controllers\Catalogos\TxnController.cs" />
+    <Compile Include="Controllers\Configuracion\PpagController.cs" />
+    <Compile Include="Controllers\Configuracion\TaxeohController.cs" />
+    <Compile Include="Controllers\Configuracion\TaxeopController.cs" />
     <Compile Include="Controllers\CorreosController.cs" />
     <Compile Include="Controllers\Det_AprobsController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
@@ -800,7 +806,9 @@
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\soporte.js" />
     <Content Include="Scripts\tableHeadFixer.js" />
+    <Content Include="Scripts\ValidarDecimalesTP.js" />
     <Content Include="Scripts\ValidarEdC.js" />
+    <Content Include="Scripts\ValidarImpuestos.js" />
     <Content Include="Scripts\ValidarLeyenda.js" />
     <Content Include="Scripts\ValidarNumero.js" />
     <Content Include="Scripts\ValidarProv.js" />
@@ -867,8 +875,8 @@
     <Content Include="Views\Contacto\Details.cshtml" />
     <Content Include="Views\Contacto\Edit.cshtml" />
     <Content Include="Views\Contacto\Index.cshtml" />
-    <Content Include="Views\Impuesto\Create.cshtml" />
-    <Content Include="Views\Impuesto\Index.cshtml" />
+    <Content Include="Views\Impuestos\Create.cshtml" />
+    <Content Include="Views\Impuestos\Index.cshtml" />
     <Content Include="Views\Pais\Create.cshtml" />
     <Content Include="Views\Pais\Delete.cshtml" />
     <Content Include="Views\Pais\Details.cshtml" />
@@ -961,6 +969,32 @@
     <Content Include="Views\Correos\Delete.cshtml" />
     <Content Include="Views\Correos\Details.cshtml" />
     <Content Include="Views\Correos\Edit.cshtml" />
+    <Content Include="Views\GALL\Index.cshtml" />
+    <Content Include="Views\GALL\Details.cshtml" />
+    <Content Include="Views\GALL\Edit.cshtml" />
+    <Content Include="Views\Iimpuesto\Index.cshtml" />
+    <Content Include="Views\Iimpuesto\Create.cshtml" />
+    <Content Include="Views\Iimpuesto\Delete.cshtml" />
+    <Content Include="Views\Iimpuesto\Details.cshtml" />
+    <Content Include="Views\Iimpuesto\Edit.cshtml" />
+    <Content Include="Views\Impuestos\Delete.cshtml" />
+    <Content Include="Views\Impuestos\Details.cshtml" />
+    <Content Include="Views\Impuestos\Edit.cshtml" />
+    <Content Include="Views\Ppag\Index.cshtml" />
+    <Content Include="Views\Ppag\Create.cshtml" />
+    <Content Include="Views\Ppag\Delete.cshtml" />
+    <Content Include="Views\Ppag\Details.cshtml" />
+    <Content Include="Views\Ppag\Edit.cshtml" />
+    <Content Include="Views\Taxeoh\Index.cshtml" />
+    <Content Include="Views\Taxeoh\Create.cshtml" />
+    <Content Include="Views\Taxeoh\Delete.cshtml" />
+    <Content Include="Views\Taxeoh\Details.cshtml" />
+    <Content Include="Views\Taxeoh\Edit.cshtml" />
+    <Content Include="Views\Taxeop\Index.cshtml" />
+    <Content Include="Views\Taxeop\Create.cshtml" />
+    <Content Include="Views\Taxeop\Delete.cshtml" />
+    <Content Include="Views\Taxeop\Details.cshtml" />
+    <Content Include="Views\Taxeop\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

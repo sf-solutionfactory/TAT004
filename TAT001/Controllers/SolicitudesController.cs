@@ -2356,24 +2356,649 @@ namespace TAT001.Controllers
         }
 
         // GET: Solicitudes/Edit/5
-        public ActionResult Edit(decimal id)
+
+        // GET: Solicitudes/Create
+        [HttpGet]
+        public ActionResult Edit(string id)
         {
-            if (id == 0)
+
+            Models.PresupuestoModels carga = new Models.PresupuestoModels();
+            ViewBag.ultMod = carga.consultarUCarga();
+
+            string dates = DateTime.Now.ToString("dd/MM/yyyy");
+            DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
+                                        "dd/MM/yyyy",
+                                        System.Globalization.CultureInfo.InvariantCulture,
+                                        System.Globalization.DateTimeStyles.None);
+
+            var relacionada_neg = "";
+            var relacionada_dis = "";
+            List<TSOLT_MODBD> tsols_valbd = new List<TSOLT_MODBD>();//RSG 13.06.2018
+
+            DOCUMENTO d = new DOCUMENTO();
+            string errorString = "";
+            int pagina = 202; //ID EN BASE DE DATOS
+            String res = "";//B20180611
+            using (TAT001Entities db = new TAT001Entities())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
-            if (dOCUMENTO == null)
+                string p = "";
+                string u = User.Identity.Name;
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                List<TREVERSAT> ldocr = new List<TREVERSAT>();
+                decimal rel = 0;
+                try
+                {
+                    if (id == null || id.Equals(""))
+                    {
+                        throw new Exception();
+                    }
+                    rel = Convert.ToDecimal(id);
+                    ViewBag.relacionada = "prelacionada";
+                    ViewBag.relacionadan = rel + "";
+
+                }
+                catch
+                {
+                    rel = 0;
+                    ViewBag.relacionada = "";
+                    ViewBag.relacionadan = "";
+                }
+
+                //Obtener los valores de tsols
+                List<TSOL> tsols_val = new List<TSOL>();
+                //List<TSOLT_MODBD> tsols_valbd = new List<TSOLT_MODBD>();//RSG 13.06.2018
+                try
+                {
+                    tsols_val = db.TSOLs.ToList();
+                    tsols_valbd = tsols_val.Select(tsv => new TSOLT_MODBD
+                    {
+                        ID = tsv.ID,
+                        FACTURA = tsv.FACTURA
+                    }).ToList();
+                }
+                catch (Exception e)
+                {
+
+                }
+                //var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);//RSG 13.06.2018
+                //ViewBag.TSOL_VALUES = tsols_valbdjs;
+
+                //Validar si es una reversa
+                string tsol = "";
+                string isrn = "";
+                string isr = "";
+                var freversa = (dynamic)null;
+                try
+                {
+                    if (tsol == null || tsol.Equals(""))
+                    {
+                        throw new Exception();
+                    }
+                    TSOL ts = tsols_val.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
+                    if (ts != null)
+                    {
+                        isrn = "X";
+                        isr = "preversa";
+                        freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        //Obtener los tipos de reversas
+                        try
+                        {
+                            //ldocr = db.TREVERSAs.Where(t => t.ACTIVO == true)
+                            //    .Join(
+                            //    db.TREVERSATs.Where(tt => tt.SPRAS_ID == user.SPRAS_ID),
+                            //    t => t.ID,
+                            //    tt => tt.TREVERSA_ID,
+                            //    (t, tt) => new TREVERSAT
+                            //    {
+                            //        SPRAS_ID = tt.SPRAS_ID,
+                            //        TREVERSA_ID = tt.TREVERSA_ID,
+                            //        TXT100 = tt.TXT100
+                            //    }).ToList();
+                            //ldocr = db.TREVERSATs.Where(tt => tt.SPRAS_ID == user.SPRAS_ID).ToList();
+                            ldocr = db.TREVERSATs.Where(a => a.TREVERSA.ACTIVO == true && a.SPRAS_ID == user.SPRAS_ID).ToList();
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    isrn = "";
+                    isr = "";
+                    freversa = "";
+                }
+
+                ViewBag.reversa = isr;
+                ViewBag.reversan = isrn;
+                ViewBag.FECHAD_REV = freversa;
+                ViewBag.TREVERSA = new SelectList(ldocr, "TREVERSA_ID", "TXT100");
+
+                if (rel == 0)
+                {
+                    try//RSG 15.05.2018
+                    {
+                        p = Session["pais"].ToString();
+                        ViewBag.pais = p + ".png";
+                    }
+                    catch
+                    {
+                        //ViewBag.pais = "mx.png";
+                        return RedirectToAction("Pais", "Home");//
+                    }
+                }
+
+                Session["spras"] = user.SPRAS_ID;
+
+                List<TSOLT_MOD> list_sol = new List<TSOLT_MOD>();
+                //tipo de solicitud
+                if (ViewBag.reversa == "preversa")
+                {
+                    list_sol = tsols_val.Where(sol => sol.TSOLR == null)
+                                        .Join(
+                                        db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
+                                        sol => sol.ID,
+                                        solt => solt.TSOL_ID,
+                                        (sol, solt) => new TSOLT_MOD
+                                        {
+                                            SPRAS_ID = solt.SPRAS_ID,
+                                            TSOL_ID = solt.TSOL_ID,
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                        })
+                                    .ToList();
+                }
+                else
+                {
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
+                                        .Join(
+                                        db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
+                                        sol => sol.ID,
+                                        solt => solt.TSOL_ID,
+                                        (sol, solt) => new TSOLT_MOD
+                                        {
+                                            SPRAS_ID = solt.SPRAS_ID,
+                                            TSOL_ID = solt.TSOL_ID,
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                        })
+                                    .ToList();
+                }
+
+
+
+                //Obtener los documentos relacionados
+                List<DOCUMENTO> docsrel = new List<DOCUMENTO>();
+
+                SOCIEDAD id_bukrs = new SOCIEDAD();
+                var id_pais = new PAI();
+                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
+
+                List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
+                //Grupos de solicitud
+                list_grupo = db.GALLs.Where(g => g.ACTIVO == true)
+                                .Join(
+                                db.GALLTs.Where(gt => gt.SPRAS_ID == user.SPRAS_ID),
+                                g => g.ID,
+                                gt => gt.GALL_ID,
+                                (g, gt) => new GALL_MOD
+                                {
+                                    SPRAS_ID = gt.SPRAS_ID,
+                                    GALL_ID = gt.GALL_ID,
+                                    TEXT = g.ID + " " + gt.TXT50
+                                }).ToList();
+                //clasificación
+                //MGC B20180611
+                List<TALLT_MOD> id_clas = new List<TALLT_MOD>();
+                id_clas = db.TALLs.Where(t => t.ACTIVO == true)
+                                .Join(
+                                db.TALLTs.Where(tallt => tallt.SPRAS_ID == user.SPRAS_ID),
+                                tall => tall.ID,
+                                tallt => tallt.TALL_ID,
+                                (tall, tallt) => new TALLT_MOD
+                                {
+                                    SPRAS_ID = tallt.SPRAS_ID,
+                                    TALL_ID = tallt.TALL_ID,
+                                    TXT50 = tallt.TXT50
+                                })
+                            .ToList();
+
+                List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
+                if (rel > 0)
+                {
+                    d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
+                    tsol = d.TSOL_ID;
+                    docsrel = db.DOCUMENTOes.Where(docr => docr.DOCUMENTO_REF == rel).ToList();
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
+                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(d.PAIS_ID)).FirstOrDefault();//RSG 15.05.2018
+                    d.DOCUMENTO_REF = rel;
+                    relacionada_neg = d.TIPO_TECNICO;
+                    ViewBag.TSOL_ANT = d.TSOL_ID;
+
+                    if (d != null)
+                    {
+
+                        d.TSOL_ID = tsol;
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
+                        ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
+                        ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50", selectedValue: d.TALL_ID); //B20180618 v1 MGC 2018.06.18
+                        TSOLT_MOD tsmod = new TSOLT_MOD();
+                        try
+                        {
+                            tsmod = list_sol.Where(ids => ids.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();
+
+                        }
+                        catch
+                        {
+                            tsmod.TEXT = "";
+                        }
+                        ViewBag.TSOL_IDI = tsmod.TEXT.ToString();
+                        TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(ids => ids.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
+                        ViewBag.GALL_IDI = gall_mod.TEXT;
+                        ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
+                        ViewBag.TALL_IDI = id_clas.Where(c => c.TALL_ID == d.TALL_ID).FirstOrDefault().TXT50; //B20180618 v1 MGC 2018.06.18
+                        archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
+
+                        List<DOCUMENTOP> docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == d.NUM_DOC).ToList();//Documentos que se obtienen de la provisión
+                        //List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();//MGC B20180611
+
+                        List<DOCUMENTOM> docml = new List<DOCUMENTOM>();//MGC B20180611----------------------------
+                        decimal totalcatrel = 0;//MGC B20180611
+                        if (docpl.Count > 0)
+                        {
+                            docml = db.DOCUMENTOMs.Where(docm => docm.NUM_DOC == d.NUM_DOC).ToList();
+                        }
+
+                        List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();
+                        List<DOCUMENTOM> docsrelm = new List<DOCUMENTOM>();//MGC B20180611----------------------------
+                        //Obtener los documentos de la relacionada
+                        if (docsrel.Count > 0)
+                        {
+                            docsrelp = docsrel
+                                .Join(
+                                db.DOCUMENTOPs,
+                                docsl => docsl.NUM_DOC,
+                                docspl => docspl.NUM_DOC,
+                                (docsl, docspl) => new DOCUMENTOP
+                                {
+                                    NUM_DOC = docspl.NUM_DOC,
+                                    POS = docspl.POS,
+                                    MATNR = docspl.MATNR,
+                                    MATKL = docspl.MATKL,
+                                    CANTIDAD = docspl.CANTIDAD,
+                                    MONTO = docspl.MONTO,
+                                    PORC_APOYO = docspl.PORC_APOYO,
+                                    MONTO_APOYO = docspl.MONTO_APOYO,
+                                    PRECIO_SUG = docspl.PRECIO_SUG,
+                                    VOLUMEN_EST = docspl.VOLUMEN_EST,
+                                    VOLUMEN_REAL = docspl.VOLUMEN_REAL,
+                                    APOYO_REAL = docspl.APOYO_REAL,
+                                    APOYO_EST = docspl.APOYO_EST,
+                                    VIGENCIA_DE = docspl.VIGENCIA_DE,
+                                    VIGENCIA_AL = docspl.VIGENCIA_AL
+                                }).ToList();
+
+                            //MGC B20180611 Obtener los documentos en caso de distribución por categoría
+                            if (docsrelp.Count > 0)
+                            {
+                                docsrelm = docsrelp
+                                    .Join(
+                                    db.DOCUMENTOMs,
+                                    docspl => docspl.NUM_DOC,
+                                    docsml => docsml.NUM_DOC,
+                                    (docspl, docsml) => new DOCUMENTOM
+                                    {
+                                        NUM_DOC = docsml.NUM_DOC,
+                                        POS_ID = docsml.POS_ID,
+                                        POS = docsml.POS,
+                                        MATNR = docsml.MATNR,
+                                        PORC_APOYO = docsml.PORC_APOYO,
+                                        APOYO_EST = docsml.APOYO_EST,
+                                        APOYO_REAL = docsml.APOYO_REAL,
+                                        VIGENCIA_DE = docsml.VIGENCIA_DE,
+                                        VIGENCIA_A = docsml.VIGENCIA_A
+                                    }).ToList();
+                            }
+
+                        }
+                        d.NUM_DOC = 0;
+                        List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
+                        var dis = "";
+                        for (int j = 0; j < docpl.Count; j++)
+                        {
+                            try
+                            {
+                                //Documentos de la provisión
+                                DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
+                                docP.NUM_DOC = d.NUM_DOC;
+                                docP.POS = docpl[j].POS;
+                                docP.MATNR = docpl[j].MATNR;
+                                if (j == 0 && docP.MATNR == "")
+                                {
+                                    relacionada_dis = "C";
+                                }
+                                docP.MATKL = docpl[j].MATKL;
+                                docP.MATKL_ID = docpl[j].MATKL;
+                                docP.CANTIDAD = 1;
+                                docP.MONTO = docpl[j].MONTO;
+                                docP.PORC_APOYO = docpl[j].PORC_APOYO;
+                                docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
+                                docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
+                                docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                docP.APOYO_EST = docpl[j].APOYO_EST;
+                                docP.APOYO_REAL = docpl[j].APOYO_REAL;
+
+                                //Verificar si hay materiales en las relacionadas
+                                if (docsrelp.Count > 0)
+                                {
+                                    List<DOCUMENTOP> docrel = new List<DOCUMENTOP>();
+
+                                    if (docP.MATNR != null && docP.MATNR != "")
+                                    {
+                                        docrel = docsrelp.Where(docrell => docrell.MATNR == docP.MATNR).ToList();
+                                    }
+                                    else
+                                    {
+                                        docrel = docsrelp.Where(docrell => docrell.MATKL == docP.MATKL_ID).ToList();
+                                        dis = "C";
+                                    }
+
+                                    for (int k = 0; k < docrel.Count; k++)
+                                    {
+                                        //Relacionada se obtiene el 
+                                        decimal docr_vr = Convert.ToDecimal(docrel[k].VOLUMEN_REAL);
+                                        decimal docr_ar = Convert.ToDecimal(docrel[k].APOYO_REAL);
+
+                                        docP.VOLUMEN_EST -= docr_vr;
+                                        docP.APOYO_EST -= docr_ar;
+
+                                        if (dis == "C")
+                                        {
+                                            totalcatrel += Convert.ToDecimal(docrel[k].APOYO_REAL); //MGC B20180611
+                                            //decimal docr_vr = Convert.ToDecimal(docrel[k].);
+                                            //decimal docr_ar = Convert.ToDecimal(docrel[k].APOYO_REAL);
+                                        }
+
+                                    }
+                                }
+
+                                //Siempre tiene que ser igual a 0
+                                if (docP.VOLUMEN_EST < 0)
+                                {
+                                    docP.VOLUMEN_EST = 0;
+                                }
+                                if (docP.APOYO_EST < 0)
+                                {
+                                    docP.APOYO_EST = 0;
+                                }
+
+                                docP.MATNR = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
+                                docsp.Add(docP);
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+                        //MGC B20180611 Obtener las categorias con el detalle de cada material
+                        if (docml.Count > 0)
+                        {
+                            res = grupoMaterialesRel(docpl, docml);
+                        }
+
+                        //Restar el valor del documento menos los relacionados
+                        d.MONTO_DOC_MD = d.MONTO_DOC_MD - totalcatrel;//MGC B20180611
+
+                        d.DOCUMENTOP = docsp;
+                    }
+                }
+                else
+                {
+                    ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
+                    ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
+                    ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
+                    ViewBag.TSOL_IDI = "";
+                    ViewBag.GALL_IDI = "";
+                    ViewBag.TALL_IDI = ""; //B20180618 v1 MGC 2018.06.18
+                    //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
+                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
+                    ViewBag.TSOL_ANT = "";
+                }
+
+                ViewBag.files = archivos;
+
+                //Select clasificación
+                //var id_clas = db.TALLs.Where(t => t.ACTIVO == true)
+                //                .Join(
+                //                db.TALLTs.Where(tallt => tallt.SPRAS_ID == user.SPRAS_ID),
+                //                tall => tall.ID,
+                //                tallt => tallt.TALL_ID,
+                //                (tall, tallt) => tallt)
+                //            .ToList();
+
+                //List<TAT001.Entities.GALL> id_clas = new List<TAT001.Entities.GALL>();//MGC B20180611
+                //ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
+
+                //Datos del país
+                //var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();//RSG 15.05.2018
+
+                var id_states = (from st in db.STATES
+                                 join co in db.COUNTRIES
+                                 on st.COUNTRY_ID equals co.ID
+                                 where co.SORTNAME.Equals(id_pais.LAND)
+                                 select new
+                                 {
+                                     st.ID,
+                                     st.NAME,
+                                     st.COUNTRY_ID
+                                 }).ToList();
+
+
+
+                List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
+
+                ViewBag.SOCIEDAD_ID = id_bukrs;
+                ViewBag.PAIS_ID = id_pais;
+                ViewBag.STATE_ID = "";// new SelectList(id_states, "ID", dataTextField: "NAME");
+                ViewBag.CITY_ID = "";// new SelectList(id_city, "ID", dataTextField: "NAME");
+                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS); //Duda si cambia en la relacionada
+
+                //Información del cliente
+                var id_clientes = db.CLIENTEs.Where(c => c.LAND.Equals(p) && c.ACTIVO == true).ToList();
+
+                ViewBag.PAYER_ID = new SelectList(id_clientes, "KUNNR", dataTextField: "NAME1");
+
+                //Información de categorías
+                var id_cat = db.CATEGORIAs.Where(c => c.ACTIVO == true)
+                                .Join(
+                                db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                                c => c.ID,
+                                ct => ct.CATEGORIA_ID,
+                                (c, ct) => new
+                                {
+                                    ct.CATEGORIA_ID,
+                                    TEXT = ct.TXT50
+                                }).ToList();
+
+                id_cat.RemoveRange(0, id_cat.Count);//RSG 28.05.2018
+                ViewBag.CATEGORIA_ID = new SelectList(id_cat, "CATEGORIA_ID", "TEXT");
+                List<TAT001.Entities.CITy> id_cityy = new List<TAT001.Entities.CITy>();
+                ViewBag.BASE_ID = new SelectList(id_cityy, "CATEGORIA_ID", "TEXT");
+
+                d.SOCIEDAD_ID = id_bukrs.BUKRS;
+                d.PAIS_ID = id_pais.LAND;//RSG 18.05.2018
+                if (rel > 0)//RSG 20.06.2018
+                {
+                    ViewBag.pais = d.PAIS_ID + ".png";
+                }
+                d.MONEDA_ID = id_bukrs.WAERS;
+                var date = DateTime.Now.Date;
+                TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO();
+                try
+                {
+                    tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();
+                    if (tcambio == null)
+                    {
+                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);
+                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();
+                    }
+                    decimal con = Convert.ToDecimal(tcambio.UKURS);
+                    var cons = con.ToString("0.##");
+
+                    ViewBag.tcambio = cons;
+                }
+                catch (Exception e)
+                {
+                    errorString = e.Message + "detail: conversion " + id_bukrs.WAERS + " to " + "USD" + " in date " + DateTime.Now.Date;
+                    ViewBag.tcambio = "";
+                }
+
+
+            }//RSG 13.06.2018
+
+            d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
+            d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
+
+            d.FECHAD = theTime;
+            ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            ViewBag.PERIODO = d.PERIODO;
+            ViewBag.EJERCICIO = d.EJERCICIO;
+            ViewBag.STCD1 = "";
+            ViewBag.PARVW = "";
+            ViewBag.UNAFACTURA = "false";
+            ViewBag.MONTO_DOC_ML2 = "";
+            ViewBag.error = errorString;
+            ViewBag.NAME1 = "";
+            ViewBag.notas_soporte = "";
+
+            //Prueba para agregar soporte a la tabla ahora información
+
+            //DOCUMENTOF DF1 = new DOCUMENTOF();
+
+            //DF1.POS = 1;
+            //DF1.FACTURA = "FF1";
+            //DF1.PROVEEDOR = "PP1";
+            //DF1.FACTURAK = "FFK1";
+
+            //DOCUMENTOF DF2 = new DOCUMENTOF();
+
+            //DF2.POS = 2;
+            //DF2.FACTURA = "FF2";
+            //DF2.PROVEEDOR = "1000000001";
+            //DF2.FACTURAK = "FFK2";
+
+            //List<DOCUMENTOF> LD = new List<DOCUMENTOF>() { DF1, DF2 };
+
+            //d.DOCUMENTOF = LD;
+
+            ViewBag.SEL_NEG = relacionada_neg;
+            ViewBag.SEL_DIS = relacionada_dis;
+            ViewBag.BMONTO_APOYO = "";
+            ViewBag.CATMAT = res; //B20180618 v1 MGC 2018.06.18
+            ViewBag.MONTO_DIS = "";
+
+            //----------------------------RSG 18.05.2018
+            string spras = Session["spras"].ToString();
+            ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
+            List<string> anios = new List<string>();
+            int mas = 10;
+            for (int i = 0; i < mas; i++)
             {
-                return HttpNotFound();
+                anios.Add((DateTime.Now.Year + i).ToString());
             }
-            ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);
-            ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION", dOCUMENTO.TSOL_ID);
-            ViewBag.USUARIOC_ID = new SelectList(db.USUARIOs, "ID", "PASS", dOCUMENTO.USUARIOC_ID);
-            ViewBag.VKORG = new SelectList(db.CLIENTEs, "VKORG", "NAME1", dOCUMENTO.VKORG);
-            ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "SPRAS", dOCUMENTO.PAIS_ID);
-            ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT", dOCUMENTO.SOCIEDAD_ID);
-            return View(dOCUMENTO);
+            ViewBag.ANIOS = new SelectList(anios, DateTime.Now.Year.ToString());
+            d.SOCIEDAD = db.SOCIEDADs.Find(d.SOCIEDAD_ID);
+            //----------------------------RSG 18.05.2018
+            //----------------------------RSG 12.06.2018
+            if (id != null)
+            {
+                decimal numPadre = decimal.Parse(id);
+                DOCUMENTO padre = db.DOCUMENTOes.Find(numPadre);
+                if (padre != null)
+                {
+                    ViewBag.original = padre.MONTO_DOC_MD;
+                    List<DOCUMENTO> dd = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF == padre.NUM_DOC).ToList();
+                    ViewBag.sumaRel = decimal.Parse("0.00"); ;
+                    foreach (DOCUMENTO dos in dd)
+                    {
+                        ViewBag.sumaRel += (decimal)dos.MONTO_DOC_MD;
+                    }
+                }
+            }
+            //----------------------------RSG 12.06.2018
+
+
+            //RSG 13.06.2018--------------------------------------------------------
+            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= DateTime.Now & a.FECHAF >= DateTime.Now & a.ACTIVO == true).ToList();
+            if (del.Count > 0)
+            {
+
+                List<Delegados> users = new List<Delegados>();
+                List<PAI> pp = (from P in db.PAIS
+                                join C in db.CREADOR2 on P.LAND equals C.LAND
+                                where P.ACTIVO == true
+                                & C.ID == User.Identity.Name & C.ACTIVO == true
+                                select P).ToList();
+
+                List<Delegados> delegados = new List<Delegados>();
+                foreach (DELEGAR de in del)
+                {
+                    var pd = (from P in db.PAIS
+                              join C in db.CREADOR2 on P.LAND equals C.LAND
+                              where P.ACTIVO == true
+                              & C.ID == de.USUARIO_ID & C.ACTIVO == true
+                              select P).ToList();
+                    Delegados delegado = new Delegados();
+                    delegado.usuario = de.USUARIO_ID;
+                    delegado.nombre = de.USUARIO_ID + " - " + de.USUARIO.NOMBRE + " " + de.USUARIO.APELLIDO_P + " " + de.USUARIO.APELLIDO_M;
+                    delegado.LISTA = pd;
+                    if (delegado.LISTA.Count > 0)
+                        delegados.Add(delegado);
+                }
+                PAI pq = pp.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                if (pq != null)
+                {
+                    Delegados de = new Delegados();
+                    de.usuario = User.Identity.Name;
+                    USUARIO uu = db.USUARIOs.Find(User.Identity.Name);
+                    de.nombre = User.Identity.Name + " - " + uu.NOMBRE + " " + uu.APELLIDO_P + " " + uu.APELLIDO_M;
+                    de.LISTA = new List<PAI>();
+                    de.LISTA.Add(pq);
+                    users.Add(de);
+                }
+                foreach (Delegados de in delegados)
+                {
+                    PAI pqq = de.LISTA.Where(a => a.LAND == d.PAIS_ID).FirstOrDefault();
+                    if (pqq != null)
+                        users.Add(de);
+                }
+
+                ViewBag.USUARIOC_ID = new SelectList(users, "usuario", "nombre", users[0].usuario);
+            }
+
+            var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+            ViewBag.TSOL_VALUES = tsols_valbdjs;
+            List<FACTURASCONF> ffc = db.FACTURASCONFs.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID)).ToList();
+            foreach (var item in tsols_valbd)
+            {
+                FACTURASCONF fc = ffc.Where(a => a.TSOL.Equals(item.ID)).FirstOrDefault();
+                if (fc == null)
+                    item.FACTURA = false;
+            }
+            ViewBag.TSOL_VALUES2 = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
+            //RSG 13.06.2018--------------------------------------------------------
+            //}//RSG 13.06.2018--------------------------------------------------------
+            return View(d);
         }
 
         // POST: Solicitudes/Edit/5
@@ -2381,12 +3006,21 @@ namespace TAT001.Controllers
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "NUM_DOC,TSOL_ID,TALL_ID,SOCIEDAD_ID,PAIS_ID,PERIODO,EJERCICIO,TIPO_TECNICO,TIPO_RECURRENTE,CANTIDAD_EV,USUARIOC_ID,FECHAD,FECHAC,ESTATUS,ESTATUS_C,ESTATUS_SAP,ESTATUS_WF,DOCUMENTO_REF,NOTAS,MONTO_DOC_MD,MONTO_FIJO_MD,MONTO_BASE_GS_PCT_MD,MONTO_BASE_NS_PCT_MD,MONTO_DOC_ML,MONTO_FIJO_ML,MONTO_BASE_GS_PCT_ML,MONTO_BASE_NS_PCT_ML,MONTO_DOC_ML2,MONTO_FIJO_ML2,MONTO_BASE_GS_PCT_ML2,MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID,MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL,VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL,MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2")] DOCUMENTO dOCUMENTO)
+        public ActionResult Edit([Bind(Include = "NUM_DOC,TSOL_ID,TALL_ID,SOCIEDAD_ID,PAIS_ID,ESTADO,CIUDAD,PERIODO," +
+            "EJERCICIO,TIPO_TECNICO,TIPO_RECURRENTE,CANTIDAD_EV,USUARIOC_ID,FECHAD,FECHAC,ESTATUS,ESTATUS_C,ESTATUS_SAP," +
+            "ESTATUS_WF,DOCUMENTO_REF,NOTAS,MONTO_DOC_MD,MONTO_FIJO_MD,MONTO_BASE_GS_PCT_MD,MONTO_BASE_NS_PCT_MD,MONTO_DOC_ML," +
+            "MONTO_FIJO_ML,MONTO_BASE_GS_PCT_ML,MONTO_BASE_NS_PCT_ML,MONTO_DOC_ML2,MONTO_FIJO_ML2,MONTO_BASE_GS_PCT_ML2," +
+            "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
+            "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
+            "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
+                IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(dOCUMENTO).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(dOCUMENTO).State = EntityState.Modified;
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);

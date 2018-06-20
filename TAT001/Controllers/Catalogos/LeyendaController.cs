@@ -34,11 +34,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -69,11 +69,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -84,7 +84,8 @@ namespace TAT001.Controllers.Catalogos
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             LEYENDA lEYENDA = db.LEYENDAs.Where(i => i.ID == id).FirstOrDefault();
-            ViewBag.ac = lEYENDA.ACTIVO;
+            ViewBag.ed = lEYENDA.EDITABLE;
+            ViewBag.ob = lEYENDA.OBLIGATORIA;
             if (lEYENDA == null)
             {
                 return HttpNotFound();
@@ -112,11 +113,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -173,11 +174,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -267,11 +268,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -282,6 +283,8 @@ namespace TAT001.Controllers.Catalogos
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             LEYENDA lEYENDA = db.LEYENDAs.Where(i => i.ID == id).FirstOrDefault();
+            ViewBag.ed = lEYENDA.EDITABLE;
+            ViewBag.ob = lEYENDA.OBLIGATORIA;
             ViewBag.ac = lEYENDA.ACTIVO;
             if (lEYENDA == null)
             {

@@ -36,17 +36,17 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
                 ViewBag.lan = user.SPRAS_ID;
             }
-            return View(db.TX_TNOTA.ToList());
+            return View(db.TX_TNOTA.Where(a => a.ACTIVO == true).ToList());
         }
 
         // GET: Txn/Details/5
@@ -70,11 +70,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -114,11 +114,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -184,11 +184,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -229,7 +229,8 @@ namespace TAT001.Controllers.Catalogos
                         db.Entry(txnt).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         var ex = e.ToString();
                     }
                 }
@@ -360,11 +361,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -375,6 +376,7 @@ namespace TAT001.Controllers.Catalogos
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TX_TNOTA tX_TNOTA = db.TX_TNOTA.Find(id);
+            ViewBag.SPRAS = db.SPRAS.ToList();
             if (tX_TNOTA == null)
             {
                 return HttpNotFound();
@@ -415,11 +417,11 @@ namespace TAT001.Controllers.Catalogos
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -431,7 +433,7 @@ namespace TAT001.Controllers.Catalogos
         [HttpPost]
         public FileResult Descargar()
         {
-            var TXN = db.TX_TNOTA.ToList();
+            var TXN = db.TX_TNOTA.Where(a => a.ACTIVO == true).ToList();
             generarExcelHome(TXN, Server.MapPath("~/pdfTemp/"));
             return File(Server.MapPath("~/pdfTemp/DocTxn" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTxn" + DateTime.Now.ToShortDateString() + ".xlsx");
         }

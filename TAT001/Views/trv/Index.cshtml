@@ -67,7 +67,7 @@
                     @Html.DisplayFor(modelItem => item.USUARIOC_ID)
                 </td>
                 <td style="text-align:left;">
-                    @Html.DisplayFor(modelItem => item.FECHAC)
+                    @item.FECHAC.Value.Year/@item.FECHAC.Value.Month/@item.FECHAC.Value.Day
                 </td>
                 <td>
                     <a data-form-method="post" href="@Url.Action("Edit", "Trv", new { id = item.ID })">
@@ -75,6 +75,9 @@
                     </a>
                     <a data-form-method="post" href="@Url.Action("Details", "Trv", new { id = item.ID })">
                         <i class='material-icons blue-text'>search</i>
+                    </a>
+                    <a data-form-method="post" href="@Url.Action("Delete", "Trv", new { id = item.ID })">
+                        <i class='material-icons red-text'>delete</i>
                     </a>
                 </td>
             </tr>

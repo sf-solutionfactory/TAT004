@@ -39,11 +39,11 @@
 <table class="table mdl-data-table striped" id="table" style="width:100%;">
     <thead>
         <tr>
-            <th id="lblLey">
-                @Html.DisplayNameFor(model => model.LEYENDA1)
+            <th id="lblLey" style="text-align:left;">
+                @Html.DisplayNameFor(model => model.ID)
             </th>
 
-            <th id="lblPais">
+            <th id="lblPais" style="text-align:left;">
                 @Html.DisplayNameFor(model => model.PAI.LAND)
             </th>
             <th></th>
@@ -53,10 +53,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LEYENDA1)
+                <td  style="text-align:left;">
+                    @Html.DisplayFor(modelItem => item.ID)
                 </td>
-                <td>
+                <td  style="text-align:left;">
                     @Html.DisplayFor(modelItem => item.PAI.LAND)
                 </td>
                 <td>

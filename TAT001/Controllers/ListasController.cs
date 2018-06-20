@@ -93,24 +93,31 @@ namespace TAT001.Controllers
             TAT001Entities db = new TAT001Entities();
             int p = Int16.Parse(puesto);
             DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.PUESTOC_ID == p).OrderByDescending(a => a.VERSION).FirstOrDefault();
-            var c = (from N in db.DET_APROBP
-                     join St in db.PUESTOTs
-                     on N.PUESTOA_ID equals St.PUESTO_ID
-                     where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
-                     //where N.BUKRS.Equals(bukrs) 
-                     select new { N.PUESTOA_ID.Value, St.TXT50 }).ToList();
-
-            TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.ACTIVO == true).FirstOrDefault();
-            if (tl != null)
+            if (dh != null)
             {
-                var col = (from St in db.PUESTOTs
-                           where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
-                           //where N.BUKRS.Equals(bukrs) 
-                           select new { Value = St.PUESTO_ID, St.TXT50 });
-                c.AddRange(col);
+                var c = (from N in db.DET_APROBP
+                         join St in db.PUESTOTs
+                         on N.PUESTOA_ID equals St.PUESTO_ID
+                         where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
+                         //where N.BUKRS.Equals(bukrs) 
+                         select new { N.PUESTOA_ID.Value, St.TXT50 }).ToList();
+
+                TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.ACTIVO == true).FirstOrDefault();
+                if (tl != null)
+                {
+                    var col = (from St in db.PUESTOTs
+                               where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
+                               //where N.BUKRS.Equals(bukrs) 
+                               select new { Value = St.PUESTO_ID, St.TXT50 });
+                    c.AddRange(col);
+                }
+                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                return cc;
             }
-            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
-            return cc;
+            else
+            {
+                return null;
+            }
         }
 
         [HttpGet]

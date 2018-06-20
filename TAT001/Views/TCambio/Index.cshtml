@@ -76,10 +76,10 @@
                     @Html.DisplayFor(modelItem => item.UKURS)
                 </td>
                 <td style="text-align:right;">
-                    <a data-form-method="post" href="@Url.Action("Edit", "TCambio", new { fcur = item.FCURR, tcur = item.TCURR, gd = item.GDATU, uku = item.UKURS })">
+                    <a data-form-method="post" href="@Url.Action("Edit", "TCambio", new { fcur = item.FCURR, tcur = item.TCURR, gd = item.GDATU})">
                         <i class='material-icons green-text'>edit</i>
                     </a>
-                    <a data-form-method="post" href="@Url.Action("Details", "TCambio", new { fcur = item.FCURR, tcur = item.TCURR, gd = item.GDATU, uku = item.UKURS })">
+                    <a data-form-method="post" href="@Url.Action("Details", "TCambio", new { fcur = item.FCURR, tcur = item.TCURR, gd = item.GDATU})">
                         <i class='material-icons blue-text'>search</i>
                     </a>
                 </td>

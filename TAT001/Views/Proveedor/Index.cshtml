@@ -75,7 +75,7 @@
                     @Html.DisplayFor(modelItem => item.PAIS_ID)
                 </td>
                 <td>
-                    <a data-form-method="post" href="@Url.Action("Edit", "Proveedor", new { id = item.ID, sc=item.SOCIEDAD_ID})">
+                    <a data-form-method="post" href="@Url.Action("Edit", "Proveedor", new { id = item.ID})">
                         <i class='material-icons green-text'>edit</i>
                     </a>
                     <a data-form-method="post" href="@Url.Action("Details", "Proveedor", new { id = item.ID})">

@@ -35,17 +35,17 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
             var cONFDIST_CAT = db.CONFDIST_CAT.Include(c => c.CAMPOZKE24).Include(c => c.SOCIEDAD);
-            return View(cONFDIST_CAT.ToList());
+            return View(cONFDIST_CAT.Where(a => a.ACTIVO == true).ToList());
         }
 
         // GET: ccat/Details/5
@@ -68,11 +68,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -111,11 +111,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -173,11 +173,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -211,11 +211,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -235,7 +235,7 @@ namespace TAT001.Controllers
             lstb.Add(false);
             ViewBag.CAMPO = new SelectList(db.CAMPOZKE24, "CAMPO", "CAMPO", cONFDIST_CAT.CAMPO);
             ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", cONFDIST_CAT.SOCIEDAD_ID);
-            ViewBag.bools = new SelectList(lstb);
+            ViewBag.bools = new SelectList(lstb, cONFDIST_CAT.PORC_AD);
             return View(cONFDIST_CAT);
         }
 
@@ -277,11 +277,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -315,11 +315,11 @@ namespace TAT001.Controllers
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".png";
+                    ViewBag.pais = p + ".svg";
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
+                    //ViewBag.pais = "mx.svg";
                     //return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
@@ -334,6 +334,7 @@ namespace TAT001.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.porcad = (cONFDIST_CAT.PORC_AD == true) ? "True" : "False";
             return View(cONFDIST_CAT);
         }
 
@@ -354,7 +355,7 @@ namespace TAT001.Controllers
         public FileResult Descargar()
         {
             var cONFDIST_CAT = db.CONFDIST_CAT.Include(c => c.CAMPOZKE24).Include(c => c.SOCIEDAD);
-            generarExcelHome(cONFDIST_CAT.ToList(), Server.MapPath("~/pdfTemp/"));
+            generarExcelHome(cONFDIST_CAT.Where(x => x.ACTIVO == true).ToList(), Server.MapPath("~/pdfTemp/"));
             return File(Server.MapPath("~/pdfTemp/DocCC" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocCC" + DateTime.Now.ToShortDateString() + ".xlsx");
         }
 
