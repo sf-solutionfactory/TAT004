@@ -3117,6 +3117,15 @@ function evalInfoTab(ret, e) {
         msg = 'Introduzca un email válido!';
         res = false;
     }
+     
+    //Facuras Add MGC B20180619 2018.06.20
+    var fact = ""; 
+    fact = evaluarInfoFacturas();
+    if (fact != "") {
+        msg = "";
+        msg = fact;
+        res = false;
+    }
 
     if (ret == true) {
         return res;
@@ -3373,6 +3382,141 @@ function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+//Add MGC B20180619 2018.06.20 Evaluar las facturas
+function evaluarInfoFacturas() {
+    var res = "";
+
+    //Saber si son varias facturas o una
+    var check = false;
+    if ($("#check_factura").is(':checked')) {
+        //Tabla con inputs
+        check = true;
+    }
+  
+    //Evaluar referencia a facturas 
+    var tsol_id = $('#tsol_id').val();
+    var mostrar = isFactura2(tsol_id);
+    if (mostrar) {
+        //La tabla debe de contener como mínimo un registro
+        var lengthT = $("table#table_sop tbody tr[role='row']").length;
+        if (lengthT > 0) {
+            //Evaluar los registros dentro de la tabla de referencia a facturas
+            //Los campos visibles deben de ser obligatorios
+            $("#table_sop > tbody  > tr[role='row']").each(function () {
+           
+                //Validar factura
+                if ($(this).find('td.FACTURA').length) {
+                    var fact = textval($(this), check, "FACTURA");
+                    res = valcolumn(fact, "FACTURA");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar fecha
+                if ($(this).find('td.FECHA').length) {
+                    var fecha = textval($(this), check, "FECHA");
+                    res = valcolumn(fecha, "FECHA");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar proveedor
+                if ($(this).find('td.PROVEEDOR').length) {
+                    var prov = textval($(this), check, "PROVEEDOR");
+                    res = valcolumn(prov, "PROVEEDOR");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar control
+                if ($(this).find('td.CONTROL').length) {
+                    var control = textval($(this), check, "CONTROL");
+                    res = valcolumn(control, "CONTROL");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar autorización
+                if ($(this).find('td.AUTORIZACION').length) {
+                    var aut = textval($(this), check, "AUTORIZACION");
+                    res = valcolumn(aut, "AUTORIZACION");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar vencimiento
+                if ($(this).find('td.VENCIMIENTO').length) {
+                    var ven = textval($(this), check, "VENCIMIENTO");
+                    res = valcolumn(ven, "VENCIMIENTO");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar facturak
+                if ($(this).find('td.FACTURAK').length) {
+                    var fk = textval($(this), check, "FACTURAK");
+                    res = valcolumn(fk, "FACTURAK");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar ejerciciok
+                if ($(this).find('td.EJERCICIOK').length) {
+                    var ek = textval($(this), check, "EJERCICIOK");
+                    res = valcolumn(ek, "EJERCICIOK");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar bill_doc
+                if ($(this).find('td.BILL_DOC').length) {
+                    var bd = textval($(this), check, "BILL_DOC");
+                    res = valcolumn(bd, "BILL_DOC");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //Validar belnr
+                if ($(this).find('td.BELNR').length) {
+                    var belnr = textval($(this), check, "BELNR");
+                    res = valcolumn(belnr, "BELNR");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+            });
+        } else {
+            res = "Referencia a facturas como mínimo un registro";
+        }
+    }
+
+    return res;
+}
+
+//Add MGC B20180619 2018.06.20 Evaluar la columna en el renglón
+function textval(tr, check, column) {
+    var val = "";
+    var rowcl = 'td.' + column;
+    //Obtener los valores como textos en la celda
+    if (!check) {
+        val = tr.find(rowcl).text();
+    } else {
+        //Obtener los valores como textos de los inputs
+        val = tr.find(rowcl + " input").val();
+    }
+    return val;
+}
+
+//Add MGC B20180619 2018.06.20 Evaluar el valor en el renglón
+function valcolumn(val, campo) {
+    var res = "";
+    if (val == "") {
+        res = "Error sin valor en el campo " + campo;
+    }
+    return res;
+}
+
 //Evaluar los elementos de tab_temp
 function evaluarTempTab() {
 
