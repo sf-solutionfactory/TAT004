@@ -748,6 +748,8 @@
     <Content Include="fonts\roboto\Roboto-Regular.woff2" />
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
+    <Content Include="images\expandl.png" />
+    <Content Include="images\expandm.png" />
     <Content Include="images\flags\1x1\as.svg" />
     <Content Include="images\flags\1x1\ec.svg" />
     <Content Include="images\flags\1x1\pa.svg" />
@@ -758,6 +760,8 @@
     <Content Include="images\flags\4x3\pa.svg" />
     <Content Include="images\flags\4x3\sg.svg" />
     <Content Include="images\flags\4x3\ve.svg" />
+    <Content Include="images\play.png" />
+    <Content Include="images\playb.png" />
     <Content Include="images\playb.svg" />
     <Content Include="images\play.svg" />
     <Content Include="images\expandm.svg" />
