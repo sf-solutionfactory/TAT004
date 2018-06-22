@@ -7,10 +7,11 @@
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
-<script src="~/Scripts/create.js"></script>
+<script src="~/Scripts/edit.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
+<script src="~/Scripts/descargar.js"></script><!--RSG 22.06.2018-->
 <script src="~/Scripts/ValidarNumero.js"></script>
 @if (ViewBag.error != "")
 {
@@ -136,9 +137,10 @@
     </style>
 
     <div class="div_right">
-        <a href="@Url.Action(" Index", "Home" )" class="btn btn-small">Cancelar</a>
+
+        <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
-            {*@
+        {*@
         <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         @*}*@
     </div>
@@ -908,34 +910,111 @@
                             </div>
                         </div>
                     }
-                    @{List<TAT001.Entities.DOCUMENTOA>
-                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                ;
-                        if (ViewBag.relacionadan != "" && archivos.Count > 0)
+                    <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
+                    @{
+                        List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+                        if (ViewBag.relacionadan != "" && archivo.Count > 0)
                         {
                             string[] nombrefile;
                             <div class="card-panel">
                                 <h5>Documentos de Soporte @ViewBag.relacionadan</h5>
                                 <div class="row" style="margin-bottom:0">
-                                    @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                                    @*@using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                                        {*@
+                                    @try
                                     {
-                                        try
+                                        foreach (TAT001.Models.Soporte item in ViewBag.soportes)
                                         {
-                                            for (int i = 0; i < archivos.Count; i++)
+                                            bool tiene = false;
+                                            for (int i = 0; i < archivo.Count; i++)
                                             {
-                                                nombrefile = archivos[i].PATH.Split('\\');
-                                                <div class="file-field input-field">
-                                                    <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
-                                                    <div class="file-path-wrapper">
-                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                if (item.TSOPORTE_ID == archivo[i].CLASE & archivo[i].ACTIVO)
+                                                {
+                                                    nombrefile = archivo[i].PATH.Split('\\');
+                                                    tiene = true;
+                                                    <div class="" id="desc-@item.TSOPORTE_ID">
+                                                        <div class="col s11">
+                                                            <div class="col s12">@item.TXT50</div>
+                                                            <div class="file-field input-field">
+                                                                <input type="hidden" id="desc-@i" value="@archivo[i].PATH" />
+                                                                <a id="lbl_cargara-@i" name="archivo" class="btn-small" style="float:left;" @*type="submit"*@ value="@archivo[i].PATH" onclick="descargar(this.id)">DESCARGAR</a>
+                                                                <div class="file-path-wrapper">
+                                                                    <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col s1" style="padding-top:19px;">
+                                                            <a href="#" class="red-text" id="elim-@item.TSOPORTE_ID" onclick="borraDescarga(this.id)">
+                                                                <i class="material-icons prefix">clear</i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col s11 hidden" id="sube-@item.TSOPORTE_ID">
+                                                        <div class="col s12">
+                                                            @item.TXT50
+                                                            @if (item.OBLIGATORIO)
+                                                            {
+                                                                <span>*</span>
+                                                            }
+                                                        </div>
+                                                        <input type="text" value="@item.TXT50" name="labels_soporte" hidden />
+                                                        <div class="file-field input-field">
+                                                            <div class="btn-small" style="float:left;">
+                                                                <span>Examinar</span>
+
+                                                                @if (item.OBLIGATORIO)
+                                                                {
+                                                                    <input class="file_soporte ne" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input class="file_soporte" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
+                                                                }
+                                                            </div>
+                                                            <div class="file-path-wrapper">
+                                                                <input class="file-path validate" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            if (!tiene)
+                                            {
+                                                <div class="col s11">
+                                                    <div class="col s12">
+                                                        @item.TXT50
+                                                        @if (item.OBLIGATORIO)
+                                                        {
+                                                            <span>*</span>
+                                                        }
+                                                    </div>
+                                                    <input type="text" value="@item.TXT50" name="labels_soporte" hidden />
+                                                    <div class="file-field input-field">
+                                                        <div class="btn-small" style="float:left;">
+                                                            <span>Examinar</span>
+
+                                                            @if (item.OBLIGATORIO)
+                                                            {
+                                                                <input class="file_soporte nec" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
+                                                            }
+                                                            else
+                                                            {
+                                                                <input class="file_soporte" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
+                                                            }
+
+                                                        </div>
+                                                        <div class="file-path-wrapper">
+                                                            <input class="file-path validate" type="text">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             }
                                         }
-                                        catch (Exception)
-                                        {
-                                        }
                                     }
+                                    catch (Exception e)
+                                    {
+                                    }
+                                    @*}*@
                                 </div>
                             </div>
                         }
@@ -977,7 +1056,7 @@
                                 <div class="col s12">
 
                                     <label name="labels_soporte2" hidden>Carta</label><label class="lbl_nec" hidden></label>
-                                    <input type="text" value="Reversa" name="labels_soporte" hidden />
+                                    <input type="text" value="Reversa" name="Sop" hidden />
                                     <div class="file-field input-field">
                                         <div class="btn-small" style="float:left;">
                                             <span>Examinar</span>
@@ -1766,3 +1845,44 @@
             }
         </script>
     }*@
+
+@{
+    List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
+    if (ViewBag.relacionadan != "" && archivos.Count > 0)
+    {
+        string[] nombrefile;
+        <div class="card-panel" style="display:none">
+            <h5>Documentos de Soporte @ViewBag.relacionadan</h5>
+            <div class="row" style="margin-bottom:0">
+                @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                {
+                    try
+                    {
+                        for (int i = 0; i < archivos.Count; i++)
+                        {
+
+                            nombrefile = archivos[i].PATH.Split('\\');
+                            <div class="col s11">
+                                <div class="file-field input-field">
+                                    <input type="hidden" id="desc-@i" value="@archivos[i].PATH" />
+                                    <button id="lbl_cargar-@i" name="archivo" class="btn-small" style="float:left;" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
+                                    <div class="file-path-wrapper">
+                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col s1" style="padding-top:19px;">
+                                <a href="#" class="red-text">
+                                    <i class="material-icons prefix">clear</i>
+                                </a>
+                            </div>
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            </div>
+        </div>
+    }
+}

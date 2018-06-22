@@ -201,9 +201,18 @@
                 {
                     <td></td>
                 }
-                <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
-                    @item.NUM_DOC
-                </td>
+                @if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.USUARIOC_ID)
+                {
+                    <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
+                        @item.NUM_DOC
+                    </td>
+                }
+                else
+                {
+                    <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                        @item.NUM_DOC
+                    </td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.SOCIEDAD_ID)
                 </td>
@@ -270,7 +279,8 @@
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_soporte">Pendiente soporte</div>
                     </td>
-                }                else if (item.ESTATUS_WF.Equals("T"))
+                }
+                else if (item.ESTATUS_WF.Equals("T"))
                 {
                     <td class="yellow darken-2 white-text">
                         <div class="lbl_tax">Pendiente Tax</div>

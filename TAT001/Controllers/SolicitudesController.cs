@@ -354,8 +354,8 @@ namespace TAT001.Controllers
                 }
                 else if (c.Equals("3"))//Rechazado
                 {
-                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
-                    //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
+                    //return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
                 }
                 else
                 {
@@ -1003,7 +1003,8 @@ namespace TAT001.Controllers
 
 
             //RSG 13.06.2018--------------------------------------------------------
-            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= DateTime.Now & a.FECHAF >= DateTime.Now & a.ACTIVO == true).ToList();
+            DateTime fecha = DateTime.Now.Date;
+            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
             if (del.Count > 0)
             {
 
@@ -3023,6 +3024,13 @@ namespace TAT001.Controllers
             }
             ViewBag.workflow = vbFl;
 
+            //string spras = Session["spras"].ToString();
+            ViewBag.soportes = (from C in db.CONSOPORTEs
+                                join T in db.TSOPORTETs
+                                on C.TSOPORTE_ID equals T.TSOPORTE_ID
+                                where C.TSOL_ID == d.TSOL_ID
+                                & T.SPRAS_ID == spras
+                                select new Soporte { TSOPORTE_ID = C.TSOPORTE_ID, OBLIGATORIO = C.OBLIGATORIO, TXT50 = T.TXT50 }).ToList();
 
             return View(d);
         }
@@ -3041,7 +3049,7 @@ namespace TAT001.Controllers
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
-                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat)
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat, string txt_sop_borr)
         {
             if (ModelState.IsValid)
             {
@@ -3071,11 +3079,11 @@ namespace TAT001.Controllers
                 ///////////////////Montos
                 //MONTO_DOC_MD
                 var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
-                dOCUMENTO.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
+                d.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
 
                 string errorString = "";
                 //Obtener el monto de la sociedad
-                dOCUMENTO.MONTO_DOC_ML = getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
+                d.MONTO_DOC_ML = getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(d.MONTO_DOC_MD), out errorString);
                 if (!errorString.Equals(""))
                 {
                     throw new Exception();
@@ -3083,19 +3091,19 @@ namespace TAT001.Controllers
 
                 //MONTO_DOC_ML2 
                 var MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
-                dOCUMENTO.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
+                d.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
 
                 //MONEDAL_ID moneda de la sociedad
-                dOCUMENTO.MONEDAL_ID = d.SOCIEDAD.WAERS;
+                d.MONEDAL_ID = d.SOCIEDAD.WAERS;
 
                 //MONEDAL2_ID moneda en USD
-                dOCUMENTO.MONEDAL2_ID = "USD";
+                d.MONEDAL2_ID = "USD";
 
                 //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                dOCUMENTO.TIPO_CAMBIOL = getUkurs(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
+                d.TIPO_CAMBIOL = getUkurs(d.SOCIEDAD.WAERS, d.MONEDA_ID, out errorString);
 
                 //Tipo cambio dolares TIPO_CAMBIOL2
-                dOCUMENTO.TIPO_CAMBIOL2 = getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
+                d.TIPO_CAMBIOL2 = getUkursUSD(d.MONEDA_ID, "USD", out errorString);
 
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
                 //Si la distribución es categoría se obtienen las categorías
@@ -3109,7 +3117,7 @@ namespace TAT001.Controllers
                         string cat = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID.ToString();
                         listcat.Add(cat);
                     }
-                    
+
                     listcatm = grupoMaterialesController(listcat, dOCUMENTO.VKORG, dOCUMENTO.SPART, dOCUMENTO.PAYER_ID, dOCUMENTO.SOCIEDAD_ID, out totalcats);
                 }
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
@@ -3394,7 +3402,7 @@ namespace TAT001.Controllers
                                             docM.POS = k + 1;
                                             docM.APOYO_REAL = apoyo_real;
                                             docM.APOYO_EST = apoyo_esti;
-                                            
+
                                             docP.DOCUMENTOMs.Add(docM);
                                             ////db.SaveChanges();//RSG
                                         }
@@ -3441,7 +3449,7 @@ namespace TAT001.Controllers
                 {
 
                 }
-                foreach(DOCUMENTOP dop in dOCUMENTO.DOCUMENTOPs)
+                foreach (DOCUMENTOP dop in dOCUMENTO.DOCUMENTOPs)
                 {
                     DOCUMENTOP dp = d.DOCUMENTOPs.Where(a => a.POS == dop.POS).FirstOrDefault();
                     if (dp != null)
@@ -3465,9 +3473,9 @@ namespace TAT001.Controllers
                     else
                         d.DOCUMENTOPs.Add(dop);
                 }
-                if(dOCUMENTO.DOCUMENTOPs.Count < d.DOCUMENTOPs.Count)
+                if (dOCUMENTO.DOCUMENTOPs.Count < d.DOCUMENTOPs.Count)
                 {
-                    for(int i = dOCUMENTO.DOCUMENTOPs.Count; i < d.DOCUMENTOPs.Count; i++)
+                    for (int i = dOCUMENTO.DOCUMENTOPs.Count; i < d.DOCUMENTOPs.Count; i++)
                     {
                         d.DOCUMENTOPs.Remove(d.DOCUMENTOPs.ElementAt(i));
                     }
@@ -3475,6 +3483,250 @@ namespace TAT001.Controllers
 
                 db.Entry(d).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //Guardar los documentos cargados en la sección de soporte
+                var res = "";
+                string errorMessage = "";
+                int numFiles = 0;
+                //Checar si hay archivos para subir
+                try
+                {
+                    foreach (HttpPostedFileBase file in files_soporte)
+                    {
+                        if (file != null)
+                        {
+                            if (file.ContentLength > 0)
+                            {
+                                numFiles++;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+
+                string[] borrarSop = txt_sop_borr.Split(',');
+                foreach (string borra in borrarSop)
+                {
+                    if (borra != "")
+                    {
+                        List<DOCUMENTOA> ddab = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.CLASE.Equals(borra) & a.ACTIVO == true).ToList();
+                        if (ddab.Count > 0)
+                        {
+                            foreach (DOCUMENTOA daa in ddab)
+                            {
+                                daa.ACTIVO = false;
+                                db.Entry(daa).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                }
+
+                if (numFiles > 0)
+                {
+                    //Obtener las variables con los datos de sesión y ruta
+                    string url = ConfigurationManager.AppSettings["URL_SAVE"];
+                    //Crear el directorio
+                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+
+                    //Evaluar que se creo el directorio
+                    ////if (dir.Equals(""))
+                    ////{
+
+                    ////    int i = 0;
+                    ////    int indexlabel = 0;
+                    ////    foreach (HttpPostedFileBase file in files_soporte)
+                    ////    {
+                    ////        string errorfiles = "";
+                    ////        var clasefile = "";
+                    ////        try
+                    ////        {
+                    ////            clasefile = labels_soporte[indexlabel];
+                    ////        }
+                    ////        catch (Exception ex)
+                    ////        {
+                    ////            clasefile = "";
+                    ////        }
+                    ////        if (file != null)
+                    ////        {
+                    ////            if (file.ContentLength > 0)
+                    ////            {
+                    ////                string path = "";
+                    ////                string filename = file.FileName;
+                    ////                errorfiles = "";
+                    ////                res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);
+
+                    ////                if (errorfiles == "")
+                    ////                {
+                    ////                    DOCUMENTOA doc = new DOCUMENTOA();
+                    ////                    var ext = System.IO.Path.GetExtension(filename);
+                    ////                    i++;
+                    ////                    doc.NUM_DOC = dOCUMENTO.NUM_DOC;
+                    ////                    doc.POS = i;
+                    ////                    doc.TIPO = ext.Replace(".", "");
+                    ////                    try
+                    ////                    {
+                    ////                        var clasefileM = clasefile.ToUpper();
+                    ////                        doc.CLASE = clasefileM.Substring(0, 3);
+                    ////                    }
+                    ////                    catch (Exception e)
+                    ////                    {
+                    ////                        doc.CLASE = "";
+                    ////                    }
+                    ////                    doc.STEP_WF = 1;
+                    ////                    doc.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
+                    ////                    doc.PATH = path;
+                    ////                    doc.ACTIVO = true;
+                    ////                    try
+                    ////                    {
+                    ////                        db.DOCUMENTOAs.Add(doc);
+                    ////                        db.SaveChanges();
+                    ////                    }
+                    ////                    catch (Exception e)
+                    ////                    {
+                    ////                        errorfiles = "" + filename;
+                    ////                    }
+
+                    ////                }
+                    ////            }
+                    ////        }
+                    ////        indexlabel++;
+                    ////        if (errorfiles != "")
+                    ////        {
+                    ////            errorMessage += "Error con el archivo " + errorfiles;
+                    ////        }
+
+
+
+                    ////    }
+                    ////}
+                    //Evaluar que se creo el directorio
+                    if (dir.Equals(""))
+                    {
+
+                        int i = 0;
+                        int indexlabel = 0;
+                        int max = 0;
+                        if (db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).Count() > 0)
+                            max = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).Max(a => a.POS);//RSG 15.05.2018
+
+                        foreach (HttpPostedFileBase file in files_soporte)
+                        {
+                            string errorfiles = "";
+                            var clasefile = "";
+                            try
+                            {
+                                clasefile = labels_soporte[indexlabel];
+                            }
+                            catch (Exception ex)
+                            {
+                                clasefile = "";
+                            }
+                            if (file != null)
+                            {
+                                if (file.ContentLength > 0)
+                                {
+                                    string path = "";
+                                    string filename = file.FileName;
+                                    errorfiles = "";
+                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);
+
+                                    if (errorfiles == "")
+                                    {
+                                        DOCUMENTOA doc = new DOCUMENTOA();
+                                        var ext = System.IO.Path.GetExtension(filename);
+                                        i++;
+                                        doc.NUM_DOC = d.NUM_DOC;
+                                        doc.POS = i;
+                                        doc.TIPO = ext.Replace(".", "");
+                                        try
+                                        {
+                                            var clasefileM = clasefile.ToUpper();
+                                            doc.CLASE = clasefileM.Substring(0, 3);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            doc.CLASE = "";
+                                        }
+                                        if (max > 0)
+                                        {
+                                            doc.POS = max + i;
+                                        }
+                                        if (max > 0)
+                                        {
+                                            List<DOCUMENTOA> dda = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(doc.NUM_DOC) & a.CLASE.Equals(doc.CLASE) & a.ACTIVO == true).ToList();
+                                            if (dda.Count > 0)
+                                            {
+                                                foreach (DOCUMENTOA daa in dda)
+                                                {
+                                                    daa.ACTIVO = false;
+                                                    db.Entry(daa).State = EntityState.Modified;
+                                                    db.SaveChanges();
+                                                }
+                                            }
+                                        }
+                                        doc.STEP_WF = 1;
+                                        doc.USUARIO_ID = User.Identity.Name;
+                                        doc.PATH = path;
+                                        doc.ACTIVO = true;
+                                        try
+                                        {
+                                            db.DOCUMENTOAs.Add(doc);
+                                            db.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            errorfiles = "" + filename;
+                                        }
+                                    }
+                                }
+                            }
+                            indexlabel++;
+                            if (errorfiles != "")
+                            {
+                                errorMessage += "Error con el archivo " + errorfiles;
+                            }
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        errorMessage = dir;
+                    }
+                    errorString = errorMessage;
+                    //Guardar número de documento creado
+                    Session["ERROR_FILES"] = errorMessage;
+                }
+
+                ProcesaFlujo2 pf = new ProcesaFlujo2();
+                try
+                {
+                    FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC == d.NUM_DOC).OrderByDescending(a => a.POS).FirstOrDefault();
+                    f.ESTATUS = "A";
+                    f.FECHAM = DateTime.Now;
+                    string c = pf.procesa(f, "");
+                    if (c == "1")
+                    {
+                        Email em = new Email();
+                        string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory);
+                    }
+                }
+                catch (Exception ee)
+                {
+                    if (errorString == "")
+                    {
+                        errorString = ee.Message.ToString();
+                    }
+                    ViewBag.error = errorString;
+                }
+
                 return RedirectToAction("Index");
             }
             ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);
@@ -4242,6 +4494,7 @@ namespace TAT001.Controllers
             JsonResult jl = Json(fc, JsonRequestBehavior.AllowGet);
             return jl;
         }
+
         public string grupoMaterialesRel(List<DOCUMENTOP> cats, List<DOCUMENTOM> docsrelm)
         {
             TAT001Entities db = new TAT001Entities();

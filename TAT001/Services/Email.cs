@@ -67,6 +67,8 @@ namespace TAT001.Services
                         mail.IsBodyHtml = true;
                         //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
                         UrlDirectory = UrlDirectory.Replace("Solicitudes/Create", "Correos/Index");
+                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Details", "Correos/Index");
+                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Edit", "Correos/Index");
                         UrlDirectory += "/" + dOCUMENTO.NUM_DOC;
                         HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
                         myRequest.Method = "GET";

@@ -150,7 +150,8 @@ namespace TAT001.Controllers
                     select P;
 
                 List<Delegados> delegados = new List<Delegados>();
-                List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= DateTime.Now & a.FECHAF >= DateTime.Now & a.ACTIVO == true).ToList();
+                DateTime fecha = DateTime.Now.Date;
+                List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
                 //List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(u)).ToList();
                 foreach (DELEGAR de in del)
                 {
