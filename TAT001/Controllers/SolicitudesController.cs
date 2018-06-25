@@ -1059,7 +1059,8 @@ namespace TAT001.Controllers
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
-                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat)
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, 
+                string bmonto_apoyo, string catmat, string borrador_param)
         {
 
             bool prueba = true;
@@ -1070,6 +1071,14 @@ namespace TAT001.Controllers
             if (ModelState.IsValid && prueba == true)
             //if (ModelState.IsValid)
             {
+
+                //B20180621 MGC2 2018.06.21s
+                if (borrador_param.Equals("borrador"))
+                {
+                    //Guardar el borrador
+                    guardarBorrador(dOCUMENTO);
+                }
+
                 try
                 {
                     //Obtener datos ocultos o deshabilitados                    
@@ -2160,6 +2169,13 @@ namespace TAT001.Controllers
             //----------------------------RSG 18.05.2018
 
             return View(dOCUMENTO);
+        }
+
+        public void guardarBorrador(DOCUMENTO doc)
+        {
+            DOCUMENTBORR docb = new DOCUMENTBORR();
+
+
         }
 
         [HttpPost]

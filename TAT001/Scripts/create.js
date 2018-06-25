@@ -1003,6 +1003,62 @@
         }
 
     });
+
+    //B20180621 MGC2 2018.06.21
+    $('#btn_borradorh').on("click", function (e) {
+        
+        //loadFilesf();
+        //Provisional
+        var tipo_cambio = $('#tipo_cambio').val();
+        //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+        var iNum = parseFloat(tipo_cambio.replace(',', ''));
+
+        if (iNum > 0) {
+            //var num = "" + iNum;
+            //num = num.replace('.', ',');
+            //var numexp = num;//* 60000000000;
+            //$('#tipo_cambio').val(numexp);
+        } else {
+            $('#tipo_cambio').val(0);
+        }
+        var tipo_cambio = $('#monto_doc_ml2').val();
+        //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+        var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+        //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
+        if (iNum2 > 0) {
+            //var nums = "" + iNum2;
+            //nums = nums.replace('.', ',');
+            //var numexp2 = nums;// * 60000000000;
+            //$('#monto_doc_ml2').val(numexp2);
+        } else {
+            $('#monto_doc_ml2').val(0);
+        }
+
+        //Monto
+        var monto = $('#monto_doc_md').val();
+        //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+        var numm = parseFloat(monto.replace(',', ''));
+        if (numm > 0) {
+            $('#MONTO_DOC_MD').val(numm);
+        } else {
+            $('#MONTO_DOC_MD').val(0);
+            $('#monto_doc_md').val(0);
+        }
+
+        $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+        $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+
+        //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+        copiarTableControl();//Distribución
+        copiarSopTableControl(); //Soporte ahora en información
+        enviaRec();//RSG 28.05.2018
+
+        //Enviar el parametro al controlador para tratarlo como borrador
+        $('#borrador_param').val("borrador");
+        $('#btn_guardar').click();
+
+    });
+
 });
 
 //Cuando se termina de cargar la página
