@@ -1072,13 +1072,6 @@ namespace TAT001.Controllers
             //if (ModelState.IsValid)
             {
 
-                //B20180621 MGC2 2018.06.21s
-                if (borrador_param.Equals("borrador"))
-                {
-                    //Guardar el borrador
-                    guardarBorrador(dOCUMENTO);
-                }
-
                 try
                 {
                     //Obtener datos ocultos o deshabilitados                    
@@ -1144,23 +1137,29 @@ namespace TAT001.Controllers
                     //Tipo técnico
                     dOCUMENTO.TIPO_TECNICO = select_neg;
 
+                    //B20180625 MGC 2018.06.25
+                    //CANTIDAD_EV > 1 si son recurrentes
+                    dOCUMENTO.CANTIDAD_EV = 1;
+
+                    //B20180625 MGC 2018.06.25
+                    //Obtener usuarioc
+                    USUARIO u = db.USUARIOs.Find(User.Identity.Name);//RSG 02/05/2018
+                    dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
+                    dOCUMENTO.USUARIOC_ID = User.Identity.Name;
+
+                    //B20180621 MGC2 2018.06.21s
+                    if (borrador_param.Equals("borrador"))
+                    {
+                        //Guardar el borrador
+                        guardarBorrador(dOCUMENTO, id_bukrs);
+                    }
+
                     //Obtener el número de documento
                     decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
 
                     //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
-
-                    ////Obtener el país
-                    //dOCUMENTO.PAIS_ID = p.ToUpper();
-
-                    //CANTIDAD_EV > 1 si son recurrentes
-                    dOCUMENTO.CANTIDAD_EV = 1;
-
-                    //Obtener usuarioc
-                    USUARIO u = db.USUARIOs.Find(User.Identity.Name);//RSG 02/05/2018
-                    dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
-                    dOCUMENTO.USUARIOC_ID = User.Identity.Name;
 
                     //Fechac
                     dOCUMENTO.FECHAC = DateTime.Now;
@@ -2171,9 +2170,19 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
-        public void guardarBorrador(DOCUMENTO doc)
+        public void guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs)
         {
             DOCUMENTBORR docb = new DOCUMENTBORR();
+            docb.USUARIOC_ID = doc.USUARIOC_ID;
+            docb.TSOL_ID = doc.TSOL_ID;
+            docb.TALL_ID = doc.TALL_ID;
+            docb.SOCIEDAD_ID = id_bukrs.BUKRS; ;
+            docb.PAIS_ID = doc.PAIS_ID;
+            docb.ESTADO = doc.ESTADO;
+            docb.CIUDAD = doc.CIUDAD;
+            docb.PERIODO = doc.PERIODO+""; //Cambiar tipo en bd
+            docb.EJERCICIO = doc.EJERCICIO;
+            docb.TIPO_TECNICO = doc.TIPO_TECNICO;
 
 
         }
