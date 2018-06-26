@@ -12,13 +12,11 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class NEGOCIACION
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
-    
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public long ID { get; set; }
+        public Nullable<System.DateTime> FECHAI { get; set; }
+        public Nullable<System.DateTime> FECHAF { get; set; }
+        public Nullable<System.DateTime> FECHAN { get; set; }
     }
 }

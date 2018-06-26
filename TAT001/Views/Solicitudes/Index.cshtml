@@ -237,6 +237,28 @@
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id = "btn_create" })
     </div>
 </div>
+@*//B20180625 MGC 2018.06.26*@
+@if (ViewBag.BORRADOR != null)
+{
+    if (ViewBag.BORRADOR != "")
+    {
+        <script>
+        $(document).ready(function () {
+            function docMessage(msg) {
+                M.toast({ html: msg });
+            }
+
+            var message = '@ViewBag.BORRADOR';
+
+            if (message != "")
+            {
+                // do drop down loic
+                docMessage(message);
+            }
+        });
+        </script>
+    }
+}
 @if (ViewBag.NUM_DOC != null)
 {
     if (ViewBag.NUM_DOC != "")

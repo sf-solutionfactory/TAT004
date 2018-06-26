@@ -360,6 +360,31 @@
     <Property Name="USUARIOA" Type="nvarchar" MaxLength="16" />
     <Property Name="USUARIOC" Type="nvarchar" MaxLength="16" />
   </EntityType>
+  <EntityType Name="DET_AGENTEC">
+    <Key>
+      <PropertyRef Name="USUARIOC_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="VERSION" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="PRESUPUESTO" Type="bit" Nullable="false" />
+    <Property Name="MAIL" Type="bit" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="DET_AGENTEH">
     <Key>
       <PropertyRef Name="SOCIEDAD_ID" />
@@ -478,7 +503,7 @@
     <Property Name="PAIS_ID" Type="nchar" MaxLength="2" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
-    <Property Name="PERIODO" Type="nchar" MaxLength="2" />
+    <Property Name="PERIODO" Type="int" />
     <Property Name="EJERCICIO" Type="nchar" MaxLength="4" />
     <Property Name="TIPO_TECNICO" Type="nchar" MaxLength="1" />
     <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
@@ -759,6 +784,17 @@
     <Property Name="BILL_DOC" Type="bit" Nullable="false" />
     <Property Name="BELNR" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="FLUJNEGO">
+    <Key>
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+    <Property Name="FECHAC" Type="datetime" />
+    <Property Name="FECHAM" Type="datetime" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+  </EntityType>
   <EntityType Name="FLUJO">
     <Key>
       <PropertyRef Name="WORKF_ID" />
@@ -902,6 +938,15 @@
     <Property Name="LTEXT" Type="nvarchar" MaxLength="50" />
     <Property Name="KTEXT" Type="nvarchar" MaxLength="15" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NEGOCIACION">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FECHAI" Type="date" />
+    <Property Name="FECHAF" Type="date" />
+    <Property Name="FECHAN" Type="date" />
   </EntityType>
   <EntityType Name="PAGINA">
     <Key>
@@ -1328,43 +1373,14 @@
     <Property Name="TEXTOS" Type="nvarchar" MaxLength="255" />
     <Property Name="ACTIVO" Type="bit" />
   </EntityType>
-  <EntityType Name="TEXTOCARTAF">
+  <EntityType Name="TEXTOCV">
     <Key>
-      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="ID" />
     </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
-    <Property Name="E_MAIL" Type="nvarchar" MaxLength="250" />
-    <Property Name="ESTIMADO" Type="nvarchar" MaxLength="15" />
-    <Property Name="CONTROL" Type="nvarchar" MaxLength="50" />
-    <Property Name="FOLIO" Type="nvarchar" MaxLength="20" />
-    <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
-    <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
-    <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
-  </EntityType>
-  <EntityType Name="TEXTOCARTAV">
-    <Key>
-      <PropertyRef Name="SPRAS_ID" />
-    </Key>
-    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
-    <Property Name="E_MAIL" Type="nvarchar" MaxLength="250" />
-    <Property Name="ESTIMADO" Type="nvarchar" MaxLength="30" />
-    <Property Name="CONTROL" Type="nvarchar" MaxLength="50" />
-    <Property Name="DE" Type="nvarchar" MaxLength="15" />
-    <Property Name="A" Type="nvarchar" MaxLength="15" />
-    <Property Name="MATERIAL" Type="nvarchar" MaxLength="50" />
-    <Property Name="CATEGORIA" Type="nvarchar" MaxLength="50" />
-    <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
-    <Property Name="COSTOU" Type="nvarchar" MaxLength="50" />
-    <Property Name="APOYOP" Type="nvarchar" MaxLength="50" />
-    <Property Name="APOYOPP" Type="nvarchar" MaxLength="50" />
-    <Property Name="COSTOA" Type="nvarchar" MaxLength="50" />
-    <Property Name="PRECIOSU" Type="nvarchar" MaxLength="50" />
-    <Property Name="FOLIO" Type="nvarchar" MaxLength="20" />
-    <Property Name="PAYER" Type="nvarchar" MaxLength="20" />
-    <Property Name="MONTO" Type="nvarchar" MaxLength="50" />
-    <Property Name="MARCA_AGUA" Type="nvarchar" MaxLength="50" />
-    <Property Name="APOYOEST" Type="nvarchar" MaxLength="50" />
-    <Property Name="APOYOREA" Type="nvarchar" MaxLength="50" />
+    <Property Name="CAMPO" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="TEXTO" Type="varchar" MaxLength="250" />
   </EntityType>
   <EntityType Name="TRETENCION">
     <Key>
@@ -1633,8 +1649,8 @@
     <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CARPETAV">
     <Key>
       <PropertyRef Name="USUARIO_ID" />
@@ -1646,8 +1662,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="ICON" Type="nvarchar" MaxLength="20" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR">
     <Key>
       <PropertyRef Name="ID" />
@@ -1663,8 +1679,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR2">
     <Key>
       <PropertyRef Name="ID" />
@@ -1681,8 +1697,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DET_APROBV">
     <Key>
       <PropertyRef Name="BUKRS" />
@@ -1694,8 +1710,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DOCUMENTOV">
     <Key>
       <PropertyRef Name="POS" />
@@ -1770,8 +1786,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PAGINAV">
     <Key>
       <PropertyRef Name="ID" />
@@ -1791,8 +1807,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="WARNINGV">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -2165,6 +2181,60 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="DET_AGENTE">
         <PropertyRef Name="PUESTOA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEC_CLIENTE">
+    <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+    <End Role="DET_AGENTEC" Type="Self.DET_AGENTEC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="DET_AGENTEC">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEC_PAIS">
+    <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
+    <End Role="DET_AGENTEC" Type="Self.DET_AGENTEC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PAIS">
+        <PropertyRef Name="LAND" />
+      </Principal>
+      <Dependent Role="DET_AGENTEC">
+        <PropertyRef Name="PAIS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEC_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="DET_AGENTEC" Type="Self.DET_AGENTEC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEC">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DET_AGENTEC_USUARIO1">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="DET_AGENTEC" Type="Self.DET_AGENTEC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DET_AGENTEC">
+        <PropertyRef Name="USUARIOA_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3811,6 +3881,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CUENTA" EntityType="Self.CUENTA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DELEGAR" EntityType="Self.DELEGAR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_AGENTEC" EntityType="Self.DET_AGENTEC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTEH" EntityType="Self.DET_AGENTEH" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTEP" EntityType="Self.DET_AGENTEP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_APROB" EntityType="Self.DET_APROB" Schema="dbo" store:Type="Tables" />
@@ -3830,6 +3901,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOSAP" EntityType="Self.DOCUMENTOSAP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FACTURASCONF" EntityType="Self.FACTURASCONF" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FLUJNEGO" EntityType="Self.FLUJNEGO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FLUJO" EntityType="Self.FLUJO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALL" EntityType="Self.GALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="GALLT" EntityType="Self.GALLT" Schema="dbo" store:Type="Tables" />
@@ -3843,6 +3915,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="MENSAJES" EntityType="Self.MENSAJES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NEGOCIACION" EntityType="Self.NEGOCIACION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
@@ -3877,8 +3950,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="TCLIENTE" EntityType="Self.TCLIENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TCLIENTET" EntityType="Self.TCLIENTET" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TEXTO" EntityType="Self.TEXTO" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TEXTOCARTAF" EntityType="Self.TEXTOCARTAF" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TEXTOCARTAV" EntityType="Self.TEXTOCARTAV" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TEXTOCV" EntityType="Self.TEXTOCV" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TRETENCION" EntityType="Self.TRETENCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TRETENCIONT" EntityType="Self.TRETENCIONT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TREVERSA" EntityType="Self.TREVERSA" Schema="dbo" store:Type="Tables" />
@@ -4157,6 +4229,22 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DET_AGENTE_PUESTO1" Association="Self.FK_DET_AGENTE_PUESTO1">
       <End Role="PUESTO" EntitySet="PUESTO" />
       <End Role="DET_AGENTE" EntitySet="DET_AGENTE" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEC_CLIENTE" Association="Self.FK_DET_AGENTEC_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEC_PAIS" Association="Self.FK_DET_AGENTEC_PAIS">
+      <End Role="PAIS" EntitySet="PAIS" />
+      <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEC_USUARIO" Association="Self.FK_DET_AGENTEC_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DET_AGENTEC_USUARIO1" Association="Self.FK_DET_AGENTEC_USUARIO1">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="DET_AGENTEC" EntitySet="DET_AGENTEC" />
     </AssociationSet>
     <AssociationSet Name="FK_DET_AGENTEH_GAUTORIZACION" Association="Self.FK_DET_AGENTEH_GAUTORIZACION">
       <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />

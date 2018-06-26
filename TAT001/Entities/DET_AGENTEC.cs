@@ -12,17 +12,25 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class DET_APROBP
+    public partial class DET_AGENTEC
     {
-        public string SOCIEDAD_ID { get; set; }
-        public int PUESTOC_ID { get; set; }
+        public string USUARIOC_ID { get; set; }
+        public string PAIS_ID { get; set; }
+        public string VKORG { get; set; }
+        public string VTWEG { get; set; }
+        public string SPART { get; set; }
+        public string KUNNR { get; set; }
         public int VERSION { get; set; }
         public int POS { get; set; }
-        public Nullable<int> PUESTOA_ID { get; set; }
+        public string USUARIOA_ID { get; set; }
         public Nullable<decimal> MONTO { get; set; }
-        public Nullable<bool> PRESUPUESTO { get; set; }
+        public bool PRESUPUESTO { get; set; }
+        public bool MAIL { get; set; }
         public bool ACTIVO { get; set; }
     
-        public virtual DET_APROBH DET_APROBH { get; set; }
+        public virtual CLIENTE CLIENTE { get; set; }
+        public virtual PAI PAI { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
+        public virtual USUARIO USUARIO1 { get; set; }
     }
 }

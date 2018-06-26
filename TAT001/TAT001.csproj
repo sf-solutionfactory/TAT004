@@ -202,7 +202,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\Configuracion\ccatController.cs" />
     <Compile Include="Controllers\Catalogos\ClienteController.cs" />
@@ -339,6 +338,9 @@
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTEC.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_AGENTEH.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -402,6 +404,9 @@
     <Compile Include="Entities\FACTURASCONF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\FLUJNEGO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FLUJO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -439,6 +444,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MONEDA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NEGOCIACION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PAGINA.cs">
@@ -570,10 +578,7 @@
     <Compile Include="Entities\TEXTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\TEXTOCARTAF.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TEXTOCARTAV.cs">
+    <Compile Include="Entities\TEXTOCV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TRETENCION.cs">
@@ -667,7 +672,6 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CargarModel.cs" />
-    <Compile Include="Models\CartaFEsqueleto.cs" />
     <Compile Include="Models\CartaV.cs" />
     <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\CartaVEsqueleto.cs" />

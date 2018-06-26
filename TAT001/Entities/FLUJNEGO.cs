@@ -12,13 +12,13 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class CATEGORIAT
+    public partial class FLUJNEGO
     {
-        public string SPRAS_ID { get; set; }
-        public string CATEGORIA_ID { get; set; }
-        public string TXT50 { get; set; }
-    
-        public virtual CATEGORIA CATEGORIA { get; set; }
-        public virtual SPRA SPRA { get; set; }
+        public decimal NUM_DOC { get; set; }
+        public int POS { get; set; }
+        public string KUNNR { get; set; }
+        public Nullable<System.DateTime> FECHAC { get; set; }
+        public Nullable<System.DateTime> FECHAM { get; set; }
+        public string COMENTARIO { get; set; }
     }
 }

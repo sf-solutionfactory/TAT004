@@ -74,6 +74,18 @@ namespace TAT001.Controllers
                 ViewBag.ERROR_FILES = "";
             }
 
+            //B20180625 MGC 2018.06.26
+            try//Mensaje de borrador guardado
+            {
+                string p = Session["BORRADOR"].ToString();
+                ViewBag.BORRADOR = p;
+                Session["BORRADOR"] = null;
+            }
+            catch
+            {
+                ViewBag.BORRADOR = "";
+            }
+
 
 
             var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
@@ -811,16 +823,44 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
-                    ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
-                    ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
-                    ViewBag.TSOL_IDI = "";
-                    ViewBag.GALL_IDI = "";
-                    ViewBag.TALL_IDI = ""; //B20180618 v1 MGC 2018.06.18
-                    //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
+                    //B20180625 MGC 2018.06.26 Verificar si hay algún borrador
+                    DOCUMENTBORR docb = new DOCUMENTBORR();
+                    try
+                    {                      
+                        docb = db.DOCUMENTBORRs.Find(user.ID);                        
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    if (docb != null)
+                    {
+                        //Hay borrador 
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: docb.TSOL_ID);
+                        //ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: docb.GALL_ID);
+                        ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50", selectedValue: docb.TALL_ID); //B20180618 v1 MGC 2018.06.18
+                        d.CIUDAD = docb.CIUDAD;
+                        d.ESTADO = docb.ESTADO;
+                        d.CONCEPTO = docb.CONCEPTO;
+                        d.NOTAS = docb.NOTAS;
+                        d.PAYER_ID = docb.PAYER_ID;
+                        d.FECHAI_VIG = docb.FECHAI_VIG;
+                        d.FECHAF_VIG = docb.FECHAF_VIG;
+                    }
+                    else
+                    {
+
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
+                        ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
+                        ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
+                                               //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018                      
+                    }
                     id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
                     ViewBag.TSOL_ANT = "";
+                    ViewBag.TSOL_IDI = "";
+                    ViewBag.GALL_IDI = "";
+                    ViewBag.TALL_IDI = ""; //B20180618 v1 MGC 2018.06.18
                 }
 
                 ViewBag.files = archivos;
@@ -1147,16 +1187,7 @@ namespace TAT001.Controllers
                     dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
                     dOCUMENTO.USUARIOC_ID = User.Identity.Name;
 
-                    //B20180621 MGC2 2018.06.21s
-                    if (borrador_param.Equals("borrador"))
-                    {
-                        //Guardar el borrador
-                        guardarBorrador(dOCUMENTO, id_bukrs);
-                    }
-
-                    //Obtener el número de documento
-                    decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
-                    dOCUMENTO.NUM_DOC = N_DOC;
+                    
 
                     //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
@@ -1216,14 +1247,47 @@ namespace TAT001.Controllers
                     //Obtener datos del payer
                     CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
 
-                    dOCUMENTO.VKORG = payer.VKORG;
-                    dOCUMENTO.VTWEG = payer.VTWEG;
-                    dOCUMENTO.SPART = payer.SPART;
+                    //B20180621 MGC2 2018.06.21s
+                    if (borrador_param.Equals("borrador"))
+                    {
+                        //Eliminar borrador anterior 
+                        string borre = "";
+                        borre = eliminarBorrador(dOCUMENTO);
+                        //Guardar el borrador
+                        if (borre != "")
+                        {
+                            try
+                            {
+                                dOCUMENTO.VKORG = payer.VKORG;
+                                dOCUMENTO.VTWEG = payer.VTWEG;
+                                dOCUMENTO.SPART = payer.SPART;
+                            }
+                            catch (Exception)
+                            {
 
+                            }
+                            DOCUMENTBORR docb = new DOCUMENTBORR();
+                            docb = guardarBorrador(dOCUMENTO, id_bukrs);
+                            db.DOCUMENTBORRs.Add(docb);
+                            db.SaveChanges();
+                            Session["BORRADOR"] = "Borrador almacenado";
+                        }
 
-                    //Guardar el documento
-                    db.DOCUMENTOes.Add(dOCUMENTO);
-                    db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        dOCUMENTO.VKORG = payer.VKORG;
+                        dOCUMENTO.VTWEG = payer.VTWEG;
+                        dOCUMENTO.SPART = payer.SPART;
+                        //Guardar el documento
+                        db.DOCUMENTOes.Add(dOCUMENTO);
+                        db.SaveChanges();
+                    }
+
+                    //Obtener el número de documento
+                    decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
+                    dOCUMENTO.NUM_DOC = N_DOC;
 
                     //Actualizar el rango
                     updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
@@ -1277,13 +1341,13 @@ namespace TAT001.Controllers
                                 }
 
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
 
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
 
@@ -1458,7 +1522,7 @@ namespace TAT001.Controllers
                                             apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
 
                                         }
-                                        catch (Exception e)
+                                        catch (Exception)
                                         {
                                             apoyo_esti = 0;
                                         }
@@ -1468,7 +1532,7 @@ namespace TAT001.Controllers
                                             apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
 
                                         }
-                                        catch (Exception e)
+                                        catch (Exception)
                                         {
                                             apoyo_real = 0;
                                         }
@@ -1506,7 +1570,7 @@ namespace TAT001.Controllers
                                                 db.DOCUMENTOMs.Add(docM);
                                                 db.SaveChanges();//RSG
                                             }
-                                            catch (Exception e)
+                                            catch (Exception)
                                             {
 
                                             }
@@ -1515,7 +1579,7 @@ namespace TAT001.Controllers
                                     }
                                     //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
 
                                 }
@@ -1585,7 +1649,7 @@ namespace TAT001.Controllers
                                             apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
 
                                         }
-                                        catch (Exception e)
+                                        catch (Exception)
                                         {
                                             apoyo_esti = 0;
                                         }
@@ -1595,7 +1659,7 @@ namespace TAT001.Controllers
                                             apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
 
                                         }
-                                        catch (Exception e)
+                                        catch (Exception)
                                         {
                                             apoyo_real = 0;
                                         }
@@ -1613,7 +1677,7 @@ namespace TAT001.Controllers
                                                 db.DOCUMENTOMs.Add(docM);
                                                 db.SaveChanges();//RSG
                                             }
-                                            catch (Exception e)
+                                            catch (Exception)
                                             {
 
                                             }
@@ -1633,7 +1697,7 @@ namespace TAT001.Controllers
                                                 db.DOCUMENTOMs.Add(docM);
                                                 db.SaveChanges();//RSG
                                             }
-                                            catch (Exception e)
+                                            catch (Exception)
                                             {
 
                                             }
@@ -2170,7 +2234,7 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
-        public void guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs)
+        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs)
         {
             DOCUMENTBORR docb = new DOCUMENTBORR();
             docb.USUARIOC_ID = doc.USUARIOC_ID;
@@ -2180,11 +2244,57 @@ namespace TAT001.Controllers
             docb.PAIS_ID = doc.PAIS_ID;
             docb.ESTADO = doc.ESTADO;
             docb.CIUDAD = doc.CIUDAD;
-            docb.PERIODO = doc.PERIODO+""; //Cambiar tipo en bd
+            docb.PERIODO = doc.PERIODO; //Cambiar tipo en bd
             docb.EJERCICIO = doc.EJERCICIO;
             docb.TIPO_TECNICO = doc.TIPO_TECNICO;
+            docb.CANTIDAD_EV = doc.CANTIDAD_EV;
+            docb.FECHAD = doc.FECHAD;
+            docb.FECHAC = doc.FECHAC;
+            docb.HORAC = doc.HORAC;
+            //docb.FECHAC_PLAN = doc.FECHAC_PLAN;
+            //docb.FECHAC_USER = doc.FECHAC_USER;
+            //docb.HORAC_USER = doc.HORAC_USER;
+            docb.CONCEPTO = doc.CONCEPTO;
+            docb.NOTAS = doc.NOTAS;
+            docb.MONTO_DOC_MD = doc.MONTO_DOC_MD;
+            docb.MONTO_DOC_ML = doc.MONTO_DOC_ML;
+            docb.MONTO_FIJO_ML2 = doc.MONTO_FIJO_ML2;
+            docb.FECHAI_VIG = doc.FECHAI_VIG;
+            docb.FECHAF_VIG = doc.FECHAF_VIG;
+            docb.PAYER_ID = doc.PAYER_ID;
+            docb.PAYER_NOMBRE = doc.PAYER_NOMBRE;
+            docb.PAYER_EMAIL = doc.PAYER_EMAIL;
+            docb.MONEDA_ID = doc.MONEDA_ID;
+            docb.MONEDAL_ID = doc.MONEDAL_ID;
+            docb.MONEDAL2_ID = doc.MONEDAL2_ID;
+            docb.TIPO_CAMBIO = doc.TIPO_CAMBIO;
+            docb.VKORG = doc.VKORG;
+            docb.VTWEG = doc.VTWEG;
+            docb.SPART = doc.SPART;
 
+            return docb;
+        }
 
+        public string eliminarBorrador(DOCUMENTO doc)
+        {
+            string res = "";
+
+            try
+            {
+                DOCUMENTBORR docb = new DOCUMENTBORR();
+                docb = db.DOCUMENTBORRs.Find(doc.USUARIOC_ID);
+                if (docb != null)
+                {
+                    db.DOCUMENTBORRs.Remove(docb);
+                    db.SaveChanges();
+                }
+                res = "X";
+            }
+            catch (Exception e)
+            {
+                string a = "";
+            }
+            return res;
         }
 
         [HttpPost]

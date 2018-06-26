@@ -76,6 +76,7 @@ function cambiaRec() {
     var tipo = document.getElementById("select_neg").value;
     var montoo = document.getElementById("monto_dis").value;
 
+    if (radio != null) //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
     if (radio.checked)
         if (campo.checked) {
             if (montoo === "") {
