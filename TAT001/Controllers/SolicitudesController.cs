@@ -100,7 +100,7 @@ namespace TAT001.Controllers
                 d.TALL = tall.Where(a => a.ID.Equals(d.TALL_ID)).FirstOrDefault();
                 //d.ESTADO = db.STATES.Where(a => a.ID.Equals(v.ESTADO)).FirstOrDefault().NAME;
                 //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
-                dOCUMENTOes.Add(d);
+                    dOCUMENTOes.Add(d);
             }
             dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
             return View(dOCUMENTOes);
@@ -337,7 +337,7 @@ namespace TAT001.Controllers
                 flujo.FECHAM = DateTime.Now;
                 flujo.COMENTARIO = "";
                 flujo.USUARIOA_ID = User.Identity.Name;
-                ProcesaFlujo2 pf = new ProcesaFlujo2();
+                ProcesaFlujo pf = new ProcesaFlujo();
                 string c = pf.procesa(flujo, "");
                 if (c.Equals("0"))//Aprobado
                 {
@@ -379,7 +379,7 @@ namespace TAT001.Controllers
             db.SaveChanges();
 
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(num_doc)).OrderByDescending(a => a.POS).FirstOrDefault();
-            ProcesaFlujo2 p = new ProcesaFlujo2();
+            ProcesaFlujo p = new ProcesaFlujo();
             f.ESTATUS = "A";
             p.procesa(f, "");
 
@@ -1846,7 +1846,7 @@ namespace TAT001.Controllers
                         //Guardar número de documento creado
                         Session["ERROR_FILES"] = errorMessage;
                     }
-                    ProcesaFlujo2 pf = new ProcesaFlujo2();
+                    ProcesaFlujo pf = new ProcesaFlujo();
                     //db.DOCUMENTOes.Add(dOCUMENTO);
                     //db.SaveChanges();
 
@@ -3704,7 +3704,7 @@ namespace TAT001.Controllers
                     Session["ERROR_FILES"] = errorMessage;
                 }
 
-                ProcesaFlujo2 pf = new ProcesaFlujo2();
+                ProcesaFlujo pf = new ProcesaFlujo();
                 try
                 {
                     FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC == d.NUM_DOC).OrderByDescending(a => a.POS).FirstOrDefault();

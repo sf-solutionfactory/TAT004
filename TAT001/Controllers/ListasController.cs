@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,28 +18,56 @@ namespace TAT001.Controllers
             return View();
         }
 
+        ////[HttpGet]
+        ////public JsonResult Clientes(string Prefix)
+        ////{
+        ////    if (Prefix == null)
+        ////        Prefix = "";
+
+        ////    TAT001Entities db = new TAT001Entities();
+
+        ////    var c = (from N in db.CLIENTEs
+        ////             where N.KUNNR.Contains(Prefix)
+        ////             select new { N.KUNNR, N.NAME1 }).ToList();
+        ////    if (c.Count == 0)
+        ////    {
+        ////        var c2 = (from N in db.CLIENTEs
+        ////                  where N.NAME1.Contains(Prefix)
+        ////                  select new { N.KUNNR, N.NAME1 }).ToList();
+        ////        c.AddRange(c2);
+        ////    }
+        ////    JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+        ////    return cc;
+        ////}
+
         [HttpGet]
-        public JsonResult Clientes(string Prefix)
+        public JsonResult Clientes(string Prefix, string usuario)
         {
             if (Prefix == null)
                 Prefix = "";
 
             TAT001Entities db = new TAT001Entities();
 
-            var c = (from N in db.CLIENTEs
+            var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.ACTIVO == true).ToList();
+
+            var c = (from N in db.CLIENTEs.ToList()
+                     join D in det
+                     on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
                      where N.KUNNR.Contains(Prefix)
                      select new { N.KUNNR, N.NAME1 }).ToList();
+
             if (c.Count == 0)
             {
-                var c2 = (from N in db.CLIENTEs
-                          where N.NAME1.Contains(Prefix)
+                var c2 = (from N in db.CLIENTEs.ToList()
+                          join D in det
+                          on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
+                          where CultureInfo.CurrentCulture.CompareInfo.IndexOf(N.NAME1, Prefix, CompareOptions.IgnoreCase) >= 0
                           select new { N.KUNNR, N.NAME1 }).ToList();
                 c.AddRange(c2);
             }
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
         [HttpGet]
         public JsonResult Estados(string pais, string Prefix)
         {
@@ -157,7 +186,7 @@ namespace TAT001.Controllers
                 //Obtener presupuesto
                 string mes = DateTime.Now.Month.ToString();
                 var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x=>x.BANNERG).First();
+                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
                 if (presupuesto != null)
                 {
                     if (String.IsNullOrEmpty(clien))
@@ -191,7 +220,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
         [HttpGet]
         public JsonResult Relacionados(string num_doc, string spras)
         {
@@ -212,7 +240,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
         [HttpGet]
         public JsonResult Paises(string bukrs)
         {
@@ -224,7 +251,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
         [HttpGet]
         public JsonResult selectTaxeo(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string spras)
         {
@@ -312,7 +338,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
         [HttpPost]
         public JsonResult clearing(string bukrs, string land, string gall, string ejercicio)
         {
@@ -329,8 +354,6 @@ namespace TAT001.Controllers
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
-
-
         [HttpPost]
         [AllowAnonymous]
         public JsonResult categoriasCliente(string vkorg, string spart, string kunnr, string soc_id)
@@ -548,7 +571,6 @@ namespace TAT001.Controllers
 
             return conf;
         }
-
         [HttpPost]
         public JsonResult getPeriodo(string fecha)
         {
@@ -560,7 +582,6 @@ namespace TAT001.Controllers
             JsonResult jl = Json(f, JsonRequestBehavior.AllowGet);
             return jl;
         }
-
         [HttpPost]
         public JsonResult getPrimerDia(string ejercicio, string periodo)
         {
@@ -572,7 +593,6 @@ namespace TAT001.Controllers
             JsonResult jl = Json(f.ToShortDateString(), JsonRequestBehavior.AllowGet);
             return jl;
         }
-
         [HttpPost]
         public JsonResult getUltimoDia(string ejercicio, string periodo)
         {

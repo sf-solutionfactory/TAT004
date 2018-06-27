@@ -10,14 +10,14 @@ namespace TAT001.Models
 {
     public class HeaderFooter : PdfPageEventHelper
     {
-        public static CartaF cf;
+        //public static CartaF cf;
         public static CartaV cv;
         public PdfContentByte cb;
         public HeaderFooter() { }
-        public HeaderFooter(CartaF c)
-        {
-            cf = c;
-        }
+        //public HeaderFooter(CartaV c)
+        //{
+        //    cv = c;
+        //}
         public HeaderFooter(CartaV v)
         {
             cv = v;
@@ -47,29 +47,30 @@ namespace TAT001.Models
             tabCabecera.WriteSelectedRows(0, -1, 0, document.PageSize.Top, writer.DirectContent);
 
             //FOOTER
-            if (cf != null)
-            {
-                if (cf.legal_x == true)
-                { celLegal.AddElement(new Paragraph(cf.legal, FontFactory.GetFont(FontFactory.HELVETICA, 8))); celLegal.PaddingLeft = 30; celLegal.PaddingRight = 30; celLegal.Border = 0; tabPie.AddCell(celLegal); }
-                else
-                { celLegal.AddElement(new Paragraph("", FontFactory.GetFont(FontFactory.HELVETICA, 8))); celLegal.Border = 0; tabPie.AddCell(celLegal); }
+            //if (cf != null)
+            //{
+            //    if (cf.legal_x == true)
+            //    { celLegal.AddElement(new Paragraph(cf.legal, FontFactory.GetFont(FontFactory.HELVETICA, 8))); celLegal.PaddingLeft = 30; celLegal.PaddingRight = 30; celLegal.Border = 0; tabPie.AddCell(celLegal); }
+            //    else
+            //    { celLegal.AddElement(new Paragraph("", FontFactory.GetFont(FontFactory.HELVETICA, 8))); celLegal.Border = 0; tabPie.AddCell(celLegal); }
 
-                if (cf.mail_x == true)
-                { celEmail.AddElement(new Paragraph(cf.mail, FontFactory.GetFont(FontFactory.HELVETICA, 8))); celEmail.PaddingLeft = 30; celEmail.PaddingRight = 30; celEmail.Border = 0; tabPie.AddCell(celEmail); }
-                else
-                { celEmail.AddElement(new Paragraph("", FontFactory.GetFont(FontFactory.HELVETICA, 8))); celEmail.Border = 0; tabPie.AddCell(celEmail); }
+            //    if (cf.mail_x == true)
+            //    { celEmail.AddElement(new Paragraph(cf.mail, FontFactory.GetFont(FontFactory.HELVETICA, 8))); celEmail.PaddingLeft = 30; celEmail.PaddingRight = 30; celEmail.Border = 0; tabPie.AddCell(celEmail); }
+            //    else
+            //    { celEmail.AddElement(new Paragraph("", FontFactory.GetFont(FontFactory.HELVETICA, 8))); celEmail.Border = 0; tabPie.AddCell(celEmail); }
 
-                celLineaPie.AddElement(new Chunk(""));
-                celLineaPie.BackgroundColor = new BaseColor(181, 25, 70);
-                celLineaPie.Border = 0;
-                celLineaPie.FixedHeight = 30f;
-                tabPie.AddCell(celLineaPie);
+            //    celLineaPie.AddElement(new Chunk(""));
+            //    celLineaPie.BackgroundColor = new BaseColor(181, 25, 70);
+            //    celLineaPie.Border = 0;
+            //    celLineaPie.FixedHeight = 30f;
+            //    tabPie.AddCell(celLineaPie);
 
-                tabPie.TotalWidth = document.PageSize.Width;
-                tabPie.WriteSelectedRows(0, -1, 0, document.PageSize.GetBottom(tabPie.TotalHeight), writer.DirectContent);
-            }
-
-            else if (cv != null)
+            //    tabPie.TotalWidth = document.PageSize.Width;
+            //    tabPie.WriteSelectedRows(0, -1, 0, document.PageSize.GetBottom(tabPie.TotalHeight), writer.DirectContent);
+            //}
+            //
+            //else 
+            if (cv != null)
             {
                 if (cv.legal_x == true)
                 { celLegal.AddElement(new Paragraph(cv.legal, FontFactory.GetFont(FontFactory.HELVETICA, 8))); celLegal.PaddingLeft = 30; celLegal.PaddingRight = 30; celLegal.Border = 0; tabPie.AddCell(celLegal); }
@@ -125,7 +126,7 @@ namespace TAT001.Models
                 }
             }
 
-            cf = null;
+            //cf = null;
             cv = null;
         }
     }

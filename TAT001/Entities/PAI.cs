@@ -19,6 +19,7 @@ namespace TAT001.Entities
         {
             this.CLIENTEs = new HashSet<CLIENTE>();
             this.CUENTAs = new HashSet<CUENTA>();
+            this.DET_AGENTEC = new HashSet<DET_AGENTEC>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.IIMPUESTOes = new HashSet<IIMPUESTO>();
             this.LEYENDAs = new HashSet<LEYENDA>();
@@ -38,6 +39,8 @@ namespace TAT001.Entities
         public virtual ICollection<CLIENTE> CLIENTEs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CUENTA> CUENTAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEC> DET_AGENTEC { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

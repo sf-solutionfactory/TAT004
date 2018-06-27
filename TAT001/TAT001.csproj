@@ -202,7 +202,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CartaFController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\Catalogos\GALLController.cs" />
     <Compile Include="Controllers\Catalogos\IimpuestoController.cs" />
@@ -345,6 +344,9 @@
     <Compile Include="Entities\DET_AGENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DET_AGENTEC.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DET_AGENTEH.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -376,6 +378,18 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOBORRF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOBORRM.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOBORRN.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTOBORRP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOF.cs">
@@ -448,6 +462,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MONEDA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NEGOCIACION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PAGINA.cs">
@@ -579,10 +596,7 @@
     <Compile Include="Entities\TEXTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\TEXTOCARTAF.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TEXTOCARTAV.cs">
+    <Compile Include="Entities\TEXTOCV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TRETENCION.cs">
@@ -677,9 +691,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CargarModel.cs" />
-    <Compile Include="Models\CartaFEsqueleto.cs" />
     <Compile Include="Models\CartaV.cs" />
-    <Compile Include="Models\CartaF.cs" />
     <Compile Include="Models\CartaVEsqueleto.cs" />
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\CLIENTE_MOD.cs" />
@@ -896,8 +908,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\CartaF\Index.cshtml" />
-    <Content Include="Views\CartaF\Detailss.cshtml" />
     <Content Include="Views\Mails\Solicitudes.cshtml" />
     <Content Include="Views\Listas\Estados.cshtml" />
     <Content Include="Views\Listas\Ciudades.cshtml" />
@@ -1078,12 +1088,10 @@
     <Content Include="Views\Textos\Index.cshtml" />
     <Content Include="Views\Listas\Clientes.cshtml" />
     <Content Include="Scripts\autocomplete1.10.2.js" />
-    <Content Include="Views\CartaF\Details.cshtml" />
     <Content Include="Views\Solicitudes\Delete.cshtml" />
     <Content Include="Views\Solicitudes\Details.cshtml" />
     <Content Include="Views\Solicitudes\Edit.cshtml" />
     <Content Include="Views\Solicitudes\Index.cshtml" />
-    <Content Include="Views\CartaF\Create.cshtml" />
     <Content Include="Views\Workflows\Create.cshtml" />
     <Content Include="Views\Workflows\Delete.cshtml" />
     <Content Include="Views\Workflows\Details.cshtml" />

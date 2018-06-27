@@ -27,6 +27,7 @@ namespace TAT001.Entities
             this.PUESTOTs = new HashSet<PUESTOT>();
             this.RETENCIONTs = new HashSet<RETENCIONT>();
             this.ROLTs = new HashSet<ROLT>();
+            this.TEXTOCVs = new HashSet<TEXTOCV>();
             this.TALLTs = new HashSet<TALLT>();
             this.TCLIENTETs = new HashSet<TCLIENTET>();
             this.TEXTOes = new HashSet<TEXTO>();
@@ -66,6 +67,8 @@ namespace TAT001.Entities
         public virtual ICollection<RETENCIONT> RETENCIONTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ROLT> ROLTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEXTOCV> TEXTOCVs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TALLT> TALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

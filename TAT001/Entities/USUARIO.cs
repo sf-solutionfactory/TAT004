@@ -20,6 +20,8 @@ namespace TAT001.Entities
             this.CARTAs = new HashSet<CARTA>();
             this.DELEGARs = new HashSet<DELEGAR>();
             this.DELEGARs1 = new HashSet<DELEGAR>();
+            this.DET_AGENTEC = new HashSet<DET_AGENTEC>();
+            this.DET_AGENTEC1 = new HashSet<DET_AGENTEC>();
             this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.DET_AGENTEP = new HashSet<DET_AGENTEP>();
             this.DET_TAXEO = new HashSet<DET_TAXEO>();
@@ -51,6 +53,10 @@ namespace TAT001.Entities
         public virtual ICollection<DELEGAR> DELEGARs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DELEGAR> DELEGARs1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEC> DET_AGENTEC { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEC> DET_AGENTEC1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DET_AGENTEH> DET_AGENTEH { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

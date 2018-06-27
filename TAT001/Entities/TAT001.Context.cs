@@ -50,6 +50,7 @@ namespace TAT001.Entities
         public virtual DbSet<CUENTA> CUENTAs { get; set; }
         public virtual DbSet<DELEGAR> DELEGARs { get; set; }
         public virtual DbSet<DET_AGENTE> DET_AGENTE { get; set; }
+        public virtual DbSet<DET_AGENTEC> DET_AGENTEC { get; set; }
         public virtual DbSet<DET_AGENTEH> DET_AGENTEH { get; set; }
         public virtual DbSet<DET_AGENTEP> DET_AGENTEP { get; set; }
         public virtual DbSet<DET_APROB> DET_APROB { get; set; }
@@ -60,6 +61,10 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRF> DOCUMENTOBORRFs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRM> DOCUMENTOBORRMs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRN> DOCUMENTOBORRNs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRP> DOCUMENTOBORRPs { get; set; }
         public virtual DbSet<DOCUMENTOF> DOCUMENTOFs { get; set; }
         public virtual DbSet<DOCUMENTOM> DOCUMENTOMs { get; set; }
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
@@ -69,6 +74,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOSAP> DOCUMENTOSAPs { get; set; }
         public virtual DbSet<DOCUMENTOT> DOCUMENTOTS { get; set; }
         public virtual DbSet<FACTURASCONF> FACTURASCONFs { get; set; }
+        public virtual DbSet<FLUJNEGO> FLUJNEGOes { get; set; }
         public virtual DbSet<FLUJO> FLUJOes { get; set; }
         public virtual DbSet<GALL> GALLs { get; set; }
         public virtual DbSet<GALLT> GALLTs { get; set; }
@@ -82,6 +88,7 @@ namespace TAT001.Entities
         public virtual DbSet<MENSAJE> MENSAJES { get; set; }
         public virtual DbSet<MIEMBRO> MIEMBROS { get; set; }
         public virtual DbSet<MONEDA> MONEDAs { get; set; }
+        public virtual DbSet<NEGOCIACION> NEGOCIACIONs { get; set; }
         public virtual DbSet<PAGINA> PAGINAs { get; set; }
         public virtual DbSet<PAGINAT> PAGINATs { get; set; }
         public virtual DbSet<PAI> PAIS { get; set; }
@@ -116,8 +123,7 @@ namespace TAT001.Entities
         public virtual DbSet<TCLIENTE> TCLIENTEs { get; set; }
         public virtual DbSet<TCLIENTET> TCLIENTETs { get; set; }
         public virtual DbSet<TEXTO> TEXTOes { get; set; }
-        public virtual DbSet<TEXTOCARTAF> TEXTOCARTAFs { get; set; }
-        public virtual DbSet<TEXTOCARTAV> TEXTOCARTAVs { get; set; }
+        public virtual DbSet<TEXTOCV> TEXTOCVs { get; set; }
         public virtual DbSet<TRETENCION> TRETENCIONs { get; set; }
         public virtual DbSet<TRETENCIONT> TRETENCIONTs { get; set; }
         public virtual DbSet<TREVERSA> TREVERSAs { get; set; }
@@ -150,7 +156,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<FLUJNEGO> FLUJNEGOes { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

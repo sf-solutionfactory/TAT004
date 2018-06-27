@@ -358,6 +358,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DET_AGENTEC">
+      <EntityTypeMapping TypeName="TAT001Model.DET_AGENTEC">
+        <MappingFragment StoreEntitySet="DET_AGENTEC">
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+          <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+          <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+          <ScalarProperty Name="SPART" ColumnName="SPART" />
+          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="PRESUPUESTO" ColumnName="PRESUPUESTO" />
+          <ScalarProperty Name="MAIL" ColumnName="MAIL" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="DET_AGENTEH">
       <EntityTypeMapping TypeName="TAT001Model.DET_AGENTEH">
         <MappingFragment StoreEntitySet="DET_AGENTEH">
@@ -609,6 +628,73 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOBORRFs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRF">
+        <MappingFragment StoreEntitySet="DOCUMENTOBORRF">
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="CONTROL" ColumnName="CONTROL" />
+          <ScalarProperty Name="AUTORIZACION" ColumnName="AUTORIZACION" />
+          <ScalarProperty Name="VENCIMIENTO" ColumnName="VENCIMIENTO" />
+          <ScalarProperty Name="FACTURAK" ColumnName="FACTURAK" />
+          <ScalarProperty Name="EJERCICIOK" ColumnName="EJERCICIOK" />
+          <ScalarProperty Name="BILL_DOC" ColumnName="BILL_DOC" />
+          <ScalarProperty Name="BELNR" ColumnName="BELNR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOBORRMs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRM">
+        <MappingFragment StoreEntitySet="DOCUMENTOBORRM">
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+          <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+          <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
+          <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+          <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
+          <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+          <ScalarProperty Name="VALORH" ColumnName="VALORH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOBORRNs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRN">
+        <MappingFragment StoreEntitySet="DOCUMENTOBORRN">
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="STEP" ColumnName="STEP" />
+          <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+          <ScalarProperty Name="TEXTO" ColumnName="TEXTO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOBORRPs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRP">
+        <MappingFragment StoreEntitySet="DOCUMENTOBORRP">
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+          <ScalarProperty Name="MATKL" ColumnName="MATKL" />
+          <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+          <ScalarProperty Name="MONTO_APOYO" ColumnName="MONTO_APOYO" />
+          <ScalarProperty Name="PRECIO_SUG" ColumnName="PRECIO_SUG" />
+          <ScalarProperty Name="VOLUMEN_EST" ColumnName="VOLUMEN_EST" />
+          <ScalarProperty Name="VOLUMEN_REAL" ColumnName="VOLUMEN_REAL" />
+          <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+          <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
+          <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+          <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="DOCUMENTOFs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOF">
         <MappingFragment StoreEntitySet="DOCUMENTOF">
@@ -630,7 +716,6 @@
     <EntitySetMapping Name="DOCUMENTOMs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOM">
         <MappingFragment StoreEntitySet="DOCUMENTOM">
-          <ScalarProperty Name="VALORH" ColumnName="VALORH" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
           <ScalarProperty Name="POS" ColumnName="POS" />
@@ -640,6 +725,7 @@
           <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
           <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
           <ScalarProperty Name="VIGENCIA_A" ColumnName="VIGENCIA_A" />
+          <ScalarProperty Name="VALORH" ColumnName="VALORH" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -740,6 +826,18 @@
           <ScalarProperty Name="EJERCICIOK" ColumnName="EJERCICIOK" />
           <ScalarProperty Name="BILL_DOC" ColumnName="BILL_DOC" />
           <ScalarProperty Name="BELNR" ColumnName="BELNR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FLUJNEGOes">
+      <EntityTypeMapping TypeName="TAT001Model.FLUJNEGO">
+        <MappingFragment StoreEntitySet="FLUJNEGO">
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+          <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -886,6 +984,17 @@
           <ScalarProperty Name="ALTWR" ColumnName="ALTWR" />
           <ScalarProperty Name="LTEXT" ColumnName="LTEXT" />
           <ScalarProperty Name="KTEXT" ColumnName="KTEXT" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NEGOCIACIONs">
+      <EntityTypeMapping TypeName="TAT001Model.NEGOCIACION">
+        <MappingFragment StoreEntitySet="NEGOCIACION">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+          <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+          <ScalarProperty Name="FECHAN" ColumnName="FECHAN" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -1314,43 +1423,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TEXTOCARTAFs">
-      <EntityTypeMapping TypeName="TAT001Model.TEXTOCARTAF">
-        <MappingFragment StoreEntitySet="TEXTOCARTAF">
+    <EntitySetMapping Name="TEXTOCVs">
+      <EntityTypeMapping TypeName="TAT001Model.TEXTOCV">
+        <MappingFragment StoreEntitySet="TEXTOCV">
+          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
-          <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
-          <ScalarProperty Name="ESTIMADO" ColumnName="ESTIMADO" />
-          <ScalarProperty Name="CONTROL" ColumnName="CONTROL" />
-          <ScalarProperty Name="FOLIO" ColumnName="FOLIO" />
-          <ScalarProperty Name="PAYER" ColumnName="PAYER" />
-          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
-          <ScalarProperty Name="MARCA_AGUA" ColumnName="MARCA_AGUA" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TEXTOCARTAVs">
-      <EntityTypeMapping TypeName="TAT001Model.TEXTOCARTAV">
-        <MappingFragment StoreEntitySet="TEXTOCARTAV">
-          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
-          <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
-          <ScalarProperty Name="ESTIMADO" ColumnName="ESTIMADO" />
-          <ScalarProperty Name="CONTROL" ColumnName="CONTROL" />
-          <ScalarProperty Name="DE" ColumnName="DE" />
-          <ScalarProperty Name="A" ColumnName="A" />
-          <ScalarProperty Name="MATERIAL" ColumnName="MATERIAL" />
-          <ScalarProperty Name="CATEGORIA" ColumnName="CATEGORIA" />
-          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
-          <ScalarProperty Name="COSTOU" ColumnName="COSTOU" />
-          <ScalarProperty Name="APOYOP" ColumnName="APOYOP" />
-          <ScalarProperty Name="APOYOPP" ColumnName="APOYOPP" />
-          <ScalarProperty Name="COSTOA" ColumnName="COSTOA" />
-          <ScalarProperty Name="PRECIOSU" ColumnName="PRECIOSU" />
-          <ScalarProperty Name="FOLIO" ColumnName="FOLIO" />
-          <ScalarProperty Name="PAYER" ColumnName="PAYER" />
-          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
-          <ScalarProperty Name="MARCA_AGUA" ColumnName="MARCA_AGUA" />
-          <ScalarProperty Name="APOYOEST" ColumnName="APOYOEST" />
-          <ScalarProperty Name="APOYOREA" ColumnName="APOYOREA" />
+          <ScalarProperty Name="CAMPO" ColumnName="CAMPO" />
+          <ScalarProperty Name="TEXTO" ColumnName="TEXTO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1415,13 +1494,13 @@
     <EntitySetMapping Name="TSOLs">
       <EntityTypeMapping TypeName="TAT001Model.TSOL">
         <MappingFragment StoreEntitySet="TSOL">
-          <ScalarProperty Name="PADRE" ColumnName="PADRE" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
           <ScalarProperty Name="RANGO_ID" ColumnName="RANGO_ID" />
           <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
           <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="PADRE" ColumnName="PADRE" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1940,17 +2019,5 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
-    <EntitySetMapping Name="FLUJNEGOes">
-      <EntityTypeMapping TypeName="TAT001Model.FLUJNEGO">
-        <MappingFragment StoreEntitySet="FLUJNEGO">
-          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
-          <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
-          <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
-          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
-          <ScalarProperty Name="POS" ColumnName="POS" />
-          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

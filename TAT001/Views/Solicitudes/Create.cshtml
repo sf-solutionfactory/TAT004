@@ -35,20 +35,20 @@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
 
-        <div class="col s12 m5 l5">
+        <div class="col s12 m3 l3">
             <div class="row" style="margin-bottom:0">
-                <div class="input-field col s4">
+                <div class="input-field col s8">
                     @Html.EditorFor(model => model.USUARIOC_ID, "Usuario", new { htmlAttributes = new { @disabled = "disabled", @Value = us.ID } })
                     @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new { @id = "lbl_userid" })
                 </div>
-                <div class="input-field col s4">
+                @*<div class="input-field col s4">
                     @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
                     @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
                 </div>
                 <div class="input-field col s4">
                     @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
                     @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
-                </div>
+                </div>*@
             </div>
         </div>
         <div class="col s12 m4 l4">
@@ -448,7 +448,7 @@
                                                 url: "../Listas/Clientes",
                                                 type: "GET",
                                                 dataType: "json",
-                                                data: { Prefix: request.term },
+                                                data: { Prefix: request.term, usuario: '@ViewBag.usuario.ID' },
                                                 success: function (data) {
                                                     response(auto.map(data, function (item) {
                                                         return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };

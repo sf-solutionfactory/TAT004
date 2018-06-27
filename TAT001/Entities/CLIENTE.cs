@@ -19,6 +19,7 @@ namespace TAT001.Entities
         {
             this.CLIENTEIs = new HashSet<CLIENTEI>();
             this.CONTACTOCs = new HashSet<CONTACTOC>();
+            this.DET_AGENTEC = new HashSet<DET_AGENTEC>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.TAXEOHs = new HashSet<TAXEOH>();
         }
@@ -63,6 +64,8 @@ namespace TAT001.Entities
         public virtual ICollection<CLIENTEI> CLIENTEIs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONTACTOC> CONTACTOCs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DET_AGENTEC> DET_AGENTEC { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

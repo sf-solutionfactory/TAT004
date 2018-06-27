@@ -97,6 +97,8 @@ namespace TAT001.Controllers
                 d.TALL = tall.Where(a => a.ID.Equals(d.TALL_ID)).FirstOrDefault();
                 //d.ESTADO = db.STATES.Where(a => a.ID.Equals(v.ESTADO)).FirstOrDefault().NAME;
                 //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
+                //dOCUMENTOes.Add(d);
+                d.FLUJOes = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).ToList();
                 dOCUMENTOes.Add(d);
             }
             dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
@@ -117,7 +119,7 @@ namespace TAT001.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SelPais(string pais)
         {
-            Session["pais"] = pais.ToUpper() ;
+            Session["pais"] = pais.ToUpper();
             return View();
         }
 
@@ -139,15 +141,16 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                //var p = db.PAIS.Where(a => a.ACTIVO.Equals(true));
-
-                //ViewBag.creador = db.CREADORs.Where(a => a.ID.Equals(u) & a.ACTIVO == true).ToList();
-
-                var p = from P in db.PAIS
-                    join C in db.CREADOR2 on P.LAND equals C.LAND
-                    where P.ACTIVO == true
-                    & C.ID == u & C.ACTIVO == true
-                    select P;
+                //var p = from P in db.PAIS
+                //        join C in db.CREADOR2 on P.LAND equals C.LAND
+                //        where P.ACTIVO == true
+                //        & C.ID == u & C.ACTIVO == true
+                //        select P;
+                var p = from P in db.PAIS.ToList()
+                        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                        on P.LAND equals C.PAIS_ID
+                        where P.ACTIVO == true
+                        select P;
 
                 List<Delegados> delegados = new List<Delegados>();
                 DateTime fecha = DateTime.Now.Date;
@@ -156,13 +159,13 @@ namespace TAT001.Controllers
                 foreach (DELEGAR de in del)
                 {
                     var pd = (from P in db.PAIS
-                             join C in db.CREADOR2 on P.LAND equals C.LAND
-                             where P.ACTIVO == true
-                             & C.ID == de.USUARIO_ID & C.ACTIVO == true
-                             select P).ToList();
+                              join C in db.CREADOR2 on P.LAND equals C.LAND
+                              where P.ACTIVO == true
+                              & C.ID == de.USUARIO_ID & C.ACTIVO == true
+                              select P).ToList();
                     Delegados delegado = new Delegados();
                     delegado.usuario = de.USUARIO_ID;
-                    delegado.nombre = de.USUARIO.NOMBRE + " " +de.USUARIO.APELLIDO_P + " " +de.USUARIO.APELLIDO_M;
+                    delegado.nombre = de.USUARIO.NOMBRE + " " + de.USUARIO.APELLIDO_P + " " + de.USUARIO.APELLIDO_M;
                     delegado.LISTA = pd;
                     if (delegado.LISTA.Count > 0)
                         delegados.Add(delegado);

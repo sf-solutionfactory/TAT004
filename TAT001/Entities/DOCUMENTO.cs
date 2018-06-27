@@ -101,7 +101,6 @@ namespace TAT001.Entities
         public List<DOCUMENTOF> DOCUMENTOF { get; set; }
         public List<DOCUMENTOREC> DOCUMENTOREC { get; set; }
 
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
         public virtual CLIENTE CLIENTE { get; set; }
