@@ -61,6 +61,10 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRF> DOCUMENTOBORRFs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRM> DOCUMENTOBORRMs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRN> DOCUMENTOBORRNs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRP> DOCUMENTOBORRPs { get; set; }
         public virtual DbSet<DOCUMENTOF> DOCUMENTOFs { get; set; }
         public virtual DbSet<DOCUMENTOM> DOCUMENTOMs { get; set; }
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }

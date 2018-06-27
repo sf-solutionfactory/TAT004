@@ -12,12 +12,14 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class NEGOCIACION
+    public partial class DOCUMENTOBORRN
     {
-        public long ID { get; set; }
-        public System.DateTime FECHAI { get; set; }
-        public System.DateTime FECHAF { get; set; }
-        public System.DateTime FECHAN { get; set; }
-        public bool ACTIVO { get; set; }
+        public string USUARIOC_ID { get; set; }
+        public int POS { get; set; }
+        public Nullable<int> STEP { get; set; }
+        public string USUARIO_ID { get; set; }
+        public string TEXTO { get; set; }
+    
+        public virtual DOCUMENTBORR DOCUMENTBORR { get; set; }
     }
 }

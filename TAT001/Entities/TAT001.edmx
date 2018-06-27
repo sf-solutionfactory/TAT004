@@ -654,6 +654,74 @@
           <Property Name="PATH" Type="nvarchar" MaxLength="500" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DOCUMENTOBORRF">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" />
+          <Property Name="FACTURA" Type="nvarchar" MaxLength="50" />
+          <Property Name="FECHA" Type="date" />
+          <Property Name="PROVEEDOR" Type="nchar" MaxLength="10" />
+          <Property Name="CONTROL" Type="nvarchar" MaxLength="50" />
+          <Property Name="AUTORIZACION" Type="nvarchar" MaxLength="50" />
+          <Property Name="VENCIMIENTO" Type="date" />
+          <Property Name="FACTURAK" Type="nvarchar" MaxLength="50" />
+          <Property Name="EJERCICIOK" Type="nchar" MaxLength="4" />
+          <Property Name="BILL_DOC" Type="nchar" MaxLength="10" />
+          <Property Name="BELNR" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRM">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="POS_ID" Type="numeric" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="MATNR" Type="nvarchar" MaxLength="18" />
+          <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_EST" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="date" />
+          <Property Name="VIGENCIA_AL" Type="date" />
+          <Property Name="VALORH" Type="decimal" Precision="13" Scale="5" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRN">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="POS" Type="int" Nullable="false" />
+          <Property Name="STEP" Type="int" />
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="TEXTO" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRP">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="POS" Type="numeric" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="MATNR" Type="nvarchar" MaxLength="18" Nullable="false" />
+          <Property Name="MATKL" Type="nvarchar" MaxLength="9" />
+          <Property Name="CANTIDAD" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="MONTO" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="MONTO_APOYO" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="PRECIO_SUG" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="VOLUMEN_EST" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="VOLUMEN_REAL" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="date" />
+          <Property Name="VIGENCIA_AL" Type="date" />
+          <Property Name="APOYO_EST" Type="decimal" Precision="13" Scale="5" />
+        </EntityType>
         <EntityType Name="DOCUMENTOF">
           <Key>
             <PropertyRef Name="NUM_DOC" />
@@ -949,9 +1017,10 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FECHAI" Type="date" />
-          <Property Name="FECHAF" Type="date" />
-          <Property Name="FECHAN" Type="date" />
+          <Property Name="FECHAI" Type="date" Nullable="false" />
+          <Property Name="FECHAF" Type="date" Nullable="false" />
+          <Property Name="FECHAN" Type="date" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PAGINA">
           <Key>
@@ -2535,6 +2604,56 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DOCUMENTOBORRF_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRF" Type="Self.DOCUMENTOBORRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRF">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRM_DOCUMENTOBORRP">
+          <End Role="DOCUMENTOBORRP" Type="Self.DOCUMENTOBORRP" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRM" Type="Self.DOCUMENTOBORRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTOBORRP">
+              <PropertyRef Name="USUARIOC_ID" />
+              <PropertyRef Name="POS" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRM">
+              <PropertyRef Name="USUARIOC_ID" />
+              <PropertyRef Name="POS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRN_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRN" Type="Self.DOCUMENTOBORRN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRN">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRP_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRP" Type="Self.DOCUMENTOBORRP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRP">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DOCUMENTOF_DOCUMENTO">
           <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
           <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
@@ -3106,6 +3225,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             </Principal>
             <Dependent Role="SOCIEDAD">
               <PropertyRef Name="WAERS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SPRAS_SPRAS_ID">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="TEXTOCV" Type="Self.TEXTOCV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TEXTOCV">
+              <PropertyRef Name="SPRAS_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3897,6 +4028,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOBORRF" EntityType="Self.DOCUMENTOBORRF" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOBORRM" EntityType="Self.DOCUMENTOBORRM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOBORRN" EntityType="Self.DOCUMENTOBORRN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTOBORRP" EntityType="Self.DOCUMENTOBORRP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOM" EntityType="Self.DOCUMENTOM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
@@ -4343,6 +4478,22 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
             <End Role="DOCUMENTOA" EntitySet="DOCUMENTOA" />
           </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRF_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORR" />
+            <End Role="DOCUMENTOBORRF" EntitySet="DOCUMENTOBORRF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRM_DOCUMENTOBORRP" Association="Self.FK_DOCUMENTOBORRM_DOCUMENTOBORRP">
+            <End Role="DOCUMENTOBORRP" EntitySet="DOCUMENTOBORRP" />
+            <End Role="DOCUMENTOBORRM" EntitySet="DOCUMENTOBORRM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRN_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORR" />
+            <End Role="DOCUMENTOBORRN" EntitySet="DOCUMENTOBORRN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRP_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORR" />
+            <End Role="DOCUMENTOBORRP" EntitySet="DOCUMENTOBORRP" />
+          </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
             <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
             <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
@@ -4530,6 +4681,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <AssociationSet Name="FK_SOCIEDAD_MONEDA" Association="Self.FK_SOCIEDAD_MONEDA">
             <End Role="MONEDA" EntitySet="MONEDA" />
             <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPRAS_SPRAS_ID" Association="Self.FK_SPRAS_SPRAS_ID">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TEXTOCV" EntitySet="TEXTOCV" />
           </AssociationSet>
           <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
             <End Role="COUNTRIES" EntitySet="COUNTRIES" />
@@ -5377,6 +5532,9 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Property Name="VKORG" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
           <Property Name="VTWEG" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="SPART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="DOCUMENTOBORRFs" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRF" />
+          <NavigationProperty Name="DOCUMENTOBORRNs" Relationship="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRN" />
+          <NavigationProperty Name="DOCUMENTOBORRPs" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRP" />
         </EntityType>
         <EntityType Name="DOCUMENTO">
           <Key>
@@ -5483,6 +5641,79 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Property Name="PATH" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOA_DOCUMENTO" FromRole="DOCUMENTOA" ToRole="DOCUMENTO" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRF">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <Property Name="FACTURA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FECHA" Type="DateTime" Precision="0" />
+          <Property Name="PROVEEDOR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CONTROL" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AUTORIZACION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VENCIMIENTO" Type="DateTime" Precision="0" />
+          <Property Name="FACTURAK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EJERCICIOK" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="BILL_DOC" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BELNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRM">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="POS_ID" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="MATNR" Type="String" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
+          <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
+          <Property Name="VALORH" Type="Decimal" Precision="13" Scale="5" />
+          <NavigationProperty Name="DOCUMENTOBORRP" Relationship="Self.FK_DOCUMENTOBORRM_DOCUMENTOBORRP" FromRole="DOCUMENTOBORRM" ToRole="DOCUMENTOBORRP" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRN">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="POS" Type="Int32" Nullable="false" />
+          <Property Name="STEP" Type="Int32" />
+          <Property Name="USUARIO_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="TEXTO" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR" FromRole="DOCUMENTOBORRN" ToRole="DOCUMENTBORR" />
+        </EntityType>
+        <EntityType Name="DOCUMENTOBORRP">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="POS" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="POS" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="MATNR" Type="String" MaxLength="18" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MATKL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="CANTIDAD" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="MONTO" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="MONTO_APOYO" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="PRECIO_SUG" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="VOLUMEN_EST" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="VOLUMEN_REAL" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
+          <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
+          <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
+          <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
+          <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTOBORRP" ToRole="DOCUMENTBORR" />
+          <NavigationProperty Name="DOCUMENTOBORRMs" Relationship="Self.FK_DOCUMENTOBORRM_DOCUMENTOBORRP" FromRole="DOCUMENTOBORRP" ToRole="DOCUMENTOBORRM" />
         </EntityType>
         <EntityType Name="DOCUMENTOF">
           <Key>
@@ -5822,9 +6053,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FECHAI" Type="DateTime" Precision="0" />
-          <Property Name="FECHAF" Type="DateTime" Precision="0" />
-          <Property Name="FECHAN" Type="DateTime" Precision="0" />
+          <Property Name="FECHAI" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FECHAF" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FECHAN" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PAGINA">
           <Key>
@@ -6185,6 +6417,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <NavigationProperty Name="PUESTOTs" Relationship="Self.FK_PUESTOT_SPRAS" FromRole="SPRAS" ToRole="PUESTOT" />
           <NavigationProperty Name="RETENCIONTs" Relationship="Self.FK_RETENCIONT_SPRAS" FromRole="SPRAS" ToRole="RETENCIONT" />
           <NavigationProperty Name="ROLTs" Relationship="Self.FK_ROLT_SPRAS" FromRole="SPRAS" ToRole="ROLT" />
+          <NavigationProperty Name="TEXTOCVs" Relationship="Self.FK_SPRAS_SPRAS_ID" FromRole="SPRAS" ToRole="TEXTOCV" />
           <NavigationProperty Name="TALLTs" Relationship="Self.FK_TALLT_SPRAS" FromRole="SPRAS" ToRole="TALLT" />
           <NavigationProperty Name="TCLIENTETs" Relationship="Self.FK_TCLIENTET_SPRAS" FromRole="SPRAS" ToRole="TCLIENTET" />
           <NavigationProperty Name="TEXTOes" Relationship="Self.FK_TEXTO_SPRAS" FromRole="SPRAS" ToRole="TEXTO" />
@@ -6374,6 +6607,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <Property Name="SPRAS_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="CAMPO" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TEXTO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SPRA" Relationship="Self.FK_SPRAS_SPRAS_ID" FromRole="TEXTOCV" ToRole="SPRAS" />
         </EntityType>
         <EntityType Name="TRETENCION">
           <Key>
@@ -7569,6 +7803,42 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DOCUMENTOBORRF_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRF" Type="Self.DOCUMENTOBORRF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRF">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRN_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRN" Type="Self.DOCUMENTOBORRN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRN">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRP_DOCUMENTBORR">
+          <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRP" Type="Self.DOCUMENTOBORRP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTBORR">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRP">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DOCUMENTO_GALL">
           <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
           <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
@@ -7746,6 +8016,20 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             </Principal>
             <Dependent Role="FLUJO">
               <PropertyRef Name="NUM_DOC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DOCUMENTOBORRM_DOCUMENTOBORRP">
+          <End Role="DOCUMENTOBORRP" Type="Self.DOCUMENTOBORRP" Multiplicity="1" />
+          <End Role="DOCUMENTOBORRM" Type="Self.DOCUMENTOBORRM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DOCUMENTOBORRP">
+              <PropertyRef Name="USUARIOC_ID" />
+              <PropertyRef Name="POS" />
+            </Principal>
+            <Dependent Role="DOCUMENTOBORRM">
+              <PropertyRef Name="USUARIOC_ID" />
+              <PropertyRef Name="POS_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8383,6 +8667,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SPRAS_SPRAS_ID">
+          <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
+          <End Role="TEXTOCV" Type="Self.TEXTOCV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TEXTOCV">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TALLT_SPRAS">
           <End Role="SPRAS" Type="Self.SPRA" Multiplicity="1" />
           <End Role="TALLT" Type="Self.TALLT" Multiplicity="*" />
@@ -8822,6 +9118,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <EntitySet Name="DOCUMENTBORRs" EntityType="Self.DOCUMENTBORR" />
           <EntitySet Name="DOCUMENTOes" EntityType="Self.DOCUMENTO" />
           <EntitySet Name="DOCUMENTOAs" EntityType="Self.DOCUMENTOA" />
+          <EntitySet Name="DOCUMENTOBORRFs" EntityType="Self.DOCUMENTOBORRF" />
+          <EntitySet Name="DOCUMENTOBORRMs" EntityType="Self.DOCUMENTOBORRM" />
+          <EntitySet Name="DOCUMENTOBORRNs" EntityType="Self.DOCUMENTOBORRN" />
+          <EntitySet Name="DOCUMENTOBORRPs" EntityType="Self.DOCUMENTOBORRP" />
           <EntitySet Name="DOCUMENTOFs" EntityType="Self.DOCUMENTOF" />
           <EntitySet Name="DOCUMENTOMs" EntityType="Self.DOCUMENTOM" />
           <EntitySet Name="DOCUMENTONs" EntityType="Self.DOCUMENTON" />
@@ -9133,6 +9433,18 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <End Role="USUARIO" EntitySet="USUARIOs" />
             <End Role="DET_TAXEO" EntitySet="DET_TAXEO" />
           </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRF_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORRs" />
+            <End Role="DOCUMENTOBORRF" EntitySet="DOCUMENTOBORRFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRN_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORRs" />
+            <End Role="DOCUMENTOBORRN" EntitySet="DOCUMENTOBORRNs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRP_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR">
+            <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORRs" />
+            <End Role="DOCUMENTOBORRP" EntitySet="DOCUMENTOBORRPs" />
+          </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTO_GALL" Association="Self.FK_DOCUMENTO_GALL">
             <End Role="GALL" EntitySet="GALLs" />
             <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
@@ -9192,6 +9504,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <AssociationSet Name="FK_FLUJO_DOCUMENTO" Association="Self.FK_FLUJO_DOCUMENTO">
             <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
             <End Role="FLUJO" EntitySet="FLUJOes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DOCUMENTOBORRM_DOCUMENTOBORRP" Association="Self.FK_DOCUMENTOBORRM_DOCUMENTOBORRP">
+            <End Role="DOCUMENTOBORRP" EntitySet="DOCUMENTOBORRPs" />
+            <End Role="DOCUMENTOBORRM" EntitySet="DOCUMENTOBORRMs" />
           </AssociationSet>
           <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
             <End Role="DOCUMENTOP" EntitySet="DOCUMENTOPs" />
@@ -9400,6 +9716,10 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <AssociationSet Name="FK_USUARIO_SOCIEDAD" Association="Self.FK_USUARIO_SOCIEDAD">
             <End Role="SOCIEDAD" EntitySet="SOCIEDADs" />
             <End Role="USUARIO" EntitySet="USUARIOs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SPRAS_SPRAS_ID" Association="Self.FK_SPRAS_SPRAS_ID">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="TEXTOCV" EntitySet="TEXTOCVs" />
           </AssociationSet>
           <AssociationSet Name="FK_TALLT_SPRAS" Association="Self.FK_TALLT_SPRAS">
             <End Role="SPRAS" EntitySet="SPRAS" />
@@ -10356,6 +10676,73 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTOBORRFs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRF">
+              <MappingFragment StoreEntitySet="DOCUMENTOBORRF">
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+                <ScalarProperty Name="CONTROL" ColumnName="CONTROL" />
+                <ScalarProperty Name="AUTORIZACION" ColumnName="AUTORIZACION" />
+                <ScalarProperty Name="VENCIMIENTO" ColumnName="VENCIMIENTO" />
+                <ScalarProperty Name="FACTURAK" ColumnName="FACTURAK" />
+                <ScalarProperty Name="EJERCICIOK" ColumnName="EJERCICIOK" />
+                <ScalarProperty Name="BILL_DOC" ColumnName="BILL_DOC" />
+                <ScalarProperty Name="BELNR" ColumnName="BELNR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTOBORRMs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRM">
+              <MappingFragment StoreEntitySet="DOCUMENTOBORRM">
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="POS_ID" ColumnName="POS_ID" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+                <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+                <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
+                <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+                <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
+                <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+                <ScalarProperty Name="VALORH" ColumnName="VALORH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTOBORRNs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRN">
+              <MappingFragment StoreEntitySet="DOCUMENTOBORRN">
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="STEP" ColumnName="STEP" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
+                <ScalarProperty Name="TEXTO" ColumnName="TEXTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DOCUMENTOBORRPs">
+            <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRP">
+              <MappingFragment StoreEntitySet="DOCUMENTOBORRP">
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="POS" ColumnName="POS" />
+                <ScalarProperty Name="MATNR" ColumnName="MATNR" />
+                <ScalarProperty Name="MATKL" ColumnName="MATKL" />
+                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+                <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
+                <ScalarProperty Name="MONTO_APOYO" ColumnName="MONTO_APOYO" />
+                <ScalarProperty Name="PRECIO_SUG" ColumnName="PRECIO_SUG" />
+                <ScalarProperty Name="VOLUMEN_EST" ColumnName="VOLUMEN_EST" />
+                <ScalarProperty Name="VOLUMEN_REAL" ColumnName="VOLUMEN_REAL" />
+                <ScalarProperty Name="APOYO_REAL" ColumnName="APOYO_REAL" />
+                <ScalarProperty Name="VIGENCIA_DE" ColumnName="VIGENCIA_DE" />
+                <ScalarProperty Name="VIGENCIA_AL" ColumnName="VIGENCIA_AL" />
+                <ScalarProperty Name="APOYO_EST" ColumnName="APOYO_EST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DOCUMENTOFs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOF">
               <MappingFragment StoreEntitySet="DOCUMENTOF">
@@ -10656,6 +11043,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
                 <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
                 <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
                 <ScalarProperty Name="FECHAN" ColumnName="FECHAN" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

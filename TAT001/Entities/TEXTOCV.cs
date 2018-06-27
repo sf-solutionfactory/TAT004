@@ -18,5 +18,7 @@ namespace TAT001.Entities
         public string SPRAS_ID { get; set; }
         public string CAMPO { get; set; }
         public string TEXTO { get; set; }
+    
+        public virtual SPRA SPRA { get; set; }
     }
 }

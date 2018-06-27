@@ -14,6 +14,14 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTBORR
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DOCUMENTBORR()
+        {
+            this.DOCUMENTOBORRFs = new HashSet<DOCUMENTOBORRF>();
+            this.DOCUMENTOBORRNs = new HashSet<DOCUMENTOBORRN>();
+            this.DOCUMENTOBORRPs = new HashSet<DOCUMENTOBORRP>();
+        }
+    
         public string USUARIOC_ID { get; set; }
         public string TSOL_ID { get; set; }
         public string TALL_ID { get; set; }
@@ -78,5 +86,12 @@ namespace TAT001.Entities
         public string VKORG { get; set; }
         public string VTWEG { get; set; }
         public string SPART { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOBORRF> DOCUMENTOBORRFs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOBORRN> DOCUMENTOBORRNs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTOBORRP> DOCUMENTOBORRPs { get; set; }
     }
 }

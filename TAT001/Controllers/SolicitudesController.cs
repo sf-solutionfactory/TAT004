@@ -440,7 +440,8 @@ namespace TAT001.Controllers
             DOCUMENTO d = new DOCUMENTO();
             string errorString = "";
             int pagina = 202; //ID EN BASE DE DATOS
-            String res = "";//B20180611
+            string res = "";//B20180611
+            string unafactura = "false"; //MGC B20180625 MGC 
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -846,6 +847,36 @@ namespace TAT001.Controllers
                         d.PAYER_ID = docb.PAYER_ID;
                         d.FECHAI_VIG = docb.FECHAI_VIG;
                         d.FECHAF_VIG = docb.FECHAF_VIG;
+
+                        //Obtener las facturas del borrador
+                        //List<DOCUMENTOBORRF> lbf = new List<DOCUMENTOBORRF>();
+                        //lbf = db.DOCUMENTOBORRFs.Where(lb => lb.USUARIOC_ID == user.ID).ToList();
+                        List<DOCUMENTOF> docfl = new List<DOCUMENTOF>();
+                        for (int j = 0;j< docb.DOCUMENTOBORRFs.Count; j++)
+                        {
+                            //Definir si son varias facturas o una
+                            if (j == 0)
+                            {
+                                unafactura = docb.DOCUMENTOBORRFs.ElementAt(j).ACTIVO + "";
+                                unafactura = unafactura.ToLower();
+                            }
+                            DOCUMENTOF docf = new DOCUMENTOF();
+
+                            docf.POS = j + 1;
+                            docf.FACTURA = docb.DOCUMENTOBORRFs.ElementAt(j).FACTURA;
+                            docf.FECHA = docb.DOCUMENTOBORRFs.ElementAt(j).FECHA;
+                            docf.PROVEEDOR = docb.DOCUMENTOBORRFs.ElementAt(j).PROVEEDOR;
+                            docf.CONTROL = docb.DOCUMENTOBORRFs.ElementAt(j).CONTROL;
+                            docf.AUTORIZACION = docb.DOCUMENTOBORRFs.ElementAt(j).AUTORIZACION;
+                            docf.VENCIMIENTO = docb.DOCUMENTOBORRFs.ElementAt(j).VENCIMIENTO;
+                            docf.FACTURAK = docb.DOCUMENTOBORRFs.ElementAt(j).FACTURAK;
+                            docf.EJERCICIOK = docb.DOCUMENTOBORRFs.ElementAt(j).EJERCICIOK;
+                            docf.BILL_DOC = docb.DOCUMENTOBORRFs.ElementAt(j).BILL_DOC;
+                            docf.BELNR = docb.DOCUMENTOBORRFs.ElementAt(j).BELNR;
+
+                            docfl.Add(docf);
+                        }
+                        d.DOCUMENTOF = docfl;
                     }
                     else
                     {
@@ -959,7 +990,7 @@ namespace TAT001.Controllers
             ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
             ViewBag.PARVW = "";
-            ViewBag.UNAFACTURA = "false";
+            ViewBag.UNAFACTURA = unafactura; //MGC B20180625
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
             ViewBag.NAME1 = "";
@@ -1253,7 +1284,7 @@ namespace TAT001.Controllers
                         //Eliminar borrador anterior 
                         string borre = "";
                         borre = eliminarBorrador(dOCUMENTO);
-                        //Guardar el borrador
+                        //Guardar el borrador documento
                         if (borre != "")
                         {
                             try
@@ -1270,6 +1301,8 @@ namespace TAT001.Controllers
                             docb = guardarBorrador(dOCUMENTO, id_bukrs);
                             db.DOCUMENTBORRs.Add(docb);
                             db.SaveChanges();
+                            //B20180625 MGC 2018.06.27 Almacenar facturas
+                            guardarBorradorf(dOCUMENTO, unafact);
                             Session["BORRADOR"] = "Borrador almacenado";
                         }
 
@@ -2275,9 +2308,60 @@ namespace TAT001.Controllers
             return docb;
         }
 
+        public void guardarBorradorf(DOCUMENTO doc,String unafact)
+        {
+            bool uf = false;
+
+            if(unafact == "true")
+            {
+                uf = true;
+            }else if(unafact == "false")
+            {
+                uf = false;
+            }
+
+            for(int i = 0; i < doc.DOCUMENTOF.Count; i++)
+            {
+                try
+                {
+                    DOCUMENTOBORRF dbf = new DOCUMENTOBORRF();
+                    dbf.USUARIOC_ID = doc.USUARIOC_ID;
+                    dbf.POS = i + 1;
+                    dbf.ACTIVO = uf;
+                    dbf.FACTURA = doc.DOCUMENTOF[i].FACTURA;
+                    dbf.FECHA = doc.DOCUMENTOF[i].FECHA;
+                    dbf.PROVEEDOR = doc.DOCUMENTOF[i].PROVEEDOR;
+                    dbf.CONTROL = doc.DOCUMENTOF[i].CONTROL;
+                    dbf.AUTORIZACION = doc.DOCUMENTOF[i].AUTORIZACION;
+                    dbf.VENCIMIENTO = doc.DOCUMENTOF[i].VENCIMIENTO;
+                    dbf.FACTURAK = doc.DOCUMENTOF[i].FACTURAK;
+                    dbf.EJERCICIOK = doc.DOCUMENTOF[i].EJERCICIOK;
+                    dbf.BILL_DOC = doc.DOCUMENTOF[i].BILL_DOC;
+                    dbf.BELNR = doc.DOCUMENTOF[i].BELNR;
+
+                    db.DOCUMENTOBORRFs.Add(dbf);
+                    db.SaveChanges();
+                }catch(Exception e)
+                {
+
+                }
+
+
+            }
+        }
+
         public string eliminarBorrador(DOCUMENTO doc)
         {
             string res = "";
+
+            try
+            {
+                db.DOCUMENTOBORRFs.RemoveRange(db.DOCUMENTOBORRFs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }catch(Exception e)
+            {
+
+            }
 
             try
             {

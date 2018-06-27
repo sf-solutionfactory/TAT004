@@ -516,6 +516,7 @@
         if ($(this).is(":checked")) {
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
+            $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
             //Add row 
             addRowSop(table);
             //Hide columns
@@ -523,6 +524,7 @@
         } else {
             $(".table_sop").css("display", "none");
             $("#file_facturat").css("display", "block");
+            $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
         }
 
         $('.file_sop').val('');
@@ -1064,6 +1066,12 @@
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
 
+    //B20180625 MGC 2018.06.26 Verificar si hay algún borrador mostrar la sección de facturas
+    var check = $("#check_facturas").val();
+    if (!isRelacionada() && !isReversa()) {
+        $('#tsol_id').change();
+    }
+
     //MGC B20180611 Obtener los materiales por categoría en la relacionada
     var jsoncat = $('#catmat').val();
     try {
@@ -1113,7 +1121,6 @@ $(window).on('load', function () {
     }
 
     //una factura
-    var check = $("#check_facturas").val();
     if (check == "true") {
         $('#check_factura').prop('checked', true);
     } else {
@@ -1506,43 +1513,45 @@ function copiarTableVistaSop() {
             rowsn = lengthT;
         }
 
-
-        var tsol = "";
-        var sol = $("#tsol_id").val();
-
+        //var tsol = "";//B20180625 MGC 2018.06.27
+        //var sol = $("#tsol_id").val();//B20180625 MGC 2018.06.27
+        //B20180625 MGC 2018.06.27 Clear la tabla del row que se agrego
+        var t = $('#table_sop').DataTable(); //B20180625 MGC 2018.06.27
+        t.clear().draw(true);
         var i = 1;
         $('#table_soph > tbody  > tr').each(function () {
 
             //var pos = $(this).find("td.POS").text();
-            var pos = $(this).find("td:eq(0)").text();
+            var pos = $(this).find("td:eq(0) input").val(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1)").text();
+            var factura = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27
             //var fecha = $(this).find("td.FECHA").text();
-            var fecha = $(this).find("td:eq(2)").text();
+            var fecha = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27
 
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(3)").text();
+            var prov = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(5)").text();
+            var control = $(this).find("td:eq(5) input").val(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(6)").text();
+            var autorizacion = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(7)").text();
+            var vencimiento = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
 
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(8)").text();
+            var facturak = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(9)").text();
+            var ejerciciok = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var bill_doc = $(this).find("td:eq(10)").text();
+            var bill_doc = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
             //var belnr = $(this).find("td.BELNR").text();
-            var belnr = $(this).find("td:eq(11)").text();
+            var belnr = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
 
+            var proverror = "";//B20180625 MGC 2018.06.27
             if ($("#check_factura").is(':checked')) {
 
                 factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
@@ -1556,26 +1565,39 @@ function copiarTableVistaSop() {
                 bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
                 belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
 
+            } else {
+                //B20180625 MGC 2018.06.27
+                //Obtener la descrpción de los proveedores
+                //Validar si el focusout fue en la columna de proveedor
+                var val = valProveedor(prov, "");
+
+                    if (val.ID == null || val.ID == "") {
+                        proverror = "errorProveedor";
+                    } else if (val.ID == prov) {
+
+                        prov_txt = val.NOMBRE; //Se encontró el proveedor
+
+                    } else {
+                        proverror = "errorProveedor";
+                    }       
             }
 
-            var t = $('#table_dis').DataTable();
-
-            addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr, proverror);//B20180625 MGC 2018.06.27
 
             //Quitar el row
             $(this).remove();
-            if (i > rowsn) {
+            //if (i > rowsn) {//B20180625 MGC 2018.06.27
 
-            }
+            //}
         });
         //Hide columns
         ocultarColumnasTablaSoporteDatos();
         $('.input_sop_f').trigger('focusout');
     }
 
-    var sol = $("#tsol_id").val();
+    //var sol = $("#tsol_id").val();
 
-    selectTsol(sol);
+    //selectTsol(sol);
 }
 
 function copiarTableControl() {
@@ -1981,7 +2003,7 @@ $('body').on('focusout', '.input_sop_f', function () {
     if ($(this).hasClass("input_proveedor")) {
         //Validar el material
         var pro = $(this).val();
-        var val = valProveedor(pro);
+        var val = valProveedor(pro, "");
 
         if (val.ID == null || val.ID == "") {
             tr.find("td.PROVEEDOR").addClass("errorProveedor");
@@ -2884,14 +2906,15 @@ function addRowSop(t) {
         "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PEJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        ""//B20180625 MGC 2018.06.27
     );
 }
 
-function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr) {
+function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr, proverror) {
     //var t = $('#table_sop').DataTable();
 
-    t.row.add([
+    var r = t.row.add([
         pos, //POS
         fac,
         fecha,
@@ -2904,7 +2927,13 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
         eje,
         bill,
         belnr
-    ]).draw(false);
+    ]).draw(false).node(); //B20180625 MGC 2018.06.27
+
+    //B20180625 MGC 2018.06.27
+    if (proverror != "") {
+        $(r).find('td.PROVEEDOR').addClass(proverror);
+        $(r).find("td.PROVEEDOR_TXT").text("");
+    }
 
 }
 
@@ -3479,11 +3508,21 @@ function evaluarInfoFacturas() {
                 }
                 //Validar proveedor
                 if ($(this).find('td.PROVEEDOR').length) {
+                    //B20180625 MGC 2018.06.27 validar valor en el proveedor
                     var prov = textval($(this), check, "PROVEEDOR");
                     res = valcolumn(prov, "PROVEEDOR");
                     if (res != "") {
                         return false;
                     }
+
+                    //B20180625 MGC 2018.06.27 validar proveedor existente
+                    res = "";
+                    res = classval($(this), check, "PROVEEDOR");
+                    if (res != "") {
+                        return false;
+                    }
+
+                    
                 }
                 //Validar control
                 if ($(this).find('td.CONTROL').length) {
@@ -3562,6 +3601,19 @@ function textval(tr, check, column) {
         val = tr.find(rowcl + " input").val();
     }
     return val;
+}
+
+//B20180625 MGC 2018.06.27 2018.06.20 Evaluar la columna en el proveedor
+function classval(tr, check, column) {
+    res = "";
+    var val = false;
+    var rowcl = 'td.' + column;
+    //Contiene la clase o no
+    val = tr.find(rowcl).hasClass("errorProveedor")
+    if (val == true) {
+        res = "Error en el campo de proveedor";
+    }
+    return res;
 }
 
 //Add MGC B20180619 2018.06.20 Evaluar el valor en el renglón
@@ -4365,7 +4417,7 @@ function asignarValMat(val) {
 }
 
 
-function valProveedor(prov) {
+function valProveedor(prov, mensaje) { //B20180625 MGC 2018.06.27
     proveedorVal = "";
     var localval = "";
     if (prov != "") {
@@ -4382,7 +4434,9 @@ function valProveedor(prov) {
 
             },
             error: function (xhr, httpStatusMessage, customErrorMessage) {
-                M.toast({ html: "Valor no encontrado" });
+                if (mensaje == "X") { //B20180625 MGC 2018.06.27
+                    M.toast({ html: "Valor no encontrado" }); 
+                }
             },
             async: false
         });

@@ -556,53 +556,53 @@
                                 <tbody>
                                     @if (Model.DOCUMENTOF != null)
                                     {
-
+                                        @*//B20180625 MGC 2018.06.27*@
                                         for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
                                         {
                                             <tr>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].POS
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].FACTURA
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].FECHA
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].PROVEEDOR
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
                                                 <td></td>
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].CONTROL
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].AUTORIZACION
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].VENCIMIENTO
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].FACTURAK
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].EJERCICIOK
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].BILL_DOC
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
 
                                                 <td>
-                                                    @Model.DOCUMENTOF[i].BELNR
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
                                                 </td>
                                             </tr>
                                         }
