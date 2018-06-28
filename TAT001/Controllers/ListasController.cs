@@ -41,14 +41,14 @@ namespace TAT001.Controllers
         ////}
 
         [HttpGet]
-        public JsonResult Clientes(string Prefix, string usuario)
+        public JsonResult Clientes(string Prefix, string usuario, string pais)
         {
             if (Prefix == null)
                 Prefix = "";
 
             TAT001Entities db = new TAT001Entities();
 
-            var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.ACTIVO == true).ToList();
+            var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
 
             var c = (from N in db.CLIENTEs.ToList()
                      join D in det

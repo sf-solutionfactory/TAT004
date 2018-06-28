@@ -28,7 +28,7 @@ namespace TAT001.Services
                 actual.POS = f.POS;
                 //DET_AGENTEH dah = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID &
                 //                    a.USUARIOC_ID.Equals(d.USUARIOC_ID)).OrderByDescending(a => a.VERSION).FirstOrDefault();
-                DET_AGENTEC dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.PAIS_ID == d.PAIS_ID &
+                DET_AGENTEC dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID == d.PAIS_ID &
                                     a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID))
                                     .OrderByDescending(a => a.VERSION).FirstOrDefault();
 
@@ -87,6 +87,7 @@ namespace TAT001.Services
                         {
                             FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
                             nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                            nuevo.USUARIOD_ID = nuevo.USUARIOA_ID;
                             nuevo.DETPOS = detA.DETPOS;
                             nuevo.DETVER = dah.VERSION;
                         }
@@ -454,7 +455,11 @@ namespace TAT001.Services
                 nuevo.DETVER = actual.DETVER;
                 nuevo.LOOP = 1;//-----------------------------------
                 DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
-                nuevo.USUARIOA_ID = d.USUARIOC_ID;
+                nuevo.USUARIOD_ID = d.USUARIOD_ID;
+                DateTime fecha = DateTime.Now.Date;
+                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                if (del != null)
+                    nuevo.USUARIOA_ID = del.USUARIOD_ID;
                 //nuevo.USUARIOD_ID
                 nuevo.ESTATUS = "P";
                 nuevo.FECHAC = DateTime.Now;
@@ -760,7 +765,7 @@ namespace TAT001.Services
             FLUJO f_actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).FirstOrDefault();
             //DET_AGENTEH dah = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID &
             //                    a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.VERSION == f_actual.DETVER).FirstOrDefault();
-            List<DET_AGENTEC> dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.PAIS_ID == d.PAIS_ID &
+            List<DET_AGENTEC> dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID == d.PAIS_ID &
                                 a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID))
                                 .OrderByDescending(a => a.VERSION).ToList();
 
@@ -815,13 +820,13 @@ namespace TAT001.Services
                             ppos = -1;
                         }
                     //if (actual.PRESUPUESTO != null)
-                        if ((bool)actual.PRESUPUESTO)
-                            if (d.MONTO_DOC_MD > 10000)
-                            {
-                                //da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
-                                dap = dah.Where(a => a.POS == (pos + 1)).FirstOrDefault();
-                                ppos = -1;
-                            }
+                    if ((bool)actual.PRESUPUESTO)
+                        if (d.MONTO_DOC_MD > 10000)
+                        {
+                            //da = db.DET_AGENTE.Where(a => a.PUESTOC_ID == d.PUESTO_ID & a.AGROUP_ID == gaa & a.POS == (pos + 1)).FirstOrDefault();
+                            dap = dah.Where(a => a.POS == (pos + 1)).FirstOrDefault();
+                            ppos = -1;
+                        }
                 }
             }
 
@@ -870,7 +875,7 @@ namespace TAT001.Services
             {
                 //dap = db.DET_AGENTEP.Where(a => a.SOCIEDAD_ID.Equals(dah.SOCIEDAD_ID) & a.PUESTOC_ID == dah.PUESTOC_ID &
                 //                    a.VERSION == dah.VERSION & a.AGROUP_ID == dah.AGROUP_ID & a.POS == 1).FirstOrDefault();
-                dap = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(dah.USUARIOC_ID) & a.PAIS_ID == dah.PAIS_ID &
+                dap = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(delega) & a.PAIS_ID == dah.PAIS_ID &
                                    a.VKORG.Equals(dah.VKORG) & a.VTWEG.Equals(dah.VTWEG) & a.SPART.Equals(dah.SPART) & a.KUNNR.Equals(dah.KUNNR) &
                                    a.VERSION == dah.VERSION & a.POS == 1).FirstOrDefault();
 

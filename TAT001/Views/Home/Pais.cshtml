@@ -17,7 +17,7 @@
                 {
                     <div class="col s6 m4 l2 center">
                         <div class="row">
-                            <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new {pais=item.LAND})';return false;" />
+                            <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("SelPais", "Home", new {pais=item.LAND, returnUrl = ViewBag.returnUrl})';return false;" />
                         </div>
                     </div>
                 }
@@ -47,7 +47,7 @@
                             {
                                 <div class="col s6 m4 l2 center">
                                     <div class="row">
-                                        <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("Index", "Home", new { pais = item.LAND })';return false;" />
+                                        <input id="btn_@item.LAND.ToLower()" type="image" src="~/images/flags/1x1/@item.IMAGE" class="circle" style="height:100px;width:100px;" onclick="location.href='@Url.Action("SelPais", "Home", new { pais = item.LAND, returnUrl = ViewBag.returnUrl })';return false;" />
                                     </div>
                                 </div>
                             }

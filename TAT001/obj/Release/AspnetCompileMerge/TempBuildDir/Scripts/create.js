@@ -4016,6 +4016,21 @@ function selectCliente(valu) {
             },
             async: false
         });
+    } else {
+        $('#cli_name').val("");
+        $("label[for='cli_name']").removeClass("active");
+        $('#vkorg').val("").focus();
+        $("label[for='vkorg']").removeClass("active");
+        $('#parvw').val("").focus();
+        $("label[for='parvw']").removeClass("active");
+        $('#stcd1').val("");
+        $("label[for='stcd1']").removeClass("active");
+        $('#vtweg').val("");
+        $("label[for='vtweg']").removeClass("active");
+        $('#payer_nombre').val("");
+        $("label[for='payer_nombre']").removeClass("active");
+        $('#payer_email').val("");
+        $("label[for='payer_email']").removeClass("active");
     }
 
 }

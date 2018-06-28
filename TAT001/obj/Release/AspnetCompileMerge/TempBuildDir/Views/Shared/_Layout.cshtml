@@ -42,16 +42,16 @@
                         if (ViewBag.pais != ".png" & ViewBag.pais != null & ViewBag.pais != "")
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home")" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
-                                    <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home")';return false;" />
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                    <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home")" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
-                                    <input type="button" id="imgPais"  class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home")';return false;" />
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                    <input type="button" id="imgPais" class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
                         }

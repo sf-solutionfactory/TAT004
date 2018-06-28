@@ -35,20 +35,20 @@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
 
-        <div class="col s12 m5 l5">
+        <div class="col s12 m3 l3">
             <div class="row" style="margin-bottom:0">
-                <div class="input-field col s4">
-                    @Html.EditorFor(model => model.USUARIOC_ID, "Usuario", new { htmlAttributes = new { @disabled = "disabled", @Value = us.ID } })
+                <div class="input-field col s8">
+                    @Html.EditorFor(model => model.USUARIOC_ID, "Usuario", new { htmlAttributes = new { @disabled = "disabled", @Value = us.ID, @id = "txt_user" } })
                     @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new { @id = "lbl_userid" })
                 </div>
-                <div class="input-field col s4">
-                    @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
-                    @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
-                </div>
-                <div class="input-field col s4">
-                    @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
-                    @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
-                </div>
+                @*<div class="input-field col s4">
+                        @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
+                        @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
+                    </div>
+                    <div class="input-field col s4">
+                        @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
+                        @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
+                    </div>*@
             </div>
         </div>
         <div class="col s12 m4 l4">
@@ -138,7 +138,7 @@
         <a id="btn_borradorh" class="btn btn-small">Borrador</a>@*Add MGC B20180619 2018.06.20*@
         <a href="@Url.Action(" Index", "Home" )" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
-        {*@
+            {*@
         <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         @*}*@
     </div>
@@ -178,14 +178,14 @@
             @*Tipo de solicitud*@
             <div class="row">
                 <div class="col s12 m6 l6">
-                    @if (ViewBag.USUARIOC_ID != null)
+                    @if (ViewBag.USUARIOD_ID != null)
                     {
                         <div class="card-panel">
                             <!--RSG 13.06.2018-->
                             <div class="row" style="margin-bottom:0;">
 
                                 <div class="input-field col s12">
-                                    @Html.DropDownList("USUARIOC_ID", null, "")
+                                    @Html.DropDownList("USUARIOD_ID", null, "", new { @onchange= "document.getElementById('payer_id').value = ''; selectCliente(''); "})
                                     <label for="txt_rel" id="lbl_rel"></label>
                                 </div>
                             </div>
@@ -444,11 +444,14 @@
                                 auto(document).ready(function () {
                                     auto("#payer_id").autocomplete({
                                         source: function (request, response) {
+                                        var user = document.getElementById("USUARIOD_ID").value;
+                                        if (user == undefined)
+                                            user = '@ViewBag.usuario.ID';
                                             auto.ajax({
                                                 url: "../Listas/Clientes",
                                                 type: "GET",
                                                 dataType: "json",
-                                                data: { Prefix: request.term },
+                                                data: { Prefix: request.term, usuario: user, pais: '@Model.PAIS_ID' },
                                                 success: function (data) {
                                                     response(auto.map(data, function (item) {
                                                         return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
@@ -905,8 +908,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                        ;
+                                                      archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                          ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1080,7 +1083,7 @@
                                 @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
                                 @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                 @*</div>
-        </div>*@
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -1247,7 +1250,7 @@
                                     @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
                                     @*</div>
-        </div>*@
+                                        </div>*@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-10">
