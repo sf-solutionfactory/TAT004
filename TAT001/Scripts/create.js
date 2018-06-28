@@ -1037,7 +1037,7 @@
         }
 
         //Monto
-        var monto = $('#monto_doc_md').val();
+        var monto = $('#monto_dis').val();
         //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
         var numm = parseFloat(monto.replace(',', ''));
         if (numm > 0) {
@@ -1054,6 +1054,13 @@
         copiarTableControl();//Distribución
         copiarSopTableControl(); //Soporte ahora en información
         enviaRec();//RSG 28.05.2018
+
+        //B20180625 MGC 2018.06.28
+        //Moneda en distribución
+        var moneda_dis = $('#monedadis_id').val();
+        $('#moneda_dis').val("");
+        $('#moneda_dis').val(moneda_dis);
+        $('#moneda_dis').prop('disabled', false);
 
         //Enviar el parametro al controlador para tratarlo como borrador
         $('#borrador_param').val("borrador");
@@ -1133,7 +1140,22 @@ $(window).on('load', function () {
         selectTall($('#gall_idt').val());
     }
 
+    //B20180625 MGC 2018.06.28
+    var borrp = "";
+    var borre = "";
+    var borr = $("#borrador_bool").val();
+    if (borr == "true") {     
+        borrp = $("#payer_nombre").val();
+        borre = $("#payer_email").val();
+    }
+
     $('#payer_id').change(); //Cambiar datos del cliente
+
+    //B20180625 MGC 2018.06.28
+    if (borr == "true") {
+        $("#payer_nombre").val(borrp);
+        $("#payer_email").val(borre);
+    }
     //Fechas de temporalidad
     var fechai_vig = $('#fechai_vig').val();
     var fechaf_vig = $('#fechaf_vig').val();
@@ -1165,6 +1187,29 @@ $(window).on('load', function () {
     if (sneg != "P" && sdis != "C") {
         $('#monto_dis').val(footeri);
     }
+    //B20180625 MGC 2018.06.28
+    if (borr == "true") {
+        $('#monto_dis').val(monto);
+    }
+
+    //B20180625 MGC 2018.06.28
+    var moneda_dis = $('#moneda_dis').val();
+    if (moneda_dis != "") {
+        $('#monedadis_id').val(moneda_dis).change();
+        var elemdpsn = document.querySelector('#monedadis_id');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+    }
+
+    //B20180625 MGC 2018.06.28
+    if (borr == "true") {
+        $('#moneda_id').change();
+        var elemdpsn = document.querySelector('#moneda_id');
+        var optionsdpsn = [];
+        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+    }
+    
+
     $("label[for='monto_dis']").addClass("active");
 
     //Validar si es una solicitud relacionada
@@ -1653,8 +1698,8 @@ function copiarTableControl() {
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

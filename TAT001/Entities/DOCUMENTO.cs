@@ -97,6 +97,7 @@ namespace TAT001.Entities
         public string GALL_ID { get; set; }
         public Nullable<int> CONCEPTO_ID { get; set; }
         public string DOCUMENTO_SAP { get; set; }
+        public string USUARIOD_ID { get; set; }
         public List<TAT001.Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
         public List<DOCUMENTOF> DOCUMENTOF { get; set; }
         public List<DOCUMENTOREC> DOCUMENTOREC { get; set; }

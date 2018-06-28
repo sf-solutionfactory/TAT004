@@ -560,6 +560,8 @@
     <Property Name="VKORG" Type="nvarchar" MaxLength="4" />
     <Property Name="VTWEG" Type="nchar" MaxLength="2" />
     <Property Name="SPART" Type="nchar" MaxLength="2" />
+    <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
+    <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -578,6 +580,7 @@
     <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
     <Property Name="CANTIDAD_EV" Type="decimal" Precision="3" Scale="0" />
     <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="USUARIOD_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="FECHAD" Type="datetime" />
     <Property Name="FECHAC" Type="datetime" />
     <Property Name="HORAC" Type="time" Precision="7" />

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -565,6 +565,8 @@
           <Property Name="VKORG" Type="nvarchar" MaxLength="4" />
           <Property Name="VTWEG" Type="nchar" MaxLength="2" />
           <Property Name="SPART" Type="nchar" MaxLength="2" />
+          <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
+          <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
         </EntityType>
         <EntityType Name="DOCUMENTO">
           <Key>
@@ -583,6 +585,7 @@
           <Property Name="TIPO_RECURRENTE" Type="nchar" MaxLength="1" />
           <Property Name="CANTIDAD_EV" Type="decimal" Precision="3" Scale="0" />
           <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIOD_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="FECHAD" Type="datetime" />
           <Property Name="FECHAC" Type="datetime" />
           <Property Name="HORAC" Type="time" Precision="7" />
@@ -4899,8 +4902,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5535,6 +5537,8 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <NavigationProperty Name="DOCUMENTOBORRFs" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRF" />
           <NavigationProperty Name="DOCUMENTOBORRNs" Relationship="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRN" />
           <NavigationProperty Name="DOCUMENTOBORRPs" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRP" />
+          <Property Name="TIPO_TECNICO2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="MONEDA_DIS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="DOCUMENTO">
           <Key>
@@ -5626,6 +5630,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
           <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+          <Property Name="USUARIOD_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -9859,7 +9864,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           </FunctionImport>
           <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
           <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
-            <Parameter Name="sociedad" Mode="In" Type="String" />
+          <Parameter Name="sociedad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -9892,7 +9897,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
             <Parameter Name="caso" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
-            <Parameter Name="path" Mode="In" Type="String" />
+          <Parameter Name="path" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -10520,6 +10525,8 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <EntitySetMapping Name="DOCUMENTBORRs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTBORR">
               <MappingFragment StoreEntitySet="DOCUMENTBORR">
+                <ScalarProperty Name="MONEDA_DIS" ColumnName="MONEDA_DIS" />
+                <ScalarProperty Name="TIPO_TECNICO2" ColumnName="TIPO_TECNICO2" />
                 <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
                 <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
@@ -10590,6 +10597,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <EntitySetMapping Name="DOCUMENTOes">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTO">
               <MappingFragment StoreEntitySet="DOCUMENTO">
+                <ScalarProperty Name="USUARIOD_ID" ColumnName="USUARIOD_ID" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
                 <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
