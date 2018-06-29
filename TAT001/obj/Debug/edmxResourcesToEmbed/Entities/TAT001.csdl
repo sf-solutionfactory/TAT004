@@ -633,6 +633,7 @@
     <NavigationProperty Name="DOCUMENTOBORRPs" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRP" />
     <Property Name="TIPO_TECNICO2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="MONEDA_DIS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+    <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>

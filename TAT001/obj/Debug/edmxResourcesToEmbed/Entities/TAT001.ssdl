@@ -562,6 +562,7 @@
     <Property Name="SPART" Type="nchar" MaxLength="2" />
     <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
     <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
+    <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>

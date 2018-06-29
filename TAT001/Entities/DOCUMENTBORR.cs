@@ -88,6 +88,7 @@ namespace TAT001.Entities
         public string SPART { get; set; }
         public string TIPO_TECNICO2 { get; set; }
         public string MONEDA_DIS { get; set; }
+        public Nullable<decimal> PORC_APOYO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTOBORRF> DOCUMENTOBORRFs { get; set; }

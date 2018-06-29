@@ -472,6 +472,7 @@
     <EntitySetMapping Name="DOCUMENTBORRs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTBORR">
         <MappingFragment StoreEntitySet="DOCUMENTBORR">
+          <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
           <ScalarProperty Name="MONEDA_DIS" ColumnName="MONEDA_DIS" />
           <ScalarProperty Name="TIPO_TECNICO2" ColumnName="TIPO_TECNICO2" />
           <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />

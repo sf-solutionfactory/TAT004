@@ -445,6 +445,8 @@ namespace TAT001.Controllers
             string borrador = "false"; //MGC B20180625 MGC 
             string moneda_dis = "";//MGC B20180625 MGC 
             string id_waersf = "";//MGC B20180625 MGC 
+            decimal bmonto_apoyo = 0;//MGC B20180625 MGC
+            string notas_soporte = "";//MGC B20180625 MGC
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -864,7 +866,8 @@ namespace TAT001.Controllers
                         relacionada_neg = docb.TIPO_TECNICO;
                         moneda_dis = docb.MONEDA_DIS;
 
-                        id_waersf = docb.MONEDA_ID;//MGC B20180625 MGC 
+                        id_waersf = docb.MONEDA_ID;//MGC B20180625 MGC
+                        bmonto_apoyo = Convert.ToDecimal(docb.PORC_APOYO);//MGC B20180625 MGC
                         //Obtener las facturas del borrador
                         //List<DOCUMENTOBORRF> lbf = new List<DOCUMENTOBORRF>();
                         //lbf = db.DOCUMENTOBORRFs.Where(lb => lb.USUARIOC_ID == user.ID).ToList();
@@ -924,6 +927,17 @@ namespace TAT001.Controllers
                         }
 
                         d.DOCUMENTOP = docpl;
+
+                        //MGC B20180625 MGC
+                        //Obtener las notas de soporte
+                        try
+                        {
+                            notas_soporte = db.DOCUMENTOBORRNs.Where(dn => dn.USUARIOC_ID == user.ID).FirstOrDefault().TEXTO.ToString();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
                     }
                     else
                     {
@@ -1043,7 +1057,7 @@ namespace TAT001.Controllers
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
             ViewBag.NAME1 = "";
-            ViewBag.notas_soporte = "";
+            ViewBag.notas_soporte = notas_soporte; //MGC B20180625 MGC
 
             //Prueba para agregar soporte a la tabla ahora información
 
@@ -1067,7 +1081,7 @@ namespace TAT001.Controllers
 
             ViewBag.SEL_NEG = relacionada_neg;
             ViewBag.SEL_DIS = relacionada_dis;
-            ViewBag.BMONTO_APOYO = "";
+            ViewBag.BMONTO_APOYO = bmonto_apoyo; //MGC B20180625 MGC 
             ViewBag.CATMAT = res; //B20180618 v1 MGC 2018.06.18
             ViewBag.MONTO_DIS = "";
             ViewBag.borrador = borrador; //MGC B20180625 MGC 
@@ -1349,12 +1363,13 @@ namespace TAT001.Controllers
 
                             }
                             DOCUMENTBORR docb = new DOCUMENTBORR();
-                            docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis);
+                            docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);
                             db.DOCUMENTBORRs.Add(docb);
                             db.SaveChanges();
                             //B20180625 MGC 2018.06.27 Almacenar facturas
                             guardarBorradorf(dOCUMENTO, unafact);
                             guardarBorradorp(dOCUMENTO);
+                            guardarBorradorn(dOCUMENTO.USUARIOC_ID, notas_soporte);
                             Session["BORRADOR"] = "Borrador almacenado";
                         }
 
@@ -2316,10 +2331,13 @@ namespace TAT001.Controllers
             dOCUMENTO.SOCIEDAD = db.SOCIEDADs.Find(dOCUMENTO.SOCIEDAD_ID);
             //----------------------------RSG 18.05.2018
 
+
+            ViewBag.borrador = "error"; //MGC B20180625 MGC 
+
             return View(dOCUMENTO);
         }
 
-        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis)
+        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis, string bmonto_apoyo)
         {
             DOCUMENTBORR docb = new DOCUMENTBORR();
             docb.USUARIOC_ID = doc.USUARIOC_ID;
@@ -2358,6 +2376,14 @@ namespace TAT001.Controllers
             docb.SPART = doc.SPART;
             docb.TIPO_TECNICO2 = dis;
             docb.MONEDA_DIS = monedadis;
+            try
+            {
+                docb.PORC_APOYO = Convert.ToDecimal(bmonto_apoyo);
+            }
+            catch (Exception)
+            {
+                docb.PORC_APOYO = null;
+            }
 
             return docb;
         }
@@ -2455,6 +2481,31 @@ namespace TAT001.Controllers
 
             }
         }
+
+        public void guardarBorradorn(string user, string notas)
+        {
+
+            if (notas != "")
+            {
+                try
+                {
+                    DOCUMENTOBORRN doc_notas = new DOCUMENTOBORRN();
+                    doc_notas.USUARIOC_ID = user;
+                    doc_notas.POS = 1;
+                    doc_notas.STEP = 1;
+                    doc_notas.USUARIO_ID = user;
+                    doc_notas.TEXTO = notas.ToString();
+
+                    db.DOCUMENTOBORRNs.Add(doc_notas);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                }
+            }
+                     
+        }
+
         public string eliminarBorrador(DOCUMENTO doc)
         {
             string res = "";
@@ -2471,6 +2522,16 @@ namespace TAT001.Controllers
             try
             {
                 db.DOCUMENTOBORRPs.RemoveRange(db.DOCUMENTOBORRPs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                db.DOCUMENTOBORRNs.RemoveRange(db.DOCUMENTOBORRNs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
                 db.SaveChanges();
             }
             catch (Exception e)

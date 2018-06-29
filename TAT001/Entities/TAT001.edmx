@@ -567,6 +567,7 @@
           <Property Name="SPART" Type="nchar" MaxLength="2" />
           <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
           <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
+          <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="2" />
         </EntityType>
         <EntityType Name="DOCUMENTO">
           <Key>
@@ -5539,6 +5540,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <NavigationProperty Name="DOCUMENTOBORRPs" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRP" />
           <Property Name="TIPO_TECNICO2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <Property Name="MONEDA_DIS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="2" />
         </EntityType>
         <EntityType Name="DOCUMENTO">
           <Key>
@@ -10525,6 +10527,7 @@ warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key d
           <EntitySetMapping Name="DOCUMENTBORRs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTBORR">
               <MappingFragment StoreEntitySet="DOCUMENTBORR">
+                <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
                 <ScalarProperty Name="MONEDA_DIS" ColumnName="MONEDA_DIS" />
                 <ScalarProperty Name="TIPO_TECNICO2" ColumnName="TIPO_TECNICO2" />
                 <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />

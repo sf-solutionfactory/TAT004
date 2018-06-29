@@ -1,4 +1,9 @@
-﻿$(document).ready(function () {
+﻿//B20180625 MGC 2018.06.28
+var monedafinanciera = true;
+var negdistribucion = true;
+var disdistribucion = true;
+
+$(document).ready(function () {
 
     //Validar que los labels esten activos
     //Información
@@ -489,8 +494,8 @@
 
     });
 
-    $('#select_neg').change();
-    $('#select_dis').change();
+    //$('#select_neg').change(); //B20180625 MGC 2018.06.29 
+    //$('#select_dis').change(); //B20180625 MGC 2018.06.29 
 
     //Archivo para tabla de distribución
     $("#file_dis").change(function () {
@@ -1079,6 +1084,9 @@ $(window).on('load', function () {
         $('#tsol_id').change();
     }
 
+    //B20180625 MGC 2018.06.29 Verificar porcentaje de apoyo
+    var bmonto_apoyo = $('#bmonto_apoyo').val();
+
     //MGC B20180611 Obtener los materiales por categoría en la relacionada
     var jsoncat = $('#catmat').val();
     try {
@@ -1144,7 +1152,7 @@ $(window).on('load', function () {
     var borrp = "";
     var borre = "";
     var borr = $("#borrador_bool").val();
-    if (borr == "true") {     
+    if (borr == "true" | borr == "error") {     
         borrp = $("#payer_nombre").val();
         borre = $("#payer_email").val();
     }
@@ -1152,7 +1160,7 @@ $(window).on('load', function () {
     $('#payer_id').change(); //Cambiar datos del cliente
 
     //B20180625 MGC 2018.06.28
-    if (borr == "true") {
+    if (borr == "true" | borr == "error") {
         $("#payer_nombre").val(borrp);
         $("#payer_email").val(borre);
     }
@@ -1189,7 +1197,15 @@ $(window).on('load', function () {
     }
     //B20180625 MGC 2018.06.28
     if (borr == "true") {
+        //Agregar el monto
         $('#monto_dis').val(monto);
+    }
+
+    //Agregar el porcentaje de apoyo //B20180625 MGC 2018.06.28
+    //Porcentaje y material
+    if (sneg == "P" && sdis == "M") {
+        $('#bmonto_apoyo').val(bmonto_apoyo);
+        $('#bmonto_apoyo').trigger("focusout");
     }
 
     //B20180625 MGC 2018.06.28
@@ -1209,17 +1225,7 @@ $(window).on('load', function () {
         var instancessn = M.Select.init(elemdpsn, optionsdpsn);
     }
     
-
     $("label[for='monto_dis']").addClass("active");
-
-    //Validar si es una solicitud relacionada
-    //Activar bloqueos
-    //if ($("#txt_rel").length) {
-    //    var relacionada = $('#txt_rel').val();
-    //    if (relacionada != "") {
-
-    //    }
-    //}
 
     $(".prelacionada").prop('disabled', true);
     $('.prelacionada').trigger('click');
@@ -3970,7 +3976,10 @@ function selectDis(val) {
         $('#div_apoyobase').css("display", "none");
         $('#div_montobase').css("display", "inherit");
     } else if (val == "P") {//Porcentaje
-        M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
+        if (negdistribucion  != true) { //B20180625 MGC 2018.06.29 Evitar Mensaje al cargar página
+            M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });
+            negdistribucion  = false;
+        }
         message = "";
         $('#div_montobase').css("display", "none");//none
         $('#div_apoyobase').css("display", "inherit");
@@ -4017,7 +4026,10 @@ function selectMonto(val, message) {
             $('#div_montobase').css("display", "inherit");
         } else if (select_neg == "P") {//Porcentaje
             if (message == "X") {
-                M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });//Add
+                if (disdistribucion  != true) { //B20180625 MGC 2018.06.29 Evitar Mensaje al cargar página
+                    M.toast({ html: '¿Desea realizar esta solicitud por porcentaje?' });//Add
+                    disdistribucion  = false;
+                }
             }
             $('#div_montobase').css("display", "none");//none
             $('#div_apoyobase').css("display", "inherit");
@@ -4239,14 +4251,20 @@ function selectMoneda(valu) {
 
                 },
                 error: function (data) {
-                    alert("Error tipo de cambio        " + data);
+                    if (monedafinanciera != true) { //B20180625 MGC 2018.06.29 Evitar Mensaje al cargar página
+                        alert("Error tipo de cambio        " + data);
+                        monedafinanciera = false;
+                    }
                 },
                 async: false
             });
 
         } else {
-            var msg = 'Monto incorrecto';
-            M.toast({ html: msg })
+            if (monedafinanciera != true) { //B20180625 MGC 2018.06.29 Evitar Mensaje al cargar página
+                var msg = 'Monto incorrecto';
+                M.toast({ html: msg })
+                monedafinanciera = false;
+            }
         }
     }
 }
