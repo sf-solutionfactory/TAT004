@@ -205,11 +205,21 @@
                     {
                         <td></td>
                     }
-                    @if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.USUARIOC_ID)
+
+                    @if (item.FLUJOes.Count > 0)
                     {
-                        <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
-                            @item.NUM_DOC
-                        </td>
+                        if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID)
+                        {
+                            <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
+                                @item.NUM_DOC
+                            </td>
+                        }
+                        else
+                        {
+                            <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                                @item.NUM_DOC
+                            </td>
+                        }
                     }
                     else
                     {
@@ -298,7 +308,10 @@
                     else if (item.ESTATUS_WF.Equals("R"))
                     {
                         <td class="red darken-1 white-text">
-                            <div class="lbl_rejected">Pendiente corrección @item.USUARIOC_ID</div>
+                            @if (item.FLUJOes.Count > 0)
+                            {
+                                <div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>
+                            }
                         </td>
                     }
                     else if (item.ESTATUS_WF.Equals("S"))

@@ -226,533 +226,485 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col s12">
-        <ul class="tabs tabs-fixed-width tab-demo " id="tab">
-            <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
-            <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>
-            @if (ViewBag.acciones != null & ViewBag.accion == "S")
-            {
-                <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
-            }
-            else
-            {
-                <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
-            }
-            <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
-            @if (ViewBag.acciones != null & ViewBag.accion == "T")
-            {
-                <li class="tab col s2"><a href="#fina" id="lbl_fina" class="active">Financiera</a></li>
-            }
-            else
-            {
-                <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
-            }
-        </ul>
-    </div>
-    <div id="info" class="col s12" style="font-size:12px;">
-        <div class="row">
-            <div class="col s12 m6 l6">
-                @if (Model.D.DOCUMENTO_REF != null)
+
+<div class="">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs tabs-fixed-width tab-demo " id="tab">
+                <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
+                <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>
+                @if (ViewBag.acciones != null & ViewBag.accion == "S")
                 {
-                    <div class="card-panel">
-                        <div class="row" style="margin-bottom:0">
-                            <div class="input-field col s8">
-                                <input type="text" value="@Model.D.DOCUMENTO_REF" disabled="disabled" />
-                                @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
-                            </div>
-                            <div class="col s4 right-align">
-                                <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
-                            </div>
-                        </div>
-                    </div>
+                    <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
                 }
-                <div class="card-panel">
-                    <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s12">
-                            @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT020, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @id = "lbl_tsol" })
-                        </div>
-                        <div class="input-field col s12">
-                            @Html.EditorFor(model => model.D.GALL.GALLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.GALL_ID, "Clasificación", new { @id = "lbl_gall" })
-                        </div>
-                        @Html.HiddenFor(model => model.D.GALL_ID, new { @id = "gall_id" })
-                        @Html.HiddenFor(model => model.D.TALL_ID, new { @id = "tall_id" })
-                        @Html.HiddenFor(model => model.D.MONTO_DOC_MD, new { @id = "monto_dis" })
-                    </div>
-                </div>
-                <div class="card-panel">
-                    <h5>Datos país</h5>
-                    <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_bukrs" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.PAIS_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.PAIS_ID, "País", new { @id = "lbl_land" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.ESTADO, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.ESTADO, "Estado", new { @id = "lbl_state" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.CIUDAD, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.CIUDAD, "Ciudad", new { @id = "lbl_city" })
-                        </div>
-                    </div>
-                </div>
-                @if (Model.D.DOCUMENTOF != null)
+                else
                 {
-                    if (Model.D.DOCUMENTOF.Count > 0)
+                    <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
+                }
+                <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
+                @if (ViewBag.acciones != null & ViewBag.accion == "T")
+                {
+                    <li class="tab col s2"><a href="#fina" id="lbl_fina" class="active">Financiera</a></li>
+                }
+                else
+                {
+                    <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
+                }
+            </ul>
+        </div>
+        <div id="info" class="col s12" style="font-size:12px;">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    @if (Model.D.DOCUMENTO_REF != null)
                     {
                         <div class="card-panel">
-                            <h5>Facturas</h5>
                             <div class="row" style="margin-bottom:0">
-                                <div class="col s12">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                @if (Model.D.DOCUMENTOF[0].FACTURA != "0")
-                                                {
-                                                    <th>Factura</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].FECHA != null)
-                                                {
-                                                    <th>Fecha</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].PROVEEDOR != "0         ")
-                                                {
-                                                    <th>Proveedor</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].CONTROL != "0")
-                                                {
-                                                    <th>Control</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].AUTORIZACION != "0")
-                                                {
-                                                    <th>Autorización</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].VENCIMIENTO != null)
-                                                {
-                                                    <th>Vencimiento</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].FACTURAK != "0")
-                                                {
-                                                    <th>Factura k</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].EJERCICIOK != "0")
-                                                {
-                                                    <th>Ejercicio</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
-                                                {
-                                                    <th>No fat</th>
-                                                }
-                                                @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
-                                                {
-                                                    <th>No documento</th>
-                                                }
-                                            </tr>
-                                        </thead>
-                                        @foreach (var item in Model.D.DOCUMENTOF)
-                                        {
-                                            <tr>
-                                                @if (item.FACTURA != "0")
-                                                {
-                                                    <td>@item.FACTURA</td>
-                                                }
-                                                @if (item.FECHA != null)
-                                                {
-                                                    <td>@item.FECHA</td>
-                                                }
-                                                @if (item.PROVEEDOR != "0         ")
-                                                {
-                                                    <td>@item.PROVEEDOR</td>
-                                                }
-                                                @if (item.CONTROL != "0")
-                                                {
-                                                    <td>@item.CONTROL</td>
-                                                }
-                                                @if (item.AUTORIZACION != "0")
-                                                {
-                                                    <td>@item.AUTORIZACION</td>
-                                                }
-                                                @if (item.VENCIMIENTO != null)
-                                                {
-                                                    <td>@item.VENCIMIENTO</td>
-                                                }
-                                                @if (item.FACTURAK != "0")
-                                                {
-                                                    <td>@item.FACTURAK</td>
-                                                }
-                                                @if (item.EJERCICIOK != "0")
-                                                {
-                                                    <td>@item.EJERCICIOK</td>
-                                                }
-                                                @if (item.BILL_DOC != "0         ")
-                                                {
-                                                    <td>@item.BILL_DOC</td>
-                                                }
-                                                @if (item.BELNR != "0         ")
-                                                {
-                                                    <td>@item.BELNR</td>
-                                                }
-                                            </tr>
-                                        }
-                                    </table>
+                                <div class="input-field col s8">
+                                    <input type="text" value="@Model.D.DOCUMENTO_REF" disabled="disabled" />
+                                    @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
+                                </div>
+                                <div class="col s4 right-align">
+                                    <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
                                 </div>
                             </div>
                         </div>
                     }
-                }
-            </div>
-            <div class="col s12 m6 l6">
-                <div class="row" style="margin-bottom:0">
                     <div class="card-panel">
                         <div class="row" style="margin-bottom:0">
-                            <h5>Información general</h5>
                             <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                @Html.LabelFor(model => model.D.FECHAC, "Fecha", new { @id = "lbl_fechac" })
+                                @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT020, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @id = "lbl_tsol" })
                             </div>
-                            <div class="input-field col s6 l6">
-                                @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_periodo" })
+                            <div class="input-field col s12">
+                                @Html.EditorFor(model => model.D.GALL.GALLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.GALL_ID, "Clasificación", new { @id = "lbl_gall" })
+                            </div>
+                            @Html.HiddenFor(model => model.D.GALL_ID, new { @id = "gall_id" })
+                            @Html.HiddenFor(model => model.D.TALL_ID, new { @id = "tall_id" })
+                            @Html.HiddenFor(model => model.D.MONTO_DOC_MD, new { @id = "monto_dis" })
+                        </div>
+                    </div>
+                    <div class="card-panel">
+                        <h5>Datos país</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <div class="input-field col s6">
+                                @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_bukrs" })
                             </div>
                             <div class="input-field col s6">
-                                @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_ejer" })
+                                @Html.EditorFor(model => model.D.PAIS_ID, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.PAIS_ID, "País", new { @id = "lbl_land" })
                             </div>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CONCEPTO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.CONCEPTO, "Concepto", new { @id = "lbl_conce" })
+                            <div class="input-field col s6">
+                                @Html.EditorFor(model => model.D.ESTADO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.ESTADO, "Estado", new { @id = "lbl_state" })
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row" style="margin-bottom:0">
-                    <div class="card-panel">
-                        <h5>@*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>
-                        <div class="row" style="margin-bottom:0">
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_id" } })
-                                @Html.LabelFor(model => model.D.CLIENTE.KUNNR)
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CLIENTE.STCD1, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.CLIENTE.STCD1, "Taxid", new { @id = "lbl_stcd1" })
-                            </div>
-                            <div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.CLIENTE.CANAL, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg" } })
-                                @Html.LabelFor(model => model.D.CLIENTE.CANAL, "Canal", new { @id = "lbl_stcd1" })
+                            <div class="input-field col s6">
+                                @Html.EditorFor(model => model.D.CIUDAD, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.CIUDAD, "Ciudad", new { @id = "lbl_city" })
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="temp" class="col s12">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="card-panel">
-                    <div class="row" style="margin-bottom:0">
-                        <h5>Vigencia</h5>
-                        @*<div class="input-field col s12">
-                                @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.NUM_DOC)
-                            </div>*@
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                            @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                            @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @if (Model.D.DOCUMENTORECs.Count() > 0)
-            {
-                <div class="col s12 m12 l12" style="font-size:12px;">
-                    <div class="card-panel">
-                        <div class="row">
-                            <h5>Recurrencia</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col s12">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Pos</th>
-                                            <th>Tipo</th>
-                                            <th>Documento</th>
-                                            <th>Fecha</th>
-                                            <th>Monto</th>
-                                            <th>%</th>
-                                            <th>Aplicado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var iteem in Model.D.DOCUMENTORECs)
-                                        {
-                                            <tr>
-                                                <td>@iteem.POS</td>
-                                                <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
-                                                @if (iteem.DOC_REF > 0)
-                                                {
-                                                    <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
-                                                }
-                                                else
-                                                {
-                                                    <td></td>
-                                                }
-                                                <td>@iteem.FECHAF.Value.ToShortDateString()</td>
-                                                <td>@iteem.MONTO_BASE</td>
-                                                <td>@Math.Round(iteem.PORC.Value, 2)</td>
-                                                @if (iteem.ESTATUS == "P")
-                                                {
-                                                    <td><i class="material-icons">check</i></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><i class="material-icons">close</i></td>
-                                                }
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-    <div id="supp" class="col s12">
-        @{
-            List<TAT001.Entities.DOCUMENTOA>
-                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                    ;
-            string[] nombrefile;
-        }
-        <div class="row">
-            <div class="col s12 m12 l6">
-                <div class="card-panel">
-                    <div class="row">
-                        <h5>Soportes</h5>
-                    </div>
-                    <div class="row">
-                        @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                    @if (Model.D.DOCUMENTOF != null)
+                    {
+                        if (Model.D.DOCUMENTOF.Count > 0)
                         {
-                            try
-                            {
-                                for (int i = 0; i < archivos.Count; i++)
-                                {
-                                    nombrefile = archivos[i].PATH.Split('\\');
-                                    <div class="file-field input-field">
-                                        <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
-                                        <div class="file-path-wrapper">
-                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
-                                        </div>
+                            <div class="card-panel">
+                                <h5>Facturas</h5>
+                                <div class="row" style="margin-bottom:0">
+                                    <div class="col s12">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    @if (Model.D.DOCUMENTOF[0].FACTURA != "0")
+                                                    {
+                                                        <th>Factura</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].FECHA != null)
+                                                    {
+                                                        <th>Fecha</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].PROVEEDOR != "0         ")
+                                                    {
+                                                        <th>Proveedor</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].CONTROL != "0")
+                                                    {
+                                                        <th>Control</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].AUTORIZACION != "0")
+                                                    {
+                                                        <th>Autorización</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].VENCIMIENTO != null)
+                                                    {
+                                                        <th>Vencimiento</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].FACTURAK != "0")
+                                                    {
+                                                        <th>Factura k</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].EJERCICIOK != "0")
+                                                    {
+                                                        <th>Ejercicio</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
+                                                    {
+                                                        <th>No fat</th>
+                                                    }
+                                                    @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
+                                                    {
+                                                        <th>No documento</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            @foreach (var item in Model.D.DOCUMENTOF)
+                                            {
+                                                <tr>
+                                                    @if (item.FACTURA != "0")
+                                                    {
+                                                        <td>@item.FACTURA</td>
+                                                    }
+                                                    @if (item.FECHA != null)
+                                                    {
+                                                        <td>@item.FECHA</td>
+                                                    }
+                                                    @if (item.PROVEEDOR != "0         ")
+                                                    {
+                                                        <td>@item.PROVEEDOR</td>
+                                                    }
+                                                    @if (item.CONTROL != "0")
+                                                    {
+                                                        <td>@item.CONTROL</td>
+                                                    }
+                                                    @if (item.AUTORIZACION != "0")
+                                                    {
+                                                        <td>@item.AUTORIZACION</td>
+                                                    }
+                                                    @if (item.VENCIMIENTO != null)
+                                                    {
+                                                        <td>@item.VENCIMIENTO</td>
+                                                    }
+                                                    @if (item.FACTURAK != "0")
+                                                    {
+                                                        <td>@item.FACTURAK</td>
+                                                    }
+                                                    @if (item.EJERCICIOK != "0")
+                                                    {
+                                                        <td>@item.EJERCICIOK</td>
+                                                    }
+                                                    @if (item.BILL_DOC != "0         ")
+                                                    {
+                                                        <td>@item.BILL_DOC</td>
+                                                    }
+                                                    @if (item.BELNR != "0         ")
+                                                    {
+                                                        <td>@item.BELNR</td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </table>
                                     </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="col s12 m6 l6">
+                    <div class="row" style="margin-bottom:0">
+                        <div class="card-panel">
+                            <div class="row" style="margin-bottom:0">
+                                <h5>Información general</h5>
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                    @Html.LabelFor(model => model.D.FECHAC, "Fecha", new { @id = "lbl_fechac" })
+                                </div>
+                                <div class="input-field col s6 l6">
+                                    @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_periodo" })
+                                </div>
+                                <div class="input-field col s6">
+                                    @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_ejer" })
+                                </div>
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.CONCEPTO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.CONCEPTO, "Concepto", new { @id = "lbl_conce" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:0">
+                        <div class="card-panel">
+                            <h5>@*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_id" } })
+                                    @Html.LabelFor(model => model.D.CLIENTE.KUNNR)
+                                </div>
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })
+                                </div>
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.CLIENTE.STCD1, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.CLIENTE.STCD1, "Taxid", new { @id = "lbl_stcd1" })
+                                </div>
+                                <div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.CLIENTE.CANAL, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg" } })
+                                    @Html.LabelFor(model => model.D.CLIENTE.CANAL, "Canal", new { @id = "lbl_stcd1" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="temp" class="col s12">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="card-panel">
+                        <div class="row" style="margin-bottom:0">
+                            <h5>Vigencia</h5>
+                            @*<div class="input-field col s12">
+                                    @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.NUM_DOC)
+                                </div>*@
+                            <div class="input-field col s6">
+                                @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
+                            </div>
+                            <div class="input-field col s6">
+                                @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.D.DOCUMENTORECs.Count() > 0)
+                {
+                    <div class="col s12 m12 l12" style="font-size:12px;">
+                        <div class="card-panel">
+                            <div class="row">
+                                <h5>Recurrencia</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col s12">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Pos</th>
+                                                <th>Tipo</th>
+                                                <th>Documento</th>
+                                                <th>Fecha</th>
+                                                <th>Monto</th>
+                                                <th>%</th>
+                                                <th>Aplicado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var iteem in Model.D.DOCUMENTORECs)
+                                            {
+                                                <tr>
+                                                    <td>@iteem.POS</td>
+                                                    <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
+                                                    @if (iteem.DOC_REF > 0)
+                                                    {
+                                                        <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                    }
+                                                    <td>@iteem.FECHAF.Value.ToShortDateString()</td>
+                                                    <td>@iteem.MONTO_BASE</td>
+                                                    <td>@Math.Round(iteem.PORC.Value, 2)</td>
+                                                    @if (iteem.ESTATUS == "P")
+                                                    {
+                                                        <td><i class="material-icons">check</i></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><i class="material-icons">close</i></td>
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div id="supp" class="col s12">
+            @{
+                List<TAT001.Entities.DOCUMENTOA>
+                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                        ;
+                string[] nombrefile;
+            }
+            <div class="row">
+                <div class="col s12 m12 l6">
+                    <div class="card-panel">
+                        <div class="row">
+                            <h5>Soportes</h5>
+                        </div>
+                        <div class="row">
+                            @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
+                            {
+                                try
+                                {
+                                    for (int i = 0; i < archivos.Count; i++)
+                                    {
+                                        nombrefile = archivos[i].PATH.Split('\\');
+                                        <div class="file-field input-field">
+                                            <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
+                                            <div class="file-path-wrapper">
+                                                <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                catch (Exception)
+                                {
                                 }
                             }
-                            catch (Exception)
-                            {
-                            }
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>
-            @if (ViewBag.acciones != null)
-            {
-                if (ViewBag.accion == "S")
+                @if (ViewBag.acciones != null)
+                {
+                    if (ViewBag.accion == "S")
+                    {
+                        <div class="col s12 m12 l6">
+                            <div class="card-panel">
+                                <div class="row">
+                                    <h5>Carta</h5>
+                                </div>
+                                <div class="row">
+
+
+                                    @using (Html.BeginForm("Details", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.D.NUM_DOC)
+                                        @*<label>Carta</label><label class"lbl_nec">*</label>*@
+                                        <label name="labels_soporte2">Acuerdo comercial</label><label class"lbl_nec"></label>
+                                        <input type="text" value="Carta" name="labels_soporte" hidden />
+                                        <div class="file-field input-field">
+                                            <div class="btn-small  " style="float:left;">
+                                                <span>Examinar</span>
+                                                @*<input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">*@
+                                                <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
+                                            </div>
+                                            <div class="file-path-wrapper">
+                                                <input class="file-path validate" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col s12 right-align">
+                                            <input type="submit" value="Enviar" class="btn-small  " />
+                                        </div>}
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+                @if (Model.D.DOCUMENTORs.Count() > 0)
                 {
                     <div class="col s12 m12 l6">
                         <div class="card-panel">
                             <div class="row">
-                                <h5>Carta</h5>
+                                <h5>Reversa</h5>
                             </div>
                             <div class="row">
-
-
-                                @using (Html.BeginForm("Details", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                @foreach (var iteem in Model.D.DOCUMENTORs)
                                 {
-                                    @Html.AntiForgeryToken()
-                                    @Html.HiddenFor(model => model.D.NUM_DOC)
-                                    @*<label>Carta</label><label class"lbl_nec">*</label>*@
-                                    <label name="labels_soporte2">Acuerdo comercial</label><label class"lbl_nec"></label>
-                                    <input type="text" value="Carta" name="labels_soporte" hidden />
-                                    <div class="file-field input-field">
-                                        <div class="btn-small  " style="float:left;">
-                                            <span>Examinar</span>
-                                            @*<input class="file_soporte nec" name="files_soporte" id="file_carta" type="file">*@
-                                            <input class="file_soporte" name="files_soporte" id="file_carta" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
+                                    <div class="input-field col s12">
+                                        <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                        <label for="txt_trev">Tipo de reversa</label>
                                     </div>
-                                    <div class="col s12 right-align">
-                                        <input type="submit" value="Enviar" class="btn-small  " />
-                                    </div>}
+                                    <div class="input-field col s12">
+                                        <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
+                                        <label for="txt_comm">Comentario</label>
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>
-
                 }
-            }
-            @if (Model.D.DOCUMENTORs.Count() > 0)
-            {
-                <div class="col s12 m12 l6">
-                    <div class="card-panel">
-                        <div class="row">
-                            <h5>Reversa</h5>
-                        </div>
-                        <div class="row">
-                            @foreach (var iteem in Model.D.DOCUMENTORs)
-                            {
-                                <div class="input-field col s12">
-                                    <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
-                                    <label for="txt_trev">Tipo de reversa</label>
-                                </div>
-                                <div class="input-field col s12">
-                                    <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
-                                    <label for="txt_comm">Comentario</label>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
-    </div>
-    <div id="dist" class="col s12">
-        <div class="row">
-            <div class="card-panel">
-                <div class="row" style="margin-bottom:0">
-                    <h5>Distribución</h5>
-                    <div class="input-field col s12">
-                        @if (Model.D.DOCUMENTOPs.Count > 0)
-                        {
-                            <table style="font-size: 12px;">
-                                <thead>
-                                    <tr>
-                                        <th>Vigencia de</th>
-                                        <th>Vigencia a</th>
-                                        @if (Model.D.DOCUMENTOPs.First().MATNR != "")
-                                        {
-                                            <th>Material</th>
-                                        }
-                                        else
-                                        {
-                                            <th>Categoría</th>
-                                        }
-                                        <th>Descripción</th>
-                                        <th>Precio unitario</th>
-                                        <th>% apoyo</th>
-                                        <th>Apoyo por pieza</th>
-                                        <th>Precio sugerido</th>
-                                        @if (Model.D.TSOL.FACTURA == false)
-                                        {
-                                            <th>Volumen estimado</th>
-                                            <th>Estimado apoyo</th>
-                                        }
-                                        else
-                                        {
-                                            <th>Volumen real</th>
-                                            <th>Apoyo real</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
-                                    {
-                                        <tr id="pos-@item.POS" onclick="muestra(this.id)">
-                                            <td>
-                                                @try
-                                                {@item.VIGENCIA_DE.Value.ToShortDateString()}
-                                            catch { }
-                                            </td>
-                                            <td>
-                                                @try
-                                                {@item.VIGENCIA_AL.Value.ToShortDateString()}
-                                            catch { }
-                                            </td>
-                                            @if (item.MATNR != "")
+        <div id="dist" class="col s12">
+            <div class="row">
+                <div class="card-panel">
+                    <div class="row" style="margin-bottom:0">
+                        <h5>Distribución</h5>
+                        <div class="input-field col s12">
+                            @if (Model.D.DOCUMENTOPs.Count > 0)
+                            {
+                                <table style="font-size: 12px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Vigencia de</th>
+                                            <th>Vigencia a</th>
+                                            @if (Model.D.DOCUMENTOPs.First().MATNR != "")
                                             {
-                                                <td>@item.MATNR.TrimStart('0')</td>
+                                                <th>Material</th>
                                             }
                                             else
                                             {
-                                                <td>@item.MATKL</td>
+                                                <th>Categoría</th>
                                             }
-                                            @{
-                                                using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
-                                                {
-                                                    if (item.MATNR != "")
-                                                    {
-                                                        var matnr = db.MATERIALs.Find(item.MATNR);
-                                                        if (matnr != null)
-                                                        {
-                                                            <td>@matnr.MAKTX</td>}
-                                                        else
-                                                        {
-                                                            <td></td>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        var matkl = db.MATERIALGPs.Find(item.MATKL);
-                                                        if (matkl != null)
-                                                        {
-                                                            <td>@matkl.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </td>}
-                                                        else
-                                                        {
-                                                            <td></td>
-                                                        }
-                                                    }
-
-                                                }
-                                            }
-                                            <td>@Math.Round(item.MONTO, 2)</td>
-                                            <td>@Math.Round(item.PORC_APOYO, 2)</td>
-                                            <td>@Math.Round(item.MONTO_APOYO, 2)</td>
-                                            <td>@Math.Round(item.PRECIO_SUG, 2)</td>
-
+                                            <th>Descripción</th>
+                                            <th>Precio unitario</th>
+                                            <th>% apoyo</th>
+                                            <th>Apoyo por pieza</th>
+                                            <th>Precio sugerido</th>
                                             @if (Model.D.TSOL.FACTURA == false)
                                             {
-                                                <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
-                                                <td>@Math.Round((decimal)item.APOYO_EST, 2)</td>
+                                                <th>Volumen estimado</th>
+                                                <th>Estimado apoyo</th>
                                             }
                                             else
                                             {
-                                                <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
-                                                <td>@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
+                                                <th>Volumen real</th>
+                                                <th>Apoyo real</th>
                                             }
                                         </tr>
-                                        foreach (var mat in item.DOCUMENTOMs)
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
                                         {
-                                            <tr class="mat-@mat.POS_ID" style="display:none;">
-                                                <td></td>
-                                                <td></td>
-                                                <td>@mat.MATNR.TrimStart('0')</td>
+                                            <tr id="pos-@item.POS" onclick="muestra(this.id)">
+                                                <td>
+                                                    @try
+                                                    {@item.VIGENCIA_DE.Value.ToShortDateString()}
+                                                catch { }
+                                                </td>
+                                                <td>
+                                                    @try
+                                                    {@item.VIGENCIA_AL.Value.ToShortDateString()}
+                                                catch { }
+                                                </td>
+                                                @if (item.MATNR != "")
+                                                {
+                                                    <td>@item.MATNR.TrimStart('0')</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>@item.MATKL</td>
+                                                }
                                                 @{
                                                     using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
                                                     {
-                                                        if (mat.MATNR != "")
+                                                        if (item.MATNR != "")
                                                         {
-                                                            var matnr = db.MATERIALs.Find(mat.MATNR);
+                                                            var matnr = db.MATERIALs.Find(item.MATNR);
                                                             if (matnr != null)
                                                             {
                                                                 <td>@matnr.MAKTX</td>}
@@ -761,102 +713,152 @@
                                                                 <td></td>
                                                             }
                                                         }
+                                                        else
+                                                        {
+                                                            var matkl = db.MATERIALGPs.Find(item.MATKL);
+                                                            if (matkl != null)
+                                                            {
+                                                                <td>@matkl.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </td>}
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                        }
+
                                                     }
                                                 }
+                                                <td>@Math.Round(item.MONTO, 2)</td>
+                                                <td>@Math.Round(item.PORC_APOYO, 2)</td>
+                                                <td>@Math.Round(item.MONTO_APOYO, 2)</td>
+                                                <td>@Math.Round(item.PRECIO_SUG, 2)</td>
 
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
                                                 @if (Model.D.TSOL.FACTURA == false)
                                                 {
-                                                    <td>@Math.Round((decimal)mat.APOYO_EST, 2)</td>
+                                                    <td>@Math.Round(item.VOLUMEN_EST, 2)</td>
+                                                    <td>@Math.Round((decimal)item.APOYO_EST, 2)</td>
                                                 }
                                                 else
                                                 {
-                                                    <td>
-                                                        @Math.Round((decimal)mat.APOYO_REAL, 2)
-                                                    </td>
+                                                    <td>@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
+                                                    <td>@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
                                                 }
                                             </tr>
+                                            foreach (var mat in item.DOCUMENTOMs)
+                                            {
+                                                <tr class="mat-@mat.POS_ID" style="display:none;">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>@mat.MATNR.TrimStart('0')</td>
+                                                    @{
+                                                        using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+                                                        {
+                                                            if (mat.MATNR != "")
+                                                            {
+                                                                var matnr = db.MATERIALs.Find(mat.MATNR);
+                                                                if (matnr != null)
+                                                                {
+                                                                    <td>@matnr.MAKTX</td>}
+                                                                else
+                                                                {
+                                                                    <td></td>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
 
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    @if (Model.D.TSOL.FACTURA == false)
+                                                    {
+                                                        <td>@Math.Round((decimal)mat.APOYO_EST, 2)</td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @Math.Round((decimal)mat.APOYO_REAL, 2)
+                                                        </td>
+                                                    }
+                                                </tr>
+
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
-                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <script>
-            function muestra(id) {
-                var ii = id.split('-')[1];
-                var clas = $("#" + id).hasClass("m");
-                if (!clas) {
-                    var a = document.getElementsByClassName("mat-" + ii);
-                    var i;
-                    for (i = 0; i < a.length; i++) {
-                        a[i].style.display = "table-row";
+            <script>
+                function muestra(id) {
+                    var ii = id.split('-')[1];
+                    var clas = $("#" + id).hasClass("m");
+                    if (!clas) {
+                        var a = document.getElementsByClassName("mat-" + ii);
+                        var i;
+                        for (i = 0; i < a.length; i++) {
+                            a[i].style.display = "table-row";
+                        }
+                        document.getElementById("pos-" + ii).classList.add("m");
                     }
-                    document.getElementById("pos-" + ii).classList.add("m");
-                }
-                else {
-                    var a = document.getElementsByClassName("mat-" + ii);
-                    var i;
-                    for (i = 0; i < a.length; i++) {
-                        a[i].style.display = "none";
+                    else {
+                        var a = document.getElementsByClassName("mat-" + ii);
+                        var i;
+                        for (i = 0; i < a.length; i++) {
+                            a[i].style.display = "none";
+                        }
+                        document.getElementById("pos-" + ii).classList.remove("m");
                     }
-                    document.getElementById("pos-" + ii).classList.remove("m");
-                }
 
-            }
-        </script>
-    </div>
-    <div id="fina" class="col s12">
-        <div class="row">
-            @if (ViewBag.acciones != null)
-            {
-                if (ViewBag.accion == "T")
+                }
+            </script>
+        </div>
+        <div id="fina" class="col s12">
+            <div class="row">
+                @if (ViewBag.acciones != null)
                 {
-                    <div class="col s12 m12 l12">
-                        @using (Html.BeginForm("Taxeo", "Solicitudes"))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.HiddenFor(model => model.D.NUM_DOC)
-                            <div class="card-panel">
-                                <h5>Taxeo</h5>
-                                <div class="row">
-                                    <div class="col s12 m12 l12">
-                                        <div class="row" id="lbl_taxeo">
-                                            <div class="input-field col s6 m6 l3">
-                                                <select id="txt_concepto" name="txt_concepto" onchange="selConcepto(this.value)">
-                                                    <option value=""></option>
-                                                </select>
-                                                <label for="txt_concepto">Concepto</label>
-                                            </div>
-                                            <div class="input-field col s6 m6 l3">
-                                                <input id="txt_nota" name="txt_nota" disabled="disabled" />
-                                                <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
-                                            </div>
-                                            <div class="col s12 m12 l6">
-                                                <div>
-                                                    <table class="table" id="tab_conc">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Concepto</th>
-                                                                <th>Porcenaje</th>
-                                                                <th>Código</th>
-                                                                <th>Totales</th>
-                                                            </tr>
-                                                        <thead>
-                                                        <tbody></tbody>
-                                                    </table>
+                    if (ViewBag.accion == "T")
+                    {
+                        <div class="col s12 m12 l12">
+                            @using (Html.BeginForm("Taxeo", "Solicitudes"))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(model => model.D.NUM_DOC)
+                                <div class="card-panel">
+                                    <h5>Taxeo</h5>
+                                    <div class="row">
+                                        <div class="col s12 m12 l12">
+                                            <div class="row" id="lbl_taxeo">
+                                                <div class="input-field col s6 m6 l3">
+                                                    <select id="txt_concepto" name="txt_concepto" onchange="selConcepto(this.value)">
+                                                        <option value=""></option>
+                                                    </select>
+                                                    <label for="txt_concepto">Concepto</label>
+                                                </div>
+                                                <div class="input-field col s6 m6 l3">
+                                                    <input id="txt_nota" name="txt_nota" disabled="disabled" />
+                                                    <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
+                                                </div>
+                                                <div class="col s12 m12 l6">
+                                                    <div>
+                                                        <table class="table" id="tab_conc">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Concepto</th>
+                                                                    <th>Porcenaje</th>
+                                                                    <th>Código</th>
+                                                                    <th>Totales</th>
+                                                                </tr>
+                                                            <thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <script>
+                                            <script>
                                             taxeo("txt_concepto");
 
                                             function taxeo(id)
@@ -962,82 +964,82 @@
                                                     }
                                                 });
                                             }
-                                        </script>
-                                    </div>
-                                    <div class="col s12 right-align">
-                                        <input type="submit" class="btn" value="Enviar" />
+                                            </script>
+                                        </div>
+                                        <div class="col s12 right-align">
+                                            <input type="submit" class="btn" value="Enviar" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
-                    </div>
-                }
-            }
-            <div class="col s12 m6 l6">
-                <div class="card-panel">
-                    <h5>Detalle de solicitud</h5>
-                    <div class="row" style="margin-bottom:0">
-                        <div class="input-field col s8">
-                            @if (ViewBag.accion == "N")
-                            {
-                                @Html.EditorFor(model => model.D.MONTO_DOC_MD)
                             }
-                            @Html.EditorFor(model => model.D.MONTO_DOC_MD, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.MONTO_DOC_MD, "Monto", new { @id = "lbl_montomd" })
                         </div>
-                        <div class="input-field col s4">
-                            @Html.EditorFor(model => model.D.MONEDA_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.MONEDA_ID, "Moneda", new { @id = "lbl_waers" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.TIPO_CAMBIO, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.TIPO_CAMBIO, "Tipo de cambio", new { @id = "lbl_tcambio" })
-                        </div>
-                        <div class="input-field col s6">
-                            @Html.EditorFor(model => model.D.MONTO_DOC_ML2, new { htmlAttributes = new { @disabled = "disabled" } })
-                            @Html.LabelFor(model => model.D.MONTO_DOC_ML2, "Monto USD", new { @id = "lbl_montoml2" })
-                        </div>
-                        @if (Model.D.TSOL_ID == "PR")
-                        {
-                            <div class="input-field col s4">
-                                @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.TSOL_ID, "Company code", new { @id = "lbl_montoml2" })
+                    }
+                }
+                <div class="col s12 m6 l6">
+                    <div class="card-panel">
+                        <h5>Detalle de solicitud</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <div class="input-field col s8">
+                                @if (ViewBag.accion == "N")
+                                {
+                                    @Html.EditorFor(model => model.D.MONTO_DOC_MD)
+                                }
+                                @Html.EditorFor(model => model.D.MONTO_DOC_MD, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.MONTO_DOC_MD, "Monto", new { @id = "lbl_montomd" })
                             </div>
                             <div class="input-field col s4">
-                                @Html.EditorFor(model => model.D.DOCUMENTO_SAP, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Docuemento SAP", new { @id = "lbl_montoml2" })
-                            </div>
-                            <div class="input-field col s4">
-                                @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Company code", new { @id = "lbl_montoml2" })
+                                @Html.EditorFor(model => model.D.MONEDA_ID, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.MONEDA_ID, "Moneda", new { @id = "lbl_waers" })
                             </div>
                             <div class="input-field col s6">
-                                @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_montoml2" })
+                                @Html.EditorFor(model => model.D.TIPO_CAMBIO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.TIPO_CAMBIO, "Tipo de cambio", new { @id = "lbl_tcambio" })
                             </div>
                             <div class="input-field col s6">
-                                @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_montoml2" })
+                                @Html.EditorFor(model => model.D.MONTO_DOC_ML2, new { htmlAttributes = new { @disabled = "disabled" } })
+                                @Html.LabelFor(model => model.D.MONTO_DOC_ML2, "Monto USD", new { @id = "lbl_montoml2" })
                             </div>
-                        }
-                        <div class="input-field col s12">
-                            @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
-                            @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
+                            @if (Model.D.TSOL_ID == "PR")
+                            {
+                                <div class="input-field col s4">
+                                    @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.TSOL_ID, "Company code", new { @id = "lbl_montoml2" })
+                                </div>
+                                <div class="input-field col s4">
+                                    @Html.EditorFor(model => model.D.DOCUMENTO_SAP, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Docuemento SAP", new { @id = "lbl_montoml2" })
+                                </div>
+                                <div class="input-field col s4">
+                                    @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Company code", new { @id = "lbl_montoml2" })
+                                </div>
+                                <div class="input-field col s6">
+                                    @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_montoml2" })
+                                </div>
+                                <div class="input-field col s6">
+                                    @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_montoml2" })
+                                </div>
+                            }
+                            <div class="input-field col s12">
+                                @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
+                                @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col s12 m6 l6 right">
-                <!--RSG 22.05.2018-->
-                <div class="card-panel">
-                    <div class="row">
-                        <h5>Cuentas</h5>
-                        <div class="col s12">
-                            <div id="div_clearing">
+                <div class="col s12 m6 l6 right">
+                    <!--RSG 22.05.2018-->
+                    <div class="card-panel">
+                        <div class="row">
+                            <h5>Cuentas</h5>
+                            <div class="col s12">
+                                <div id="div_clearing">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <script>
+                        <script>
                         var clearing = [];
                         function getClearing(gall)
                         {
@@ -1114,258 +1116,258 @@
                             div += "       </ul>";
                             $("#div_clearing").append(div);
                         }
-                    </script>
-                </div>
+                        </script>
+                    </div>
 
-                @using (TAT001Entities db = new TAT001Entities())
-                {
-                    List<DOCUMENTO> inf = new List<DOCUMENTO>();
-                    inf = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == Model.D.NUM_DOC).ToList();
-                    <div class="card-panel">
-                        <div class="row">
-                            <h5>Relacionados</h5>
-                            <div class="col s12">
-                                @if (inf.Count() > 0)
-                                {
-                                    <table class="table striped" id="table" style="width:100%; font-size:12px;">
-                                        <thead>
-                                            <tr class="header">
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.TSOL_ID, "Tipo")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.NUM_DOC, "Documento")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "SAP")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Sociedad")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio")
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var miCi in inf)
-                                            {
+                    @using (TAT001Entities db = new TAT001Entities())
+                    {
+                        List<DOCUMENTO> inf = new List<DOCUMENTO>();
+                        inf = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == Model.D.NUM_DOC).ToList();
+                        <div class="card-panel">
+                            <div class="row">
+                                <h5>Relacionados</h5>
+                                <div class="col s12">
+                                    @if (inf.Count() > 0)
+                                    {
+                                        <table class="table striped" id="table" style="width:100%; font-size:12px;">
+                                            <thead>
+                                                <tr class="header">
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.TSOL_ID, "Tipo")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.NUM_DOC, "Documento")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "SAP")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Sociedad")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.PERIODO, "Periodo")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio")
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var miCi in inf)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @miCi.TSOL_ID
+                                                        </td>
+                                                        <td>
+                                                            @miCi.NUM_DOC
+                                                        </td>
+                                                        <td>
+                                                            @miCi.DOCUMENTO_SAP
+                                                        </td>
+                                                        <td>
+                                                            @miCi.SOCIEDAD_ID
+                                                        </td>
+                                                        <td>
+                                                            @miCi.PERIODO
+                                                        </td>
+                                                        <td>
+                                                            @miCi.EJERCICIO
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <table class="table striped" id="table" style="width:100%; font-size:12px;">
+                                            <thead>
+                                                <tr class="header">
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.TSOL_ID, "Tipo")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.NUM_DOC, "Documento")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "SAP")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Sociedad")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.PERIODO, "Periodo")
+                                                    </th>
+                                                    <th>
+                                                        @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio")
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 <tr>
                                                     <td>
-                                                        @miCi.TSOL_ID
+                                                        @Model.D.TSOL_ID
                                                     </td>
                                                     <td>
-                                                        @miCi.NUM_DOC
+                                                        @Model.D.NUM_DOC
                                                     </td>
                                                     <td>
-                                                        @miCi.DOCUMENTO_SAP
+                                                        @Model.D.DOCUMENTO_SAP
                                                     </td>
                                                     <td>
-                                                        @miCi.SOCIEDAD_ID
+                                                        @Model.D.SOCIEDAD_ID
                                                     </td>
                                                     <td>
-                                                        @miCi.PERIODO
+                                                        @Model.D.PERIODO
                                                     </td>
                                                     <td>
-                                                        @miCi.EJERCICIO
+                                                        @Model.D.EJERCICIO
                                                     </td>
                                                 </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                }
-                                else
-                                {
-                                    <table class="table striped" id="table" style="width:100%; font-size:12px;">
-                                        <thead>
-                                            <tr class="header">
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.TSOL_ID, "Tipo")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.NUM_DOC, "Documento")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "SAP")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Sociedad")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo")
-                                                </th>
-                                                <th>
-                                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio")
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    @Model.D.TSOL_ID
-                                                </td>
-                                                <td>
-                                                    @Model.D.NUM_DOC
-                                                </td>
-                                                <td>
-                                                    @Model.D.DOCUMENTO_SAP
-                                                </td>
-                                                <td>
-                                                    @Model.D.SOCIEDAD_ID
-                                                </td>
-                                                <td>
-                                                    @Model.D.PERIODO
-                                                </td>
-                                                <td>
-                                                    @Model.D.EJERCICIO
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
 
-                <div class="card-panel">
-                    <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
-                    <div class="row" style="margin-bottom:0">
-                        <ul class="collection">
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s4">
-                                        Presupuesto canal
-                                    </div>
-                                    <div class="col s4">
-                                        <label id="p_vtweg">
-                                            aaaa
-                                        </label>
-                                    </div>
-                                    <div class="col s4 right-align">
-                                        <label id="p_canal">
-                                            1111
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s4">
-                                        Presupuesto cliente
-                                    </div>
-                                    <div class="col s4">
-                                        <label id="p_kunnr">
-
-                                        </label>
-                                    </div>
-                                    <div class="col s4 right-align">
-                                        <label id="p_banner">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row">
-                        <ul class="collection">
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s6">
-                                        Registrado en SAP
-                                    </div>
-                                    <div class="col s6 right-align">
-                                        <label id="pc_c">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s6">
-                                        Por registrar en SAP
-                                    </div>
-                                    <div class="col s6 right-align">
-                                        <label id="pc_a">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s6">
-                                        En proceso TAT
-                                    </div>
-                                    <div class="col s6 right-align">
-                                        <label id="pc_p">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s6">
-                                        Consumido
-                                    </div>
-                                    <div class="col s6 right-align">
-                                        <label id="pc_t">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="collection-item">
-                                <div class="row" style="margin-bottom:0;">
-                                    <div class="col s6">
-                                        Presupuesto disponible
-                                    </div>
-                                    <div class="col s6 right-align">
-                                        <label id="consu">
-                                        </label>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        @*</ul>*@
-                    </div>
-                </div>
-            </div>
-            @if (Model.D.CONCEPTO_ID != null)
-            {<div class="col s12 m12 l12">
                     <div class="card-panel">
-                        <h5>Taxeo</h5>
-                        <div class="row">
-                            <div class="col s12 m12 l12">
-                                <div class="row" id="lbl_taxeo">
-                                    <div class="input-field col s6 m6 l3">
-                                        <input type="text" id="txt_concepto" name="txt_concepto" value="@Model.D.CONCEPTO_ID" disabled="disabled" />
-                                        <label for="txt_concepto">Concepto</label>
-                                    </div>
-                                    <div class="input-field col s6 m6 l3">
-                                        <input id="txt_nota" name="txt_nota" disabled="disabled" />
-                                        <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
-                                    </div>
-                                    <div class="col s12 m12 l6">
-                                        <div>
-                                            <table class="table" id="tab_conc">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Concepto</th>
-                                                        <th>Porcenaje</th>
-                                                        <th>Código</th>
-                                                        <th>Totales</th>
-                                                    </tr>
-                                                <thead>
-                                                <tbody></tbody>
-                                                <tfoot>
-                                                </tfoot>
-                                            </table>
+                        <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
+                        <div class="row" style="margin-bottom:0">
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s4">
+                                            Presupuesto canal
+                                        </div>
+                                        <div class="col s4">
+                                            <label id="p_vtweg">
+                                                aaaa
+                                            </label>
+                                        </div>
+                                        <div class="col s4 right-align">
+                                            <label id="p_canal">
+                                                1111
+                                            </label>
                                         </div>
                                     </div>
-                                </div>
-                                <script>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s4">
+                                            Presupuesto cliente
+                                        </div>
+                                        <div class="col s4">
+                                            <label id="p_kunnr">
+
+                                            </label>
+                                        </div>
+                                        <div class="col s4 right-align">
+                                            <label id="p_banner">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row">
+                            <ul class="collection">
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Registrado en SAP
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <label id="pc_c">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Por registrar en SAP
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <label id="pc_a">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            En proceso TAT
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <label id="pc_p">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Consumido
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <label id="pc_t">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item">
+                                    <div class="row" style="margin-bottom:0;">
+                                        <div class="col s6">
+                                            Presupuesto disponible
+                                        </div>
+                                        <div class="col s6 right-align">
+                                            <label id="consu">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            @*</ul>*@
+                        </div>
+                    </div>
+                </div>
+                @if (Model.D.CONCEPTO_ID != null)
+                {<div class="col s12 m12 l12">
+                        <div class="card-panel">
+                            <h5>Taxeo</h5>
+                            <div class="row">
+                                <div class="col s12 m12 l12">
+                                    <div class="row" id="lbl_taxeo">
+                                        <div class="input-field col s6 m6 l3">
+                                            <input type="text" id="txt_concepto" name="txt_concepto" value="@Model.D.CONCEPTO_ID" disabled="disabled" />
+                                            <label for="txt_concepto">Concepto</label>
+                                        </div>
+                                        <div class="input-field col s6 m6 l3">
+                                            <input id="txt_nota" name="txt_nota" disabled="disabled" />
+                                            <label id="lbl_nota" for="txt_nota">Tipo de nota</label>
+                                        </div>
+                                        <div class="col s12 m12 l6">
+                                            <div>
+                                                <table class="table" id="tab_conc">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Concepto</th>
+                                                            <th>Porcenaje</th>
+                                                            <th>Código</th>
+                                                            <th>Totales</th>
+                                                        </tr>
+                                                    <thead>
+                                                    <tbody></tbody>
+                                                    <tfoot>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
                                 selConcepto(document.getElementById("txt_concepto").value);
 
 
@@ -1432,71 +1434,72 @@
                                         }
                                     });
                                 }
-                                </script>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-
-            @if (ViewBag.Relacionados != null)
-            {
-                if (ViewBag.Relacionados.Count > 0)
-                {
-
-                    <div class="col s12 m6 l6">
-                        <div class="card-panel">
-                            <h5>Relacionados</h5>
-                            <div class="row" style="margin-bottom:0">
-                                <div class="col s12">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Documento</th>
-                                                <th>Tipo Solicitud</th>
-                                                @*<th>Fecha</th>
-                                                    <th>Hora</th>*@
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (TAT001.Entities.DOCUMENTO item in ViewBag.Relacionados)
-                                            {
-                                                <tr>
-                                                    <td>
-                                                        @item.NUM_DOC
-                                                    </td>
-                                                    <td>
-                                                        @item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50
-                                                    </td>
-                                                    @*<td>
-                                                            @item.FECHAC.Value.ToShortDateString()
-                                                        </td>
-                                                        <td>
-                                                            @item.HORAC.Value.ToString().Split('.')[0]
-                                                        </td>*@
-                                                    <td>
-                                                        <a href="@Url.Action("Details", new { id = item.NUM_DOC })" class="btn-small">Ver</a>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
+                                    </script>
                                 </div>
                             </div>
                         </div>
-                    </div>}
-            }
+                    </div>
+
+                }
+
+                @if (ViewBag.Relacionados != null)
+                {
+                    if (ViewBag.Relacionados.Count > 0)
+                    {
+
+                        <div class="col s12 m6 l6">
+                            <div class="card-panel">
+                                <h5>Relacionados</h5>
+                                <div class="row" style="margin-bottom:0">
+                                    <div class="col s12">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Documento</th>
+                                                    <th>Tipo Solicitud</th>
+                                                    @*<th>Fecha</th>
+                                                        <th>Hora</th>*@
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (TAT001.Entities.DOCUMENTO item in ViewBag.Relacionados)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @item.NUM_DOC
+                                                        </td>
+                                                        <td>
+                                                            @item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50
+                                                        </td>
+                                                        @*<td>
+                                                                @item.FECHAC.Value.ToShortDateString()
+                                                            </td>
+                                                            <td>
+                                                                @item.HORAC.Value.ToString().Split('.')[0]
+                                                            </td>*@
+                                                        <td>
+                                                            <a href="@Url.Action("Details", new { id = item.NUM_DOC })" class="btn-small">Ver</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
+                }
+            </div>
         </div>
+        @*<div id="dist" class="col s12">Test 4</div>*@
     </div>
-    @*<div id="dist" class="col s12">Test 4</div>*@
+    <script>
+        var el = document.getElementById("tab");
+        options = [];
+        var instance = M.Tabs.init(el, options);
+    </script>
 </div>
-<script>
-    var el = document.getElementById("tab");
-    options = [];
-    var instance = M.Tabs.init(el, options);
-</script>
 @if (ViewBag.acciones != null)
 {
     using (Html.BeginForm("Procesa", "Flujos"))

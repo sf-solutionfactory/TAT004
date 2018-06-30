@@ -15,7 +15,7 @@
 @if (ViewBag.error != "")
 {
     <script>
-    $(document).ready(function () {
+    $(document).ready(function () {bmonto_apoyo
         function errorMessage(msg) {
             M.toast({ html: msg });
         }
@@ -185,7 +185,7 @@
                             <div class="row" style="margin-bottom:0;">
 
                                 <div class="input-field col s12">
-                                    @Html.DropDownList("USUARIOD_ID", null, "", new { @onchange= "document.getElementById('payer_id').value = ''; selectCliente(''); "})
+                                    @Html.DropDownList("USUARIOD_ID", null, "", new { @onchange = "document.getElementById('payer_id').value = ''; selectCliente(''); " })
                                     <label for="txt_rel" id="lbl_rel"></label>
                                 </div>
                             </div>
@@ -444,9 +444,11 @@
                                 auto(document).ready(function () {
                                     auto("#payer_id").autocomplete({
                                         source: function (request, response) {
-                                        var user = document.getElementById("USUARIOD_ID").value;
-                                        if (user == undefined)
-                                            user = '@ViewBag.usuario.ID';
+                                            var userC = document.getElementById("USUARIOD_ID");
+                                            if (userC == undefined)
+                                                var user = '@ViewBag.usuario.ID';
+                                            else
+                                                var user = userC.value;
                                             auto.ajax({
                                                 url: "../Listas/Clientes",
                                                 type: "GET",
@@ -908,8 +910,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                      archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                          ;
+                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                              ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;

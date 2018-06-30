@@ -8,6 +8,23 @@
     List<TAT001.Entities.CUENTA> lstC = ViewBag.Cuentas as List<TAT001.Entities.CUENTA>;
     List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
 }
+@section noticia{
+    @if (true)
+    {
+        <div style="width:320px;"></div>
+        <div class="parallax-container" >
+            <div class="parallax">
+                @*<img src="images/parallax1.jpg">*@
+                <img src="~/images/parallax.jpg" />
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.parallax');
+                var instances = M.Parallax.init(elems, options);
+            });</script>
+    }
+}
 <!--BOTONES-->
 <div class="row">
     <div class="col s12 right-align">
@@ -205,11 +222,21 @@
                     {
                         <td></td>
                     }
-                    @if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.USUARIOC_ID)
+
+                    @if (item.FLUJOes.Count > 0)
                     {
-                        <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
-                            @item.NUM_DOC
-                        </td>
+                        if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID)
+                        {
+                            <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
+                                @item.NUM_DOC
+                            </td>
+                        }
+                        else
+                        {
+                            <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                                @item.NUM_DOC
+                            </td>
+                        }
                     }
                     else
                     {
@@ -298,7 +325,10 @@
                     else if (item.ESTATUS_WF.Equals("R"))
                     {
                         <td class="red darken-1 white-text">
-                            <div class="lbl_rejected">Pendiente corrección @item.USUARIOC_ID</div>
+                            @if (item.FLUJOes.Count > 0)
+                            {
+                                <div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>
+                            }
                         </td>
                     }
                     else if (item.ESTATUS_WF.Equals("S"))

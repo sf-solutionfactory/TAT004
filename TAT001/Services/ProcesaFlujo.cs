@@ -88,6 +88,14 @@ namespace TAT001.Services
                             FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
                             nuevo.USUARIOA_ID = detA.USUARIOA_ID;
                             nuevo.USUARIOD_ID = nuevo.USUARIOA_ID;
+
+                            DateTime fecha = DateTime.Now.Date;
+                            TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                            if (del != null)
+                                nuevo.USUARIOA_ID = del.USUARIOD_ID;
+                            else
+                                nuevo.USUARIOA_ID = nuevo.USUARIOD_ID;
+
                             nuevo.DETPOS = detA.DETPOS;
                             nuevo.DETVER = dah.VERSION;
                         }
@@ -171,7 +179,26 @@ namespace TAT001.Services
                                 if (next.ACCION.TIPO == "S")
                                     sop = 98;
                                 detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS, sop);
-                                nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                                //nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+
+
+
+
+
+
+                                nuevo.USUARIOD_ID = detA.USUARIOA_ID;
+
+                                DateTime fecha = DateTime.Now.Date;
+                                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                                if (del != null)
+                                    nuevo.USUARIOA_ID = del.USUARIOD_ID;
+                                else
+                                    nuevo.USUARIOA_ID = nuevo.USUARIOD_ID;
+
+
+
+
+
                                 nuevo.DETPOS = detA.DETPOS;
                                 nuevo.DETVER = actual.DETVER;
                                 if (paso_a.ACCION.TIPO == "N")
@@ -335,7 +362,25 @@ namespace TAT001.Services
                                 if (paso_a.ACCION.TIPO == "N")
                                     actual.DETPOS = actual.DETPOS - 1;
                                 FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 98, next.LOOPS, 98);
-                                nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+                                //nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+
+
+
+
+
+                                nuevo.USUARIOD_ID = detA.USUARIOA_ID;
+
+                                DateTime fecha = DateTime.Now.Date;
+                                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                                if (del != null)
+                                    nuevo.USUARIOA_ID = del.USUARIOD_ID;
+                                else
+                                    nuevo.USUARIOA_ID = nuevo.USUARIOD_ID;
+
+
+
+
+
                                 nuevo.DETPOS = detA.DETPOS;
                                 nuevo.DETVER = actual.DETVER;
                                 if (paso_a.ACCION.TIPO == "N")
@@ -460,6 +505,8 @@ namespace TAT001.Services
                 TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
                 if (del != null)
                     nuevo.USUARIOA_ID = del.USUARIOD_ID;
+                else
+                    nuevo.USUARIOA_ID = nuevo.USUARIOD_ID;
                 //nuevo.USUARIOD_ID
                 nuevo.ESTATUS = "P";
                 nuevo.FECHAC = DateTime.Now;
@@ -835,7 +882,7 @@ namespace TAT001.Services
             f.DETPOS = 0;
             if (!fin)
             {
-                if (dap != null)
+                if (dap.USUARIOA_ID != null)
                 {
                     //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
                     agente = dap.USUARIOA_ID;
@@ -846,7 +893,7 @@ namespace TAT001.Services
                     dap = dah.Where(a => a.POS == (sop)).FirstOrDefault();
                     if (dap == null)
                     {
-                        agente = d.USUARIOC_ID;
+                        agente = d.USUARIOD_ID;
                         f.DETPOS = 98;
                     }
                     else
@@ -858,7 +905,10 @@ namespace TAT001.Services
                 }
             }
             f.POS = ppos;
-            f.USUARIOA_ID = agente;
+            if (agente != "")
+                f.USUARIOA_ID = agente;
+            else
+                f.USUARIOA_ID = null;
             return f;
         }
 

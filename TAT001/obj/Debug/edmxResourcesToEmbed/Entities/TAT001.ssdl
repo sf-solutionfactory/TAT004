@@ -561,6 +561,8 @@
     <Property Name="VTWEG" Type="nchar" MaxLength="2" />
     <Property Name="SPART" Type="nchar" MaxLength="2" />
     <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
+    <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
+    <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="2" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -636,6 +638,7 @@
     <Property Name="GALL_ID" Type="nvarchar" MaxLength="5" />
     <Property Name="CONCEPTO_ID" Type="int" />
     <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
+    <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>

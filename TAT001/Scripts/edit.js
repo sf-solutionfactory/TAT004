@@ -412,11 +412,14 @@
             } else if (neg == "P") {
                 //Negociación porcentaje
                 //Obtener el porcentaje de apoyo base
-                var p_apoyo = $('#bmonto_apoyo').val();
-                p_apoyo = parseFloat(p_apoyo) | 0;
+                var p_apoyo = $('#bmonto_apoyo').val() + "";
+                p_apoyo = parseFloat(p_apoyo);//RSG 29.06.2018
+                //| 0.00;//RSG 29.06.2018
+                if (p_apoyo == undefined)//RSG 29.06.2018
+                    p_apoyo = 0;//RSG 29.06.2018
 
-                var m_apoyo = $('#monto_dis').val();
-                m_apoyo = parseFloat(m_apoyo) | 0;
+                var m_apoyo = $('#monto_dis').val() + "";
+                m_apoyo = parseFloat(m_apoyo) | 0.00;
 
 
                 //if (p_apoyo > 0) {
@@ -3837,7 +3840,7 @@ function selectMonto(val, message) {
 
     //Reset los valores
     $('#monto_dis').val("");
-    $('#bmonto_apoyo').val("");
+    //$('#bmonto_apoyo').val("");//RSG 29.06.2018
 
     //Obtener la negociación
     var select_neg = $('#select_neg').val();
