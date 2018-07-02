@@ -882,11 +882,29 @@ namespace TAT001.Services
             f.DETPOS = 0;
             if (!fin)
             {
-                if (dap.USUARIOA_ID != null)
+                if (dap != null)
                 {
-                    //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
-                    agente = dap.USUARIOA_ID;
-                    f.DETPOS = dap.POS;
+                    if (dap.USUARIOA_ID != null)
+                    {
+                        //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                        agente = dap.USUARIOA_ID;
+                        f.DETPOS = dap.POS;
+                    }
+                    else
+                    {
+                        dap = dah.Where(a => a.POS == (sop)).FirstOrDefault();
+                        if (dap == null)
+                        {
+                            agente = d.USUARIOD_ID;
+                            f.DETPOS = 98;
+                        }
+                        else
+                        {
+                            //agente = db.GAUTORIZACIONs.Where(a => a.ID == da.AGROUP_ID).FirstOrDefault().USUARIOs.Where(a => a.PUESTO_ID == da.PUESTOA_ID).First().ID;
+                            agente = dap.USUARIOA_ID;
+                            f.DETPOS = dap.POS;
+                        }
+                    }
                 }
                 else
                 {

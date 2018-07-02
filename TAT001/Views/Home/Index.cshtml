@@ -8,32 +8,31 @@
     List<TAT001.Entities.CUENTA> lstC = ViewBag.Cuentas as List<TAT001.Entities.CUENTA>;
     List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
 }
-@section noticia{
-    @if (true)
-    {
-        <div style="width:320px;"></div>
-        <div class="parallax-container" >
-            <div class="parallax">
-                @*<img src="images/parallax1.jpg">*@
-                <img src="~/images/parallax.jpg" />
+@*@section noticia{
+        @if (false)
+        {
+            <div style="width:320px;"></div>
+            <div class="parallax-container" >
+                <div class="parallax">
+                    <img src="~/images/parallax.jpg" />
+                </div>
             </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('.parallax');
-                var instances = M.Parallax.init(elems, options);
-            });</script>
-    }
-}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.parallax');
+                    var instances = M.Parallax.init(elems, options);
+                });</script>
+        }
+    }*@
 <!--BOTONES-->
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small" })
+        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id= "btn_create" })
         @using (Html.BeginForm("Descargar", "Home", FormMethod.Post, new { @style = "display:inline;" }))
         {
             <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
         }
-        @Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })
+            @*@Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })*@
     </div>
     <div class="col s12 right-align" style="margin-top:5px;">
 
@@ -42,194 +41,203 @@
 <!--MENSAJES-->
 <div>
     @if (ViewBag.NUM_DOC != null)
-    {
-        if (ViewBag.NUM_DOC != "")
         {
-            <script>
-        $(document).ready(function () {
-            function docMessage(msg) {
-                M.toast({ html: msg });
-            }
-
-            var message = '@ViewBag.NUM_DOC';
-
-            if (message != "")
+            if (ViewBag.NUM_DOC != "")
             {
-                // do drop down loic
-                docMessage('Documento ' + message+' fue creado');
-            }
+            <script>
+            $(document).ready(function () {
+                    function docMessage(msg) {
+                        M.toast({ html: msg });
+                }
 
-        });
+                var message = '@ViewBag.NUM_DOC';
+
+                if (message != "")
+                {
+                    // do drop down loic
+                    docMessage('Documento ' + message+' fue creado');
+                }
+
+            });
             </script>
         }
     }
     @if (TempData["docs_masiva"] != null)
-    {
-        List<string> aa = (List<string>)TempData["docs_masiva"];
-        foreach (var a in aa)
         {
+            List<string> aa = (List<string>)TempData["docs_masiva"];
+            foreach (var a in aa)
+            {
 
             <script>
-        $(document).ready(function () {
-            function docMessage(msg) {
-                M.toast({ html: msg });
-            }
+            $(document).ready(function () {
+                    function docMessage(msg) {
+                        M.toast({ html: msg });
+                }
 
-            var messages = '@a';
+                var messages = '@a';
 
-            if (messages != "")
-            {
-                // do drop down loic
-                docMessage('Documento ' + messages +' fue creado');
-            }
-        });
+                if (messages != "")
+                {
+                    // do drop down loic
+                    docMessage('Documento ' + messages +' fue creado');
+                }
+            });
             </script>
         }
         TempData["docs_masiva"] = null;
     }
 </div>
 <!--TABLA-->
-<div>
-    <div class="row" style="margin-bottom:0;">
-        <div class="input-field col s3 m3 l3">
-            <select id="selecc">
-                <option value="10" selected>10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <label id="lbl_length">Ver por página</label>
+<div class="card-panel">
+    <div class="row">
+        <div class="row" style="margin-bottom:0;">
+            <div class="input-field col s3 m3 l3">
+                <select id="selecc">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <label id="btn_length">Ver por página</label>
+            </div>
+            <div class="input-field col s5 m3 l3 offset-l6 offset-m6 offset-s4">
+                <input type="text" class="global_filter" id="global_filter">
+                <label for="global_filter" id="lbl_search">Buscar</label>
+            </div>
         </div>
-        <div class="input-field col s5 m3 l3 offset-l6 offset-m6 offset-s4">
-            <input type="text" class="global_filter" id="global_filter">
-            <label for="global_filter" id="lbl_search">Buscar</label>
-        </div>
-    </div>
-    <script>
-        var elem = document.querySelector('select');
-        var options = [];
-        var instance = M.Select.init(elem, options);
-    </script>
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
-    <link href="~/Content/dataTable.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
-    <table class="table mdl-data-table striped" id="table" style="width:100%;">
-        <thead>
-            <tr>
-                <th></th>
-                <th class="lbl_num">
-                    @Html.DisplayNameFor(model => model.NUM_DOC)
-                </th>
-                <th class="lblSociedad">
-                    @Html.DisplayNameFor(model => model.SOCIEDAD_ID)
-                </th>
-                <th class="lblPais">
-                    @Html.DisplayNameFor(model => model.PAIS_ID)
-                </th>
-                <th id="lbl_fechad">
-                    @Html.DisplayNameFor(model => model.FECHAD)
-                </th>
-                <th id="lbl_horac">
-                    @Html.DisplayNameFor(model => model.HORAC)
-                </th>
-                <th id="lblPC">
-                    @Html.DisplayName("Periodo Contable")
-                </th>
-                <th id="lbl_estatus">
-                    @Html.DisplayNameFor(model => model.ESTATUS)
-                </th>
-                <th id="lblPayId">
-                    @Html.DisplayNameFor(model => model.PAYER_ID)
-                </th>
-                <th id="lblCliente">
-                    @Html.DisplayName("Cliente")
-                </th>
-                <th id="lblCanal">
-                    @Html.DisplayName("Canal")
-                </th>
-                <th id="lbl_tsol">
-                    @Html.DisplayNameFor(model => model.TSOL)
-                </th>
-                <th id="lbl_tall">
-                    @Html.DisplayNameFor(model => model.TALL)
-                </th>
-                <th id="lblCuentas">
-                    @Html.DisplayName("Cuentas")
-                </th>
-                <th id="lbl_concepto">
-                    @Html.DisplayNameFor(model => model.CONCEPTO)
-                </th>
-                <th id="lblMo">
-                    @Html.DisplayNameFor(model => model.MONTO_DOC_ML)
-                </th>
-                <th id="lblFac">
-                    @Html.DisplayName("Factura")
-                </th>
-                <th id="lblFack">
-                    @Html.DisplayName("FacturaK")
-                </th>
-                <th id="lblUC">
-                    @Html.DisplayNameFor(model => model.USUARIOC_ID)
-                </th>
-                <th id="lblUM">
-                    @Html.DisplayName("Modificado por")
-                </th>
-                <th id="lblNC">
-                    @Html.DisplayName("Número Nota Crédito/Orden de Pago")
-                </th>
-                <th id="lblRP">
-                    @Html.DisplayName("Núm. Registro Provisión")
-                </th>
-                <th id="lblRnc">
-                    @Html.DisplayName("Núm. Registro NC/OP")
-                </th>
-                <th id="lblRap">
-                    @Html.DisplayName("Núm Registro AP")
-                </th>
-                <th id="lblRR">
-                    @Html.DisplayName("Núm. Registro Reverso")
-                </th>
-                <th id="lblTDoc">
-                    @Html.DisplayName("Tipo Documento")
-                </th>
-                <th id="lblPayer">
-                    @Html.DisplayName("Payer")
-                </th>
-                <th id="lblCl">
-                    @Html.DisplayName("Cliente")
-                </th>
-                <th id="lblIL">
-                    @Html.DisplayName("$ Importe Moneda Local")
-                </th>
-                <th id="lblCCG">
-                    @Html.DisplayName("Cuenta Contable Gasto")
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+        <script>
+            var elem = document.querySelector('select');
+            var options = [];
+            var instance = M.Select.init(elem, options);
+        </script>
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+        <link href="~/Content/dataTable.css" rel="stylesheet" />
+        @*<link href="~/Content/dataTables.material.min.css" rel="stylesheet" />*@
+        <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+        <table class="table mdl-data-table striped" id="table" style="width:100%;">
+            <thead>
                 <tr>
-                    @if (item.TSOL.PADRE)
-                    {
-                        <td class=" details-control" style="cursor:pointer">
-                            <i class="material-icons">add</i>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-
-                    @if (item.FLUJOes.Count > 0)
-                    {
-                        if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID)
+                    <th></th>
+                    <th class="lbl_num">
+                        @Html.DisplayNameFor(model => model.NUM_DOC)
+                    </th>
+                    <th class="lblSociedad">
+                        @Html.DisplayNameFor(model => model.SOCIEDAD_ID)
+                    </th>
+                    <th class="lblPais">
+                        @Html.DisplayNameFor(model => model.PAIS_ID)
+                    </th>
+                    <th id="lbl_fechad">
+                        @Html.DisplayNameFor(model => model.FECHAD)
+                    </th>
+                    <th id="lbl_horac">
+                        @Html.DisplayNameFor(model => model.HORAC)
+                    </th>
+                    <th id="lblPC">
+                        @Html.DisplayName("Periodo Contable")
+                    </th>
+                    <th id="lbl_estatus">
+                        @Html.DisplayNameFor(model => model.ESTATUS)
+                    </th>
+                    <th id="lblPayId">
+                        @Html.DisplayNameFor(model => model.PAYER_ID)
+                    </th>
+                    <th id="lblCliente">
+                        @Html.DisplayName("Cliente")
+                    </th>
+                    <th id="lblCanal">
+                        @Html.DisplayName("Canal")
+                    </th>
+                    <th id="lbl_tsol">
+                        @Html.DisplayNameFor(model => model.TSOL)
+                    </th>
+                    <th id="lbl_tall">
+                        @Html.DisplayNameFor(model => model.TALL)
+                    </th>
+                    <th id="lblCuentas">
+                        @Html.DisplayName("Cuentas")
+                    </th>
+                    <th id="lbl_concepto">
+                        @Html.DisplayNameFor(model => model.CONCEPTO)
+                    </th>
+                    <th id="lblMo">
+                        @Html.DisplayNameFor(model => model.MONTO_DOC_ML)
+                    </th>
+                    <th id="lblFac">
+                        @Html.DisplayName("Factura")
+                    </th>
+                    <th id="lblFack">
+                        @Html.DisplayName("FacturaK")
+                    </th>
+                    <th id="lblUC">
+                        @Html.DisplayNameFor(model => model.USUARIOC_ID)
+                    </th>
+                    <th id="lblUM">
+                        @Html.DisplayName("Modificado por")
+                    </th>
+                    <th id="lblNC">
+                        @Html.DisplayName("Número Nota Crédito/Orden de Pago")
+                    </th>
+                    <th id="lblRP">
+                        @Html.DisplayName("Núm. Registro Provisión")
+                    </th>
+                    <th id="lblRnc">
+                        @Html.DisplayName("Núm. Registro NC/OP")
+                    </th>
+                    <th id="lblRap">
+                        @Html.DisplayName("Núm Registro AP")
+                    </th>
+                    <th id="lblRR">
+                        @Html.DisplayName("Núm. Registro Reverso")
+                    </th>
+                    <th id="lblTDoc">
+                        @Html.DisplayName("Tipo Documento")
+                    </th>
+                    <th id="lblPayer">
+                        @Html.DisplayName("Payer")
+                    </th>
+                    <th id="lblCl">
+                        @Html.DisplayName("Cliente")
+                    </th>
+                    <th id="lblIL">
+                        @Html.DisplayName("$ Importe Moneda Local")
+                    </th>
+                    <th id="lblCCG">
+                        @Html.DisplayName("Cuenta Contable Gasto")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (item.TSOL.PADRE)
                         {
-                            <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
-                                @item.NUM_DOC
+                            <td class=" details-control" style="cursor:pointer">
+                                <i class="material-icons">add</i>
                             </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                        @if (item.FLUJOes.Count > 0)
+                        {
+                            if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID)
+                            {
+                                <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
+                                    @item.NUM_DOC
+                                </td>
+                            }
+                            else
+                            {
+                                <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                                    @item.NUM_DOC
+                                </td>
+                            }
                         }
                         else
                         {
@@ -237,52 +245,59 @@
                                 @item.NUM_DOC
                             </td>
                         }
-                    }
-                    else
-                    {
-                        <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
-                            @item.NUM_DOC
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SOCIEDAD_ID)
                         </td>
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SOCIEDAD_ID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PAIS_ID)
-                    </td>
-                    <td>
-                        @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
-                    </td>
-                    <td>
-                        @item.HORAC.Value.ToString().Split('.')[0]
-                    </td>
-                    <td>
-                        @item.FECHAC.Value.Month
-                    </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PAIS_ID)
+                        </td>
+                        <td>
+                            @item.FECHAD.Value.Year/@item.FECHAD.Value.Month/@item.FECHAD.Value.Day
+                        </td>
+                        <td>
+                            @item.HORAC.Value.ToString().Split('.')[0]
+                        </td>
+                        <td>
+                            @item.FECHAC.Value.Month
+                        </td>
 
-                    @if (item.ESTATUS_C == "C")
-                    {
-                        <td class="red darken-1 white-text">
-                            <div class="lbl_cancelled">Cancelada</div>
-                        </td>
-                    }
-                    else if (item.ESTATUS_WF.Equals("P"))
-                    {
-                        if (item.FLUJOes.Count > 0)
+                        @if (item.ESTATUS_C == "C")
                         {
-                            if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
+                            @*<td class="red darken-1 white-text">
+                                    <div class="lbl_cancelled">Cancelada</div>
+                                </td>*@
+                            <td class="">
+                                <span class="lbl_cancelled new badge red darken-1 white-text" data-badge-caption=" ">Cancelada</span>
+                            </td>
+                        }
+                        else if (item.ESTATUS_WF.Equals("P"))
+                        {
+                            if (item.FLUJOes.Count > 0)
                             {
-                                if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
+                                if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
                                 {
-                                    <td class="yellow darken-2 white-text">
-                                        <div class="lbl_pending">Pendiente Validación TS</div>
-                                    </td>
+                                    if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
+                                    {
+                                        @*<td class="yellow darken-2 white-text">
+                                                <div class="lbl_pending">Pendiente Validación TS</div>
+                                            </td>*@
+                                        <td class="">
+                                            <span class="lbl_ts yellow darken-2 white-text new badge" data-badge-caption=" ">Validación TS</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        @*<td class="yellow darken-2 white-text">
+                                                <div class="lbl_pending">Pendiente @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</div>
+                                            </td>*@
+                                        <td class="">
+                                            <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente </span> @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</span>
+                                        </td>
+                                    }
                                 }
                                 else
                                 {
-                                    <td class="yellow darken-2 white-text">
-                                        <div class="lbl_pending">Pendiente @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</div>
-                                    </td>
+                                    <td></td>
                                 }
                             }
                             else
@@ -290,146 +305,158 @@
                                 <td></td>
                             }
                         }
+                        else if (item.ESTATUS_WF.Equals("A"))
+                        {
+                            if (item.ESTATUS.Equals("C"))
+                            {
+                                @*<td class="green darken-1 white-text">
+                                        <div class="lbl_txt">Por gen .txt</div>
+                                    </td>*@
+                                <td class="">
+                                    <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
+                                </td>
+                            }
+                            else if (item.ESTATUS.Equals("P"))
+                            {
+                                <td class="">
+                                    <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
+                                </td>
+                            }
+                            else if (item.ESTATUS.Equals("N"))
+                            {
+                                @*<td class="green darken-1 white-text">
+                                        <div class="lbl_txt">Por gen .txt</div>
+                                    </td>*@
+                                <td class="">
+                                    <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
+                                </td>
+                            }
+                            else
+                            {
+                                @*<td class="green darken-1 white-text">
+                                        <div class="lbl_approved">Aprobada</div>
+                                    </td>*@
+                                <td class="">
+                                    <span class="lbl_approved new badge green darken-1 white-text" data-badge-caption=" ">Aprobada</span>
+                                </td>
+                            }
+                        }
+                        else if (item.ESTATUS_WF.Equals("R"))
+                        {
+                            @*<td class="red darken-1 white-text">*@
+                            <td class="">
+                                @if (item.FLUJOes.Count > 0)
+                                {
+                                    @*<div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>*@
+                                    <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección </span> @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</span>
+                                }
+                            </td>
+                        }
+                        else if (item.ESTATUS_WF.Equals("S"))
+                        {
+                            @*<td class="yellow darken-2 white-text">
+                                    <div class="lbl_soporte">Pendiente firma</div>
+                                </td>*@
+                            <td class="">
+                                <span class="lbl_soporte new badge yellow darken-2 white-text" data-badge-caption=" ">Pendiente firma</span>
+                            </td>
+                        }
+                        else if (item.ESTATUS_WF.Equals("T"))
+                        {
+                            @*<td class="yellow darken-2 white-text">
+                                    <div class="lbl_tax">Pendiente Tax</div>
+                                </td>*@
+                            <td class="">
+                                <span class="lbl_tax new badge yellow darken-2 white-text" data-badge-caption=" ">Pendiente Tax</span>
+                            </td>
+                        }
                         else
                         {
                             <td></td>
                         }
-                    }
-                    else if (item.ESTATUS_WF.Equals("A"))
-                    {
-                        if (item.ESTATUS.Equals("C"))
-                        {
-                            <td class="green darken-1 white-text">
-                                <div class="lbl_txt">Por gen .txt</div>
-                            </td>
-                        }
-                        else if (item.ESTATUS.Equals("P"))
-                        {
-                            <td class="green darken-1 white-text">
-                                <div class="lbl_contab">Por contabilizar</div>
-                            </td>
-                        }
-                        else if (item.ESTATUS.Equals("N"))
-                        {
-                            <td class="green darken-1 white-text">
-                                <div class="lbl_txt">Por gen .txt</div>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="green darken-1 white-text">
-                                <div class="lbl_approved">Aprobada</div>
-                            </td>
-                        }
-                    }
-                    else if (item.ESTATUS_WF.Equals("R"))
-                    {
-                        <td class="red darken-1 white-text">
-                            @if (item.FLUJOes.Count > 0)
-                            {
-                                <div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>
-                            }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PAYER_ID)
                         </td>
-                    }
-                    else if (item.ESTATUS_WF.Equals("S"))
-                    {
-                        <td class="yellow darken-2 white-text">
-                            <div class="lbl_soporte">Pendiente firma</div>
-                        </td>
-                    }
-                    else if (item.ESTATUS_WF.Equals("T"))
-                    {
-                        <td class="yellow darken-2 white-text">
-                            <div class="lbl_tax">Pendiente Tax</div>
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PAYER_ID)
-                    </td>
-                    <td>
-                        @for (int i = 0; i < lst.Count; i++)
-                        {
-                            if (lst[i].KUNNR == item.PAYER_ID)
+                        <td>
+                            @for (int i = 0; i < lst.Count; i++)
                             {
-                                @Html.Label(lst[i].NAME1)
-                            }
-                        }
-                    </td>
-                    <td>
-                        @for (int i = 0; i < lst.Count; i++)
-                        {
-                            if (lst[i].KUNNR == item.PAYER_ID)
-                            {
-                                @Html.Label(lst[i].CANAL)
-                            }
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
-                    </td>
-                    <td>
-                        @for (int i = 0; i < lstC.Count; i++)
-                        {
-                            if (item.TALL != null)
-                            {
-                                if (lstC[i].SOCIEDAD_ID == item.SOCIEDAD_ID && lstC[i].TALL_ID == item.TALL.ID)
+                                if (lst[i].KUNNR == item.PAYER_ID)
                                 {
-                                    @Html.Label(lstC[i].CARGO.ToString())
+                                    @Html.Label(lst[i].NAME1)
                                 }
                             }
-                        }
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CONCEPTO)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MONTO_DOC_ML)
-                    </td>
-                    <td>
-                        @for (int i = 0; i < lstD.Count; i++)
-                        {
-                            if (lstD[i].NUM_DOC == item.NUM_DOC)
+                        </td>
+                        <td>
+                            @for (int i = 0; i < lst.Count; i++)
                             {
-                                @Html.Label(lstD[i].FACTURA)
+                                if (lst[i].KUNNR == item.PAYER_ID)
+                                {
+                                    @Html.Label(lst[i].CANAL)
+                                }
                             }
-                        }
-                    </td>
-                    <td>
-                        @for (int i = 0; i < lstD.Count; i++)
-                        {
-                            if (lstD[i].NUM_DOC == item.NUM_DOC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
+                        </td>
+                        <td>
+                            @for (int i = 0; i < lstC.Count; i++)
                             {
-                                @Html.Label(lstD[i].FACTURAK)
+                                if (item.TALL != null)
+                                {
+                                    if (lstC[i].SOCIEDAD_ID == item.SOCIEDAD_ID && lstC[i].TALL_ID == item.TALL.ID)
+                                    {
+                                        @Html.Label(lstC[i].CARGO.ToString())
+                                    }
+                                }
                             }
-                        }
-                    </td>
-                    <td>
-                        @item.USUARIOC_ID
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <iframe id="txtArea1" style="display:none"></iframe>
-    <script>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CONCEPTO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MONTO_DOC_ML)
+                        </td>
+                        <td>
+                            @for (int i = 0; i < lstD.Count; i++)
+                            {
+                                if (lstD[i].NUM_DOC == item.NUM_DOC)
+                                {
+                                    @Html.Label(lstD[i].FACTURA)
+                                }
+                            }
+                        </td>
+                        <td>
+                            @for (int i = 0; i < lstD.Count; i++)
+                            {
+                                if (lstD[i].NUM_DOC == item.NUM_DOC)
+                                {
+                                    @Html.Label(lstD[i].FACTURAK)
+                                }
+                            }
+                        </td>
+                        <td>
+                            @item.USUARIOC_ID
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <iframe id="txtArea1" style="display:none"></iframe>
+        <script>
     $(document).ready(function () {
         var table = $('#table').DataTable({
             //paging: false,
@@ -448,7 +475,8 @@
             //},
             order: [[4, "desc"], [5, "desc"], [1, "desc"]],
             language: {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                "url": "../Scripts/lang/@Session["spras"].ToString()"+".json"
             },
             columnDefs: [
                 {
@@ -611,19 +639,21 @@
     function link(num) {
         document.location = "../Solicitudes/Details/" + num;
     }
-    </script>
-    <style>
+        </script>
+        <style>
 
-        .dataTables_length {
-            display: none;
-        }
+            .dataTables_length {
+                display: none;
+            }
 
-        .dataTables_filter {
-            display: none;
-        }
+            .dataTables_filter {
+                display: none;
+            }
 
-        .dataTables_scrollHeadInner, .mdl-data-table {
-            width: 100%;
-        }
-    </style>
+            .dataTables_scrollHeadInner, .mdl-data-table {
+                width: 100%;
+            }
+
+        </style>
+    </div>
 </div>
