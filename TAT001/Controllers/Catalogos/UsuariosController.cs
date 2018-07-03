@@ -641,45 +641,57 @@ namespace TAT001.Controllers.Catalogos
         public ActionResult ModificarRol(USUARIO u)
         {
             //int rol = Int32.Parse(Request.Form["txt_rol"].ToString());
-            string soc = Request.Form["item.BUKRS"].ToString();
-            string pais = Request.Form["item.LAND"].ToString();
-            long agroup = long.Parse(Request.Form["txt_agroup"].ToString());
+            string pais = Request.Form["item.PAIS_ID"].ToString();
+            string vkorg = Request.Form["item.VKORG"].ToString();
+            string vtweg = Request.Form["item.VTWEG"].ToString();
+            string spart = Request.Form["item.SPART"].ToString();
+            string kunnr = Request.Form["item.KUNNR"].ToString();
 
-            DET_AGENTEH dh = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == (agroup)).OrderByDescending(a => a.VERSION).FirstOrDefault();
+            //DET_AGENTEH dh = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.AGROUP_ID == (agroup)).OrderByDescending(a => a.VERSION).FirstOrDefault();
+            DET_AGENTEC dh = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(u.ID) & a.PAIS_ID.Equals(pais) & a.VKORG.Equals(vkorg) & a.VTWEG.Equals(vtweg) & a.SPART.Equals(spart) & a.KUNNR.Equals(kunnr) & a.POS == 1 & a.ACTIVO == true).OrderByDescending(a => a.VERSION).FirstOrDefault();
             if (dh != null)
             {
 
-                List<DET_APROBP> ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.VERSION == dh.VERSION).ToList();
-                foreach (DET_APROBP dp in ddp)
+                List<DET_AGENTEC> ddp = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(u.ID) & a.PAIS_ID.Equals(pais) & a.VKORG.Equals(vkorg) & a.VTWEG.Equals(vtweg)
+                                        & a.SPART.Equals(spart) & a.KUNNR.Equals(kunnr) & a.VERSION == dh.VERSION & a.ACTIVO == true).ToList();
+                foreach (DET_AGENTEC dp in ddp)
                 {
-                    DET_AGENTEP dap = new DET_AGENTEP();
-                    dap.SOCIEDAD_ID = dh.SOCIEDAD_ID;
-                    dap.PUESTOC_ID = dh.PUESTOC_ID;
-                    dap.VERSION = dh.VERSION;
-                    dap.AGROUP_ID = dh.AGROUP_ID;
-                    dap.POS = dp.POS;
-                    dap.PUESTOA_ID = dp.PUESTOA_ID;
-                    dap.USUARIOA_ID = Request.Form[soc + "-" + pais + "-" + dp.PUESTOA_ID].ToString();
-                    dap.MONTO = dp.MONTO;
-                    dap.PRESUPUESTO = dp.PRESUPUESTO;
-                    dap.ACTIVO = true;
-                    db.Entry(dap).State = EntityState.Modified;
-                    //dgp.Add(dap);
-
-                    ////string us = dap.USUARIOA_ID;
-                    ////USUARIO uu = db.USUARIOs.Find(us);
-                    ////uu.GAUTORIZACIONs.Add(ga);
-                    ////db.Entry(uu).State = EntityState.Modified;
-
-                    ////MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
-                    ////if (mi == null)
-                    ////{
-                    ////    mi = new MIEMBRO();
-                    ////    mi.ROL_ID = 2;
-                    ////    mi.USUARIO_ID = uu.ID;
-                    ////    mi.ACTIVO = true;
-                    ////    db.MIEMBROS.Add(mi);
-                    ////}
+                    //DET_AGENTEP dap = new DET_AGENTEP();
+                    //dap.SOCIEDAD_ID = dh.SOCIEDAD_ID;
+                    //dap.PUESTOC_ID = dh.PUESTOC_ID;
+                    //dap.VERSION = dh.VERSION;
+                    //dap.AGROUP_ID = dh.AGROUP_ID;
+                    //dap.POS = dp.POS;
+                    //dap.PUESTOA_ID = dp.PUESTOA_ID;
+                    dp.USUARIOA_ID = Request.Form[pais + "-" + kunnr + "-" + dp.POS].ToString();
+                    try
+                    {
+                        string monto = Request.Form[pais + "-" + kunnr + "-" + dp.POS + "-monto"].ToString();
+                        if(monto != "")
+                            dp.MONTO = decimal.Parse(monto);
+                        else
+                            dp.MONTO = null;
+                    }
+                    catch
+                    {
+                        dp.MONTO = null;
+                    }
+                    try
+                    {
+                        string presu = Request.Form[pais + "-" + kunnr + "-" + dp.POS + "-presup"].ToString();
+                        if (presu == "on")
+                            dp.PRESUPUESTO = true;
+                        else
+                            dp.PRESUPUESTO = false;
+                    }
+                    catch
+                    {
+                        dp.PRESUPUESTO = false;
+                    }
+                    dp.MONTO = dp.MONTO;
+                    dp.PRESUPUESTO = dp.PRESUPUESTO;
+                    dp.ACTIVO = true;
+                    db.Entry(dp).State = EntityState.Modified;
 
                 }
                 db.SaveChanges();

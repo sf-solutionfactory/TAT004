@@ -98,191 +98,271 @@
     <div class="col l6 s12">
         <div class="card-panel">
             <div class="row">
-                <h5>Grupos</h5>
+                <h5>Flujos</h5>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Solciedad</th>
                             <th>País</th>
+                            <th>Cliente</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.GAUTORIZACIONs)
+                        @foreach (var item in Model.DET_AGENTEC.Where(a => a.POS == 1).ToList())
                         {
-                            TAT001.Entities.DET_AGENTEH dah = item.DET_AGENTEH.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID)).FirstOrDefault();
-                            TAT001.Entities.DET_TAXEO dta = Model.DET_TAXEO.Where(a => a.PUESTOC_ID.Equals(Model.PUESTO_ID) & a.SOCIEDAD_ID.Equals(item.BUKRS) & a.PAIS_ID.Equals(item.LAND)).FirstOrDefault();
-                            if (dah != null)
-                            {
-                                if (dah.PUESTOC_ID == Model.PUESTO_ID)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.BUKRS)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.LAND)
-                                        </td>
-                                        <td class="right-align">
-                                            <a class="btn-small modal-trigger" href="#@item.BUKRS@item.LAND">Editar</a>
-                                            @using (Html.BeginForm("ModificarRol", "Usuarios"))
-                                            {
-                                                @Html.AntiForgeryToken()
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PAI.LANDX)
+                                </td>
+                                <td>
+                                    @item.KUNNR.TrimStart('0')
+                                    @Html.DisplayFor(modelItem => item.CLIENTE.NAME1)
+                                </td>
+                                <td class="right-align">
+                                    <a class="btn-small modal-trigger" href="#@item.PAIS_ID@item.KUNNR">Editar</a>
+                                    @using (Html.BeginForm("ModificarRol", "Usuarios"))
+                                    {
+                                        @Html.AntiForgeryToken()
 
-                                                <div id="@item.BUKRS@item.LAND" class="modal modal-fixed-footer left-align">
-                                                    <div class="modal-content">
-                                                        <h4>Modificar Rol</h4>
-                                                        <div class="row">
-                                                            @Html.HiddenFor(model => model.ID)
-                                                            @Html.HiddenFor(model => model.PUESTO_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_puestoid" })
-                                                            @Html.HiddenFor(itemm => item.BUKRS, new { @id = item.BUKRS + "-" + item.LAND + "-txt_soc" })
-                                                            @Html.HiddenFor(itemm => item.LAND, new { @id = item.BUKRS + "-" + item.LAND + "-txt_pai" })
-                                                            <input type="hidden" value="@dah.AGROUP_ID" name="txt_agroup" />
-                                                            <div class="input-field col s6">
-                                                                <select id="@item.BUKRS-@item.LAND-txt_rol" name="@item.BUKRS-@item.LAND-txt_rol" required="required">
-                                                                    @foreach (var itemm in ViewBag.ROLES)
-                                                                    {
-                                                                        <option value="@itemm.ROL_ID">@itemm.TXT50</option>
-                                                                        break;
-                                                                    }
-                                                                </select>
-                                                                <label for="txt_rol">Rol</label>
-                                                            </div>
-                                                        </div>
-                                                        <script>
-                                                            var elem2 = document.getElementById('@item.BUKRS-@item.LAND-txt_rol');
-                                                            var instance2 = M.Select.init(elem2, []);
-                                                        </script>
-                                                        <div class="row" id="div_crea">
-                                                            <div class="input-field col s6">
-                                                                <input type="text" id="mtxt_soc" name="txt_soc" disabled="disabled" value="@item.BUKRS" />
-                                                                <label for="mtxt_soc">Sociedad</label>
-                                                            </div>
-                                                            <div class="input-field col s6">
-                                                                <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.LAND" />
-                                                                <label for="mtxt_pai">País</label>
-                                                            </div>
-
-                                                            <div id="q">
-                                                                @foreach (var input in dah.DET_AGENTEP)
-                                                                {
-                                                                    <div class="input-field col s6">
-                                                                        <input type="text" value="@input.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@input.PUESTOA_ID" />
-                                                                        <label for="@item.BUKRS-@item.LAND-@input.PUESTOA_ID">@input.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
-                                                                    </div>
-                                                                    <script>
-                                                                    auto("#" + "@item.BUKRS-@item.LAND-@input.PUESTOA_ID").autocomplete({
-                                                                        source: function (request, response) {
-                                                                            auto.ajax({
-                                                                                url: "../../Listas/UsuariosPuesto",
-                                                                                type: "GET",
-                                                                                dataType: "json",
-                                                                                data: { puesto: '@input.PUESTOA_ID', Prefix: request.term },
-                                                                                success: function (data) {
-                                                                                    response($.map(data, function (item) {
-                                                                                        return { label: item.ID, value: item.ID };
-                                                                                    }))
-                                                                                },
-                                                                                error: function (data) {
-                                                                                    alert("error");
-                                                                                }
-                                                                            })
-                                                                        },
-                                                                        messages: {
-                                                                            noResults: '',
-                                                                            results: function (resultsCount) { }
-                                                                        },
-                                                                        change: function (e, ui) {
-                                                                            if (!(ui.item)) {
-                                                                                e.target.value = "";
-                                                                                   document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
-                                                                            }
-
-                                                                                for (var i = 1; i <= @input.PUESTOA_ID; i++) {
-                                                                                    try {
-                                                                                        var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
-                                                                                if (value != "") {
-                                                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat";
-                                                                                } else {
-                                                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat disabled";
-                                                                                    break;
-                                                                                        }
-                                                                                    } catch
-                                                                                    { }
-                                                                            }
-                                                                        },
-                                                                        autoFocus: true,
-                                                                        minLength: 1
-                                                                    });
-
-                                                                    </script>
-                                                                }
-
-                                                                @if (dta != null)
-                                                                {
-                                                                    <div class="input-field col s6">
-                                                                        <input type="text" value="@dta.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" />
-                                                                        <label for="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID">@dta.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
-                                                                    </div>
-                                                                    <script>
-                                                                    auto("#" + "@item.BUKRS-@item.LAND-@dta.PUESTOA_ID").autocomplete({
-                                                                        source: function (request, response) {
-                                                                            auto.ajax({
-                                                                                url: "../../Listas/UsuariosPuesto",
-                                                                                type: "GET",
-                                                                                dataType: "json",
-                                                                                data: { puesto: '@dta.PUESTOA_ID', Prefix: request.term },
-                                                                                success: function (data) {
-                                                                                    response($.map(data, function (item) {
-                                                                                        return { label: item.ID, value: item.ID };
-                                                                                    }))
-                                                                                },
-                                                                                error: function (data) {
-                                                                                    alert("error");
-                                                                                }
-                                                                            })
-                                                                        },
-                                                                        messages: {
-                                                                            noResults: '',
-                                                                            results: function (resultsCount) { }
-                                                                        },
-                                                                        change: function (e, ui) {
-                                                                            if (!(ui.item)) {
-                                                                                e.target.value = "";
-                                                                                   document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
-                                                                            }
-
-                                                                                for (var i = 1; i <= @dta.PUESTOA_ID; i++) {
-                                                                                    try {
-                                                                                        var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
-                                                                                if (value != "") {
-                                                                                    document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat";
-                                                                                } else {
-                                                                                    document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
-                                                                                    break;
-                                                                                        }
-                                                                                    } catch
-                                                                                    { }
-                                                                            }
-                                                                        },
-                                                                        autoFocus: true,
-                                                                        minLength: 1
-                                                                    });
-
-                                                                    </script>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <input type="submit" class="modal-action modal-close btn-flat" value="Guardar" id="@item.BUKRS-@item.LAND-btn_submit2" />
+                                        <div id="@item.PAIS_ID@item.KUNNR" class="modal modal-fixed-footer left-align">
+                                            <div class="modal-content">
+                                                <h4>Modificar flujo</h4>
+                                                <div class="row">
+                                                    @Html.HiddenFor(model => model.ID)
+                                                    @*@Html.HiddenFor(model => model.PUESTO_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_puestoid" })*@
+                                                    @*@Html.HiddenFor(itemm => item.PAIS_ID, new { @id = item.BUKRS + "-" + item.LAND + "-txt_soc" })*@
+                                                    @Html.HiddenFor(itemm => item.PAIS_ID, new { @id = item.PAIS_ID + "-" + item.KUNNR + "-txt_pai" })
+                                                    @Html.HiddenFor(itemm => item.VKORG, new { @id = item.PAIS_ID + "-" + item.KUNNR + "-txt_vko" })
+                                                    @Html.HiddenFor(itemm => item.VTWEG, new { @id = item.PAIS_ID + "-" + item.KUNNR + "-txt_vtw" })
+                                                    @Html.HiddenFor(itemm => item.SPART, new { @id = item.PAIS_ID + "-" + item.KUNNR + "-txt_spa" })
+                                                    @Html.HiddenFor(itemm => item.KUNNR, new { @id = item.PAIS_ID + "-" + item.KUNNR + "-txt_kun" })
+                                                    @*<input type="hidden" value="@dah.AGROUP_ID" name="txt_agroup" />*@
+                                                    <div class="input-field col s6">
+                                                        <select id="@item.PAIS_ID-@item.KUNNR-txt_rol" name="@item.PAIS_ID-@item.KUNNR-txt_rol" required="required">
+                                                            @foreach (var itemm in ViewBag.ROLES)
+                                                            {
+                                                                <option value="@itemm.ROL_ID">@itemm.TXT50</option>
+                                                                break;
+                                                            }
+                                                        </select>
+                                                        <label for="txt_rol">Rol</label>
                                                     </div>
                                                 </div>
+                                                <script>
+                                                    var elem2 = document.getElementById('@item.PAIS_ID-@item.KUNNR-txt_rol');
+                                                    var instance2 = M.Select.init(elem2, []);
+                                                </script>
+                                                <div class="col s12" id="div_crea">
+                                                    <div class="row">
+                                                        <div class="input-field col s6">
+                                                            <input type="text" id="mtxt_pai" name="txt_pai" disabled="disabled" value="@item.PAI.LANDX" />
+                                                            <label for="mtxt_pai">País</label>
+                                                        </div>
+                                                        <div class="input-field col s6">
+                                                            <input type="text" id="mtxt_kun" name="txt_soc" disabled="disabled" value="@item.KUNNR" />
+                                                            <label for="mtxt_kun">Cliente</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div id="q">
+
+                                                            @{
+                                                                int poss = Model.DET_AGENTEC.Where(a => a.KUNNR.Equals(item.KUNNR) & a.POS != 99).OrderByDescending(a => a.POS).FirstOrDefault().POS;
+                                                                foreach (var input in Model.DET_AGENTEC.Where(a => a.KUNNR.Equals(item.KUNNR)).ToList())
+                                                                {
+                                                                    <div class="row">
+                                                                        <div class="input-field col s4">
+                                                                            <input type="text" value="@input.USUARIOA_ID" name="@item.PAIS_ID-@item.KUNNR-@input.POS" id="@item.PAIS_ID-@item.KUNNR-@input.POS" />
+                                                                            <label for="@item.PAIS_ID-@item.KUNNR-@input.POS">@input.USUARIO1.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
+                                                                        </div>
+                                                                        @if (input.POS != 99 & input.POS != poss)
+                                                                        {
+                                                                            if (!input.PRESUPUESTO)
+                                                                            {
+                                                                                <div class="col s2">
+                                                                                    <label>Presupuesto</label>
+                                                                                    <div class="switch">
+                                                                                        <label>
+                                                                                            <input type="checkbox" id="@item.PAIS_ID-@item.KUNNR-@input.POS-presup" name="@item.PAIS_ID-@item.KUNNR-@input.POS-presup">
+                                                                                            <span class="lever"></span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div class="col s2">
+                                                                                    <label>Presupuesto</label>
+                                                                                    <div class="switch">
+                                                                                        <label>
+                                                                                            <input checked="checked" type="checkbox" id="@item.PAIS_ID-@item.KUNNR-@input.POS-presup" name="@item.PAIS_ID-@item.KUNNR-@input.POS-presup">
+                                                                                            <span class="lever"></span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                            if (input.MONTO != null)
+                                                                            {
+                                                                                <div class="col s1">
+                                                                                    <label>Monto</label>
+                                                                                    <div class="switch">
+                                                                                        <label>
+                                                                                            <input onchange="cambiaMonto(this.id)" checked="checked" type="checkbox" id="@item.PAIS_ID-@item.KUNNR-@input.POS-IsMonto" name="@item.PAIS_ID-@item.KUNNR-@input.POS-IsMonto">
+                                                                                            <span class="lever"></span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="input-field col s4" id="@item.PAIS_ID-@item.KUNNR-@input.POS-montoDiv">
+                                                                                    <input type="text" value="@input.MONTO" name="@item.PAIS_ID-@item.KUNNR-@input.POS-monto" id="@item.PAIS_ID-@item.KUNNR-@input.POS-monto" />
+                                                                                    <label for="@item.PAIS_ID-@item.KUNNR-@input.POS-monto">Monto</label>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+
+                                                                                <div class="col s1">
+                                                                                    <label>Monto</label>
+                                                                                    <div class="switch">
+                                                                                        <label>
+                                                                                            <input onchange="cambiaMonto(this.id)" type="checkbox" id="@item.PAIS_ID-@item.KUNNR-@input.POS-IsMonto" name="@item.PAIS_ID-@item.KUNNR-@input.POS-IsMonto">
+                                                                                            <span class="lever"></span>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="input-field col s4 hide" id="@item.PAIS_ID-@item.KUNNR-@input.POS-montoDiv">
+                                                                                    <input type="text" value="@input.MONTO" name="@item.PAIS_ID-@item.KUNNR-@input.POS-monto" id="@item.PAIS_ID-@item.KUNNR-@input.POS-monto" />
+                                                                                    <label for="@item.PAIS_ID-@item.KUNNR-@input.POS-monto">Monto</label>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                    <script>
+                                    auto("#" + "@item.PAIS_ID-@item.KUNNR-@input.POS").autocomplete({
+                                                                source: function (request, response) {
+                                                                        auto.ajax({
+                                                                        url: "../../Listas/UsuariosPuesto",
+                                                type: "GET",
+                                                dataType: "json",
+                                                data: { puesto: '2', Prefix: request.term },
+                                                success: function (data) {
+                                                                                response($.map(data, function (item) {
+                                                                                    return { label: item.ID, value: item.ID };
+                                                                                }))
+                                                },
+                                                error: function (data) {
+                                                                                alert("error");
+                                                                            }
+                                                                        })
+                                        },
+                                        messages: {
+                                                                    noResults: '',
+                                            results: function (resultsCount) { }
+                                                                    },
+                                        change: function (e, ui) {
+                                                                        if (!(ui.item)) {
+                                                                            e.target.value = "";
+                                                                            document.getElementById("@item.PAIS_ID-@item.KUNNR-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                        }
+
+                                                                        for (var i = 1; i <= 2 @*@input.PUESTOA_ID*@; i++) {
+                                                    try {
+                                                        var value = document.getElementById("@item.PAIS_ID-@item.KUNNR-" + i).value;
+                                                if (value != "") {
+                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat";
+                                                } else {
+                                                    document.getElementById("btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                    break;
+                                                        }
+                                                    } catch
+                                                    { }
                                             }
-                                        </td>
-                                    </tr>
-                                }
-                            }
+                                        },
+                                        autoFocus: true,
+                                        minLength: 1
+                                    });
+
+                                                                    </script>
+                                                                    <script>
+                                                                        function cambiaMonto(id) {
+                                                                            var campo = document.getElementById(id);
+                                                                            var i = "" + id;
+                                                                            var ids = i.split('-');
+                                                                            var prin = ids[0] + "-" + ids[1] + "-" + ids[2] + "-montoDiv";
+                                                                            if (campo.checked) {
+                                                                                document.getElementById(prin).classList.remove("hide");
+                                                                            } else {
+                                                                                document.getElementById(prin).classList.add("hide");
+                                                                            }
+                                                                        }
+                                                                    </script>
+                                                                }
+                                                            }
+
+                                                            @*@if (dta != null)
+                                                                                    {
+                                                                                        <div class="input-field col s6">
+                                                                                            <input type="text" value="@dta.USUARIOA_ID" name="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" id="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID" />
+                                                                                            <label for="@item.BUKRS-@item.LAND-@dta.PUESTOA_ID">@dta.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
+                                                                                        </div>
+                                                                                        <script>
+                                                                auto("#" + "@item.BUKRS-@item.LAND-@dta.PUESTOA_ID").autocomplete({
+                                                                    source: function (request, response) {
+                                                                        auto.ajax({
+                                                                            url: "../../Listas/UsuariosPuesto",
+                                                                            type: "GET",
+                                                                            dataType: "json",
+                                                                            data: { puesto: '@dta.PUESTOA_ID', Prefix: request.term },
+                                                                            success: function (data) {
+                                                                                response($.map(data, function (item) {
+                                                                                    return { label: item.ID, value: item.ID };
+                                                                                }))
+                                                                            },
+                                                                            error: function (data) {
+                                                                                alert("error");
+                                                                            }
+                                                                        })
+                                                                    },
+                                                                    messages: {
+                                                                        noResults: '',
+                                                                        results: function (resultsCount) { }
+                                                                    },
+                                                                    change: function (e, ui) {
+                                                                        if (!(ui.item)) {
+                                                                            e.target.value = "";
+                                                                               document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                        }
+
+                                                                            for (var i = 1; i <= @dta.PUESTOA_ID; i++) {
+                                                                                try {
+                                                                                    var value = document.getElementById("@item.BUKRS-@item.LAND-" + i).value;
+                                                                            if (value != "") {
+                                                                                document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat";
+                                                                            } else {
+                                                                                document.getElementById("@item.BUKRS-@item.LAND-btn_submit2").className = "modal-action modal-close btn-flat disabled";
+                                                                                break;
+                                                                                    }
+                                                                                } catch
+                                                                                { }
+                                                                        }
+                                                                    },
+                                                                    autoFocus: true,
+                                                                    minLength: 1
+                                                                });
+
+                                                                                        </script>
+                                                                                    }*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input type="submit" class="modal-action modal-close btn-flat" value="Guardar" id="@item.PAIS_ID-@item.KUNNR-btn_submit2" />
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -294,33 +374,6 @@
             </div>
         </div>
     </div>
-    @*<div class="col l6 s12">
-            <div class="card-panel">
-                <div class="row">
-                    <h5>Roles</h5>
-                    <div class="col s12">
-                        <table class="table">
-                            <thead><tr><th>Rol</th></tr></thead>
-                            <tbody>
-                                @foreach (var item in Model.MIEMBROS)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.ROL.ROLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 right-align">
-                        <a class="btn modal-trigger" href="#modal1">Agregar</a>
-                    </div>
-                </div>
-            </div>
-        </div>*@
 </div>
 
 @using (Html.BeginForm("AgregarRol", "Usuarios"))

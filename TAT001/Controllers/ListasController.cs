@@ -155,7 +155,8 @@ namespace TAT001.Controllers
             TAT001Entities db = new TAT001Entities();
             int p = Int16.Parse(puesto);
             var c = (from N in db.USUARIOs
-                     where N.PUESTO_ID == p & N.ID.Contains(Prefix)
+                     where //N.PUESTO_ID == p & 
+                     N.ID.Contains(Prefix)
                      //where N.BUKRS.Equals(bukrs) 
                      select new { N.ID });
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);

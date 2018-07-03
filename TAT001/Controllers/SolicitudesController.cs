@@ -1094,7 +1094,7 @@ namespace TAT001.Controllers
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat)
         {
 
-            bool prueba = true;
+            bool prueba = false;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";

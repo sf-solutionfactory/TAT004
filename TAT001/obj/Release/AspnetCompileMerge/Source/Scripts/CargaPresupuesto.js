@@ -77,11 +77,12 @@ $(document).ready(function () {
             //scrollY: "70vh",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/@Session["spras"].ToString()"+ ".json"
             },
             columnDefs: [
                 {

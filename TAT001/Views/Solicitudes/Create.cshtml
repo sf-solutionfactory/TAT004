@@ -139,7 +139,15 @@
         <a href="@Url.Action(" Index", "Home" )" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
             {*@
-        <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
+        <a id="btn_guardarh" class="btn btn-small disabled" onclick="guardah()">Guardar</a>
+        <script>
+            function guardah() {
+                //alert("uno")
+                M.toast({ html: "Guardando" })
+                document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
+                document.getElementById("btn_guardarh").classList.add("disabled");//RSG 26.04.2018
+            }
+        </script>
         @*}*@
     </div>
     <div class="div_bottom">
@@ -910,8 +918,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                              ;
+                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;

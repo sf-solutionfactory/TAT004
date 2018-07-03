@@ -836,9 +836,17 @@
         formatCat();
     });
 
+    /**
+       * Delay for a number of milliseconds
+       */
+    function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+    }
 
     $('#btn_guardarh').on("click", function (e) {
-        document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
+        document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
+        sleep(5000);
         var msg = 'Verificar valores en los campos de ';
         var res = true;
         //Evaluar TabInfo values
@@ -3948,6 +3956,7 @@ function asignCity(valu) {
 
 function selectCliente(valu) {
     if (valu != "") {
+        document.getElementById("loader").style.display = "flex";//RSG 03.07.2018
         $.ajax({
             type: "POST",
             url: 'SelectCliente',
@@ -3997,6 +4006,7 @@ function selectCliente(valu) {
                     $("label[for='payer_email']").removeClass("active");
                 }
 
+                //document.getElementById("loader").style.display = "none";//RSG 03.07.2018
             },
             error: function (data) {
                 $('#cli_name').val("");
@@ -4013,6 +4023,7 @@ function selectCliente(valu) {
                 $("label[for='payer_nombre']").removeClass("active");
                 $('#payer_email').val("");
                 $("label[for='payer_email']").removeClass("active");
+                //document.getElementById("loader").style.display = "none";//RSG 03.07.2018
             },
             async: false
         });

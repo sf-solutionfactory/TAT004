@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿//$(document).ready(function () {
+function jsConsulta(idioma) {
     var arrFiltr = ['canalFltr', 'totCanFltr', 'bannerFltr', 'totBannerFltr', 'periodoFltr', 'VVX17Fltr', 'CSHDCFltr', 'RECUNFltr', 'DSTRBFltr', 'OTHTAFltr', 'ADVERFltr', 'CORPMFltr', 'POPFltr', 'PMVARFltr', 'CONPRFltr', 'RSRDVFltr', 'SPAFltr', 'FREEGFltr', 'ALLBFltr', 'ALLFFltr', 'PROCESOFltr', 'consumidoFltr', 'disponibleFltr'];
     var ids = ['id']
 
@@ -11,11 +12,12 @@
             dom: "Bfrtip",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/" + idioma + ".json"
             },
             "fixedHeader": {
                 header: true,
@@ -388,4 +390,5 @@
     //'width': '350px'});//porque no se deja de otra forma
     $('td').css('text-align', 'center');
 
-});
+//});
+}

@@ -836,9 +836,18 @@
         formatCat();
     });
 
+    /**
+       * Delay for a number of milliseconds
+       */
+    function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+    }
 
     $('#btn_guardarh').on("click", function (e) {
-        document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
+        //M.toast({ html: "Guardando" })
+        //document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
+        sleep(5000);
         var msg = 'Verificar valores en los campos de ';
         var res = true;
         //Evaluar TabInfo values
@@ -915,6 +924,7 @@
             copiarSopTableControl(); //Soporte ahora en información
             enviaRec();//RSG 28.05.2018
             //Termina provisional
+            document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
             $('#btn_guardar').click();
         } else {
             M.toast({ html: msg })
@@ -3948,6 +3958,7 @@ function asignCity(valu) {
 
 function selectCliente(valu) {
     if (valu != "") {
+        document.getElementById("loader").style.display = "flex";//RSG 03.07.2018
         $.ajax({
             type: "POST",
             url: 'SelectCliente',
@@ -3997,6 +4008,7 @@ function selectCliente(valu) {
                     $("label[for='payer_email']").removeClass("active");
                 }
 
+                document.getElementById("loader").style.display = "none";//RSG 03.07.2018
             },
             error: function (data) {
                 $('#cli_name').val("");
@@ -4013,8 +4025,9 @@ function selectCliente(valu) {
                 $("label[for='payer_nombre']").removeClass("active");
                 $('#payer_email').val("");
                 $("label[for='payer_email']").removeClass("active");
+                document.getElementById("loader").style.display = "none";//RSG 03.07.2018
             },
-            async: false
+            async: true
         });
     } else {
         $('#cli_name').val("");
@@ -4036,7 +4049,7 @@ function selectCliente(valu) {
 }
 
 function getCatMateriales(vkorg, vtweg, spart, kunnr) {
-    document.getElementById("loader").style.display = "initial";
+    //document.getElementById("loader").style.display = "initial";
     var soc = document.getElementById("sociedad_id").value;
     $('#catmat').val("");
     $.ajax({
@@ -4048,13 +4061,13 @@ function getCatMateriales(vkorg, vtweg, spart, kunnr) {
             if (data !== null || data !== "") {
                 $('#catmat').val(JSON.stringify(data));
             }
-            document.getElementById("loader").style.display = "none";
+            //document.getElementById("loader").style.display = "none";
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
-            document.getElementById("loader").style.display = "none";
+            //document.getElementById("loader").style.display = "none";
         },
-        async: false
+        async: true
     });
 }
 

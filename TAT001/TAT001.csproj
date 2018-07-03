@@ -1055,6 +1055,7 @@
     <Content Include="Views\Taxeop\Delete.cshtml" />
     <Content Include="Views\Taxeop\Details.cshtml" />
     <Content Include="Views\Taxeop\Edit.cshtml" />
+    <Content Include="Views\Usuarios\Details1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
