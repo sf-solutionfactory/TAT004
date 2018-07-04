@@ -496,10 +496,17 @@ namespace TAT001.Controllers
             if (jd.Count > 0)
             {
                 MATERIALGPT c = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
-                MATERIALGPT cc = new MATERIALGPT();
-                cc.SPRAS_ID = c.SPRAS_ID;
-                cc.MATERIALGP_ID = c.MATERIALGP_ID;
-                cc.TXT50 = c.TXT50;
+                MATERIALGPT cc = new MATERIALGPT();//B20180625 MGC 2018.07.02
+                if (c != null)//B20180625 MGC 2018.07.02
+                {                
+                    cc.SPRAS_ID = c.SPRAS_ID;       
+                    cc.TXT50 = c.TXT50;
+                    
+                }
+                else
+                {
+                    cc.MATERIALGP_ID = "000";
+                }
                 list.Add(cc);
             }
             foreach (var line in jd)

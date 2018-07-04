@@ -2,6 +2,9 @@
 var monedafinanciera = true;
 var negdistribucion = true;
 var disdistribucion = true;
+var interval; //B20180625 MGC 2018.07.04
+var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
+//var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
 
 $(document).ready(function () {
 
@@ -573,7 +576,6 @@ $(document).ready(function () {
     });
 
     $('#tab_soporte').on("click", function (e) {
-
         evalTempTab(false, e);
 
     });
@@ -628,7 +630,6 @@ $(document).ready(function () {
     });
 
     $('#tab_fin').on("click", function (e) {
-
         var res = evalDistribucionTab(true, e);
         if (res) {
 
@@ -667,7 +668,8 @@ $(document).ready(function () {
             }
 
             //Emular un focus out para actualizar los campos
-            $('#monto_doc_md').focusout();
+            $('#monto_doc_md').focusout();//B20180625 MGC 2018.07.02
+            //focusoutmonto("");//B20180625 MGC 2018.07.02
 
             $("label[for='monto_doc_md']").addClass("active");
 
@@ -918,9 +920,9 @@ $(document).ready(function () {
             $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
      
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-            copiarTableControl();//Distribución
-            copiarSopTableControl(); //Soporte ahora en información
-            enviaRec();//RSG 28.05.2018
+            copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
+            copiarSopTableControl(""); //Soporte ahora en información //B20180625 MGC 2018.07.03
+            enviaRec("");//RSG 28.05.2018 //B20180625 MGC 2018.07.03
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -1000,8 +1002,8 @@ $(document).ready(function () {
                 $('#monto_doc_md').val(0);
             }
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-            copiarTableControl();//Distribución
-            copiarSopTableControl(); //Soporte ahora en información
+            copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
+            copiarSopTableControl(""); //Soporte ahora en información //B20180625 MGC 2018.07.03
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -1013,63 +1015,65 @@ $(document).ready(function () {
 
     //B20180621 MGC2 2018.06.21
     $('#btn_borradorh').on("click", function (e) {
-        
-        //loadFilesf();
-        //Provisional
-        var tipo_cambio = $('#tipo_cambio').val();
-        //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-        var iNum = parseFloat(tipo_cambio.replace(',', ''));
+        document.getElementById("loader").style.display = "initial";
+        guardarBorrador(false);
+        document.getElementById("loader").style.display = "none";
+        ////loadFilesf();
+        ////Provisional
+        //var tipo_cambio = $('#tipo_cambio').val();
+        ////var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+        //var iNum = parseFloat(tipo_cambio.replace(',', ''));
 
-        if (iNum > 0) {
-            //var num = "" + iNum;
-            //num = num.replace('.', ',');
-            //var numexp = num;//* 60000000000;
-            //$('#tipo_cambio').val(numexp);
-        } else {
-            $('#tipo_cambio').val(0);
-        }
-        var tipo_cambio = $('#monto_doc_ml2').val();
-        //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-        var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
-        //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
-        if (iNum2 > 0) {
-            //var nums = "" + iNum2;
-            //nums = nums.replace('.', ',');
-            //var numexp2 = nums;// * 60000000000;
-            //$('#monto_doc_ml2').val(numexp2);
-        } else {
-            $('#monto_doc_ml2').val(0);
-        }
+        //if (iNum > 0) {
+        //    //var num = "" + iNum;
+        //    //num = num.replace('.', ',');
+        //    //var numexp = num;//* 60000000000;
+        //    //$('#tipo_cambio').val(numexp);
+        //} else {
+        //    $('#tipo_cambio').val(0);
+        //}
+        //var tipo_cambio = $('#monto_doc_ml2').val();
+        ////var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+        //var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+        ////var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
+        //if (iNum2 > 0) {
+        //    //var nums = "" + iNum2;
+        //    //nums = nums.replace('.', ',');
+        //    //var numexp2 = nums;// * 60000000000;
+        //    //$('#monto_doc_ml2').val(numexp2);
+        //} else {
+        //    $('#monto_doc_ml2').val(0);
+        //}
 
-        //Monto
-        var monto = $('#monto_dis').val();
-        //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
-        var numm = parseFloat(monto.replace(',', ''));
-        if (numm > 0) {
-            $('#MONTO_DOC_MD').val(numm);
-        } else {
-            $('#MONTO_DOC_MD').val(0);
-            $('#monto_doc_md').val(0);
-        }
+        ////Monto
+        //var monto = $('#monto_dis').val();
+        ////var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+        //var numm = parseFloat(monto.replace(',', ''));
+        //if (numm > 0) {
+        //    $('#MONTO_DOC_MD').val(numm);
+        //} else {
+        //    $('#MONTO_DOC_MD').val(0);
+        //    $('#monto_doc_md').val(0);
+        //}
 
-        $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
-        $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+        //$('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+        //$('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
-        //Guardar los valores de la tabla en el modelo para enviarlos al controlador
-        copiarTableControl();//Distribución
-        copiarSopTableControl(); //Soporte ahora en información
-        enviaRec();//RSG 28.05.2018
+        ////Guardar los valores de la tabla en el modelo para enviarlos al controlador
+        //copiarTableControl();//Distribución
+        //copiarSopTableControl(); //Soporte ahora en información
+        //enviaRec();//RSG 28.05.2018
 
-        //B20180625 MGC 2018.06.28
-        //Moneda en distribución
-        var moneda_dis = $('#monedadis_id').val();
-        $('#moneda_dis').val("");
-        $('#moneda_dis').val(moneda_dis);
-        $('#moneda_dis').prop('disabled', false);
+        ////B20180625 MGC 2018.06.28
+        ////Moneda en distribución
+        //var moneda_dis = $('#monedadis_id').val();
+        //$('#moneda_dis').val("");
+        //$('#moneda_dis').val(moneda_dis);
+        //$('#moneda_dis').prop('disabled', false);
 
-        //Enviar el parametro al controlador para tratarlo como borrador
-        $('#borrador_param').val("borrador");
-        $('#btn_guardar').click();
+        ////Enviar el parametro al controlador para tratarlo como borrador
+        //$('#borrador_param').val("borrador");
+        //$('#btn_guardar').click();
 
     });
 
@@ -1115,6 +1119,15 @@ $(window).on('load', function () {
     var sneg = $('#select_negi').val();
     var sdis = $('#select_disi').val();
 
+    //B20180625 MGC 2018.07.04 si están vacios inicializarlos en M y M
+    if (sneg == "") {
+        sneg = "M";
+        $('#select_negi').val(sneg);
+    }
+    if (sdis == "") {
+        sdis = "M"
+        $('#select_disi').val(sdis);
+    }
     if (sneg != "") {
 
         //$("#select_neg").val(sneg);
@@ -1186,7 +1199,7 @@ $(window).on('load', function () {
     //Valores en información antes soporte
     copiarTableVistaSop();
     //Valores en  distribución    
-    copiarTableVista("");
+    copiarTableVista("", borr); //B20180625 MGC 2018.07.02
 
     updateFooter();
     //Pasar el total de la tabla al total en monto
@@ -1207,6 +1220,8 @@ $(window).on('load', function () {
         $('#bmonto_apoyo').val(bmonto_apoyo);
         $('#bmonto_apoyo').trigger("focusout");
     }
+
+    var tipocambio = $('#tipo_cambio').val();//B20180625 MGC 2018.07.02
 
     //B20180625 MGC 2018.06.28
     var moneda_dis = $('#moneda_dis').val();
@@ -1264,9 +1279,184 @@ $(window).on('load', function () {
         var optionsdpc = [];
         var instancesc = M.Select.init(elemdpc, optionsdpc);
     }
+    var mt = parseFloat(tipocambio.replace(',', '.')) //B20180625 MGC 2018.07.02
+    if (mt > 0) { //B20180625 MGC 2018.07.02
+        $('#tipo_cambio').val(mt); //B20180625 MGC 2018.07.02
+    }
 
 });
 
+//B20180625 MGC 2018.07.04 para el auto-guardado del borrador
+$(document).on('mousemove keyup keypress', function () {
+    clearTimeout(interval);//clear it as soon as any event occurs
+    //do any process and then call the function again
+    settimeout();//call it again
+})
+
+function settimeout() {
+    //Aplicar nada más si el boton de borrador existe
+    if ($("#btn_borradorh").length) {
+        interval = setTimeout(function () {
+            actiontime();
+        }, borradorinac)
+    }
+}
+
+function actiontime() {
+    guardarBorrador(true);
+}
+//B20180625 MGC 2018.07.03
+function guardarBorrador(asyncv) {
+
+    //Antigúo borrador
+    //loadFilesf();
+    //Provisional
+    var tipo_cambio = $('#tipo_cambio').val();
+    //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+    var iNum = parseFloat(tipo_cambio.replace(',', ''));
+
+    if (iNum > 0) {
+        //var num = "" + iNum;
+        //num = num.replace('.', ',');
+        //var numexp = num;//* 60000000000;
+        //$('#tipo_cambio').val(numexp);
+    } else {
+        $('#tipo_cambio').val(0);
+    }
+    var tipo_cambio = $('#monto_doc_ml2').val();
+    //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+    var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+    //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
+    if (iNum2 > 0) {
+        //var nums = "" + iNum2;
+        //nums = nums.replace('.', ',');
+        //var numexp2 = nums;// * 60000000000;
+        //$('#monto_doc_ml2').val(numexp2);
+    } else {
+        $('#monto_doc_ml2').val(0);
+    }
+
+    //Monto
+    var monto = $('#monto_dis').val();
+    //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
+    var numm = parseFloat(monto.replace(',', ''));
+    if (numm > 0) {
+        $('#MONTO_DOC_MD').val(numm);
+    } else {
+        $('#MONTO_DOC_MD').val(0);
+        $('#monto_doc_md').val(0);
+    }
+
+    $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+    $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+
+    //Guardar los valores de la tabla en el modelo para enviarlos al controlador
+    copiarTableControl("X");//Distribución //B20180625 MGC 2018.07.03
+    copiarSopTableControl("X"); //Soporte ahora en información //B20180625 MGC 2018.07.03
+    enviaRec("X");//RSG 28.05.2018 //B20180625 MGC 2018.07.03
+
+    //B20180625 MGC 2018.06.28
+    //Moneda en distribución
+    var moneda_dis = $('#monedadis_id').val();
+    $('#moneda_dis').val("");
+    $('#moneda_dis').val(moneda_dis);
+    $('#moneda_dis').prop('disabled', false);
+
+    //Enviar el parametro al controlador para tratarlo como borrador
+    $('#borrador_param').val("borrador");
+
+    //Obtener los parametros para enviar
+    var form = $("#formCreate");
+
+    var notas_soporte = $('#notas_soporte').val();
+    var unafact = $('#check_facturas').val();
+    var select_neg = $('#select_neg').val();
+    var select_dis = $('#select_dis').val();
+    var select_negi = $('#select_negi').val();
+    var select_disi = $('#select_disi').val();
+    var bmonto_apoyo = $('#bmonto_apoyo').val();
+    var monedadis = $('#moneda_dis').val();
+
+    //Complemento mensaje
+    var comp = "";
+
+    if (asyncv == true) {
+        comp = "(Autoguardado)";
+    }
+
+    $.ajax({
+        type: "POST",
+        url: 'Borrador',
+        dataType: "json",
+        data: form.serialize() + "&notas_soporte = " + notas_soporte + "&unafact = " + unafact +"&select_neg = " + select_neg +"&select_dis = " + select_dis +
+            "&select_negi = " + select_negi +"&select_disi = " + select_disi +"&bmonto_apoyo = " + bmonto_apoyo +"&monedadis = " + monedadis,
+        //data: {
+        //    object: form.serialize(), "notas_soporte": notas_soporte, "unafact": unafact, "select_neg": select_neg, "select_dis": select_dis,
+        //    "select_negi": select_negi, "select_disi": select_disi, "bmonto_apoyo": bmonto_apoyo, "monedadis": monedadis},
+        success: function (data) {
+
+            if (data !== null || data !== "") {
+                if (data == true) {
+                    M.toast({ html: "Borrador Guardado " + comp});
+                } else {
+                    M.toast({ html: "No se guardo el borrador" + comp});
+                }
+            }
+
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: "No se guardo el borrador" + comp});
+        },
+        async: asyncv
+    });
+}
+
+//B20180625 MGC 2018.07.02
+function focusoutmonto(directo) {
+    if (directo == "X") {
+        $('#monto_doc_md').focusout();
+    } else {
+
+        var monto_doc_md = $('#monto_doc_md').val();
+        var is_num = $.isNumeric(monto_doc_md);
+        var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        if (mt > 0 & is_num == true) {
+            //Obtener la moneda en la lista
+            //var MONEDA_ID = $('#moneda_id').val();
+            $('#monto_doc_md').val(mt);
+
+            //selectTcambio(MONEDA_ID, mt);
+            var tipo_cambio = $('#tipo_cambio').val();
+            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //Validar el monto en tipo de cambio
+            var is_num2 = $.isNumeric(tipo_cambio);
+            if (tc > 0 & is_num2 == true) {
+                $('#tipo_cambio').val(tc);
+                var monto = mt / tc;
+                monto = parseFloat(monto).toFixed(2);
+                $('#monto_doc_ml2').val(monto);
+                $('#montos_doc_ml2').val(monto);
+                $("label[for='montos_doc_ml2']").addClass("active");
+            } else {
+                $('#monto_doc_ml2').val(monto);
+                $('#montos_doc_ml2').val(monto);
+                $("label[for='montos_doc_ml2']").addClass("active");
+                var msg = 'Tipo de cambio incorrecto';
+                M.toast({ html: msg });
+                e.preventDefault();
+            }
+
+        } else {
+            $('#monto_doc_ml2').val(monto_doc_md);
+            $('#montos_doc_ml2').val(monto_doc_md);
+            $("label[for='montos_doc_ml2']").addClass("active");
+            var msg = 'Monto incorrecto';
+            M.toast({ html: msg });
+            e.preventDefault();
+        }
+
+    }
+}
 function formatDate(val) {
     var vdate = "";
     try {
@@ -1321,7 +1511,7 @@ function formatDatef(vdate) {
     return d;
 }
 
-function copiarTableVista(update) {
+function copiarTableVista(update, borr) {
 
     var lengthT = $("table#table_dish tbody tr").length;
 
@@ -1465,12 +1655,21 @@ function copiarTableVista(update) {
                 if (neg == "M") {
                     addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, total, relacionada, reversa, "", "");
                 } else if (neg == "P") {
-                    var porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
-                    addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, "", relacionada, reversa, porcentaje_cat, "pc");
-                    $(".pc").prop('disabled', true);
-                    $('.pc').trigger('click');
-                    //Actualizar la tabla con los porcentajes
-                    updateTableCat();
+                    //Verifcar si la categoría se encuentra aún vigente en el borrador //B20180625 MGC 2018.07.02
+                    var agregar = true;
+                    if (borr == "true" | borr == "error") {
+                        agregar = catPresupuesto(matkl_id);
+                    }
+
+                    if (agregar) { //B20180625 MGC 2018.07.02
+                        var porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
+                        addedRow = addRowCat(t, matkl_id, $.trim(ddate[0]), $.trim(adate[0]), matkl, "", relacionada, reversa, porcentaje_cat, "pc");
+                        $(".pc").prop('disabled', true);
+                        $('.pc').trigger('click');
+                        //Actualizar la tabla con los porcentajes
+                        updateTableCat();
+
+                    }
                 }
             }
             //Quitar el row
@@ -1651,7 +1850,7 @@ function copiarTableVistaSop() {
     //selectTsol(sol);
 }
 
-function copiarTableControl() {
+function copiarTableControl(borrador) { //B20180625 MGC 2018.07.03
 
     var lengthT = $("table#table_dis tbody tr[role='row']").length;
 
@@ -1732,9 +1931,9 @@ function copiarTableControl() {
             jsonObjDocs.push(item);
             i++;
             item = "";
-
-            $(this).addClass('selected');
-
+            if (borrador != "X") { //B20180625 MGC 2018.07.03
+                $(this).addClass('selected');
+            }
         });
 
         docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
@@ -1749,7 +1948,9 @@ function copiarTableControl() {
                 if (data !== null || data !== "") {
 
                     $("table#table_dish tbody").append(data);
-                    $('#delRow').click();
+                    if (borrador != "X") { //B20180625 MGC 2018.07.03
+                        $('#delRow').click();
+                    }
                 }
 
             },
@@ -1763,7 +1964,7 @@ function copiarTableControl() {
 }
 
 //Copiar la tabla de soporte a la de control ahora en información
-function copiarSopTableControl() {
+function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
 
     var lengthT = $("table#table_sop tbody tr[role='row']").length;
 
@@ -1835,7 +2036,9 @@ function copiarSopTableControl() {
 
             jsonObjDocs.push(item);
             item = "";
-            $(this).addClass('selected');
+            if (borrador != "X") { //B20180625 MGC 2018.07.03
+                $(this).addClass('selected');
+            }
 
         });
 
@@ -1851,7 +2054,9 @@ function copiarSopTableControl() {
 
                 if (data !== null || data !== "") {
                     var t = $('#table_sop').DataTable();
-                    t.rows('.selected').remove().draw(false);
+                    if (borrador != "X") { //B20180625 MGC 2018.07.03
+                        t.rows('.selected').remove().draw(false);
+                    }
                     $("table#table_soph tbody").append(data);
 
                 }
@@ -2424,6 +2629,31 @@ function GetCategoriasTableCat() {
 
     return categorias;
 
+}
+
+//B20180625 MGC 2018.07.02
+//Saber si la categoría que se agregará está en el presupuesto
+function catPresupuesto(catid) {
+    var vals = $('#catmat').val();
+    try {
+        var jsval = JSON.parse(vals);
+    } catch (error) {
+    }
+
+    var total = false;
+    try {
+        $.each(jsval, function (i, d) {
+
+            if (catid == d.ID) {
+                total = true;
+                return false;
+            }
+        }); //Fin de for
+    } catch (error) {
+
+    }
+
+    return total;
 }
 
 
@@ -4216,11 +4446,12 @@ function selectMoneda(valu) {
     $('#monedas_id').val("");
 
     if (valu != "") {
+        $('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
         var monto_doc_md = $('#monto_doc_md').val()
         var mt = parseFloat(monto_doc_md.replace(',', '.'))
         if (mt > 0) {
 
-            $('#monedas_id').val(valu);
+            //$('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
 
             $.ajax({
                 type: "POST",

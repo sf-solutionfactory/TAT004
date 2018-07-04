@@ -162,8 +162,8 @@
         </ul>
     </div>
 </div>
-
-@using (Html.BeginForm("Create", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@*//B20180625 MGC 2018.07.03*@
+@using (Html.BeginForm("Create", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data", id = "formCreate" }))
 {
     @Html.AntiForgeryToken()
 
@@ -906,8 +906,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                        ;
+                                                      archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                          ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1082,7 +1082,7 @@
                                 @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
                                 @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                 @*</div>
-        </div>*@
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -1249,7 +1249,7 @@
                                     @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
                                     @*</div>
-        </div>*@
+                                        </div>*@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-10">
