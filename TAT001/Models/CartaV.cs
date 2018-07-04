@@ -82,46 +82,40 @@ namespace TAT001.Models
         public string compromisoC { get; set; }
         public bool compromisoC_x { get; set; }
         public string moneda { get; set; }
-        //ENCABEZADO
-        public string material { get; set; }
-        public string categoria { get; set; }
-        public string descripcion { get; set; }
-        public string item { get; set; }
-        public bool item_x { get; set; }
-        public string costoun { get; set; }
-        public bool costoun_x { get; set; }
-        public string apoyo { get; set; }
-        public bool apoyo_x { get; set; }
-        public string apoyop { get; set; }
-        public bool apoyop_x { get; set; }
-        public string costoap { get; set; }
-        public bool costoap_x { get; set; }
-        public string precio { get; set; }
-        public bool precio_x { get; set; }
-        public string apoyoEst { get; set; }
-        public bool apoyoEst_x { get; set; }
-        public string apoyoRea { get; set; }
-        public bool apoyoRea_x { get; set; }
-        //DATOS PARA LA TABLA SECUNDARIA DOCUMENOREC
-        public bool secondTab_x { get; set; }
-        public int pos2 { get; set; }
-        public string tipoDoc { get; set; }
-        public string fechaF { get; set; }
-        public string montoR { get; set; }
-        public string porcentajeR { get; set; }
-        public string aplicado { get; set; }
-
-        //TABLA DE MATERIALES O CATEGORÍAS
-        [Key, Column(Order = 2)]
-
-        //ARMADO DE LA CABECERA DE CADA TABLA INDIVIDUAL
-        public List<string> listaFechas { get; set; }
-        public List<string> listaEncabezado { get; set; }
-        public int listaEncabezado2 { get; set; }
-        //ARMADO DEL CUERPO CADA TABLA INDIVIDUAL
-        public List<int> numfilasTabla { get; set; }
-        public int numfilasTabla2 { get; set; }
-        public List<string> listaCuerpo { get; set; }
-        public List<string> listaCuerpoRec { get; set; }
+        ///////////////////////////////////////////////DATOS PARA LA TABLA DE MATERIALES////////////////////////////////////////////////////////////
+        public List<string> listaFechas { get; set; }//RANGO DE FECHAS QUE DETERMINAN EL NUMERO DE TABLAS
+        public List<int> numfilasTabla { get; set; }//NUMERO FILAS POR TABLA CALCULADA
+        public List<string> listaCuerpo { get; set; }//NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE QUE POSTERIORMENTE ES DISTRIBUIDA EN LAS TABLAS
+        public List<string> numColEncabezado { get; set; }//NUMERO DE COLUMNAS PARA EL ENCABEZADO
+        public string material { get; set; }//TEXTO ENCABEZADO
+        public string categoria { get; set; }//TEXTO ENCABEZADO
+        public string descripcion { get; set; }//TEXTO ENCABEZADO
+        public string costoun { get; set; }//TEXTO ENCABEZADO
+        public bool costoun_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string apoyo { get; set; }//TEXTO ENCABEZADO
+        public bool apoyo_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string apoyop { get; set; }//TEXTO ENCABEZADO
+        public bool apoyop_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string costoap { get; set; }//TEXTO ENCABEZADO
+        public bool costoap_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string precio { get; set; }//TEXTO ENCABEZADO
+        public bool precio_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string apoyoEst { get; set; }//TEXTO ENCABEZADO
+        public bool apoyoEst_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string apoyoRea { get; set; }//TEXTO ENCABEZADO
+        public bool apoyoRea_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////DATOS PARA LA TABLA DE RECURRENCIAS DOCUMENTOREC///////////////////////////////////////////////
+        public List<string> numColEncabezado2 { get; set; }//NUMERO DE COLUMNAS PARA EL ENCABEZADO
+        public int numfilasTabla2 { get; set; }//NUMERO DE FILAS TOTAL DE LA TABLA
+        public List<string> listaCuerpoRec { get; set; }//NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE
+        public bool secondTab_x { get; set; }//PARA MOSTRAR O NO LA TABLA
+        public string tipoDoc { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string fechaF { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string montoR { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string porcentajeR { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string aplicado { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //[Key, Column(Order = 2)]
     }
 }

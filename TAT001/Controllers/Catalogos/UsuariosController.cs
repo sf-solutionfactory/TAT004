@@ -666,8 +666,9 @@ namespace TAT001.Controllers.Catalogos
                     dp.USUARIOA_ID = Request.Form[pais + "-" + kunnr + "-" + dp.POS].ToString();
                     try
                     {
+                        string isMonto = Request.Form[pais + "-" + kunnr + "-" + dp.POS + "-IsMonto"].ToString();
                         string monto = Request.Form[pais + "-" + kunnr + "-" + dp.POS + "-monto"].ToString();
-                        if(monto != "")
+                        if (monto != "")
                             dp.MONTO = decimal.Parse(monto);
                         else
                             dp.MONTO = null;

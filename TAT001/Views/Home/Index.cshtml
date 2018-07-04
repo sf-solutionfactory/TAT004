@@ -27,12 +27,12 @@
 <!--BOTONES-->
 <div class="row">
     <div class="col s12 right-align">
-        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id= "btn_create" })
+        @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id = "btn_create" })
         @using (Html.BeginForm("Descargar", "Home", FormMethod.Post, new { @style = "display:inline;" }))
         {
             <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
         }
-            @*@Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })*@
+        @*@Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })*@
     </div>
     <div class="col s12 right-align" style="margin-top:5px;">
 
@@ -41,9 +41,9 @@
 <!--MENSAJES-->
 <div>
     @if (ViewBag.NUM_DOC != null)
+    {
+        if (ViewBag.NUM_DOC != "")
         {
-            if (ViewBag.NUM_DOC != "")
-            {
             <script>
             $(document).ready(function () {
                     function docMessage(msg) {
@@ -63,10 +63,10 @@
         }
     }
     @if (TempData["docs_masiva"] != null)
+    {
+        List<string> aa = (List<string>)TempData["docs_masiva"];
+        foreach (var a in aa)
         {
-            List<string> aa = (List<string>)TempData["docs_masiva"];
-            foreach (var a in aa)
-            {
 
             <script>
             $(document).ready(function () {
@@ -85,6 +85,31 @@
             </script>
         }
         TempData["docs_masiva"] = null;
+    }
+
+    @if (Session["error"] != null)
+    {
+        if (Session["error"].ToString() != "")
+        {
+            string message = Session["error"].ToString();
+            Session["error"] = null;
+            <script>
+                $(document).ready(function () {
+                    function docMessage(msg) {
+                        M.toast({ html: msg });
+                    }
+
+                    /**/
+                    var message = '@message';
+                /**/
+
+                if (message != "") {
+                    docMessage(message);
+                }
+
+            });
+            </script>
+        }
     }
 </div>
 <!--TABLA-->
@@ -653,7 +678,6 @@
             .dataTables_scrollHeadInner, .mdl-data-table {
                 width: 100%;
             }
-
         </style>
     </div>
 </div>
