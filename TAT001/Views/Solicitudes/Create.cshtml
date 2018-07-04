@@ -139,7 +139,20 @@
         @if (ViewBag.relacionada == "")
         {
             <a id="btn_borradorh" class="btn btn-small">Borrador</a>@*Add MGC B20180619 2018.06.20*@
+
         }
+
+        @*//B20180625 MGC2 2018.07.04*@
+        @{string b = ViewBag.borradore + "";
+            string display = "none";
+            if (b == "true")
+            {
+                display = "inline-block";
+            }
+            <a id="btn_borradore" class="btn btn-small" style="display :@display">Descartar Borrador</a>@*//B20180625 MGC2 2018.07.04*@
+            <input type="text" id="borradore" name="borradore" value="@ViewBag.borradore" hidden /> @*//B20180625 MGC2 2018.07.04*@
+        }
+
         <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
         <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
     </div>

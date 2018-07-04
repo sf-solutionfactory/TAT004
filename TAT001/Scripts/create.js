@@ -923,6 +923,15 @@ $(document).ready(function () {
             copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
             copiarSopTableControl(""); //Soporte ahora en información //B20180625 MGC 2018.07.03
             enviaRec("");//RSG 28.05.2018 //B20180625 MGC 2018.07.03
+
+            //B20180625 MGC2 2018.07.04
+            //enviar borrador
+            var borrador = "false";
+            if ($("#borradore").length) {
+                borrador = $('#borradore').val();
+            }
+            $('#borrador_param').val(borrador);//B20180625 MGC2 2018.07.04
+
             //Termina provisional
             $('#btn_guardar').click();
         } else {
@@ -1075,6 +1084,13 @@ $(document).ready(function () {
         //$('#borrador_param').val("borrador");
         //$('#btn_guardar').click();
 
+    });
+
+    //B20180625 MGC2 2018.07.04
+    $('#btn_borradore').on("click", function (e) {
+        document.getElementById("loader").style.display = "initial";
+        eliminarBorrador(false);
+        document.getElementById("loader").style.display = "none";
     });
 
 });
@@ -1397,7 +1413,8 @@ function guardarBorrador(asyncv) {
 
             if (data !== null || data !== "") {
                 if (data == true) {
-                    M.toast({ html: "Borrador Guardado " + comp});
+                    M.toast({ html: "Borrador Guardado " + comp });
+                    $('#btn_borradore').css("display", "inline-block");  //B20180625 MGC2 2018.07.04
                 } else {
                     M.toast({ html: "No se guardo el borrador" + comp});
                 }
@@ -1406,6 +1423,38 @@ function guardarBorrador(asyncv) {
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: "No se guardo el borrador" + comp});
+        },
+        async: asyncv
+    });
+}
+
+//B20180625 MGC2 2018.07.04
+function eliminarBorrador(asyncv) {
+
+    var user = $('#USUARIOC_ID').val();
+
+    $.ajax({
+        type: "POST",
+        url: 'eliminarBorrador',
+        //dataType: "json",
+        data: {"user": user},
+
+        success: function (data) {
+
+            if (data != null || data != "") {
+                if (data == "X") {
+                    M.toast({ html: "Borrador se ha eliminado " });
+                    borrador = $('#borradore').val("false");
+                    $('#btn_borradore').css("display", "none");          
+                } else {
+                    M.toast({ html: "No se ha eliminado el borrador" });
+                    borrador = $('#borradore').val("true");
+                }
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: "No se ha eliminado el borrador" });
+            borrador = $('#borradore').val("true");
         },
         async: asyncv
     });

@@ -1092,6 +1092,7 @@ namespace TAT001.Controllers
             ViewBag.CATMAT = res; //B20180618 v1 MGC 2018.06.18
             ViewBag.MONTO_DIS = "";
             ViewBag.borrador = borrador; //MGC B20180625 MGC 
+            ViewBag.borradore = borrador; //B20180625 MGC2 2018.07.04
             ViewBag.moneda_dis = moneda_dis;//MGC B20180625 MGC 
 
             //----------------------------RSG 18.05.2018
@@ -1398,6 +1399,17 @@ namespace TAT001.Controllers
                         //Guardar el documento
                         db.DOCUMENTOes.Add(dOCUMENTO);
                         db.SaveChanges();
+
+                        //B20180625 MGC2 2018.07.04
+                        //Eliminar borrador anterior 
+                        string borre = "";
+                        borre = eliminarBorrador(dOCUMENTO);
+
+                        //Se eliminó
+                        if(borre != "")
+                        {
+                            borrador_param = "false";
+                        }
                     }
 
                     //Redireccionar al inicio
@@ -2341,6 +2353,7 @@ namespace TAT001.Controllers
 
 
             ViewBag.borrador = "error"; //MGC B20180625 MGC 
+            ViewBag.borradore = borrador_param; //B20180625 MGC2 2018.07.04
 
             return View(dOCUMENTO);
         }
@@ -2708,8 +2721,23 @@ namespace TAT001.Controllers
             }
             catch (Exception e)
             {
-                string a = "";
+                //string a = ""; //B20180625 MGC2 2018.07.04
             }
+            return res;
+        }
+
+        //B20180625 MGC2 2018.07.04
+        [HttpPost]
+        public string eliminarBorrador(string user)
+        {
+            string res = "";
+
+            DOCUMENTO doc = new DOCUMENTO();
+
+            doc.USUARIOC_ID = user;
+
+            res = eliminarBorrador(doc);
+
             return res;
         }
 
