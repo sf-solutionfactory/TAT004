@@ -105,6 +105,9 @@ namespace TAT001.Controllers
             ViewBag.Clientes = db.CLIENTEs.ToList();
             ViewBag.Cuentas = db.CUENTAs.ToList();
             ViewBag.DOCF = db.DOCUMENTOFs.ToList();
+            //jemo inicio 4/07/2018
+            ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
+            //jemo inicio 4/07/2018
 
 
 

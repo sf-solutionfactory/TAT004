@@ -156,6 +156,8 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
+        public virtual DbSet<DET_TAXEOC> DET_TAXEOC { get; set; }
+        public virtual DbSet<NOTICIA> NOTICIAs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
@@ -441,6 +443,11 @@ namespace TAT001.Entities
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<CPS_LISTA_CLI_PRO_Result> CPS_LISTA_CLI_PRO()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CPS_LISTA_CLI_PRO_Result>("CPS_LISTA_CLI_PRO");
         }
     }
 }

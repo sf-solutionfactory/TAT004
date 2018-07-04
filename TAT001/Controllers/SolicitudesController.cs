@@ -74,6 +74,17 @@ namespace TAT001.Controllers
                 ViewBag.ERROR_FILES = "";
             }
 
+            //B20180625 MGC 2018.06.26
+            try//Mensaje de borrador guardado
+            {
+                string p = Session["BORRADOR"].ToString();
+                ViewBag.BORRADOR = p;
+                Session["BORRADOR"] = null;
+            }
+            catch
+            {
+                ViewBag.BORRADOR = "";
+            }
 
 
             var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
@@ -449,6 +460,13 @@ namespace TAT001.Controllers
             string errorString = "";
             int pagina = 202; //ID EN BASE DE DATOS
             String res = "";//B20180611
+            string unafactura = "false"; //MGC B20180625 MGC 
+            string borrador = "false"; //MGC B20180625 MGC 
+            string moneda_dis = "";//MGC B20180625 MGC 
+            string id_waersf = "";//MGC B20180625 MGC 
+            decimal bmonto_apoyo = 0;//MGC B20180625 MGC
+            string notas_soporte = "";//MGC B20180625 MGC
+            string tipo_cambio = "";//MGC B20180625 MGC
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -640,11 +658,13 @@ namespace TAT001.Controllers
                             .ToList();
 
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
+                TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO(); //MGC B20180625 MGC
                 if (rel > 0)
                 {
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).FirstOrDefault();
                     docsrel = db.DOCUMENTOes.Where(docr => docr.DOCUMENTO_REF == rel).ToList();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
+                    id_waersf = id_bukrs.WAERS;//MGC B20180625 MGC 
                     id_pais = db.PAIS.Where(pais => pais.LAND.Equals(d.PAIS_ID)).FirstOrDefault();//RSG 15.05.2018
                     d.DOCUMENTO_REF = rel;
                     relacionada_neg = d.TIPO_TECNICO;
@@ -831,16 +851,130 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
-                    ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
-                    ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
+                    //B20180625 MGC 2018.06.26 Verificar si hay algún borrador
+                    DOCUMENTBORR docb = new DOCUMENTBORR();
+                    try
+                    {
+                        docb = db.DOCUMENTBORRs.Find(user.ID);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018 //MGC B20180625 MGC 
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018 //MGC B20180625 MGC 
+
+                    if (docb != null)
+                    {
+                        //Hay borrador 
+                        borrador = "true";
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: docb.TSOL_ID);
+                        //ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: docb.GALL_ID);
+                        ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50", selectedValue: docb.TALL_ID); //B20180618 v1 MGC 2018.06.18
+                        d.CIUDAD = docb.CIUDAD;
+                        d.ESTADO = docb.ESTADO;
+                        d.CONCEPTO = docb.CONCEPTO;
+                        d.NOTAS = docb.NOTAS;
+                        d.PAYER_ID = docb.PAYER_ID;
+                        d.FECHAI_VIG = docb.FECHAI_VIG;
+                        d.FECHAF_VIG = docb.FECHAF_VIG;
+                        d.PAYER_EMAIL = docb.PAYER_EMAIL;
+                        d.PAYER_NOMBRE = docb.PAYER_NOMBRE;
+                        d.MONTO_DOC_MD = docb.MONTO_DOC_MD;
+
+                        relacionada_dis = docb.TIPO_TECNICO2;
+                        relacionada_neg = docb.TIPO_TECNICO;
+                        moneda_dis = docb.MONEDA_DIS;
+
+                        id_waersf = docb.MONEDA_ID;//MGC B20180625 MGC
+                        bmonto_apoyo = Convert.ToDecimal(docb.PORC_APOYO);//MGC B20180625 MGC
+                        //Obtener las facturas del borrador
+                        //List<DOCUMENTOBORRF> lbf = new List<DOCUMENTOBORRF>();
+                        //lbf = db.DOCUMENTOBORRFs.Where(lb => lb.USUARIOC_ID == user.ID).ToList();
+                        List<DOCUMENTOF> docfl = new List<DOCUMENTOF>();
+                        for (int j = 0; j < docb.DOCUMENTOBORRFs.Count; j++)
+                        {
+                            //Definir si son varias facturas o una
+                            if (j == 0)
+                            {
+                                unafactura = docb.DOCUMENTOBORRFs.ElementAt(j).ACTIVO + "";
+                                unafactura = unafactura.ToLower();
+                            }
+                            DOCUMENTOF docf = new DOCUMENTOF();
+
+                            docf.POS = j + 1;
+                            docf.FACTURA = docb.DOCUMENTOBORRFs.ElementAt(j).FACTURA;
+                            docf.FECHA = docb.DOCUMENTOBORRFs.ElementAt(j).FECHA;
+                            docf.PROVEEDOR = docb.DOCUMENTOBORRFs.ElementAt(j).PROVEEDOR;
+                            docf.CONTROL = docb.DOCUMENTOBORRFs.ElementAt(j).CONTROL;
+                            docf.AUTORIZACION = docb.DOCUMENTOBORRFs.ElementAt(j).AUTORIZACION;
+                            docf.VENCIMIENTO = docb.DOCUMENTOBORRFs.ElementAt(j).VENCIMIENTO;
+                            docf.FACTURAK = docb.DOCUMENTOBORRFs.ElementAt(j).FACTURAK;
+                            docf.EJERCICIOK = docb.DOCUMENTOBORRFs.ElementAt(j).EJERCICIOK;
+                            docf.BILL_DOC = docb.DOCUMENTOBORRFs.ElementAt(j).BILL_DOC;
+                            docf.BELNR = docb.DOCUMENTOBORRFs.ElementAt(j).BELNR;
+
+                            docfl.Add(docf);
+                        }
+                        d.DOCUMENTOF = docfl;
+
+                        //Obtener las posiciones del borrador
+                        List<DOCUMENTOP_MOD> docpl = new List<DOCUMENTOP_MOD>();
+                        for (int j = 0; j < docb.DOCUMENTOBORRPs.Count; j++)
+                        {
+                            DOCUMENTOP_MOD docp = new DOCUMENTOP_MOD();
+
+                            docp.POS = j + 1;
+                            docp.MATNR = docb.DOCUMENTOBORRPs.ElementAt(j).MATNR;
+                            docp.MATKL = docb.DOCUMENTOBORRPs.ElementAt(j).MATKL;
+                            docp.MATKL_ID = docb.DOCUMENTOBORRPs.ElementAt(j).MATKL;
+                            docp.DESC = "";
+                            docp.CANTIDAD = 1;
+                            docp.MONTO = Convert.ToDecimal(docb.DOCUMENTOBORRPs.ElementAt(j).MONTO);
+                            docp.PORC_APOYO = Convert.ToDecimal(docb.DOCUMENTOBORRPs.ElementAt(j).PORC_APOYO);
+                            docp.MONTO_APOYO = Convert.ToDecimal(docb.DOCUMENTOBORRPs.ElementAt(j).MONTO_APOYO);
+                            //docp.MONTOC_APOYO = docb.DOCUMENTOBORRPs.ElementAt(j).;
+                            //docp.PORC_APOYOEST = docb.DOCUMENTOBORRPs.ElementAt(j).BILL_DOC;
+                            docp.PRECIO_SUG = Convert.ToDecimal(docb.DOCUMENTOBORRPs.ElementAt(j).PRECIO_SUG);
+                            docp.VOLUMEN_EST = Convert.ToDecimal(docb.DOCUMENTOBORRPs.ElementAt(j).VOLUMEN_EST);
+                            //docp.VOLUMEN_REAL = docb.DOCUMENTOBORRPs.ElementAt(j).BELNR;
+                            docp.VIGENCIA_DE = docb.DOCUMENTOBORRPs.ElementAt(j).VIGENCIA_DE;
+                            docp.VIGENCIA_AL = docb.DOCUMENTOBORRPs.ElementAt(j).VIGENCIA_AL;
+                            docp.APOYO_EST = docb.DOCUMENTOBORRPs.ElementAt(j).APOYO_EST;
+                            docp.APOYO_REAL = docb.DOCUMENTOBORRPs.ElementAt(j).APOYO_REAL;
+
+                            docpl.Add(docp);
+                        }
+
+                        d.DOCUMENTOP = docpl;
+
+                        //MGC B20180625 MGC
+                        //Obtener las notas de soporte
+                        try
+                        {
+                            notas_soporte = db.DOCUMENTOBORRNs.Where(dn => dn.USUARIOC_ID == user.ID).FirstOrDefault().TEXTO.ToString();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        id_waersf = id_bukrs.WAERS;//MGC B20180625 MGC 
+                        ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
+                        ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
+                        ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
+                                                                                       //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018                      
+                    }
+                    //id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018 //MGC B20180625 MGC 
+                    //id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018 //MGC B20180625 MGC 
+
+                    ViewBag.TSOL_ANT = "";
                     ViewBag.TSOL_IDI = "";
                     ViewBag.GALL_IDI = "";
                     ViewBag.TALL_IDI = ""; //B20180618 v1 MGC 2018.06.18
-                    //id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
-                    id_pais = db.PAIS.Where(pais => pais.LAND.Equals(p)).FirstOrDefault();//RSG 15.05.2018
-                    id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS.Equals(id_pais.SOCIEDAD_ID) && soc.ACTIVO == true).FirstOrDefault();//RSG 15.05.2018
-                    ViewBag.TSOL_ANT = "";
                 }
 
                 ViewBag.files = archivos;
@@ -879,7 +1013,8 @@ namespace TAT001.Controllers
                 ViewBag.PAIS_ID = id_pais;
                 ViewBag.STATE_ID = "";// new SelectList(id_states, "ID", dataTextField: "NAME");
                 ViewBag.CITY_ID = "";// new SelectList(id_city, "ID", dataTextField: "NAME");
-                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS); //Duda si cambia en la relacionada
+                //ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_bukrs.WAERS); //Duda si cambia en la relacionada //B20180625 MGC 2018.06.28
+                ViewBag.MONEDA = new SelectList(id_waers, "WAERS", dataTextField: "WAERS", selectedValue: id_waersf); //Duda si cambia en la relacionada //B20180625 MGC 2018.06.28
 
                 //Información del cliente
                 var id_clientes = db.CLIENTEs.Where(c => c.LAND.Equals(p) && c.ACTIVO == true).ToList();
@@ -905,26 +1040,32 @@ namespace TAT001.Controllers
 
                 d.SOCIEDAD_ID = id_bukrs.BUKRS;
                 d.PAIS_ID = id_pais.LAND;//RSG 18.05.2018
-                d.MONEDA_ID = id_bukrs.WAERS;
+                //d.MONEDA_ID = id_bukrs.WAERS; //B20180625 MGC 2018.07.02
+                d.MONEDA_ID = id_waersf; //B20180625 MGC 2018.07.02
                 var date = DateTime.Now.Date;
-                TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO();
+                //TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO(); //MGC B20180625 MGC
                 try
                 {
-                    tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();
+                    //tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();//B20180625 MGC 2018.07.02
+                    tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_waersf) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();//B20180625 MGC 2018.07.02
                     if (tcambio == null)
                     {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();
+                        //var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);//B20180625 MGC 2018.07.02
+                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_waersf) && t.TCURR.Equals("USD")).Max(a => a.GDATU);//B20180625 MGC 2018.07.02
+                        //tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();//B20180625 MGC 2018.07.02
+                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_waersf) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();//B20180625 MGC 2018.07.02
                     }
                     decimal con = Convert.ToDecimal(tcambio.UKURS);
                     var cons = con.ToString("0.##");
 
-                    ViewBag.tcambio = cons;
+                    //ViewBag.tcambio = cons;
+                    tipo_cambio = cons; //MGC B20180625 MGC
                 }
                 catch (Exception e)
                 {
                     errorString = e.Message + "detail: conversion " + id_bukrs.WAERS + " to " + "USD" + " in date " + DateTime.Now.Date;
-                    ViewBag.tcambio = "";
+                    //ViewBag.tcambio = "";
+                    tipo_cambio = ""; //MGC B20180625 MGC
                 }
 
 
@@ -939,11 +1080,12 @@ namespace TAT001.Controllers
             ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
             ViewBag.PARVW = "";
-            ViewBag.UNAFACTURA = "false";
+            ViewBag.UNAFACTURA = unafactura; //MGC B20180625
             ViewBag.MONTO_DOC_ML2 = "";
             ViewBag.error = errorString;
             ViewBag.NAME1 = "";
-            ViewBag.notas_soporte = "";
+            ViewBag.notas_soporte = notas_soporte; //MGC B20180625 MGC
+            ViewBag.tcambio = tipo_cambio;//MGC B20180625 MGC
 
             //Prueba para agregar soporte a la tabla ahora información
 
@@ -967,9 +1109,12 @@ namespace TAT001.Controllers
 
             ViewBag.SEL_NEG = relacionada_neg;
             ViewBag.SEL_DIS = relacionada_dis;
-            ViewBag.BMONTO_APOYO = "";
+            ViewBag.BMONTO_APOYO = bmonto_apoyo; //MGC B20180625 MGC 
             ViewBag.CATMAT = res; //B20180618 v1 MGC 2018.06.18
             ViewBag.MONTO_DIS = "";
+            ViewBag.borrador = borrador; //MGC B20180625 MGC 
+            ViewBag.borradore = borrador; //B20180625 MGC2 2018.07.04
+            ViewBag.moneda_dis = moneda_dis;//MGC B20180625 MGC 
 
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
@@ -1091,10 +1236,11 @@ namespace TAT001.Controllers
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
-                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat)
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis)
         {
 
-            bool prueba = false;
+            bool prueba = true;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
@@ -1167,9 +1313,9 @@ namespace TAT001.Controllers
                     //Tipo técnico
                     dOCUMENTO.TIPO_TECNICO = select_neg;
 
-                    //Obtener el número de documento
-                    decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
-                    dOCUMENTO.NUM_DOC = N_DOC;
+                    ////Obtener el número de documento
+                    //decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
+                    //dOCUMENTO.NUM_DOC = N_DOC;
 
                     //Obtener SOCIEDAD_ID                     
                     dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
@@ -1177,9 +1323,11 @@ namespace TAT001.Controllers
                     ////Obtener el país
                     //dOCUMENTO.PAIS_ID = p.ToUpper();
 
+                    //B20180625 MGC 2018.06.25
                     //CANTIDAD_EV > 1 si son recurrentes
                     dOCUMENTO.CANTIDAD_EV = 1;
 
+                    //B20180625 MGC 2018.06.25
                     //Obtener usuarioc
                     USUARIO u = db.USUARIOs.Find(User.Identity.Name);//RSG 02/05/2018
                     dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
@@ -1222,7 +1370,8 @@ namespace TAT001.Controllers
                     }
                     //Obtener el monto de la sociedad
                     dOCUMENTO.MONTO_DOC_ML = getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
-                    if (!errorString.Equals(""))
+                    //if (!errorString.Equals("") && !borrador_param.Equals("borrador")) //B20180625 MGC 2018.07.03
+                    if (!errorString.Equals("")) //B20180625 MGC 2018.07.03
                     {
                         throw new Exception();
                     }
@@ -1248,18 +1397,73 @@ namespace TAT001.Controllers
                     }
                     //Obtener datos del payer
                     CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
+                    //B20180621 MGC2 2018.06.21s
+                    if (borrador_param == null)
+                    {
+                        borrador_param = "";
+                    }
+                    if (borrador_param.Equals("borrador"))
+                    {
+                        //Eliminar borrador anterior 
+                        string borre = "";
+                        borre = eliminarBorrador(dOCUMENTO);
+                        //Guardar el borrador documento
+                        if (borre != "")
+                        {
+                            try
+                            {
+                                dOCUMENTO.VKORG = payer.VKORG;
+                                dOCUMENTO.VTWEG = payer.VTWEG;
+                                dOCUMENTO.SPART = payer.SPART;
+                            }
+                            catch (Exception)
+                            {
 
-                    dOCUMENTO.VKORG = payer.VKORG;
-                    dOCUMENTO.VTWEG = payer.VTWEG;
-                    dOCUMENTO.SPART = payer.SPART;
+                            }
+                            DOCUMENTBORR docb = new DOCUMENTBORR();
+                            docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);
+                            db.DOCUMENTBORRs.Add(docb);
+                            db.SaveChanges();
+                            //B20180625 MGC 2018.06.27 Almacenar facturas
+                            guardarBorradorf(dOCUMENTO, unafact);
+                            guardarBorradorp(dOCUMENTO);
+                            guardarBorradorn(dOCUMENTO.USUARIOC_ID, notas_soporte);
+                            Session["BORRADOR"] = "Borrador almacenado";
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+
+                        //Obtener el número de documento
+                        decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
+                        dOCUMENTO.NUM_DOC = N_DOC;
+                        //Actualizar el rango
+                        updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
 
-                    //Guardar el documento
-                    db.DOCUMENTOes.Add(dOCUMENTO);
-                    db.SaveChanges();
+                        dOCUMENTO.VKORG = payer.VKORG;
+                        dOCUMENTO.VTWEG = payer.VTWEG;
+                        dOCUMENTO.SPART = payer.SPART;
 
-                    //Actualizar el rango
-                    updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
+
+                        //Guardar el documento
+                        db.DOCUMENTOes.Add(dOCUMENTO);
+                        db.SaveChanges();
+
+                        //B20180625 MGC2 2018.07.04
+                        //Eliminar borrador anterior 
+                        string borre = "";
+                        borre = eliminarBorrador(dOCUMENTO);
+
+                        //Se eliminó
+                        if (borre != "")
+                        {
+                            borrador_param = "false";
+                        }
+                    }
+
 
                     //Redireccionar al inicio
                     //Guardar número de documento creado
@@ -2182,6 +2386,7 @@ namespace TAT001.Controllers
             }
             var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
             ViewBag.TSOL_VALUES = tsols_valbdjs;
+            ViewBag.TSOL_VALUES2 = tsols_valbdjs; //B20180625 MGC 2018.06.28
 
             ViewBag.SEL_NEG = select_neg;
             ViewBag.SEL_DIS = select_dis;
@@ -2202,7 +2407,397 @@ namespace TAT001.Controllers
             dOCUMENTO.SOCIEDAD = db.SOCIEDADs.Find(dOCUMENTO.SOCIEDAD_ID);
             //----------------------------RSG 18.05.2018
 
+
+            ViewBag.borrador = "error"; //MGC B20180625 MGC
+            ViewBag.borradore = borrador_param; //B20180625 MGC2 2018.07.04 
+
+
             return View(dOCUMENTO);
+        }
+        [HttpPost]
+        public string Borrador([Bind(Include = "NUM_DOC,TSOL_ID,TALL_ID,SOCIEDAD_ID,PAIS_ID,ESTADO,CIUDAD,PERIODO," +
+            "EJERCICIO,TIPO_TECNICO,TIPO_RECURRENTE,CANTIDAD_EV,USUARIOC_ID,FECHAD,FECHAC,ESTATUS,ESTATUS_C,ESTATUS_SAP," +
+            "ESTATUS_WF,DOCUMENTO_REF,NOTAS,MONTO_DOC_MD,MONTO_FIJO_MD,MONTO_BASE_GS_PCT_MD,MONTO_BASE_NS_PCT_MD,MONTO_DOC_ML," +
+            "MONTO_FIJO_ML,MONTO_BASE_GS_PCT_ML,MONTO_BASE_NS_PCT_ML,MONTO_DOC_ML2,MONTO_FIJO_ML2,MONTO_BASE_GS_PCT_ML2," +
+            "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
+            "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
+            "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
+            string notas_soporte, string unafact, string select_neg, string select_dis, string select_negi, string select_disi,
+            string bmonto_apoyo, string monedadis)
+        {
+
+            string errorString = "";
+            SOCIEDAD id_bukrs = new SOCIEDAD();
+            string p = "";
+            string res = "false";
+            decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+                    //Obtener datos ocultos o deshabilitados                    
+                    try
+                    {
+                        p = Session["pais"].ToString();
+                        ViewBag.pais = p + ".png";
+                    }
+                    catch
+                    {
+                        ViewBag.pais = "mx.png";
+                    }
+
+                    try
+                    {
+                        dOCUMENTO.GALL_ID = db.TALLs.Where(t => t.ID == dOCUMENTO.TALL_ID).FirstOrDefault().GALL_ID;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    id_bukrs = db.SOCIEDADs.Where(soc => soc.LAND.Equals(p)).FirstOrDefault();
+                    //Obtener el país
+                    dOCUMENTO.PAIS_ID = p.ToUpper();//RSG 15.05.2018
+
+                    //Tipo técnico
+                    dOCUMENTO.TIPO_TECNICO = select_neg;
+
+                    //B20180625 MGC 2018.06.25
+                    //CANTIDAD_EV > 1 si son recurrentes
+                    dOCUMENTO.CANTIDAD_EV = 1;
+
+                    //B20180625 MGC 2018.06.25
+                    //Obtener usuarioc
+                    USUARIO u = db.USUARIOs.Find(User.Identity.Name);//RSG 02/05/2018
+                    dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
+                    dOCUMENTO.USUARIOC_ID = User.Identity.Name;
+
+                    //Obtener SOCIEDAD_ID                     
+                    dOCUMENTO.SOCIEDAD_ID = id_bukrs.BUKRS;
+
+                    //Fechac
+                    dOCUMENTO.FECHAC = DateTime.Now;
+
+                    //Horac
+                    dOCUMENTO.HORAC = DateTime.Now.TimeOfDay;
+
+                    //FECHAC_PLAN
+                    dOCUMENTO.FECHAC_PLAN = DateTime.Now.Date;
+
+                    //FECHAC_USER
+                    dOCUMENTO.FECHAC_USER = DateTime.Now.Date;
+
+                    //HORAC_USER
+                    dOCUMENTO.HORAC_USER = DateTime.Now.TimeOfDay;
+
+                    //Estatus
+                    dOCUMENTO.ESTATUS = "N";
+
+                    //Estatus wf
+                    dOCUMENTO.ESTATUS_WF = "P";
+
+                    ///////////////////Montos
+                    //MONTO_DOC_MD
+                    var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
+                    dOCUMENTO.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
+
+                    //Obtener el monto de la sociedad
+                    dOCUMENTO.MONTO_DOC_ML = getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
+
+                    //MONTO_DOC_ML2 
+                    var MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
+                    dOCUMENTO.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
+
+                    //MONEDAL_ID moneda de la sociedad
+                    dOCUMENTO.MONEDAL_ID = id_bukrs.WAERS;
+
+                    //MONEDAL2_ID moneda en USD
+                    dOCUMENTO.MONEDAL2_ID = "USD";
+
+                    //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
+                    dOCUMENTO.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
+
+                    //Tipo cambio dolares TIPO_CAMBIOL2
+                    dOCUMENTO.TIPO_CAMBIOL2 = getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
+
+                    //Obtener datos del payer
+                    CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
+
+                    //Eliminar borrador anterior 
+                    string borre = "";
+                    borre = eliminarBorrador(dOCUMENTO);
+                    //Guardar el borrador documento
+                    if (borre != "")
+                    {
+                        try
+                        {
+                            dOCUMENTO.VKORG = payer.VKORG;
+                            dOCUMENTO.VTWEG = payer.VTWEG;
+                            dOCUMENTO.SPART = payer.SPART;
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        DOCUMENTBORR docb = new DOCUMENTBORR();
+                        docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);
+                        db.DOCUMENTBORRs.Add(docb);
+                        db.SaveChanges();
+                        //B20180625 MGC 2018.06.27 Almacenar facturas
+                        guardarBorradorf(dOCUMENTO, unafact);
+                        guardarBorradorp(dOCUMENTO);
+                        guardarBorradorn(dOCUMENTO.USUARIOC_ID, notas_soporte);
+                        res = "true";
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return res;
+        }
+
+        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis, string bmonto_apoyo)
+        {
+            DOCUMENTBORR docb = new DOCUMENTBORR();
+            docb.USUARIOC_ID = doc.USUARIOC_ID;
+            docb.TSOL_ID = doc.TSOL_ID;
+            docb.TALL_ID = doc.TALL_ID;
+            docb.SOCIEDAD_ID = id_bukrs.BUKRS; ;
+            docb.PAIS_ID = doc.PAIS_ID;
+            docb.ESTADO = doc.ESTADO;
+            docb.CIUDAD = doc.CIUDAD;
+            docb.PERIODO = doc.PERIODO; //Cambiar tipo en bd
+            docb.EJERCICIO = doc.EJERCICIO;
+            docb.TIPO_TECNICO = doc.TIPO_TECNICO;
+            docb.CANTIDAD_EV = doc.CANTIDAD_EV;
+            docb.FECHAD = doc.FECHAD;
+            docb.FECHAC = doc.FECHAC;
+            docb.HORAC = doc.HORAC;
+            //docb.FECHAC_PLAN = doc.FECHAC_PLAN;
+            //docb.FECHAC_USER = doc.FECHAC_USER;
+            //docb.HORAC_USER = doc.HORAC_USER;
+            docb.CONCEPTO = doc.CONCEPTO;
+            docb.NOTAS = doc.NOTAS;
+            docb.MONTO_DOC_MD = doc.MONTO_DOC_MD;
+            docb.MONTO_DOC_ML = doc.MONTO_DOC_ML;
+            docb.MONTO_FIJO_ML2 = doc.MONTO_FIJO_ML2;
+            docb.FECHAI_VIG = doc.FECHAI_VIG;
+            docb.FECHAF_VIG = doc.FECHAF_VIG;
+            docb.PAYER_ID = doc.PAYER_ID;
+            docb.PAYER_NOMBRE = doc.PAYER_NOMBRE;
+            docb.PAYER_EMAIL = doc.PAYER_EMAIL;
+            docb.MONEDA_ID = doc.MONEDA_ID;
+            docb.MONEDAL_ID = doc.MONEDAL_ID;
+            docb.MONEDAL2_ID = doc.MONEDAL2_ID;
+            docb.TIPO_CAMBIO = doc.TIPO_CAMBIO;
+            docb.VKORG = doc.VKORG;
+            docb.VTWEG = doc.VTWEG;
+            docb.SPART = doc.SPART;
+            docb.TIPO_TECNICO2 = dis;
+            docb.MONEDA_DIS = monedadis;
+            try
+            {
+                docb.PORC_APOYO = Convert.ToDecimal(bmonto_apoyo);
+            }
+            catch (Exception)
+            {
+                docb.PORC_APOYO = null;
+            }
+
+            return docb;
+        }
+
+        public void guardarBorradorf(DOCUMENTO doc, string unafact)
+        {
+            bool uf = false;
+
+            if (unafact == "true")
+            {
+                uf = true;
+            }
+            else if (unafact == "false")
+            {
+                uf = false;
+            }
+
+            try
+            {
+                for (int i = 0; i < doc.DOCUMENTOF.Count; i++)
+                {
+                    try
+                    {
+                        DOCUMENTOBORRF dbf = new DOCUMENTOBORRF();
+                        dbf.USUARIOC_ID = doc.USUARIOC_ID;
+                        dbf.POS = i + 1;
+                        dbf.ACTIVO = uf;
+                        dbf.FACTURA = doc.DOCUMENTOF[i].FACTURA;
+                        dbf.FECHA = doc.DOCUMENTOF[i].FECHA;
+                        dbf.PROVEEDOR = doc.DOCUMENTOF[i].PROVEEDOR;
+                        dbf.CONTROL = doc.DOCUMENTOF[i].CONTROL;
+                        dbf.AUTORIZACION = doc.DOCUMENTOF[i].AUTORIZACION;
+                        dbf.VENCIMIENTO = doc.DOCUMENTOF[i].VENCIMIENTO;
+                        dbf.FACTURAK = doc.DOCUMENTOF[i].FACTURAK;
+                        dbf.EJERCICIOK = doc.DOCUMENTOF[i].EJERCICIOK;
+                        dbf.BILL_DOC = doc.DOCUMENTOF[i].BILL_DOC;
+                        dbf.BELNR = doc.DOCUMENTOF[i].BELNR;
+
+                        db.DOCUMENTOBORRFs.Add(dbf);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+        public void guardarBorradorp(DOCUMENTO doc)
+        {
+            try
+            {
+
+                for (int i = 0; i < doc.DOCUMENTOP.Count; i++)
+                {
+                    try
+                    {
+                        DOCUMENTOBORRP dbp = new DOCUMENTOBORRP();
+                        dbp.USUARIOC_ID = doc.USUARIOC_ID;
+                        dbp.POS = doc.DOCUMENTOP[i].POS;
+                        if (doc.DOCUMENTOP[i].MATNR == null)
+                        {
+                            doc.DOCUMENTOP[i].MATNR = "";
+                        }
+                        dbp.MATNR = doc.DOCUMENTOP[i].MATNR;
+                        dbp.MATKL = doc.DOCUMENTOP[i].MATKL_ID;
+                        dbp.CANTIDAD = 1;
+                        dbp.MONTO = doc.DOCUMENTOP[i].MONTO;
+                        dbp.PORC_APOYO = doc.DOCUMENTOP[i].PORC_APOYO;
+                        dbp.MONTO_APOYO = doc.DOCUMENTOP[i].MONTO_APOYO;
+                        dbp.PRECIO_SUG = doc.DOCUMENTOP[i].PRECIO_SUG;
+                        dbp.VOLUMEN_EST = doc.DOCUMENTOP[i].VOLUMEN_EST;
+                        dbp.VOLUMEN_REAL = doc.DOCUMENTOP[i].VOLUMEN_REAL;
+                        dbp.VIGENCIA_DE = doc.DOCUMENTOP[i].VIGENCIA_DE;
+                        dbp.VIGENCIA_AL = doc.DOCUMENTOP[i].VIGENCIA_AL;
+                        dbp.APOYO_EST = doc.DOCUMENTOP[i].APOYO_EST;
+                        dbp.APOYO_REAL = doc.DOCUMENTOP[i].APOYO_REAL;
+
+                        db.DOCUMENTOBORRPs.Add(dbp);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public void guardarBorradorn(string user, string notas)
+        {
+
+            if (notas != "")
+            {
+                try
+                {
+                    DOCUMENTOBORRN doc_notas = new DOCUMENTOBORRN();
+                    doc_notas.USUARIOC_ID = user;
+                    doc_notas.POS = 1;
+                    doc_notas.STEP = 1;
+                    doc_notas.USUARIO_ID = user;
+                    doc_notas.TEXTO = notas.ToString();
+
+                    db.DOCUMENTOBORRNs.Add(doc_notas);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                }
+            }
+
+        }
+
+        public string eliminarBorrador(DOCUMENTO doc)
+        {
+            string res = "";
+
+            try
+            {
+                db.DOCUMENTOBORRFs.RemoveRange(db.DOCUMENTOBORRFs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                db.DOCUMENTOBORRPs.RemoveRange(db.DOCUMENTOBORRPs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                db.DOCUMENTOBORRNs.RemoveRange(db.DOCUMENTOBORRNs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                DOCUMENTBORR docb = new DOCUMENTBORR();
+                docb = db.DOCUMENTBORRs.Find(doc.USUARIOC_ID);
+                if (docb != null)
+                {
+                    db.DOCUMENTBORRs.Remove(docb);
+                    db.SaveChanges();
+                }
+                res = "X";
+            }
+            catch (Exception e)
+            {
+                //string a = ""; //B20180625 MGC2 2018.07.04
+            }
+            return res;
+        }
+        //B20180625 MGC2 2018.07.04
+        [HttpPost]
+        public string eliminarBorrador(string user)
+        {
+            string res = "";
+
+            DOCUMENTO doc = new DOCUMENTO();
+
+            doc.USUARIOC_ID = user;
+
+            res = eliminarBorrador(doc);
+
+            return res;
         }
 
         [HttpPost]
@@ -4796,7 +5391,14 @@ namespace TAT001.Controllers
             {
                 CategoriaMaterial nnn = new CategoriaMaterial();
                 nnn.ID = "000";
-                nnn.DESCRIPCION = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals(nnn.ID)).FirstOrDefault().TXT50;
+                try//B20180625 MGC 2018.07.02
+                {
+                    nnn.DESCRIPCION = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals(nnn.ID)).FirstOrDefault().TXT50;
+                }
+                catch (Exception)//B20180625 MGC 2018.07.02
+                {
+
+                }
                 nnn.MATERIALES = new List<DOCUMENTOM_MOD>();
                 foreach (var item in lcatmat)
                 {
@@ -6247,15 +6849,15 @@ namespace TAT001.Controllers
                 string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                cat = db.CATEGORIAs.Where(c => c.ID == cate && c.ACTIVO == true)
+                cat = db.MATERIALGPs.Where(c => c.ID == cate && c.ACTIVO == true) //Cambiar por materialgp //B20180625 MGC 2018.06.28
                             .Join(
-                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            db.MATERIALGPTs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),//Cambiar por materialgpt //B20180625 MGC 2018.06.28
                             c => c.ID,
-                            ct => ct.CATEGORIA_ID,
+                            ct => ct.MATERIALGP_ID,//B20180625 MGC 2018.06.28
                             (c, ct) => new
                             {
                                 SPRAS_ID = ct.SPRAS_ID.ToString(),
-                                CATEGORIA_ID = ct.CATEGORIA_ID.ToString(),
+                                CATEGORIA_ID = ct.MATERIALGP_ID.ToString(),//B20180625 MGC 2018.06.28
                                 TXT50 = ct.TXT50.ToString()
                             })
                         .FirstOrDefault();

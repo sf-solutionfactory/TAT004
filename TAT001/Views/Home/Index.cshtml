@@ -8,6 +8,19 @@
     List<TAT001.Entities.CUENTA> lstC = ViewBag.Cuentas as List<TAT001.Entities.CUENTA>;
     List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
 }
+
+@*//jemo inicio 4/07/2018*@
+@if (ViewBag.imgnoticia != null)
+{
+    if (String.IsNullOrEmpty(ViewBag.imgnoticia) == false)
+    {
+        <div class="parallax-container" style="height:250px;">
+            <img src="@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+        </div>
+    }
+}
+////jemo inicio 4/07/2018
+
 @*@section noticia{
         @if (false)
         {
@@ -40,6 +53,28 @@
 </div>
 <!--MENSAJES-->
 <div>
+    @*//B20180625 MGC 2018.06.26*@
+    @if (ViewBag.BORRADOR != null)
+    {
+        if (ViewBag.BORRADOR != "")
+        {
+            <script>
+        $(document).ready(function () {
+            function docMessage(msg) {
+                M.toast({ html: msg });
+            }
+
+            var message = '@ViewBag.BORRADOR';
+
+            if (message != "")
+            {
+                // do drop down loic
+                docMessage(message);
+            }
+        });
+            </script>
+        }
+    }
     @if (ViewBag.NUM_DOC != null)
     {
         if (ViewBag.NUM_DOC != "")

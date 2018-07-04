@@ -308,6 +308,9 @@
     <Compile Include="Entities\COUNTRy.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CPS_LISTA_CLI_PRO_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CREADOR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -369,6 +372,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DET_TAXEO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DET_TAXEOC.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTBORR.cs">
@@ -465,6 +471,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NEGOCIACION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\NOTICIA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PAGINA.cs">
@@ -677,6 +686,7 @@
     <Compile Include="Entities\ZCTGR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CargaMasivaModels.cs" />
     <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
@@ -762,6 +772,7 @@
     <Content Include="fonts\roboto\Roboto-Regular.woff2" />
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
+    <Content Include="images\6792532.jpg" />
     <Content Include="images\expandl.png" />
     <Content Include="images\expandm.png" />
     <Content Include="images\flags\1x1\ad.png" />

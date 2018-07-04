@@ -103,7 +103,7 @@ namespace TAT001.Controllers.Catalogos
             ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", uSUARIO.BUNIT);
             ViewBag.ROLES = db.ROLTs.Where(a => a.SPRAS_ID.Equals(spra));
             ViewBag.SOCIEDADES = db.SOCIEDADs;
-            ViewBag.PAISES = db.PAIS;
+            ViewBag.PAISES = db.PAIS.Where(a=>a.SOCIEDAD_ID != null & a.ACTIVO == true).ToList();
             ViewBag.APROBADORES = db.DET_APROB.Where(a => a.BUKRS.Equals("KCMX") & a.PUESTOC_ID == uSUARIO.PUESTO_ID).ToList();
             return View(uSUARIO);
         }

@@ -290,6 +290,10 @@ namespace TAT001.Models
             TCAMBIO cambio = new TCAMBIO();
             TAXEOH taxh = new TAXEOH();
             List<TAXEOP> taxp = new List<TAXEOP>();
+            MATERIAL material;
+            string[] grupos;
+            string grupo = "";
+            string materi = "";
             string factura = "";
             try
             {
@@ -487,7 +491,6 @@ namespace TAT001.Models
                                     //conta.BALANCE = docm[j].APOYO_EST.ToString(); //KCMX solic
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docm[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
-
                             }
                             else
                             {
@@ -565,7 +568,18 @@ namespace TAT001.Models
                             {
                                 if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
                                 {
-                                    conta.TAX_CODE = conp[i].TAX_CODE;
+                                    materi = docm[j].MATNR;
+                                    material = db.MATERIALs.Where(x => x.ID == materi).First();
+                                    grupos = conp[i].MATERIALGP.Split('+');
+                                    grupo = grupos.Where(x => x == material.MATERIALGP_ID).First();
+                                    if (String.IsNullOrEmpty(grupo) == false)
+                                    {
+                                        conta.TAX_CODE = conp[i].TAXCODEGP;
+                                    }
+                                    else
+                                    {
+                                        conta.TAX_CODE = conp[i].TAX_CODE;
+                                    }
                                 }
                             }
                             if (enca.TIPO_DOC == "DG" || enca.TIPO_DOC == "BB")
@@ -623,6 +637,7 @@ namespace TAT001.Models
                                 {
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
+
                             }
                             else
                             {
@@ -703,7 +718,18 @@ namespace TAT001.Models
                             {
                                 if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
                                 {
-                                    conta.TAX_CODE = conp[i].TAX_CODE;
+                                    materi = docp[j].MATNR;
+                                    material = db.MATERIALs.Where(y => y.ID == materi).Single();
+                                    grupos = conp[i].MATERIALGP.Split('+');
+                                    grupo = grupos.Where(x => x == material.MATERIALGP_ID).FirstOrDefault();
+                                    if (String.IsNullOrEmpty(grupo) == false)
+                                    {
+                                        conta.TAX_CODE = conp[i].TAXCODEGP;
+                                    }
+                                    else
+                                    {
+                                        conta.TAX_CODE = conp[i].TAX_CODE;
+                                    }
                                 }
                             }
                             if (enca.TIPO_DOC == "DG" || enca.TIPO_DOC == "BB")

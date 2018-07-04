@@ -47,26 +47,45 @@ namespace TAT001.Controllers
                 Prefix = "";
 
             TAT001Entities db = new TAT001Entities();
-
-            var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
-
-            var c = (from N in db.CLIENTEs.ToList()
-                     join D in det
-                     on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
-                     where N.KUNNR.Contains(Prefix)
-                     select new { N.KUNNR, N.NAME1 }).ToList();
-
-            if (c.Count == 0)
+            if (usuario == "" & pais == "")
             {
-                var c2 = (from N in db.CLIENTEs.ToList()
-                          join D in det
-                          on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
-                          where CultureInfo.CurrentCulture.CompareInfo.IndexOf(N.NAME1, Prefix, CompareOptions.IgnoreCase) >= 0
-                          select new { N.KUNNR, N.NAME1 }).ToList();
-                c.AddRange(c2);
+                var c = (from N in db.CLIENTEs
+                         where N.KUNNR.Contains(Prefix)
+                         select new { N.KUNNR, N.NAME1 }).ToList();
+                if (c.Count == 0)
+                {
+                    var c2 = (from N in db.CLIENTEs
+                              where N.NAME1.Contains(Prefix)
+                              select new { N.KUNNR, N.NAME1 }).ToList();
+                    c.AddRange(c2);
+                }
+                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                return cc;
             }
-            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
-            return cc;
+            else
+            {
+
+                var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
+
+                var c = (from N in db.CLIENTEs.ToList()
+                         join D in det
+                         on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
+                         where N.KUNNR.Contains(Prefix)
+                         select new { N.KUNNR, N.NAME1 }).ToList();
+
+                if (c.Count == 0)
+                {
+                    var c2 = (from N in db.CLIENTEs.ToList()
+                              join D in det
+                              on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
+                              where CultureInfo.CurrentCulture.CompareInfo.IndexOf(N.NAME1, Prefix, CompareOptions.IgnoreCase) >= 0
+                              select new { N.KUNNR, N.NAME1 }).ToList();
+                    c.AddRange(c2);
+                }
+                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                return cc;
+            }
+
         }
         [HttpGet]
         public JsonResult Estados(string pais, string Prefix)
@@ -129,7 +148,7 @@ namespace TAT001.Controllers
                          on N.PUESTOA_ID equals St.PUESTO_ID
                          where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
                          //where N.BUKRS.Equals(bukrs) 
-                         select new { N.PUESTOA_ID.Value, St.TXT50 }).ToList();
+                         select new { N.POS,  N.PUESTOA_ID.Value, St.TXT50, N.MONTO, PRESUPUESTO = (bool)N.PRESUPUESTO.Value }).ToList();
 
                 TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.ACTIVO == true).FirstOrDefault();
                 if (tl != null)
@@ -137,10 +156,11 @@ namespace TAT001.Controllers
                     var col = (from St in db.PUESTOTs
                                where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
                                //where N.BUKRS.Equals(bukrs) 
-                               select new { Value = St.PUESTO_ID, St.TXT50 });
+                               select new { POS = 98, Value = St.PUESTO_ID, St.TXT50, MONTO = (decimal?)decimal.Parse("-1"), PRESUPUESTO = false });
                     c.AddRange(col);
                 }
-                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                var ca = c.OrderBy(a => a.POS);
+                JsonResult cc = Json(ca, JsonRequestBehavior.AllowGet);
                 return cc;
             }
             else
@@ -158,19 +178,42 @@ namespace TAT001.Controllers
                      where //N.PUESTO_ID == p & 
                      N.ID.Contains(Prefix)
                      //where N.BUKRS.Equals(bukrs) 
-                     select new { N.ID });
+                     select new { N.ID, NOMBRE = N.ID + " - " + N.NOMBRE + " " + N.APELLIDO_P + " " + N.APELLIDO_M });
+            if (c.Count() == 0)
+            {
+                c = (from N in db.USUARIOs
+                     where //N.PUESTO_ID == p & 
+                     N.NOMBRE.Contains(Prefix) | N.APELLIDO_P.Contains(Prefix) | N.APELLIDO_M.Contains(Prefix)
+                     //where N.BUKRS.Equals(bukrs) 
+                     select new { N.ID, NOMBRE = N.ID + " - " + N.NOMBRE + " " + N.APELLIDO_P + " " + N.APELLIDO_M });
+            }
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
 
+        //[HttpGet]
+        //public JsonResult Grupos(string bukrs, string pais, string user)
+        //{
+        //    TAT001Entities db = new TAT001Entities();
+        //    var c = (from N in db.CREADOR2
+        //             where N.BUKRS == bukrs & N.LAND == pais & N.ID.Equals(user)
+        //             //where N.BUKRS.Equals(bukrs) 
+        //             select new { N.AGROUP_ID });
+        //    JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+        //    return cc;
+        //}
         [HttpGet]
-        public JsonResult Grupos(string bukrs, string pais, string user)
+        public JsonResult Grupos(string pais, string user, string vkorg, string vtweg, string spart, string kunnr)
         {
             TAT001Entities db = new TAT001Entities();
-            var c = (from N in db.CREADOR2
-                     where N.BUKRS == bukrs & N.LAND == pais & N.ID.Equals(user)
-                     //where N.BUKRS.Equals(bukrs) 
-                     select new { N.AGROUP_ID });
+            var c = (from N in db.DET_AGENTEC
+                     where N.PAIS_ID == pais
+                     & N.USUARIOC_ID.Equals(user)
+                     & N.VKORG.Equals(vkorg)
+                     & N.VTWEG.Equals(vtweg)
+                     & N.SPART.Equals(spart)
+                     & N.KUNNR.Equals(kunnr)
+                     select new { N.POS });
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
         }
@@ -526,13 +569,27 @@ namespace TAT001.Controllers
             var list = new List<MATERIALGPT>();
             if (jd.Count > 0)
             {
+                //MATERIALGPT c = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
+                //MATERIALGPT cc = new MATERIALGPT();
+                //cc.SPRAS_ID = c.SPRAS_ID;
+                //cc.MATERIALGP_ID = c.MATERIALGP_ID;
+                //cc.TXT50 = c.TXT50;
+                //list.Add(cc);
                 MATERIALGPT c = db.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras) & a.MATERIALGP_ID.Equals("000")).FirstOrDefault();
-                MATERIALGPT cc = new MATERIALGPT();
-                cc.SPRAS_ID = c.SPRAS_ID;
-                cc.MATERIALGP_ID = c.MATERIALGP_ID;
-                cc.TXT50 = c.TXT50;
+                MATERIALGPT cc = new MATERIALGPT();//B20180625 MGC 2018.07.02
+                if (c != null)//B20180625 MGC 2018.07.02
+                {
+                    cc.SPRAS_ID = c.SPRAS_ID;
+                    cc.TXT50 = c.TXT50;
+
+                }
+                else
+                {
+                    cc.MATERIALGP_ID = "000";
+                }
                 list.Add(cc);
             }
+
             foreach (var line in jd)
             {
                 bool ban = true;
@@ -605,5 +662,58 @@ namespace TAT001.Controllers
             JsonResult jl = Json(f.ToShortDateString(), JsonRequestBehavior.AllowGet);
             return jl;
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult SelectCliente(string kunnr)
+        {
+
+            TAT001Entities db = new TAT001Entities();
+
+            CLIENTE_MOD id_cl = (from c in db.CLIENTEs
+                                 join co in db.CONTACTOCs
+                                 on new { c.VKORG, c.VTWEG, c.SPART, c.KUNNR } equals new { co.VKORG, co.VTWEG, co.SPART, co.KUNNR } into jjcont
+                                 from co in jjcont.DefaultIfEmpty()
+                                 where (c.KUNNR == kunnr & co.DEFECTO == true)
+                                 select new CLIENTE_MOD
+                                 {
+                                     VKORG = c.VKORG,
+                                     VTWEG = c.VTWEG,
+                                     SPART = c.SPART,//RSG 28.05.2018-------------------
+                                     NAME1 = c.NAME1,
+                                     KUNNR = c.KUNNR,
+                                     STCD1 = c.STCD1,
+                                     PARVW = c.PARVW,
+                                     BANNER = c.BANNER,
+                                     CANAL = c.CANAL,
+                                     PAYER_NOMBRE = co == null ? String.Empty : co.NOMBRE,
+                                     PAYER_EMAIL = co == null ? String.Empty : co.EMAIL,
+                                 }).FirstOrDefault();
+
+            if (id_cl == null)
+            {
+                id_cl = (from c in db.CLIENTEs
+                         where (c.KUNNR == kunnr)
+                         select new CLIENTE_MOD
+                         {
+                             VKORG = c.VKORG,
+                             VTWEG = c.VTWEG,
+                             SPART = c.SPART,//RSG 28.05.2018-------------------
+                             NAME1 = c.NAME1,
+                             KUNNR = c.KUNNR,
+                             STCD1 = c.STCD1,
+                             PARVW = c.PARVW,
+                             BANNER = c.BANNER,
+                             CANAL = c.CANAL,
+                             PAYER_NOMBRE = String.Empty,
+                             PAYER_EMAIL = String.Empty,
+                         }).FirstOrDefault();
+            }
+
+
+            JsonResult jc = Json(id_cl, JsonRequestBehavior.AllowGet);
+            return jc;
+        }
+
     }
 }

@@ -46,5 +46,7 @@ namespace TAT001.Entities
         public Nullable<bool> ASSIGNACION { get; set; }
         public Nullable<int> QUANTITY { get; set; }
         public string BASE_UNIT { get; set; }
+        public string MATERIALGP { get; set; }
+        public string TAXCODEGP { get; set; }
     }
 }

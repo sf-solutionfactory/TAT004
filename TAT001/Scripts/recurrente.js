@@ -76,6 +76,7 @@ function cambiaRec() {
     var tipo = document.getElementById("select_neg").value;
     var montoo = document.getElementById("monto_dis").value;
 
+    if (radio != null) //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
     if (radio.checked)
         if (campo.checked) {
             if (montoo === "") {
@@ -207,7 +208,7 @@ function addRowRecl(t, pos, tsol, fecha, monto, porc) {
     ]).draw(false);
 }
 
-function enviaRec() {
+function enviaRec(borrador) { //B20180625 MGC 2018.07.03
 
     var lengthT = $("table#table_rec tbody tr[role='row']").length;
     var tipo = document.getElementById("select_neg").value;
@@ -229,7 +230,7 @@ function enviaRec() {
         }
 
         var poss = 0;
-        $('#table_rec > tbody  > tr').each(function () {
+        $("#table_rec > tbody  > tr[role='row']").each(function () { //B20180625 MGC 2018.07.03
             poss++;
 
             var pos = $(this).find("td.POS").text();
@@ -266,7 +267,10 @@ function enviaRec() {
             i++;
             item = "";
 
-            //$(this).addClass('selected');
+            //$(this).addClass('selected');            
+            if (borrador != "X") { //B20180625 MGC 2018.07.03
+            $(this).addClass('selected');
+        }
 
         });
 
@@ -282,7 +286,9 @@ function enviaRec() {
                 if (data !== null || data !== "") {
 
                     $("table#table_rech tbody").append(data);
-                    $('#delRow').click();
+                    if (borrador != "X") { //B20180625 MGC 2018.07.03
+                        $('#delRow').click();
+                    }
                 }
 
             },

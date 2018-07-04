@@ -279,6 +279,8 @@
     <Property Name="ASSIGNACION" Type="bit" />
     <Property Name="QUANTITY" Type="int" />
     <Property Name="BASE_UNIT" Type="nchar" MaxLength="3" />
+    <Property Name="MATERIALGP" Type="nvarchar" MaxLength="30" />
+    <Property Name="TAXCODEGP" Type="nchar" MaxLength="2" />
   </EntityType>
   <EntityType Name="CONSOPORTE">
     <Key>
@@ -490,6 +492,26 @@
     <Property Name="VERSION" Type="int" Nullable="false" />
     <Property Name="PUESTOA_ID" Type="int" />
     <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DET_TAXEOC">
+    <Key>
+      <PropertyRef Name="USUARIOC_ID" />
+      <PropertyRef Name="PAIS_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="VERSION" />
+    </Key>
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+    <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="VERSION" Type="int" Nullable="false" />
+    <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="DOCUMENTBORR">
@@ -1020,6 +1042,18 @@
     <Property Name="FECHAI" Type="date" Nullable="false" />
     <Property Name="FECHAF" Type="date" Nullable="false" />
     <Property Name="FECHAN" Type="date" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NOTICIA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FECHAI" Type="date" Nullable="false" />
+    <Property Name="FECHAF" Type="date" Nullable="false" />
+    <Property Name="PATH" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="FECHAC" Type="datetime" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PAGINA">
@@ -2996,6 +3030,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_NOTICIA_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+    <End Role="NOTICIA" Type="Self.NOTICIA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="NOTICIA">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_PAGINA_CARPETA">
     <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="0..1" />
     <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="*" />
@@ -3902,6 +3948,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="CPS_LISTA_CLI_PRO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="CSP_BANNERSINCANAL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="CSP_CAMBIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="sociedad" Type="nvarchar" Mode="In" />
@@ -4025,6 +4072,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DET_APROBP" EntityType="Self.DET_APROBP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_TAX" EntityType="Self.DET_TAX" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_TAXEO" EntityType="Self.DET_TAXEO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DET_TAXEOC" EntityType="Self.DET_TAXEOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
@@ -4056,6 +4104,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NEGOCIACION" EntityType="Self.NEGOCIACION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NOTICIA" EntityType="Self.NOTICIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
@@ -4605,6 +4654,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_MIEMBROS_USUARIO" Association="Self.FK_MIEMBROS_USUARIO">
       <End Role="USUARIO" EntitySet="USUARIO" />
       <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NOTICIA_USUARIO" Association="Self.FK_NOTICIA_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="NOTICIA" EntitySet="NOTICIA" />
     </AssociationSet>
     <AssociationSet Name="FK_PAGINA_CARPETA" Association="Self.FK_PAGINA_CARPETA">
       <End Role="CARPETA" EntitySet="CARPETA" />

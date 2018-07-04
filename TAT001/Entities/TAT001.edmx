@@ -284,6 +284,8 @@
           <Property Name="ASSIGNACION" Type="bit" />
           <Property Name="QUANTITY" Type="int" />
           <Property Name="BASE_UNIT" Type="nchar" MaxLength="3" />
+          <Property Name="MATERIALGP" Type="nvarchar" MaxLength="30" />
+          <Property Name="TAXCODEGP" Type="nchar" MaxLength="2" />
         </EntityType>
         <EntityType Name="CONSOPORTE">
           <Key>
@@ -495,6 +497,26 @@
           <Property Name="VERSION" Type="int" Nullable="false" />
           <Property Name="PUESTOA_ID" Type="int" />
           <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DET_TAXEOC">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="PAIS_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="PAIS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="USUARIOA_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DOCUMENTBORR">
@@ -1025,6 +1047,18 @@
           <Property Name="FECHAI" Type="date" Nullable="false" />
           <Property Name="FECHAF" Type="date" Nullable="false" />
           <Property Name="FECHAN" Type="date" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOTICIA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FECHAI" Type="date" Nullable="false" />
+          <Property Name="FECHAF" Type="date" Nullable="false" />
+          <Property Name="PATH" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAC" Type="datetime" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PAGINA">
@@ -3001,6 +3035,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NOTICIA_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="0..1" />
+          <End Role="NOTICIA" Type="Self.NOTICIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTICIA">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PAGINA_CARPETA">
           <End Role="CARPETA" Type="Self.CARPETA" Multiplicity="0..1" />
           <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="*" />
@@ -3907,6 +3953,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CPS_LISTA_CLI_PRO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CSP_BANNERSINCANAL" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="CSP_CAMBIO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="sociedad" Type="nvarchar" Mode="In" />
@@ -4030,6 +4077,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="DET_APROBP" EntityType="Self.DET_APROBP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_TAX" EntityType="Self.DET_TAX" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DET_TAXEO" EntityType="Self.DET_TAXEO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DET_TAXEOC" EntityType="Self.DET_TAXEOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTBORR" EntityType="Self.DOCUMENTBORR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTO" EntityType="Self.DOCUMENTO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DOCUMENTOA" EntityType="Self.DOCUMENTOA" Schema="dbo" store:Type="Tables" />
@@ -4061,6 +4109,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NEGOCIACION" EntityType="Self.NEGOCIACION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOTICIA" EntityType="Self.NOTICIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAGINA" EntityType="Self.PAGINA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAGINAT" EntityType="Self.PAGINAT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PAIS" EntityType="Self.PAIS" Schema="dbo" store:Type="Tables" />
@@ -4610,6 +4659,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_MIEMBROS_USUARIO" Association="Self.FK_MIEMBROS_USUARIO">
             <End Role="USUARIO" EntitySet="USUARIO" />
             <End Role="MIEMBROS" EntitySet="MIEMBROS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTICIA_USUARIO" Association="Self.FK_NOTICIA_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="NOTICIA" EntitySet="NOTICIA" />
           </AssociationSet>
           <AssociationSet Name="FK_PAGINA_CARPETA" Association="Self.FK_PAGINA_CARPETA">
             <End Role="CARPETA" EntitySet="CARPETA" />
@@ -5222,6 +5275,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="ASSIGNACION" Type="Boolean" />
           <Property Name="QUANTITY" Type="Int32" />
           <Property Name="BASE_UNIT" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
+          <Property Name="MATERIALGP" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TAXCODEGP" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="CONSOPORTE">
           <Key>
@@ -6837,6 +6892,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
           <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+          <NavigationProperty Name="NOTICIAs" Relationship="TAT001Model.FK_NOTICIA_USUARIO" FromRole="USUARIO" ToRole="NOTICIA" />
         </EntityType>
         <EntityType Name="USUARIOSAP">
           <Key>
@@ -9944,6 +10000,13 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="DET_TAXEOC" EntityType="TAT001Model.DET_TAXEOC" />
+          <EntitySet Name="NOTICIAs" EntityType="TAT001Model.NOTICIA" />
+          <AssociationSet Name="FK_NOTICIA_USUARIO" Association="TAT001Model.FK_NOTICIA_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="NOTICIA" EntitySet="NOTICIAs" />
+          </AssociationSet>
+          <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -10051,6 +10114,62 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="Int32" Name="ID" Nullable="false" />
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="DET_TAXEOC">
+          <Key>
+            <PropertyRef Name="USUARIOC_ID" />
+            <PropertyRef Name="PAIS_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="USUARIOC_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="PAIS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="USUARIOA_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOTICIA">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FECHAI" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FECHAF" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PATH" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_NOTICIA_USUARIO" FromRole="NOTICIA" ToRole="USUARIO" />
+        </EntityType>
+        <Association Name="FK_NOTICIA_USUARIO">
+          <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="TAT001Model.NOTICIA" Role="NOTICIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTICIA">
+              <PropertyRef Name="USUARIOC_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
+          <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="NAME1" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="PROVEEDOR_ID" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="NOMBRE" Nullable="true" MaxLength="250" />
+          <Property Type="String" Name="LANDX" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="VKORG" Nullable="false" MaxLength="4" />
+          <Property Type="String" Name="CANAL" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CONTAC" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="CONT_EMAIL" Nullable="true" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -10304,6 +10423,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CONPOSAPPs">
             <EntityTypeMapping TypeName="TAT001Model.CONPOSAPP">
               <MappingFragment StoreEntitySet="CONPOSAPP">
+                <ScalarProperty Name="TAXCODEGP" ColumnName="TAXCODEGP" />
+                <ScalarProperty Name="MATERIALGP" ColumnName="MATERIALGP" />
                 <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
                 <ScalarProperty Name="POSICION" ColumnName="POSICION" />
                 <ScalarProperty Name="RELACION" ColumnName="RELACION" />
@@ -12081,6 +12202,49 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="DET_TAXEOC">
+            <EntityTypeMapping TypeName="TAT001Model.DET_TAXEOC">
+              <MappingFragment StoreEntitySet="DET_TAXEOC">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="USUARIOA_ID" ColumnName="USUARIOA_ID" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+                <ScalarProperty Name="SPART" ColumnName="SPART" />
+                <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+                <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+                <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTICIAs">
+            <EntityTypeMapping TypeName="TAT001Model.NOTICIA">
+              <MappingFragment StoreEntitySet="NOTICIA">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="PATH" ColumnName="PATH" />
+                <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+                <ScalarProperty Name="FECHAI" ColumnName="FECHAI" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CPS_LISTA_CLI_PRO" FunctionName="TAT001Model.Store.CPS_LISTA_CLI_PRO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="TAT001Model.CPS_LISTA_CLI_PRO_Result">
+                <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+                <ScalarProperty Name="NAME1" ColumnName="NAME1" />
+                <ScalarProperty Name="PROVEEDOR_ID" ColumnName="PROVEEDOR_ID" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="LANDX" ColumnName="LANDX" />
+                <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+                <ScalarProperty Name="CANAL" ColumnName="CANAL" />
+                <ScalarProperty Name="CONTAC" ColumnName="CONTAC" />
+                <ScalarProperty Name="CONT_EMAIL" ColumnName="CONT_EMAIL" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
