@@ -4541,6 +4541,7 @@ namespace TAT001.Controllers
                                  {
                                      VKORG = c.VKORG,
                                      VTWEG = c.VTWEG,
+                                     VTWEG2 = c.VTWEG,//RSG 05.07.2018
                                      SPART = c.SPART,//RSG 28.05.2018-------------------
                                      NAME1 = c.NAME1,
                                      KUNNR = c.KUNNR,
@@ -4560,6 +4561,7 @@ namespace TAT001.Controllers
                          {
                              VKORG = c.VKORG,
                              VTWEG = c.VTWEG,
+                             VTWEG2 = c.VTWEG,//RSG 05.07.2018
                              SPART = c.SPART,//RSG 28.05.2018-------------------
                              NAME1 = c.NAME1,
                              KUNNR = c.KUNNR,

@@ -4449,6 +4449,8 @@ function selectCliente(valu) {
                         $('#payer_email').val(data.PAYER_EMAIL);
                         $("label[for='payer_email']").addClass("active");
                     }
+                    $("#txt_vkorg").val(data.VKORG);//RSG 05.07.2018
+                    $("#txt_vtweg").val(data.VTWEG2);//RSG 05.07.2018
                     //RSG 28.05.2018------------------------------------------
                     //MGC B20180611
                     if (!isRelacionada()) {
@@ -4471,6 +4473,8 @@ function selectCliente(valu) {
                     $("label[for='payer_nombre']").removeClass("active");
                     $('#payer_email').val("");
                     $("label[for='payer_email']").removeClass("active");
+                    $("#txt_vkorg").val("");//RSG 05.07.2018
+                    $("#txt_vtweg").val("");//RSG 05.07.2018
                 }
 
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
@@ -4491,6 +4495,8 @@ function selectCliente(valu) {
                 $('#payer_email').val("");
                 $("label[for='payer_email']").removeClass("active");
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
+                $("#txt_vkorg").val("");//RSG 05.07.2018
+                $("#txt_vtweg").val("");//RSG 05.07.2018
             },
             async: true
         });

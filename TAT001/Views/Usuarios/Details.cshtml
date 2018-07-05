@@ -163,14 +163,14 @@
                                                             <label for="mtxt_kun">Cliente</label>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
+                                                    <div class="">
                                                         <div id="q">
 
                                                             @{
-                                                                int poss = Model.DET_AGENTEC.Where(a => a.KUNNR.Equals(item.KUNNR) & a.POS != 99).OrderByDescending(a => a.POS).FirstOrDefault().POS;
-                                                                foreach (var input in Model.DET_AGENTEC.Where(a => a.KUNNR.Equals(item.KUNNR)).ToList())
+                                                                int poss = Model.DET_AGENTEC.Where(a => a.PAIS_ID.Equals(item.PAIS_ID) & a.KUNNR.Equals(item.KUNNR) & a.POS != 99).OrderByDescending(a => a.POS).FirstOrDefault().POS;
+                                                                foreach (var input in Model.DET_AGENTEC.Where(a => a.PAIS_ID.Equals(item.PAIS_ID) & a.KUNNR.Equals(item.KUNNR)).ToList())
                                                                 {
-                                                                    <div class="row">
+                                                                    <div class="row" style="margin-bottom:0;">
                                                                         <div class="input-field col s4">
                                                                             <input type="text" value="@input.USUARIOA_ID" name="@item.PAIS_ID-@item.KUNNR-@input.POS" id="@item.PAIS_ID-@item.KUNNR-@input.POS" />
                                                                             <label for="@item.PAIS_ID-@item.KUNNR-@input.POS">@input.USUARIO1.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</label>
@@ -203,7 +203,7 @@
                                                                             }
                                                                             if (input.MONTO != null)
                                                                             {
-                                                                                <div class="col s1">
+                                                                                <div class="col s2">
                                                                                     <label>Monto</label>
                                                                                     <div class="switch">
                                                                                         <label>
@@ -220,7 +220,7 @@
                                                                             else
                                                                             {
 
-                                                                                <div class="col s1">
+                                                                                <div class="col s2">
                                                                                     <label>Monto</label>
                                                                                     <div class="switch">
                                                                                         <label>
@@ -409,7 +409,7 @@
                         <label for="txt_soc">Sociedad</label>
                     </div>*@
                 <div class="input-field col s6">
-                    <select id="txt_pai" name="txt_pai" required="required" onchange="document.getElementById('txt_clie').value = ''">
+                    <select id="txt_pai" name="txt_pai" required="required" onchange="document.getElementById('txt_clie').value = '';$('#lbl_puestos').empty();">
                         <option value=""></option>
                         @foreach (TAT001.Entities.PAI item in ViewBag.PAISES)
                         {
@@ -501,6 +501,9 @@
                         }
                     </script>
                 </div>
+            </div>
+
+            <div class="row">
                 <div id="lbl_puestos"></div>
                 @*@foreach (TAT001.Entities.DET_APROB item in ViewBag.APROBADORES)
                     {
@@ -615,15 +618,61 @@
                     var pp = ($.map(data, function (item) {
                         return { pos: item.POS, label: item.TXT50, value: item.Value, monto: item.MONTO, presup: item.PRESUPUESTO };
                     }))
+                    var poss = 0;
                     for (var i = 0; i < pp.length; i++) {
-                        //var div = "<div class='input-field col s6'>" + formaInpPuestos(pp[i]) + "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div>"
-                        var div = "<div class='row'><div class='input-field col s4'>" +
-                            "<input id='txt_p-" + pp[i].value + "' name='txt_p-" + pp[i].value + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
-                            "<label for='txt_p-" + pp[i].value + "'>" + pp[i].label + "</label></div><div class='col s8'>" + pp[i].monto + "-" + pp[i].presup + "</div></div>";
-                        $("#lbl_puestos").append(div);
-                        autocompleta("txt_p-" + pp[i].value, pp[i].value, false);
+                        if (pp[i].pos < 98) {
+                            if (pp[i].pos > poss)
+                                poss = pp[i].pos;
+                        }
+                    }
+                    var div = "<div class='row'><ul class='collapsible expandable' ><li class='active'><div class='collapsible-header'>Aprobadores</div><div class='collapsible-body'>";
+                    for (var i = 0; i < pp.length; i++) {
+                        if (pp[i].pos < 97) {
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+
+                            if (pp[i].pos != poss && pp[i].pos < 97) {
+                                if (pp[i].presup) {
+                                    div += "<div class='col s2'><label>Presupuesto</label><div class='switch'><label>" +
+                                        "<input checked type='checkbox' id='txt_presup-" + pp[i].pos + "'  name='txt_presup'><span class='lever'></span></label></div></div>";
+                                } else {
+                                    div += "<div class='col s2'><label>Presupuesto</label><div class='switch'><label>" +
+                                        "<input type='checkbox' id='txt_presup' name='txt_presup-" + pp[i].pos + "' ><span class='lever'></span></label></div></div>";
+                                }
+                                if (pp[i].monto == null) {
+                                    div += "<div class='col s2'><label>Monto</label><div class='switch'><label>" +
+                                        "<input onchange='cambiaMonto(this.id)' type='checkbox' id='" + pp[i].pos + "-t-t-ch_monto' name='" + pp[i].pos + "-t-t-ch_monto'><span class='lever'></span></label></div></div>";
+                                    div += "<div class='input-field col s4 hide' id='" + pp[i].pos + "-t-t-montoDiv'><input type='text' value='0' name='txt_monto-" + pp[i].pos + "'  id='txt_monto' />" +
+                                        "<label for='txt_monto' class='active'>Monto</label></div>";
+                                } else {
+                                    div += "<div class='col s2'><label>Monto</label><div class='switch'><label>" +
+                                        "<input onchange='cambiaMonto(this.id)' checked type='checkbox' id='" + pp[i].pos + "-t-t-ch_monto' name='" + pp[i].pos + "-t-t-ch_monto'><span class='lever'></span></label></div></div>";
+                                    div += "<div class='input-field col s4' id='" + pp[i].pos + "-t-t-montoDiv'><input type='text' value='" + pp[i].monto + "' name='txt_monto-" + pp[i].pos + "'  id='txt_monto' />" +
+                                        "<label for='txt_monto' class='active'>Monto</label></div>";
+                                }
+                            }
+                        } else if (pp[i].pos == 98) {
+                            div += "</li><li class='active'><div class='collapsible-header'>Taxeo</div><div class='collapsible-body'>";
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+                        } else if (pp[i].pos == 99){
+                            div += "</li><li class='active'><div class='collapsible-header'>Trade Spending</div><div class='collapsible-body'>";
+                            div += "<div class='row'><div class='input-field col s4'>" +
+                                "<input id='txt_p-" + pp[i].pos + "' name='txt_p-" + pp[i].pos + "' type='text' class='seleccUser' onchange='autorizadores();' />" +
+                                "<label for='txt_p-" + pp[i].pos + "'>" + pp[i].label + "</label></div>";
+                        }
+                        div += "</div>";
                     }
                     campos_p = pp;
+                    $("#lbl_puestos").append(div);
+                    for (var i = 0; i < pp.length; i++) {
+                        autocompleta("txt_p-" + pp[i].pos, pp[i].value, false);
+                    }
+                    div = "";
+                    var elems = document.querySelectorAll('.collapsible');
+                    var instances = M.Collapsible.init(elems, { accordion: false });
                 }
             });
 
@@ -724,7 +773,7 @@
                 }
 
                 for (var i = 0; i < campos_p.length; i++) {
-                    var value = document.getElementById("txt_p-" + campos_p[i].value).value;
+                    var value = document.getElementById("txt_p-" + campos_p[i].pos).value;
                     if (value != "") {
                         document.getElementById("btn_submit").className = "modal-action modal-close btn-flat";
                     } else {

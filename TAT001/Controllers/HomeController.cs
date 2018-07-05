@@ -143,14 +143,14 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                //Flujo 1
+                //Flujo 1 - Anterior
                 var p = from P in db.PAIS
                         join C in db.CREADOR2 on P.LAND equals C.LAND
                         where P.ACTIVO == true
                         & C.ID == u & C.ACTIVO == true
                         select P;
 
-                //flujo2
+                ////flujo2
                 //var p = from P in db.PAIS.ToList()
                 //        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
                 //        on P.LAND equals C.PAIS_ID

@@ -1,13 +1,20 @@
 ﻿
 $('body').on('keydown.autocomplete', '.input_material', function () {
     var tr = $(this).closest('tr'); //Obtener el row
+    var vk = '0152';
+    vk = document.getElementById("txt_vkorg").value;
+    var vt = '50';
+    vt = document.getElementById("txt_vtweg").value;
+    var sp = 'ES';
+    sp = document.getElementById("txt_spras").value;
     auto(this).autocomplete({
         source: function (request, response) {
             auto.ajax({
                 type: "POST",
-                url: 'materiales',
+                url: 'materiales',//Anterior
+                //url: '../Listas/materiales',
                 dataType: "json",
-                data: { "Prefix": request.term },
+                data: { "Prefix": request.term, vkorg: vk, vtweg: vt, spras: sp },
                 success: function (data) {
                     response(auto.map(data, function (item) {
                         //return { label: item.ID + " - " + item.MAKTX, value: item.ID };

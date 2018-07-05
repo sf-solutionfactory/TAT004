@@ -42,6 +42,7 @@ namespace TAT001.Entities
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
+            this.MATERIALTs = new HashSet<MATERIALT>();
         }
     
         public string ID { get; set; }
@@ -97,5 +98,7 @@ namespace TAT001.Entities
         public virtual ICollection<WARNING> WARNINGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALT> MATERIALTs { get; set; }
     }
 }

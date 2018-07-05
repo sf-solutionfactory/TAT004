@@ -14,6 +14,13 @@ namespace TAT001.Entities
     
     public partial class MATERIAL
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MATERIAL()
+        {
+            this.MATERIALVKEs = new HashSet<MATERIALVKE>();
+            this.MATERIALTs = new HashSet<MATERIALT>();
+        }
+    
         public string ID { get; set; }
         public string MTART { get; set; }
         public string MATKL_ID { get; set; }
@@ -30,5 +37,9 @@ namespace TAT001.Entities
         public virtual ZBRAND ZBRAND { get; set; }
         public virtual MATERIALGP MATERIALGP { get; set; }
         public virtual UMEDIDA UMEDIDA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALVKE> MATERIALVKEs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALT> MATERIALTs { get; set; }
     }
 }

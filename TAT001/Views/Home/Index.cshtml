@@ -15,8 +15,17 @@
     if (String.IsNullOrEmpty(ViewBag.imgnoticia) == false)
     {
         <div class="parallax-container" style="height:250px;">
-            <img src="@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+            <div class="@*parallax*@">
+                <img src="@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+            </div>
         </div>
+
+        @*<script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.parallax');
+                var instances = M.Parallax.init(elems, options);
+            });
+        </script>*@
     }
 }
 ////jemo inicio 4/07/2018

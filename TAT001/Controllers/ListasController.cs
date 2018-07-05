@@ -44,7 +44,7 @@ namespace TAT001.Controllers
         public JsonResult Clientes(string Prefix, string usuario, string pais)
         {
             usuario = "";//Anterior
-            pais = "";
+            pais = "";//Anterior
             if (Prefix == null)
                 Prefix = "";
 
@@ -158,8 +158,12 @@ namespace TAT001.Controllers
                     var col = (from St in db.PUESTOTs
                                where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
                                //where N.BUKRS.Equals(bukrs) 
-                               select new { POS = 98, Value = St.PUESTO_ID, St.TXT50, MONTO = (decimal?)decimal.Parse("-1"), PRESUPUESTO = false });
-                    c.AddRange(col);
+                               select new { POS = 98, Value = St.PUESTO_ID, St.TXT50, PRESUPUESTO = false });
+                    foreach(var coll in col)
+                    {
+                        var colll = new { POS = 98, Value = coll.Value, coll.TXT50, MONTO = (decimal?)decimal.Parse("-1"), PRESUPUESTO = false };
+                        c.Add(colll);
+                    }
                 }
                 var ca = c.OrderBy(a => a.POS);
                 JsonResult cc = Json(ca, JsonRequestBehavior.AllowGet);
@@ -717,5 +721,38 @@ namespace TAT001.Controllers
             return jc;
         }
 
+        [HttpPost]
+        public JsonResult materiales(string Prefix, string vkorg, string vtweg, string spras)
+        {
+            if (Prefix == null)
+                Prefix = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from m in db.MATERIALs
+                     join g in db.MATERIALVKEs
+                     on m.ID equals g.MATERIAL_ID
+                     join t in db.MATERIALTs
+                     on m.ID equals t.MATERIAL_ID
+                     where m.ID.Contains(Prefix) && m.ACTIVO == true && m.MATERIALGP_ID != null
+                         && g.VKORG == vkorg && g.VTWEG == vtweg
+                         && t.SPRAS == spras
+                     select new { m.ID, t.MAKTX }).ToList();
+            if (c.Count == 0)
+            {
+                var c2 = (from m in db.MATERIALs
+                          join g in db.MATERIALVKEs
+                          on m.ID equals g.MATERIAL_ID
+                          join t in db.MATERIALTs
+                          on m.ID equals t.MATERIAL_ID
+                          where m.MAKTX.Contains(Prefix) && m.ACTIVO == true && m.MATERIALGP_ID != null
+                         && g.VKORG == vkorg && g.VTWEG == vtweg
+                         && t.SPRAS == spras
+                          select new { m.ID, t.MAKTX }).ToList();
+                c.AddRange(c2);
+            }
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
     }
 }

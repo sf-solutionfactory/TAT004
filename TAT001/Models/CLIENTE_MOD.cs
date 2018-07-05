@@ -9,6 +9,7 @@ namespace TAT001.Models
     {
         public string VKORG { get; set; }
         public string VTWEG { get; set; }
+        public string VTWEG2 { get; set; }//RSG 05.07.2018
         public string SPART { get; set; }
         public string KUNNR { get; set; }
         public string NAME1 { get; set; }

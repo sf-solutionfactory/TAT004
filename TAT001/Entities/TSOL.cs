@@ -30,6 +30,7 @@ namespace TAT001.Entities
         public string ESTATUS { get; set; }
         public bool FACTURA { get; set; }
         public bool PADRE { get; set; }
+        public bool ADICIONA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }

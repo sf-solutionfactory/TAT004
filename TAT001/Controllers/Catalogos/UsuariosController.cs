@@ -27,7 +27,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -68,7 +68,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -103,7 +103,7 @@ namespace TAT001.Controllers.Catalogos
             ViewBag.BUNIT = new SelectList(db.SOCIEDADs, "BUKRS", "BUKRS", uSUARIO.BUNIT);
             ViewBag.ROLES = db.ROLTs.Where(a => a.SPRAS_ID.Equals(spra));
             ViewBag.SOCIEDADES = db.SOCIEDADs;
-            ViewBag.PAISES = db.PAIS.Where(a=>a.SOCIEDAD_ID != null & a.ACTIVO == true).ToList();
+            ViewBag.PAISES = db.PAIS.Where(a => a.SOCIEDAD_ID != null & a.ACTIVO == true).ToList();
             ViewBag.APROBADORES = db.DET_APROB.Where(a => a.BUKRS.Equals("KCMX") & a.PUESTOC_ID == uSUARIO.PUESTO_ID).ToList();
             return View(uSUARIO);
         }
@@ -119,7 +119,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -203,7 +203,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -242,7 +242,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -304,7 +304,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -369,7 +369,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -436,7 +436,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -466,7 +466,7 @@ namespace TAT001.Controllers.Catalogos
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
@@ -509,128 +509,126 @@ namespace TAT001.Controllers.Catalogos
         public ActionResult AgregarRol(USUARIO u)
         {
             int rol = Int32.Parse(Request.Form["txt_rol"].ToString());
-            string soc = Request.Form["txt_soc"].ToString();
-            string pais = Request.Form["txt_pai"].ToString();
+            string pais = Request.Form["txt_pai"].ToString().Split('-')[0];
+            string vkorg = Request.Form["txt_vkor"].ToString();
+            string vtweg = Request.Form["txt_vtwe"].ToString();
+            string spart = Request.Form["txt_spar"].ToString();
+            string kunnr = Request.Form["txt_clie"].ToString();
+            string soc = Request.Form["txt_pai"].ToString().Split('-')[1];
 
-            MIEMBRO m = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(u.ID) & a.ROL_ID == rol).FirstOrDefault();
-            if (m == null)
+            //MIEMBRO m = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(u.ID) & a.ROL_ID == rol).FirstOrDefault();
+            //if (m == null)
+            //{
+            //    m = new MIEMBRO();
+            //    m.ROL_ID = rol;
+            //    m.USUARIO_ID = u.ID;
+            //    m.ACTIVO = true;
+            //    db.MIEMBROS.Add(m);
+            //}
+
+            ////List<DET_APROB> dd = db.DET_APROB.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.BUKRS.Equals(soc)).ToList();
+            //GAUTORIZACION ga = new GAUTORIZACION();
+            //ga.LAND = pais;
+            //ga.BUKRS = soc;
+            //ga.CLAVE = pais;
+            //ga.NOMBRE = soc;
+            ////db.GAUTORIZACIONs.Add(ga);
+            //USUARIO user = db.USUARIOs.Find(u.ID);
+            //user.GAUTORIZACIONs.Add(ga);
+            //db.Entry(user).State = EntityState.Modified;
+            //db.SaveChanges();
+
+            if (vkorg != "" && vtweg != "" && spart != "")
             {
-                m = new MIEMBRO();
-                m.ROL_ID = rol;
-                m.USUARIO_ID = u.ID;
-                m.ACTIVO = true;
-                db.MIEMBROS.Add(m);
-            }
 
-            //List<DET_APROB> dd = db.DET_APROB.Where(a => a.PUESTOC_ID == u.PUESTO_ID & a.BUKRS.Equals(soc)).ToList();
-            GAUTORIZACION ga = new GAUTORIZACION();
-            ga.LAND = pais;
-            ga.BUKRS = soc;
-            ga.CLAVE = pais;
-            ga.NOMBRE = soc;
-            //db.GAUTORIZACIONs.Add(ga);
-            USUARIO user = db.USUARIOs.Find(u.ID);
-            user.GAUTORIZACIONs.Add(ga);
-            db.Entry(user).State = EntityState.Modified;
-            db.SaveChanges();
-
-            ////foreach (DET_APROB d in dd)
-            ////{
-            ////    DET_AGENTE da = new DET_AGENTE();
-            ////    da.PUESTOC_ID = (int)u.PUESTO_ID;
-            ////    da.USUARIOC = u.ID;
-            ////    da.POS = d.POS;
-            ////    da.PUESTOA_ID = d.PUESTOA_ID;
-            ////    da.USUARIOA = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
-            ////    da.ACTIVO = true;
-            ////    da.AGROUP_ID = ga.ID;
-            ////    da.MONTO = d.MONTO;
-            ////    da.PRESUPUESTO = d.PRESUPUESTO;
-            ////    db.DET_AGENTE.Add(da);
-
-
-            ////    string us = Request.Form["txt_p-" + d.PUESTOA_ID].ToString();
-            ////    USUARIO uu = db.USUARIOs.Find(us);
-            ////    uu.GAUTORIZACIONs.Add(ga);
-            ////    db.Entry(uu).State = EntityState.Modified;
-
-            ////    MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
-            ////    if (mi == null)
-            ////    {
-            ////        mi = new MIEMBRO();
-            ////        mi.ROL_ID = 2;
-            ////        mi.USUARIO_ID = uu.ID;
-            ////        mi.ACTIVO = true;
-            ////        db.MIEMBROS.Add(mi);
-            ////    }
-
-            ////    db.SaveChanges();
-            ////}
-            //string rol = Request.Form["txt_p-3"].ToString();
-
-            DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID).OrderByDescending(a => a.VERSION).FirstOrDefault();
-            if (dh != null)
-            {
-                DET_AGENTEH dah = new DET_AGENTEH();
-                dah.SOCIEDAD_ID = dh.SOCIEDAD_ID;
-                dah.PUESTOC_ID = (int)u.PUESTO_ID;
-                dah.VERSION = dh.VERSION;
-                dah.AGROUP_ID = (int)ga.ID;
-                dah.USUARIOC_ID = u.ID;
-                dah.ACTIVO = true;
-                db.DET_AGENTEH.Add(dah);
-                db.SaveChanges();
-
-                List<DET_APROBP> ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.VERSION == dh.VERSION).ToList();
-                foreach (DET_APROBP dp in ddp)
+                DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID).OrderByDescending(a => a.VERSION).FirstOrDefault();
+                if (dh != null)
                 {
-                    DET_AGENTEP dap = new DET_AGENTEP();
-                    dap.SOCIEDAD_ID = dah.SOCIEDAD_ID;
-                    dap.PUESTOC_ID = dah.PUESTOC_ID;
-                    dap.VERSION = dah.VERSION;
-                    dap.AGROUP_ID = dah.AGROUP_ID;
-                    dap.POS = dp.POS;
-                    dap.PUESTOA_ID = dp.PUESTOA_ID;
-                    dap.USUARIOA_ID = Request.Form["txt_p-" + dp.PUESTOA_ID].ToString();
-                    dap.MONTO = dp.MONTO;
-                    dap.PRESUPUESTO = dp.PRESUPUESTO;
-                    dap.ACTIVO = true;
-                    dah.DET_AGENTEP.Add(dap);
-                    //dgp.Add(dap);
+                    DET_AGENTEH dah = new DET_AGENTEH();
+                    //dah.SOCIEDAD_ID = dh.SOCIEDAD_ID;
+                    //dah.PUESTOC_ID = (int)u.PUESTO_ID;
+                    //dah.VERSION = dh.VERSION;
+                    //dah.AGROUP_ID = (int)ga.ID;
+                    //dah.USUARIOC_ID = u.ID;
+                    //dah.ACTIVO = true;
+                    //db.DET_AGENTEH.Add(dah);
+                    //db.SaveChanges();
 
-                    ////string us = dap.USUARIOA_ID;
-                    ////USUARIO uu = db.USUARIOs.Find(us);
-                    ////uu.GAUTORIZACIONs.Add(ga);
-                    ////db.Entry(uu).State = EntityState.Modified;
+                    List<DET_APROBP> ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.PUESTOC_ID == u.PUESTO_ID & a.VERSION == dh.VERSION).ToList();
+                    foreach (DET_APROBP dp in ddp)
+                    {
+                        DET_AGENTEC dap = new DET_AGENTEC();
+                        dap.USUARIOC_ID = u.ID;
+                        dap.PAIS_ID = pais;
+                        dap.VKORG = vkorg;
+                        dap.VTWEG = vtweg;
+                        dap.SPART = spart;
+                        dap.KUNNR = kunnr;
+                        dap.VERSION = dah.VERSION;
+                        dap.POS = dp.POS;
+                        dap.USUARIOA_ID = Request.Form["txt_p-" + dp.POS].ToString();
+                        try
+                        {
+                            string pre = Request.Form["txt_presup-" + dp.POS].ToString();
+                            if (pre == "on")
+                                dap.PRESUPUESTO = true;
 
-                    ////MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
-                    ////if (mi == null)
-                    ////{
-                    ////    mi = new MIEMBRO();
-                    ////    mi.ROL_ID = 2;
-                    ////    mi.USUARIO_ID = uu.ID;
-                    ////    mi.ACTIVO = true;
-                    ////    db.MIEMBROS.Add(mi);
-                    ////}
+                        }
+                        catch
+                        {
+                            dap.PRESUPUESTO = false;
+                        }
+                        try
+                        {
+                            string mon = Request.Form["txt_monto-" + dp.POS].ToString();
+                            if (mon != "")
+                                dap.MONTO = decimal.Parse(mon);
 
+                        }
+                        catch
+                        {
+                            dap.MONTO = null;
+                        }
+
+                        //dap.PRESUPUESTO = dp.PRESUPUESTO;
+                        dap.ACTIVO = true;
+                        db.DET_AGENTEC.Add(dap);
+                        //dgp.Add(dap);
+
+                        ////string us = dap.USUARIOA_ID;
+                        ////USUARIO uu = db.USUARIOs.Find(us);
+                        ////uu.GAUTORIZACIONs.Add(ga);
+                        ////db.Entry(uu).State = EntityState.Modified;
+
+                        ////MIEMBRO mi = db.MIEMBROS.Where(a => a.USUARIO_ID.Equals(uu.ID) & a.ROL_ID == 2).FirstOrDefault();
+                        ////if (mi == null)
+                        ////{
+                        ////    mi = new MIEMBRO();
+                        ////    mi.ROL_ID = 2;
+                        ////    mi.USUARIO_ID = uu.ID;
+                        ////    mi.ACTIVO = true;
+                        ////    db.MIEMBROS.Add(mi);
+                        ////}
+
+                    }
+
+                    TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(soc) & a.ACTIVO == true).FirstOrDefault();
+                    if (tl != null)
+                    {
+                        DET_TAXEO dt = new DET_TAXEO();
+                        dt.SOCIEDAD_ID = soc;
+                        dt.PAIS_ID = pais;
+                        dt.PUESTOC_ID = dah.PUESTOC_ID;
+                        dt.USUARIOC_ID = dah.USUARIOC_ID;
+                        dt.VERSION = dah.VERSION;
+                        dt.PUESTOA_ID = 9;
+                        dt.USUARIOA_ID = Request.Form["txt_p-9"].ToString();
+                        dt.ACTIVO = true;
+                        db.DET_TAXEO.Add(dt);
+                    }
+
+                    db.SaveChanges();
                 }
-
-                TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(soc)& a.ACTIVO == true).FirstOrDefault();
-                if (tl != null)
-                {
-                    DET_TAXEO dt = new DET_TAXEO();
-                    dt.SOCIEDAD_ID = soc;
-                    dt.PAIS_ID = pais;
-                    dt.PUESTOC_ID = dah.PUESTOC_ID;
-                    dt.USUARIOC_ID = dah.USUARIOC_ID;
-                    dt.VERSION = dah.VERSION;
-                    dt.PUESTOA_ID = 9;
-                    dt.USUARIOA_ID = Request.Form["txt_p-9"].ToString();
-                    dt.ACTIVO = true;
-                    db.DET_TAXEO.Add(dt);
-                }
-
-                db.SaveChanges();
             }
             return RedirectToAction("Details", new { id = u.ID });
 

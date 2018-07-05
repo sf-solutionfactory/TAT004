@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -26,6 +27,7 @@ namespace TAT001.Controllers
             {
                 var _fi = DateTime.Parse(fi);
                 var _ff = DateTime.Parse(ff);
+                var _idN = db.NEGOCIACIONs.Where(x => x.FECHAI == _fi && x.FECHAF == _ff).FirstOrDefault().ID;
                 var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.PAYER_ID == pay && x.VKORG == vkorg && x.VTWEG == vtweg && x.SPART == spart && x.PAYER_EMAIL == correo && ((x.FECHAC.Value.Day >= _fi.Day && x.FECHAC.Value.Day <= _ff.Day) && x.FECHAC.Value.Month == _ff.Month && x.FECHAC.Value.Year == _ff.Year)).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).ToList();
                 for (int i = 0; i < dOCUMENTOes.Count; i++)
                 {
@@ -77,11 +79,13 @@ namespace TAT001.Controllers
                 ViewBag.KellCom = db.SOCIEDADs.Where(s => s.BUKRS == clSoc).Select(r => r.NAME1).FirstOrDefault();
                 ViewBag.cd = clCd;
                 ViewBag.edo = clEdo;
+                ViewBag.idf = _idN;
             }
-            catch (Exception) { }
+            catch (Exception e) {
+                e.ToString();
+            }
             return View(dx);
         }
-
         // GET: Negociaciones/Details/5
         public ActionResult Details(decimal id)
         {
@@ -147,77 +151,95 @@ namespace TAT001.Controllers
             return View();
         }
 
-        public void mandarCorreo(string pay, string vkorg, string vtweg, string spart, string correo, DateTime fi, DateTime ff)
+        public void mandarCorreo(string pay, string vkorg, string vtweg, string spart, string correo)
         {
-            MailMessage mail = new System.Net.Mail.MailMessage();
+            ////MailMessage mail = new System.Net.Mail.MailMessage();
 
-            mail.From = new MailAddress("lejgg017@gmail.com");
+            ////mail.From = new MailAddress("lejgg017@gmail.com");
 
-            mail.To.Add("luisengonzalez25@hotmail.com");
-            //mail.To.Add(correo);
-            mail.Subject = "Asunto";
+            //////mail.To.Add("rogelio.sanchez@sf-solutionfactory.com");
+            ////mail.To.Add(correo);
+            ////mail.Subject = "Asunto";
 
-            SmtpClient smtp = new SmtpClient();
+            ////SmtpClient smtp = new SmtpClient();
 
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 25; //465; //587
-            smtp.Credentials = new NetworkCredential("lejgg017@gmail.com", "24abril14");
-            smtp.EnableSsl = true;
-            try
+            ////smtp.Host = "smtp.gmail.com";
+            ////smtp.Port = 25; //465; //587
+            ////smtp.Credentials = new NetworkCredential("lejgg017@gmail.com", "24abril14");
+            ////smtp.EnableSsl = true;
+
+            string mailt = ConfigurationManager.AppSettings["mailt"];
+            string mtest = ConfigurationManager.AppSettings["mailtest"];
+            string mailTo = "";
+            if (mtest == "X")
+                mailTo = "rogelio.sanchez@sf-solutionfactory.com";
+            else
+                mailTo = correo;
+            CONMAIL conmail = db.CONMAILs.Find(mailt);
+            if (conmail != null)
             {
-                string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                UrlDirectory = UrlDirectory.Replace("armarCorreos", "Index");
-                UrlDirectory += "?pay=" + pay + "&vkorg=" + vkorg + "&vtweg=" + vtweg + "&spart=" + spart + "&correo=" + correo + "&fi=" + fi.ToShortDateString() + "&ff=" + ff.ToShortDateString();
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
-                myRequest.Method = "GET";
-                WebResponse myResponse = myRequest.GetResponse();
-                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
-                string result = sr.ReadToEnd();
-                sr.Close();
-                myResponse.Close();
-                mail.IsBodyHtml = true;
-                mail.Body = result;
-                smtp.Send(mail);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("No se ha podido enviar el email", ex.InnerException);
+                System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage(conmail.MAIL, mailTo);
+                SmtpClient client = new SmtpClient();
+                if (conmail.SSL)
+                {
+                    client.Port = (int)conmail.PORT;
+                    client.EnableSsl = conmail.SSL;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                }
+                else
+                {
+                    client.UseDefaultCredentials = true;
+                    client.Credentials = new NetworkCredential(conmail.MAIL, conmail.PASS);
+                }
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Host = conmail.HOST;
+
+
+                //mail.To.Add("rogelio.sanchez@sf-solutionfactory.com");
+                //mail.To.Add(correo);
+                mail.Subject = "Negociaciones cliente: "+ pay;
+
+                try
+                {
+                    string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                    UrlDirectory = UrlDirectory.Replace("Edit", "Index");
+                    UrlDirectory += "?pay=" + pay + "&vkorg=" + vkorg + "&vtweg=" + vtweg + "&spart=" + spart + "&correo=" + correo;
+                    HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
+                    myRequest.Method = "GET";
+                    WebResponse myResponse = myRequest.GetResponse();
+                    StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+                    string result = sr.ReadToEnd();
+                    sr.Close();
+                    myResponse.Close();
+                    mail.IsBodyHtml = true;
+                    mail.Body = result;
+                    client.Send(mail);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("No se ha podido enviar el email", ex.InnerException);
+                }
             }
         }
         // GET: Negociaciones/Edit/5
-        public void armarCorreos()
+        public ActionResult Edit()
         {
-            var _hoy = DateTime.Now;
-            var _neg = db.NEGOCIACIONs.Where(x => x.FECHAN.Day == _hoy.Day && x.FECHAN.Month == _hoy.Month && x.FECHAN.Year == _hoy.Year && x.ACTIVO == true).FirstOrDefault();
-            if (_neg != null)
+            var fs = db.DOCUMENTOes.Where(f => f.FECHAC.Value.Month == DateTime.Now.Month && f.FECHAC.Value.Year == DateTime.Now.Year && f.DOCUMENTO_REF == null).ToList();
+            var fs3 = fs.DistinctBy(q => q.PAYER_ID).ToList();
+            for (int i = 0; i < fs3.Count; i++)
             {
-                //Realizo una consulta por medio de la coincidencia entre fechas
-                var fs = db.DOCUMENTOes.Where(f => (f.FECHAC.Value.Day >= _neg.FECHAI.Day && f.FECHAC.Value.Day <= _neg.FECHAF.Day) && f.FECHAC.Value.Month == _neg.FECHAI.Month && f.FECHAC.Value.Year == _neg.FECHAF.Year).ToList();
-                var fs3 = fs.DistinctBy(q => q.PAYER_ID).ToList();
-                var fs4 = fs3.DistinctBy(e => e.PAYER_EMAIL).ToList();
-                //var fs2 = fs.Select(p => new { p.PAYER_ID, p.PAYER_EMAIL, p.VKORG, p.VTWEG, p.SPART }).Distinct().ToList();          
-                //for (int i = 0; i < fs2.Count; i++)
-                //{
-                //    if (fs2[i].PAYER_ID != null && fs2[i].PAYER_EMAIL != null)
-                //    {
-                //        mandarCorreo(fs2[i].PAYER_ID, fs2[i].VKORG, fs2[i].VTWEG, fs2[i].SPART, fs2[i].PAYER_EMAIL);
-                //    }
-                //}
-                for (int i = 0; i < fs3.Count; i++)
+                if (fs3[i].PAYER_ID != null && fs3[i].PAYER_EMAIL != null)
                 {
-                    //De todos los documentos del mes, los filtro por el id en turno
-                    var xyz = fs.Where(p => p.PAYER_ID == fs3[i].PAYER_ID).ToList();
-                    //posterior hago un ditinct por su correo y los envio
-                    var cr = xyz.DistinctBy(p => p.PAYER_EMAIL).ToList();
-                    for (int j = 0; j < cr.Count; j++)
+                    var de = fs3[i].NUM_DOC;
+                    var dsa = db.DOCUMENTOAs.Where(x => x.NUM_DOC == de && x.CLASE != "OTR").FirstOrDefault();
+                    if (dsa == null || dsa != null)
                     {
-                        if (fs3[i].PAYER_ID != null && cr[j].PAYER_EMAIL != null)
-                        {
-                            mandarCorreo(fs3[i].PAYER_ID, fs3[i].VKORG, fs3[i].VTWEG, fs3[i].SPART, cr[j].PAYER_EMAIL, _neg.FECHAI, _neg.FECHAF);
-                        }
+                        mandarCorreo(fs3[i].PAYER_ID, fs3[i].VKORG, fs3[i].VTWEG, fs3[i].SPART, fs3[i].PAYER_EMAIL);
                     }
                 }
             }
+            return RedirectToAction("Index", "Home");
         }
 
 
@@ -234,10 +256,10 @@ namespace TAT001.Controllers
         // GET: Negociaciones/Delete/5
         public ActionResult Delete(decimal id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
             DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
             if (dOCUMENTO == null)
             {

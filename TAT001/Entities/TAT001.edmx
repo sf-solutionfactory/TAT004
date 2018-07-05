@@ -1010,6 +1010,27 @@
           <Property Name="MATERIALGP_ID" Type="nchar" MaxLength="3" Nullable="false" />
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="MATERIALT">
+          <Key>
+            <PropertyRef Name="SPRAS" />
+            <PropertyRef Name="MATERIAL_ID" />
+          </Key>
+          <Property Name="SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="MATERIAL_ID" Type="nvarchar" MaxLength="18" Nullable="false" />
+          <Property Name="MAKTX" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MAKTG" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MATERIALVKE">
+          <Key>
+            <PropertyRef Name="MATERIAL_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+          </Key>
+          <Property Name="MATERIAL_ID" Type="nvarchar" MaxLength="18" Nullable="false" />
+          <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="VTWEG" Type="nchar" MaxLength="4" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="MENSAJES">
           <Key>
             <PropertyRef Name="ID_MENSAJE" />
@@ -1561,6 +1582,7 @@
           <Property Name="ESTATUS" Type="nchar" MaxLength="1" Nullable="false" />
           <Property Name="FACTURA" Type="bit" Nullable="false" />
           <Property Name="PADRE" Type="bit" Nullable="false" />
+          <Property Name="ADICIONA" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -3011,6 +3033,42 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MATERIALT_MATERIAL">
+          <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="1" />
+          <End Role="MATERIALT" Type="Self.MATERIALT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MATERIAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALT">
+              <PropertyRef Name="MATERIAL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATERIALT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="MATERIALT" Type="Self.MATERIALT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALT">
+              <PropertyRef Name="SPRAS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATERIALVKE_MATERIAL">
+          <End Role="MATERIAL" Type="Self.MATERIAL" Multiplicity="1" />
+          <End Role="MATERIALVKE" Type="Self.MATERIALVKE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MATERIAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALVKE">
+              <PropertyRef Name="MATERIAL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MIEMBROS_ROL">
           <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
           <End Role="MIEMBROS" Type="Self.MIEMBROS" Multiplicity="*" />
@@ -4105,6 +4163,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="MATERIAL" EntityType="Self.MATERIAL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIALGP" EntityType="Self.MATERIALGP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MATERIALGPT" EntityType="Self.MATERIALGPT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MATERIALT" EntityType="Self.MATERIALT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MATERIALVKE" EntityType="Self.MATERIALVKE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MENSAJES" EntityType="Self.MENSAJES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MIEMBROS" EntityType="Self.MIEMBROS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MONEDA" EntityType="Self.MONEDA" Schema="dbo" store:Type="Tables" />
@@ -4651,6 +4711,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_MATERIALGPT_SPRAS" Association="Self.FK_MATERIALGPT_SPRAS">
             <End Role="SPRAS" EntitySet="SPRAS" />
             <End Role="MATERIALGPT" EntitySet="MATERIALGPT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATERIALT_MATERIAL" Association="Self.FK_MATERIALT_MATERIAL">
+            <End Role="MATERIAL" EntitySet="MATERIAL" />
+            <End Role="MATERIALT" EntitySet="MATERIALT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATERIALT_SPRAS" Association="Self.FK_MATERIALT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="MATERIALT" EntitySet="MATERIALT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATERIALVKE_MATERIAL" Association="Self.FK_MATERIALVKE_MATERIAL">
+            <End Role="MATERIAL" EntitySet="MATERIAL" />
+            <End Role="MATERIALVKE" EntitySet="MATERIALVKE" />
           </AssociationSet>
           <AssociationSet Name="FK_MIEMBROS_ROL" Association="Self.FK_MIEMBROS_ROL">
             <End Role="ROL" EntitySet="ROL" />
@@ -6056,6 +6128,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="ZBRAND" Relationship="Self.FK_MATERIAL_MARCA" FromRole="MATERIAL" ToRole="ZBRAND" />
           <NavigationProperty Name="MATERIALGP" Relationship="Self.FK_MATERIAL_MATERIALGP" FromRole="MATERIAL" ToRole="MATERIALGP" />
           <NavigationProperty Name="UMEDIDA" Relationship="Self.FK_MATERIAL_UMEDIDA" FromRole="MATERIAL" ToRole="UMEDIDA" />
+          <NavigationProperty Name="MATERIALVKEs" Relationship="TAT001Model.FK_MATERIALVKE_MATERIAL" FromRole="MATERIAL" ToRole="MATERIALVKE" />
+          <NavigationProperty Name="MATERIALTs" Relationship="TAT001Model.FK_MATERIALT_MATERIAL" FromRole="MATERIAL" ToRole="MATERIALT" />
         </EntityType>
         <EntityType Name="MATERIALGP">
           <Key>
@@ -6496,6 +6570,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
           <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
           <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+          <NavigationProperty Name="MATERIALTs" Relationship="TAT001Model.FK_MATERIALT_SPRAS" FromRole="SPRA" ToRole="MATERIALT" />
         </EntityType>
         <EntityType Name="STATE">
           <Key>
@@ -6759,6 +6834,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
           <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
           <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+          <Property Name="ADICIONA" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -10007,6 +10083,20 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="NOTICIA" EntitySet="NOTICIAs" />
           </AssociationSet>
           <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
+          <EntitySet Name="MATERIALVKEs" EntityType="TAT001Model.MATERIALVKE" />
+          <AssociationSet Name="FK_MATERIALVKE_MATERIAL" Association="TAT001Model.FK_MATERIALVKE_MATERIAL">
+            <End Role="MATERIAL" EntitySet="MATERIALs" />
+            <End Role="MATERIALVKE" EntitySet="MATERIALVKEs" />
+          </AssociationSet>
+          <EntitySet Name="MATERIALTs" EntityType="TAT001Model.MATERIALT" />
+          <AssociationSet Name="FK_MATERIALT_MATERIAL" Association="TAT001Model.FK_MATERIALT_MATERIAL">
+            <End Role="MATERIAL" EntitySet="MATERIALs" />
+            <End Role="MATERIALT" EntitySet="MATERIALTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MATERIALT_SPRAS" Association="TAT001Model.FK_MATERIALT_SPRAS">
+            <End Role="SPRA" EntitySet="SPRAS" />
+            <End Role="MATERIALT" EntitySet="MATERIALTs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CSP_CAMBIO_Result">
           <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -10171,6 +10261,66 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="String" Name="CONTAC" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="CONT_EMAIL" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="MATERIALVKE">
+          <Key>
+            <PropertyRef Name="MATERIAL_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+          </Key>
+          <Property Name="MATERIAL_ID" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MATERIAL" Relationship="TAT001Model.FK_MATERIALVKE_MATERIAL" FromRole="MATERIALVKE" ToRole="MATERIAL" />
+        </EntityType>
+        <Association Name="FK_MATERIALVKE_MATERIAL">
+          <End Type="TAT001Model.MATERIAL" Role="MATERIAL" Multiplicity="1" />
+          <End Type="TAT001Model.MATERIALVKE" Role="MATERIALVKE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MATERIAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALVKE">
+              <PropertyRef Name="MATERIAL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MATERIALT">
+          <Key>
+            <PropertyRef Name="SPRAS" />
+            <PropertyRef Name="MATERIAL_ID" />
+          </Key>
+          <Property Name="SPRAS" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="MATERIAL_ID" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+          <Property Name="MAKTX" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MAKTG" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MATERIAL" Relationship="TAT001Model.FK_MATERIALT_MATERIAL" FromRole="MATERIALT" ToRole="MATERIAL" />
+          <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_MATERIALT_SPRAS" FromRole="MATERIALT" ToRole="SPRA" />
+        </EntityType>
+        <Association Name="FK_MATERIALT_MATERIAL">
+          <End Type="TAT001Model.MATERIAL" Role="MATERIAL" Multiplicity="1" />
+          <End Type="TAT001Model.MATERIALT" Role="MATERIALT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MATERIAL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALT">
+              <PropertyRef Name="MATERIAL_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MATERIALT_SPRAS">
+          <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+          <End Type="TAT001Model.MATERIALT" Role="MATERIALT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MATERIALT">
+              <PropertyRef Name="SPRAS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11677,6 +11827,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="TAT001Model.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="ADICIONA" ColumnName="ADICIONA" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                 <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />
@@ -12245,6 +12396,26 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="MATERIALVKEs">
+            <EntityTypeMapping TypeName="TAT001Model.MATERIALVKE">
+              <MappingFragment StoreEntitySet="MATERIALVKE">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+                <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+                <ScalarProperty Name="MATERIAL_ID" ColumnName="MATERIAL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MATERIALTs">
+            <EntityTypeMapping TypeName="TAT001Model.MATERIALT">
+              <MappingFragment StoreEntitySet="MATERIALT">
+                <ScalarProperty Name="MAKTG" ColumnName="MAKTG" />
+                <ScalarProperty Name="MAKTX" ColumnName="MAKTX" />
+                <ScalarProperty Name="MATERIAL_ID" ColumnName="MATERIAL_ID" />
+                <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
