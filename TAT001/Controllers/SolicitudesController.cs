@@ -220,6 +220,8 @@ namespace TAT001.Controllers
             Models.PresupuestoModels carga = new Models.PresupuestoModels();
             ViewBag.ultMod = carga.consultarUCarga();
 
+            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS != "X" & a.PADRE == false).ToList();
+
             return View(DF);
         }
         [HttpPost]

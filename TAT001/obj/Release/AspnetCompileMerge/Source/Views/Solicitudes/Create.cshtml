@@ -141,7 +141,7 @@
         @*//B20180625 MGC 2018.06.26*@
         @if (ViewBag.relacionada == "")
         {
-            <a id="btn_borradorh" class="btn btn-small">Borrador</a>@*Add MGC B20180619 2018.06.20*@
+            <a id="btn_borradorh" class="btn btn-small">Borrador (1)</a>@*Add MGC B20180619 2018.06.20*@
         }
         @*//B20180625 MGC2 2018.07.04*@
         @{string b = ViewBag.borradore + "";
@@ -217,6 +217,10 @@
                             </div>
                         </div>
                     }
+                    else
+                    {
+                        <input type="hidden" id="USUARIOD_ID" name="USUARIOD_ID" value="@User.Identity.Name" />
+                   }
                     <div class="card-panel">
                         <h5>Tipo de solicitud y Clasificación</h5>
                         <div class="row" style="margin-bottom:0">

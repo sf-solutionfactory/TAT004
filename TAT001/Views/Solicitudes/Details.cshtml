@@ -161,9 +161,16 @@
                             <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
                             @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
                             <ul id='list_rela' class='dropdown-content'>
-                                <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
-                                <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
-                                <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP" })" id="lbl_op">Orden de pago</a></li>
+                                @if (ViewBag.TSOL_RELA != null)
+                                {
+                                    foreach (TSOL inte in ViewBag.TSOL_RELA)
+                                    {
+                                        @*<li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
+                                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
+                                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP" })" id="lbl_op">Orden de pago</a></li>*@
+                                        <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = inte.ID })" id="lbl_@inte.ID">@inte.TSOLTs.Where(a=>a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </a></li>
+                                    }
+                                }
                             </ul>
                             <script>
                                 var elem = document.getElementById('btn_rela');
@@ -1740,15 +1747,15 @@
             </div>
         </div>
 
-                                                                }
-                                                            }
-                                                            catch (Exception ee)
-                                                            {
-                                                                Session["error"] = ee.Message.ToString();
-                                                                <script>
-                                                                    document.location.replace("../../Home/Index");
-                                                                </script>
-                                                            }
+    }
+}
+catch (Exception ee)
+{
+    Session["error"] = ee.Message.ToString();
+    <script>
+        document.location.replace("../../Home/Index");
+    </script>
+}
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.D.NUM_DOC }) |
     @Html.ActionLink("Back to List", "Index")

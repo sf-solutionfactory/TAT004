@@ -50,7 +50,9 @@
     <table class="table mdl-data-table striped" id="table" style="width:100%;">
         <thead>
             <tr class="header" style="background-color:#CCCCCC">
-                <th></th>
+                @*<th style="text-align:center">D Relacionada</th>*@
+                <th style="text-align:center">F Relacionada</th>
+                <th style="text-align:center">Materiales</th>
                 <th>
                     @Html.DisplayNameFor(model => model.NUM_DOC)
                 </th>
@@ -133,9 +135,15 @@
                     {
                         if (perm != null)
                         {
-                            <tr>
-                                <td class="details-control" style="cursor:pointer">
-                                    <i class="material-icons">add</i>
+                            <tr class="green white-text">
+                                @*<td class="details-control3" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
+                                </td>*@
+                                <td id="cam" class="details-control2" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
+                                </td>
+                                <td class="details-control" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
                                 </td>
                                 <td>
                                     @ViewBag.data1.Tables[0].Rows[i][0].ToString()
@@ -184,8 +192,14 @@
                         else
                         {
                             <tr class="red white-text">
-                                <td class="details-control" style="cursor:pointer">
-                                    <i class="material-icons">add</i>
+                                @*<td class="details-control3" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
+                                </td>*@
+                                <td class="details-control2" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
+                                </td>
+                                <td class="details-control" style="cursor:pointer; text-align:center">
+                                    <i class="material-icons">expand_more</i>
                                 </td>
                                 <td>
                                     @ViewBag.data1.Tables[0].Rows[i][0].ToString()
@@ -235,8 +249,14 @@
                     else
                     {
                         <tr>
-                            <td class="details-control" style="cursor:pointer">
-                                <i class="material-icons">add</i>
+                            @*<td class="details-control3" style="cursor:pointer; text-align:center">
+                                <i class="material-icons">expand_more</i>
+                            </td>*@
+                            <td class="details-control2" style="cursor:pointer; text-align:center">
+                                <i class="material-icons">expand_more</i>
+                            </td>
+                            <td class="details-control" style="cursor:pointer; text-align:center">
+                                <i class="material-icons">expand_more</i>
                             </td>
                             <td>
                                 @ViewBag.data1.Tables[0].Rows[i][0].ToString()
@@ -399,6 +419,45 @@
             }
         });
 
+        $('#table tbody').on('click', 'td.details-control2', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                //row.child(format(row.data())).show();
+                //tr.addClass('shown');
+                // Open this row
+                var child = format2(row.data(), row, tr);
+                if (child != undefined) {
+                }
+            }
+        });
+
+        //$('#table tbody').on('click', 'td.details-control3', function () {
+        //    var tr = $(this).closest('tr');
+        //    var row = table.row(tr);
+
+        //    if (row.child.isShown()) {
+        //        // This row is already open - close it
+        //        row.child.hide();
+        //        tr.removeClass('shown');
+        //    }
+        //    else {
+        //        // Open this row
+        //        //row.child(format(row.data())).show();
+        //        //tr.addClass('shown');
+        //        // Open this row
+        //        var child = format3(row.data(), row, tr);
+        //        if (child != undefined) {
+        //        }
+        //    }
+        //});
     });
 
     function filterGlobal() {
@@ -408,9 +467,9 @@
 
     function convert(str) {
         var date = new Date(str),
-            mnth = ("0" + (date.getMonth()+1)).slice(-2),
-            day  = ("0" + date.getDate()).slice(-2);
-        return [ day, mnth, date.getFullYear() ].join("/");
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + date.getDate()).slice(-2);
+        return [day, mnth, date.getFullYear()].join("/");
     }
 
     function format(d, row, tr) {
@@ -420,41 +479,48 @@
             async: false,
             timeout: 30000,
             dataType: "json",
-            data: { num_doc: d[1] },
+            data: { num_doc: d[2] },
             success: function (data) {
                 var ldp = ($.map(data, function (item) {
                     return { label: item, value: item };
                 }))
                 var ret = "<table class='table mdl-data-table striped'>";
                 for (var i = 0; i < data.length; i++) {
-                    var date = data[i].VIGENCIA_DE.replace(/[^0-9 +]/g, '');
+                    var matTam = data[i].MATNR.substr(0, 4);
+                    var catTam = data[i].MATKL.substr(0, 4);
+
+                    var dd, dd2;
                     var fechaJS = new Date(parseInt(data[i].VIGENCIA_DE.replace(/[^0-9 +]/g, '')));
                     var fechaJS2 = new Date(parseInt(data[i].VIGENCIA_AL.replace(/[^0-9 +]/g, '')));
+                    if (fechaJS > fechaJS2) {
+                        dd = "<td class='red white-text'>" + convert(fechaJS) + "</td>";
+                        dd2 = "<td class='red white-text'>" + convert(fechaJS2) + "</td>";
+                    }
+                    else {
+                        dd = "<td>" + convert(fechaJS) + "</td>";
+                        dd2 = "<td>" + convert(fechaJS2) + "</td>";
+                    }
 
-                    ret += "<tr ><td>" + data[i].NUM_DOC + "</td><td>" + data[i].POS + "</td>";
+                    if (matTam == "<td>" & catTam == "<td>" & dd.substr(0, 4) == "<td>" & dd2.substr(0, 4) == "<td>") {
+                        ret += "<tr class='green white-text'>";
+                    }
+                    else {
+                        ret += "<tr>";
+                    }
+                    ret += "<td>" + data[i].NUM_DOC + "</td>";
+                    //ret += "<td>" + data[i].POS + "</td>";
                     ret += data[i].MATNR;
                     ret += data[i].MATKL;
-
                     ret += "<td>" + data[i].MONTO + "</td>";
                     ret += "<td>" + data[i].PORC_APOYO + "</td>";
                     ret += "<td>" + data[i].PRECIO_SUG + "</td>";
                     ret += "<td>" + data[i].VOLUMEN_EST + "</td>";
                     ret += "<td>" + data[i].APOYO_EST + "</td>";
+                    ret += dd;
+                    ret += dd2;
 
-                    if (fechaJS > fechaJS2) {
-                        var dd = convert(fechaJS);
-                        var dd2 = convert(fechaJS2);
-                        ret += "<td class='red white-text'>" + dd + "</td>";
-                        ret += "<td class='red white-text'>" + dd2 + "</td>";
-                    }
-                    else {
-                        var dd = convert(fechaJS);
-                        var dd2 = convert(fechaJS2);
-                        ret += "<td>" + dd + "</td>";
-                        ret += "<td>" + dd2 + "</td>";
-                    }
                 }
-                ret += "</table>"
+                ret += "</tr></table>"
 
                 row.child(ret).show();
                 tr.addClass('shown');
@@ -466,6 +532,121 @@
             }
         });
     }
+
+
+    function format2(d, row, tr) {
+        $.ajax({
+            url: "Hoja3",
+            type: "GET",
+            async: false,
+            timeout: 30000,
+            dataType: "json",
+            data: { num_doc: d[2], a: d[3], c: d[5], d: d[6] },
+            success: function (data) {
+                var ldf = ($.map(data, function (item) {
+                    return { label: item, value: item };
+                }))
+
+                var paisA = data.pop();
+                //var paisA2 = data.pop();
+                var ret = "<table class='table mdl-data-table striped'>";
+                for (var i = 0; i < paisA.length; i++) {
+                    var fecha, vencimiento;
+
+                    if (data[i].FECHA != null) { fecha = new Date(parseInt(data[i].FECHA.replace(/[^0-9 +]/g, ''))); }
+                    else { fecha = null }
+
+                    if (data[i].VENCIMIENTO != null) { vencimiento = new Date(parseInt(data[i].VENCIMIENTO.replace(/[^0-9 +]/g, ''))); }
+                    else { vencimiento = null }
+
+                    //paisA --> Pais clave
+                    //d[3] --> Tipo de solicitud
+
+                    ret += paisA[i];
+                    ret += "<td>" + data[i].NUM_DOC + "</td>";
+                    //ret += "<td>" + data[i].POS + "</td>";
+                    ret += "<td>" + data[i].FACTURA + "</td>";
+                    if (fecha == null) { ret += "<td>0</td>"; }
+                    else { ret += "<td>" + convert(fecha) + "</td>"; }
+                    ret += "<td>" + data[i].PROVEEDOR + "</td>";
+                    ret += "<td>" + data[i].CONTROL + "</td>";
+                    ret += "<td>" + data[i].AUTORIZACION + "</td>";
+                    if (vencimiento == null) { ret += "<td>0</td>"; }
+                    else { ret += "<td>" + convert(vencimiento) + "</td>"; }
+                    ret += "<td>" + data[i].FACTURAK + "</td>";
+                    ret += "<td>" + data[i].EJERCICIOK + "</td>";
+                    ret += "<td>" + data[i].BILL_DOC + "</td>";
+                    ret += "<td>" + data[i].BELNR + "</td>";
+                }
+                ret += "</tr></table>"
+
+                row.child(ret).show();
+                tr.addClass('shown');
+
+                return ret;
+            },
+            error: function (e, ew) {
+                alert(e);
+            }
+        });
+    }
+
+    //function format3(d, row, tr) {
+    //    $.ajax({
+    //        url: "Hoja4",
+    //        type: "GET",
+    //        async: false,
+    //        timeout: 30000,
+    //        dataType: "json",
+    //        data: { num_doc: d[2] },
+    //        success: function (data) {
+    //            var ldf = ($.map(data, function (item) {
+    //                return { label: item, value: item };
+    //            }))
+
+    //            var paisA = data.pop();
+    //            //var paisA2 = data.pop();
+    //            var ret = "<table class='table mdl-data-table striped'>";
+    //            for (var i = 0; i < paisA.length; i++) {
+    //                var fecha, vencimiento;
+
+    //                if (data[i].FECHA != null) { fecha = new Date(parseInt(data[i].FECHA.replace(/[^0-9 +]/g, ''))); }
+    //                else { fecha = null }
+
+    //                if (data[i].VENCIMIENTO != null) { vencimiento = new Date(parseInt(data[i].VENCIMIENTO.replace(/[^0-9 +]/g, ''))); }
+    //                else { vencimiento = null }
+
+    //                //paisA --> Pais clave
+    //                //d[3] --> Tipo de solicitud
+
+    //                ret += paisA[i];
+    //                ret += "<td>" + data[i].NUM_DOC + "</td>";
+    //                //ret += "<td>" + data[i].POS + "</td>";
+    //                ret += "<td>" + data[i].FACTURA + "</td>";
+    //                if (fecha == null) { ret += "<td>0</td>"; }
+    //                else { ret += "<td>" + convert(fecha) + "</td>"; }
+    //                ret += "<td>" + data[i].PROVEEDOR + "</td>";
+    //                ret += "<td>" + data[i].CONTROL + "</td>";
+    //                ret += "<td>" + data[i].AUTORIZACION + "</td>";
+    //                if (vencimiento == null) { ret += "<td>0</td>"; }
+    //                else { ret += "<td>" + convert(vencimiento) + "</td>"; }
+    //                ret += "<td>" + data[i].FACTURAK + "</td>";
+    //                ret += "<td>" + data[i].EJERCICIOK + "</td>";
+    //                ret += "<td>" + data[i].BILL_DOC + "</td>";
+    //                ret += "<td>" + data[i].BELNR + "</td>";
+    //            }
+    //            ret += "</tr></table>"
+
+    //            row.child(ret).show();
+    //            tr.addClass('shown');
+
+    //            return ret;
+    //        },
+    //        error: function (e, ew) {
+    //            alert(e);
+    //        }
+    //    });
+    //}
 </script>
 
 <style>

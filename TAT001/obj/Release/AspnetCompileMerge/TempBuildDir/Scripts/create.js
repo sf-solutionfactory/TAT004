@@ -1458,7 +1458,7 @@ function guardarBorrador(asyncv) {
 //B20180625 MGC2 2018.07.04
 function eliminarBorrador(asyncv) {
 
-    var user = $('#USUARIOC_ID').val();
+    var user = $('#USUARIOD_ID').val();
 
     $.ajax({
         type: "POST",

@@ -8,7 +8,7 @@ using TAT001.Models;
 
 namespace TAT001.Services
 {
-    public class ProcesaFlujo2
+    public class ProcesaFlujo
     {
         public string procesa(FLUJO f, string recurrente)
         {

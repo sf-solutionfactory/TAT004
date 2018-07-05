@@ -234,6 +234,7 @@
     <Compile Include="Controllers\Catalogos\PaginasController.cs" />
     <Compile Include="Controllers\Catalogos\PaisController.cs" />
     <Compile Include="Controllers\NegociacionesController.cs" />
+    <Compile Include="Controllers\Configuracion\NegsController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
     <Compile Include="Controllers\ProvisionController.cs" />
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
@@ -1067,6 +1068,11 @@
     <Content Include="Views\Taxeop\Details.cshtml" />
     <Content Include="Views\Taxeop\Edit.cshtml" />
     <Content Include="Views\Usuarios\Details1.cshtml" />
+    <Content Include="Views\Negs\Index.cshtml" />
+    <Content Include="Views\Negs\Create.cshtml" />
+    <Content Include="Views\Negs\Delete.cshtml" />
+    <Content Include="Views\Negs\Details.cshtml" />
+    <Content Include="Views\Negs\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

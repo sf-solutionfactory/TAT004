@@ -5,21 +5,59 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm("Masiva", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    int? contMas = ViewBag.contenidoMas;
-    @Html.AntiForgeryToken()
-    <div class="row">
-        <a href="@Url.Action("Archivo", "Excel")">
-            <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
-        </a>
-        @*//jemo inicio 4/07/2018*@
-        <a href="@Url.Action("Index3", "Excel")">
-            <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
-        </a>
-        @*//jemo fin 4/07/2018*@
-    </div>
+<style>
+    #carga {
+        display: none;
+    }
+</style>
 
+@using (Html.BeginForm("ArchivoA", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    if (ViewBag.usuario.ID == "admin")
+    {
+        @*<input id="carga" type="file" />
+            <a href="@Url.Action("ArchivoA", "Excel")" id="sube">
+                <i class='material-icons red-text'>archive</i> ACTUALIZA ARCHIVO
+            </a>*@
+        <div class="row">
+            <div class="row col s6 m6 l6">
+                <div class="file-field input-field">
+                    <div class="btn">
+                        <span>Archivo</span>
+                        <input accept=".xlsx, .xls" type="file" name="file">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="Archivo a cargar">
+                    </div>
+                </div>
+            </div>
+            <div class="row col s2 m2 l2">
+                @*<a href="@Url.Action("ArchivoA", "Excel")" class="waves-effect waves-light btn btn-large">ACTUALIZAR</a>*@
+                <input type="submit" value="ACTUALIZAR" class="btn btn-default" />
+            </div>
+            <a href="@Url.Action("Archivo", "Excel")">
+                <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
+            </a>
+            @*//jemo inicio 4/07/2018*@
+            <a href="@Url.Action("Index3", "Excel")">
+                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
+            </a>
+            @*//jemo fin 4/07/2018*@
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <a href="@Url.Action("Archivo", "Excel")">
+                <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
+            </a>
+            @*//jemo inicio 4/07/2018*@
+            <a href="@Url.Action("Index3", "Excel")">
+                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
+            </a>
+            @*//jemo fin 4/07/2018*@
+        </div>
+    }
     <div class="row">
         <div class="row" style="height:10px;width:100%;">
             <div class="col l7 pink darken-1" style="height:10px;padding:0;"></div>
@@ -31,6 +69,12 @@
             <div class="col l2 yellow" style="height:10px;padding:0;"></div>
         </div>
     </div>
+}
+
+@using (Html.BeginForm("Masiva", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    int? contMas = ViewBag.contenidoMas;
+    @Html.AntiForgeryToken()
 
     if (contMas == 1)
     {
@@ -71,7 +115,6 @@
         </div>
     }
 }
-
 @using (Html.BeginForm("Soportes", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     int? cont = ViewBag.contenidoSop;
@@ -115,6 +158,11 @@
         </div>
     }
 }
-
-
-
+<script type="text/javascript">
+    $(function () {
+        $("#sube").on('click', function (e) {
+            e.preventDefault();
+            $("#carga:hidden").trigger('click');
+        });
+    });
+</script>
