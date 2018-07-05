@@ -462,6 +462,12 @@
     <Compile Include="Entities\MATERIALGPT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\MATERIALT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\MATERIALVKE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\MENSAJE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

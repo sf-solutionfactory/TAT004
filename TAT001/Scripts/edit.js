@@ -3123,12 +3123,15 @@ function evalInfoTab(ret, e) {
 
     //Facuras Add MGC B20180619 2018.06.20
     var fact = "";
-    fact = evaluarInfoFacturas();
+    //Facuras Add MGC B20180705 2018.07.05 evaluar si es una relacionada
+    if (!isReversa() & !isRelacionada(){
+        fact = evaluarInfoFacturas();
+    }
     if (fact != "") {
         msg = "";
         msg = fact;
         res = false;
-    }
+        }
 
     if (ret == true) {
         return res;

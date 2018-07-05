@@ -12,16 +12,14 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class NOTICIA
+    public partial class MATERIALT
     {
-        public long ID { get; set; }
-        public System.DateTime FECHAI { get; set; }
-        public System.DateTime FECHAF { get; set; }
-        public string PATH { get; set; }
-        public string USUARIOC_ID { get; set; }
-        public Nullable<System.DateTime> FECHAC { get; set; }
-        public bool ACTIVO { get; set; }
+        public string SPRAS { get; set; }
+        public string MATERIAL_ID { get; set; }
+        public string MAKTX { get; set; }
+        public string MAKTG { get; set; }
     
-        public virtual USUARIO USUARIO { get; set; }
+        public virtual MATERIAL MATERIAL { get; set; }
+        public virtual SPRA SPRA { get; set; }
     }
 }

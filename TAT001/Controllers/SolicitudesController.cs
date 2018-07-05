@@ -469,6 +469,7 @@ namespace TAT001.Controllers
             decimal bmonto_apoyo = 0;//MGC B20180625 MGC
             string notas_soporte = "";//MGC B20180625 MGC
             string tipo_cambio = "";//MGC B20180625 MGC
+            string addrowst = "X"; //Add MGC B20180705 2018.07.05
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -521,6 +522,25 @@ namespace TAT001.Controllers
                 //var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);//RSG 13.06.2018
                 //ViewBag.TSOL_VALUES = tsols_valbdjs;
 
+                //Add MGC B20180705 2018.07.05 conocer si se puede agregar renglones a la relacionada
+                bool addon = true;
+                try
+                {
+                    addon = tsols_val.Where(tsb => tsb.ID == tsol).FirstOrDefault().ADICIONA;
+                }
+                catch (Exception)
+                {
+
+                }
+                if (addon == true)
+                {
+                    addrowst = "X";
+                }
+                else
+                {
+                    addrowst = "";
+                }
+
                 //Validar si es una reversa
                 string isrn = "";
                 string isr = "";
@@ -533,7 +553,7 @@ namespace TAT001.Controllers
                     }
                     TSOL ts = tsols_val.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
                     if (ts != null)
-                    {
+                    {                        
                         isrn = "X";
                         isr = "preversa";
                         freversa = theTime.ToString("yyyy-MM-dd"); ;
@@ -708,6 +728,7 @@ namespace TAT001.Controllers
 
                         List<DOCUMENTOP> docsrelp = new List<DOCUMENTOP>();
                         List<DOCUMENTOM> docsrelm = new List<DOCUMENTOM>();//MGC B20180611----------------------------
+
                         //Obtener los documentos de la relacionada
                         if (docsrel.Count > 0)
                         {
@@ -1118,6 +1139,8 @@ namespace TAT001.Controllers
             ViewBag.borradore = borrador; //B20180625 MGC2 2018.07.04
             ViewBag.moneda_dis = moneda_dis;//MGC B20180625 MGC 
 
+            ViewBag.addrowt = addrowst; //Add MGC B20180705 2018.07.05 conocer si se puede agregar renglones a la relacionada
+
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
             ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
@@ -1246,6 +1269,7 @@ namespace TAT001.Controllers
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
+            string rel = ""; //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
             if (ModelState.IsValid && prueba == true)
             //if (ModelState.IsValid)
@@ -1305,6 +1329,8 @@ namespace TAT001.Controllers
                         //Obtener el país
                         dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                         dOCUMENTO.TIPO_TECNICO = d.TIPO_TECNICO; //B20180618 v1 MGC 2018.06.18
+
+                        rel = "X";//Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                     }
                     else
                     {
@@ -1513,6 +1539,7 @@ namespace TAT001.Controllers
                                     db.SaveChanges();
 
                                     revn = "X";
+                                    rel = "";
                                 }
 
                             }
@@ -1576,7 +1603,11 @@ namespace TAT001.Controllers
                         if (dOCUMENTO.DOCUMENTO_REF > 0)
                         {
                             docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
-
+                            //Add MGC B20180705 2018.07.05 Agregar materiales agregados en la vista
+                            if (rel == "X" && select_dis == "M" && select_neg == "M")
+                            {
+                                
+                            }
                             for (int j = 0; j < docpl.Count; j++)
                             {
                                 try
@@ -2360,7 +2391,6 @@ namespace TAT001.Controllers
                 ViewBag.relacionada = "prelacionada";
                 ViewBag.relacionadan = rel + "";
                 ViewBag.TSOL_ANT = dOCUMENTO.TSOL_ID;
-
             }
             catch
             {

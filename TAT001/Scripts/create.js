@@ -220,7 +220,13 @@ $(document).ready(function () {
 
     $('#table_dis tbody').on('click', 'td.select_row', function () {
         var tr = $(this).closest('tr');
-        $(tr).toggleClass('selected');
+        //Add MGC B20180705 2018.07.05 ne no eliminar
+        if ($(tr).hasClass('ne')) {
+            M.toast({ html: 'Los materiales originales de la provisión no se pueden eliminar' });
+            $(tr).removeClass('selected');
+        }else {
+            $(tr).toggleClass('selected');
+        }
     });
 
     $('#delRow').click(function (e) {
@@ -278,6 +284,12 @@ $(document).ready(function () {
             if (vrelacionada != "") {
                 relacionada = "prelacionada";
             }
+        }
+
+        //Add MGC B20180705 2018.07.05 permitir editar el material 
+        var relacionadaed = "";
+        if (isAddt()) {
+            relacionadaed = "prelacionadaed"
         }
 
         var reversa = "";
@@ -385,7 +397,7 @@ $(document).ready(function () {
                 } else if (dis == "M") {
                     //Distribución por material                     
 
-                    var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
+                    var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, relacionadaed, reversa, ddate, adate, "", "");//Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                     //t.row.add([
                     //    "",
                     //    "",
@@ -460,7 +472,7 @@ $(document).ready(function () {
                     var por_apoyo = "";
                     por_apoyo = p_apoyo;
                     if (por_apoyo > 0) {
-                        var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "", "pm");
+                        var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, "", reversa, ddate, adate, "", "pm", "");//Add MGC B20180705 2018.07.05 ne no eliminar después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                         //Si el porcentaje de apoyo es mayor a cero bloquear la columna de porcentaje de apoyo
                         //Eliminar los renglones que no contienen el mismo porcentaje
                         $(".pm").prop('disabled', true);
@@ -1229,10 +1241,16 @@ $(window).on('load', function () {
         $('#monto_dis').val(m);
     }
 
+    //Add MGC B20180705 2018.07.05 ne no eliminar
+    //Obtener el parámetro para no eliminar renglones
+    var ne = "";
+    if (isRelacionada() & isAddt()){
+        ne = "ne";
+    }
     //Valores en información antes soporte
     copiarTableVistaSop();
     //Valores en  distribución    
-    copiarTableVista("", borr); //B20180625 MGC 2018.07.02
+    copiarTableVista("", borr, ne); //B20180625 MGC 2018.07.02 //Add MGC B20180705 2018.07.05 ne no eliminar
 
     updateFooter();
     //Pasar el total de la tabla al total en monto
@@ -1587,7 +1605,7 @@ function formatDatef(vdate) {
     return d;
 }
 
-function copiarTableVista(update) {
+function copiarTableVista(update, borr, ne) { //Add MGC B20180705 2018.07.05 Cambios no actualizados, ne no eliminar
 
     var lengthT = $("table#table_dish tbody tr").length;
 
@@ -1702,8 +1720,7 @@ function copiarTableVista(update) {
             var addedRow = "";
             //Si la distribución es por material
             if (dis == "M") {
-                addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
-                    calculo, pm);
+                addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, "", reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo, pm, ne);//Add MGC B20180705 2018.07.05 ne //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
 
 
@@ -2212,7 +2229,10 @@ $('body').on('focusout', '#monto_dis', function () {
 });
 
 $('body').on('click', '.prelacionada', function () {
-    $(this).prop('disabled', true);
+    //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+    if (!$(this).hasClass('prelacionadaed')) {
+        $(this).prop('disabled', true);
+    }
 });
 
 $('body').on('click', '.preversa', function () {
@@ -3081,7 +3101,7 @@ function loadExcelDis(file) {
                         dataj.PORC_APOYO = monto_apoyo;
                     }
                     //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);
-                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo, pm);//RSG 24.05.2018
+                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, "", reversa, date_de, date_al, calculo, pm, "");//RSG 24.05.2018 //Add MGC B20180705 2018.07.05 ne parametro después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
 
 
@@ -3346,7 +3366,7 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
     return r;
 }
 
-function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo, porcentaje_mat) {
+function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, relacionadaed, reversa, date_de, date_al, calculo, porcentaje_mat, ne) { //Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
     var r = addRowl(
         t,
@@ -3355,7 +3375,7 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "",
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de + "\">",
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018",
-        "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">",
+        "<input class=\"" + relacionada + " " + relacionadaed + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">", //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
         MATKL,
         DESC,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MONTO + "\">",
@@ -3368,6 +3388,10 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">"//RSG 24.05.2018
     );
 
+    //Add MGC B20180705 2018.07.05 ne no eliminar
+    if (ne != "") {
+        $(r).addClass(ne);
+    }
     return r;
 }
 
@@ -3568,7 +3592,10 @@ function evalInfoTab(ret, e) {
 
     //Facuras Add MGC B20180619 2018.06.20
     var fact = "";
-    fact = evaluarInfoFacturas();
+    //Facuras Add MGC B20180705 2018.07.05 evaluar si es una relacionada
+    if (!isReversa() & !isRelacionada()){
+        fact = evaluarInfoFacturas();
+    }
     if (fact != "") {
         msg = "";
         msg = fact;
@@ -4866,6 +4893,20 @@ function valcategoria(cat) {
     });
 
     return res;
+}
+
+//Add MGC B20180705 2018.07.05 ne no eliminar verificar si se pueden eliminar los renglones
+function isAddt() {
+    var res = false;
+    if ($("#txt_addrowt").length) {
+        var addrowv = $('#txt_addrowt').val();
+        if (addrowv == "X") {
+            res = true;
+        }
+    }
+
+    return res;
+
 }
 
 //MGC B20180611 Verificar si es relacionada

@@ -297,6 +297,11 @@
         <EntityTypeShape EntityType="TAT001Model.DET_TAXEOC" Width="1.5" PointX="5.375" PointY="15.75" />
         <EntityTypeShape EntityType="TAT001Model.NOTICIA" Width="1.5" PointX="14.25" PointY="108.625" />
         <AssociationConnector Association="TAT001Model.FK_NOTICIA_USUARIO" />
+        <EntityTypeShape EntityType="TAT001Model.MATERIALT" Width="1.5" PointX="26.25" PointY="74.625" />
+        <EntityTypeShape EntityType="TAT001Model.MATERIALVKE" Width="1.5" PointX="23.25" PointY="70.5" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIALT_MATERIAL" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIALVKE_MATERIAL" />
+        <AssociationConnector Association="TAT001Model.FK_MATERIALT_SPRAS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
