@@ -700,6 +700,7 @@
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
+    <Compile Include="Models\Flujos.cs" />
     <Compile Include="Models\TALLT_MOD.cs" />
     <Compile Include="Models\Soporte.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
@@ -1080,6 +1081,7 @@
     <Content Include="Views\Negs\Delete.cshtml" />
     <Content Include="Views\Negs\Details.cshtml" />
     <Content Include="Views\Negs\Edit.cshtml" />
+    <Content Include="Views\Flujos\Carga.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,14 +19,14 @@ namespace TAT001.Controllers
         private TAT001Entities db = new TAT001Entities();
 
         [Authorize]
-        public ActionResult Index(string pais)
+        public ActionResult Index(string id)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
                 int pagina = 101; //ID EN BASE DE DATOS
                 string u = User.Identity.Name;
-                if (pais != null)
-                    Session["pais"] = pais;
+                ////if (pais != null)
+                ////    Session["pais"] = pais;
                 //string u = "admin";
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                 ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
@@ -72,8 +72,32 @@ namespace TAT001.Controllers
             }
 
 
-            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
-            var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(User.Identity.Name)).ToList();
+            string us = "";
+            DateTime fecha = DateTime.Now.Date;
+            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
+
+            if (del.Count > 0)
+            {
+                List<USUARIO> users = new List<USUARIO>();
+                foreach (DELEGAR de in del)
+                {
+                    users.Add(de.USUARIO);
+                }
+                users.Add(ViewBag.usuario);
+                ViewBag.delegados = users.ToList();
+
+                if (id != null)
+                    us = id;
+                else
+                    us = User.Identity.Name;
+                ViewBag.usuariod = us;
+            }
+            else
+                us = User.Identity.Name;
+
+
+            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(us)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
+            var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(us)).ToList();
             var tsol = db.TSOLs.ToList();
             var tall = db.TALLs.ToList();
             foreach (DOCUMENTOV v in dOCUMENTOVs)
@@ -143,19 +167,19 @@ namespace TAT001.Controllers
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
-                //Flujo 1 - Anterior
-                var p = from P in db.PAIS
-                        join C in db.CREADOR2 on P.LAND equals C.LAND
-                        where P.ACTIVO == true
-                        & C.ID == u & C.ACTIVO == true
-                        select P;
-
-                ////flujo2
-                //var p = from P in db.PAIS.ToList()
-                //        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
-                //        on P.LAND equals C.PAIS_ID
+                ////Flujo 1 - Anterior
+                //var p = from P in db.PAIS
+                //        join C in db.CREADOR2 on P.LAND equals C.LAND
                 //        where P.ACTIVO == true
+                //        & C.ID == u & C.ACTIVO == true
                 //        select P;
+
+                //flujo2
+                var p = from P in db.PAIS.ToList()
+                        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                        on P.LAND equals C.PAIS_ID
+                        where P.ACTIVO == true
+                        select P;
 
                 List<Delegados> delegados = new List<Delegados>();
                 DateTime fecha = DateTime.Now.Date;

@@ -21,11 +21,11 @@
         </div>
 
         @*<script>
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('.parallax');
-                var instances = M.Parallax.init(elems, options);
-            });
-        </script>*@
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.parallax');
+                    var instances = M.Parallax.init(elems, options);
+                });
+            </script>*@
     }
 }
 ////jemo inicio 4/07/2018
@@ -48,7 +48,32 @@
     }*@
 <!--BOTONES-->
 <div class="row">
-    <div class="col s12 right-align">
+    @if (ViewBag.delegados != null)
+    {
+        <div class="col s4">
+            <select onchange="cambiaUsuario(this.value);">
+                @foreach (TAT001.Entities.USUARIO u in ViewBag.delegados)
+                {
+                    if (u.ID == ViewBag.usuariod)
+                    {
+                        <option selected="selected" value="@u.ID">@u.ID - @u.NOMBRE @u.APELLIDO_P @u.APELLIDO_M</option>
+                    }
+                    else
+                    {
+                        <option value="@u.ID">@u.ID - @u.NOMBRE @u.APELLIDO_P @u.APELLIDO_M</option>
+                    }
+                }
+            </select>
+        </div>
+        <script>
+            //var elems = document.querySelectorAll('select');
+            //var instances = M.FormSelect.init(elems, []);
+            function cambiaUsuario(user_id) {
+                document.location.replace("/?id=" + user_id);
+            }
+        </script>
+    }
+    <div class="col s8 right-align">
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id = "btn_create" })
         @using (Html.BeginForm("Descargar", "Home", FormMethod.Post, new { @style = "display:inline;" }))
         {
@@ -175,7 +200,7 @@
             </div>
         </div>
         <script>
-            var elem = document.querySelector('select');
+            var elem = document.querySelectorAll('select');
             var options = [];
             var instance = M.Select.init(elem, options);
         </script>
@@ -491,7 +516,7 @@
                         <td>
                             @for (int i = 0; i < lstD.Count; i++)
                             {
-                                if (lstD[i].NUM_DOC == item.NUM_DOC)
+                                if (lstD[i].NUM_DOC == item.NUM_DOC & lstD[i].FACTURA != null)
                                 {
                                     @Html.Label(lstD[i].FACTURA)
                                 }
@@ -500,7 +525,7 @@
                         <td>
                             @for (int i = 0; i < lstD.Count; i++)
                             {
-                                if (lstD[i].NUM_DOC == item.NUM_DOC)
+                                if (lstD[i].NUM_DOC == item.NUM_DOC & lstD[i].FACTURA != null)
                                 {
                                     @Html.Label(lstD[i].FACTURAK)
                                 }

@@ -8,7 +8,7 @@ using TAT001.Models;
 
 namespace TAT001.Services
 {
-    public class ProcesaFlujo2
+    public class ProcesaFlujo
     {
         public string procesa(FLUJO f, string recurrente)
         {
@@ -544,7 +544,7 @@ namespace TAT001.Services
                                 .OrderByDescending(a => a.VERSION).ToList();
 
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);
-            long gaa = db.CREADOR2.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
+            //long gaa = db.CREADOR2.Where(a => a.ID.Equals(u.ID) & a.BUKRS.Equals(d.SOCIEDAD_ID) & a.LAND.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.ACTIVO == true).FirstOrDefault().AGROUP_ID;
             int ppos = 0;
 
             if (pos.Equals(0))

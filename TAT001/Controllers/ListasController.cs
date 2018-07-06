@@ -43,8 +43,8 @@ namespace TAT001.Controllers
         [HttpGet]
         public JsonResult Clientes(string Prefix, string usuario, string pais)
         {
-            usuario = "";//Anterior
-            pais = "";//Anterior
+            //usuario = "";//Anterior
+            //pais = "";//Anterior
             if (Prefix == null)
                 Prefix = "";
 

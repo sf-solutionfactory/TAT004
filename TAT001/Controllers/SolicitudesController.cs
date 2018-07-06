@@ -23,7 +23,7 @@ namespace TAT001.Controllers
         private TAT001Entities db = new TAT001Entities();
 
         // GET: Solicitudes
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
             int pagina = 201; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -46,8 +46,6 @@ namespace TAT001.Controllers
                 }
                 catch
                 {
-                    //ViewBag.pais = "mx.png";
-                    ////return RedirectToAction("Pais", "Home");
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
@@ -113,6 +111,7 @@ namespace TAT001.Controllers
                 //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
                 dOCUMENTOes.Add(d);
             }
+
             dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
             return View(dOCUMENTOes);
         }
@@ -192,6 +191,11 @@ namespace TAT001.Controllers
             }
             ViewBag.workflow = vbFl;
 
+            string usuariodel = "";
+            DateTime fecha = DateTime.Now.Date;
+            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
+          
+
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P")).FirstOrDefault();
             ViewBag.acciones = f;
             List<DOCUMENTOA> archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(id) & x.ACTIVO == true).ToList();//RSG 15.05.2018
@@ -199,7 +203,18 @@ namespace TAT001.Controllers
             if (f != null)
                 if (f.USUARIOA_ID != null)
                 {
-                    if (f.USUARIOA_ID.Equals(User.Identity.Name))
+                    if (del.Count > 0)
+                    {
+                        DELEGAR dell = del.Where(a => a.USUARIO_ID.Equals(f.USUARIOA_ID)).FirstOrDefault();
+                        if (dell != null)
+                            usuariodel = dell.USUARIO_ID;
+                        else
+                            usuariodel = User.Identity.Name;
+                    }
+                    else
+                        usuariodel = User.Identity.Name;
+
+                    if (f.USUARIOA_ID.Equals(usuariodel))
                         ViewBag.accion = db.WORKFPs.Where(a => a.ID.Equals(f.WORKF_ID) & a.POS.Equals(f.WF_POS) & a.VERSION.Equals(f.WF_VERSION)).FirstOrDefault().ACCION.TIPO;
                 }
                 else
