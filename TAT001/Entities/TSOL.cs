@@ -31,6 +31,8 @@ namespace TAT001.Entities
         public bool FACTURA { get; set; }
         public bool PADRE { get; set; }
         public bool ADICIONA { get; set; }
+        public string TSOLM { get; set; }
+        public string TSOLC { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }

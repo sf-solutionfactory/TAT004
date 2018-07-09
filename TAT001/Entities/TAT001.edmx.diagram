@@ -302,6 +302,8 @@
         <EntityTypeShape EntityType="TAT001Model.MATERIALT" Width="1.5" PointX="26.25" PointY="74.625" />
         <AssociationConnector Association="TAT001Model.FK_MATERIALT_MATERIAL" />
         <AssociationConnector Association="TAT001Model.FK_MATERIALT_SPRAS" />
+        <EntityTypeShape EntityType="TAT001Model.CARTAP" Width="1.5" PointX="19.5" PointY="95.75" />
+        <AssociationConnector Association="TAT001Model.FK_CARTAP_CARTA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

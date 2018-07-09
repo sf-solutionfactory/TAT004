@@ -160,6 +160,7 @@ namespace TAT001.Entities
         public virtual DbSet<NOTICIA> NOTICIAs { get; set; }
         public virtual DbSet<MATERIALVKE> MATERIALVKEs { get; set; }
         public virtual DbSet<MATERIALT> MATERIALTs { get; set; }
+        public virtual DbSet<CARTAP> CARTAPs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
