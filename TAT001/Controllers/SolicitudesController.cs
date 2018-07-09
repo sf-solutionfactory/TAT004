@@ -1269,7 +1269,7 @@ namespace TAT001.Controllers
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
-            string rel = ""; //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+            string rele = ""; //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
             if (ModelState.IsValid && prueba == true)
             //if (ModelState.IsValid)
@@ -1330,7 +1330,7 @@ namespace TAT001.Controllers
                         dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                         dOCUMENTO.TIPO_TECNICO = d.TIPO_TECNICO; //B20180618 v1 MGC 2018.06.18
 
-                        rel = "X";//Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+                        rele = "X";//Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                     }
                     else
                     {
@@ -1539,7 +1539,7 @@ namespace TAT001.Controllers
                                     db.SaveChanges();
 
                                     revn = "X";
-                                    rel = "";
+                                    rele = "";
                                 }
 
                             }
@@ -1604,9 +1604,39 @@ namespace TAT001.Controllers
                         {
                             docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
                             //Add MGC B20180705 2018.07.05 Agregar materiales agregados en la vista
-                            if (rel == "X" && select_dis == "M" && select_neg == "M")
+                            if (rele == "X" && select_dis == "M" && select_neg == "M")
                             {
-                                
+                                List<DOCUMENTOP_MOD> listvista = new List<DOCUMENTOP_MOD>();
+
+                                for(int h=0; h < dOCUMENTO.DOCUMENTOP.Count; h++)
+                                {
+                                    DOCUMENTOP docmode = new DOCUMENTOP();
+
+                                    string mmatnr = dOCUMENTO.DOCUMENTOP[h].MATNR.TrimStart('0');
+                                    docmode = docpl.Where(dcp => dcp.MATNR.TrimStart('0') == mmatnr).FirstOrDefault();
+
+                                    //Agregarlo a la lista
+                                    if(docmode == null)
+                                    {
+                                        DOCUMENTOP docadd = new DOCUMENTOP();
+
+                                        docadd.MATNR = dOCUMENTO.DOCUMENTOP[h].MATNR;
+                                        docadd.MATKL = dOCUMENTO.DOCUMENTOP[h].MATKL;
+                                        docadd.CANTIDAD = 1;
+                                        docadd.MONTO = dOCUMENTO.DOCUMENTOP[h].MONTO;
+                                        docadd.PORC_APOYO = dOCUMENTO.DOCUMENTOP[h].PORC_APOYO;
+                                        docadd.MONTO_APOYO = dOCUMENTO.DOCUMENTOP[h].MONTO_APOYO;
+                                        docadd.PRECIO_SUG = dOCUMENTO.DOCUMENTOP[h].PRECIO_SUG;
+                                        docadd.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP[h].VOLUMEN_EST;
+                                        docadd.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP[h].VOLUMEN_REAL;
+                                        docadd.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP[h].VIGENCIA_DE;
+                                        docadd.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP[h].VIGENCIA_AL;
+                                        docadd.APOYO_EST = dOCUMENTO.DOCUMENTOP[h].APOYO_EST;
+                                        docadd.APOYO_REAL = dOCUMENTO.DOCUMENTOP[h].APOYO_REAL;
+
+                                        docpl.Add(docadd);
+                                    }
+                                }
                             }
                             for (int j = 0; j < docpl.Count; j++)
                             {

@@ -583,18 +583,18 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.Select.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -2001,8 +2001,8 @@ function copiarTableControl(borrador) { //B20180625 MGC 2018.07.03
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
@@ -3688,6 +3688,17 @@ function evalDistribucionTab(ret, e) {
         res = false;
     }
 
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    var dist = "";
+    //Facuras Add MGC B20180705 2018.07.09 evaluar si es una relacionada
+    dist = evaluarDisTable();
+
+    if (dist != "") {
+        msg = "";
+        msg = dist;
+        res = false;
+    }
+
     if (ret == true) {
         return res;
     } else {
@@ -3970,6 +3981,155 @@ function evaluarInfoFacturas() {
     }
 
     return res;
+}
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function evaluarDisTable() {
+    var res = "";
+
+    var dis = $("#select_dis").val();
+    var indext = getIndex();
+
+    //La tabla debe de contener como mínimo un registro
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
+    if (lengthT > 0) {
+
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+            //Distribución por material
+            if (dis == "M") {
+                var val = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                //Validar material
+                if (val == "") {
+                    //Sin material elimina el renglón
+                    $(this).addClass('selected');
+                } else {
+                    //Validar que el material exista
+                    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+                    var valp = valMaterial(val, "X");
+                    if (valp.ID == null || valp.ID == "") {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                        return false;
+                    } else if (trimStart('0', valp.ID) == val) {//RSG 07.06.2018
+
+                        //selectMaterial(val.ID, val.MAKTX, $(this));
+                        //Validar registros duplicados
+                        if (evaluarDisTableCount(val, dis) > 1) {
+                            res = "Error con el material " + val;
+                            if (res != "") {
+                                return false;
+                            }
+                        }
+
+                    } else {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                        return false;
+                    }                   
+                }
+            }
+
+            ////Validar fecha
+            //if ($(this).find('td.FECHA').length) {
+            //    var fecha = textval($(this), check, "FECHA");
+            //    res = valcolumn(fecha, "FECHA");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar proveedor
+            //if ($(this).find('td.PROVEEDOR').length) {
+            //    var prov = textval($(this), check, "PROVEEDOR");
+            //    res = valcolumn(prov, "PROVEEDOR");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar control
+            //if ($(this).find('td.CONTROL').length) {
+            //    var control = textval($(this), check, "CONTROL");
+            //    res = valcolumn(control, "CONTROL");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar autorización
+            //if ($(this).find('td.AUTORIZACION').length) {
+            //    var aut = textval($(this), check, "AUTORIZACION");
+            //    res = valcolumn(aut, "AUTORIZACION");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar vencimiento
+            //if ($(this).find('td.VENCIMIENTO').length) {
+            //    var ven = textval($(this), check, "VENCIMIENTO");
+            //    res = valcolumn(ven, "VENCIMIENTO");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar facturak
+            //if ($(this).find('td.FACTURAK').length) {
+            //    var fk = textval($(this), check, "FACTURAK");
+            //    res = valcolumn(fk, "FACTURAK");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar ejerciciok
+            //if ($(this).find('td.EJERCICIOK').length) {
+            //    var ek = textval($(this), check, "EJERCICIOK");
+            //    res = valcolumn(ek, "EJERCICIOK");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar bill_doc
+            //if ($(this).find('td.BILL_DOC').length) {
+            //    var bd = textval($(this), check, "BILL_DOC");
+            //    res = valcolumn(bd, "BILL_DOC");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar belnr
+            //if ($(this).find('td.BELNR').length) {
+            //    var belnr = textval($(this), check, "BELNR");
+            //    res = valcolumn(belnr, "BELNR");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+        });
+
+        var t = $('#table_dis').DataTable();
+        t.rows('.selected').remove().draw(false);
+    } else {
+        res = "Posiciones en tabla de distribución como mínimo un registro";
+    }
+
+    return res;
+}
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function evaluarDisTableCount(mat, dis) {
+    var count = 0;
+
+    var indext = getIndex();
+
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+            //Distribución por material
+            if (dis == "M") {
+                var val = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                //Validar material
+                if (val == mat) {
+                    count++;
+                }
+            }
+        });
+
+    return count;
 }
 
 //Add MGC B20180619 2018.06.20 Evaluar la columna en el renglón
@@ -4891,6 +5051,33 @@ function valcategoria(cat) {
         }
 
     });
+
+    return res;
+}
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function valmaterial(mat) {
+
+    var res = false;
+
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
+
+    if (lengthT > 0) {
+
+        var indext = getIndex();
+
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+            var matnr = "";
+            matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+
+            if (mat == matnr) {
+                res = true;
+                return false;
+            }
+
+        });
+
+    }
 
     return res;
 }

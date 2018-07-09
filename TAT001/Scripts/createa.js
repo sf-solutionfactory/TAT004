@@ -48,6 +48,9 @@ function trimStart(character, string) {//RSG 07.06.2018
 function selectMaterial(val, desc, tr) {
     var index = getIndex();
     desc = $.trim(desc);
+
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    var matExist = valmaterial(val);
     //Categoría
     var cat = getCategoria(val);
     tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
@@ -55,7 +58,13 @@ function selectMaterial(val, desc, tr) {
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
 
     //Remove background a celda de material
-    tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    if (matExist) {
+        M.toast({ html: 'Ya hay un material con ese mismo identificador' });
+        tr.find('td').eq((5 + index)).addClass("errorMaterial");
+    } else {
+        tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    }
 }
 
 $('body').on('keydown.autocomplete', '.input_proveedor', function () {
