@@ -10,6 +10,7 @@ using TAT001.Entities;
 using TAT001.Models;
 using ClosedXML.Excel;
 using TAT001.Services;
+using System.Web.Script.Serialization;
 
 namespace TAT001.Controllers
 {
@@ -96,7 +97,7 @@ namespace TAT001.Controllers
                 us = User.Identity.Name;
 
 
-            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(us)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
+            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(us) | a.USUARIOD_ID.Equals(us)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
             var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(us)).ToList();
             var tsol = db.TSOLs.ToList();
             var tall = db.TALLs.ToList();
@@ -133,7 +134,14 @@ namespace TAT001.Controllers
             ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
             //jemo inicio 4/07/2018
 
-
+            //List<DOCUMENTO> docs = new List<DOCUMENTO>();
+            //foreach(DOCUMENTO d in dOCUMENTOes)
+            //{
+            //    docs = d;
+            //}
+            //JsonResult cc = Json(dOCUMENTOes.ToList(), JsonRequestBehavior.AllowGet);
+            //string json = new JavaScriptSerializer().Serialize(cc.Data);
+            //ViewBag.documentos =  json;
 
             ////Recurrente r = new Recurrente();
             ////int ii = r.creaRecurrente("1000000491", "PR");

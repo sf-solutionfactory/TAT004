@@ -697,6 +697,7 @@
     <Compile Include="Models\CargaMasivaModels.cs" />
     <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
+    <Compile Include="Models\Documento.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />

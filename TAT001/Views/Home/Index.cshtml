@@ -51,7 +51,8 @@
     @if (ViewBag.delegados != null)
     {
         <div class="col s4">
-            <select onchange="cambiaUsuario(this.value);">
+            <label for="txt_user">Usuario</label>
+            <select onchange="cambiaUsuario(this.value);" id="txt_user">
                 @foreach (TAT001.Entities.USUARIO u in ViewBag.delegados)
                 {
                     if (u.ID == ViewBag.usuariod)
@@ -73,7 +74,7 @@
             }
         </script>
     }
-    <div class="col s8 right-align">
+    <div class="col s8 right-align right">
         @Html.ActionLink("Crear Solicitud", "Create", "Solicitudes", null, new { @class = "btn-small", @id = "btn_create" })
         @using (Html.BeginForm("Descargar", "Home", FormMethod.Post, new { @style = "display:inline;" }))
         {
@@ -553,6 +554,7 @@
         <script>
     $(document).ready(function () {
         var table = $('#table').DataTable({
+            //"ajax": 'ViewBag.documentos.Data[0]',
             //paging: false,
             //searching: false
             //stateSave: true,

@@ -37,7 +37,7 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
             }
-            ViewBag.url = ruta;
+            ViewBag.url = Request.Url.OriginalString.Replace(Request.Url.PathAndQuery,"") + ruta;
             ViewBag.miNum = ids;
 
             return View();

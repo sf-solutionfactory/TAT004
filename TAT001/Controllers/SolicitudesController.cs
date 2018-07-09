@@ -85,7 +85,7 @@ namespace TAT001.Controllers
             }
 
 
-            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
+            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(User.Identity.Name) | a.USUARIOD_ID.Equals(User.Identity.Name)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
             var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(User.Identity.Name)).ToList();
             var tsol = db.TSOLs.ToList();
             var tall = db.TALLs.ToList();
@@ -184,7 +184,7 @@ namespace TAT001.Controllers
                     fvbfl.NUM_DOC = flng[i].NUM_DOC;
                     fvbfl.FECHAC = flng[i].FECHAC;
                     fvbfl.FECHAM = flng[i].FECHAM;
-                    fvbfl.USUARIOA_ID = clName + "(Cliente)";
+                    fvbfl.USUARIOA_ID = clName;// + "(Cliente)";
                     fvbfl.COMENTARIO = flng[i].COMENTARIO;
                     vbFl.Add(fvbfl);
                 }
@@ -194,7 +194,7 @@ namespace TAT001.Controllers
             string usuariodel = "";
             DateTime fecha = DateTime.Now.Date;
             List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
-          
+
 
             FLUJO f = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P")).FirstOrDefault();
             ViewBag.acciones = f;
@@ -616,7 +616,7 @@ namespace TAT001.Controllers
                                         {
                                             SPRAS_ID = solt.SPRAS_ID,
                                             TSOL_ID = solt.TSOL_ID,
-                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT50
                                         })
                                     .ToList();
                 }
@@ -631,7 +631,7 @@ namespace TAT001.Controllers
                                         {
                                             SPRAS_ID = solt.SPRAS_ID,
                                             TSOL_ID = solt.TSOL_ID,
-                                            TEXT = solt.TSOL_ID + " " + solt.TXT020
+                                            TEXT = solt.TSOL_ID + " " + solt.TXT50
                                         })
                                     .ToList();
                 }
@@ -673,6 +673,7 @@ namespace TAT001.Controllers
                                     TXT50 = tallt.TXT50
                                 })
                             .ToList();
+                id_clas = id_clas.OrderBy(x => x.TXT50).ToList();
 
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
                 TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO(); //MGC B20180625 MGC
@@ -3539,7 +3540,8 @@ namespace TAT001.Controllers
 
             ViewBag.SEL_NEG = relacionada_neg;
             ViewBag.SEL_DIS = relacionada_dis;
-            ViewBag.BMONTO_APOYO = Math.Round((decimal)d.PORC_APOYO, 2);
+            if (d.PORC_APOYO != null)
+                ViewBag.BMONTO_APOYO = Math.Round((decimal)d.PORC_APOYO, 2);
             ViewBag.CATMAT = res; //B20180618 v1 MGC 2018.06.18
             ViewBag.MONTO_DIS = "";
 

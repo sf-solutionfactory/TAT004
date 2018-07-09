@@ -15,6 +15,7 @@ function asignarSolicitud(num, num2) {
                     $('#s_montop').text("-");
                     $('#s_montoa').text("-");
                     $('#s_rema').text(num2);
+                    $('#s_rema').text("-");//RSG 09.07.2018
                     $('#s_impa').text("-");
                     $('#s_impb').text("-");
                     $('#s_impc').text("-");
