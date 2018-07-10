@@ -236,7 +236,10 @@ namespace TAT001.Controllers
             ViewBag.ultMod = carga.consultarUCarga();
 
             ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS != "X" & a.PADRE == false).ToList();
-
+            //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
+            var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
+            ViewBag.miles = ".";
+            ViewBag.dec = ",";
             return View(DF);
         }
         [HttpPost]
@@ -391,7 +394,10 @@ namespace TAT001.Controllers
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
             }
-
+            //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
+            var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
+            ViewBag.miles = ",";
+            ViewBag.dec = ".";
             return RedirectToAction("Details");
         }
 
@@ -1237,6 +1243,11 @@ namespace TAT001.Controllers
             ViewBag.TSOL_VALUES2 = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);
             //RSG 13.06.2018--------------------------------------------------------
             //}//RSG 13.06.2018--------------------------------------------------------
+            //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
+            var paisMon = Session["pais"].ToString();//------------------------LEJ 09.07.18
+            ViewBag.miles = ".";
+            ViewBag.dec = ",";
+            //-----------------------------------------------------------------LEJ 09.07.18
             return View(d);
         }
 

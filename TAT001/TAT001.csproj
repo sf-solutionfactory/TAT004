@@ -891,6 +891,8 @@
     <Content Include="Scripts\tableHeadFixer.js" />
     <Content Include="Scripts\ValidarDecimalesTP.js" />
     <Content Include="Scripts\ValidarEdC.js" />
+    <Content Include="Scripts\ValidarFormatoDecimalesC.js" />
+    <Content Include="Scripts\ValidarFormatosDec.js" />
     <Content Include="Scripts\ValidarImpuestos.js" />
     <Content Include="Scripts\ValidarLeyenda.js" />
     <Content Include="Scripts\ValidarNumero.js" />

@@ -632,7 +632,10 @@ $(document).ready(function () {
     });
 
     $('#tab_fin').on("click", function (e) {
-
+        //LEJ 09.07.18----------------------------
+        var _miles = $("#miles").val();
+        var _decimales = $("#dec").val();
+        //LEJ 09.07.18----------------------------
         var res = evalDistribucionTab(true, e);
         if (res) {
 
@@ -640,7 +643,18 @@ $(document).ready(function () {
             $("#btn_guardarh").removeClass("disabled");
 
             //Copiar el monto de distribución de la tabla footer al monto financiera
-            var total_dis = $('#total_dis').text();
+            //LEJ 09.07.18-------------------------------------------------------------Inicia
+            //var total_dis = $('#total_dis').text();
+            var total_dis = $('#total_dis').text().replace("$", '');
+            if (_decimales === '.') {
+                total_dis = total_dis.replace(',', '');
+            }
+            else if (_decimales === ',') {
+                var _xtot = total_dis.replace('.', '');
+                _xtot = _xtot.replace(',', '.');
+                total_dis = _xtot;
+            }
+            //LEJ 09.07.18-------------------------------------------------------------Termina
             var basei = convertI(total_dis);
 
             //Obtiene el id del tipo de negociación, default envía vacío
@@ -654,20 +668,44 @@ $(document).ready(function () {
 
                 //Si las monedas son iguales, se pasa el monto
                 if (monedadis_id == monedafin_id) {
-                    $('#monto_doc_md').val(basei);
-
+                    //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                    //$('#monto_doc_md').val(basei);
+                    //Adaptacion para monedas . y ,
+                    if (_decimales === '.') {
+                        $('#monto_doc_md').val("$" + basei.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                    } else if (_decimales === ',') {
+                        var _xbasei = basei.toFixed(2).replace('.', ',');
+                        $('#monto_doc_md').val("$" + _xbasei.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+                    }
+                    //LEJ 09.07.18------------------------------------------------------------------------------Termina
                 } else {
                     //Realizar conversión de monedas
                     var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
-                    $('#monto_doc_md').val(newMonto);
-
+                    // $('#monto_doc_md').val(newMonto);
+                    //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                    if (_decimales === '.') {
+                        $('#monto_doc_md').val("$" + newMonto.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                    }
+                    else if (_decimales === ',') {
+                        var x_newm = newMonto.toFixed(2).replace('.', ',');
+                        $('#monto_doc_md').val("$" + x_newm.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+                    }
+                    //LEJ 09.07.18------------------------------------------------------------------------------Termina
                 }
 
             } else if (select_neg == "P") {
                 //Si no es por monto solo se copia la cantidad
 
-                $('#monto_doc_md').val(basei);
-
+                //  $('#monto_doc_md').val(basei);
+                //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                //Adaptacion para monedas . y ,
+                if (_decimales === '.') {
+                    $('#monto_doc_md').val("$" + basei.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                } else if (_decimales === ',') {
+                    var _xbasei = basei.toFixed(2).replace('.', ',');
+                    $('#monto_doc_md').val("$" + _xbasei.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'));
+                }
+                //LEJ 09.07.18------------------------------------------------------------------------------Termina
             }
 
             //Emular un focus out para actualizar los campos
@@ -692,7 +730,7 @@ $(document).ready(function () {
             var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
 
             asignarPresupuesto(kunnr);
-            asignarSolicitud(num, num2);//RSG 12.06.2018
+            asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
 
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });
@@ -710,27 +748,74 @@ $(document).ready(function () {
 
     //Financiera   
     $('#monto_doc_md').focusout(function (e) {
-
-        var monto_doc_md = $('#monto_doc_md').val();
+        //LEJ 09.07.18-----------------------------------------------Inicia
+        var _miles = $("#miles").val();
+        var _decimales = $("#dec").val();
+        var monto_doc_md = $('#monto_doc_md').val().replace("$", '');
+        //var is_num = $.isNumeric(monto_doc_md);
+        // var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        if (_decimales === '.') {
+            monto_doc_md = monto_doc_md.replace(',', '');
+        }
+        else if (_decimales === ',') {
+            monto_doc_md = monto_doc_md.replace('.', '');
+            monto_doc_md = monto_doc_md.replace(',', '.');
+        }
         var is_num = $.isNumeric(monto_doc_md);
         var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        //LEJ 09.07.18----------------------------------------------Termina
         if (mt > 0 & is_num == true) {
             //Obtener la moneda en la lista
             //var MONEDA_ID = $('#moneda_id').val();
-            $('#monto_doc_md').val(mt);
-
+            //$('#monto_doc_md').val(mt);
+            //LEJ 09.07.18---------------------------------------------------------------------Inicia
+            if (_decimales === '.') {
+                $('#monto_doc_md').val("$" + mt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            }
+            else if (_decimales === ',') {
+                var _mtx = mt.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                $('#monto_doc_md').val("$" + _mtx);
+            }
+            //LEJ 09.07.18---------------------------------------------------------------------Termina
             //selectTcambio(MONEDA_ID, mt);
-            var tipo_cambio = $('#tipo_cambio').val();
-            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //var tipo_cambio = $('#tipo_cambio').val();
+            var tipo_cambio = $('#tipo_cambio').val().replace('$', '');//LEJ 09.07.18
+            //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            var tc = 0;//LEJ 09.07.18
+            if (_decimales === ',') {
+                tc = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+                tipo_cambio = tipo_cambio.replace('.', '');
+                tipo_cambio = tipo_cambio.replace(',', '.');
+            }//LEJ 09.07.18
+            else if (_decimales === '.') {
+                tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);//LEJ 09.07.18
+            }
             //Validar el monto en tipo de cambio
             var is_num2 = $.isNumeric(tipo_cambio);
             if (tc > 0 & is_num2 == true) {
-                $('#tipo_cambio').val(tc);
+                // $('#tipo_cambio').val(tc);
+                //LEJ 09.07.18--------------------
+                if (_decimales === '.') {
+                    $('#tipo_cambio').val("$" + tc);
+                }
+                else if (_decimales === ',') {
+                    $('#tipo_cambio').val("$" + tc.replace('.', ','));
+                }
                 var monto = mt / tc;
                 monto = parseFloat(monto).toFixed(2);
-                $('#monto_doc_ml2').val(monto);
-                $('#montos_doc_ml2').val(monto);
-                $("label[for='montos_doc_ml2']").addClass("active");
+                //$('#monto_doc_ml2').val(monto);
+                // $('#montos_doc_ml2').val(monto);
+                //$("label[for='montos_doc_ml2']").addClass("active");
+                //LEJ 09.07.18-------------------------------------------------------------------------------------------Inicia
+                if (_decimales === '.') {
+                    $('#monto_doc_ml2').val("$" + monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    $('#montos_doc_ml2').val("$" + monto.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                }
+                else if (_decimales === ',') {
+                    $('#monto_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                    $('#montos_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                }
+                //LEJ 09.07.18-------------------------------------------------------------------------------------------Termina
             } else {
                 $('#monto_doc_ml2').val(monto);
                 $('#montos_doc_ml2').val(monto);
@@ -750,61 +835,189 @@ $(document).ready(function () {
         }
 
     });
+
+    $('body').on('keydown', '#tipo_cambio', function (e) {
+        var _miles = $("#miles").val(); //LEJ 09.07.18
+        var _decimales = $("#dec").val(); //LEJ 09.07.18
+        if (_decimales === ".") {
+            if (e.keyCode == 110 || e.keyCode == 190) {
+                if ($(this).val().indexOf('.') != -1) {
+                    e.preventDefault();
+                }
+            }
+            else {  // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+
+                    return;
+                }
+
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }
+        }
+        else if (_decimales === ",") {
+            if (e.keyCode == 188) {
+                if ($(this).val().indexOf(',') != -1) {
+                    e.preventDefault();
+                }
+            }
+            else {  // Allow: backspace, delete, tab, escape, enter and ','
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 188]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+
+                    return;
+                }
+
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+
+    //LEJ 09.07.18---------------------------------------------Inicia
+    //--Cambio de formato monetario
+    var _Tc = $("#tipo_cambio").val().replace('$', '');
+    var _mil = $("#miles").val();
+    var _dec = $("#dec").val();
+    if (_dec === '.') {
+        $("#tipo_cambio").val("$" + _Tc);
+    }
+    else if (_dec === ',') {
+        var _xtc = _Tc.replace('.', ',');
+        _Tc = _xtc;
+        $("#tipo_cambio").val("$" + _Tc);
+    }
+    //LEJ 09.07.18---------------------------------------------Termina
+
     $('#tipo_cambio').focusout(function (e) {
-        var tipo_cambio = $('#tipo_cambio').val();
-        var is_num = $.isNumeric(tipo_cambio);
-        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
-        //Validar el monto en tipo de cambio
-        if (tc > 0 & is_num == true) {
-            //Validar el monto
-            $('#tipo_cambio').val(tc)
-            var monto_doc_md = $('#monto_doc_md').val();
-            var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
-            var is_num2 = $.isNumeric(monto_doc_md);
-            if (mt > 0 & is_num2 == true) {
-                $('#monto_doc_md').val(mt);
+        var _miles = $("#miles").val(); //LEJ 09.07.18
+        var _decimales = $("#dec").val(); //LEJ 09.07.18
+        //var tipo_cambio = $('#tipo_cambio').val();
+        var tipo_cambio = $('#tipo_cambio').val().replace('$', ''); //LEJ 09.07.18
+        if (tipo_cambio != "") {
+            //LEJ 09.07.18------------------------I
+            if (_decimales === '.') {
+                tipo_cambio = tipo_cambio.replace(',', '');
+            }
+            else if (_decimales === ',') {
+                var _xtc = tipo_cambio.replace('.', '');
+                _xtc = _xtc.replace(',', '.');
+                tipo_cambio = _xtc;
+            }
+            //LEJ 09.07.18------------------------T
+            var is_num = $.isNumeric(tipo_cambio);
+            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //Validar el monto en tipo de cambio
+            if (tc > 0 & is_num == true) {
+                //Validar el monto
+                // $('#tipo_cambio').val(tc)
+                //LEJ 09.07.18----------------------------------I
+                if (_decimales === '.') {
+                    $('#tipo_cambio').val("$" + tc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                }
+                else if (_decimales === '.') {
+                    tc = tc.replace('.', ',');
+                    $('#tipo_cambio').val("$" + tc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                }
+                //LEJ 09.07.18----------------------------------T
+                // var monto_doc_md = $('#monto_doc_md').val();
+                //var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+                //LEJ 09.07.18-----------------------------------------------I
+                var monto_doc_md = $('#monto_doc_md').val().replace('$', '');
+                var mt = 0;
+                //Cambiosde formato para moneda
+                if (_decimales === '.') {
+                    mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+                    monto_doc_md = mt;
+                }
+                else if (_decimales === ',') {
+                    var _xmt = monto_doc_md.replace('.', '');
+                    _xmt = _xmt.replace(',', '.');
+                    mt = parseFloat(_xmt).toFixed(2);
+                    monto_doc_md = mt;
+                }
+                //LEJ 09.07.18-----------------------------------------------T
+                var is_num2 = $.isNumeric(monto_doc_md);
+                if (mt > 0 & is_num2 == true) {
+                    //$('#monto_doc_md').val(mt);//LEJ 09.07.18
 
-                //Validar la moneda                    
-                var moneda_id = $('#moneda_id').val();
-                if (moneda_id != null && moneda_id != "") {
-                    $('#monto_doc_ml2').val();
-                    $('#montos_doc_ml2').val();
+                    //Validar la moneda                    
+                    var moneda_id = $('#moneda_id').val();
+                    if (moneda_id != null && moneda_id != "") {
+                        $('#monto_doc_ml2').val();
+                        $('#montos_doc_ml2').val();
 
-                    //Los valores son correctos, proceso para generar nuevo monto
-                    var monto = mt / tc;
-                    monto = parseFloat(monto).toFixed(2);
-                    $('#monto_doc_ml2').val(monto);
-                    $('#montos_doc_ml2').val(monto);
-                    $("label[for='montos_doc_ml2']").addClass("active");
+                        //Los valores son correctos, proceso para generar nuevo monto
+                        var monto = mt / tc;
+                        monto = parseFloat(monto).toFixed(2);
+                        //LEJ 09.07.18----------------------------I
+                        if (_decimales === '.') {
+                            monto = monto;
+                        }
+                        else if (_decimales === ',') {
+                            var _xmonto = monto.replace('.', ',');
+                            //compruebo los millares
+                            var _arrM = _xmonto.split(',');
+                            _arrM[0] = _arrM[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                            _xmonto = _arrM[0] + ',' + _arrM[1];
+                            monto = _xmonto;
+                        }
+                        //$('#monto_doc_ml2').val(monto);
+                        //$('#montos_doc_ml2').val(monto);
+                        $('#monto_doc_ml2').val("$" + monto);
+                        $('#montos_doc_ml2').val("$" + monto);
+                        //LEJ 09.07.18-----------------------------T
+                        $("label[for='montos_doc_ml2']").addClass("active");
+                    }
+                    else {
+                        $('#monto_doc_md').val();
 
+                        // $('#monto_doc_ml2').val(monto);
+                        // $('#montos_doc_ml2').val(monto);
+                        //LEJ 09.07.18
+                        $('#monto_doc_ml2').val("$" + monto);
+                        $('#montos_doc_ml2').val("$" + monto);
+                        var msg = 'Moneda incorrecta';
+                        M.toast({ html: msg })
+                    }
                 } else {
                     $('#monto_doc_md').val();
 
+                    $('#tipo_cambio').val("");
                     $('#monto_doc_ml2').val(monto);
                     $('#montos_doc_ml2').val(monto);
-                    var msg = 'Moneda incorrecta';
-                    M.toast({ html: msg })
+                    $("label[for='montos_doc_ml2']").addClass("active");
+                    var msg = 'Monto incorrecto';
+                    M.toast({ html: msg });
+                    e.preventDefault();
                 }
 
             } else {
-                $('#monto_doc_md').val();
-
-                $('#tipo_cambio').val("");
-                $('#monto_doc_ml2').val(monto);
-                $('#montos_doc_ml2').val(monto);
+                //$('#monto_doc_ml2').val(monto);
+                // $('#montos_doc_ml2').val(monto);
+                $('#monto_doc_ml2').val("$" + monto);//LEJ 09.07.18
+                $('#montos_doc_ml2').val("$" + monto);//LEJ 09.07.18
                 $("label[for='montos_doc_ml2']").addClass("active");
-                var msg = 'Monto incorrecto';
+                var msg = 'Tipo de cambio incorrecto';
                 M.toast({ html: msg });
                 e.preventDefault();
             }
-
         } else {
-            $('#monto_doc_ml2').val(monto);
-            $('#montos_doc_ml2').val(monto);
-            $("label[for='montos_doc_ml2']").addClass("active");
-            var msg = 'Tipo de cambio incorrecto';
-            M.toast({ html: msg });
-            e.preventDefault();
+            $('#monto_doc_ml2').val("$0.00");//LEJ 09.07.18
+            $('#montos_doc_ml2').val("$0.00");//LEJ 09.07.18
         }
     });
 
@@ -1432,7 +1645,7 @@ function guardarBorrador(asyncv) {
         url: 'Borrador',
         dataType: "json",
         data: form.serialize() + "&notas_soporte = " + notas_soporte + "&unafact = " + unafact + "&select_neg = " + select_neg + "&select_dis = " + select_dis +
-        "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
+            "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
         //data: {
         //    object: form.serialize(), "notas_soporte": notas_soporte, "unafact": unafact, "select_neg": select_neg, "select_dis": select_dis,
         //    "select_negi": select_negi, "select_disi": select_disi, "bmonto_apoyo": bmonto_apoyo, "monedadis": monedadis},
@@ -2171,16 +2384,65 @@ function asignarPresupuesto(kunnr) {
                 //$('#pc_p').text(data.PC_P);
                 //$('#pc_t').text(data.PC_T);
                 //RSG 26.04.2018----------------
-                $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
-                $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
-                $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
-                $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
-                $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
-                $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
-                $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
+                /* $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
+                 $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
+                 $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
+                 $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
+                 $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
+                 $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                 $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));*/
                 //RSG 26.04.2018----------------
+                //LEJ 09.07.18------------------------------------------
+                var pcan = (data.P_CANAL / 1).toFixed(2);
+                var pban = (data.P_BANNER / 1).toFixed(2);
+                var pcc = (data.PC_C / 1).toFixed(2);
+                var pca = (data.PC_A / 1).toFixed(2);
+                var pcp = (data.PC_P / 1).toFixed(2);
+                var pct = (data.PC_T / 1).toFixed(2);
+                var consu = (data.CONSU / 1).toFixed(2);
+                var _xdec = $("#dec").val();
+                var _xm = $("#miles").val();
+                if (_xdec === '.') {
+                    $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
+                    $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
+                    $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                    if (_xcs.indexOf("-") >= 0) {
+                        var _dsARx = _xcs;
+                        _dsARx = _dsARx.replace('-', '(');
+                        _dsARx += ")";
+                        _xcs = _dsARx;
+                    }
+                    $('#consu').text('$' + _xcs);
+                } else
+                    if (_xdec === ',') {
+                        pcan = pcan.replace('.', ',');
+                        pban = pban.replace('.', ',');
+                        pcc = pcc.replace('.', ',');
+                        pca = pca.replace('.', ',');
+                        pcp = pcp.replace('.', ',');
+                        pct = pct.replace('.', ',');
+                        consu = consu.replace('.', ',');
+                        $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                        if (_xcs.indexOf("-") >= 0) {
+                            var _dsARx = _xcs;
+                            _dsARx = _dsARx.replace('-', '(');
+                            _dsARx += ")";
+                            _xcs = _dsARx;
+                        }
+                        $('#consu').text('$' + _xcs);
+                    }
             }
-
+            //LEJ 09.07.18-----------------------------------------------
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -2240,7 +2502,7 @@ $('body').on('focusout', '.input_oper', function () {
         if (neg == "M") {
             //Se dispara el evento desde el total
             if ($(this).hasClass("total")) {
-                var total_val = $(this).val();
+                var total_val = $(this).val().replace("$", "");
                 //Agregar los valores a 0 y agregar el total
                 updateTotalRow(t, tr, "", "X", total_val);
             } else {
@@ -2396,7 +2658,9 @@ var proveedorVal = "";
 var dataConfig = null;
 
 function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
-
+    //LEJ 09.07.18
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
     //totals = X cuando nada más se agrega el total
 
     //Add index
@@ -2411,9 +2675,66 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
 
     //Validar si las operaciones se hacen por renglón o solo agregar el valor del total
     if (totals != "X") {
-        var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
-        var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
-
+        /* var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
+         var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+ 
+         col9 = convertP(col9);
+ 
+         if ($.isNumeric(col9)) {
+             col9 = col9 / 100;
+         }
+ 
+         var col10 = col8 * col9;
+         //Apoyo por pieza
+         //Modificar el input
+         tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
+ 
+         //Costo con apoyo
+         var col11 = col8 - col10;
+         //col11 = col11.toFixed(2);
+         tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
+ 
+         //Estimado apoyo
+         var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+         var col14 = col10 * col13;
+         //col14 = col14.toFixed(2);
+         tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+ 
+         //Agregar nada más el total
+     } else {
+         total_val = parseFloat(total_val);
+         var col14 = total_val.toFixed(2);
+         tr.find("td:eq(" + (8 + index) + ") input").val("");
+         if (tdp_apoyo != "X") {
+             tr.find("td:eq(" + (9 + index) + ") input").val("");
+         }
+         tr.find("td:eq(" + (10 + index) + ") input").val("");
+         tr.find("td:eq(" + (11 + index) + ")").text("");
+         tr.find("td:eq(" + (12 + index) + ") input").val("");
+         tr.find("td:eq(" + (13 + index) + ") input").val("");
+         tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+     }*/
+        //-----------------------------------------------------------------------------LEJGG 09.07.18
+        var col8 = "";
+        var col9 = "";
+        if (_decimales === '.') {
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val().replace('$', '');
+            var _cl8 = col8.replace(',', '');
+            col8 = _cl8;
+            col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+            var _cl9 = col9.replace(',', '');
+            col9 = _cl9.replace('%', '');
+        } else if (_decimales === ',') {
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val().replace('$', '');
+            col8 = col8.replace(',', '*');
+            col8 = col8.replace('.', '');
+            col8 = col8.replace('*', '.');
+            col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+            col9 = col9.replace(',', '*');
+            col9 = col9.replace('.', '');
+            col9 = col9.replace('*', '.');
+            col9 = col9.replace('%', '');
+        }
         col9 = convertP(col9);
 
         if ($.isNumeric(col9)) {
@@ -2423,23 +2744,64 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         var col10 = col8 * col9;
         //Apoyo por pieza
         //Modificar el input
-        tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
+        var _c10 = col10.toFixed(2);
+        if (_decimales === '.') {
+            tr.find("td:eq(" + (10 + index) + ") input").val("$" + _c10.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        }
+        else if (_decimales === ',') {
+            _c10 = _c10.replace('.', ',');
+            tr.find("td:eq(" + (10 + index) + ") input").val("$" + _c10.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        }
 
         //Costo con apoyo
         var col11 = col8 - col10;
         //col11 = col11.toFixed(2);
-        tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
+
+        if (_decimales === '.') {
+            tr.find("td:eq(" + (11 + index) + ")").text("$" + col11.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        } else if (_decimales === ',') {
+            col11 = col11.toFixed(2);
+            col11 = col11.replace('.', ',');
+            tr.find("td:eq(" + (11 + index) + ")").text("$" + col11.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        }
 
         //Estimado apoyo
-        var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+        var col13 = "";
+        if (_decimales === '.') {
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
+        } else if (_decimales === ',') {
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+            var _c13 = col13.replace('.', '');
+            _c13 = _c13.replace(',', '.');
+            col13 = _c13;
+        }
         var col14 = col10 * col13;
         //col14 = col14.toFixed(2);
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+        if (_decimales === '.') {
+            tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        } else if (_decimales === ',') {
+            col14 = col14.toFixed(2);
+            col14 = col14.replace('.', ',');
+            tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        }
 
         //Agregar nada más el total
-    } else {
-        total_val = parseFloat(total_val);
+    }
+    else {
+        if (_decimales === '.') {
+            total_val = parseFloat(total_val);
+        }
+        else if (_decimales === ',') {
+            total_val = total_val.replace('.', '');
+            total_val = total_val.replace(',', '.');
+            total_val = parseFloat(total_val);
+        }
         var col14 = total_val.toFixed(2);
+        if (_decimales === '.') {
+            col14 = col14;
+        } else if (_decimales === ',') {
+            col14 = col14.replace('.', ',');
+        }
         tr.find("td:eq(" + (8 + index) + ") input").val("");
         if (tdp_apoyo != "X") {
             tr.find("td:eq(" + (9 + index) + ") input").val("");
@@ -2448,7 +2810,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         tr.find("td:eq(" + (11 + index) + ")").text("");
         tr.find("td:eq(" + (12 + index) + ") input").val("");
         tr.find("td:eq(" + (13 + index) + ") input").val("");
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+        tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
     }
 
     updateFooter();
@@ -2799,23 +3161,55 @@ function updateFooter() {
     var index = getIndex();
     coltotal = (14 + index);
 
+    //LEJ 09.07.18
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+
     var t = $('#table_dis').DataTable();
     var total = 0;
 
     $('#table_dis').find("tr").each(function (index) {
-        var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+        //var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
 
-        col4 = convertI(col4);
+        //col4 = convertI(col4);
 
-        if ($.isNumeric(col4)) {
-            total += col4;
+        //if ($.isNumeric(col4)) {
+        //    total += col4;
+        //}
+        //LEJ 09.07.18----------------------------------------I
+        if (_decimales === '.') {
+            var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+            col4 = convertI(col4);
+            if ($.isNumeric(col4)) {
+                total += col4;
+            }
         }
-
+        else if (_decimales === ',') {
+            var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+            var x_col4 = '' + col4;
+            if (x_col4 != "undefined") {
+                x_col4 = x_col4.replace('.', '');
+                x_col4 = x_col4.replace(',', '.');
+                col4 = x_col4;
+            }
+            col4 = convertI(col4);
+            if ($.isNumeric(col4)) {
+                total += col4;
+            }
+        }
+        //LEJ 09.07.18----------------------------------------T
     });
 
     total = total.toFixed(2);
-
-    $('#total_dis').text("$" + total);
+    //LEJ 09.07.18----------------------------------------------------------------------------I
+    if (_decimales === '.') {
+        $('#total_dis').text("$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+    } else if (_decimales === ',') {
+        var _total = total.toString().replace('.', ',');
+        $('#total_dis').text("$" + _total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+    }
+    //LEJ 09.07.18----------------------------------------------------------------------------T
+    //$('#total_dis').text("$" + total);
 }
 
 function convertI(i) {
@@ -3080,7 +3474,45 @@ function loadExcelDis(file) {
                     if (monto_apoyo > 0) {
                         dataj.PORC_APOYO = monto_apoyo;
                     }
+                    //LEJ 09.07.2018---------------------------------
+                    var _miles = $("#miles").val();
+                    var _decimales = $("#dec").val();
                     //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);
+                    //LEJ 09.07.2018---------------------------------Inicia
+                    if (_decimales === '.') {
+                        //Remplazo el punto, lo cambio por una coma 
+                        var _xm = parseFloat(dataj.MONTO).toFixed(2);
+                        var _xpa = parseFloat(dataj.PORC_APOYO).toFixed(2);
+                        var _map = parseFloat(dataj.MONTO_APOYO).toFixed(2);
+                        var _psu = parseFloat(dataj.PRECIO_SUG).toFixed(2);
+                        var _ves = parseFloat(dataj.VOLUMEN_EST).toFixed(2);
+                        var _apE = parseFloat(dataj.APOYO_EST).toFixed(2);
+
+                        // Le agrego el punto si fuera millar //----
+                        dataj.MONTO = "$" + _xm.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        dataj.PORC_APOYO = _xpa.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%";
+                        dataj.MONTO_APOYO = "$" + _map.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        dataj.PRECIO_SUG = "$" + _psu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        dataj.VOLUMEN_EST = _ves.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        dataj.APOYO_EST = "$" + _apE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+                    else if (_decimales === ',') {
+                        //Remplazo el punto, lo cambio por una coma 
+                        var _xm = parseFloat(dataj.MONTO).toFixed(2).toString().replace('.', ',');
+                        var _xpa = parseFloat(dataj.PORC_APOYO).toFixed(2).toString().replace('.', ',');
+                        var _map = parseFloat(dataj.MONTO_APOYO).toFixed(2).toString().replace('.', ',');
+                        var _psu = parseFloat(dataj.PRECIO_SUG).toFixed(2).toString().replace('.', ',');
+                        var _ves = parseFloat(dataj.VOLUMEN_EST).toFixed(2).toString().replace('.', ',');
+                        var _apE = parseFloat(dataj.APOYO_EST).toFixed(2).toString().replace('.', ',');
+                        // Le agrego el punto si fuera millar //----
+                        dataj.MONTO = "$" + _xm.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        dataj.PORC_APOYO = _xpa.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "%";
+                        dataj.MONTO_APOYO = "$" + _map.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        dataj.PRECIO_SUG = "$" + _psu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        dataj.VOLUMEN_EST = _ves.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        dataj.APOYO_EST = _apE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+                    //LEJ 09.07.2018---------------------------------Termina
                     var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo, pm);//RSG 24.05.2018
 
 
@@ -3359,11 +3791,11 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         MATKL,
         DESC,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MONTO + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc " + porcentaje_mat + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYO + "\">",
+        "<input class=\"" + reversa + " input_oper numberd input_dcp " + porcentaje_mat + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYO + "\">",
         "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MONTO_APOYO + "\">",
         MONTOC_APOYO,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
+        "<input class=\"" + reversa + " input_oper numberd input_dcv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">"//RSG 24.05.2018
     );
@@ -4232,9 +4664,15 @@ function evaluarVal(v) {
 
 function evaluarValInt(v) {
 
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+
     if (v != null && v != "") {
-        var is_num = $.isNumeric(v);
-        var iNum = parseFloat(v.replace(',', '.'))
+        var n = v.replace('$', '');//RSG 10.07.2018
+         n = n.replace(_miles, '');//RSG 10.07.2018
+         n = n.replace(_decimales, '.');//RSG 10.07.2018
+        var is_num = $.isNumeric(n);
+        var iNum = parseFloat(n.replace(',', '.'))
         if (iNum > 0 & is_num == true) {
             return true;
         } else {
