@@ -29,6 +29,6 @@ namespace TAT001.Entities
         public bool BELNR { get; set; }
         public bool IMPORTE_FAC { get; set; }
         public bool PAYER { get; set; }
-        public bool MULTIPLE { get; set; }
+        public bool DESCRIPCION { get; set; }
     }
 }

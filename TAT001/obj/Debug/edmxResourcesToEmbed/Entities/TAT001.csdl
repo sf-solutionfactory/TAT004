@@ -968,7 +968,7 @@
     <Property Name="BELNR" Type="Boolean" Nullable="false" />
     <Property Name="IMPORTE_FAC" Type="Boolean" Nullable="false" />
     <Property Name="PAYER" Type="Boolean" Nullable="false" />
-    <Property Name="MULTIPLE" Type="Boolean" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
@@ -1556,16 +1556,6 @@
     <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
     <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -4288,7 +4278,6 @@
     <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
     <EntitySet Name="STATES" EntityType="Self.STATE" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TALLs" EntityType="Self.TALL" />
     <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" />
