@@ -1600,6 +1600,7 @@
     <Property Name="ADICIONA" Type="bit" Nullable="false" />
     <Property Name="TSOLM" Type="nvarchar" MaxLength="10" />
     <Property Name="TSOLC" Type="nvarchar" MaxLength="10" />
+    <Property Name="TRECU" Type="nchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>

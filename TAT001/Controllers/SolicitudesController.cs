@@ -667,6 +667,8 @@ namespace TAT001.Controllers
                 //clasificación
                 //MGC B20180611
                 List<TALLT_MOD> id_clas = new List<TALLT_MOD>();
+                //string ch = "Direct Plant ship  (\"DPS\")";
+                //var aa = db.TALLs.Where(a => a.DESCRIPCION == ch).ToList();
                 id_clas = db.TALLs.Where(t => t.ACTIVO == true)
                                 .Join(
                                 db.TALLTs.Where(tallt => tallt.SPRAS_ID == user.SPRAS_ID),
@@ -679,6 +681,7 @@ namespace TAT001.Controllers
                                     TXT50 = tallt.TXT50
                                 })
                             .ToList();
+                            //.ToList().Where(a => a.TXT50 == ).ToList();
                 id_clas = id_clas.OrderBy(x => x.TXT50).ToList();
 
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();

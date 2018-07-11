@@ -178,9 +178,10 @@
     <div class="col s12">
         <ul class="tabs" id="tabs">
             <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="active">Información</a></li>
-            <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
+            @*<li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>*@@*RSG 09.07.2018*@
             <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
             <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
+            <li id="tabs_rec" class="tab col s3 tabs_menu disabled"><a id="tab_rec" href="#Recurrente_cont">Recurrencia</a></li><!--RSG 09.07.2018-->
             <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
         </ul>
     </div>
@@ -548,109 +549,10 @@
                     </div>
                 </div>
             </div>
-            <div id="ref_soporte" style="display:none" class="col s12">
-                <div class="card-panel">
-                    <h5>Referencia de Facturas</h5>
-                    <div class="row" style="margin-bottom:0;">
-                        <p>
-                            <label>
-                                <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
-                                <input id="check_factura" type="checkbox" checked="checked" />
-                                <span>Una Factura</span>
-                            </label>
-                        </p>
-                        @*Cargar archivo excel soporte*@
-                        <div id="file_facturat" class="file-field input-field" style="display:none">
-                            <div class="btn">
-                                <span>File</span>
-                                <input type="file" class="file_sop" id="file_sop">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input class="file-path validate file_sop" type="text">
-                            </div>
-                        </div>
-                        <div class="table_sop" id="" style="display:none">
-                        </div>
-                        <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
-                            <thead>
-                                <tr>
-                                    <th>Pos</th>
-                                    <th>Factura</th>
-                                    <th>Fecha Factura</th>
-                                    <th>Proveedor</th>
-                                    <th>Proveedor Desc</th>
-                                    <th>Control</th>
-                                    <th>Autorización</th>
-                                    <th>Vencimiento</th>
-                                    <th>Factura k</th>
-                                    <th>Ejercicio k</th>
-                                    <th>Bill doc</th>
-                                    <th>Belnr</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
-                        <table id="table_soph" class="display" cellspacing="0" style="display:none">
-                            <tbody>
-                                @if (Model.DOCUMENTOF != null)
-                                {
-                                    @*//B20180625 MGC 2018.06.27*@
-                                    for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @*Temporalidad*@
-    <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
-        <div class="row">
-            <div class="col s12">
+            <div class="col s12 m6 l6">
                 <div class="card-panel">
                     <h5>Vigencia</h5>
                     <div class="row" style="margin-bottom:0">
-                        <!--RSG 22.05.2018-->
                         @if (ViewBag.relacionada == "")
                         {
                             <div class="col s12">
@@ -693,14 +595,12 @@
                             <div class="col s6">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
-                                    @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
                                     @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                     <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
                                     @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
                                 </div>
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
-                                    @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
                                     @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                     <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
                                     @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
@@ -811,83 +711,92 @@
                         }
                     </div>
                 </div>
-                <div id="div_picker2"></div><!--RSG 27.05.2017-->
+                <div id="div_picker2"></div>
+            </div>
+            <div id="ref_soporte" style="display:none" class="col s12">
                 <div class="card-panel">
-                    <h5>Recurrente</h5>
+                    <h5>Referencia de Facturas</h5>
                     <div class="row" style="margin-bottom:0;">
                         <p>
                             <label>
-                                @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                <span>Documento recurrente</span>
+                                <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
+                                <input id="check_factura" type="checkbox" checked="checked" />
+                                <span>Una Factura</span>
                             </label>
                         </p>
-                        <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                        @*Cargar archivo excel soporte*@
+                        <div id="file_facturat" class="file-field input-field" style="display:none">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" class="file_sop" id="file_sop">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate file_sop" type="text">
+                            </div>
+                        </div>
+                        <div class="table_sop" id="" style="display:none">
+                        </div>
+                        <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>TSOL</th>
-                                    <th>FECHA</th>
-                                    <th>Monto</th>
-                                    <th>Porcentaje</th>
+                                    <th>Pos</th>
+                                    <th>Factura</th>
+                                    <th>Fecha Factura</th>
+                                    <th>Proveedor</th>
+                                    <th>Proveedor Desc</th>
+                                    <th>Control</th>
+                                    <th>Autorización</th>
+                                    <th>Vencimiento</th>
+                                    <th>Factura k</th>
+                                    <th>Ejercicio k</th>
+                                    <th>Bill doc</th>
+                                    <th>Belnr</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
-                        @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
-                        <table id="table_rech" class="display" cellspacing="0" style="display:none">
-                            <thead>
-                                <tr>
-                                    <th>NO</th>
-                                    <th>TSOL</th>
-                                    <th>FECHA</th>
-                                    <th>Monto</th>
-                                    <th>Porcentaje</th>
-                                </tr>
-                            </thead>
+                        @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
+                        <table id="table_soph" class="display" cellspacing="0" style="display:none">
                             <tbody>
-                                @if (Model.DOCUMENTOREC != null)
+                                @if (Model.DOCUMENTOF != null)
                                 {
-
-                                    for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                    @*//B20180625 MGC 2018.06.27*@
+                                    for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
                                     {
                                         <tr>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].NUM_DOC
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].POS
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].FECHAF
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].MONTO_BASE
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].PORC
-                                            </td>
-
-                                            <td>
-                                                @Model.DOCUMENTOREC[i].DOC_REF
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].EJERCICIO
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].ESTATUS
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].MONTO_GRS
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                             <td>
-                                                @Model.DOCUMENTOREC[i].MONTO_NET
-                                            </td>
-                                            <td>
-                                                @Model.DOCUMENTOREC[i].PERIODO
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
                                             </td>
                                         </tr>
                                     }
@@ -899,6 +808,257 @@
             </div>
         </div>
     </div>
+    @*Temporalidad*@
+    <!--<div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
+         <div class="row">
+             <div class="col s12">
+                 <div class="card-panel">
+                         <h5>Vigencia</h5>
+                         <div class="row" style="margin-bottom:0">
+                             @if (ViewBag.relacionada == "")
+                             {
+                                 <div class="col s12">
+                                     <label class="col s6">
+                                         <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+                                         <span>Por fecha</span>
+                                     </label>
+                                     <label class="col s6">
+                                         <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                         <span>Por periodo</span>
+                                     </label>
+                                 </div>
+                                 <script>
+                                     function cambiaTemp(id) {
+                                         var tipo = id.split('-')[1];
+                                         if (tipo == "date") {
+                                             document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                             document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                             document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                             document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+
+                                             document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                             document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                         } else {
+                                             document.getElementById("periodoi_id").removeAttribute("disabled");
+                                             document.getElementById("anioi_id").removeAttribute("disabled");
+                                             document.getElementById("periodof_id").removeAttribute("disabled");
+                                             document.getElementById("aniof_id").removeAttribute("disabled");
+
+                                             document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                             document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+
+                                         }
+                                         setDates(tipo);
+                                         var elem = document.querySelectorAll('select');
+                                         var instance = M.Select.init(elem, []);
+                                         pickerFecha2(".format_date");
+                                     }
+                                 </script>
+                                 <div class="col s6">
+                                     <div class="input-field col s12">
+                                         <i class="material-icons prefix">date_range</i>
+                                        @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                         <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                         @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                     </div>
+                                     <div class="input-field col s12">
+                                         <i class="material-icons prefix">date_range</i>
+                                         @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+                                         <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                         @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                     </div>
+                                 </div>
+                                 <script>
+                                     asignaFechasInit();
+                                     function asignaFechasInit() {
+                                         var datei = document.getElementById("fechai_vig").value;
+                                         var datef = document.getElementById("fechaf_vig").value;
+
+                                         if (datei != "") {
+                                             document.getElementById("fechai_vig2").value = datei;
+                                         }
+                                         if (datef != "") {
+                                             document.getElementById("fechaf_vig2").value = datef;
+                                         }
+                                     }
+                                 </script>
+                                 <div class="col s6">
+                                     <div class="col s12">
+                                         <div class="input-field col s6">
+                                             @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                             <label>De</label>
+                                         </div>
+                                         <div class="input-field col s3">
+                                             @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                         </div>
+                                     </div><div class="col s12">
+                                         <div class="input-field col s6">
+                                             @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                             <label>Hasta</label>
+                                         </div>
+                                         <div class="input-field col s3">
+                                             @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <script>
+                                     var datei = document.getElementById("fechai_vig").value;
+                                     var datef = document.getElementById("fechaf_vig").value;
+                                     var elemth = document.querySelector('#fechai_vig2');
+                                     var optionsth = {
+                                         defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
+                                         format: 'dd/mm/yyyy',
+                                         i18n: {
+                                             clear: 'Limpiar',
+                                             today: 'Hoy',
+                                             done: 'Seleccionar',
+                                             previousMonth: '‹',
+                                             nextMonth: '›',
+                                             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                             monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                             weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                             weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                             weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                         }
+                                     };
+                                     var instanceth = M.Datepicker.init(elemth, optionsth);
+
+                                     var elemtd = document.querySelector('#fechaf_vig2');
+                                     var optionstd = {
+                                         defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
+                                         format: 'dd/mm/yyyy',
+                                         onClose: function (e) {
+                                             var datei = $('#fechai_vig2').val();
+                                             var datef = $('#fechaf_vig2').val();
+                                             var res = validar_fechas(datei, datef);
+
+                                             if (!res) {
+                                                 $('#fechaf_vig2').val("");
+                                                 M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                             }
+                                         },
+                                         i18n: {
+                                             clear: 'Limpiar',
+                                             today: 'Hoy',
+                                             done: 'Seleccionar',
+                                             previousMonth: '‹',
+                                             nextMonth: '›',
+                                             months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                             monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                             weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                             weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                             weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                         }
+                                     };
+                                     var instancetd = M.Datepicker.init(elemtd, optionstd);
+
+                                     function borrar(field) {
+                                         field.value = "";
+                                     }
+                                 </script>
+                             }
+                             else
+                             { <div class="col s12">
+                                     <div class="input-field col s6">
+                                         <i class="material-icons prefix">date_range</i>
+                                         @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
+                                         @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                     </div>
+                                     <div class="input-field col s6">
+                                         <i class="material-icons prefix">date_range</i>
+                                         @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
+                                         @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                     </div>
+                                 </div>
+                             }
+                         </div>
+                     </div>
+                     <div id="div_picker2"></div>
+                 <div class="card-panel">
+                     <h5>Recurrente</h5>
+                     <div class="row" style="margin-bottom:0;">
+                         <p>
+                             <label>
+                                 <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                 <span>Documento recurrente</span>
+                             </label>
+                         </p>
+                         <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                             <thead>
+                                 <tr>
+                                     <th>NO</th>
+                                     <th>TSOL</th>
+                                     <th>FECHA</th>
+                                     <th>Monto</th>
+                                     <th>Porcentaje</th>
+                                 </tr>
+                             </thead>
+                             <tbody></tbody>
+                         </table>
+                         <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                             <thead>
+                                 <tr>
+                                     <th>NO</th>
+                                     <th>TSOL</th>
+                                     <th>FECHA</th>
+                                     <th>Monto</th>
+                                     <th>Porcentaje</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 @if (Model.DOCUMENTOREC != null)
+                                 {
+
+                                     for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                     {
+                                         <tr>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].NUM_DOC
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].POS
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].FECHAF
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].MONTO_BASE
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].PORC
+                                             </td>
+
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].DOC_REF
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].EJERCICIO
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].ESTATUS
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].MONTO_GRS
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].MONTO_NET
+                                             </td>
+                                             <td>
+                                                 @Model.DOCUMENTOREC[i].PERIODO
+                                             </td>
+                                         </tr>
+                                     }
+                                 }
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>-->
     @*Soporte*@
     <div id="Soporte_cont">
         <div class="row">
@@ -928,8 +1088,8 @@
                     </div>
                 }
                 @{List<TAT001.Entities.DOCUMENTOA>
-                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                ;
+                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                    ;
                     if (ViewBag.relacionadan != "" && archivos.Count > 0)
                     {
                         string[] nombrefile;
@@ -1040,6 +1200,105 @@
                         </div>
                     </div>
                 }
+            </div>
+        </div>
+    </div>
+    @*Recurrencia*@
+    <div id="Recurrente_cont" class="row">
+        <div class="col s12 l8 offset-l2">
+            <div class="card horizontal green white-text">
+                <div class="col s12" style="margin-bottom0;">
+                    <p>
+                        Esta pestaña se debe llenar solamente si necesitas que tu solicitud se genere automáticamente durante los periodos seleccionados
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12">
+            <div class="card-panel">
+                @*<h5>Recurrente</h5>*@
+                <input type="hidden" id="txt_trec" />
+                <div class="row" style="margin-bottom:0;">
+                    <p>
+                        <label>
+                            @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                            <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                            <span>Documento recurrente</span>
+                        </label>
+                    </p>
+                    <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>TSOL</th>
+                                <th>FECHA</th>
+                                <th>Monto</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
+                    <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>TSOL</th>
+                                <th>FECHA</th>
+                                <th>Monto</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DOCUMENTOREC != null)
+                    {
+
+                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].NUM_DOC
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].POS
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].FECHAF
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].MONTO_BASE
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].PORC
+                                </td>
+
+                                <td>
+                                    @Model.DOCUMENTOREC[i].DOC_REF
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].EJERCICIO
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].ESTATUS
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].MONTO_GRS
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].MONTO_NET
+                                </td>
+                                <td>
+                                    @Model.DOCUMENTOREC[i].PERIODO
+                                </td>
+                            </tr>
+                }
+            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

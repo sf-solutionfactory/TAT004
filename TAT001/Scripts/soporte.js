@@ -38,6 +38,23 @@ function soportes(tsol, spras) {
             }
         }
     });
+    //alert(tsol + soci + pais);
+    $.ajax({
+        url: "../Listas/TipoRecurrencia",
+        type: "POST",
+        async: true,
+        timeout: 30000,
+        //dataType: "json",
+        data: { tsol: tsol },
+        success: function (data) {
+            $("#txt_trec").val(data);
+            if (data === "") {
+                $("#tabs_rec").addClass("disabled");
+            } else {
+                $("#tabs_rec").removeClass("disabled");
+            }
+        }
+    });
 }
 
 function pickerFecha(clase) {

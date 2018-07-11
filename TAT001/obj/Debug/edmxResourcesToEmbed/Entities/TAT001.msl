@@ -1497,6 +1497,7 @@
     <EntitySetMapping Name="TSOLs">
       <EntityTypeMapping TypeName="TAT001Model.TSOL">
         <MappingFragment StoreEntitySet="TSOL">
+          <ScalarProperty Name="TRECU" ColumnName="TRECU" />
           <ScalarProperty Name="TSOLC" ColumnName="TSOLC" />
           <ScalarProperty Name="TSOLM" ColumnName="TSOLM" />
           <ScalarProperty Name="ADICIONA" ColumnName="ADICIONA" />

@@ -74,100 +74,107 @@ function cambiaRec() {
     var table = $('#table_rec').DataTable();
     table.clear().draw(true);
     var tipo = document.getElementById("select_neg").value;
-    var montoo = document.getElementById("monto_dis").value;
+    //var montoo = document.getElementById("monto_dis").value;//RSG 09.07.2018
+    var montoo = toNum(document.getElementById("monto_dis").value);
+    var tipoR = document.getElementById("txt_trec").value;//RSG 09.07.2018
 
     if (radio != null) //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
-    if (radio.checked)
-        if (campo.checked) {
-            if (montoo === "") {
-                var dist = $('#table_dis').DataTable();
-                var montooo = 0.00;
-                $('#table_dis > tbody  > tr').each(function () {
-                    var montot = $(this).find("td.total input").val();
-                    //montoo += parseInt(montot);
-                    montooo += parseFloat(montot);
-                });
-                montoo = montooo;
-            }
-            if (montoo > 0) {
-
-                //if (montoo > 0) { 
-                $(".table_rec").css("display", "table");
-                //Add row 
-                ////var datei = document.getElementById("fechai_vig").value.split('/');
-                ////var datef = document.getElementById("fechaf_vig").value.split('/');
-                ////var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
-                ////var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
-                var pe1 = document.getElementById("periodoi_id").value;
-                var pe2 = document.getElementById("periodof_id").value;
-                var ej1 = document.getElementById("anioi_id").value;
-                var ej2 = document.getElementById("aniof_id").value;
-
-                var anios = ej2 - ej1;
-                ////var resdate = dateff - dateii;
-
-                var meses = 1 + (pe2 - pe1) + (anios * 12);
-                if (meses > 1 & montoo > 0) {
-                    for (var i = 1; i <= meses; i++) {
-                        var date = "";
-                        var monto = "";
-                        if (i === 1) {
-                            if (tipo !== "P") {
-                                ////date = document.getElementById("fechai_vig").value;
-                                ////monto = montoo;
-                                //////addRowRec(table, i, date, monto, tipo);
-                                ////primerDiaT(table, i, datei, monto, tipo);
-                            } else {
-                                ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
-                                //////date = date.addDays(-1);
-                                ////dates.setDate(dates.getDate() - 1);
-                                ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                monto = montoo;
-                                //////addRowRec(table, i, date, monto, tipo);
-                                ////ultimoDiaT(table, i, datei, monto, tipo);
-                                ultimoDiaT(table, i, pe1, ej1, monto, tipo);
-                            }
-                        }
-                        else {
-                            if (tipo !== "P") {
-                                //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                                //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                ////monto = montoo;
-                                ////primerDiaT(table, i, datei, monto, tipo);
-                            } else {
-                                ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
-                                //////date = date.addDays(-1);
-                                ////dates.setDate(dates.getDate() - 1);
-                                ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                monto = montoo;
-                                //////addRowRec(table, i, date, monto, tipo);
-                                ////ultimoDiaT(table, i, datei, monto, tipo);
-                                ultimoDiaT(table, i, pe1, ej1, monto, tipo);
-                            }
-                        }
-                    }
-
+        if (radio.checked)
+            if (campo.checked) {
+                if (montoo === "") {
+                    var dist = $('#table_dis').DataTable();
+                    var montooo = 0.00;
+                    $('#table_dis > tbody  > tr').each(function () {
+                        var montot = $(this).find("td.total input").val();
+                        //montoo += parseInt(montot);
+                        //montooo += parseFloat(montot);//RSG 09.07.2018
+                        montooo += parseFloat(toNum(montot));
+                    });
+                    montoo = montooo;
                 }
-            }
-            else {
+                if (montoo > 0) {
+
+                    //if (montoo > 0) { 
+                    $(".table_rec").css("display", "table");
+                    //Add row 
+                    ////var datei = document.getElementById("fechai_vig").value.split('/');
+                    ////var datef = document.getElementById("fechaf_vig").value.split('/');
+                    ////var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
+                    ////var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
+                    var pe1 = document.getElementById("periodoi_id").value;
+                    var pe2 = document.getElementById("periodof_id").value;
+                    var ej1 = document.getElementById("anioi_id").value;
+                    var ej2 = document.getElementById("aniof_id").value;
+
+                    var anios = ej2 - ej1;
+                    ////var resdate = dateff - dateii;
+
+                    var meses = 1 + (pe2 - pe1) + (anios * 12);
+                    if (meses > 1 & montoo > 0) {
+                        for (var i = 1; i <= meses; i++) {
+                            var date = "";
+                            var monto = "";
+                            if (i === 1) {
+                                ////if (tipo !== "P") {
+                                    if (tipoR !== "2") {
+                                    ////date = document.getElementById("fechai_vig").value;
+                                    monto = montoo;
+                                    //////addRowRec(table, i, date, monto, tipo);
+                                    //////primerDiaT(table, i, datei, monto, tipo);
+                                    primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                } else {
+                                    ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                                    //////date = date.addDays(-1);
+                                    ////dates.setDate(dates.getDate() - 1);
+                                    ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                                    monto = montoo;
+                                    //////addRowRec(table, i, date, monto, tipo);
+                                    ////ultimoDiaT(table, i, datei, monto, tipo);
+                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR);
+                                }
+                            }
+                            else {
+                                ////if (tipo !== "P") {
+                                    if (tipoR !== "2") {
+                                    //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                                    //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                                    monto = montoo;
+                                    //////primerDiaT(table, i, datei, monto, tipo);
+                                    primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                } else {
+                                    ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                                    //////date = date.addDays(-1);
+                                    ////dates.setDate(dates.getDate() - 1);
+                                    ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                                    monto = montoo;
+                                    //////addRowRec(table, i, date, monto, tipo);
+                                    ////ultimoDiaT(table, i, datei, monto, tipo);
+                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR);
+                                }
+                            }
+                        }
+
+                    }
+                }
+                else {
+                    $(".table_rec").css("display", "none");
+                    //campo.checked = false;
+                }
+            } else {
                 $(".table_rec").css("display", "none");
-                //campo.checked = false;
             }
-        } else {
-            $(".table_rec").css("display", "none");
-        }
 
 
 }
 
 function addRowRec(t, num, date, monto, tipo) {
-    if (tipo !== "P") {
+    if (tipo !== "2") {
         addRowRecl(
             t,
             num, //POS
             document.getElementById("tsol_id").value,
             date,
-            monto,
+            toShow(monto),
             0.00
             //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
         );
@@ -212,6 +219,7 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
 
     var lengthT = $("table#table_rec tbody tr[role='row']").length;
     var tipo = document.getElementById("select_neg").value;
+    var tipoR = document.getElementById("txt_trec").value;
 
     if (lengthT > 0) {
         //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
@@ -269,8 +277,8 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
 
             //$(this).addClass('selected');            
             if (borrador != "X") { //B20180625 MGC 2018.07.03
-            $(this).addClass('selected');
-        }
+                $(this).addClass('selected');
+            }
 
         });
 
@@ -379,20 +387,22 @@ function copiarTableVistaRec() {
     //selectTsol(sol);
 }
 
-function primerDiaT(t, num, date, monto, tipo) {
+//function primerDiaT(t, num, date, monto, tipo) {
+    function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
     document.getElementById("loader").style.display = "initial";
 
 
     $.ajax({
         type: "POST",
-        url: '../Listas/getPrimerDia',
+        //url: '../Listas/getPrimerDia',
+        url: '../Listas/getPrimerViernes',
         dataType: "json",
-        data: { ejercicio: date[2], periodo: (date[1] - 1 + num) },
+        data: { ejercicio: ejercicio, periodo: (periodo - 1 + num) },
         success: function (data) {
             document.getElementById("loader").style.display = "none";
             var dd = data.split('/');
-            var dates = new Date(dd[2], dd[1], dd[0]);
-            datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+            var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+            datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
             addRowRec(t, num, datee, monto, tipo);
         },
@@ -417,8 +427,8 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo) {
         success: function (data) {
             document.getElementById("loader").style.display = "none";
             var dd = data.split('/');
-            var dates = new Date(dd[2], dd[1], dd[0]);
-            datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+            var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+            datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
             addRowRec(t, num, datee, monto, tipo);
         },
@@ -533,3 +543,98 @@ function changeFile(campo) {
         }
     }
 }
+
+
+function toNum(string) {
+    if (string !== "" && string != undefined) {
+        var _miles = $("#miles").val();
+        var _decimales = $("#dec").val();
+        string = string.replace('$', '');
+        string = string.replace('%', '');
+        string = string.replace(_miles, '');
+        string = string.replace(_decimales, '.');
+    } else {
+        string = "0.00";
+    }
+    return string;
+}
+
+
+function toShow(string) {
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+    var xx = parseFloat(string).toFixed(2);
+    xx = xx.replace('.', _decimales);
+    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
+    if (xx != '') {
+        if (_decimales === '.') {
+            //Hace la conversion a 2 decimales
+            var _xv = xx.replace(',', '');
+            xx = _xv;
+            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        } else if (_decimales === ',') {
+            var _xv = xx.replace('.', '');
+            xx = _xv.replace(',', '.');
+            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+            _xpf = _xpf.replace('.', ',');
+            string = ("$" + _xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+        }
+    }
+    else {
+        $(this).val("$ 0" + _decimales + "00");
+    }
+    return string;
+}
+
+function toShowPorc(string) {
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+    var xx = parseFloat(string).toFixed(2);
+    xx = xx.replace('.', _decimales);
+    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
+    if (xx != '') {
+        if (_decimales === '.') {
+            //Hace la conversion a 2 decimales
+            var _xv = xx.replace(',', '');
+            xx = _xv;
+            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '%');
+        } else if (_decimales === ',') {
+            var _xv = xx.replace('.', '');
+            xx = _xv.replace(',', '.');
+            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+            _xpf = _xpf.replace('.', ',');
+            string = (_xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '%');
+        }
+    }
+    else {
+        $(this).val("$ 0" + _decimales + "00");
+    }
+    return string;
+}
+
+function toShowNum(string) {
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+    var xx = parseFloat(string).toFixed(2);
+    xx = xx.replace('.', _decimales);
+    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
+    if (xx != '') {
+        if (_decimales === '.') {
+            //Hace la conversion a 2 decimales
+            var _xv = xx.replace(',', '');
+            xx = _xv;
+            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        } else if (_decimales === ',') {
+            var _xv = xx.replace('.', '');
+            xx = _xv.replace(',', '.');
+            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+            _xpf = _xpf.replace('.', ',');
+            string = (_xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+        }
+    }
+    else {
+        $(this).val("$ 0" + _decimales + "00");
+    }
+    return string;
+}
+

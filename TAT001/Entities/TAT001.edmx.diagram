@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0890745a53dc419997c3856a8d2e4946" Name="Diagram1" ZoomLevel="101">
+      <Diagram DiagramId="0890745a53dc419997c3856a8d2e4946" Name="Diagram1" ZoomLevel="37">
         <EntityTypeShape EntityType="TAT001Model.ACCION" Width="1.5" PointX="26" PointY="105.875" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CAMPOS" Width="1.5" PointX="9.75" PointY="61.5" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CAMPOZKE24" Width="1.5" PointX="0.75" PointY="86.875" IsExpanded="true" />

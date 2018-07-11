@@ -1605,6 +1605,7 @@
           <Property Name="ADICIONA" Type="bit" Nullable="false" />
           <Property Name="TSOLM" Type="nvarchar" MaxLength="10" />
           <Property Name="TSOLC" Type="nvarchar" MaxLength="10" />
+          <Property Name="TRECU" Type="nchar" MaxLength="1" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -6844,6 +6845,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="ADICIONA" Type="Boolean" Nullable="false" />
           <Property Name="TSOLM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="TSOLC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TRECU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="TSOLT">
           <Key>
@@ -11874,6 +11876,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLs">
             <EntityTypeMapping TypeName="TAT001Model.TSOL">
               <MappingFragment StoreEntitySet="TSOL">
+                <ScalarProperty Name="TRECU" ColumnName="TRECU" />
                 <ScalarProperty Name="TSOLC" ColumnName="TSOLC" />
                 <ScalarProperty Name="TSOLM" ColumnName="TSOLM" />
                 <ScalarProperty Name="ADICIONA" ColumnName="ADICIONA" />

@@ -585,6 +585,7 @@ namespace TAT001.Controllers
                 MATERIALGPT cc = new MATERIALGPT();//B20180625 MGC 2018.07.02
                 if (c != null)//B20180625 MGC 2018.07.02
                 {
+                    cc.MATERIALGP_ID = "000";
                     cc.SPRAS_ID = c.SPRAS_ID;
                     cc.TXT50 = c.TXT50;
 
@@ -657,6 +658,20 @@ namespace TAT001.Controllers
             JsonResult jl = Json(f.ToShortDateString(), JsonRequestBehavior.AllowGet);
             return jl;
         }
+        [HttpPost]
+        public JsonResult getPrimerViernes(string ejercicio, string periodo)
+        {
+            int e = int.Parse(ejercicio);
+            int p = int.Parse(periodo);
+            Calendario445 c4 = new Calendario445();
+            DateTime f = c4.getPrimerDia(e, p);
+            int daysUntilFriday = ((int)DayOfWeek.Friday - (int)f.DayOfWeek + 7) % 7;
+            DateTime nextFridat = f.AddDays(daysUntilFriday);
+
+            JsonResult jl = Json(nextFridat.ToShortDateString(), JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
         [HttpPost]
         public JsonResult getUltimoDia(string ejercicio, string periodo)
         {
@@ -753,6 +768,18 @@ namespace TAT001.Controllers
             }
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;
+        }
+
+        public string tipoRecurrencia(string tsol)
+        {
+            TAT001Entities db = new TAT001Entities();
+            string tipo = "";
+            var aa = db.TSOLs.Where(a => a.ID.Equals(tsol)).FirstOrDefault();
+            if (aa != null)
+            {
+                tipo = aa.TRECU;
+            }
+            return tipo;
         }
     }
 }
