@@ -698,6 +698,7 @@
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
+    <Compile Include="Models\listacuerpoc.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
     <Compile Include="Models\TALLT_MOD.cs" />
     <Compile Include="Models\Soporte.cs" />

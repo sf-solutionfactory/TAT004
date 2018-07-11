@@ -265,7 +265,9 @@ namespace TAT001.Models
 
                             for (int j = 0; j < columnas; j++)
                             {
-                                tablasN.AddCell(new Paragraph(v.listaCuerpo[pos], letraTab));
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                //tablasN.AddCell(new Paragraph(v.listaCuerpo[pos], letraTab));
+                                tablasN.AddCell(new Paragraph(v.listaCuerpo[pos].val, letraTab));
                                 pos++;
                             }
                         }

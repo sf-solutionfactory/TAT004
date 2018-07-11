@@ -1,5 +1,6 @@
 ﻿@model TAT001.Models.CartaV
 @using TAT001.Entities
+@using TAT001.Models @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
 @{
     ViewBag.pagina_r = 232;
     ViewBag.carpeta_r = 100;
@@ -313,13 +314,22 @@
                                 @{int filas = 0; }
                                 @{columnas = Model.numColEncabezado.Count(); }
                                 @{filas = Model.numfilasTabla[a]; }
-
+                                @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                                 @for (int i = 0; i < filas; i++)
                                 {
                                     <tr>
                                         @for (int j = 0; j < columnas; j++)
                                         {
-                                            <td>@Model.listaCuerpo[pos]</td>
+                                            listacuerpoc iteml = new listacuerpoc();
+
+                                            if (@Model.listaCuerpo[pos].clase == "")
+                                            {
+                                                <td>@Model.listaCuerpo[pos].val</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Html.EditorFor(m => m.listaCuerpo[pos].val, new { htmlAttributes = new { @class = "listaCuerpo[pos].clase" } })</td>
+                                            }
                                             pos++;
                                         }
                                     </tr>
@@ -382,15 +392,15 @@
                                     @{int cols2 = Model.numColEncabezado2.Count(); }
                                     @{int pos2 = 0; }
                                     @for (int i = 0; i < Model.numfilasTabla2; i++)
-    {
-                                <tr>
-                                    @for (int j = 0; j < cols2; j++)
-    {
-                                <td style='text-align:center;'>@Model.listaCuerpoRec[pos2]</td>
-pos2++;
-}
-                                </tr>
-}
+                                    {
+                                        <tr>
+                                            @for (int j = 0; j < cols2; j++)
+                                            {
+                                                <td style='text-align:center;'>@Model.listaCuerpoRec[pos2]</td>
+                                                pos2++;
+                                            }
+                                        </tr>
+                                    }
                                 </table>
                             </div>
                         </div>

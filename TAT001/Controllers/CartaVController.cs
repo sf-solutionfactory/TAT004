@@ -108,8 +108,8 @@ namespace TAT001.Controllers
                 d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
 
                 List<string> lista = new List<string>();
-                List<string> armadoCuerpoTab = new List<string>();
-                List<string> armadoCuerpoTab2 = new List<string>();
+                List<listacuerpoc> armadoCuerpoTab = new List<listacuerpoc>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                List<string> armadoCuerpoTab2 = new List<string>(); 
                 List<int> numfilasTabla = new List<int>();
                 int contadorTabla = 0;
                 HeaderFooter hfc = new HeaderFooter();
@@ -152,16 +152,57 @@ namespace TAT001.Controllers
                     {
                         foreach (var item2 in con2)
                         {
-                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.MAKTX);
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                            listacuerpoc lc1 = new listacuerpoc();
+                            lc1.val = item2.MATNR.TrimStart('0');
+                            lc1.clase = "";
+                            armadoCuerpoTab.Add(lc1);
+
+                            listacuerpoc lc2 = new listacuerpoc();
+                            lc2.val = item2.MATKL;
+                            lc2.clase = "";
+                            armadoCuerpoTab.Add(lc2);
+
+                            listacuerpoc lc3 = new listacuerpoc();
+                            lc3.val = item2.MAKTX;
+                            lc3.clase = "";
+                            armadoCuerpoTab.Add(lc3);
+
+                            listacuerpoc lc4 = new listacuerpoc();
+                            lc4.val = Math.Round(item2.MONTO, 2).ToString();
+                            lc4.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc4);
+
+                            listacuerpoc lc5 = new listacuerpoc();
+                            lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
+                            lc5.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc5);
+
+                            listacuerpoc lc6 = new listacuerpoc();
+                            lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
+                            lc6.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc5);
+
+                            listacuerpoc lc7 = new listacuerpoc();
+                            lc7.val = Math.Round(item2.resta, 2).ToString();
+                            lc7.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc7);
+
+                            listacuerpoc lc8 = new listacuerpoc();
+                            lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
+                            lc8.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc8);
+
+                            listacuerpoc lc9 = new listacuerpoc();
+                            lc9.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            lc9.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc9);
+
+                            listacuerpoc lc10 = new listacuerpoc();
+                            lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            lc10.clase = "input_oper numberd input_dc total";
+                            armadoCuerpoTab.Add(lc10);
+
                             contadorTabla++;
                         }
                     }
@@ -174,16 +215,56 @@ namespace TAT001.Controllers
 
                         foreach (var item2 in con3)
                         {
-                            armadoCuerpoTab.Add("");
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.TXT50);
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                            listacuerpoc lc1 = new listacuerpoc();
+                            lc1.val = "";
+                            lc1.clase = "";
+                            armadoCuerpoTab.Add(lc1);
+
+                            listacuerpoc lc2 = new listacuerpoc();
+                            lc2.val = item2.MATKL;
+                            lc2.clase = "";
+                            armadoCuerpoTab.Add(lc2);
+
+                            listacuerpoc lc3 = new listacuerpoc();
+                            lc3.val = item2.TXT50;
+                            lc3.clase = "";
+                            armadoCuerpoTab.Add(lc3);
+
+                            listacuerpoc lc4 = new listacuerpoc();
+                            lc4.val = Math.Round(item2.MONTO, 2).ToString();
+                            lc4.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc4);
+
+                            listacuerpoc lc5 = new listacuerpoc();
+                            lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
+                            lc5.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc5);
+
+                            listacuerpoc lc6 = new listacuerpoc();
+                            lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
+                            lc6.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc5);
+
+                            listacuerpoc lc7 = new listacuerpoc();
+                            lc7.val = Math.Round(item2.resta, 2).ToString();
+                            lc7.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc7);
+
+                            listacuerpoc lc8 = new listacuerpoc();
+                            lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
+                            lc8.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc8);
+
+                            listacuerpoc lc9 = new listacuerpoc();
+                            lc9.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            lc9.clase = "input_oper numberd input_dc";
+                            armadoCuerpoTab.Add(lc9);
+
+                            listacuerpoc lc10 = new listacuerpoc();
+                            lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            lc10.clase = "input_oper numberd input_dc total";
+                            armadoCuerpoTab.Add(lc10);
                             contadorTabla++;
                         }
                     }
@@ -309,7 +390,7 @@ namespace TAT001.Controllers
 
         // POST: CartaV/Details/5
         [HttpPost]
-        public ActionResult Create(CartaV v)
+        public ActionResult Create([Bind(Include = "listaCuerpo")] CartaV v)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -317,7 +398,7 @@ namespace TAT001.Controllers
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
                 List<string> encabezadoFech = new List<string>();
-                List<string> armadoCuerpoTab = new List<string>();
+                List<listacuerpoc> armadoCuerpoTab = new List<listacuerpoc>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                 List<string> armadoCuerpoTab2 = new List<string>();
                 List<int> numfilasTab = new List<int>();
 
@@ -348,16 +429,17 @@ namespace TAT001.Controllers
                     {
                         foreach (var item2 in con2)
                         {
-                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.MAKTX);                        
-                            if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                            //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                            //armadoCuerpoTab.Add(item2.MATKL);
+                            //armadoCuerpoTab.Add(item2.MAKTX);                        
+                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
                             contadorTabla++;
                         }
                     }
@@ -370,16 +452,17 @@ namespace TAT001.Controllers
 
                         foreach (var item2 in con3)
                         {
-                            armadoCuerpoTab.Add("");
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.TXT50);
-                            if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                            //armadoCuerpoTab.Add("");
+                            //armadoCuerpoTab.Add(item2.MATKL);
+                            //armadoCuerpoTab.Add(item2.TXT50);
+                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
                             contadorTabla++;
                         }
                     }
