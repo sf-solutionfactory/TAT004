@@ -131,6 +131,18 @@ namespace TAT001.Controllers
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN LA VISTA///////////////////////////////////////
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
+                //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol............
+                bool fact = false;
+                try
+                {
+                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                }
+                catch (Exception)
+                {
+
+                }
+                //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
+
                 foreach (var item in con)
                 {
                     lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
@@ -145,7 +157,8 @@ namespace TAT001.Controllers
 
                     var con2 = db.DOCUMENTOPs
                                           .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL
+                                          , x.VOLUMEN_EST, x.VOLUMEN_REAL }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL
                                           .ToList();
 
                     if (con2.Count > 0)
@@ -185,7 +198,7 @@ namespace TAT001.Controllers
 
                             listacuerpoc lc7 = new listacuerpoc();
                             lc7.val = Math.Round(item2.resta, 2).ToString();
-                            lc7.clase = "input_oper numberd input_dc";
+                            lc7.clase = "input_oper numberd costoa input_dc";//Importante costoa para validación en vista
                             armadoCuerpoTab.Add(lc7);
 
                             listacuerpoc lc8 = new listacuerpoc();
@@ -193,13 +206,30 @@ namespace TAT001.Controllers
                             lc8.clase = "input_oper numberd input_dc";
                             armadoCuerpoTab.Add(lc8);
 
+                            //Modificación 9 y 10 dependiendo del campo de factura en tsol
+                            //fact = true es real
+
                             listacuerpoc lc9 = new listacuerpoc();
-                            lc9.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            if (fact)
+                            {
+                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                            }
+                            else
+                            {
+                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                            }
                             lc9.clase = "input_oper numberd input_dc";
                             armadoCuerpoTab.Add(lc9);
 
                             listacuerpoc lc10 = new listacuerpoc();
-                            lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            if (fact)
+                            {
+                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            }
+                            else
+                            {
+                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            }
                             lc10.clase = "input_oper numberd input_dc total";
                             armadoCuerpoTab.Add(lc10);
 
@@ -210,7 +240,8 @@ namespace TAT001.Controllers
                     {
                         var con3 = db.DOCUMENTOPs
                                             .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL
+                                            , x.VOLUMEN_EST, x.VOLUMEN_REAL }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL})
                                             .ToList();
 
                         foreach (var item2 in con3)
@@ -255,16 +286,33 @@ namespace TAT001.Controllers
                             lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
                             lc8.clase = "input_oper numberd input_dc";
                             armadoCuerpoTab.Add(lc8);
+                            //Modificación 9 y 10 dependiendo del campo de factura en tsol
+                            //fact = true es real
 
                             listacuerpoc lc9 = new listacuerpoc();
-                            lc9.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            if (fact)
+                            {
+                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                            }
+                            else
+                            {
+                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                            }
                             lc9.clase = "input_oper numberd input_dc";
                             armadoCuerpoTab.Add(lc9);
 
                             listacuerpoc lc10 = new listacuerpoc();
-                            lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            if (fact)
+                            {
+                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                            }
+                            else
+                            {
+                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                            }
                             lc10.clase = "input_oper numberd input_dc total";
                             armadoCuerpoTab.Add(lc10);
+
                             contadorTabla++;
                         }
                     }
@@ -280,8 +328,27 @@ namespace TAT001.Controllers
                 cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                //fact = true es real
+                //Volumen
+                if (fact)
+                {
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
+                }
+                else
+                {
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
+                }
+                //Apoyo
+                if (fact)
+                {
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                }
+                else
+                {
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
+                }
+                
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN LA VISTA///////////////////////////////////////

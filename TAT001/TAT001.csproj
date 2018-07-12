@@ -858,6 +858,7 @@
     <Content Include="Scripts\analisis.js" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
+    <Content Include="Scripts\cartaV.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\edit.js" />
     <Content Include="Scripts\create.js" />

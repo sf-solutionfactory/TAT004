@@ -7,6 +7,9 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<script src="~/Scripts/cartaV.js"></script> @*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -15,7 +18,8 @@
         <div class="row right">
             <div class="col l12 m12 right">
                 <a href="@Url.Action("Details", "Solicitudes", new { id = Model.num_doc })" class="btn btn-default">Regresar</a>
-                <input type="submit" value="Imprimir" class="btn btn-default" onclick="timer()" />
+                <input type="button" id="imprimir_btn" value="Imprimir" class="btn btn-default" onclick="timer()" />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
+                <input type="submit" id="submit_btn" value="Imprimir" class="btn btn-default" onclick="timer()" hidden />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
             </div>
         </div>
     </div>
@@ -204,7 +208,7 @@
                 {
                     <div class="row">
                         <div class="col s12">
-                            <table class="table" style="font-size: 12px;">
+                            <table id="table_mat" class="table" style="font-size: 12px;">
                                 <thead>
                                     <tr>
                                         @{ string cabecera = @ViewBag.de + " " + Model.listaFechas[a].Remove(10) + " " + @ViewBag.al + " " + (Model.listaFechas[a].Remove(0, Model.listaFechas[a].Length / 2)).Remove(10); }
@@ -322,13 +326,13 @@
                                         {
                                             listacuerpoc iteml = new listacuerpoc();
 
-                                            if (@Model.listaCuerpo[pos].clase == "")
+                                            if (@Model.listaCuerpo[pos].clase == "" | @Model.listaCuerpo[pos].clase.Contains("costoa"))
                                             {
                                                 <td>@Model.listaCuerpo[pos].val</td>
                                             }
                                             else
                                             {
-                                                <td>@Html.EditorFor(m => m.listaCuerpo[pos].val, new { htmlAttributes = new { @class = "listaCuerpo[pos].clase" } })</td>
+                                                <td>@Html.EditorFor(m => m.listaCuerpo[pos].val, new { htmlAttributes = new { @class = @Model.listaCuerpo[pos].clase } })</td>
                                             }
                                             pos++;
                                         }
@@ -350,6 +354,7 @@
                             @Html.HiddenFor(model => model.monto)
                             @Html.HiddenFor(model => model.moneda)
                             @{ string monto = @ViewBag.mon; }
+                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto">
                             @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
                         </div>
                     </div>
