@@ -237,9 +237,9 @@ namespace TAT001.Controllers
 
             ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS != "X" & a.PADRE == false).ToList();
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
-            var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
-            ViewBag.miles = ".";
-            ViewBag.dec = ",";
+            ////var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
+            ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
+            ViewBag.dec = DF.D.PAI.DECIMAL;//LEJGG 090718
             return View(DF);
         }
         [HttpPost]
@@ -395,9 +395,9 @@ namespace TAT001.Controllers
                 }
             }
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
-            var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
-            ViewBag.miles = ",";
-            ViewBag.dec = ".";
+            //var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
+            //ViewBag.miles = ",";
+            //ViewBag.dec = ".";
             return RedirectToAction("Details");
         }
 
@@ -490,6 +490,7 @@ namespace TAT001.Controllers
             decimal bmonto_apoyo = 0;//MGC B20180625 MGC
             string notas_soporte = "";//MGC B20180625 MGC
             string tipo_cambio = "";//MGC B20180625 MGC
+            string addrowst = "X"; //Add MGC B20180705 2018.07.05
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -541,6 +542,26 @@ namespace TAT001.Controllers
                 }
                 //var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);//RSG 13.06.2018
                 //ViewBag.TSOL_VALUES = tsols_valbdjs;
+
+                //Add MGC B20180705 2018.07.05 conocer si se puede agregar renglones a la relacionada
+                bool addon = true;
+                try
+                {
+                    addon = tsols_val.Where(tsb => tsb.ID == tsol).FirstOrDefault().ADICIONA;
+                }
+                catch (Exception)
+                {
+
+                }
+                if (addon == true)
+                {
+                    addrowst = "X";
+                }
+                else
+                {
+                    addrowst = "";
+                }
+
 
                 //Validar si es una reversa
                 string isrn = "";
@@ -681,7 +702,7 @@ namespace TAT001.Controllers
                                     TXT50 = tallt.TXT50
                                 })
                             .ToList();
-                            //.ToList().Where(a => a.TXT50 == ).ToList();
+                //.ToList().Where(a => a.TXT50 == ).ToList();
                 id_clas = id_clas.OrderBy(x => x.TXT50).ToList();
 
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
@@ -883,6 +904,7 @@ namespace TAT001.Controllers
                     try
                     {
                         docb = db.DOCUMENTBORRs.Find(user.ID);
+                        ViewBag.LIGADA = docb.LIGADA;//RSG 09.07.2018
                     }
                     catch (Exception e)
                     {
@@ -1143,6 +1165,8 @@ namespace TAT001.Controllers
             ViewBag.borradore = borrador; //B20180625 MGC2 2018.07.04
             ViewBag.moneda_dis = moneda_dis;//MGC B20180625 MGC 
 
+            ViewBag.addrowt = addrowst; //Add MGC B20180705 2018.07.05 conocer si se puede agregar renglones a la relacionada
+
             //----------------------------RSG 18.05.2018
             string spras = Session["spras"].ToString();
             ViewBag.PERIODOS = new SelectList(db.PERIODOTs.Where(a => a.SPRAS_ID == spras).ToList(), "PERIODO_ID", "TXT50", DateTime.Now.Month);
@@ -1247,9 +1271,13 @@ namespace TAT001.Controllers
             //RSG 13.06.2018--------------------------------------------------------
             //}//RSG 13.06.2018--------------------------------------------------------
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
-            var paisMon = Session["pais"].ToString();//------------------------LEJ 09.07.18
-            ViewBag.miles = ".";
-            ViewBag.dec = ",";
+            //var paisMon = Session["pais"].ToString();//------------------------LEJ 09.07.18
+            d.PAI = db.PAIS.Where(a => a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
+            if (d.PAI != null)
+            {
+                ViewBag.miles = d.PAI.MILES;//LEJGG 090718
+                ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
+            }
             //-----------------------------------------------------------------LEJ 09.07.18
             return View(d);
         }
@@ -1269,13 +1297,14 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
-                string bmonto_apoyo, string catmat, string borrador_param, string monedadis)
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada)
         {
 
             bool prueba = true;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
             string p = "";
+            string rele = ""; //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
             if (ModelState.IsValid && prueba == true)
             //if (ModelState.IsValid)
@@ -1335,6 +1364,8 @@ namespace TAT001.Controllers
                         //Obtener el país
                         dOCUMENTO.PAIS_ID = d.PAIS_ID;//RSG 15.05.2018
                         dOCUMENTO.TIPO_TECNICO = d.TIPO_TECNICO; //B20180618 v1 MGC 2018.06.18
+
+                        rele = "X";//Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                     }
                     else
                     {
@@ -1453,7 +1484,8 @@ namespace TAT001.Controllers
 
                             }
                             DOCUMENTBORR docb = new DOCUMENTBORR();
-                            docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);
+                            //docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);//RSG 09.07.2018
+                            docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo, chk_ligada);
                             db.DOCUMENTBORRs.Add(docb);
                             db.SaveChanges();
                             //B20180625 MGC 2018.06.27 Almacenar facturas
@@ -1606,6 +1638,42 @@ namespace TAT001.Controllers
                         if (dOCUMENTO.DOCUMENTO_REF > 0)
                         {
                             docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
+
+                            //Add MGC B20180705 2018.07.05 Agregar materiales agregados en la vista
+                            if (rele == "X" && select_dis == "M" && select_neg == "M")
+                            {
+                                List<DOCUMENTOP_MOD> listvista = new List<DOCUMENTOP_MOD>();
+
+                                for (int h = 0; h < dOCUMENTO.DOCUMENTOP.Count; h++)
+                                {
+                                    DOCUMENTOP docmode = new DOCUMENTOP();
+
+                                    string mmatnr = dOCUMENTO.DOCUMENTOP[h].MATNR.TrimStart('0');
+                                    docmode = docpl.Where(dcp => dcp.MATNR.TrimStart('0') == mmatnr).FirstOrDefault();
+
+                                    //Agregarlo a la lista
+                                    if (docmode == null)
+                                    {
+                                        DOCUMENTOP docadd = new DOCUMENTOP();
+
+                                        docadd.MATNR = dOCUMENTO.DOCUMENTOP[h].MATNR;
+                                        docadd.MATKL = dOCUMENTO.DOCUMENTOP[h].MATKL;
+                                        docadd.CANTIDAD = 1;
+                                        docadd.MONTO = dOCUMENTO.DOCUMENTOP[h].MONTO;
+                                        docadd.PORC_APOYO = dOCUMENTO.DOCUMENTOP[h].PORC_APOYO;
+                                        docadd.MONTO_APOYO = dOCUMENTO.DOCUMENTOP[h].MONTO_APOYO;
+                                        docadd.PRECIO_SUG = dOCUMENTO.DOCUMENTOP[h].PRECIO_SUG;
+                                        docadd.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP[h].VOLUMEN_EST;
+                                        docadd.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP[h].VOLUMEN_REAL;
+                                        docadd.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP[h].VIGENCIA_DE;
+                                        docadd.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP[h].VIGENCIA_AL;
+                                        docadd.APOYO_EST = dOCUMENTO.DOCUMENTOP[h].APOYO_EST;
+                                        docadd.APOYO_REAL = dOCUMENTO.DOCUMENTOP[h].APOYO_REAL;
+
+                                        docpl.Add(docadd);
+                                    }
+                                }
+                            }
 
                             for (int j = 0; j < docpl.Count; j++)
                             {
@@ -1958,8 +2026,8 @@ namespace TAT001.Controllers
                                 drec.NUM_DOC = dOCUMENTO.NUM_DOC;
                                 if (drec.POS == 1)
                                 {
-                                    drec.DOC_REF = drec.NUM_DOC;
-                                    drec.ESTATUS = "P";
+                                    ////drec.DOC_REF = drec.NUM_DOC;//RSG 09.07.2018
+                                    ////drec.ESTATUS = "P";//RSG 09.07.2018
                                     if (dOCUMENTO.TIPO_TECNICO != "P")
                                     {
                                         Calendario445 c4 = new Calendario445();//RSG 11.06.2018
@@ -2456,7 +2524,7 @@ namespace TAT001.Controllers
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
             string notas_soporte, string unafact, string select_neg, string select_dis, string select_negi, string select_disi,
-            string bmonto_apoyo, string monedadis)
+            string bmonto_apoyo, string monedadis, string chk_ligada)
         {
 
             string errorString = "";
@@ -2464,6 +2532,11 @@ namespace TAT001.Controllers
             string p = "";
             string res = "false";
             decimal monto_ret = Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD);
+            if (select_neg == null)//RSG 09.07.2018
+                select_neg = select_negi;
+            if (select_dis == null)//RSG 09.07.2018
+                select_dis = select_disi;
+
             if (ModelState.IsValid)
             {
 
@@ -2573,7 +2646,8 @@ namespace TAT001.Controllers
 
                         }
                         DOCUMENTBORR docb = new DOCUMENTBORR();
-                        docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);
+                        //docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo);//RSG 09.07.2018
+                        docb = guardarBorrador(dOCUMENTO, id_bukrs, select_dis, monedadis, bmonto_apoyo, chk_ligada);
                         db.DOCUMENTBORRs.Add(docb);
                         db.SaveChanges();
                         //B20180625 MGC 2018.06.27 Almacenar facturas
@@ -2590,11 +2664,11 @@ namespace TAT001.Controllers
 
                 }
             }
-
             return res;
         }
 
-        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis, string bmonto_apoyo)
+        //public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis, string bmonto_apoyo)
+        public DOCUMENTBORR guardarBorrador(DOCUMENTO doc, SOCIEDAD id_bukrs, string dis, string monedadis, string bmonto_apoyo, string ligada)//RSG 09.07.2018
         {
             DOCUMENTBORR docb = new DOCUMENTBORR();
             docb.USUARIOC_ID = doc.USUARIOC_ID;
@@ -2633,6 +2707,9 @@ namespace TAT001.Controllers
             docb.SPART = doc.SPART;
             docb.TIPO_TECNICO2 = dis;
             docb.MONEDA_DIS = monedadis;
+            if (ligada != null)
+                if (ligada != "off")
+                    docb.LIGADA = "X";
             try
             {
                 docb.PORC_APOYO = Convert.ToDecimal(bmonto_apoyo);

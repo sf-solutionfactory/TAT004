@@ -474,6 +474,7 @@
     <EntitySetMapping Name="DOCUMENTBORRs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTBORR">
         <MappingFragment StoreEntitySet="DOCUMENTBORR">
+          <ScalarProperty Name="LIGADA" ColumnName="LIGADA" />
           <ScalarProperty Name="PORC_APOYO" ColumnName="PORC_APOYO" />
           <ScalarProperty Name="MONEDA_DIS" ColumnName="MONEDA_DIS" />
           <ScalarProperty Name="TIPO_TECNICO2" ColumnName="TIPO_TECNICO2" />
@@ -1038,6 +1039,8 @@
     <EntitySetMapping Name="PAIS">
       <EntityTypeMapping TypeName="TAT001Model.PAI">
         <MappingFragment StoreEntitySet="PAIS">
+          <ScalarProperty Name="MILES" ColumnName="MILES" />
+          <ScalarProperty Name="DECIMAL" ColumnName="DECIMAL" />
           <ScalarProperty Name="LAND" ColumnName="LAND" />
           <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
           <ScalarProperty Name="LANDX" ColumnName="LANDX" />

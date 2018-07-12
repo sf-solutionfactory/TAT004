@@ -131,6 +131,7 @@
     <Property Name="MONEDA" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
+    <NavigationProperty Name="CARTAPs" Relationship="TAT001Model.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
   </EntityType>
   <EntityType Name="CATEGORIA">
     <Key>
@@ -636,6 +637,7 @@
     <Property Name="TIPO_TECNICO2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="MONEDA_DIS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
     <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="LIGADA" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -836,6 +838,8 @@
     <Property Name="BILL_DOC" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="BELNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOF_DOCUMENTO" FromRole="DOCUMENTOF" ToRole="DOCUMENTO" />
+    <Property Name="IMPORTE_FAC" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
@@ -963,6 +967,9 @@
     <Property Name="EJERCICIOK" Type="Boolean" Nullable="false" />
     <Property Name="BILL_DOC" Type="Boolean" Nullable="false" />
     <Property Name="BELNR" Type="Boolean" Nullable="false" />
+    <Property Name="IMPORTE_FAC" Type="Boolean" Nullable="false" />
+    <Property Name="PAYER" Type="Boolean" Nullable="false" />
+    <Property Name="DESCRIPCION" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
@@ -1095,6 +1102,8 @@
     <NavigationProperty Name="ZBRAND" Relationship="Self.FK_MATERIAL_MARCA" FromRole="MATERIAL" ToRole="ZBRAND" />
     <NavigationProperty Name="MATERIALGP" Relationship="Self.FK_MATERIAL_MATERIALGP" FromRole="MATERIAL" ToRole="MATERIALGP" />
     <NavigationProperty Name="UMEDIDA" Relationship="Self.FK_MATERIAL_UMEDIDA" FromRole="MATERIAL" ToRole="UMEDIDA" />
+    <NavigationProperty Name="MATERIALVKEs" Relationship="TAT001Model.FK_MATERIALVKE_MATERIAL" FromRole="MATERIAL" ToRole="MATERIALVKE" />
+    <NavigationProperty Name="MATERIALTs" Relationship="TAT001Model.FK_MATERIALT_MATERIAL" FromRole="MATERIAL" ToRole="MATERIALT" />
   </EntityType>
   <EntityType Name="MATERIALGP">
     <Key>
@@ -1105,6 +1114,8 @@
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="MATERIALs" Relationship="Self.FK_MATERIAL_MATERIALGP" FromRole="MATERIALGP" ToRole="MATERIAL" />
     <NavigationProperty Name="MATERIALGPTs" Relationship="Self.FK_MATERIALGPT_MATERIALGP" FromRole="MATERIALGP" ToRole="MATERIALGPT" />
+    <Property Name="EXCLUIR" Type="Boolean" Nullable="false" />
+    <Property Name="UNICA" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="MATERIALGPT">
     <Key>
@@ -1208,6 +1219,8 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <Property Name="DECIMAL" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="MILES" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>
@@ -1535,6 +1548,7 @@
     <NavigationProperty Name="USUARIOs" Relationship="Self.FK_USUARIO_SPRAS" FromRole="SPRAS" ToRole="USUARIO" />
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+    <NavigationProperty Name="MATERIALTs" Relationship="TAT001Model.FK_MATERIALT_SPRAS" FromRole="SPRA" ToRole="MATERIALT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -1545,16 +1559,6 @@
     <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
     <NavigationProperty Name="CITIES" Relationship="Self.FK_CITIES_STATES" FromRole="STATES" ToRole="CITIES" />
     <NavigationProperty Name="COUNTRy" Relationship="Self.FK_STATES_COUNTRIES" FromRole="STATES" ToRole="COUNTRIES" />
-  </EntityType>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -1798,6 +1802,10 @@
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
     <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
+    <Property Name="ADICIONA" Type="Boolean" Nullable="false" />
+    <Property Name="TSOLM" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="TSOLC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="TRECU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -4274,7 +4282,6 @@
     <EntitySet Name="SOCIEDADs" EntityType="Self.SOCIEDAD" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRA" />
     <EntitySet Name="STATES" EntityType="Self.STATE" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TALLs" EntityType="Self.TALL" />
     <EntitySet Name="TALLTs" EntityType="Self.TALLT" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" />
@@ -5046,6 +5053,25 @@
       <End Role="NOTICIA" EntitySet="NOTICIAs" />
     </AssociationSet>
     <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
+    <EntitySet Name="MATERIALVKEs" EntityType="TAT001Model.MATERIALVKE" />
+    <AssociationSet Name="FK_MATERIALVKE_MATERIAL" Association="TAT001Model.FK_MATERIALVKE_MATERIAL">
+      <End Role="MATERIAL" EntitySet="MATERIALs" />
+      <End Role="MATERIALVKE" EntitySet="MATERIALVKEs" />
+    </AssociationSet>
+    <EntitySet Name="MATERIALTs" EntityType="TAT001Model.MATERIALT" />
+    <AssociationSet Name="FK_MATERIALT_MATERIAL" Association="TAT001Model.FK_MATERIALT_MATERIAL">
+      <End Role="MATERIAL" EntitySet="MATERIALs" />
+      <End Role="MATERIALT" EntitySet="MATERIALTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MATERIALT_SPRAS" Association="TAT001Model.FK_MATERIALT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="MATERIALT" EntitySet="MATERIALTs" />
+    </AssociationSet>
+    <EntitySet Name="CARTAPs" EntityType="TAT001Model.CARTAP" />
+    <AssociationSet Name="FK_CARTAP_CARTA" Association="TAT001Model.FK_CARTAP_CARTA">
+      <End Role="CARTA" EntitySet="CARTAs" />
+      <End Role="CARTAP" EntitySet="CARTAPs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CSP_CAMBIO_Result">
     <Property Type="String" Name="FCURR" Nullable="false" MaxLength="3" />
@@ -5210,4 +5236,102 @@
     <Property Type="String" Name="CONTAC" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="CONT_EMAIL" Nullable="true" MaxLength="100" />
   </ComplexType>
+  <EntityType Name="MATERIALVKE">
+    <Key>
+      <PropertyRef Name="MATERIAL_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+    </Key>
+    <Property Name="MATERIAL_ID" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="MATERIAL" Relationship="TAT001Model.FK_MATERIALVKE_MATERIAL" FromRole="MATERIALVKE" ToRole="MATERIAL" />
+  </EntityType>
+  <Association Name="FK_MATERIALVKE_MATERIAL">
+    <End Type="TAT001Model.MATERIAL" Role="MATERIAL" Multiplicity="1" />
+    <End Type="TAT001Model.MATERIALVKE" Role="MATERIALVKE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIAL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALVKE">
+        <PropertyRef Name="MATERIAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="MATERIALT">
+    <Key>
+      <PropertyRef Name="SPRAS" />
+      <PropertyRef Name="MATERIAL_ID" />
+    </Key>
+    <Property Name="SPRAS" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="MATERIAL_ID" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MAKTX" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MAKTG" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MATERIAL" Relationship="TAT001Model.FK_MATERIALT_MATERIAL" FromRole="MATERIALT" ToRole="MATERIAL" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_MATERIALT_SPRAS" FromRole="MATERIALT" ToRole="SPRA" />
+  </EntityType>
+  <Association Name="FK_MATERIALT_MATERIAL">
+    <End Type="TAT001Model.MATERIAL" Role="MATERIAL" Multiplicity="1" />
+    <End Type="TAT001Model.MATERIALT" Role="MATERIALT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MATERIAL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALT">
+        <PropertyRef Name="MATERIAL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MATERIALT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.MATERIALT" Role="MATERIALT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="MATERIALT">
+        <PropertyRef Name="SPRAS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CARTAP">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="POS_ID" Type="Int32" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="MATNR" Type="String" Nullable="false" MaxLength="18" FixedLength="false" Unicode="true" />
+    <Property Name="MATKL" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+    <Property Name="CANTIDAD" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="MONTO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="PORC_APOYO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="MONTO_APOYO" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="PRECIO_SUG" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="VOLUMEN_EST" Type="Decimal" Nullable="false" Precision="13" Scale="5" />
+    <Property Name="VOLUMEN_REAL" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="APOYO_REAL" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="VIGENCIA_DE" Type="DateTime" Precision="0" />
+    <Property Name="VIGENCIA_AL" Type="DateTime" Precision="0" />
+    <Property Name="APOYO_EST" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="CARTA" Relationship="TAT001Model.FK_CARTAP_CARTA" FromRole="CARTAP" ToRole="CARTA" />
+  </EntityType>
+  <Association Name="FK_CARTAP_CARTA">
+    <End Type="TAT001Model.CARTA" Role="CARTA" Multiplicity="1" />
+    <End Type="TAT001Model.CARTAP" Role="CARTAP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CARTA">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS" />
+      </Principal>
+      <Dependent Role="CARTAP">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

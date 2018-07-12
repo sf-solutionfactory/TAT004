@@ -874,6 +874,7 @@
     <Content Include="Entities\TAT001.edmx.diagram">
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\SERVER.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\descargar.js" />
@@ -885,6 +886,7 @@
     <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\materialize.js" />
     <Content Include="Scripts\menu.js" />
+    <Content Include="Scripts\formatos.js" />
     <Content Include="Scripts\recurrente.js" />
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\soporte.js" />

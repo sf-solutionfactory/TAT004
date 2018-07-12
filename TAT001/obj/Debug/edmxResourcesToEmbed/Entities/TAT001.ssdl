@@ -608,6 +608,7 @@
     <Property Name="TIPO_TECNICO2" Type="nchar" MaxLength="1" />
     <Property Name="MONEDA_DIS" Type="nchar" MaxLength="3" />
     <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="2" />
+    <Property Name="LIGADA" Type="nchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -1138,6 +1139,8 @@
     <Property Name="IMAGE" Type="nchar" MaxLength="6" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
+    <Property Name="DECIMAL" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="MILES" Type="nchar" MaxLength="1" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>

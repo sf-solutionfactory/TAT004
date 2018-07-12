@@ -637,6 +637,7 @@
     <Property Name="TIPO_TECNICO2" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="MONEDA_DIS" Type="String" MaxLength="3" FixedLength="true" Unicode="true" />
     <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="2" />
+    <Property Name="LIGADA" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -1218,6 +1219,8 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <Property Name="DECIMAL" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="MILES" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>

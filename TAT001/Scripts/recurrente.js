@@ -73,10 +73,11 @@ function cambiaRec() {
     var radio = document.getElementById("btn-peri");
     var table = $('#table_rec').DataTable();
     table.clear().draw(true);
-    var tipo = document.getElementById("select_neg").value;
+    var tipo = document.getElementById("select_neg").value + document.getElementById("select_dis").value;
     //var montoo = document.getElementById("monto_dis").value;//RSG 09.07.2018
     var montoo = toNum(document.getElementById("monto_dis").value);
     var tipoR = document.getElementById("txt_trec").value;//RSG 09.07.2018
+    var porc = document.getElementById("bmonto_apoyo").value;//RSG 09.07.2018
 
     if (radio != null) //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
         if (radio.checked)
@@ -92,8 +93,7 @@ function cambiaRec() {
                     });
                     montoo = montooo;
                 }
-                if (montoo > 0) {
-
+                if ((montoo > 0 & tipo == "MC") | ligada()) {
                     //if (montoo > 0) { 
                     $(".table_rec").css("display", "table");
                     //Add row 
@@ -110,18 +110,20 @@ function cambiaRec() {
                     ////var resdate = dateff - dateii;
 
                     var meses = 1 + (pe2 - pe1) + (anios * 12);
-                    if (meses > 1 & montoo > 0) {
+                    if (meses > 1 & (montoo > 0 | ligada())) {
                         for (var i = 1; i <= meses; i++) {
                             var date = "";
                             var monto = "";
                             if (i === 1) {
                                 ////if (tipo !== "P") {
-                                    if (tipoR !== "2") {
-                                    ////date = document.getElementById("fechai_vig").value;
-                                    monto = montoo;
-                                    //////addRowRec(table, i, date, monto, tipo);
-                                    //////primerDiaT(table, i, datei, monto, tipo);
-                                    primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                if (tipoR !== "2") {
+                                    if (tipo == "MC") {
+                                        ////date = document.getElementById("fechai_vig").value;
+                                        monto = montoo;
+                                        //////addRowRec(table, i, date, monto, tipo);
+                                        //////primerDiaT(table, i, datei, monto, tipo);
+                                        primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                    }
                                 } else {
                                     ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
                                     //////date = date.addDays(-1);
@@ -130,17 +132,19 @@ function cambiaRec() {
                                     monto = montoo;
                                     //////addRowRec(table, i, date, monto, tipo);
                                     ////ultimoDiaT(table, i, datei, monto, tipo);
-                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR);
+                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
                                 }
                             }
                             else {
                                 ////if (tipo !== "P") {
-                                    if (tipoR !== "2") {
-                                    //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                                    //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                    monto = montoo;
-                                    //////primerDiaT(table, i, datei, monto, tipo);
-                                    primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                if (tipoR !== "2") {
+                                    if (tipo == "MC") {
+                                        //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                                        //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                                        monto = montoo;
+                                        //////primerDiaT(table, i, datei, monto, tipo);
+                                        primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                    }
                                 } else {
                                     ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
                                     //////date = date.addDays(-1);
@@ -149,7 +153,7 @@ function cambiaRec() {
                                     monto = montoo;
                                     //////addRowRec(table, i, date, monto, tipo);
                                     ////ultimoDiaT(table, i, datei, monto, tipo);
-                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR);
+                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
                                 }
                             }
                         }
@@ -167,7 +171,7 @@ function cambiaRec() {
 
 }
 
-function addRowRec(t, num, date, monto, tipo) {
+function addRowRec(t, num, date, monto, tipo, porc) {
     if (tipo !== "2") {
         addRowRecl(
             t,
@@ -175,7 +179,7 @@ function addRowRec(t, num, date, monto, tipo) {
             document.getElementById("tsol_id").value,
             date,
             toShow(monto),
-            0.00
+            toShow(0.00)
             //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
         );
     } else {
@@ -185,8 +189,9 @@ function addRowRec(t, num, date, monto, tipo) {
                 num, //POS
                 document.getElementById("tsol_id").value,
                 date,
-                "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto + "\">",
-                "<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+                "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\">",
+                //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
+                toShowPorc(porc)
             );
         } else {
             addRowRecl(
@@ -194,10 +199,12 @@ function addRowRec(t, num, date, monto, tipo) {
                 num, //POS
                 document.getElementById("tsol_id").value,
                 date,
-                monto,
+                //monto,//RSG 09.07.2018
+                "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\">",
                 //0.00
                 //"<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto + "\">",
-                "<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+                //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
+                toShowPorc(porc)
             );
         }
     }
@@ -246,15 +253,20 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
             var fecha = $(this).find("td.FECHA").text();
             var monto = "";
             if (tipo === "P") {
-                if (poss === 1) {
-                    monto = $(this).find("td.MONTO").text();
+                if (ligada()) {
+                    monto = toNum($(this).find("td.MONTO input").val());
+                    var porcentaje = toNum($(this).find("td.PORCENTAJE").text());
                 } else {
-                    monto = $(this).find("td.MONTO input").val();
+                    if (poss === 1) {
+                        monto = toNum($(this).find("td.MONTO").text());
+                    } else {
+                        monto = toNum($(this).find("td.MONTO input").val());
+                    }
+                    var porcentaje = toNum($(this).find("td.PORCENTAJE input").val());
                 }
-                var porcentaje = $(this).find("td.PORCENTAJE input").val();
             } else {
-                monto = $(this).find("td.MONTO").text();
-                var porcentaje = $(this).find("td.PORCENTAJE").text();
+                monto = toNum($(this).find("td.MONTO").text());
+                var porcentaje = toNum($(this).find("td.PORCENTAJE").text());
             }
 
 
@@ -388,7 +400,7 @@ function copiarTableVistaRec() {
 }
 
 //function primerDiaT(t, num, date, monto, tipo) {
-    function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
+function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
     document.getElementById("loader").style.display = "initial";
 
 
@@ -404,7 +416,7 @@ function copiarTableVistaRec() {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo);
+            addRowRec(t, num, datee, monto, tipo, "");
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -415,7 +427,7 @@ function copiarTableVistaRec() {
 }
 
 //function ultimoDiaT(t, num, date, monto, tipo) {
-function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo) {
+function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
     document.getElementById("loader").style.display = "initial";
 
 
@@ -430,7 +442,7 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo) {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo);
+            addRowRec(t, num, datee, monto, tipo, porc);
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -502,7 +514,6 @@ function setDates(tipo) {
     pickerFecha2(".format_date");
 }
 
-
 //Evaluar la extensión y tamaño del archivo a cargar
 function changeFile(campo) {
     var length = $(campo).length;
@@ -544,7 +555,6 @@ function changeFile(campo) {
     }
 }
 
-
 function toNum(string) {
     if (string !== "" && string != undefined) {
         var _miles = $("#miles").val();
@@ -558,7 +568,6 @@ function toNum(string) {
     }
     return string;
 }
-
 
 function toShow(string) {
     var _miles = $("#miles").val();
@@ -638,3 +647,6 @@ function toShowNum(string) {
     return string;
 }
 
+function ligada() {
+    return ($("#chk_ligada").is(":checked"));
+}

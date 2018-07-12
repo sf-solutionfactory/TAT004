@@ -1,6 +1,214 @@
 ﻿$(document).ready(function () {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
+    var _ctlCount = $('#ctlDis tr').length;
+    //LEJ 12.07.2018------------------------------
+    for (var i = 0; i < _ctlCount - 1; i++) {
+        if (_decimales === '.') {
+            //Recuperamos los valores con jquery
+            var _dsMn = $("#dsMn").text();
+            var _dsApo = $("#dsApo").text();
+            var _dsPS = $("#dsPS").text();
+            var _dsAE = $("#dsAE").text();
+            var _dsAR = $("#dsAR").text();
+            var _dsPAp = $("#dsPAp").text().replace('%', '');
+            var _dsVE = $("#dsVE").text();
+            var _dsVR = $("#dsVR").text();
+
+            //Separo enteros[0] y decimales[1]
+            var _dsMnA = _dsMn.split('.');
+            var _dsApoA = _dsApo.split('.');
+            var _dsPSA = _dsPS.split('.');
+            var _dsAEA = _dsAE.split('.');
+            var _dsARA = _dsAR.split('.');
+            var _dsPapA = _dsPAp.split('.');
+            var _dsVEA = _dsVE.split('.');
+            var _dsVRA = _dsVR.split('.');
+
+            //La siguiente linea agrega la coma(,) o el(.) cada que sea unidad de millar
+            var _millesdsMn = _dsMnA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsApo = _dsApoA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsPs = _dsPSA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsAe = _dsAEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsAr = _dsARA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsPap = _dsPapA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsVE = _dsVEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsVR = _dsVRA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            //junto la cantidad separada por millar junto con su parte decimal
+            var dsMn = _millesdsMn + "." + _dsMnA[1];
+            var dsApo = _millesdsApo + "." + _dsApoA[1];
+            var dsPS = _millesdsPs + "." + _dsPSA[1];
+            var dsAE = _millesdsAe + "." + _dsAEA[1];
+            var dsAR = _millesdsAr + "." + _dsARA[1];
+            var dsPAp = _millesdsPap + "." + _dsPapA[1];
+            var dsVE = _millesdsVE + "." + _dsVEA[1];
+            var dsVR = _millesdsVR + "." + _dsVRA[1];
+
+            //compruebo si es un valor negativo
+            if (dsMn.indexOf("-") >= 0) {
+                var _dsMnx = dsMn;
+                _dsMnx = _dsMnx.replace('-', '(');
+                _dsMnx += ")";
+                dsMn = _dsMnx;
+            }
+            if (dsApo.indexOf("-") >= 0) {
+                var _dsApox = dsApo;
+                _dsApox = _dsApox.replace('-', '(');
+                _dsApox += ")";
+                dsApo = _dsApox;
+            }
+            if (dsPS.indexOf("-") >= 0) {
+                var _dsPSx = dsPS;
+                _dsPSx = _dsPSx.replace('-', '(');
+                _dsPSx += ")";
+                dsPS = _dsPSx;
+            }
+            if (dsAE.indexOf("-") >= 0) {
+                var _dsAEx = dsAE;
+                _dsAEx = _dsAEx.replace('-', '(');
+                _dsAEx += ")";
+                dsAE = _dsAEx;
+            }
+            if (dsAR.indexOf("-") >= 0) {
+                var _dsARx = dsAR;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsAR = _dsARx;
+            }
+            if (dsPAp.indexOf("-") >= 0) {
+                var _dsAEx = dsPAp;
+                _dsAEx = _dsAEx.replace('-', '(');
+                _dsAEx += ")";
+                dsPAp = _dsAEx;
+            }
+            if (dsVE.indexOf("-") >= 0) {
+                var _dsARx = dsVE;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsVE = _dsARx;
+            }
+            if (dsVR.indexOf("-") >= 0) {
+                var _dsARx = dsVR;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsVR = _dsARx;
+            }
+
+            //Reasignamos los valores
+            $("#dsMn").text("$" + dsMn);
+            $("#dsApo").text("$" + dsApo);
+            $("#dsPS").text("$" + dsPS);
+            $("#dsAE").text("$" + dsAE);
+            $("#dsAR").text("$" + dsAR);
+            $("#dsPAp").text(dsPAp + "%");
+            $("#dsVE").text(dsVE);
+            $("#dsVR").text(dsVR);
+        }
+        else if (_decimales === ',') {
+            //Recuperamos los valores con jquery
+            var _dsMn = $("#dsMn-" + i).text();
+            var _dsApo = $("#dsApo-" + i).text();
+            var _dsPS = $("#dsPS-" + i).text();
+            var _dsAE = $("#dsAE-" + i).text();
+            var _dsAR = $("#dsAR-" + i).text();
+            var _dsPAp = $("#dsPAp-" + i).text().replace('%', '');
+            var _dsVE = $("#dsVE-" + i).text();
+            var _dsVR = $("#dsVR-" + i).text();
+
+            //Separo enteros[0] y decimales[1]
+            var _dsMnA = _dsMn.split('.');
+            var _dsApoA = _dsApo.split('.');
+            var _dsPSA = _dsPS.split('.');
+            var _dsAEA = _dsAE.split('.');
+            var _dsARA = _dsAR.split('.');
+            var _dsPapA = _dsPAp.split('.');
+            var _dsVEA = _dsVE.split('.');
+            var _dsVRA = _dsVR.split('.');
+
+            //La siguiente linea agrega la coma(,) o el(.) cada que sea unidad de millar
+            var _millesdsMn = _dsMnA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsApo = _dsApoA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsPs = _dsPSA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsAe = _dsAEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsAr = _dsARA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsPap = _dsPapA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsVE = _dsVEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsVR = _dsVRA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+            //junto la cantidad separada por millar junto con su parte decimal
+            var dsMn = _millesdsMn + "," + _dsMnA[1];
+            var dsApo = _millesdsApo + "," + _dsApoA[1];
+            var dsPS = _millesdsPs + "," + _dsPSA[1];
+            var dsAE = _millesdsAe + "," + _dsAEA[1];
+            var dsAR = _millesdsAr + "," + _dsARA[1];
+            var dsPAp = _millesdsPap + "," + _dsPapA[1];
+            var dsVE = _millesdsVE + "," + _dsVEA[1];
+            var dsVR = _millesdsVR + "," + _dsVRA[1];
+
+            //compruebo si es un valor negativo           
+            //--
+            if (dsMn.indexOf("-") >= 0) {
+                var _dsMnx = dsMn;
+                _dsMnx = _dsMnx.replace('-', '(');
+                _dsMnx += ")";
+                dsMn = _dsMnx;
+            }
+            if (dsApo.indexOf("-") >= 0) {
+                var _dsApox = dsApo;
+                _dsApox = _dsApox.replace('-', '(');
+                _dsApox += ")";
+                dsApo = _dsApox;
+            }
+            if (dsPS.indexOf("-") >= 0) {
+                var _dsPSx = dsPS;
+                _dsPSx = _dsPSx.replace('-', '(');
+                _dsPSx += ")";
+                dsPS = _dsPSx;
+            }
+            if (dsAE.indexOf("-") >= 0) {
+                var _dsAEx = dsAE;
+                _dsAEx = _dsAEx.replace('-', '(');
+                _dsAEx += ")";
+                dsAE = _dsAEx;
+            }
+            if (dsAR.indexOf("-") >= 0) {
+                var _dsARx = dsAR;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsAR = _dsARx;
+            }
+            if (dsPAp.indexOf("-") >= 0) {
+                var _dsAEx = dsPAp;
+                _dsAEx = _dsAEx.replace('-', '(');
+                _dsAEx += ")";
+                dsPAp = _dsAEx;
+            }
+            if (dsVE.indexOf("-") >= 0) {
+                var _dsARx = dsVE;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsVE = _dsARx;
+            }
+            if (dsVR.indexOf("-") >= 0) {
+                var _dsARx = dsVR;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsVR = _dsARx;
+            }
+
+            //Reasignamos los valores
+            $("#dsMn-" + i).text("$" + dsMn);
+            $("#dsApo-" + i).text("$" + dsApo);
+            $("#dsPS-" + i).text("$" + dsPS);
+            $("#dsAE-" + i).text("$" + dsAE);
+            $("#dsAR-" + i).text("$" + dsAR);
+            $("#dsPAp-" + i).text(dsPAp + "%");
+            $("#dsVE-" + i).text(dsVE);
+            $("#dsVR-" + i).text(dsVR);
+        }
+    }
+    //LEJ 12.07.2018------------------------------
     if (_decimales === '.') {
         //Recuperamos los valores con jquery
         var _mt = $("._vmonto").val();
@@ -13,14 +221,6 @@
         var _pcp = $("#pc_p").text().replace('$', '');
         var _pct = $("#pc_t").text().replace('$', '');
         var _consu = $("#consu").text().replace('$', '');//
-        var _dsMn = $("#dsMn").text();
-        var _dsApo = $("#dsApo").text();
-        var _dsPS = $("#dsPS").text();
-        var _dsAE = $("#dsAE").text();
-        var _dsAR = $("#dsAR").text();
-        var _dsPAp = $("#dsPAp").text().replace('%', '');
-        var _dsVE = $("#dsVE").text();
-        var _dsVR = $("#dsVR").text();
 
         //Separo enteros[0] y decimales[1]
         var _mtA = _mt.split('.');
@@ -33,14 +233,6 @@
         var _pcpA = _pcp.split('.');
         var _pctA = _pct.split('.');
         var _consuA = _consu.split('.');//--
-        var _dsMnA = _dsMn.split('.');
-        var _dsApoA = _dsApo.split('.');
-        var _dsPSA = _dsPS.split('.');
-        var _dsAEA = _dsAE.split('.');
-        var _dsARA = _dsAR.split('.');
-        var _dsPapA = _dsPAp.split('.');
-        var _dsVEA = _dsVE.split('.');
-        var _dsVRA = _dsVR.split('.');
 
         //La siguiente linea agrega la coma(,) o el(.) cada que sea unidad de millar
         var _millesMt = _mtA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -53,14 +245,6 @@
         var _millespcp = _pcpA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         var _millespct = _pctA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         var _millesconsu = _consuA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");//--
-        var _millesdsMn = _dsMnA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsApo = _dsApoA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsPs = _dsPSA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsAe = _dsAEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsAr = _dsARA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsPap = _dsPapA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsVE = _dsVEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        var _millesdsVR = _dsVRA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
         //junto la cantidad separada por millar junto con su parte decimal
         var _vmonto = _millesMt + "." + _mtA[1];
@@ -73,14 +257,6 @@
         var pc_p = _millespcp + "." + _pcpA[1];
         var pc_t = _millespct + "." + _pctA[1];
         var consu = _millesconsu + "." + _consuA[1];//--
-        var dsMn = _millesdsMn + "." + _dsMnA[1];
-        var dsApo = _millesdsApo + "." + _dsApoA[1];
-        var dsPS = _millesdsPs + "." + _dsPSA[1];
-        var dsAE = _millesdsAe + "." + _dsAEA[1];
-        var dsAR = _millesdsAr + "." + _dsARA[1];
-        var dsPAp = _millesdsPap + "." + _dsPapA[1];
-        var dsVE = _millesdsVE + "." + _dsVEA[1];
-        var dsVR = _millesdsVR + "." + _dsVRA[1];
 
         //compruebo si es un valor negativo
         if (_vmonto.indexOf("-") >= 0) {
@@ -142,54 +318,6 @@
             _cx = _cx.replace('-', '(');
             _cx += ")";
             consu = _cx;
-        }//--
-        if (dsMn.indexOf("-") >= 0) {
-            var _dsMnx = dsMn;
-            _dsMnx = _dsMnx.replace('-', '(');
-            _dsMnx += ")";
-            dsMn = _dsMnx;
-        }
-        if (dsApo.indexOf("-") >= 0) {
-            var _dsApox = dsApo;
-            _dsApox = _dsApox.replace('-', '(');
-            _dsApox += ")";
-            dsApo = _dsApox;
-        }
-        if (dsPS.indexOf("-") >= 0) {
-            var _dsPSx = dsPS;
-            _dsPSx = _dsPSx.replace('-', '(');
-            _dsPSx += ")";
-            dsPS = _dsPSx;
-        }
-        if (dsAE.indexOf("-") >= 0) {
-            var _dsAEx = dsAE;
-            _dsAEx = _dsAEx.replace('-', '(');
-            _dsAEx += ")";
-            dsAE = _dsAEx;
-        }
-        if (dsAR.indexOf("-") >= 0) {
-            var _dsARx = dsAR;
-            _dsARx = _dsARx.replace('-', '(');
-            _dsARx += ")";
-            dsAR = _dsARx;
-        }
-        if (dsPAp.indexOf("-") >= 0) {
-            var _dsAEx = dsPAp;
-            _dsAEx = _dsAEx.replace('-', '(');
-            _dsAEx += ")";
-            dsPAp = _dsAEx;
-        }
-        if (dsVE.indexOf("-") >= 0) {
-            var _dsARx = dsVE;
-            _dsARx = _dsARx.replace('-', '(');
-            _dsARx += ")";
-            dsVE = _dsARx;
-        }
-        if (dsVR.indexOf("-") >= 0) {
-            var _dsARx = dsVR;
-            _dsARx = _dsARx.replace('-', '(');
-            _dsARx += ")";
-            dsVR = _dsARx;
         }
 
         //Reasignamos los valores
@@ -203,14 +331,7 @@
         $("#pc_p").text("$" + pc_p);
         $("#pc_t").text("$" + pc_t);
         $("#consu").text("$" + consu);
-        $("#dsMn").text("$" + dsMn);
-        $("#dsApo").text("$" + dsApo);
-        $("#dsPS").text("$" + dsPS);
-        $("#dsAE").text("$" + dsAE);
-        $("#dsAR").text("$" + dsAR);
-        $("#dsPAp").text(dsPAp + "%");
-        $("#dsVE").text(dsVE);
-        $("#dsVR").text(dsVR);
+
     }
     else if (_decimales === ',') {
         //Recuperamos los valores con jquery

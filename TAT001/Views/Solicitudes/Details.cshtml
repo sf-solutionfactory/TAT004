@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 201;
     ViewBag.carpeta_r = 200;
+    int idn = 0;//LEJ 12.07.18
 }
 @try
 {
@@ -243,7 +244,7 @@
             <div class="col s12">
                 <ul class="tabs tabs-fixed-width tab-demo " id="tab">
                     <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
-                    <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>
+                    @*<li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>*@<!--RSG 09.07.2018 DEL-->
                     @if (ViewBag.acciones != null & ViewBag.accion == "S")
                     {
                         <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
@@ -253,6 +254,10 @@
                         <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
                     }
                     <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
+                    @if (Model.D.DOCUMENTORECs.Count > 0)
+                    {
+                        <li class="tab col s2"><a href="#recu" id="lbl_dist">Recurrencia</a></li><!--RSG 09.07.2018 ADD-->
+                    }
                     @if (ViewBag.acciones != null & ViewBag.accion == "T")
                     {
                         <li class="tab col s2"><a href="#fina" id="lbl_fina" class="active">Financiera</a></li>
@@ -467,88 +472,103 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="temp" class="col s12">
-                <div class="row">
-                    <div class="col s12 m12 l12">
-                        <div class="card-panel">
-                            <div class="row" style="margin-bottom:0">
-                                <h5>Vigencia</h5>
-                                @*<div class="input-field col s12">
-                                        @Html.EditorFor(model => model.D.NUM_DOC, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.NUM_DOC)
-                                    </div>*@
-                                <div class="input-field col s6">
-                                    @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                    @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
-                                </div>
-                                <div class="input-field col s6">
-                                    @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                    @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if (Model.D.DOCUMENTORECs.Count() > 0)
-                    {
-                        <div class="col s12 m12 l12" style="font-size:12px;">
                             <div class="card-panel">
-                                <div class="row">
-                                    <h5>Recurrencia</h5>
-                                </div>
-                                <div class="row">
-                                    <div class="col s12">
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Pos</th>
-                                                    <th>Tipo</th>
-                                                    <th>Documento</th>
-                                                    <th>Fecha</th>
-                                                    <th>Monto</th>
-                                                    <th>%</th>
-                                                    <th>Aplicado</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var iteem in Model.D.DOCUMENTORECs)
-                                                {
-                                                    <tr>
-                                                        <td>@iteem.POS</td>
-                                                        <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
-                                                        @if (iteem.DOC_REF > 0)
-                                                        {
-                                                            <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td></td>
-                                                        }
-                                                        <td>@iteem.FECHAF.Value.ToShortDateString()</td>
-                                                        <td>@iteem.MONTO_BASE</td>
-                                                        <td>@Math.Round(iteem.PORC.Value, 2)</td>
-                                                        @if (iteem.ESTATUS == "P")
-                                                        {
-                                                            <td><i class="material-icons">check</i></td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td><i class="material-icons">close</i></td>
-                                                        }
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                <div class="row" style="margin-bottom:0">
+                                    <h5>Vigencia</h5>
+                                    <div class="input-field col s12">
+                                        @*@Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text", @value=Model.D.FECHAI_VIG.Value.ToShortDateString() } })*@
+                                        <input type="text" value="@Model.D.FECHAI_VIG.Value.ToShortDateString()" disabled="disabled" />
+                                        @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
+                                    </div>
+                                    <div class="input-field col s12">
+                                        @*@Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })*@
+                                        <input type="text" value="@Model.D.FECHAF_VIG.Value.ToShortDateString()" disabled="disabled" />
+                                        @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
+            @*<div id="temp" class="col s12">*@
+            @if (Model.D.DOCUMENTORECs.Count > 0)
+            {
+                <div id="recu" class="col s12">
+                    <div class="row">
+                        @*<div class="col s12 m12 l12">
+                                <div class="card-panel">
+                                    <div class="row" style="margin-bottom:0">
+                                        <h5>Vigencia</h5>
+                                        <div class="input-field col s6">
+                                            @Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                            @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
+                                        </div>
+                                        <div class="input-field col s6">
+                                            @Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                            @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        @if (Model.D.DOCUMENTORECs.Count() > 0)
+                        {
+                            <div class="col s12 m12 l12" style="font-size:12px;">
+                                <div class="card-panel">
+                                    <div class="row">
+                                        <h5>Recurrencia</h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pos</th>
+                                                        <th>Tipo</th>
+                                                        <th>Documento</th>
+                                                        <th>Fecha</th>
+                                                        <th>Monto</th>
+                                                        <th>%</th>
+                                                        <th>Aplicado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var iteem in Model.D.DOCUMENTORECs)
+                                                    {
+                                                        <tr>
+                                                            <td>@iteem.POS</td>
+                                                            <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
+                                                            @if (iteem.DOC_REF > 0)
+                                                            {
+                                                                <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                            <td>@iteem.FECHAF.Value.ToShortDateString()</td>
+                                                            <td class="precio">@iteem.MONTO_BASE</td>
+                                                            <td class="porcentaje">@Math.Round(iteem.PORC.Value, 2)</td>
+                                                            @if (iteem.ESTATUS == "P")
+                                                            {
+                                                                <td><i class="material-icons">check</i></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td><i class="material-icons">close</i></td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
             <div id="supp" class="col s12">
                 @{
                     List<TAT001.Entities.DOCUMENTOA>
@@ -654,150 +674,155 @@
                             <h5>Distribución</h5>
                             <div class="input-field col s12">
                                 @if (Model.D.DOCUMENTOPs.Count > 0)
-                                {
-                                    <table style="font-size: 12px;">
-                                        <thead>
-                                            <tr>
-                                                <th>Vigencia de</th>
-                                                <th>Vigencia a</th>
-                                                @if (Model.D.DOCUMENTOPs.First().MATNR != "")
-                                                {
-                                                    <th>Material</th>
-                                                }
-                                                else
-                                                {
-                                                    <th>Categoría</th>
-                                                }
-                                                <th>Descripción</th>
-                                                <th>Precio unitario</th>
-                                                <th>% apoyo</th>
-                                                <th>Apoyo por pieza</th>
-                                                <th>Precio sugerido</th>
-                                                @if (Model.D.TSOL.FACTURA == false)
-                                                {
-                                                    <th>Volumen estimado</th>
-                                                    <th>Estimado apoyo</th>
-                                                }
-                                                else
-                                                {
-                                                    <th>Volumen real</th>
-                                                    <th>Apoyo real</th>
-                                                }
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
-                                            {
-                                                <tr id="pos-@item.POS" onclick="muestra(this.id)">
-                                                    <td>
-                                                        @try
-                                                        {@item.VIGENCIA_DE.Value.ToShortDateString()}
-                                                    catch { }
-                                                    </td>
-                                                    <td>
-                                                        @try
-                                                        {@item.VIGENCIA_AL.Value.ToShortDateString()}
-                                                    catch { }
-                                                    </td>
-                                                    @if (item.MATNR != "")
-                                                    {
-                                                        <td>@item.MATNR.TrimStart('0')</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>@item.MATKL</td>
-                                                    }
-                                                    @{
-                                                        using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
-                                                        {
-                                                            if (item.MATNR != "")
-                                                            {
-                                                                var matnr = db.MATERIALs.Find(item.MATNR);
-                                                                if (matnr != null)
-                                                                {
-                                                                    <td>@matnr.MAKTX</td>}
-                                                                else
-                                                                {
-                                                                    <td></td>
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                var matkl = db.MATERIALGPs.Find(item.MATKL);
-                                                                if (matkl != null)
-                                                                {
-                                                                    <td>@matkl.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </td>}
-                                                                else
-                                                                {
-                                                                    <td></td>
-                                                                }
-                                                            }
+                    {
+                        <table style="font-size: 12px;" id="ctlDis">
+                            <thead>
+                                <tr>
+                                    <th>Vigencia de</th>
+                                    <th>Vigencia a</th>
+                                    @if (Model.D.DOCUMENTOPs.First().MATNR != "")
+                        {
+                            <th>Material</th>
+            }
+            else
+            {
+                <th>Categoría</th>
+}
+                                    <th>Descripción</th>
+                                    <th>Precio unitario</th>
+                                    <th>% apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Precio sugerido</th>
+                                    @if (Model.D.TSOL.FACTURA == false)
+                        {
+                            <th>Volumen estimado</th>
+                            <th>Estimado apoyo</th>
+            }
+            else
+            {
+                <th>Volumen real</th>
+                <th>Apoyo real</th>
+}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.D.DOCUMENTOPs.Where(a => a.VIGENCIA_DE != null & (a.MATNR != "" | a.MATKL != null)))
+                    {
+                        <tr id="pos-@item.POS" onclick="muestra(this.id)">
+                            <td>
+                                @try
+                    {@item.VIGENCIA_DE.Value.ToShortDateString()}
+    catch { }
+                            </td>
+                            <td>
+                                @try
+                    {@item.VIGENCIA_AL.Value.ToShortDateString()}
+    catch { }
+                            </td>
+                            @if (item.MATNR != "")
+                {
+                    <td>@item.MATNR.TrimStart('0')</td>
+    }
+    else
+    {
+            <td>@item.MATKL</td>
+}
+                            @{
+                    using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+                    {
+                        if (item.MATNR != "")
+                        {
+                            var matnr = db.MATERIALs.Find(item.MATNR);
+                            if (matnr != null)
+                            {
+                                <td>@matnr.MAKTX</td>}
+                else
+                {
+                    <td></td>
+    }
+}
+else
+{
+    var matkl = db.MATERIALGPs.Find(item.MATKL);
+    if (matkl != null)
+    {
+            <td>@matkl.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </td>}
+else
+{
+            <td></td>
+}
+}
 
-                                                        }
-                                                    }
-                                                    <td id="dsMn">@Math.Round(item.MONTO, 2)</td>
-                                                    <td id="dsPAp">@Math.Round(item.PORC_APOYO, 2)</td>
-                                                    <td id="dsApo">@Math.Round(item.MONTO_APOYO, 2)</td>
-                                                    <td id="dsPS">@Math.Round(item.PRECIO_SUG, 2)</td>
-                                                    @if (Model.D.TSOL.FACTURA == false)
-                                                    {
-                                                        <td id="dsVE">@Math.Round(item.VOLUMEN_EST, 2)</td>
-                                                        <td id="dsAE">@Math.Round((decimal)item.APOYO_EST, 2)</td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td id="dsVR">@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
-                                                        <td id="dsAR">@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
-                                                    }
-                                                </tr>
-                                                foreach (var mat in item.DOCUMENTOMs)
-                                                {
-                                                    <tr class="mat-@mat.POS_ID" style="display:none;">
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>@mat.MATNR.TrimStart('0')</td>
-                                                        @{
-                                                            using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
-                                                            {
-                                                                if (mat.MATNR != "")
-                                                                {
-                                                                    var matnr = db.MATERIALs.Find(mat.MATNR);
-                                                                    if (matnr != null)
-                                                                    {
-                                                                        <td>@matnr.MAKTX</td>}
-                                                                    else
-                                                                    {
-                                                                        <td></td>
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        @if (Model.D.TSOL.FACTURA == false)
-                                                        {
-                                                            <td>@Math.Round((decimal)mat.APOYO_EST, 2)</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>
-                                                                @Math.Round((decimal)mat.APOYO_REAL, 2)
-                                                            </td>
-                                                        }
-                                                    </tr>
+}
+                            }
 
-                                                }
-                                            }
-                                        </tbody>
-                                    </table>
-                                }
+                            @*LEJ 12.07.18 Añadi un identificador para modificarse dinamicamente*@
+                            <td id="dsMn-@idn">@Math.Round(item.MONTO, 2)</td>
+                            <td id="dsPAp-@idn">@Math.Round(item.PORC_APOYO, 2)</td>
+                            <td id="dsApo-@idn">@Math.Round(item.MONTO_APOYO, 2)</td>
+                            <td id="dsPS-@idn">@Math.Round(item.PRECIO_SUG, 2)</td>
+                            @if (Model.D.TSOL.FACTURA == false)
+                {
+                    <td id="dsVE-@idn">@Math.Round(item.VOLUMEN_EST, 2)</td>
+                    <td id="dsAE-@idn">@Math.Round((decimal)item.APOYO_EST, 2)</td>
+    }
+    else
+    {
+            <td id="dsVR-@idn">@Math.Round((decimal)item.VOLUMEN_REAL, 2)</td>
+            <td id="dsAR-@idn">@Math.Round(((decimal)item.APOYO_REAL), 2)</td>
+}
+                        </tr>
+                        @*LEJ 12.07.18 Añadi un identificador para modificarse dinamicamente*@
+            foreach (var mat in item.DOCUMENTOMs)
+            {
+                <tr class="mat-@mat.POS_ID" style="display:none;">
+                    <td></td>
+                    <td></td>
+                    <td>@mat.MATNR.TrimStart('0')</td>
+                    @{
+            using (TAT001.Entities.TAT001Entities db = new TAT001.Entities.TAT001Entities())
+            {
+                if (mat.MATNR != "")
+                {
+                    var matnr = db.MATERIALs.Find(mat.MATNR);
+                    if (matnr != null)
+                    {
+                        <td>@matnr.MAKTX</td>}
+        else
+        {
+            <td></td>
+}
+}
+}
+                    }
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    @if (Model.D.TSOL.FACTURA == false)
+        {
+            <td class="precio">@Math.Round((decimal)mat.APOYO_EST, 2)</td>
+}
+else
+{
+            <td class="precio">
+                @Math.Round((decimal)mat.APOYO_REAL, 2)
+            </td>
+}
+                </tr>
+
+}
+idn++;//LEJ 12.07.18
+}
+                            </tbody>
+                        </table>
+        }
                             </div>
                         </div>
                     </div>
                 </div>
+                <script src="~/Scripts/formatos.js"></script>
                 <script>
                     function muestra(id) {
                         var ii = id.split('-')[1];
@@ -819,6 +844,14 @@
                             document.getElementById("pos-" + ii).classList.remove("m");
                         }
 
+                    }
+                    var precio = document.getElementsByClassName("precio");
+                    for (var i = 0; i < precio.length; i++) {
+                        precio[i].innerHTML = toShow(precio[i].innerHTML);
+                    }
+                    var porc = document.getElementsByClassName("porcentaje");
+                    for (var i = 0; i < porc.length; i++) {
+                        porc[i].innerHTML = toShowPorc(porc[i].innerHTML);
                     }
                 </script>
             </div>
