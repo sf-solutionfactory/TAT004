@@ -14,6 +14,7 @@
     if (total > monto) {
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     } else {
+        copiarTableControl();
         $('#submit_btn').click();
     }
     
@@ -130,16 +131,26 @@ function totalFooter() {
     coltotal = (9);
     var total = 0;
 
-    $('#table_mat').find("tr").each(function (index) {
-        var col9 = $(this).find("td:eq(" + coltotal + ") input").val();
+    //Obtener las tablas
+    var tables = $('.table_mat');
 
-        col9 = convertI(col9);
+    try {
+        for (var i = 0; i < tables.length; i++) {
+            var tabname = "#" + tables[i].id;
+            $(tabname).find("tr").each(function (index) {
+                var col9 = $(this).find("td:eq(" + coltotal + ") input").val();
 
-        if ($.isNumeric(col9)) {
-            total += col9;
+                col9 = convertI(col9);
+
+                if ($.isNumeric(col9)) {
+                    total += col9;
+                }
+
+            });
         }
+    } catch (error) {
 
-    });
+    }
 
     total = total.toFixed(2);
 
@@ -157,4 +168,139 @@ function armarMonto(monto) {
     var moneda = $('#moneda').val();
 
     return texto + " " + monto + " " + moneda
+}
+
+function copiarTableControl() {
+
+    //var lengthT = $("table#table_dis tbody tr[role='row']").length;
+    var tables = $('.table_mat');
+
+    if (tables.length > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
+
+        jsonObjDocs = [];
+        var i = 1;
+        var vol = "";
+        var mostrar = true;
+        mostrar = isFactura();
+
+        if (mostrar) {
+            vol = "real";
+        } else {
+            vol = "estimado";
+        }
+
+        //Obtener las tablas
+        var tables = $('.table_mat');
+        try {
+            for (var i = 0; i < tables.length; i++) {
+                var tabdate = "#" + tables[i].id;
+                var tabname = "#" + tables[i].id + " > tbody  > tr[role='row']";
+                
+                $(tabname).each(function () {
+
+                    //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
+                    //Columnas 8 * 9 res 10
+                    //Categoría es 7 * 8 = 9  --> -1
+                    //Material es 6 * 7 = 8   --> -2
+
+                    var vigencia_de = $(this).find("td:eq(" + (3) + ") input").val();
+                    var vigencia_al = $(this).find("td:eq(" + (4) + ") input").val();
+
+                    var matnr = "";
+                    matnr = $(this).find("td:eq(" + (5) + ") input").val();
+                    var matkl = $(this).find("td:eq(" + (6) + ")").text();
+
+                    //Obtener el id de la categoría            
+                    
+                    var matkl_id = '';
+
+                    var costo_unitario = $(this).find("td:eq(" + (8) + ") input").val();
+                    var porc_apoyo = $(this).find("td:eq(" + (9) + ") input").val();
+                    var monto_apoyo = $(this).find("td:eq(" + (10) + ") input").val();
+
+                    var precio_sug = $(this).find("td:eq(" + (12) + ") input").val();
+                    var volumen_est = $(this).find("td:eq(" + (13) + ") input").val();
+
+                    var total = $(this).find("td:eq(" + (14) + ") input").val();
+
+                    var item = {};
+
+                    item["NUM_DOC"] = 0;
+                    item["POS"] = i;
+                    item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+                    item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+                    item["MATNR"] = matnr || "";
+                    item["MATKL"] = matkl;
+                    item["MATKL_ID"] = matkl_id;
+                    item["CANTIDAD"] = 0; //Siempre 0
+                    item["MONTO"] = costo_unitario;
+                    item["PORC_APOYO"] = porc_apoyo;
+                    item["MONTO_APOYO"] = monto_apoyo;
+                    item["PRECIO_SUG"] = precio_sug;
+                    volumen_est = volumen_est || 0
+                    total = parseFloat(total);
+                    if (vol == "estimado") {
+                        item["VOLUMEN_EST"] = volumen_est;
+                        item["VOLUMEN_REAL"] = 0;
+                        item["APOYO_REAL"] = 0;
+                        item["APOYO_EST"] = total;
+                    } else {
+                        item["VOLUMEN_EST"] = 0;
+                        item["VOLUMEN_REAL"] = volumen_est;
+                        item["APOYO_REAL"] = total;
+                        item["APOYO_EST"] = 0;
+
+                    }
+
+                    jsonObjDocs.push(item);
+                    i++;
+                    item = "";
+
+                });
+
+            }
+        } catch (error) {
+
+        }
+
+        docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
+
+        $.ajax({
+            type: "POST",
+            url: 'getPartialMat',
+            contentType: "application/json; charset=UTF-8",
+            data: docsenviar,
+            success: function (data) {
+
+                if (data !== null || data !== "") {
+
+                    $("table#table_dish tbody").append(data);
+
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: false
+        });
+    }
+
+}
+
+function isFactura() {
+
+    var res = false;
+
+   
+    var fact = $('#isfactura').val();
+           
+    try {
+        fact = (fact == 'true');
+    } catch (error) {
+        fact = false;
+    }
+    res = fact;
+    return res;
 }

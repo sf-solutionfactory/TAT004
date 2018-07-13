@@ -451,13 +451,16 @@ namespace TAT001.Controllers
                 cv.monto_x = true;
                 cv.monto = d.MONTO_DOC_MD.ToString();
                 cv.moneda = d.MONEDA_ID;
+
+                ViewBag.factura = fact;//B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+
                 return View(cv);
             }
         }
 
         // POST: CartaV/Details/5
         [HttpPost]
-        public ActionResult Create([Bind(Include = "listaCuerpo")] CartaV v)
+        public ActionResult Create([Bind(Include = "listaCuerpo, DOCUMENTOP")] CartaV v)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -638,5 +641,16 @@ namespace TAT001.Controllers
                 return View();
             }
         }
-    }
+
+        //B20180710 MGC 2018.07.13 Modificaciones para editar los campos de distribución se agrego los objetos
+        [HttpPost]
+        public ActionResult getPartialMat(List<TAT001.Models.DOCUMENTOP_MOD> docs)
+        {
+            
+            CartaV doc = new CartaV();
+
+            doc.DOCUMENTOP = docs;
+            return PartialView("~/Views/CartaV/_PartialMatTr.cshtml", doc);
+        }
+    }   
 }

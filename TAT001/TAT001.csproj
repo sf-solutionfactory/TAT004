@@ -1081,6 +1081,7 @@
     <Content Include="Views\Negs\Delete.cshtml" />
     <Content Include="Views\Negs\Details.cshtml" />
     <Content Include="Views\Negs\Edit.cshtml" />
+    <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

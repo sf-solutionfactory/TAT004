@@ -18,8 +18,8 @@
         <div class="row right">
             <div class="col l12 m12 right">
                 <a href="@Url.Action("Details", "Solicitudes", new { id = Model.num_doc })" class="btn btn-default">Regresar</a>
-                <input type="button" id="imprimir_btn" value="Imprimir" class="btn btn-default" onclick="timer()" />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
-                <input type="submit" id="submit_btn" value="Imprimir" class="btn btn-default" onclick="timer()" hidden />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
+                <input type="button" id="imprimir_btn" value="Imprimir" class="btn btn-default" />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
+                <input type="submit" id="submit_btn" value="Imprimir" class="btn btn-default" hidden="hidden" /> @*onclick="timer()"  />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
             </div>
         </div>
     </div>
@@ -204,11 +204,13 @@
                 @{ int cols = Model.numColEncabezado.Count(); } @*SE RECIBE LA CANTIDAD DE COLUMNAS A CONTENER LA TABLA*@
                 @{ int tamaño = 600 / cols; }
                 @{int pos = 0; }
+                <input id="isfactura" name="isfactura" type="hidden" value="@ViewBag.factura"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                 @for (int a = 0; a < tablas; a++)
                 {
                     <div class="row">
                         <div class="col s12">
-                            <table id="table_mat" class="table" style="font-size: 12px;">
+                            @{var tabname = "table_mat" + a;}
+                            <table id="@tabname" class="table table_mat" style="font-size: 12px;">
                                 <thead>
                                     <tr>
                                         @{ string cabecera = @ViewBag.de + " " + Model.listaFechas[a].Remove(10) + " " + @ViewBag.al + " " + (Model.listaFechas[a].Remove(0, Model.listaFechas[a].Length / 2)).Remove(10); }
@@ -321,11 +323,9 @@
                                 @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                                 @for (int i = 0; i < filas; i++)
                                 {
-                                    <tr>
+                                    <tr role="row">
                                         @for (int j = 0; j < columnas; j++)
                                         {
-                                            listacuerpoc iteml = new listacuerpoc();
-
                                             if (@Model.listaCuerpo[pos].clase == "" | @Model.listaCuerpo[pos].clase.Contains("costoa"))
                                             {
                                                 <td>@Model.listaCuerpo[pos].val</td>
@@ -342,6 +342,81 @@
                         </div>
                     </div>
                 }
+                @*Tabla para ser enviada siempre está oculta*@
+                    <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
+                        @*
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Vigencia De</th>
+                                    <th>Vigencia Al</th>
+                                    <th>Material</th>
+                                    <th>Categoría</th>
+                                    <th>Categoría ID</th>
+                                    <th>Costo unitario</th>
+                                    <th>% Apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Precio sugerido</th>
+                                    <th>Volumen estimado</th>
+                                    <th>Volumen real</th>
+                                    <th>Apoyo estimado</th>
+                                    <th>Apoyo real</th>
+                                </tr>
+                            </thead>*@
+                        <tbody>
+                            @if (Model.DOCUMENTOP != null)
+                            {
+                                for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL_ID)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_REAL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_REAL)
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @*Tabla para ser enviada siempre está oculta*@
                 <div class="row">
                     <div class="col l8 m8 s12">
                         <div class="col l1 s1">
@@ -354,7 +429,7 @@
                             @Html.HiddenFor(model => model.monto)
                             @Html.HiddenFor(model => model.moneda)
                             @{ string monto = @ViewBag.mon; }
-                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto">
+                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                             @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
                         </div>
                     </div>
