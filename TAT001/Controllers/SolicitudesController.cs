@@ -1135,6 +1135,7 @@ namespace TAT001.Controllers
             ViewBag.NAME1 = "";
             ViewBag.notas_soporte = notas_soporte; //MGC B20180625 MGC
             ViewBag.tcambio = tipo_cambio;//MGC B20180625 MGC
+            d.TIPO_CAMBIO = decimal.Parse(tipo_cambio);//MGC B20180625 MGC
 
             //Prueba para agregar soporte a la tabla ahora información
 
@@ -2055,6 +2056,7 @@ namespace TAT001.Controllers
                                     drec.MONTO_BASE = 0;
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
+                                dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
@@ -3758,6 +3760,9 @@ namespace TAT001.Controllers
                                 & T.SPRAS_ID == spras
                                 select new Soporte { TSOPORTE_ID = C.TSOPORTE_ID, OBLIGATORIO = C.OBLIGATORIO, TXT50 = T.TXT50 }).ToList();
 
+            ViewBag.miles = d.PAI.MILES;//LEJGG 090718
+            ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
+
             return View(d);
         }
 
@@ -3806,7 +3811,8 @@ namespace TAT001.Controllers
                 //MONTO_DOC_MD
                 var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
                 d.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
-                d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
+                if (bmonto_apoyo == "") bmonto_apoyo = "0";//RSG 09.07.2018
+                    d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
 
                 string errorString = "";
                 //Obtener el monto de la sociedad

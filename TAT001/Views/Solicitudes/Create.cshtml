@@ -609,32 +609,34 @@
                                 <script>
                                     asignaFechasInit();
                                     function asignaFechasInit() {
-                                        var datei = document.getElementById("fechai_vig").value;
-                                        var datef = document.getElementById("fechaf_vig").value;
+                                        var datei = document.getElementById("fechai_vig").value.split(' ')[0];
+                                        var datef = document.getElementById("fechaf_vig").value.split(' ')[0];
 
                                         if (datei != "") {
+                                            document.getElementById("fechai_vig").value = datei;
                                             document.getElementById("fechai_vig2").value = datei;
                                         }
                                         if (datef != "") {
+                                            document.getElementById("fechaf_vig").value = datef;
                                             document.getElementById("fechaf_vig2").value = datef;
                                         }
                                     }
                                 </script>
                                 <div class="col s6">
                                     <div class="col s12">
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s8">
                                             @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
                                             <label>De</label>
                                         </div>
-                                        <div class="input-field col s3">
+                                        <div class="input-field col s4">
                                             @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
                                         </div>
                                     </div><div class="col s12">
-                                        <div class="input-field col s6">
+                                        <div class="input-field col s8">
                                             @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
                                             <label>Hasta</label>
                                         </div>
-                                        <div class="input-field col s3">
+                                        <div class="input-field col s4">
                                             @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
                                         </div>
                                     </div>
@@ -1088,8 +1090,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                    ;
+                                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                        ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1251,51 +1253,51 @@
                             </thead>
                             <tbody>
                                 @if (Model.DOCUMENTOREC != null)
-                        {
+                                {
 
-                            for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].NUM_DOC
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].POS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].FECHAF
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_BASE
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].PORC
-                                    </td>
+                                    for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].NUM_DOC
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].POS
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].FECHAF
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].MONTO_BASE
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].PORC
+                                            </td>
 
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].DOC_REF
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].EJERCICIO
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].ESTATUS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_FIJO
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_GRS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_NET
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].PERIODO
-                                    </td>
-                                </tr>
-                    }
-                }
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].DOC_REF
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].EJERCICIO
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].ESTATUS
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].MONTO_GRS
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].MONTO_NET
+                                            </td>
+                                            <td>
+                                                @Model.DOCUMENTOREC[i].PERIODO
+                                            </td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -1303,7 +1305,7 @@
             </div>
 
             <div class="col s12">
-                <div class="card-panel">
+                <div  id="div_objq"  class="card-panel hide">
                     @*<h5>Recurrente</h5>*@
                     <input type="hidden" id="txt_trec" />
                     <div class="row" style="margin-bottom:0;">
@@ -1341,7 +1343,7 @@
                             @*<input type="button" id="matcat" value="Get materiales cat" />*@
                             <div class="col s12">
                                 <label>
-                                    @if (ViewBag.ligada != null)
+                                    @if (ViewBag.ligada != null)//RSG 09.07.2018
                                     {
                                         <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
                                     }
@@ -1351,7 +1353,6 @@
                                     }
                                     <span>Solicitud ligada a facturación </span>
                                 </label>
-
                                 <script>
                                     function cambiaLigada(campo) {
                                         if (campo.checked) {
@@ -1363,11 +1364,13 @@
                                             $("#select_dis").prop("disabled", "disabled");
                                             $("#select_neg").change();
                                             $("#select_dis").change();
+                                            $("#div_objq").removeClass("hide");
                                         } else {
                                             $("#select_neg").prop("disabled", false);
                                             $("#select_dis").prop("disabled", false);
                                             $("#select_neg").change();
                                             $("#select_dis").change();
+                                            $("#div_objq").addClass("hide");
                                         }
 
                                         var elem = document.getElementById('select_neg');
@@ -1409,6 +1412,19 @@
                         </div>
                     </div>
                 </div>
+
+                @if (ViewBag.ligada != null)//RSG 09.07.2018
+                {
+                    <script>
+                        $("#select_neg").prop("disabled", "disabled");
+                        $("#select_dis").prop("disabled", "disabled");
+
+                        var elem = document.getElementById('select_neg');
+                        var instance = M.Select.init(elem, []);
+                        elem = document.getElementById('select_dis');
+                        instance = M.Select.init(elem, []);
+                    </script>
+                }
                 <div id="div_montobase" class="col s12 m6 l6" style="display:none">
                     <div class="card-panel">
                         <h5>Monto Base</h5>

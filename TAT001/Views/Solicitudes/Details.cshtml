@@ -272,19 +272,19 @@
                 <div class="row">
                     <div class="col s12 m6 l6">
                         @if (Model.D.DOCUMENTO_REF != null)
-                        {
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <div class="input-field col s8">
-                                        <input type="text" value="@Model.D.DOCUMENTO_REF" disabled="disabled" />
-                                        @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
-                                    </div>
-                                    <div class="col s4 right-align">
-                                        <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
-                                    </div>
-                                </div>
+    {
+                    <div class="card-panel">
+                        <div class="row" style="margin-bottom:0">
+                            <div class="input-field col s8">
+                                <input type="text" value="@Model.D.DOCUMENTO_REF" disabled="disabled" />
+                                @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
                             </div>
-                        }
+                            <div class="col s4 right-align">
+                                <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+}
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
@@ -321,113 +321,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if (Model.D.DOCUMENTOF != null)
-                        {
-                            if (Model.D.DOCUMENTOF.Count > 0)
-                            {
-                                <div class="card-panel">
-                                    <h5>Facturas</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <table>
-                                                <thead>
-                                                    <tr>
-                                                        @if (Model.D.DOCUMENTOF[0].FACTURA != "0")
-                                                        {
-                                                            <th>Factura</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].FECHA != null)
-                                                        {
-                                                            <th>Fecha</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].PROVEEDOR != "0         ")
-                                                        {
-                                                            <th>Proveedor</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].CONTROL != "0")
-                                                        {
-                                                            <th>Control</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].AUTORIZACION != "0")
-                                                        {
-                                                            <th>Autorización</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].VENCIMIENTO != null)
-                                                        {
-                                                            <th>Vencimiento</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].FACTURAK != "0")
-                                                        {
-                                                            <th>Factura k</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].EJERCICIOK != "0")
-                                                        {
-                                                            <th>Ejercicio</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
-                                                        {
-                                                            <th>No fat</th>
-                                                        }
-                                                        @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
-                                                        {
-                                                            <th>No documento</th>
-                                                        }
-                                                    </tr>
-                                                </thead>
-                                                @foreach (var item in Model.D.DOCUMENTOF)
-                                                {
-                                                    <tr>
-                                                        @if (item.FACTURA != "0")
-                                                        {
-                                                            <td>@item.FACTURA</td>
-                                                        }
-                                                        @if (item.FECHA != null)
-                                                        {
-                                                            <td>@item.FECHA</td>
-                                                        }
-                                                        @if (item.PROVEEDOR != "0         ")
-                                                        {
-                                                            <td>@item.PROVEEDOR</td>
-                                                        }
-                                                        @if (item.CONTROL != "0")
-                                                        {
-                                                            <td>@item.CONTROL</td>
-                                                        }
-                                                        @if (item.AUTORIZACION != "0")
-                                                        {
-                                                            <td>@item.AUTORIZACION</td>
-                                                        }
-                                                        @if (item.VENCIMIENTO != null)
-                                                        {
-                                                            <td>@item.VENCIMIENTO</td>
-                                                        }
-                                                        @if (item.FACTURAK != "0")
-                                                        {
-                                                            <td>@item.FACTURAK</td>
-                                                        }
-                                                        @if (item.EJERCICIOK != "0")
-                                                        {
-                                                            <td>@item.EJERCICIOK</td>
-                                                        }
-                                                        @if (item.BILL_DOC != "0         ")
-                                                        {
-                                                            <td>@item.BILL_DOC</td>
-                                                        }
-                                                        @if (item.BELNR != "0         ")
-                                                        {
-                                                            <td>@item.BELNR</td>
-                                                        }
-                                                    </tr>
-                                                }
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </div>
-                    <div class="col s12 m6 l6">
-                        <div class="row" style="margin-bottom:0">
+                        @*<div class="row" style="margin-bottom:0">*@
                             <div class="card-panel">
                                 <div class="row" style="margin-bottom:0">
                                     <h5>Información general</h5>
@@ -449,7 +343,113 @@
                                     </div>
                                 </div>
                             </div>
+                        @*</div>*@
+                        @if (Model.D.DOCUMENTOF != null)
+    {
+        if (Model.D.DOCUMENTOF.Count > 0)
+        {
+                    <div class="card-panel">
+                        <h5>Facturas</h5>
+                        <div class="row" style="margin-bottom:0">
+                            <div class="col s12">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            @if (Model.D.DOCUMENTOF[0].FACTURA != "0")
+                        {
+                            <th>Factura</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].FECHA != null)
+                        {
+                            <th>Fecha</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].PROVEEDOR != "0         ")
+                        {
+                            <th>Proveedor</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].CONTROL != "0")
+                        {
+                            <th>Control</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].AUTORIZACION != "0")
+                        {
+                            <th>Autorización</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].VENCIMIENTO != null)
+                        {
+                            <th>Vencimiento</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].FACTURAK != "0")
+                        {
+                            <th>Factura k</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].EJERCICIOK != "0")
+                        {
+                            <th>Ejercicio</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
+                        {
+                            <th>No fat</th>
+    }
+                                            @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
+                        {
+                            <th>No documento</th>
+    }
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.D.DOCUMENTOF)
+                {
+                    <tr>
+                        @if (item.FACTURA != "0")
+    {
+                    <td>@item.FACTURA</td>
+}
+                        @if (item.FECHA != null)
+    {
+                    <td>@item.FECHA</td>
+}
+                        @if (item.PROVEEDOR != "0         ")
+    {
+                    <td>@item.PROVEEDOR</td>
+}
+                        @if (item.CONTROL != "0")
+    {
+                    <td>@item.CONTROL</td>
+}
+                        @if (item.AUTORIZACION != "0")
+    {
+                    <td>@item.AUTORIZACION</td>
+}
+                        @if (item.VENCIMIENTO != null)
+    {
+                    <td>@item.VENCIMIENTO</td>
+}
+                        @if (item.FACTURAK != "0")
+    {
+                    <td>@item.FACTURAK</td>
+}
+                        @if (item.EJERCICIOK != "0")
+    {
+                    <td>@item.EJERCICIOK</td>
+}
+                        @if (item.BILL_DOC != "0         ")
+    {
+                    <td>@item.BILL_DOC</td>
+}
+                        @if (item.BELNR != "0         ")
+    {
+                    <td>@item.BELNR</td>
+}
+                    </tr>
+}
+                                </table>
+                            </div>
                         </div>
+                    </div>
+}
+}
+                    </div>
+                    <div class="col s12 m6 l6">
                         <div class="row" style="margin-bottom:0">
                             <div class="card-panel">
                                 <h5>@*@Html.DisplayFor(model => model.D.CLIENTE.KUNNR)*@</h5>

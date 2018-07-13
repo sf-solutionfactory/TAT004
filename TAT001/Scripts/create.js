@@ -5,6 +5,7 @@ var disdistribucion = true;
 var interval; //B20180625 MGC 2018.07.04
 var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
+var proverror = "";//B20180625 MGC 2018.06.27
 
 $(document).ready(function () {
 
@@ -2167,7 +2168,7 @@ function copiarTableVistaSop() {
             //var belnr = $(this).find("td.BELNR").text();
             var belnr = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
 
-            var proverror = "";//B20180625 MGC 2018.06.27
+            ////var proverror = "";//B20180625 MGC 2018.06.27
 
             if ($("#check_factura").is(':checked')) {
 
@@ -2202,7 +2203,9 @@ function copiarTableVistaSop() {
 
             //var t = $('#table_dis').DataTable();
 
-            addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            var t = $('#table_sop').DataTable();
+            //addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
 
             //Quitar el row
             $(this).remove();
@@ -2713,6 +2716,7 @@ $('body').on('focusout', '#bmonto_apoyo', function () {
     var val = $(this).val();
     updateTableValIndex(9, val);
 
+    var val = $(this).val(toShowPorc(val));//RSG 09.07.208
 });
 
 //$('body').on('focusout', '#monto_dis', function () {
@@ -2806,22 +2810,32 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         var col8 = "";
         var col9 = "";
         if (_decimales === '.') {
-            col8 = tr.find("td:eq(" + (8 + index) + ") input").val().replace('$', '');
-            var _cl8 = col8.replace(',', '');
-            col8 = _cl8;
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val();//.replace('$', '');//RSG 09.07.2018
+            if (col8 != null) {
+                col8 = col8.replace('$', '');
+                var _cl8 = col8.replace(',', '');
+                col8 = _cl8;
+            }
             col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
             var _cl9 = col9.replace(',', '');
             col9 = _cl9.replace('%', '');
         } else if (_decimales === ',') {
-            col8 = tr.find("td:eq(" + (8 + index) + ") input").val().replace('$', '');
-            col8 = col8.replace(',', '*');
-            col8 = col8.replace('.', '');
-            col8 = col8.replace('*', '.');
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val();//.replace('$', '');//RSG 09.07.2018
+            if (col8 != null) {
+                col8 = col8.replace('$', '');
+                col8 = col8.replace(',', '*');
+                col8 = col8.replace('.', '');
+                col8 = col8.replace('*', '.');
+            } else
+                col8 = "";
             col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
-            col9 = col9.replace(',', '*');
-            col9 = col9.replace('.', '');
-            col9 = col9.replace('*', '.');
-            col9 = col9.replace('%', '');
+            if (col9 != null) {//RSG 09.07.2018
+                col9 = col9.replace(',', '*');
+                col9 = col9.replace('.', '');
+                col9 = col9.replace('*', '.');
+                col9 = col9.replace('%', '');
+            } else
+                col9 = "";
         }
         col9 = convertP(col9);
 
@@ -2859,6 +2873,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
         } else if (_decimales === ',') {
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+            if (col13 == null) col13 = "";//RSG 09.07.2018
             var _c13 = col13.replace('.', '');
             _c13 = _c13.replace(',', '.');
             col13 = _c13;
@@ -5340,9 +5355,10 @@ function selectMoneda(valu) {
 
     if (valu != "") {
         $('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
-        var monto_doc_md = $('#monto_doc_md').val()
+        var monto_doc_md = $('#monto_doc_md').val();
+        if (monto_doc_md == "") monto_doc_md = "0.0";
         var mt = parseFloat(monto_doc_md.replace(',', '.'))
-        if (mt > 0) {
+        if (mt >= 0) {
 
             //$('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
 

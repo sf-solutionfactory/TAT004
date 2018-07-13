@@ -79,8 +79,21 @@ function cambiaRec() {
     var tipoR = document.getElementById("txt_trec").value;//RSG 09.07.2018
     var porc = document.getElementById("bmonto_apoyo").value;//RSG 09.07.2018
 
-    if (radio != null) //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
-        if (radio.checked)
+    if (radio != null) { //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
+        if (radio.checked) {
+
+            var pe1 = document.getElementById("periodoi_id").value;
+            var pe2 = document.getElementById("periodof_id").value;
+            var ej1 = document.getElementById("anioi_id").value;
+            var ej2 = document.getElementById("aniof_id").value;
+        }
+    } else {
+
+        var pe1 = document.getElementById("periodoi_id").value;
+        var pe2 = document.getElementById("periodof_id").value;
+        var ej1 = document.getElementById("anioi_id").value;
+        var ej2 = document.getElementById("aniof_id").value;
+    }
             if (campo.checked) {
                 if (montoo === "") {
                     var dist = $('#table_dis').DataTable();
@@ -101,10 +114,6 @@ function cambiaRec() {
                     ////var datef = document.getElementById("fechaf_vig").value.split('/');
                     ////var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
                     ////var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
-                    var pe1 = document.getElementById("periodoi_id").value;
-                    var pe2 = document.getElementById("periodof_id").value;
-                    var ej1 = document.getElementById("anioi_id").value;
-                    var ej2 = document.getElementById("aniof_id").value;
 
                     var anios = ej2 - ej1;
                     ////var resdate = dateff - dateii;
@@ -179,7 +188,7 @@ function addRowRec(t, num, date, monto, tipo, porc) {
             document.getElementById("tsol_id").value,
             date,
             toShow(monto),
-            toShow(0.00)
+            toShowPorc(0.00)
             //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
         );
     } else {

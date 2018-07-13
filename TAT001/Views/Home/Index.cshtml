@@ -9,6 +9,7 @@
     List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
 }
 
+
 @*//jemo inicio 4/07/2018*@
 @if (ViewBag.imgnoticia != null)
 {
@@ -16,7 +17,14 @@
     {
         <div class="parallax-container" style="height:250px;">
             <div class="@*parallax*@">
-                <img src="@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+                @if (Request.Url.PathAndQuery != "/")
+                {
+                    <img src="@Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "")@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+                }
+                else
+                {
+                    <img src="@Request.Url.OriginalString@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+                }
             </div>
         </div>
 
@@ -28,7 +36,8 @@
             </script>*@
     }
 }
-////jemo inicio 4/07/2018
+
+@*////jemo inicio 4/07/2018*@
 
 @*@section noticia{
         @if (false)
