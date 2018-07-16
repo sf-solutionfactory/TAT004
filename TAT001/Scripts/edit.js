@@ -3214,7 +3214,8 @@ function updateTableValIndex(indexr, val) {
     var ind = (index + indexr);
     $('#table_dis > tbody  > tr').each(function () {
 
-        $(this).find('td').eq(ind).find('input').val(val);
+        //$(this).find('td').eq(ind).find('input').val(val);//RSG 09.07.2018
+        $(this).find('td').eq(ind).find('input').val(toShowPorc(val));
 
     });
 
