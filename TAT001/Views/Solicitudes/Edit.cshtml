@@ -903,7 +903,7 @@
                     <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
                     @{
                     List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
-                    if (ViewBag.relacionadan != "" && archivo.Count > 0)
+                    if (ViewBag.relacionadan != "" && archivo.Count >= 0)
                     {
                         string[] nombrefile;
                         <div class="card-panel">

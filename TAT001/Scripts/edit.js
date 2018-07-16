@@ -1194,6 +1194,8 @@ $(document).ready(function () {
                 $('#monto_doc_md').val(0);
             }
 
+            $("#bmonto_apoyo").val(toNum($("#bmonto_apoyo").val())); //RSG 09.07.2018
+
             $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
             $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
@@ -1517,7 +1519,9 @@ $(window).on('load', function () {
     //B20180625 MGC 2018.06.28
     if (borr == "true") {
         //Agregar el monto
-        $('#monto_dis').val(monto);//RSG 09.07.2018
+        //$('#monto_dis').val(monto);//RSG 09.07.2018
+        $('#monto_dis').val(toShow(monto));
+    } else {
         $('#monto_dis').val(toShow(monto));
     }
 

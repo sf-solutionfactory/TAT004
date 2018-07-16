@@ -3812,7 +3812,7 @@ namespace TAT001.Controllers
                 var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
                 d.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
                 if (bmonto_apoyo == "") bmonto_apoyo = "0";//RSG 09.07.2018
-                    d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
+                d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
 
                 string errorString = "";
                 //Obtener el monto de la sociedad
@@ -3851,7 +3851,7 @@ namespace TAT001.Controllers
                         listcat.Add(cat);
                     }
 
-                    listcatm = grupoMaterialesController(listcat, dOCUMENTO.VKORG, dOCUMENTO.SPART, dOCUMENTO.PAYER_ID, dOCUMENTO.SOCIEDAD_ID, out totalcats);
+                    listcatm = grupoMaterialesController(listcat, d.VKORG, d.SPART, d.PAYER_ID, d.SOCIEDAD_ID, out totalcats);
                 }
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
                 //Guardar los documentos p para el documento guardado
@@ -4205,11 +4205,35 @@ namespace TAT001.Controllers
                     }
                     else
                         d.DOCUMENTOPs.Add(dop);
+
+                    foreach (DOCUMENTOM dom in dop.DOCUMENTOMs)
+                    {
+                        DOCUMENTOM dm = d.DOCUMENTOPs.Where(a => a.POS == dom.POS_ID).FirstOrDefault().DOCUMENTOMs.Where(x => x.POS == dom.POS).FirstOrDefault();
+                        if (dm != null)
+                        {
+                            dm.APOYO_EST = dom.APOYO_EST;
+                            dm.APOYO_REAL = dom.APOYO_REAL;
+                            dm.NUM_DOC = dom.NUM_DOC;
+                            dm.PORC_APOYO = dom.PORC_APOYO;
+                            dm.POS = dom.POS;
+                            dm.POS_ID = dom.POS_ID;
+                            dm.VIGENCIA_A = dom.VIGENCIA_A;
+                            dm.VIGENCIA_DE = dom.VIGENCIA_DE;
+                        }
+                        else
+                            dop.DOCUMENTOMs.Add(dom);
+                    }
                 }
                 if (dOCUMENTO.DOCUMENTOPs.Count < d.DOCUMENTOPs.Count)
                 {
                     for (int i = dOCUMENTO.DOCUMENTOPs.Count; i < d.DOCUMENTOPs.Count; i++)
                     {
+                        if (d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count > 0)
+                            for (int j = 0; j < d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count; j++)
+                            {
+                                d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Remove(d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.ElementAt(j));
+                            }
+
                         d.DOCUMENTOPs.Remove(d.DOCUMENTOPs.ElementAt(i));
                     }
                 }
