@@ -460,6 +460,7 @@ namespace TAT001.Controllers
 
         // POST: CartaV/Details/5
         [HttpPost]
+        [ValidateAntiForgeryToken] //B20180710 MGC 2018.07.16 Modificaciones para editar los campos de distribución se agrego los objetos
         public ActionResult Create([Bind(Include = "listaCuerpo, DOCUMENTOP")] CartaV v)
         {
             using (TAT001Entities db = new TAT001Entities())
@@ -644,7 +645,7 @@ namespace TAT001.Controllers
 
         //B20180710 MGC 2018.07.13 Modificaciones para editar los campos de distribución se agrego los objetos
         [HttpPost]
-        public ActionResult getPartialMat(List<TAT001.Models.DOCUMENTOP_MOD> docs)
+        public ActionResult getPartialMat(List<DOCUMENTOP_MOD> docs)
         {
             
             CartaV doc = new CartaV();

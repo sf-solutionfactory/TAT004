@@ -1,4 +1,4 @@
-﻿$('body').on('click', '#imprimir_btn', function () {
+﻿$('body').on('click', '#imprimir_btn', function (e) {
 
     //Validar valores correctos en distribución
     updateFooter(false);
@@ -15,9 +15,10 @@
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     } else {
         copiarTableControl();
-        $('#submit_btn').click();
+        //$('#submit_btn').click();
     }
-    
+    e.preventDefault();
+    return false;
 });
 
 $('body').on('focusout', '.input_oper', function () {
@@ -204,25 +205,25 @@ function copiarTableControl() {
                     //Categoría es 7 * 8 = 9  --> -1
                     //Material es 6 * 7 = 8   --> -2
 
-                    var vigencia_de = $(this).find("td:eq(" + (3) + ") input").val();
-                    var vigencia_al = $(this).find("td:eq(" + (4) + ") input").val();
+                    var vigencia_de = "24/07/2018";//$(this).find("td:eq(" + (3) + ") input").val();
+                    var vigencia_al = "24/07/2018";//$(this).find("td:eq(" + (4) + ") input").val();
 
                     var matnr = "";
-                    matnr = $(this).find("td:eq(" + (5) + ") input").val();
-                    var matkl = $(this).find("td:eq(" + (6) + ")").text();
+                    matnr = $(this).find("td:eq(" + (3) + ")").text();
+                    var matkl = $(this).find("td:eq(" + (4) + ")").text();
 
                     //Obtener el id de la categoría            
                     
                     var matkl_id = '';
 
-                    var costo_unitario = $(this).find("td:eq(" + (8) + ") input").val();
-                    var porc_apoyo = $(this).find("td:eq(" + (9) + ") input").val();
-                    var monto_apoyo = $(this).find("td:eq(" + (10) + ") input").val();
+                    var costo_unitario = $(this).find("td:eq(" + (5) + ") input").val();
+                    var porc_apoyo = $(this).find("td:eq(" + (6) + ") input").val();
+                    var monto_apoyo = $(this).find("td:eq(" + (7) + ") input").val();
 
-                    var precio_sug = $(this).find("td:eq(" + (12) + ") input").val();
-                    var volumen_est = $(this).find("td:eq(" + (13) + ") input").val();
+                    var precio_sug = $(this).find("td:eq(" + (9) + ") input").val();
+                    var volumen_est = $(this).find("td:eq(" + (10) + ") input").val();
 
-                    var total = $(this).find("td:eq(" + (14) + ") input").val();
+                    var total = $(this).find("td:eq(" + (11) + ") input").val();
 
                     var item = {};
 
