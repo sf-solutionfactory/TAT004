@@ -207,9 +207,13 @@ namespace TAT001.Services
                                     actual.DETPOS = actual.DETPOS + 1;
                                 }
 
+                                if (d.DOCUMENTORECs.Count > 0)
+                                    recurrente = "X";
 
                                 if (nuevo.DETPOS == 0 | nuevo.DETPOS == 99)
                                 {
+                                    if (recurrente == "X")
+                                        next_step_a++;
                                     next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
                                     if (next.NEXT_STEP.Equals(99))//--------FIN DEL WORKFLOW
                                     {
@@ -217,6 +221,24 @@ namespace TAT001.Services
                                         d.ESTATUS_WF = "A";
                                         if (paso_a.EMAIL.Equals("X"))
                                             correcto = "2";
+                                        if(recurrente == "X")
+                                        {
+                                            FLUJO nuevos = new FLUJO();
+                                            nuevos.WORKF_ID = paso_a.ID;
+                                            nuevos.WF_VERSION = paso_a.VERSION;
+                                            nuevos.WF_POS = next.POS;
+                                            nuevos.NUM_DOC = actual.NUM_DOC;
+                                            nuevos.POS = actual.POS + 1;
+                                            nuevos.ESTATUS = "A";
+                                            nuevos.FECHAC = DateTime.Now;
+                                            nuevos.FECHAM = DateTime.Now;
+
+                                            d.ESTATUS = "A";
+
+                                            db.FLUJOes.Add(nuevos);
+                                            //db.SaveChanges();
+                                            ban = false;
+                                        }
                                     }
                                     else
                                     {

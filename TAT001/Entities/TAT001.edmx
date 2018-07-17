@@ -265,7 +265,7 @@
           <Property Name="PAIS" Type="nchar" MaxLength="2" />
           <Property Name="NOTA" Type="nchar" MaxLength="50" />
           <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
-          <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
+          <Property Name="CALC_TAXT" Type="bit" />
           <Property Name="RELACION" Type="int" />
           <Property Name="RETENCION" Type="nchar" MaxLength="1" />
           <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />
@@ -5318,7 +5318,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PAIS" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="NOTA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="CORRESPONDENCIA" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="CALC_TAXT" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="CALC_TAXT" Type="Boolean" />
           <Property Name="RELACION" Type="Int32" />
           <Property Name="RETENCION" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
           <Property Name="DESCRI_CONFIG" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />

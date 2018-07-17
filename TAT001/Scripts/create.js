@@ -3345,7 +3345,8 @@ function format(catid, idate, fdate) {
         var total = 0;
         var categorias = GetCategoriasTableCat();
         total = GetTotalTableCat(categorias);
-        var m_base = $('#monto_dis').val();
+        //var m_base = $('#monto_dis').val();//RSG 09.07.2018
+        var m_base = toNum($('#monto_dis').val());
         m_base = parseFloat(m_base) | 0;
 
         var materiales = [];
@@ -3363,8 +3364,8 @@ function format(catid, idate, fdate) {
                 '<td>' + fdate + '</td>' +
                 '<td>' + m.MATNR + '</td>' +
                 '<td>' + m.DESC + '</td>' +
-                '<td>' + m.POR.toFixed(2) + '</td>' +
-                '<td>' + m.VAL.toFixed(2) + '</td>' +
+                '<td>' + toShowPorc(m.POR.toFixed(2)) + '</td>' +
+                '<td>' + toShow(m.VAL.toFixed(2)) + '</td>' +
                 '</tr>';
 
             rows += r;

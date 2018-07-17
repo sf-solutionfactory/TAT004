@@ -106,7 +106,7 @@ function cambiaRec() {
                     });
                     montoo = montooo;
                 }
-                if ((montoo > 0 & tipo == "MC") | ligada()) {
+                if ((montoo > 0 & tipo == "PC") | ligada()) {
                     //if (montoo > 0) { 
                     $(".table_rec").css("display", "table");
                     //Add row 
@@ -126,7 +126,7 @@ function cambiaRec() {
                             if (i === 1) {
                                 ////if (tipo !== "P") {
                                 if (tipoR !== "2") {
-                                    if (tipo == "MC") {
+                                    if (tipo == "PC") {
                                         ////date = document.getElementById("fechai_vig").value;
                                         monto = montoo;
                                         //////addRowRec(table, i, date, monto, tipo);
@@ -147,7 +147,7 @@ function cambiaRec() {
                             else {
                                 ////if (tipo !== "P") {
                                 if (tipoR !== "2") {
-                                    if (tipo == "MC") {
+                                    if (tipo == "PC") {
                                         //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
                                         //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
                                         monto = montoo;
@@ -269,7 +269,8 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
                     if (poss === 1) {
                         monto = toNum($(this).find("td.MONTO").text());
                     } else {
-                        monto = toNum($(this).find("td.MONTO input").val());
+                        //monto = toNum($(this).find("td.MONTO input").val());
+                        monto = toNum($(this).find("td.MONTO").val());
                     }
                     var porcentaje = toNum($(this).find("td.PORCENTAJE input").val());
                 }

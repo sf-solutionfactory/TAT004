@@ -10,6 +10,7 @@ namespace TAT001.Models
         public string ID { get; set; }
         public string DESCRIPCION { get; set; }
         public List<DOCUMENTOM_MOD> MATERIALES { get; set; }
+        public bool EXCLUIR { get; set; }//RSG 09.07.2018 ID167
 
     }
 }

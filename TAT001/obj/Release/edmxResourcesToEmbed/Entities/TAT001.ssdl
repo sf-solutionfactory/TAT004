@@ -260,7 +260,7 @@
     <Property Name="PAIS" Type="nchar" MaxLength="2" />
     <Property Name="NOTA" Type="nchar" MaxLength="50" />
     <Property Name="CORRESPONDENCIA" Type="nchar" MaxLength="50" />
-    <Property Name="CALC_TAXT" Type="nchar" MaxLength="1" />
+    <Property Name="CALC_TAXT" Type="bit" />
     <Property Name="RELACION" Type="int" />
     <Property Name="RETENCION" Type="nchar" MaxLength="1" />
     <Property Name="DESCRI_CONFIG" Type="nvarchar" MaxLength="30" />

@@ -5459,7 +5459,8 @@ namespace TAT001.Controllers
                                   ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
-                                  VAL = Convert.ToDecimal(ps.GRSLS)
+                                  VAL = Convert.ToDecimal(ps.GRSLS),
+                                  EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
                               }).ToList();
                     }
                     else
@@ -5482,7 +5483,8 @@ namespace TAT001.Controllers
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
 
-                                  VAL = Convert.ToDecimal(ps.NETLB)
+                                  VAL = Convert.ToDecimal(ps.NETLB),
+                                  EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
                               }).ToList();
                     }
                 }
@@ -5497,6 +5499,7 @@ namespace TAT001.Controllers
             {
                 CategoriaMaterial cm = new CategoriaMaterial();
                 cm.ID = item.Key;
+                cm.EXCLUIR = jd.Where(x => x.ID_CAT.Equals(item.Key)).FirstOrDefault().EXCLUIR; //RSG 09.07.2018 ID167
 
                 //Obtener los materiales de la categoría
                 List<DOCUMENTOM_MOD> dl = new List<DOCUMENTOM_MOD>();
@@ -5542,7 +5545,8 @@ namespace TAT001.Controllers
 
                 }
                 nnn.MATERIALES = new List<DOCUMENTOM_MOD>();
-                foreach (var item in lcatmat)
+                //foreach (var item in lcatmat)//RSG 09.07.2018 ID167
+                foreach (var item in lcatmat.Where(x => x.EXCLUIR == false).ToList())
                 {
                     foreach (var ii in item.MATERIALES)
                     {
@@ -6039,7 +6043,8 @@ namespace TAT001.Controllers
                                   ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
-                                  VAL = Convert.ToDecimal(ps.GRSLS)
+                                  VAL = Convert.ToDecimal(ps.GRSLS),
+                                  EXCLUIR = mk.MATERIALGP.EXCLUIR // RSG 09.07.2018 ID 156
                               }).ToList();
                     }
                     else
@@ -6060,7 +6065,8 @@ namespace TAT001.Controllers
                                   ID_CAT = m.MATERIALGP_ID,
                                   MATNR = ps.MATNR,
                                   //mk.TXT50
-                                  VAL = Convert.ToDecimal(ps.NETLB)
+                                  VAL = Convert.ToDecimal(ps.NETLB),
+                                  EXCLUIR = mk.MATERIALGP.EXCLUIR // RSG 09.07.2018 ID 156
                               }).ToList();
                     }
                 }
@@ -6088,17 +6094,20 @@ namespace TAT001.Controllers
             {
                 CategoriaMaterial cm = new CategoriaMaterial();
                 cm.ID = item;
+                cm.EXCLUIR = jd.Where(x => x.ID_CAT.Equals(item)).FirstOrDefault().EXCLUIR;//RSG 09.07.2018 ID 156
 
                 //Obtener los materiales de la categoría
                 List<DOCUMENTOM_MOD> dl = new List<DOCUMENTOM_MOD>();
                 List<DOCUMENTOM_MOD> dm = new List<DOCUMENTOM_MOD>();
-                dl = jd.Where(c => c.ID_CAT == item).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).ToList();//Falta obtener el groupby
+                //dl = jd.Where(c => c.ID_CAT == item).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL}).ToList();//Falta obtener el groupby
+                dl = jd.Where(c => c.ID_CAT == item).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL, EXCLUIR = c.EXCLUIR }).ToList();//RSG 09.07.2018 ID 156
 
                 //Obtener la descripción de los materiales
                 foreach (DOCUMENTOM_MOD d in dl)
                 {
                     DOCUMENTOM_MOD dcl = new DOCUMENTOM_MOD();
-                    dcl = dm.Where(z => z.MATNR == d.MATNR).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).FirstOrDefault();
+                    //dcl = dm.Where(z => z.MATNR == d.MATNR).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL }).FirstOrDefault();//RSG 09.07.2018 ID 156
+                    dcl = dm.Where(z => z.MATNR == d.MATNR).Select(c => new DOCUMENTOM_MOD { ID_CAT = c.ID_CAT, MATNR = c.MATNR, VAL = c.VAL, EXCLUIR = c.EXCLUIR }).FirstOrDefault();//RSG 09.07.2018 ID 156
 
                     if (dcl == null)
                     {
@@ -6551,8 +6560,8 @@ namespace TAT001.Controllers
 
             //Obtener de la lista de categorias los materiales de la categoría del item
             List<CategoriaMaterial> ccategor = new List<CategoriaMaterial>();
-            if (catid == "000")
-                ccategor = categorias.ToList();
+            if (catid == "000")//ccategor = categorias.ToList();//RSG 09.07.2018 ID 156
+                ccategor = categorias.Where(a=>a.EXCLUIR==false).ToList();//RSG 09.07.2018 ID 156
             else
                 ccategor = categorias.Where(c => c.ID == catid).ToList();
             foreach (CategoriaMaterial categor in ccategor)
