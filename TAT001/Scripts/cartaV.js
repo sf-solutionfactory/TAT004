@@ -15,10 +15,8 @@
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     } else {
         copiarTableControl();
-        //$('#submit_btn').click();
+        $('#submit_btn').click();
     }
-    e.preventDefault();
-    return false;
 });
 
 $('body').on('focusout', '.input_oper', function () {
@@ -180,10 +178,15 @@ function copiarTableControl() {
         //Obtener los valores de la tabla para agregarlos a la tabla oculta y agregarlos al json
 
         jsonObjDocs = [];
-        var i = 1;
+        var j = 1;
         var vol = "";
         var mostrar = true;
         mostrar = isFactura();
+
+        //var itemh = {};
+        //var token = $('input[name=__RequestVerificationToken]').val();
+        //itemh["__RequestVerificationToken"] = token;
+        //jsonObjDocs.push(itemh);
 
         if (mostrar) {
             vol = "real";
@@ -195,7 +198,8 @@ function copiarTableControl() {
         var tables = $('.table_mat');
         try {
             for (var i = 0; i < tables.length; i++) {
-                var tabdate = "#" + tables[i].id;
+                var tabdedate = "#aldate_" + tables[i].id;
+                var tabaldate = "#dedate_" + tables[i].id;
                 var tabname = "#" + tables[i].id + " > tbody  > tr[role='row']";
                 
                 $(tabname).each(function () {
@@ -205,39 +209,40 @@ function copiarTableControl() {
                     //Categoría es 7 * 8 = 9  --> -1
                     //Material es 6 * 7 = 8   --> -2
 
-                    var vigencia_de = "24/07/2018";//$(this).find("td:eq(" + (3) + ") input").val();
-                    var vigencia_al = "24/07/2018";//$(this).find("td:eq(" + (4) + ") input").val();
+                    var vigencia_de = $(tabdedate).val();//$(this).find("td:eq(" + (3) + ") input").val();
+                    var vigencia_al = $(tabaldate).val();//$(this).find("td:eq(" + (4) + ") input").val();
 
                     var matnr = "";
-                    matnr = $(this).find("td:eq(" + (3) + ")").text();
-                    var matkl = $(this).find("td:eq(" + (4) + ")").text();
+                    matnr = $(this).find("td:eq(" + (0) + ")").text();
+                    var matkl = $(this).find("td:eq(" + (1) + ")").text();
 
                     //Obtener el id de la categoría            
                     
                     var matkl_id = '';
 
-                    var costo_unitario = $(this).find("td:eq(" + (5) + ") input").val();
-                    var porc_apoyo = $(this).find("td:eq(" + (6) + ") input").val();
-                    var monto_apoyo = $(this).find("td:eq(" + (7) + ") input").val();
+                    var costo_unitario = $(this).find("td:eq(" + (3) + ") input").val();
+                    var porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
+                    var monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
 
-                    var precio_sug = $(this).find("td:eq(" + (9) + ") input").val();
-                    var volumen_est = $(this).find("td:eq(" + (10) + ") input").val();
+                    var precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
+                    var volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
 
-                    var total = $(this).find("td:eq(" + (11) + ") input").val();
+                    var total = $(this).find("td:eq(" + (9) + ") input").val();
 
                     var item = {};
 
                     item["NUM_DOC"] = 0;
-                    item["POS"] = i;
-                    item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
-                    item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
+                    item["POS"] = j;
                     item["MATNR"] = matnr || "";
                     item["MATKL"] = matkl;
                     item["MATKL_ID"] = matkl_id;
+                    item["DESC"] = "";
                     item["CANTIDAD"] = 0; //Siempre 0
                     item["MONTO"] = costo_unitario;
                     item["PORC_APOYO"] = porc_apoyo;
                     item["MONTO_APOYO"] = monto_apoyo;
+                    item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
+                    item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
                     item["PRECIO_SUG"] = precio_sug;
                     volumen_est = volumen_est || 0
                     total = parseFloat(total);
@@ -255,7 +260,7 @@ function copiarTableControl() {
                     }
 
                     jsonObjDocs.push(item);
-                    i++;
+                    j++;
                     item = "";
 
                 });
@@ -265,11 +270,13 @@ function copiarTableControl() {
 
         }
 
+        
+
         docsenviar = JSON.stringify({ 'docs': jsonObjDocs });
 
         $.ajax({
             type: "POST",
-            url: 'getPartialMat',
+            url: '../../Listas/getPartialMat',
             contentType: "application/json; charset=UTF-8",
             data: docsenviar,
             success: function (data) {

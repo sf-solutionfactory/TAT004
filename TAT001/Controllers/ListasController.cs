@@ -717,5 +717,17 @@ namespace TAT001.Controllers
             return jc;
         }
 
+        //B20180710 MGC 2018.07.13 Modificaciones para editar los campos de distribución se agrego los objetos
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult getPartialMat(List<DOCUMENTOP_MOD> docs)
+        {
+
+            CartaV doc = new CartaV();
+
+            doc.DOCUMENTOP = docs;
+            return PartialView("~/Views/CartaV/_PartialMatTr.cshtml", doc);
+        }
+
     }
 }

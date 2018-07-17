@@ -19,7 +19,7 @@
             <div class="col l12 m12 right">
                 <a href="@Url.Action("Details", "Solicitudes", new { id = Model.num_doc })" class="btn btn-default">Regresar</a>
                 <input type="button" id="imprimir_btn" value="Imprimir" class="btn btn-default" />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
-                @*<input type="submit" id="submit_btn" value="Imprimir" class="btn btn-default" style="display:none" /> @*onclick="timer()"  />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
+                <input type="submit" id="submit_btn" value="Imprimir" class="btn btn-default" style="display:none" /> @*onclick="timer()"  />@*B20180710 MGC 2018.07.12 Modificaciones para editar los campos de distribución*@
             </div>
         </div>
     </div>
@@ -209,8 +209,12 @@
                 {
                     <div class="row">
                         <div class="col s12">
-                            @{var tabname = "table_mat" + a;}
-                            <table id="@tabname" class="table table_mat" style="font-size: 12px;">
+                            @{var tabname = "table_mat" + a;} @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            @{var dename = "dedate_table_mat" + a;} @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            @{var alname = "aldate_table_mat" + a;} @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            <input type="hidden" value="@Model.listaFechas[a].Remove(10)" id="@dename" /> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            <input type="hidden" value="@Model.listaFechas[a].Remove(0, Model.listaFechas[a].Length / 2).Remove(10)" id="@alname" /> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            <table id="@tabname" class="table table_mat" style="font-size: 12px;"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                                 <thead>
                                     <tr>
                                         @{ string cabecera = @ViewBag.de + " " + Model.listaFechas[a].Remove(10) + " " + @ViewBag.al + " " + (Model.listaFechas[a].Remove(0, Model.listaFechas[a].Length / 2)).Remove(10); }
@@ -326,13 +330,13 @@
                                     <tr role="row">
                                         @for (int j = 0; j < columnas; j++)
                                         {
-                                            if (@Model.listaCuerpo[pos].clase == "" | @Model.listaCuerpo[pos].clase.Contains("costoa"))
+                                            if (@Model.listaCuerpom[pos].clase == "" | @Model.listaCuerpom[pos].clase.Contains("costoa"))
                                             {
-                                                <td>@Model.listaCuerpo[pos].val</td>
+                                                <td>@Model.listaCuerpom[pos].val</td>
                                             }
                                             else
                                             {
-                                                <td>@Html.EditorFor(m => m.listaCuerpo[pos].val, new { htmlAttributes = new { @class = @Model.listaCuerpo[pos].clase } })</td>
+                                                <td>@Html.EditorFor(m => m.listaCuerpom[pos].val, new { htmlAttributes = new { @class = @Model.listaCuerpom[pos].clase } })</td>
                                             }
                                             pos++;
                                         }

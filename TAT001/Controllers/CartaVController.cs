@@ -379,7 +379,7 @@ namespace TAT001.Controllers
                 //TABLA 1 MATERIALES
                 cv.listaFechas = lista;//////////////RANGO DE FECHAS QUE DETERMINAN EL NUMERO DE TABLAS
                 cv.numfilasTabla = numfilasTabla;////NUMERO FILAS POR TABLA CALCULADA
-                cv.listaCuerpo = armadoCuerpoTab;////NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE QUE POSTERIORMENTE ES DISTRIBUIDA EN LAS TABLAS
+                cv.listaCuerpom = armadoCuerpoTab;////NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE QUE POSTERIORMENTE ES DISTRIBUIDA EN LAS TABLAS //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                 cv.numColEncabezado = cabeza;////////NUMERO DE COLUMNAS PARA LAS TABLAS
                 cv.secondTab_x = true;
                 cv.costoun_x = true;
@@ -460,8 +460,9 @@ namespace TAT001.Controllers
 
         // POST: CartaV/Details/5
         [HttpPost]
-        [ValidateAntiForgeryToken] //B20180710 MGC 2018.07.16 Modificaciones para editar los campos de distribución se agrego los objetos
-        public ActionResult Create([Bind(Include = "listaCuerpo, DOCUMENTOP")] CartaV v)
+        //[ValidateAntiForgeryToken] //B20180710 MGC 2018.07.16 Modificaciones para editar los campos de distribución se agrego los objetos
+        //public ActionResult Create([Bind(Include = "num_doc, listaCuerpo, DOCUMENTOP")] CartaV v)
+        public ActionResult Create(CartaV v)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -469,7 +470,7 @@ namespace TAT001.Controllers
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
                 List<string> encabezadoFech = new List<string>();
-                List<listacuerpoc> armadoCuerpoTab = new List<listacuerpoc>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                List<string> armadoCuerpoTab = new List<string>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                 List<string> armadoCuerpoTab2 = new List<string>();
                 List<int> numfilasTab = new List<int>();
 
@@ -478,6 +479,18 @@ namespace TAT001.Controllers
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+
+                //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
+                bool fact = false;
+                try
+                {
+                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                }
+                catch (Exception)
+                {
+
+                }
+                //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
 
                 foreach (var item in con)
                 {
@@ -500,6 +513,7 @@ namespace TAT001.Controllers
                     {
                         foreach (var item2 in con2)
                         {
+                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
                             //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                             //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
                             //armadoCuerpoTab.Add(item2.MATKL);
@@ -511,6 +525,40 @@ namespace TAT001.Controllers
                             //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
                             //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
                             //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+
+                            try
+                            {
+                                docmod = v.DOCUMENTOP.Where(x => x.MATNR == item2.MATNR.TrimStart('0')).FirstOrDefault();
+
+                                if(docmod != null)
+                                {
+                                    armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                    armadoCuerpoTab.Add(item2.MATKL);
+                                    armadoCuerpoTab.Add(item2.MAKTX);
+
+                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                    //fact = true es real
+                                    //Apoyo
+                                    if (fact)
+                                    {
+                                        if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                    }
+                                    else
+                                    {
+                                        if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                    }        
+                                }
+                            }
+                            catch(Exception e)
+                            {
+
+                            }
                             contadorTabla++;
                         }
                     }
@@ -523,6 +571,7 @@ namespace TAT001.Controllers
 
                         foreach (var item2 in con3)
                         {
+                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
                             //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                             //armadoCuerpoTab.Add("");
                             //armadoCuerpoTab.Add(item2.MATKL);
@@ -549,8 +598,18 @@ namespace TAT001.Controllers
                 if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
                 if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
                 if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
+                //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                //fact = true es real
+                //Apoyo
+                if (fact)
+                {
+                    if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
+                }
+                else
+                {
+                    if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
+                }
+                 
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN PDF///////////////////////////////////////
