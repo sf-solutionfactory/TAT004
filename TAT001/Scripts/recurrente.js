@@ -270,7 +270,7 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
                         monto = toNum($(this).find("td.MONTO").text());
                     } else {
                         //monto = toNum($(this).find("td.MONTO input").val());
-                        monto = toNum($(this).find("td.MONTO").val());
+                        monto = toNum($(this).find("td.MONTO").text());
                     }
                     var porcentaje = toNum($(this).find("td.PORCENTAJE input").val());
                 }

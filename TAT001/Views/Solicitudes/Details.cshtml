@@ -7,6 +7,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 201;
     ViewBag.carpeta_r = 200;
+    List<TAT001.Entities.CARTAP> lstCarta = ViewBag.cartap as List<TAT001.Entities.CARTAP>;
+    var pos = lstCarta.GroupBy(c => c.POS_ID).Select(g => g.First()).ToList();
     int idn = 0;//LEJ 12.07.18
 }
 @try
@@ -633,13 +635,83 @@
                                                     <input class="file-path validate" type="text">
                                                 </div>
                                             </div>
+                                            @*<div class="col s12 right-align">
+                                                    <input type="submit" value="Enviar" class="btn-small  " />
+                                                </div>*@
                                             <div class="col s12 right-align">
-                                                <input type="submit" value="Enviar" class="btn-small  " />
-                                            </div>}
+                                                @*<input id="Enviar" type="button" value="Enviar" class="btn-small btnEnviar" />*@
+                                                <input @*style="display:none"*@ id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
+                                            </div>
+                                            <input type="hidden" id="pos" name="pos" value="0"/>
+                                        }
                                     </div>
                                 </div>
                             </div>
 
+                            if (ViewBag.cartap.Count != 0)
+                            {
+                                //LEJ 10.07.2018
+
+                                <div class="col s12 m12 l12">
+                                    <div class="row" style="margin-bottom:0">
+                                        <div class="card-panel cpC">
+                                            <div class="row">
+
+                                                <h5>Seleccionar distribución</h5>
+                                                <ul class="collapsible">
+                                                    @for (int i = 0; i < pos.Count; i++)
+        {
+            var lstCF = lstCarta.Where(p => p.POS_ID == pos[i].POS_ID).ToList();
+            string idx = "chb" + i;
+                                            <li>
+                                                <div class="collapsible-header">
+                                                    <label for="@idx">
+                                                        <input type="checkbox" id="@idx" />
+                                                        <span id="Tt-@i">@pos[i].POS_ID</span>
+                                                    </label>
+                                                </div>
+                                                <div class="collapsible-body">
+                                                    <table class="table highlight responsive-table" id="tableC-@i">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Vigencia de</th>
+                                                                <th>Vigencia al </th>
+                                                                <th>MANTR</th>
+                                                                <th>CANTIDAD</th>
+                                                                <th>Monto</th>
+                                                                <th>Porc Apoyo</th>
+                                                                <th>Monto Apoyo</th>
+                                                                <th>Precio Sugerido</th>
+                                                                <th>Apoyo Estimado</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tb-@i">
+                                                            @for (int y = 0; y < lstCF.Count; y++)
+                {
+                                            <tr>
+                                                <td id="_pos-@i-@y" name="_pos-@i" style="display:none;">@lstCF[y].POS_ID</td>
+                                                <td id="Vigd-@i-@y">@lstCF[y].VIGENCIA_DE.Value.Year/@lstCF[y].VIGENCIA_DE.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
+                                                <td id="Viga-@i-@y-@y">@lstCF[y].VIGENCIA_AL.Value.Year/@lstCF[y].VIGENCIA_AL.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
+                                                <td id="mantr-@i-@y">@lstCF[y].MATNR </td>
+                                                <td id="cant-@i-@y"> @lstCF[y].CANTIDAD </td>
+                                                <td id="pap-@i-@y">@lstCF[y].MONTO </td>
+                                                <td id="papo-@i-@y"> @lstCF[y].PORC_APOYO </td>
+                                                <td id="mnt-@i-@y">@lstCF[y].MONTO_APOYO </td>
+                                                <td id="psu-@i-@y">@lstCF[y].PRECIO_SUG </td>
+                                                <td id="ape-@i-@y"> @lstCF[y].APOYO_EST </td>
+                                            </tr>
+}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </li>
+}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         }
                     }
                     @if (Model.D.DOCUMENTORs.Count() > 0)
@@ -1849,3 +1921,8 @@ catch (Exception ee)
 }
 @* LEJ 09.07.18 *@
 <script src="~/Scripts/ValidarFormatosDec.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
+</script>

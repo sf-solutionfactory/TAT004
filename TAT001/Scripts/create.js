@@ -207,7 +207,9 @@ $(document).ready(function () {
             {},
             {},
             {},
-            {},
+            {
+                "className": 'PORC'//RSG 11.06.2018
+            },
             {},
             {},
             {},
@@ -3300,6 +3302,13 @@ function updateFooter() {
                 col4 = x_col4;
             }
             col4 = convertI(col4);
+
+            var tipo = document.getElementById("select_neg").value + document.getElementById("select_dis").value;//RSG 09.07.2018---------------
+            if (tipo == "PC") {
+                var porc = toNum($(this).find("td.PORC input").val());
+                var monto = toNum($("#monto_dis").val());
+                col4 = monto * porc / 100;
+            }
             if ($.isNumeric(col4)) {
                 total += col4;
             }
@@ -5668,10 +5677,18 @@ function valcategoria(cat) {
         var index = t.row(tr).index();
         //Categoría en el row
         var catid = t.row(index).data()[0];
-        //Comparar la categoría en la tabla y la agregada
-        if (catid === "000" | cat === "000") {//RSG 05.06.2018
-            res = true;
+        var _xxx = $.parseJSON($('#catmat').val());//LEJ 18.07.2018
+        for (var i = 0; i < _xxx.length; i++) {
+            if (catid === _xxx[i].ID | cat === _xxx[i].ID) {
+                if (_xxx[i].UNICA === true) {
+                    res = true;
+                }
+            }
         }
+        //Comparar la categoría en la tabla y la agregada
+        // if (catid === "000" | cat === "000") {//RSG 05.06.2018
+        //   res = true;
+        // }
         if (cat == catid) {
             res = true;
         }

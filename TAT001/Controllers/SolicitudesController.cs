@@ -232,6 +232,9 @@ namespace TAT001.Controllers
                 ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
             ViewBag.Title += id;
 
+            //LEJ 10.07.2018----------------------------------------------
+            ViewBag.cartap = db.CARTAPs.Where(i => i.NUM_DOC == id).ToList();
+
             Models.PresupuestoModels carga = new Models.PresupuestoModels();
             ViewBag.ultMod = carga.consultarUCarga();
 
@@ -244,7 +247,7 @@ namespace TAT001.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Details(IEnumerable<HttpPostedFileBase> files_soporte, string[] labels_soporte)
+        public ActionResult Details(IEnumerable<HttpPostedFileBase> files_soporte, string[] labels_soporte, int pos)
         {
             decimal num_doc = decimal.Parse(Request.Form["D.NUM_DOC"].ToString());
             var res = "";
@@ -349,11 +352,102 @@ namespace TAT001.Controllers
 
 
                     }
+                    //LEJ 13.07.2018------------------------------------------------------
+                    if (pos > 0)
+                    {
+                        string errorString = "";
+                        var _cartap = db.CARTAPs.Where(p => p.NUM_DOC == num_doc && p.POS_ID == pos).ToList();
+                        var _dp = db.DOCUMENTOPs.Where(d => d.NUM_DOC == num_doc).ToList();
+                        DOCUMENTO _dc = db.DOCUMENTOes.Where(d => d.NUM_DOC == num_doc).FirstOrDefault();
+                        SOCIEDAD id_bukrs = new SOCIEDAD();
+                        id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == _dc.SOCIEDAD_ID).FirstOrDefault();
+                        decimal MONTO_DOC_MD = 0;
+                        for (int j = 0; j < _cartap.Count; j++)
+                        {
+                            //var _xdp = _dp.Where(p => p.POS == _cartap[j].POS).FirstOrDefault();
+                            //Comprobamos que sean la misma cantidad de registros
+                            if (_cartap.Count == _dp.Count)//LEJ 17.07.2018-------------------
+                            {
+                                _dp[j].NUM_DOC = num_doc;
+                                _dp[j].POS = _cartap[j].POS;
+                                _dp[j].MATNR = _cartap[j].MATNR;
+                                _dp[j].CANTIDAD = _cartap[j].CANTIDAD;
+                                _dp[j].MONTO = _cartap[j].MONTO;
+                                _dp[j].MONTO_APOYO = _cartap[j].MONTO_APOYO;
+                                _dp[j].PRECIO_SUG = _cartap[j].PRECIO_SUG;
+                                _dp[j].VOLUMEN_EST = _cartap[j].VOLUMEN_EST;
+                                _dp[j].VOLUMEN_REAL = _cartap[j].VOLUMEN_REAL;
+                                _dp[j].APOYO_REAL = _cartap[j].APOYO_REAL;
+                                _dp[j].VIGENCIA_DE = _cartap[j].VIGENCIA_DE;
+                                _dp[j].VIGENCIA_AL = _cartap[j].VIGENCIA_AL;
+                                _dp[j].APOYO_EST = _cartap[j].APOYO_EST;
+                                db.Entry(_dp[j]).State = EntityState.Modified;
+                                db.SaveChanges();
+                                ///////////////////Montos
+                                //MONTO_DOC_MD
+
+                                if (_dc.TSOL.FACTURA)
+                                {
+                                    MONTO_DOC_MD += decimal.Parse(_dp[j].APOYO_REAL.ToString());
+                                }
+                                else if (!_dc.TSOL.FACTURA)
+                                {
+                                    MONTO_DOC_MD += decimal.Parse(_dp[j].APOYO_EST.ToString());
+                                }
+                            }
+                        }
+                        //LEJ 17.07.2018-------------------
+                        _dc.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
+                        try
+                        {
+                            //_dc.PORC_APOYO = decimal.Parse(bmonto_apoyo);
+                        }
+                        catch
+                        {
+                            //
+                        }
+                        //Obtener el monto de la sociedad
+                        var MONTO_DOC_ML = MONTO_DOC_MD / _dc.TIPO_CAMBIOL;
+                        _dc.MONTO_DOC_ML = MONTO_DOC_ML;
+                        if (!errorString.Equals("")) //LEJ 13.07.2018
+                        {
+                            throw new Exception();
+                        }
+
+                        var _xx = _dc.TIPO_CAMBIOL2;
+                        //MONTO_DOC_ML2 
+                        var MONTO_DOC_ML2 = MONTO_DOC_MD / _xx;
+                        _dc.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
+
+                        //MONEDAL_ID moneda de la sociedad
+                        _dc.MONEDAL_ID = id_bukrs.WAERS;
+
+                        //MONEDAL2_ID moneda en USD
+                        _dc.MONEDAL2_ID = "USD";
+
+                        //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
+                        _dc.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, _dc.MONEDA_ID, out errorString);
+
+                        //Tipo cambio dolares TIPO_CAMBIOL2
+                        _dc.TIPO_CAMBIOL2 = getUkursUSD(_dc.MONEDA_ID, "USD", out errorString);
+                        db.Entry(_dc).State = EntityState.Modified;
+                        db.SaveChanges();
+                        if (!errorString.Equals(""))
+                        {
+                            throw new Exception();
+                        }
+                    }
                 }
                 else
                 {
                     errorMessage = dir;
                 }
+                //LEJ 17.07.2018-------------------T
+                ////}
+                ////else
+                ////    {
+                ////        errorMessage = dir;
+                ////    }
 
                 ////errorString = errorMessage;
                 //Guardar número de documento creado
@@ -5529,6 +5623,8 @@ namespace TAT001.Controllers
                 }
 
                 cm.MATERIALES = dm;
+                //LEJ 18.07.2018-----------------------------------------------------------
+                cm.UNICA = db.MATERIALGPs.Where(u => u.ID == cm.ID).FirstOrDefault().UNICA;
                 lcatmat.Add(cm);
             }
 
@@ -5559,6 +5655,8 @@ namespace TAT001.Controllers
                         nnn.MATERIALES.Add(dm);
                     }
                 }
+                //LEJ 18.07.2018-----------------------------------------------------------
+                nnn.UNICA = db.MATERIALGPs.Where(u => u.ID == nnn.ID).FirstOrDefault().UNICA;
                 lcatmat.Add(nnn);
             }
 
@@ -6561,7 +6659,7 @@ namespace TAT001.Controllers
             //Obtener de la lista de categorias los materiales de la categoría del item
             List<CategoriaMaterial> ccategor = new List<CategoriaMaterial>();
             if (catid == "000")//ccategor = categorias.ToList();//RSG 09.07.2018 ID 156
-                ccategor = categorias.Where(a=>a.EXCLUIR==false).ToList();//RSG 09.07.2018 ID 156
+                ccategor = categorias.Where(a => a.EXCLUIR == false).ToList();//RSG 09.07.2018 ID 156
             else
                 ccategor = categorias.Where(c => c.ID == catid).ToList();
             foreach (CategoriaMaterial categor in ccategor)

@@ -6,14 +6,14 @@
     for (var i = 0; i < _ctlCount - 1; i++) {
         if (_decimales === '.') {
             //Recuperamos los valores con jquery
-            var _dsMn = $("#dsMn").text();
-            var _dsApo = $("#dsApo").text();
-            var _dsPS = $("#dsPS").text();
-            var _dsAE = $("#dsAE").text();
-            var _dsAR = $("#dsAR").text();
-            var _dsPAp = $("#dsPAp").text().replace('%', '');
-            var _dsVE = $("#dsVE").text();
-            var _dsVR = $("#dsVR").text();
+            var _dsMn = $("#dsMn-" + i).text();
+            var _dsApo = $("#dsApo-" + i).text();
+            var _dsPS = $("#dsPS-" + i).text();
+            var _dsAE = $("#dsAE-" + i).text();
+            var _dsAR = $("#dsAR-" + i).text();
+            var _dsPAp = $("#dsPAp-" + i).text().replace('%', '');
+            var _dsVE = $("#dsVE-" + i).text();
+            var _dsVR = $("#dsVR-" + i).text();
 
             //Separo enteros[0] y decimales[1]
             var _dsMnA = _dsMn.split('.');
@@ -96,14 +96,14 @@
             }
 
             //Reasignamos los valores
-            $("#dsMn").text("$" + dsMn);
-            $("#dsApo").text("$" + dsApo);
-            $("#dsPS").text("$" + dsPS);
-            $("#dsAE").text("$" + dsAE);
-            $("#dsAR").text("$" + dsAR);
-            $("#dsPAp").text(dsPAp + "%");
-            $("#dsVE").text(dsVE);
-            $("#dsVR").text(dsVR);
+            $("#dsMn-" + i).text("$" + dsMn);
+            $("#dsApo-" + i).text("$" + dsApo);
+            $("#dsPS-" + i).text("$" + dsPS);
+            $("#dsAE-" + i).text("$" + dsAE);
+            $("#dsAR-" + i).text("$" + dsAR);
+            $("#dsPAp-" + i).text(dsPAp + "%");
+            $("#dsVE-" + i).text(dsVE);
+            $("#dsVR-" + i).text(dsVR);
         }
         else if (_decimales === ',') {
             //Recuperamos los valores con jquery
@@ -628,4 +628,133 @@
         }
     });
 
+    //LEJ 12.07.2018----------------------------------------
+    //Para cuando clicke el checkbox
+    $("input[type=checkbox]").on("click", function (e) {
+        //recupero los datos de lo que clickeo
+        var x = e.target;
+        if (x.checked === true) {
+            revisarChecked(x.id);
+        }
+    });
+
+    function revisarChecked(id) {
+        //deshabilito los checbox, para que solo este 1 checked true
+        $("input[type=checkbox]").each(function () {
+            if ($(this).attr('id') !== id) {
+                $(this).prop('checked', false);
+            }
+        });
+    }
+
+    //LEJ 17.07.2018--------------------------------------
+    //Saco los nodos span para modificarlos
+    var _ctlColsp = $('.collapsible span').length;
+    var t = 0;
+    for (var i = 0; i < _ctlColsp; i++) {
+        //saco los renglones de cada tabla
+        var rowCount = $('#tableC-' + i + ' tbody tr').length;
+        t = 0;
+        for (var y = 0; y < rowCount; y++) {
+            if (_decimales === '.') {
+
+                //Para los valores de la tabla
+                var _cant = $("#cant-" + i + '-' + y).text();
+                var _pap = $("#pap-" + i + '-' + y).text();
+                var _papo = $("#papo-" + i + '-' + y).text();
+                var _mnt = $("#mnt-" + i + '-' + y).text();
+                var _psu = $("#psu-" + i + '-' + y).text();
+                var _ape = $("#ape-" + i + '-' + y).text();
+
+                //Convertimos a 2 decimales
+                _cant = parseFloat(_cant).toFixed(2);
+                _pap = parseFloat(_pap).toFixed(2);
+                _papo = parseFloat(_papo).toFixed(2);
+                _mnt = parseFloat(_mnt).toFixed(2);
+                _psu = parseFloat(_psu).toFixed(2);
+                _ape = parseFloat(_ape).toFixed(2);
+                t = t + parseFloat(_ape);
+
+                //Reasignacion de valores y asignacion de millares
+                $("#cant-" + i + '-' + y).text("$" + _cant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $("#pap-" + i + '-' + y).text("$" + _pap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $("#papo-" + i + '-' + y).text(_papo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "%");
+                $("#mnt-" + i + '-' + y).text("$" + _mnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $("#psu-" + i + '-' + y).text("$" + _psu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                $("#ape-" + i + '-' + y).text("$" + _ape.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            }
+            else if (_decimales === ',') {
+                //Para los valores de la tabla
+                var _cant = $("#cant-" + i + '-' + y).text();
+                var _pap = $("#pap-" + i + '-' + y).text();
+                var _papo = $("#papo-" + i + '-' + y).text();
+                var _mnt = $("#mnt-" + i + '-' + y).text();
+                var _psu = $("#psu-" + i + '-' + y).text();
+                var _ape = $("#ape-" + i + '-' + y).text();
+
+                //Convertimos a 2 decimales
+                _cant = parseFloat(_cant).toFixed(2);
+                _pap = parseFloat(_pap).toFixed(2);
+                _papo = parseFloat(_papo).toFixed(2);
+                _mnt = parseFloat(_mnt).toFixed(2);
+                _psu = parseFloat(_psu).toFixed(2);
+                _ape = parseFloat(_ape).toFixed(2);
+                t = t + parseFloat(_ape);
+                //Remplazamos el simbolo de decimal x la coma','
+                _cant = (_cant).replace('.', ',');
+                _pap = (_pap).replace('.', ',');
+                _papo = (_papo).replace('.', ',');
+                _mnt = (_mnt).replace('.', ',');
+                _psu = (_psu).replace('.', ',');
+                _ape = (_ape).replace('.', ',');
+                //Reasignacion de valores
+                $("#cant-" + i + '-' + y).text("$" + _cant.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                $("#pap-" + i + '-' + y).text("$" + _pap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                $("#papo-" + i + '-' + y).text(_papo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "%");
+                $("#mnt-" + i + '-' + y).text("$" + _mnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                $("#psu-" + i + '-' + y).text("$" + _psu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                $("#ape-" + i + '-' + y).text("$" + _ape.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+            }
+        }
+        //LEJ 17.07.2018----------------------------------------------------------------
+        var _txt = $('#Tt-' + i).text();
+        if (_decimales === '.') {
+            $('#Tt-' + i).text(_txt + '- ' + '$' + t.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
+        else if (_decimales === ',') {
+            t = t.toFixed(2).replace('.', ',');
+            $('#Tt-' + i).text(_txt + '- ' + '$' + t.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+        }
+    }
+
+    //LEJ 13.07.2018-----------------------------------------------------
+    $('.btnEnviar').on("click", function (e) {
+        //var _xfile = document.getElementById("file_carta").files.length;
+        var msg = "";
+        var ban = 0;
+        if (document.getElementById("file_carta").files.length > 0) {
+            var inputs = $(".cpC").find($("input[type=checkbox]"));
+            $(".cpC :input[type=checkbox]").each(function () {
+                var _xid = $(this).attr('id');
+                var checkedTrue = $('#' + _xid + ':checked').length > 0;
+                if (checkedTrue) {
+                    ban++;
+                    var _pTb = _xid.split('b');
+                    var tt = $("#Tt-" + _pTb[1]).text();
+                    var arrTt = tt.split('-');
+                    $("#pos").val(tt[0]);
+                    $('#btn_guardar').click();
+                }
+            });
+            if (ban == 0) {
+                msg = "Seleccionar una Distribucion";
+                M.toast({ html: msg })
+                document.getElementById("loader").style.display = "none"; //LEJ 13.07.2018
+            }
+        } else {
+            msg = "Favor de subir archivo";
+            M.toast({ html: msg })
+            document.getElementById("loader").style.display = "none"; //LEJ 13.07.2018
+        }
+    });
 });

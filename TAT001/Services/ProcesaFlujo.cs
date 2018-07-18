@@ -212,9 +212,12 @@ namespace TAT001.Services
 
                                 if (nuevo.DETPOS == 0 | nuevo.DETPOS == 99)
                                 {
-                                    if (recurrente == "X")
-                                        next_step_a++;
                                     next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                                    if (recurrente == "X" & next.ACCION.TIPO.Equals("P"))
+                                    {
+                                        next_step_a++;
+                                        next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                                    }
                                     if (next.NEXT_STEP.Equals(99))//--------FIN DEL WORKFLOW
                                     {
                                         //DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
@@ -254,6 +257,7 @@ namespace TAT001.Services
                                         //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0);
                                         //nuevo.USUARIOA_ID = "admin";
                                         //nuevo.DETPOS = 1;
+                                        bool finR = false;
                                         d.ESTATUS_WF = "P";
                                         if (next.ACCION.TIPO.Equals("T"))
                                         {
@@ -270,6 +274,12 @@ namespace TAT001.Services
                                                 nuevo.USUARIOA_ID = null;
                                                 d.ESTATUS_WF = "A";
                                                 d.ESTATUS_SAP = "P";
+                                                if (recurrente == "X")
+                                                {
+                                                    nuevo.WF_POS++;
+                                                    d.ESTATUS_SAP = "";
+                                                    finR = true;
+                                                }
                                             }
                                         }
                                         else if (paso_a.ACCION.TIPO == "E")
@@ -288,6 +298,12 @@ namespace TAT001.Services
                                         nuevo.ESTATUS = "P";
                                         nuevo.FECHAC = DateTime.Now;
                                         nuevo.FECHAM = DateTime.Now;
+
+                                        if (finR)
+                                        {
+                                            nuevo.ESTATUS = "A";
+                                            d.ESTATUS = "A";
+                                        }
 
                                         db.FLUJOes.Add(nuevo);
                                         if (paso_a.EMAIL.Equals("X"))
