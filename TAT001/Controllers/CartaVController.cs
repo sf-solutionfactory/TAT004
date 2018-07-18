@@ -143,6 +143,10 @@ namespace TAT001.Controllers
                 }
                 //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
 
+                //B20180710 MGC 2018.07.18 total es input o text
+                string trclass = "";
+                bool editmonto = false; //B20180710 MGC 2018.07.18 editar el monto en porcentaje categoría
+
                 foreach (var item in con)
                 {
                     lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
@@ -161,6 +165,21 @@ namespace TAT001.Controllers
                                           , x.VOLUMEN_EST, x.VOLUMEN_REAL }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL
                                           .ToList();
 
+                    //Definición si la distribución es monto o porcentaje
+                    string porclass = "";//B20180710 MGC 2018.07.18 total es input o text
+                    string totalm = "";//B20180710 MGC 2018.07.18 total es input o text
+                    if (d.TIPO_TECNICO == "M")
+                    {
+                        porclass = " tipom";
+                        totalm = " total";
+                        trclass = "total";
+                    }
+                    else if (d.TIPO_TECNICO == "P")
+                    {
+                        porclass = " tipop";
+                        totalm = " ni";
+                    }
+
                     if (con2.Count > 0)
                     {
                         foreach (var item2 in con2)
@@ -168,42 +187,42 @@ namespace TAT001.Controllers
                             //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                             listacuerpoc lc1 = new listacuerpoc();
                             lc1.val = item2.MATNR.TrimStart('0');
-                            lc1.clase = "";
+                            lc1.clase = "ni";
                             armadoCuerpoTab.Add(lc1);
 
                             listacuerpoc lc2 = new listacuerpoc();
                             lc2.val = item2.MATKL;
-                            lc2.clase = "";
+                            lc2.clase = "ni";
                             armadoCuerpoTab.Add(lc2);
 
                             listacuerpoc lc3 = new listacuerpoc();
                             lc3.val = item2.MAKTX;
-                            lc3.clase = "";
+                            lc3.clase = "ni";
                             armadoCuerpoTab.Add(lc3);
 
                             listacuerpoc lc4 = new listacuerpoc();
                             lc4.val = Math.Round(item2.MONTO, 2).ToString();
-                            lc4.clase = "input_oper numberd input_dc";
+                            lc4.clase = "input_oper numberd input_dc" + porclass;
                             armadoCuerpoTab.Add(lc4);
 
                             listacuerpoc lc5 = new listacuerpoc();
                             lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
-                            lc5.clase = "input_oper numberd input_dc";
+                            lc5.clase = "input_oper numberd porc input_dc" + porclass;
                             armadoCuerpoTab.Add(lc5);
 
                             listacuerpoc lc6 = new listacuerpoc();
                             lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
-                            lc6.clase = "input_oper numberd input_dc";
-                            armadoCuerpoTab.Add(lc5);
+                            lc6.clase = "input_oper numberd costoa input_dc" + porclass;
+                            armadoCuerpoTab.Add(lc6);
 
                             listacuerpoc lc7 = new listacuerpoc();
                             lc7.val = Math.Round(item2.resta, 2).ToString();
-                            lc7.clase = "input_oper numberd costoa input_dc";//Importante costoa para validación en vista
+                            lc7.clase = "input_oper numberd costoa input_dc " + porclass;//Importante costoa para validación en vista
                             armadoCuerpoTab.Add(lc7);
 
                             listacuerpoc lc8 = new listacuerpoc();
                             lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
-                            lc8.clase = "input_oper numberd input_dc";
+                            lc8.clase = "input_oper numberd input_dc" + porclass;
                             armadoCuerpoTab.Add(lc8);
 
                             //Modificación 9 y 10 dependiendo del campo de factura en tsol
@@ -212,25 +231,25 @@ namespace TAT001.Controllers
                             listacuerpoc lc9 = new listacuerpoc();
                             if (fact)
                             {
-                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                                lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2).ToString();
                             }
                             else
                             {
-                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                                lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2).ToString();
                             }
-                            lc9.clase = "input_oper numberd input_dc";
+                            lc9.clase = "input_oper numberd input_dc" + porclass;
                             armadoCuerpoTab.Add(lc9);
 
                             listacuerpoc lc10 = new listacuerpoc();
                             if (fact)
                             {
-                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                                lc10.val = Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
                             }
                             else
                             {
-                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                                lc10.val = Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
                             }
-                            lc10.clase = "input_oper numberd input_dc total";
+                            lc10.clase = "input_oper numberd input_dc"+ totalm +"" + porclass;
                             armadoCuerpoTab.Add(lc10);
 
                             contadorTabla++;
@@ -243,48 +262,71 @@ namespace TAT001.Controllers
                                             .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL
                                             , x.VOLUMEN_EST, x.VOLUMEN_REAL }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL})
                                             .ToList();
+                        if (d.TIPO_TECNICO == "M")
+                        {
+                            trclass = "total";
+                        }else if(d.TIPO_TECNICO == "P")
+                        {
+                            editmonto = true;
+                        }
+                        
 
                         foreach (var item2 in con3)
                         {
                             //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
                             listacuerpoc lc1 = new listacuerpoc();
                             lc1.val = "";
-                            lc1.clase = "";
+                            lc1.clase = "ni";
                             armadoCuerpoTab.Add(lc1);
 
                             listacuerpoc lc2 = new listacuerpoc();
                             lc2.val = item2.MATKL;
-                            lc2.clase = "";
+                            lc2.clase = "ni";
                             armadoCuerpoTab.Add(lc2);
 
                             listacuerpoc lc3 = new listacuerpoc();
                             lc3.val = item2.TXT50;
-                            lc3.clase = "";
+                            lc3.clase = "ni";
                             armadoCuerpoTab.Add(lc3);
 
                             listacuerpoc lc4 = new listacuerpoc();
-                            lc4.val = Math.Round(item2.MONTO, 2).ToString();
-                            lc4.clase = "input_oper numberd input_dc";
+                            //lc4.val = Math.Round(item2.MONTO, 2).ToString();
+                            lc4.val = "";
+                            lc4.clase = "ni";
                             armadoCuerpoTab.Add(lc4);
 
                             listacuerpoc lc5 = new listacuerpoc();
-                            lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
-                            lc5.clase = "input_oper numberd input_dc";
+                            //lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
+                            //Definición si la distribución es monto o porcentaje
+                            if (d.TIPO_TECNICO == "M")
+                            {
+                                lc5.val = "";
+                            }
+                            else if (d.TIPO_TECNICO == "P")
+                            {
+                                lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
+                            }
+                            
+                            //lc5.clase = "input_oper numberd input_dc";
+                            lc5.clase = "ni";
                             armadoCuerpoTab.Add(lc5);
 
                             listacuerpoc lc6 = new listacuerpoc();
-                            lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
-                            lc6.clase = "input_oper numberd input_dc";
-                            armadoCuerpoTab.Add(lc5);
+                            //lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
+                            lc6.val = "";
+                            lc6.clase = "ni";
+                            armadoCuerpoTab.Add(lc6);
 
                             listacuerpoc lc7 = new listacuerpoc();
-                            lc7.val = Math.Round(item2.resta, 2).ToString();
-                            lc7.clase = "input_oper numberd input_dc";
+                            //lc7.val = Math.Round(item2.resta, 2).ToString();
+                            lc7.val = "";
+                            lc7.clase = "ni";
                             armadoCuerpoTab.Add(lc7);
 
                             listacuerpoc lc8 = new listacuerpoc();
-                            lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
-                            lc8.clase = "input_oper numberd input_dc";
+                            //lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
+                            lc8.val = "";
+                            lc8.clase = "ni";
                             armadoCuerpoTab.Add(lc8);
                             //Modificación 9 y 10 dependiendo del campo de factura en tsol
                             //fact = true es real
@@ -292,25 +334,36 @@ namespace TAT001.Controllers
                             listacuerpoc lc9 = new listacuerpoc();
                             if (fact)
                             {
-                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                                //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                                lc9.val = "";
                             }
                             else
                             {
-                                lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                                //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                                lc9.val = "";
                             }
-                            lc9.clase = "input_oper numberd input_dc";
+                            lc9.clase = "ni";
                             armadoCuerpoTab.Add(lc9);
 
                             listacuerpoc lc10 = new listacuerpoc();
                             if (fact)
                             {
-                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString();
+                                lc10.val = Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
                             }
                             else
                             {
-                                lc10.val = Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString();
+                                lc10.val = Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
                             }
-                            lc10.clase = "input_oper numberd input_dc total";
+                            //Definición si la distribución es monto o porcentaje
+                            if (d.TIPO_TECNICO == "M")
+                            {
+                                lc10.clase = "input_oper numberd input_dc total cat";
+                            }
+                            else if (d.TIPO_TECNICO == "P")
+                            {
+                                lc10.clase = "ni";
+                            }
+                            
                             armadoCuerpoTab.Add(lc10);
 
                             contadorTabla++;
@@ -453,6 +506,8 @@ namespace TAT001.Controllers
                 cv.moneda = d.MONEDA_ID;
 
                 ViewBag.factura = fact;//B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                ViewBag.trclass = trclass;//B20180710 MGC 2018.07.18 total es input o text
+                ViewBag.editmonto = editmonto;//B20180710 MGC 2018.07.18 total es input o text
 
                 return View(cv);
             }
@@ -462,7 +517,7 @@ namespace TAT001.Controllers
         [HttpPost]
         //[ValidateAntiForgeryToken] //B20180710 MGC 2018.07.16 Modificaciones para editar los campos de distribución se agrego los objetos
         //public ActionResult Create([Bind(Include = "num_doc, listaCuerpo, DOCUMENTOP")] CartaV v)
-        public ActionResult Create(CartaV v)
+        public ActionResult Create(CartaV v,string monto_enviar)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -479,7 +534,8 @@ namespace TAT001.Controllers
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-
+                //B20180710 MGC 2018.07.17 Modificación de monto
+                v.monto = monto_enviar;
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
                 bool fact = false;
                 try
@@ -566,7 +622,7 @@ namespace TAT001.Controllers
                     {
                         var con3 = db.DOCUMENTOPs
                                             .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.CATEGORIAs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
                                             .ToList();
 
                         foreach (var item2 in con3)
@@ -583,6 +639,40 @@ namespace TAT001.Controllers
                             //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
                             //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
                             //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+
+                            try
+                            {
+                                docmod = v.DOCUMENTOP.Where(x => x.MATKL_ID == item2.MATKL).FirstOrDefault();
+
+                                if (docmod != null)
+                                {
+                                    armadoCuerpoTab.Add("");
+                                    armadoCuerpoTab.Add(item2.MATKL);
+                                    armadoCuerpoTab.Add(item2.TXT50);
+
+                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                    //fact = true es real
+                                    //Apoyo
+                                    if (fact)
+                                    {
+                                        if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                    }
+                                    else
+                                    {
+                                        if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
                             contadorTabla++;
                         }
                     }

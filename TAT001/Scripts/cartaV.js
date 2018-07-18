@@ -1,22 +1,46 @@
 ﻿$('body').on('click', '#imprimir_btn', function (e) {
 
+    //editmonto_texto
+    var ed = $('#editmonto_texto').val();
     //Validar valores correctos en distribución
-    updateFooter(false);
-
     var total = 0;
+    if (ed == "false") {
+        updateFooter(false);
 
-    total = totalFooter();
+        total = totalFooter();
 
-    var texto = armarMonto(total);
+        var texto = armarMonto(total);
 
+    } else if (ed == "true") {
+        total = updateTotalRowp();
+    }
+
+    total = parseFloat(total);
     //Obtener el monto original
     var monto = $('#monto').val();
+    monto = parseFloat(monto);
+
     if (total > monto) {
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     } else {
         copiarTableControl();
+        $('#monto_enviar').val(total.toFixed(2));
         $('#submit_btn').click();
     }
+});
+
+$('body').on('focusout', '#ed_monto', function (e) {
+
+    var total = 0;
+
+    total = updateTotalRowp();
+
+    //Obtener el monto original
+    var monto = $('#monto').val();
+    monto = parseFloat(monto);
+    if (total > monto) {
+        M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
+    } 
 });
 
 $('body').on('focusout', '.input_oper', function () {
@@ -26,21 +50,31 @@ $('body').on('focusout', '.input_oper', function () {
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
 
+        //Definir si es tipo m
+        var tipo = "";
+        if ($(this).hasClass("tipom")) {
+            tipo = "m";
+        } else if ($(this).hasClass("tipop")) {
+            tipo = "p"
+        }
+
         //Se dispara el evento desde el total
-        if ($(this).hasClass("total")) {
+        if ($(this).hasClass("total") & !$(this).hasClass("cat")) {
             var total_val = $(this).val();
             //Agregar los valores a 0 y agregar el total
-            updateTotalRow(tr, "", "X", total_val);
+            updateTotalRow(tr, "", "X", total_val, "", tipo);
             //alert("total" + total_val);
-        } else {
-            //alert("no total");
-            updateTotalRow(tr, "", "", 0);
+        } else if ($(this).hasClass("total") & $(this).hasClass("cat")) {
+            var total_val = $(this).val();
+            updateTotalRow(tr, "", "X", total_val,"X", tipo);
+        }else {
+            updateTotalRow(tr, "", "", 0, "", tipo);
         }
 
     }
 });
 
-function updateTotalRow(tr, tdp_apoyo, totals, total_val) {
+function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
 
     //totals = X cuando nada más se agrega el total
 
@@ -52,7 +86,13 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val) {
     //Validar si las operaciones se hacen por renglón o solo agregar el valor del total
     if (totals != "X") {
         var col3 = tr.find("td:eq(" + (3) + ") input").val();
-        var col4 = tr.find("td:eq(" + (4) + ") input").val();
+        var col4 = 0;
+
+        if (tipo == "m") {
+            col4 = tr.find("td:eq(" + (4) + ") input").val();
+        } else if (tipo == "p") {
+            col4 = tr.find("td:eq(" + (4) + ")").text();
+        }
 
         col4 = convertP(col4);
 
@@ -63,7 +103,7 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val) {
         var col5 = col3 * col4;
         //Apoyo por pieza
         //Modificar el input
-        tr.find("td:eq(" + (5) + ") input").val(col5.toFixed(2));
+        tr.find("td:eq(" + (5) + ")").text(col5.toFixed(2));
 
         //Costo con apoyo
         var col6 = col3 - col5;
@@ -73,21 +113,48 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val) {
         var col8 = tr.find("td:eq(" + (8) + ") input").val();
         var col9 = col5 * col8;
         //col14 = col14.toFixed(2);
-        tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+        if (tipo == "m") {
+            tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+        } else if (tipo == "p") {
+            tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));
+        }
+        
 
         //Agregar nada más el total
     } else {
         total_val = parseFloat(total_val);
-        var col9 = total_val.toFixed(2);
-        tr.find("td:eq(" + (3) + ") input").val("0.00");
-        if (tdp_apoyo != "X") {
-            tr.find("td:eq(" + (4) + ") input").val("0.00");
+        var col9 = total_val;
+        if (cat == "") {
+            tr.find("td:eq(" + (3) + ") input").val("0.00");
+            if (tdp_apoyo != "X") {
+                if (tipo == "m") {
+                    tr.find("td:eq(" + (4) + ") input").val("0.00");
+                } else if (tipo == "p") {
+                    tr.find("td:eq(" + (4) + ")").val("0.00");
+                }   
+            }
+            tr.find("td:eq(" + (5) + ")").text("0.00");
+            tr.find("td:eq(" + (6) + ")").text("0.00");
+            tr.find("td:eq(" + (7) + ") input").val("0.00");
+            tr.find("td:eq(" + (8) + ") input").val("0.00");
+            if (tipo == "m") {
+                tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+            } else if (tipo == "p") {
+                tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));
+            }
+            
+        } else if (cat == "X") {
+            tr.find("td:eq(" + (3) + ")").text("");
+            if (tdp_apoyo != "X") {
+
+                tr.find("td:eq(" + (4) + ")").text("");
+            }
+            tr.find("td:eq(" + (5) + ")").text("");
+            tr.find("td:eq(" + (6) + ")").text("");
+            tr.find("td:eq(" + (7) + ")").text("");
+            tr.find("td:eq(" + (8) + ")").text("");
+            tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
         }
-        tr.find("td:eq(" + (5) + ") input").val("0.00");
-        tr.find("td:eq(" + (6) + ")").text("0.00");
-        tr.find("td:eq(" + (7) + ") input").val("0.00");
-        tr.find("td:eq(" + (8) + ") input").val("0.00");
-        tr.find("td:eq(" + (9) + ") input").val(col9);
     }
 
     updateFooter(true);
@@ -113,12 +180,14 @@ function updateFooter(flag) {
 
     total = totalFooter();
 
-    var texto = armarMonto(total);
+    var texto = armarMonto(total.toFixed(2));
 
     //Obtener el monto original
     if (flag) {
         var monto = $('#monto').val();
-        if (total > monto) {
+        var montof = parseFloat(monto);
+        var totalf = parseFloat(total);
+        if (totalf > montof) {
             M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
         }
     }
@@ -136,8 +205,14 @@ function totalFooter() {
     try {
         for (var i = 0; i < tables.length; i++) {
             var tabname = "#" + tables[i].id;
-            $(tabname).find("tr").each(function (index) {
-                var col9 = $(this).find("td:eq(" + coltotal + ") input").val();
+            $(tabname).find("tr[role='row']").each(function (index) {
+                var col9 = 0;
+                if ($(this).hasClass("total")) {
+                    col9 = $(this).find("td:eq(" + coltotal + ") input").val();
+                } else {
+                    col9 = $(this).find("td:eq(" + (coltotal) + ")").text();
+                   
+                }
 
                 col9 = convertI(col9);
 
@@ -152,12 +227,52 @@ function totalFooter() {
     }
 
     total = total.toFixed(2);
+    total = parseFloat(total)
+
+    return total;
+}
+
+function updateTotalRowp() {
+    var coltotal = (9);
+    var colpor = (4)
+    var total = 0;
+
+    //Obtener la cantidad asignada por el usuario como total
+    var ed_monto = $('#ed_monto').val();
+    ed_monto = parseFloat(ed_monto);
+
+    // ed_monto -- 100%
+    //coltotal  -- colpor
+    //Obtener las tablas
+    var tables = $('.table_mat');
+
+    try {
+        for (var i = 0; i < tables.length; i++) {
+            var tabname = "#" + tables[i].id;
+            $(tabname).find("tr[role='row']").each(function (index) {
+                var col4 = 0;
+                col4 = $(this).find("td:eq(" + (colpor) + ")").text();
+                col4 = parseFloat(col4);
+
+                colt = (col4 * ed_monto) / 100;
+
+                $(this).find("td:eq(" + (coltotal) + ")").text(colt.toFixed(2));
+                total += colt;
+
+            });
+        }
+    } catch (error) {
+
+    }
+
+    total = total.toFixed(2);
+    total = parseFloat(total)
 
     return total;
 }
 
 function resetFooter() {
-    var texto = armarMonto(0);
+    var texto = armarMonto("0.00");
     $('#lbl_monto').text(texto);
 }
 
@@ -183,11 +298,7 @@ function copiarTableControl() {
         var mostrar = true;
         mostrar = isFactura();
 
-        //var itemh = {};
-        //var token = $('input[name=__RequestVerificationToken]').val();
-        //itemh["__RequestVerificationToken"] = token;
-        //jsonObjDocs.push(itemh);
-
+        
         if (mostrar) {
             vol = "real";
         } else {
@@ -204,11 +315,6 @@ function copiarTableControl() {
                 
                 $(tabname).each(function () {
 
-                    //Multiplicar costo unitario % por apoyo(dividirlo entre 100)
-                    //Columnas 8 * 9 res 10
-                    //Categoría es 7 * 8 = 9  --> -1
-                    //Material es 6 * 7 = 8   --> -2
-
                     var vigencia_de = $(tabdedate).val();//$(this).find("td:eq(" + (3) + ") input").val();
                     var vigencia_al = $(tabaldate).val();//$(this).find("td:eq(" + (4) + ") input").val();
 
@@ -217,17 +323,61 @@ function copiarTableControl() {
                     var matkl = $(this).find("td:eq(" + (1) + ")").text();
 
                     //Obtener el id de la categoría            
-                    
-                    var matkl_id = '';
 
-                    var costo_unitario = $(this).find("td:eq(" + (3) + ") input").val();
-                    var porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
-                    var monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
+                    var matkl_id = matkl;
 
-                    var precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
-                    var volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
 
-                    var total = $(this).find("td:eq(" + (9) + ") input").val();
+                    //Definir si es tipo m
+                    var tipo = "";
+                    if ($(this).hasClass("tipom")) {
+                        tipo = "m";
+                    } else if ($(this).hasClass("tipop")) {
+                        tipo = "p"
+                    }
+
+                    //Saber si los valores se tienen como texto del td o input
+                    var costo_unitario = 0;
+                    if ($(this).find("td:eq(" + (3) + ")").hasClass("ni")) {
+                        costo_unitario = $(this).find("td:eq(" + (3) + ")").text();
+                    } else {
+                        costo_unitario = $(this).find("td:eq(" + (3) + ") input").val();
+                    }
+
+                    var porc_apoyo = 0;
+                    if ($(this).find("td:eq(" + (4) + ")").hasClass("ni")) {
+                        porc_apoyo = $(this).find("td:eq(" + (4) + ")").text();
+                    } else {
+                        porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
+                    }
+                    //var porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
+                    var monto_apoyo = 0;
+                    if ($(this).find("td:eq(" + (5) + ")").hasClass("ni")) {
+                        monto_apoyo = $(this).find("td:eq(" + (5) + ")").text();
+                    } else {
+                        monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
+                    }
+                    //var monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
+                    var precio_sug = 0;
+                    if ($(this).find("td:eq(" + (7) + ")").hasClass("ni")) {
+                        precio_sug = $(this).find("td:eq(" + (7) + ")").text();
+                    } else {
+                        precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
+                    }
+                    //var precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
+                    var volumen_est = 0;
+                    if ($(this).find("td:eq(" + (8) + ")").hasClass("ni")) {
+                        volumen_est = $(this).find("td:eq(" + (8) + ")").text();
+                    } else {
+                        volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
+                    }
+                    //var volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
+                    var total = 0;
+                    if ($(this).find("td:eq(" + (9) + ")").hasClass("ni")) {
+                        total = $(this).find("td:eq(" + (9) + ")").text();
+                    } else {
+                        total = $(this).find("td:eq(" + (9) + ") input").val();
+                    }
+                    //var total = $(this).find("td:eq(" + (9) + ") input").val();
 
                     var item = {};
 
@@ -238,14 +388,15 @@ function copiarTableControl() {
                     item["MATKL_ID"] = matkl_id;
                     item["DESC"] = "";
                     item["CANTIDAD"] = 0; //Siempre 0
-                    item["MONTO"] = costo_unitario;
-                    item["PORC_APOYO"] = porc_apoyo;
-                    item["MONTO_APOYO"] = monto_apoyo;
+                    item["MONTO"] = costo_unitario || 0;
+                    item["PORC_APOYO"] = porc_apoyo || 0;
+                    item["MONTO_APOYO"] = monto_apoyo || 0;
                     item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p. m.";
                     item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p. m.";
-                    item["PRECIO_SUG"] = precio_sug;
-                    volumen_est = volumen_est || 0
+                    item["PRECIO_SUG"] = precio_sug || 0; 
+                    volumen_est = volumen_est || 0;
                     total = parseFloat(total);
+                    total = total || 0;
                     if (vol == "estimado") {
                         item["VOLUMEN_EST"] = volumen_est;
                         item["VOLUMEN_REAL"] = 0;

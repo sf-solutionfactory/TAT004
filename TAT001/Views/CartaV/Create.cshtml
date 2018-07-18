@@ -327,12 +327,12 @@
                                 @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                                 @for (int i = 0; i < filas; i++)
                                 {
-                                    <tr role="row">
+                                    <tr class="@ViewBag.trclass" role="row">
                                         @for (int j = 0; j < columnas; j++)
                                         {
-                                            if (@Model.listaCuerpom[pos].clase == "" | @Model.listaCuerpom[pos].clase.Contains("costoa"))
+                                            if (@Model.listaCuerpom[pos].clase.Contains("ni") | @Model.listaCuerpom[pos].clase.Contains("costoa") | (@Model.listaCuerpom[pos].clase.Contains("porc") & @Model.listaCuerpom[pos].clase.Contains("tipop")))
                                             {
-                                                <td>@Model.listaCuerpom[pos].val</td>
+                                                <td class="ni">@Model.listaCuerpom[pos].val</td>
                                             }
                                             else
                                             {
@@ -347,7 +347,7 @@
                     </div>
                 }
                 @*Tabla para ser enviada siempre está oculta*@
-                <table id="table_dish" class="display" cellspacing="0" width="100%">
+                <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
                     @*
                         <thead>
                             <tr>
@@ -432,9 +432,24 @@
                         <div class="input-field col l10 m10" style="margin-bottom:0;">
                             @Html.HiddenFor(model => model.monto)
                             @Html.HiddenFor(model => model.moneda)
-                            @{ string monto = @ViewBag.mon; }
-                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
-                            @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+                            @{ string monto = @ViewBag.mon;
+                                bool editmonto = @ViewBag.editmonto;
+                                string editmontos = editmonto + "";
+                                editmontos = editmontos.ToLower();}
+                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto">
+                            <input id="monto_enviar" name="monto_enviar" type="hidden" value="">
+                            <input id="editmonto_texto" name="editmonto_texto" type="hidden" value="@editmontos">@*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                            @{ if (editmonto == false)
+                                {
+                                    @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+                                }
+                                else
+                                {
+                                    @Html.EditorFor(model => model.monto, new { htmlAttributes = new { @id = "ed_monto" } })
+                                    @Html.LabelFor(model => model.monto, monto + " (" + Model.moneda + ")", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+
+                                }
+                            }
                         </div>
                     </div>
                 </div>
