@@ -28,6 +28,8 @@ $('body').on('focusout', '.input_oper', function () {
 
     var tr = $(this).closest('tr'); //Obtener el row 
 
+    //$(this).val(toShow($(this).val()));
+
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using TAT001.Entities;
 using TAT001.Models;
@@ -37,7 +38,7 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
             }
-            ViewBag.url = ruta;
+            ViewBag.url = Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "") + HostingEnvironment.ApplicationVirtualPath + "/" + ruta;
             ViewBag.miNum = ids;
 
             return View();
@@ -106,6 +107,9 @@ namespace TAT001.Controllers
                 DOCUMENTO d = new DOCUMENTO();
                 PUESTOT pp = new PUESTOT();
                 d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
+
+                ViewBag.miles = d.PAI.MILES;//LEJGG 090718
+                ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
 
                 List<string> lista = new List<string>();
                 List<listacuerpoc> armadoCuerpoTab = new List<listacuerpoc>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
@@ -562,6 +566,7 @@ namespace TAT001.Controllers
 
                 int contadorTabla = 0;
                 DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
+
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();

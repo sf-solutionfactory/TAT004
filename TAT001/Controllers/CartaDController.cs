@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using TAT001.Entities;
 using TAT001.Models;
@@ -37,7 +38,7 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Pais", "Home");
                 }
             }
-            ViewBag.url = Request.Url.OriginalString.Replace(Request.Url.PathAndQuery,"") + ruta;
+            ViewBag.url = Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "") + HostingEnvironment.ApplicationVirtualPath + "/" + ruta;
             ViewBag.miNum = ids;
 
             return View();
@@ -210,7 +211,7 @@ namespace TAT001.Controllers
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "fechaC2").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "montoC2").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "porcentajeC2").Select(x => x.TEXTO).FirstOrDefault());
-                
+
                 var con4 = db.DOCUMENTORECs
                                             .Where(x => x.NUM_DOC.Equals(id))
                                             .Join(db.DOCUMENTOes, x => x.NUM_DOC, y => y.NUM_DOC, (x, y) => new { x.POS, y.TSOL_ID, x.FECHAF, x.MONTO_BASE, x.PORC })
@@ -242,7 +243,7 @@ namespace TAT001.Controllers
                 cv.apoyoEst_x = true;
                 cv.apoyoRea_x = true;
                 /////////////////////////////////
-                
+
                 //TABLA 2 RECURRENCIAS
                 cv.numColEncabezado2 = cabeza2;////////NUMERO DE COLUMNAS PARA LAS TABLAS
                 cv.numfilasTabla2 = con4.Count();//////NUMERO FILAS TOTAL PARA LA TABLA
@@ -350,7 +351,7 @@ namespace TAT001.Controllers
                         {
                             armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
                             armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.MAKTX);                        
+                            armadoCuerpoTab.Add(item2.MAKTX);
                             if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
                             if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
                             if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
