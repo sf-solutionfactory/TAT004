@@ -38,11 +38,6 @@
             <a href="@Url.Action("Archivo", "Excel")">
                 <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
             </a>
-            @*//jemo inicio 4/07/2018*@
-            <a href="@Url.Action("Index3", "Excel")">
-                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
-            </a>
-            @*//jemo fin 4/07/2018*@
         </div>
     }
     else
@@ -51,11 +46,6 @@
             <a href="@Url.Action("Archivo", "Excel")">
                 <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
             </a>
-            @*//jemo inicio 4/07/2018*@
-            <a href="@Url.Action("Index3", "Excel")">
-                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
-            </a>
-            @*//jemo fin 4/07/2018*@
         </div>
     }
     <div class="row">
@@ -116,11 +106,11 @@
     }
 }
 @using (Html.BeginForm("Soportes", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    int? cont = ViewBag.contenidoSop;
+            {
+                int? cont = ViewBag.contenidoSop;
 
-    if (cont == 1)
-    {
+                if (cont == 1)
+                {
         <div class="row">
             <div class="row col s10 m10 l10">
                 <div class="file-field input-field">

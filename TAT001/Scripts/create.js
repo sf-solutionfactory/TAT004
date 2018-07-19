@@ -2819,8 +2819,9 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
                 col8 = _cl8;
             }
             col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
-            var _cl9 = col9.replace(',', '');
-            col9 = _cl9.replace('%', '');
+            //var _cl9 = col9.replace(',', '');
+            //col9 = _cl9.replace('%', '');
+            col9 = toNum(col9);
         } else if (_decimales === ',') {
             col8 = tr.find("td:eq(" + (8 + index) + ") input").val();//.replace('$', '');//RSG 09.07.2018
             if (col8 != null) {

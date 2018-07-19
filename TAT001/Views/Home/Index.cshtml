@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TAT001.Entities.DOCUMENTO>
+@using System.Web.Hosting;
 @{
     //ViewBag.Title = "Páginas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,11 +20,11 @@
             <div class="@*parallax*@">
                 @if (Request.Url.PathAndQuery != "/")
                 {
-                    <img src="@Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "")@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+                    <img src="@Request.Url.OriginalString.Replace(Request.Url.PathAndQuery, "")@HostingEnvironment.ApplicationVirtualPath/@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
                 }
                 else
                 {
-                    <img src="@Request.Url.OriginalString@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
+                    <img src="@Request.Url.OriginalString@HostingEnvironment.ApplicationVirtualPath/@ViewBag.imgnoticia" style="height: 200px; position:absolute; width:100%;" />
                 }
             </div>
         </div>
@@ -40,21 +41,21 @@
 @*////jemo inicio 4/07/2018*@
 
 @*@section noticia{
-        @if (false)
-        {
-            <div style="width:320px;"></div>
-            <div class="parallax-container" >
-                <div class="parallax">
-                    <img src="~/images/parallax.jpg" />
+    @if (true)
+    {
+        <div style="width:320px;"></div>
+                <div class="parallax-container" >
+                    <div class="parallax">
+                        <img src="~/images/parallax.jpg" />
+                    </div>
                 </div>
-            </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.parallax');
-                    var instances = M.Parallax.init(elems, options);
+                    var instances = M.Parallax.init(elems, []);
                 });</script>
-        }
-    }*@
+    }
+}*@
 <!--BOTONES-->
 <div class="row">
     @if (ViewBag.delegados != null)
@@ -89,7 +90,7 @@
         {
             <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
         }
-        @*@Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })*@
+        @*@Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" }) *@
     </div>
     <div class="col s12 right-align" style="margin-top:5px;">
 
@@ -141,6 +142,8 @@
             </script>
         }
     }
+
+    @*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
     @if (TempData["docs_masiva"] != null)
     {
         List<string> aa = (List<string>)TempData["docs_masiva"];
@@ -149,22 +152,26 @@
 
             <script>
             $(document).ready(function () {
-                    function docMessage(msg) {
-                        M.toast({ html: msg });
+                function docMessage(msg) {
+                    M.toast({ html: msg });
                 }
 
                 var messages = '@a';
 
-                if (messages != "")
-                {
-                    // do drop down loic
-                    docMessage('Documento ' + messages +' fue creado');
+                if (messages != "") {
+                    if (messages.substring(0, 4) == "&lt;") {
+                        docMessage('Error en registro ' + messages.replace("&lt;", ""));
+                    }
+                    else {
+                        docMessage('Documento ' + messages + ' fue creado');
+                    }
                 }
             });
             </script>
         }
         TempData["docs_masiva"] = null;
     }
+    @*///////////////////////////////L.G.P.P MODIFICACIONES FIN*@
 
     @if (Session["error"] != null)
     {

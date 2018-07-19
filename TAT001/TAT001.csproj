@@ -202,6 +202,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartaDController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\Catalogos\GALLController.cs" />
     <Compile Include="Controllers\Catalogos\IimpuestoController.cs" />
@@ -695,11 +696,15 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CargaMasivaModels.cs" />
+    <Compile Include="Models\CartaD.cs" />
+    <Compile Include="Models\CartaDEsqueleto.cs" />
     <Compile Include="Models\CategoriaMaterial.cs" />
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\Documento.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
+    <Compile Include="Models\HeaderFooterD.cs" />
+    <Compile Include="Models\listacuerpoc.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
     <Compile Include="Models\Flujos.cs" />
     <Compile Include="Models\TALLT_MOD.cs" />
@@ -861,6 +866,7 @@
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
+    <Content Include="Scripts\cartaV.js" />
     <Content Include="Scripts\edit - antes.js" />
     <Content Include="Scripts\edit.js" />
     <Content Include="Scripts\create.js" />
@@ -1088,6 +1094,12 @@
     <Content Include="Views\Negs\Details.cshtml" />
     <Content Include="Views\Negs\Edit.cshtml" />
     <Content Include="Views\Flujos\Carga.cshtml" />
+    <Content Include="Views\CartaD\Create.cshtml" />
+    <Content Include="Views\CartaD\Create1.cshtml" />
+    <Content Include="Views\CartaD\Create2.cshtml" />
+    <Content Include="Views\CartaD\Details.cshtml" />
+    <Content Include="Views\CartaD\Index.cshtml" />
+    <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

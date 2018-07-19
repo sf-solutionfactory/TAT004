@@ -7,7 +7,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 201;
     ViewBag.carpeta_r = 200;
-    List<TAT001.Entities.CARTAP> lstCarta = ViewBag.cartap as List<TAT001.Entities.CARTAP>;
+    List<TAT001.Entities.CARTAP>
+    lstCarta = ViewBag.cartap as List<TAT001.Entities.CARTAP>
+        ;
     var pos = lstCarta.GroupBy(c => c.POS_ID).Select(g => g.First()).ToList();
     int idn = 0;//LEJ 12.07.18
 }
@@ -79,8 +81,8 @@
                                 };
                                 var instance = M.FloatingActionButton.init(elem, options);
                             </script>
-                            @*<a id="lbl_wfa" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="A" })">Aprobar</a>
-                                <a id="lbl_wfr" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="R" })">Rechazar</a>*@
+                            @*<a id="lbl_wfa" class="btn-small  " href="@Url.Action(" Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="A" })">Aprobar</a>
+                                <a id="lbl_wfr" class="btn-small  " href="@Url.Action(" Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="R" })">Rechazar</a>*@
                             <a class="btn-small modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
                             <a class="btn-small modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
                         }
@@ -104,7 +106,7 @@
                                 };
                                 var instance = M.FloatingActionButton.init(elem, options);
                             </script>
-                            @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                            @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action(" Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
                             <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="siguiente()">Siguiente</a>
                         }
                         else if (ViewBag.accion == "P")
@@ -128,7 +130,7 @@
                                 };
                                 var instance = M.FloatingActionButton.init(elem, options);
                             </script>
-                            @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action("Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
+                            @*<a id="lbl_wfn" class="btn-small  " href="@Url.Action(" Procesa", "Flujos" , new { id=Model.D.NUM_DOC, accion="N" })">Siguiente</a>*@
                             <a id="lbl_wfn" class="btn-small modal-trigger" href="#modal1" onclick="contabilizar()">Contabilizar</a>
                         }
                         else if (!Model.D.ESTATUS.Equals("A"))
@@ -152,7 +154,7 @@
                                     </div>
                                     <div class="modal-footer right">
                                         <a href="#!" class="modal-action modal-close btn-flat">No</a>
-                                        <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes", new { id = Model.D.NUM_DOC })">Si</a>
+                                        <a class="modal-action btn-flat" href="@Url.Action(" Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
                                     </div>
                                 </div>
                             }
@@ -162,7 +164,7 @@
                     {
                         if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                         {
-                            <a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "CPR" })" class="btn-small">Reversar</a>
+                            <a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversar</a>
                             <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
                             @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
                             <ul id='list_rela' class='dropdown-content'>
@@ -170,10 +172,11 @@
                                 {
                                     foreach (TSOL inte in ViewBag.TSOL_RELA)
                                     {
-                                        @*<li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NC" })" id="lbl_nc">Nota de crédito</a></li>
-                                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
-                                            <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = "OP" })" id="lbl_op">Orden de pago</a></li>*@
-                                        <li><a href="@Url.Action("Create", "Solicitudes", new { id_d = Model.D.NUM_DOC.ToString(), tsol = inte.ID })" id="lbl_@inte.ID">@inte.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </a></li>
+                                        @*
+                                            <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
+                                            <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
+                                            <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>*@
+                                        <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol=inte.ID })" id="lbl_@inte.ID">@inte.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </a></li>
                                     }
                                 }
                             </ul>
@@ -207,7 +210,7 @@
                                 </div>
                                 <div class="modal-footer right">
                                     <a href="#!" class="modal-action modal-close btn-flat">No</a>
-                                    <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes", new { id = Model.D.NUM_DOC })">Si</a>
+                                    <a class="modal-action btn-flat" href="@Url.Action(" Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
                                 </div>
                             </div>
                         }
@@ -217,14 +220,14 @@
                     <button type="button" class="btn-small  " data-target="list_carta" id="btn_carta">Carta</button>
                     @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
                     <ul id='list_carta' class='dropdown-content'>
-                        <li><a href="@Url.Action("Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
-                        @if (Model.D.DOCUMENTOPs.Count().Equals(0))
+                        <li><a href="@Url.Action(" Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
+                        @if (Model.D.ESTATUS_WF.Equals("S"))
                         {
-                            <li><a href="@Url.Action("Create", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                            <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
                         }
                         else
                         {
-                            <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
+                            <li><a href="@Url.Action("Create", "CartaD" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Imprimir draft</a></li>
                         }
                     </ul>
                     <script>
@@ -246,7 +249,8 @@
             <div class="col s12">
                 <ul class="tabs tabs-fixed-width tab-demo " id="tab">
                     <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
-                    @*<li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>*@<!--RSG 09.07.2018 DEL-->
+                    @*
+                        <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>*@<!--RSG 09.07.2018 DEL-->
                     @if (ViewBag.acciones != null & ViewBag.accion == "S")
                     {
                         <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
@@ -282,7 +286,7 @@
                                         @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
                                     </div>
                                     <div class="col s4 right-align">
-                                        <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
+                                        <a href="@Url.Action(" Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
                                     </div>
                                 </div>
                             </div>
@@ -323,7 +327,8 @@
                                 </div>
                             </div>
                         </div>
-                        @*<div class="row" style="margin-bottom:0">*@
+                        @*<div class="row" style="margin-bottom:0">
+                        *@
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <h5>Información general</h5>
@@ -345,7 +350,8 @@
                                 </div>
                             </div>
                         </div>
-                        @*</div>*@
+                        @*
+                            </div>*@
                         @if (Model.D.DOCUMENTOF != null)
                         {
                             if (Model.D.DOCUMENTOF.Count > 0)
@@ -389,60 +395,101 @@
                                                         {
                                                             <th>Ejercicio</th>
                                                         }
-                                                        @if (Model.D.DOCUMENTOF[0].BILL_DOC != "0         ")
+                                                        @if (Model.D.DOCUMENTOF[0].BILL_DOC.Trim() != "0")
                                                         {
                                                             <th>No fat</th>
                                                         }
-                                                        @if (Model.D.DOCUMENTOF[0].BELNR != "0         ")
+                                                        @if (Model.D.DOCUMENTOF[0].BELNR.Trim() != "0")
                                                         {
                                                             <th>No documento</th>
                                                         }
+                                                        @if (Model.D.DOCUMENTOF[0].PAYER != null)
+                                                        {
+                                                            if (Model.D.DOCUMENTOF[0].PAYER.Trim() != "0")
+                                                            {
+                                                                <th>Payer</th>
+                                                            }
+                                                            if (Model.D.DOCUMENTOF[0].PAYER.Trim() != "0")
+                                                            {
+                                                                <th>Nombre</th>
+                                                            }
+                                                        }
+                                                        @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null | Model.D.DOCUMENTOF[0].IMPORTE_FAC.ToString() != "0.00000")
+                                                        {
+                                                            <th>Importe Fac</th>
+                                                        }
                                                     </tr>
                                                 </thead>
-                                                @foreach (var item in Model.D.DOCUMENTOF)
+
+                                                @using (TAT001Entities db = new TAT001Entities())
                                                 {
-                                                    <tr>
-                                                        @if (item.FACTURA != "0")
-                                                        {
-                                                            <td>@item.FACTURA</td>
-                                                        }
-                                                        @if (item.FECHA != null)
-                                                        {
-                                                            <td>@item.FECHA</td>
-                                                        }
-                                                        @if (item.PROVEEDOR != "0         ")
-                                                        {
-                                                            <td>@item.PROVEEDOR</td>
-                                                        }
-                                                        @if (item.CONTROL != "0")
-                                                        {
-                                                            <td>@item.CONTROL</td>
-                                                        }
-                                                        @if (item.AUTORIZACION != "0")
-                                                        {
-                                                            <td>@item.AUTORIZACION</td>
-                                                        }
-                                                        @if (item.VENCIMIENTO != null)
-                                                        {
-                                                            <td>@item.VENCIMIENTO</td>
-                                                        }
-                                                        @if (item.FACTURAK != "0")
-                                                        {
-                                                            <td>@item.FACTURAK</td>
-                                                        }
-                                                        @if (item.EJERCICIOK != "0")
-                                                        {
-                                                            <td>@item.EJERCICIOK</td>
-                                                        }
-                                                        @if (item.BILL_DOC != "0         ")
-                                                        {
-                                                            <td>@item.BILL_DOC</td>
-                                                        }
-                                                        @if (item.BELNR != "0         ")
-                                                        {
-                                                            <td>@item.BELNR</td>
-                                                        }
-                                                    </tr>
+                                                    foreach (var item in Model.D.DOCUMENTOF)
+                                                    {
+                                                        <tr>
+                                                            @if (item.FACTURA != "0")
+                                                            {
+                                                                <td>@item.FACTURA</td>
+                                                            }
+                                                            @if (item.FECHA != null)
+                                                            {
+                                                                string fech = item.FECHA.ToString();
+                                                                fech = fech.Substring(0, 10);
+                                                                <td>@fech</td>
+                                                            }
+                                                            @if (item.PROVEEDOR.Trim() != "0")
+                                                            {
+                                                                <td>@item.PROVEEDOR</td>
+                                                            }
+                                                            @if (item.CONTROL != "0")
+                                                            {
+                                                                <td>@item.CONTROL</td>
+                                                            }
+                                                            @if (item.AUTORIZACION != "0")
+                                                            {
+                                                                <td>@item.AUTORIZACION</td>
+                                                            }
+                                                            @if (item.VENCIMIENTO != null)
+                                                            {
+                                                                string venc = item.VENCIMIENTO.ToString();
+                                                                venc = venc.Substring(0, 10);
+                                                                <td>@venc</td>
+                                                            }
+                                                            @if (item.FACTURAK != "0")
+                                                            {
+                                                                <td>@item.FACTURAK</td>
+                                                            }
+                                                            @if (item.EJERCICIOK != "0")
+                                                            {
+                                                                <td>@item.EJERCICIOK</td>
+                                                            }
+                                                            @if (item.BILL_DOC.Trim() != "0")
+                                                            {
+                                                                <td>@item.BILL_DOC</td>
+                                                            }
+                                                            @if (item.BELNR.Trim() != "0")
+                                                            {
+                                                                <td>@item.BELNR</td>
+                                                            }
+                                                            @if (item.PAYER != null)
+                                                            {
+                                                                if (item.PAYER.Trim() != "0")
+                                                                {
+                                                                    <td>@item.PAYER</td>
+                                                                }
+                                                                if (item.PAYER.Trim() != "0")
+                                                                {
+                                                                    <td>@db.CLIENTEs.Where(x => x.KUNNR == item.PAYER.Trim()).Select(x => x.NAME1).FirstOrDefault()</td>
+                                                                }
+                                                            }
+                                                            @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null | Model.D.DOCUMENTOF[0].IMPORTE_FAC.ToString() != "0.00000")
+                                                            {
+                                                                decimal asd = Convert.ToDecimal(item.IMPORTE_FAC);
+                                                                string impFac = asd.ToString("N2");
+                                                                //double impFac2 = Convert.ToDouble(impFac);
+                                                                <td>$@impFac</td>
+                                                            }
+                                                        </tr>
+                                                    }
                                                 }
                                             </table>
                                         </div>
@@ -493,7 +540,8 @@
                     </div>
                 </div>
             </div>
-            @*<div id="temp" class="col s12">*@
+            @*<div id="temp" class="col s12">
+            *@
             @if (Model.D.DOCUMENTORECs.Count > 0)
             {
                 <div id="recu" class="col s12">
@@ -542,7 +590,7 @@
                                                             <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
                                                             @if (iteem.DOC_REF > 0)
                                                             {
-                                                                <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                                <td><a href="@Url.Action(" Details", new { id=iteem.DOC_REF })">@iteem.DOC_REF</a></td>
                                                             }
                                                             else
                                                             {
@@ -639,10 +687,10 @@
                                                     <input type="submit" value="Enviar" class="btn-small  " />
                                                 </div>*@
                                             <div class="col s12 right-align">
-                                                @*<input id="Enviar" type="button" value="Enviar" class="btn-small btnEnviar" />*@
-                                                <input @*style="display:none"*@ id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
+                                                <input id="Enviar" type="button" value="Enviar" class="btn-small btnEnviar" />
+                                                <input style="display:none"  id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
                                             </div>
-                                            <input type="hidden" id="pos" name="pos" value="0"/>
+                                            <input type="hidden" id="pos" name="pos" value="0" />
                                         }
                                     </div>
                                 </div>
@@ -660,52 +708,52 @@
                                                 <h5>Seleccionar distribución</h5>
                                                 <ul class="collapsible">
                                                     @for (int i = 0; i < pos.Count; i++)
-        {
-            var lstCF = lstCarta.Where(p => p.POS_ID == pos[i].POS_ID).ToList();
-            string idx = "chb" + i;
-                                            <li>
-                                                <div class="collapsible-header">
-                                                    <label for="@idx">
-                                                        <input type="checkbox" id="@idx" />
-                                                        <span id="Tt-@i">@pos[i].POS_ID</span>
-                                                    </label>
-                                                </div>
-                                                <div class="collapsible-body">
-                                                    <table class="table highlight responsive-table" id="tableC-@i">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Vigencia de</th>
-                                                                <th>Vigencia al </th>
-                                                                <th>MANTR</th>
-                                                                <th>CANTIDAD</th>
-                                                                <th>Monto</th>
-                                                                <th>Porc Apoyo</th>
-                                                                <th>Monto Apoyo</th>
-                                                                <th>Precio Sugerido</th>
-                                                                <th>Apoyo Estimado</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="tb-@i">
-                                                            @for (int y = 0; y < lstCF.Count; y++)
-                {
-                                            <tr>
-                                                <td id="_pos-@i-@y" name="_pos-@i" style="display:none;">@lstCF[y].POS_ID</td>
-                                                <td id="Vigd-@i-@y">@lstCF[y].VIGENCIA_DE.Value.Year/@lstCF[y].VIGENCIA_DE.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
-                                                <td id="Viga-@i-@y-@y">@lstCF[y].VIGENCIA_AL.Value.Year/@lstCF[y].VIGENCIA_AL.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
-                                                <td id="mantr-@i-@y">@lstCF[y].MATNR </td>
-                                                <td id="cant-@i-@y"> @lstCF[y].CANTIDAD </td>
-                                                <td id="pap-@i-@y">@lstCF[y].MONTO </td>
-                                                <td id="papo-@i-@y"> @lstCF[y].PORC_APOYO </td>
-                                                <td id="mnt-@i-@y">@lstCF[y].MONTO_APOYO </td>
-                                                <td id="psu-@i-@y">@lstCF[y].PRECIO_SUG </td>
-                                                <td id="ape-@i-@y"> @lstCF[y].APOYO_EST </td>
-                                            </tr>
-}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </li>
-}
+                                                    {
+                                                        var lstCF = lstCarta.Where(p => p.POS_ID == pos[i].POS_ID).ToList();
+                                                        string idx = "chb" + i;
+                                                        <li>
+                                                            <div class="collapsible-header">
+                                                                <label for="@idx">
+                                                                    <input type="checkbox" id="@idx" />
+                                                                    <span id="Tt-@i">@pos[i].POS_ID</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="collapsible-body">
+                                                                <table class="table highlight responsive-table"  style="font-size: 12px;" id="tableC-@i">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Vigencia de</th>
+                                                                            <th>Vigencia al </th>
+                                                                            <th>MANTR</th>
+                                                                            <th>CANTIDAD</th>
+                                                                            <th>Monto</th>
+                                                                            <th>Porc Apoyo</th>
+                                                                            <th>Monto Apoyo</th>
+                                                                            <th>Precio Sugerido</th>
+                                                                            <th>Apoyo Estimado</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="tb-@i">
+                                                                        @for (int y = 0; y < lstCF.Count; y++)
+                                                                        {
+                                                                            <tr>
+                                                                                <td id="_pos-@i-@y" name="_pos-@i" style="display:none;">@lstCF[y].POS_ID</td>
+                                                                                <td id="Vigd-@i-@y">@lstCF[y].VIGENCIA_DE.Value.Year/@lstCF[y].VIGENCIA_DE.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
+                                                                                <td id="Viga-@i-@y-@y">@lstCF[y].VIGENCIA_AL.Value.Year/@lstCF[y].VIGENCIA_AL.Value.Month/@lstCF[y].VIGENCIA_DE.Value.Day</td>
+                                                                                <td id="mantr-@i-@y">@lstCF[y].MATNR </td>
+                                                                                <td id="cant-@i-@y"> @lstCF[y].CANTIDAD </td>
+                                                                                <td id="pap-@i-@y">@lstCF[y].MONTO </td>
+                                                                                <td id="papo-@i-@y"> @lstCF[y].PORC_APOYO </td>
+                                                                                <td id="mnt-@i-@y">@lstCF[y].MONTO_APOYO </td>
+                                                                                <td id="psu-@i-@y">@lstCF[y].PRECIO_SUG </td>
+                                                                                <td id="ape-@i-@y"> @lstCF[y].APOYO_EST </td>
+                                                                            </tr>
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </li>
+                                                    }
                                                 </ul>
                                             </div>
                                         </div>
@@ -725,7 +773,7 @@
                                     @foreach (var iteem in Model.D.DOCUMENTORs)
                                     {
                                         <div class="input-field col s12">
-                                            <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                            <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session[" spras"].ToString())).FirstOrDefault().TXT100" />
                                             <label for="txt_trev">Tipo de reversa</label>
                                         </div>
                                         <div class="input-field col s12">
@@ -970,22 +1018,35 @@
                                                     </div>
                                                 </div>
                                                 <script>
-                                            taxeo("txt_concepto");
+                                                taxeo("txt_concepto");
 
-                                            function taxeo(id)
-                                            {
-                                                var campo = document.getElementById(id);
-                                                $("#" + id).find('option').remove();
-                                                //$("#lbl_puestos").empty();
-                                                ///1
+                                                function taxeo(id) {
+                                                    var campo = document.getElementById(id);
+                                                    $("#" + id).find('option').remove();
+                                                    //$("#lbl_puestos").empty();
+                                                    ///1
 
-                                                var soci = '@Model.D.SOCIEDAD_ID';
+                                                    /**/
+                                                    var soci = '@Model.D.SOCIEDAD_ID';
+                                                /**/
+                                                /**/
                                                 var pais = '@Model.D.PAIS_ID';
+                                                /**/
+                                                /**/
                                                 var vkorg = '@Model.D.VKORG';
+                                                /**/
+                                                /**/
                                                 var vtweg = '@Model.D.VTWEG';
+                                                /**/
+                                                /**/
                                                 var spart = '@Model.D.SPART';
+                                                /**/
+                                                /**/
                                                 var kunnr = '@Model.D.PAYER_ID';
+                                                /**/
+                                                /**/
                                                 var spras = '@Session["spras"].ToString()';
+                                                /**/
                                                 $.ajax({
                                                     url: "../../Listas/selectTaxeo",
                                                     type: "GET",
@@ -993,16 +1054,15 @@
                                                     timeout: 30000,
                                                     dataType: "json",
                                                     data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, spras: spras },
-                                                    success: function(data) {
-                                                        var pp = ($.map(data, function(item) {
+                                                    success: function (data) {
+                                                        var pp = ($.map(data, function (item) {
                                                             return { label: item.TXT50, value: item.CONCEPTO_ID };
                                                         }))
                                                         $("#" + id)
                                                             .append($("<option></option>")
                                                                 .attr("value", "")
                                                                 .text(""));
-                                                        for (var i = 0; i < pp.length; i++)
-                                                        {
+                                                        for (var i = 0; i < pp.length; i++) {
                                                             //var div =  "<option value='" + pp[i].value + "'>" + pp[i].label + "</option>"
                                                             //$("#txt_pai").append(div);
                                                             $("#" + id)
@@ -1016,18 +1076,31 @@
                                                 });
                                             }
 
-                                            function selConcepto(value)
-                                            {
+                                            function selConcepto(value) {
                                                 //2
                                                 //$("#lbl_puestos").empty();
+                                                /**/
                                                 var soci = '@Model.D.SOCIEDAD_ID';
+                                                /**/
+                                                /**/
                                                 var pais = '@Model.D.PAIS_ID';
+                                                /**/
+                                                /**/
                                                 var vkorg = '@Model.D.VKORG';
+                                                /**/
+                                                /**/
                                                 var vtweg = '@Model.D.VTWEG';
+                                                /**/
+                                                /**/
                                                 var spart = '@Model.D.SPART';
+                                                /**/
+                                                /**/
                                                 var kunnr = '@Model.D.PAYER_ID';
+                                                /**/
                                                 var concepto_id = value;
+                                                /**/
                                                 var spras = '@Session["spras"].ToString()';
+                                                /**/
                                                 $.ajax({
                                                     url: "../../Listas/selectConcepto",
                                                     type: "POST",
@@ -1035,17 +1108,15 @@
                                                     timeout: 30000,
                                                     dataType: "json",
                                                     data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
-                                                    success: function(data) {
-                                                        var pp = ($.map(data, function(item) {
+                                                    success: function (data) {
+                                                        var pp = ($.map(data, function (item) {
                                                             return { label: item.TXT50, value: item.CONCEPTO_ID };
                                                         }))
-                                                        if (pp.length > 0)
-                                                        {
+                                                        if (pp.length > 0) {
                                                             $("#txt_nota").val(pp[0].label);
                                                             $("#lbl_nota").addClass("active");
                                                         }
-                                                        else
-                                                        {
+                                                        else {
                                                             $("#txt_nota").val("");
                                                             $("#lbl_nota").removeClass("active");
                                                         }
@@ -1058,23 +1129,24 @@
                                                     timeout: 30000,
                                                     dataType: "json",
                                                     data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
-                                                    success: function(data) {
+                                                    success: function (data) {
                                                         $("#tab_conc tbody").empty();
                                                         var pp = ($.map(data, function (item) {
                                                             return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC, TEXT: item.TXT50 };
                                                         }))
-                                                        for (var i = 0; i < pp.length; i++)
-                                                        {
+                                                        for (var i = 0; i < pp.length; i++) {
                                                             var cod = pp[i].IMPUESTO_ID;
                                                             var por = pp[i].PORC;
+                                                            /**/
                                                             var tot = @Model.D.MONTO_DOC_ML;
-                                                            var sub = tot * por / 100;
+                                                /**/
+                                                var sub = tot * por / 100;
 
-                                                            $("#tab_conc tbody").append("<tr><td>" + pp[i].TEXT + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
-                                                        }
-                                                    }
-                                                });
+                                                $("#tab_conc tbody").append("<tr><td>" + pp[i].TEXT + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
                                             }
+                                        }
+                                    });
+                                }
                                                 </script>
                                             </div>
                                             <div class="col s12 right-align">
@@ -1151,92 +1223,92 @@
                                 </div>
                             </div>
                             <script>
-                        var clearing = [];
-                        function getClearing(gall)
-                        {
-                            $("#div_clearing").empty();
-                            clearing = [];
-                            /**/
-                            var bukrs = '@Model.D.SOCIEDAD_ID';
-                            /**/
-                            /**/
-                            var land = '@Model.D.PAIS_ID';
-                            /**/
-                            /**/
-                            var ejercicio = '@Model.D.EJERCICIO';
-                            /**/
-                            $.ajax({
-                                type: "POST",
-                                url: '../../Listas/clearing',
-                                dataType: "json",
-                                data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+                                        var clearing = [];
+                                        function getClearing(gall) {
+                                            $("#div_clearing").empty();
+                                            clearing = [];
+                                            /**/
+                                            /**/
+                                            var bukrs = '@Model.D.SOCIEDAD_ID';
+                                        /**/
+                                        /**/
+                                        /**/
+                                        /**/
+                                        var land = '@Model.D.PAIS_ID';
+                                        /**/
+                                        /**/
+                                        /**/
+                                        /**/
+                                        var ejercicio = '@Model.D.EJERCICIO';
+                                        /**/
+                                        /**/
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '../../Listas/clearing',
+                                            dataType: "json",
+                                            data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
 
-                                success: function(data) {
-                                    if (data !== null || data !== "")
-                                    {
-                                        //RSG 26.04.2018----------------
-                                        clearing.push(data.ABONO);
-                                        clearing.push(data.CARGO);
-                                        clearing.push(data.CLEARING);
-                                        clearing.push(data.LIMITE);
-                                        //RSG 26.04.2018----------------
+                                            success: function (data) {
+                                                if (data !== null || data !== "") {
+                                                    //RSG 26.04.2018----------------
+                                                    clearing.push(data.ABONO);
+                                                    clearing.push(data.CARGO);
+                                                    clearing.push(data.CLEARING);
+                                                    clearing.push(data.LIMITE);
+                                                    //RSG 26.04.2018----------------
+                                                }
+
+                                            },
+                                            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                                M.toast({ html: httpStatusMessage });
+                                            },
+                                            async: false
+                                        });
+
                                     }
+                                    function formaClearing() {
+                                        getClearing(document.getElementById("tall_id").value);
+                                        $("#div_clearing").empty();
+                                        var monto = document.getElementById("monto_dis").value;
+                                        //LEJ 09.07.18---------------------------------------------
+                                        var _monto = monto.split('.');
+                                        var _miles = document.getElementById("miles").value;
+                                        var _decimales = document.getElementById("dec").value;
+                                        var _millesMonto = _monto[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles);
+                                        var div = "<ul class='collection'><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
 
-                                },
-                                error: function(xhr, httpStatusMessage, customErrorMessage) {
-                                    M.toast({ html: httpStatusMessage });
-                                },
-                                async: false
-                            });
-
-                        }
-                        function formaClearing()
-                        {
-                            getClearing(document.getElementById("tall_id").value);
-                            $("#div_clearing").empty();
-                            var monto = document.getElementById("monto_dis").value;
-                            //LEJ 09.07.18---------------------------------------------
-                            var _monto = monto.split('.');
-                            var _miles = document.getElementById("miles").value;
-                            var _decimales = document.getElementById("dec").value;
-                            var _millesMonto = _monto[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles);
-                            var div = "<ul class='collection'><li class='collection-item'>";
-                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
-                            div += "</li><li class='collection-item'>";
-
-                            if (clearing[3] == null)
-                            {
-                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
-                            }
-                            else
-                            {
-                                if (clearing[2] != null)
-                                {
-                                    if (monto <= clearing[3])
-                                    {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
-                                        div += "</li><li class='collection-item'>                                        ";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4 right-align'>$0.00</div></div>";
-                                        div += "    </li>";
+                                        if (clearing[3] == null) {
+                                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
+                                        }
+                                        else {
+                                            if (clearing[2] != null) {
+                                                if (monto <= clearing[3]) {
+                                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + _millesMonto + _decimales + _monto[1] + "</div></div>";
+                                                    div += "</li><li class='collection-item'>                                        ";
+                                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4 right-align'>$0.00</div></div>";
+                                                    div += "    </li>";
+                                                }
+                                                else {
+                                                    div += "  <div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + clearing[3] + "</div></div>";
+                                                    div += "</li><li class='collection-item'>                                     ";
+                                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4 right-align'>$" + (monto - clearing[3]) + "</div></div>";
+                                                    div += "          </li>";
+                                                }
+                                            }
+                                        }
+                                        div += "</li>";
+                                        div += "       </ul>";
+                                        $("#div_clearing").append(div);
                                     }
-                                    else
-                                    {
-                                        div += "  <div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4 right-align'>$" + clearing[3] + "</div></div>";
-                                        div += "</li><li class='collection-item'>                                     ";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4 right-align'>$" + (monto - clearing[3]) + "</div></div>";
-                                        div += "          </li>";
-                                    }
-                                }
-                            }
-                            div += "</li>";
-                            div += "       </ul>";
-                            $("#div_clearing").append(div);
-                        }
                             </script>
                         </div>
                         @using (TAT001Entities db = new TAT001Entities())
                         {
-                            List<DOCUMENTO> inf = new List<DOCUMENTO>();
+                            List<DOCUMENTO>
+                                inf = new List<DOCUMENTO>
+                                    ();
                             inf = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == Model.D.NUM_DOC).ToList();
                             <div class="card-panel">
                                 <div class="row">
@@ -1347,21 +1419,23 @@
                                 </div>
                             </div>
                         }
+
+                        @*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
                         <div class="card-panel">
                             <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
                             <div class="row" style="margin-bottom:0">
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s4">
+                                            <div class="col s3">
                                                 Presupuesto canal
                                             </div>
-                                            <div class="col s4">
+                                            <div class="col s3">
                                                 <label id="p_vtweg">
                                                     aaaa
                                                 </label>
                                             </div>
-                                            <div class="col s4 right-align">
+                                            <div class="col s3 right-align">
                                                 <label id="p_canal">
                                                     1111
                                                 </label>
@@ -1370,14 +1444,15 @@
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s4">
+                                            <div class="col s3">
                                                 Presupuesto cliente
                                             </div>
-                                            <div class="col s4">
+                                            <div class="col s3">
                                                 <label id="p_kunnr">
+
                                                 </label>
                                             </div>
-                                            <div class="col s4 right-align">
+                                            <div class="col s3 right-align">
                                                 <label id="p_banner">
                                                 </label>
                                             </div>
@@ -1389,10 +1464,10 @@
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s3">
                                                 Registrado en SAP
                                             </div>
-                                            <div class="col s6 right-align">
+                                            <div class="col s3 offset-s6 right-align">
                                                 <label id="pc_c">
                                                 </label>
                                             </div>
@@ -1400,10 +1475,10 @@
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s3">
                                                 Por registrar en SAP
                                             </div>
-                                            <div class="col s6 right-align">
+                                            <div class="col s3 offset-s6 right-align">
                                                 <label id="pc_a">
                                                 </label>
                                             </div>
@@ -1411,32 +1486,36 @@
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s3">
                                                 En proceso TAT
                                             </div>
-                                            <div class="col s6 right-align">
+                                            <div class="col s3 offset-s6 right-align">
                                                 <label id="pc_p">
                                                 </label>
+                                                <hr align="right" />
                                             </div>
                                         </div>
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s3">
                                                 Consumido
                                             </div>
-                                            <div class="col s6 right-align">
-                                                <label id="pc_t">
-                                                </label>
+                                            <div class="col s3 offset-s3 right-align">
+                                                <b>
+                                                    <label id="pc_t">
+                                                    </label>
+                                                </b>
+                                                <hr />
                                             </div>
                                         </div>
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s3">
                                                 Presupuesto disponible
                                             </div>
-                                            <div class="col s6 right-align">
+                                            <div class="col s3 offset-s3 right-align">
                                                 <label id="consu">
                                                 </label>
                                             </div>
@@ -1446,6 +1525,7 @@
                                 @*</ul>*@
                             </div>
                         </div>
+                        @*///////////////////////////////L.G.P.P MODIFICACIONES FIN*@
                     </div>
                     @if (Model.D.CONCEPTO_ID != null)
                     {<div class="col s12 m12 l12">
@@ -1481,62 +1561,76 @@
                                             </div>
                                         </div>
                                         <script>
-                                selConcepto(document.getElementById("txt_concepto").value);
+                                                selConcepto(document.getElementById("txt_concepto").value);
 
 
-                                function selConcepto(value)
-                                {
-                                    //3
-                                    //$("#lbl_puestos").empty();
-                                    var soci = '@Model.D.SOCIEDAD_ID';
-                                    var pais = '@Model.D.PAIS_ID';
-                                    var vkorg = '@Model.D.VKORG';
-                                    var vtweg = '@Model.D.VTWEG';
-                                    var spart = '@Model.D.SPART';
-                                    var kunnr = '@Model.D.PAYER_ID';
-                                    var concepto_id = value;
-                                    var spras = '@Session["spras"].ToString()';
-                                    $.ajax({
-                                        url: "../../Listas/selectConcepto",
-                                        type: "POST",
-                                        async: false,
-                                        timeout: 30000,
-                                        dataType: "json",
-                                        data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
-                                        success: function(data) {
-                                            var pp = ($.map(data, function(item) {
-                                                return { label: item.TXT50, value: item.CONCEPTO_ID };
-                                            }))
-                                            if (pp.length > 0)
-                                            {
-                                                $("#txt_nota").val(pp[0].label);
-                                                $("#lbl_nota").addClass("active");
-                                            }
-                                            else
-                                            {
-                                                $("#txt_nota").val("");
-                                                $("#lbl_nota").removeClass("active");
-                                            }
-                                        }
-                                    });
-                                    $.ajax({
-                                        url: "../../Listas/selectImpuesto",
-                                        type: "POST",
-                                        async: false,
-                                        timeout: 30000,
-                                        dataType: "json",
-                                        data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
-                                        success: function(data) {
-                                            $("#tab_conc tbody").empty();
-                                            var pp = ($.map(data, function(item) {
-                                                return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC, label: item.TXT50 };
-                                            }))
-                                            var foot = @Model.D.MONTO_DOC_ML;
-                                            for (var i = 0; i < pp.length; i++)
-                                            {
-                                                var cod = pp[i].IMPUESTO_ID;
-                                                var por = pp[i].PORC;
-                                                var tot = @Model.D.MONTO_DOC_ML;
+                                                function selConcepto(value) {
+                                                    //3
+                                                    //$("#lbl_puestos").empty();
+                                                    /**/
+                                                    var soci = '@Model.D.SOCIEDAD_ID';
+                                                /**/
+                                                /**/
+                                                var pais = '@Model.D.PAIS_ID';
+                                                /**/
+                                                /**/
+                                                var vkorg = '@Model.D.VKORG';
+                                                /**/
+                                                /**/
+                                                var vtweg = '@Model.D.VTWEG';
+                                                /**/
+                                                /**/
+                                                var spart = '@Model.D.SPART';
+                                                /**/
+                                                /**/
+                                                var kunnr = '@Model.D.PAYER_ID';
+                                                /**/
+                                                var concepto_id = value;
+                                                /**/
+                                                var spras = '@Session["spras"].ToString()';
+                                                /**/
+                                                $.ajax({
+                                                    url: "../../Listas/selectConcepto",
+                                                    type: "POST",
+                                                    async: false,
+                                                    timeout: 30000,
+                                                    dataType: "json",
+                                                    data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                    success: function (data) {
+                                                        var pp = ($.map(data, function (item) {
+                                                            return { label: item.TXT50, value: item.CONCEPTO_ID };
+                                                        }))
+                                                        if (pp.length > 0) {
+                                                            $("#txt_nota").val(pp[0].label);
+                                                            $("#lbl_nota").addClass("active");
+                                                        }
+                                                        else {
+                                                            $("#txt_nota").val("");
+                                                            $("#lbl_nota").removeClass("active");
+                                                        }
+                                                    }
+                                                });
+                                                $.ajax({
+                                                    url: "../../Listas/selectImpuesto",
+                                                    type: "POST",
+                                                    async: false,
+                                                    timeout: 30000,
+                                                    dataType: "json",
+                                                    data: { bukrs: soci, pais: pais, vkorg: vkorg, vtweg: vtweg, spart: spart, kunnr: kunnr, concepto: concepto_id, spras: spras },
+                                                    success: function (data) {
+                                                        $("#tab_conc tbody").empty();
+                                                        var pp = ($.map(data, function (item) {
+                                                            return { IMPUESTO_ID: item.IMPUESTO_ID, PORC: item.PORC, label: item.TXT50 };
+                                                        }))
+                                                        /**/
+                                                        var foot = @Model.D.MONTO_DOC_ML;
+                                                /**/
+                                                for (var i = 0; i < pp.length; i++) {
+                                                    var cod = pp[i].IMPUESTO_ID;
+                                                    var por = pp[i].PORC;
+                                                    /**/
+                                                    var tot = @Model.D.MONTO_DOC_ML;
+                                                /**/
                                                 var sub = tot * por / 100;
                                                 foot = foot + sub;
 
@@ -1569,7 +1663,8 @@
                                                     <tr>
                                                         <th>Documento</th>
                                                         <th>Tipo Solicitud</th>
-                                                        @*<th>Fecha</th>
+                                                        @*
+                                                            <th>Fecha</th>
                                                             <th>Hora</th>*@
                                                         <th></th>
                                                     </tr>
@@ -1584,14 +1679,15 @@
                                                             <td>
                                                                 @item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50
                                                             </td>
-                                                            @*<td>
+                                                            @*
+                                                                <td>
                                                                     @item.FECHAC.Value.ToShortDateString()
                                                                 </td>
                                                                 <td>
                                                                     @item.HORAC.Value.ToString().Split('.')[0]
                                                                 </td>*@
                                                             <td>
-                                                                <a href="@Url.Action("Details", new { id = item.NUM_DOC })" class="btn-small">Ver</a>
+                                                                <a href="@Url.Action(" Details", new { id=item.NUM_DOC })" class="btn-small">Ver</a>
                                                             </td>
                                                         </tr>
                                                     }
@@ -1654,7 +1750,7 @@
                 <div class="modal-fixed-footer right">
                     <a href="#!" class="modal-action modal-close btn-flat">Cancelar</a>
                     <input type="submit" value="Aceptar" class="modal-action modal-close btn-flat" onclick="document.getElementById('loader').style.display = 'initial';" />
-                    @*<a class="btn-small btn-default" href="@Url.Action("Details", "Solicitudes" , new { id=Model.F.NUM_DOC})">Cancelar</a>*@
+                    @*<a class="btn-small btn-default" href="@Url.Action(" Details", "Solicitudes" , new { id=Model.F.NUM_DOC})">Cancelar</a>*@
                 </div>
             </div>
             if (ViewBag.accion == "R")
@@ -1852,6 +1948,9 @@ catch (Exception ee)
     @Html.ActionLink("Edit", "Edit", new { id = Model.D.NUM_DOC }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+@*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
 <script>
     var canal = $('#vtweg').val();
     var canal = canal.split('-');
@@ -1887,7 +1986,7 @@ catch (Exception ee)
                     $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
                     $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
                     $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
-                    $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                    $('#pc_t').text('($' + ((data.PC_T / 1).toFixed(2)) + ')');
                     $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
                     //RSG 26.04.2018----------------
                 }
@@ -1904,6 +2003,7 @@ catch (Exception ee)
     formaClearing();
     //M.textareaAutoResize($('#txt_notas'));
 </script>
+@*///////////////////////////////L.G.P.P MODIFICACIONES FIN*@
 @if (TempData["error"] != null)
 {
     @*<div class="row red-text">
@@ -1913,9 +2013,11 @@ catch (Exception ee)
     if (TempData["error"].ToString() != "")
     {
         <script>
-    /**/
-    M.toast({ html: '@TempData["error"]', classes: '' });
-/**/
+                /**/
+                /**/
+                M.toast({ html: '@TempData["error"]', classes: '' });
+                /**/
+                /**/
         </script>
     }
 }

@@ -86,6 +86,8 @@ namespace TAT001.Models
         public List<string> listaFechas { get; set; }//RANGO DE FECHAS QUE DETERMINAN EL NUMERO DE TABLAS
         public List<int> numfilasTabla { get; set; }//NUMERO FILAS POR TABLA CALCULADA
         public List<string> listaCuerpo { get; set; }//NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE QUE POSTERIORMENTE ES DISTRIBUIDA EN LAS TABLAS
+        public List<listacuerpoc> listaCuerpom { get; set; }//NUMERO TOTAL DE FILAS CON LA INFO CORRESPONDIENTE QUE POSTERIORMENTE ES DISTRIBUIDA EN LAS TABLAS
+        public List<DOCUMENTOP_MOD> DOCUMENTOP { get; set; } //B20180710 MGC 2018.07.13 Modificaciones para editar los campos de distribución
         public List<string> numColEncabezado { get; set; }//NUMERO DE COLUMNAS PARA EL ENCABEZADO
         public string material { get; set; }//TEXTO ENCABEZADO
         public string categoria { get; set; }//TEXTO ENCABEZADO
