@@ -17,7 +17,6 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SOCIEDAD()
         {
-            this.CONPOSAPHs = new HashSet<CONPOSAPH>();
             this.CUENTAs = new HashSet<CUENTA>();
             this.DET_AGENTEH = new HashSet<DET_AGENTEH>();
             this.DET_APROB = new HashSet<DET_APROB>();
@@ -28,6 +27,7 @@ namespace TAT001.Entities
             this.TAXEOHs = new HashSet<TAXEOH>();
             this.TS_FORM = new HashSet<TS_FORM>();
             this.USUARIOs = new HashSet<USUARIO>();
+            this.CONPOSAPHs = new HashSet<CONPOSAPH>();
         }
     
         public string BUKRS { get; set; }
@@ -43,8 +43,6 @@ namespace TAT001.Entities
         public string REGION { get; set; }
     
         public virtual CONFDIST_CAT CONFDIST_CAT { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONPOSAPH> CONPOSAPHs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CUENTA> CUENTAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -66,5 +64,7 @@ namespace TAT001.Entities
         public virtual ICollection<TS_FORM> TS_FORM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONPOSAPH> CONPOSAPHs { get; set; }
     }
 }

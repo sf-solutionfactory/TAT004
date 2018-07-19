@@ -42,7 +42,6 @@ namespace TAT001.Entities
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
         public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
         public virtual DbSet<CONMAIL> CONMAILs { get; set; }
-        public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
         public virtual DbSet<CONPOSAPP> CONPOSAPPs { get; set; }
         public virtual DbSet<CONSOPORTE> CONSOPORTEs { get; set; }
         public virtual DbSet<CONTACTOC> CONTACTOCs { get; set; }
@@ -160,6 +159,8 @@ namespace TAT001.Entities
         public virtual DbSet<NOTICIA> NOTICIAs { get; set; }
         public virtual DbSet<MATERIALT> MATERIALTs { get; set; }
         public virtual DbSet<MATERIALVKE> MATERIALVKEs { get; set; }
+        public virtual DbSet<CARTAP> CARTAPs { get; set; }
+        public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

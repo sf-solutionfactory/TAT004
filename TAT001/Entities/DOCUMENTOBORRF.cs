@@ -27,6 +27,9 @@ namespace TAT001.Entities
         public string EJERCICIOK { get; set; }
         public string BILL_DOC { get; set; }
         public string BELNR { get; set; }
+        public Nullable<decimal> IMPORTE_FAC { get; set; }
+        public string PAYER { get; set; }
+        public string NAME1 { get; set; }
     
         public virtual DOCUMENTBORR DOCUMENTBORR { get; set; }
     }

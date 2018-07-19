@@ -138,7 +138,7 @@ namespace TAT001.Models
                         + doc.MONEDA_ID.Trim() + "|"
                         + dir.HEADER_TEXT.Trim() + "|"
                         + dir.REFERENCIA.Trim() + "|"
-                        + dir.CALC_TAXT.Trim() + "|"
+                        //+ //dir.CALC_TAXT.Trim() + "|"
                         + dir.NOTA.Trim() + "|"
                         + dir.CORRESPONDENCIA.Trim()
                         );
@@ -395,7 +395,7 @@ namespace TAT001.Models
                                 }
                                 conta.REF_KEY1 = clien.STCD1;
                                 conta.REF_KEY3 = clien.NAME1;
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     conta.TAX_CODE = conp[i].TAX_CODE;
                                 }
@@ -413,7 +413,7 @@ namespace TAT001.Models
                             if (enca.TIPO_DOC == "KR" && doc.PAIS_ID == "CO")
                             {
                                 conta.ASSIGNMENT = clien.PAYER;
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     conta.TAX_CODE = taxh.IMPUESTO_ID;
                                 }
@@ -555,7 +555,7 @@ namespace TAT001.Models
                             }
                             if (enca.TIPO_DOC == "KR" && doc.PAIS_ID == "CO")
                             {
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     conta.TAX_CODE = taxh.IMPUESTO_ID;
                                 }
@@ -566,7 +566,7 @@ namespace TAT001.Models
                             }
                             else
                             {
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     materi = docm[j].MATNR;
                                     material = db.MATERIALs.Where(x => x.ID == materi).First();
@@ -705,7 +705,7 @@ namespace TAT001.Models
                             }
                             if (enca.TIPO_DOC == "KR" && doc.PAIS_ID == "CO")
                             {
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     conta.TAX_CODE = taxh.IMPUESTO_ID;
                                 }
@@ -716,7 +716,7 @@ namespace TAT001.Models
                             }
                             else
                             {
-                                if (String.IsNullOrEmpty(enca.CALC_TAXT) == false)
+                                if (enca.CALC_TAXT == false)
                                 {
                                     materi = docp[j].MATNR;
                                     material = db.MATERIALs.Where(y => y.ID == materi).Single();

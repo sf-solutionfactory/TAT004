@@ -273,6 +273,9 @@
     <Compile Include="Entities\CARTA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CARTAP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CATEGORIA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

@@ -27,5 +27,8 @@ namespace TAT001.Entities
         public bool EJERCICIOK { get; set; }
         public bool BILL_DOC { get; set; }
         public bool BELNR { get; set; }
+        public bool IMPORTE_FAC { get; set; }
+        public bool PAYER { get; set; }
+        public bool DESCRIPCION { get; set; }
     }
 }

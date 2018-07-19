@@ -20,7 +20,6 @@
         <EntityTypeShape EntityType="TAT001Model.CLIENTEI" Width="1.5" PointX="14.25" PointY="100.5" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CONFDIST_CAT" Width="1.5" PointX="12.75" PointY="71.25" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CONMAIL" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="TAT001Model.CONPOSAPH" Width="1.5" PointX="3.75" PointY="51.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CONPOSAPP" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CONSOPORTE" Width="1.5" PointX="23.25" PointY="75.125" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CONTACTOC" Width="1.5" PointX="14.25" PointY="104.5" IsExpanded="true" />
@@ -159,7 +158,6 @@
         <AssociationConnector Association="TAT001Model.FK_TAXEOH_CLIENTE" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_CLIENTEI_IMPUESTO" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_CONFDIST_CAT_SOCIEDAD" ManuallyRouted="false" />
-        <AssociationConnector Association="TAT001Model.FK_CONPOSAPH_SOCIEDAD" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_TSOL" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_CONSOPORTE_TSOPORTE" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_STATES_COUNTRIES" ManuallyRouted="false" />
@@ -302,6 +300,10 @@
         <AssociationConnector Association="TAT001Model.FK_MATERIALT_MATERIAL" />
         <AssociationConnector Association="TAT001Model.FK_MATERIALVKE_MATERIAL" />
         <AssociationConnector Association="TAT001Model.FK_MATERIALT_SPRAS" />
+        <EntityTypeShape EntityType="TAT001Model.CARTAP" Width="1.5" PointX="19.5" PointY="95.75" />
+        <AssociationConnector Association="TAT001Model.FK_CARTAP_CARTA" />
+        <EntityTypeShape EntityType="TAT001Model.CONPOSAPH" Width="1.5" PointX="3.75" PointY="36.5" />
+        <AssociationConnector Association="TAT001Model.FK_CONPOSAPH_SOCIEDAD" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

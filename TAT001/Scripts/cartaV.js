@@ -1,32 +1,13 @@
-﻿$('body').on('click', '#imprimir_btn', function (e) {
+﻿$('body').on('click', '#btn_guardar', function (e) {
 
-    //editmonto_texto
-    var ed = $('#editmonto_texto').val();
-    //Validar valores correctos en distribución
-    var total = 0;
-    if (ed == "false") {
-        updateFooter(false);
+    guardarcarta("guardar_param");
+    
+});
 
-        total = totalFooter();
+$('body').on('click', '#btn_visualizar', function (e) {
 
-        var texto = armarMonto(total);
+    guardarcarta("");
 
-    } else if (ed == "true") {
-        total = updateTotalRowp();
-    }
-
-    total = parseFloat(total);
-    //Obtener el monto original
-    var monto = $('#monto').val();
-    monto = parseFloat(monto);
-
-    if (total > monto) {
-        M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
-    } else {
-        copiarTableControl();
-        $('#monto_enviar').val(total.toFixed(2));
-        $('#submit_btn').click();
-    }
 });
 
 $('body').on('focusout', '#ed_monto', function (e) {
@@ -73,6 +54,41 @@ $('body').on('focusout', '.input_oper', function () {
 
     }
 });
+
+function guardarcarta(guardar) {
+
+    //editmonto_texto
+    var ed = $('#editmonto_texto').val();
+    //Validar valores correctos en distribución
+    var total = 0;
+    if (ed == "false") {
+        updateFooter(false);
+
+        total = totalFooter();
+
+        var texto = armarMonto(total);
+
+    } else if (ed == "true") {
+        total = updateTotalRowp();
+    }
+
+    total = parseFloat(total);
+    //Obtener el monto original
+    var monto = $('#monto').val();
+    monto = parseFloat(monto);
+
+    if (total > monto) {
+        M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
+    } else {
+        copiarTableControl();
+        $('#monto_enviar').val(total.toFixed(2));
+        if (guardar == "guardar_param") {
+            $('#guardar_param').val(guardar);
+        }
+        $('#btn_submit').click();
+    }
+
+}
 
 function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
 

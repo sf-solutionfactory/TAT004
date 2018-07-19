@@ -14,6 +14,12 @@ namespace TAT001.Entities
     
     public partial class CARTA
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CARTA()
+        {
+            this.CARTAPs = new HashSet<CARTAP>();
+        }
+    
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public Nullable<System.DateTime> FECHAC { get; set; }
@@ -64,5 +70,7 @@ namespace TAT001.Entities
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public virtual USUARIO USUARIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CARTAP> CARTAPs { get; set; }
     }
 }

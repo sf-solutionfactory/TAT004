@@ -28,7 +28,7 @@ namespace TAT001.Entities
         public string PAIS { get; set; }
         public string NOTA { get; set; }
         public string CORRESPONDENCIA { get; set; }
-        public string CALC_TAXT { get; set; }
+        public Nullable<bool> CALC_TAXT { get; set; }
         public Nullable<int> RELACION { get; set; }
         public string RETENCION { get; set; }
         public string DESCRI_CONFIG { get; set; }
