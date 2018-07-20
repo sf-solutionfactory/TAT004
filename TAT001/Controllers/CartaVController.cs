@@ -567,9 +567,97 @@ namespace TAT001.Controllers
         //public ActionResult Create([Bind(Include = "num_doc, listaCuerpo, DOCUMENTOP")] CartaV v)
         public ActionResult Create(CartaV v, string monto_enviar, string guardar_param)
         {
+            v.monto = monto_enviar; //B20180720P MGC
+            int pos = 0;//B20180720P MGC Guardar Carta
+
+            CARTA ca = new CARTA();
+            ca.NUM_DOC = v.num_doc;
+            ca.CLIENTE = v.cliente;
+            ca.CLIENTEX = v.cliente_x;
+            ca.COMPANY = v.company;
+            ca.COMPANYC = v.companyC;
+            ca.COMPANYCC = v.companyCC;
+            ca.COMPANYCCX = v.companyCC_x;
+            ca.COMPANYCX = v.companyC_x;
+            ca.COMPANYX = v.company_x;
+            ca.CONCEPTO = v.concepto;
+            ca.CONCEPTOX = v.concepto_x;
+            ca.DIRECCION = v.direccion;
+            ca.DIRECCIONX = v.direccion_x;
+            //ca.DOCUMENTO = v.DOCUMENTO;
+            ca.ESTIMADO = v.estimado;
+            ca.ESTIMADOX = v.estimado_x;
+            //ca.FECHAC = v.FECHAC;
+            ca.FOLIO = v.folio;
+            ca.FOLIOX = v.folio_x;
+            ca.LEGAL = v.legal;
+            ca.LEGALX = v.legal_x;
+            ca.LUGARFECH = v.lugarFech;
+            ca.LUGARFECHX = v.lugarFech_x;
+            ca.LUGAR = v.lugar;
+            ca.LUGARX = v.lugar_x;
+            ca.MAIL = v.mail;
+            ca.MAILX = v.mail_x;
+            ca.MECANICA = v.mecanica;
+            ca.MECANICAX = v.mecanica_x;
+            ca.NOMBREC = v.nombreC;
+            ca.NOMBRECX = v.nombreC_x;
+            ca.NOMBREE = v.nombreE;
+            ca.NOMBREEX = v.nombreE_x;
+            ca.NUM_DOC = v.num_doc;
+            ca.PAYER = v.payerId;
+            ca.PAYERX = v.payerId_x;
+            ca.PUESTO = v.puesto;
+            ca.PUESTOC = v.puestoC;
+            ca.PUESTOCX = v.puestoC_x;
+            ca.PUESTOE = v.puestoE;
+            ca.PUESTOEX = v.puestoE_x;
+            ca.PUESTOX = v.puestoE_x;
+            ca.TAXID = v.taxid;
+            ca.TAXIDX = v.taxid_x;
+            ca.MONTO = v.monto;
+            ca.MONEDA = v.moneda;
+            //ca.TIPO = v.TIPO;
+            //ca.USUARIO = v.USUARIO;
+            //ca.USUARIO_ID = v.USUARIO_ID;
+            ca.USUARIO_ID = User.Identity.Name;
+            ca.FECHAC = DateTime.Now;
+
+                //CartaFEsqueleto cfe = new CartaFEsqueleto();//B20180720P MGC Guardar Carta
+                //TEXTOCARTAF f = new TEXTOCARTAF();//B20180720P MGC Guardar Carta
+                string u = User.Identity.Name;
+            //string recibeRuta = ""; //B20180720P MGC Guardar Carta
+            using (TAT001Entities db = new TAT001Entities())
+                {
+                    var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                    var cartas = db.CARTAs.Where(a => a.NUM_DOC.Equals(ca.NUM_DOC)).ToList();
+                    //int pos = 0;//B20180720P MGC Guardar Carta
+                    if (cartas.Count > 0)
+                        pos = cartas.OrderByDescending(a => a.POS).First().POS;
+
+                    ca.POS = pos + 1;
+                pos = ca.POS; //B20180720P MGC Guardar Carta
+                if (guardar_param == "guardar_param")//B20180720P MGC Guardar Carta
+                    {
+                        db.CARTAs.Add(ca);
+                        db.SaveChanges();
+                    }
+                }
+                //bool aprob = false;//B20180720P MGC Guardar Carta
+                //B20180720P MGC Guardar Carta
+                //using (TAT001Entities db = new TAT001Entities())
+                //{
+                //    DOCUMENTO d = db.DOCUMENTOes.Find(c.num_doc);
+                //    aprob = (d.ESTATUS_WF.Equals("A"));
+
+                //    cfe.crearPDF(c, f, aprob);
+                //    recibeRuta = Convert.ToString(Session["rutaCompletaf"]);
+                //    return RedirectToAction("Details", new { ruta = recibeRuta });
+                //}
+            
             using (TAT001Entities db = new TAT001Entities())
             {
-                string u = User.Identity.Name;
+                //string u = User.Identity.Name; //B20180720P MGC Guardar Carta
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
                 List<string> encabezadoFech = new List<string>();
@@ -584,7 +672,7 @@ namespace TAT001.Controllers
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
                 var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
                 //B20180710 MGC 2018.07.17 Modificación de monto
-                v.monto = monto_enviar;
+                //v.monto = monto_enviar; //B20180720P MGC
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
                 bool fact = false;
                 try
@@ -603,34 +691,37 @@ namespace TAT001.Controllers
                 }
 
                 //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
-                int pos = 0;
+                //B20180720P MGC Guardar Carta.......................................................................
+                //int pos = 0; //B20180720P MGC Guardar Carta
 
-                try
-                {
-                    pos = db.CARTAs.Where(ca => ca.NUM_DOC == v.num_doc).Max(ca => ca.POS);
-                    pos++;
-                }
-                catch (Exception)
-                {
+                //try
+                //{
+                //    pos = db.CARTAs.Where(ca => ca.NUM_DOC == v.num_doc).Max(ca => ca.POS);
+                //    pos++;
+                //}
+                //catch (Exception)
+                //{
 
-                }
-                //Guardar carta
-                if (guardar_param == "guardar_param")
-                {
-                    CARTA car = new CARTA();
-                    car.NUM_DOC = v.num_doc;
-                    car.POS = pos;
+                //}
 
-                    try
-                    {
-                        db.CARTAs.Add(car);
-                        db.SaveChanges();
-                    }
-                    catch (Exception e)
-                    {
+                ////Guardar carta
+                //if (guardar_param == "guardar_param")
+                //{
+                //    CARTA car = new CARTA();
+                //    car.NUM_DOC = v.num_doc;
+                //    car.POS = pos;
 
-                    }
-                }
+                //    try
+                //    {
+                //        db.CARTAs.Add(car);
+                //        db.SaveChanges();
+                //    }
+                //    catch (Exception e)
+                //    {
+
+                //    }
+                //}
+                //B20180720P MGC Guardar Carta......................................................................
 
                 //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
                 int indexp = 1; //B20180710 MGC 2018.07.17
