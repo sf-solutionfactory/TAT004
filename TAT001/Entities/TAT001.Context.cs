@@ -35,6 +35,7 @@ namespace TAT001.Entities
         public virtual DbSet<CARPETA> CARPETAs { get; set; }
         public virtual DbSet<CARPETAT> CARPETATs { get; set; }
         public virtual DbSet<CARTA> CARTAs { get; set; }
+        public virtual DbSet<CARTAP> CARTAPs { get; set; }
         public virtual DbSet<CATEGORIA> CATEGORIAs { get; set; }
         public virtual DbSet<CATEGORIAT> CATEGORIATs { get; set; }
         public virtual DbSet<CITy> CITIES { get; set; }
@@ -58,6 +59,7 @@ namespace TAT001.Entities
         public virtual DbSet<DET_APROBP> DET_APROBP { get; set; }
         public virtual DbSet<DET_TAX> DET_TAX { get; set; }
         public virtual DbSet<DET_TAXEO> DET_TAXEO { get; set; }
+        public virtual DbSet<DET_TAXEOC> DET_TAXEOC { get; set; }
         public virtual DbSet<DOCUMENTBORR> DOCUMENTBORRs { get; set; }
         public virtual DbSet<DOCUMENTO> DOCUMENTOes { get; set; }
         public virtual DbSet<DOCUMENTOA> DOCUMENTOAs { get; set; }
@@ -85,10 +87,13 @@ namespace TAT001.Entities
         public virtual DbSet<MATERIAL> MATERIALs { get; set; }
         public virtual DbSet<MATERIALGP> MATERIALGPs { get; set; }
         public virtual DbSet<MATERIALGPT> MATERIALGPTs { get; set; }
+        public virtual DbSet<MATERIALT> MATERIALTs { get; set; }
+        public virtual DbSet<MATERIALVKE> MATERIALVKEs { get; set; }
         public virtual DbSet<MENSAJE> MENSAJES { get; set; }
         public virtual DbSet<MIEMBRO> MIEMBROS { get; set; }
         public virtual DbSet<MONEDA> MONEDAs { get; set; }
         public virtual DbSet<NEGOCIACION> NEGOCIACIONs { get; set; }
+        public virtual DbSet<NOTICIA> NOTICIAs { get; set; }
         public virtual DbSet<PAGINA> PAGINAs { get; set; }
         public virtual DbSet<PAGINAT> PAGINATs { get; set; }
         public virtual DbSet<PAI> PAIS { get; set; }
@@ -113,6 +118,7 @@ namespace TAT001.Entities
         public virtual DbSet<SOCIEDAD> SOCIEDADs { get; set; }
         public virtual DbSet<SPRA> SPRAS { get; set; }
         public virtual DbSet<STATE> STATES { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TALL> TALLs { get; set; }
         public virtual DbSet<TALLT> TALLTs { get; set; }
         public virtual DbSet<TAX_LAND> TAX_LAND { get; set; }
@@ -127,6 +133,7 @@ namespace TAT001.Entities
         public virtual DbSet<TRETENCIONT> TRETENCIONTs { get; set; }
         public virtual DbSet<TREVERSA> TREVERSAs { get; set; }
         public virtual DbSet<TREVERSAT> TREVERSATs { get; set; }
+        public virtual DbSet<TS_CAMPO> TS_CAMPO { get; set; }
         public virtual DbSet<TS_FORM> TS_FORM { get; set; }
         public virtual DbSet<TS_FORMT> TS_FORMT { get; set; }
         public virtual DbSet<TSOL> TSOLs { get; set; }
@@ -155,11 +162,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<DET_TAXEOC> DET_TAXEOC { get; set; }
-        public virtual DbSet<NOTICIA> NOTICIAs { get; set; }
-        public virtual DbSet<MATERIALVKE> MATERIALVKEs { get; set; }
-        public virtual DbSet<MATERIALT> MATERIALTs { get; set; }
-        public virtual DbSet<CARTAP> CARTAPs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)
@@ -173,6 +175,11 @@ namespace TAT001.Entities
                 new ObjectParameter("delimiter", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<split_Result>("[TAT001Entities].[split](@delimited, @delimiter)", delimitedParameter, delimiterParameter);
+        }
+    
+        public virtual ObjectResult<CPS_LISTA_CLI_PRO_Result> CPS_LISTA_CLI_PRO()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CPS_LISTA_CLI_PRO_Result>("CPS_LISTA_CLI_PRO");
         }
     
         public virtual ObjectResult<string> CSP_BANNERSINCANAL()
@@ -445,11 +452,6 @@ namespace TAT001.Entities
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
-        }
-    
-        public virtual ObjectResult<CPS_LISTA_CLI_PRO_Result> CPS_LISTA_CLI_PRO()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CPS_LISTA_CLI_PRO_Result>("CPS_LISTA_CLI_PRO");
         }
     }
 }

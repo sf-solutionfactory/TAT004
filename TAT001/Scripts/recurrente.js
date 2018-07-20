@@ -94,88 +94,88 @@ function cambiaRec() {
         var ej1 = document.getElementById("anioi_id").value;
         var ej2 = document.getElementById("aniof_id").value;
     }
-            if (campo.checked) {
-                if (montoo === "") {
-                    var dist = $('#table_dis').DataTable();
-                    var montooo = 0.00;
-                    $('#table_dis > tbody  > tr').each(function () {
-                        var montot = $(this).find("td.total input").val();
-                        //montoo += parseInt(montot);
-                        //montooo += parseFloat(montot);//RSG 09.07.2018
-                        montooo += parseFloat(toNum(montot));
-                    });
-                    montoo = montooo;
-                }
-                if ((montoo > 0 & tipo == "PC") | ligada()) {
-                    //if (montoo > 0) { 
-                    $(".table_rec").css("display", "table");
-                    //Add row 
-                    ////var datei = document.getElementById("fechai_vig").value.split('/');
-                    ////var datef = document.getElementById("fechaf_vig").value.split('/');
-                    ////var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
-                    ////var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
+    if (campo.checked) {
+        if (montoo === "") {
+            var dist = $('#table_dis').DataTable();
+            var montooo = 0.00;
+            $('#table_dis > tbody  > tr').each(function () {
+                var montot = $(this).find("td.total input").val();
+                //montoo += parseInt(montot);
+                //montooo += parseFloat(montot);//RSG 09.07.2018
+                montooo += parseFloat(toNum(montot));
+            });
+            montoo = montooo;
+        }
+        if ((montoo > 0 & tipo == "PC") | ligada()) {
+            //if (montoo > 0) { 
+            $(".table_rec").css("display", "table");
+            //Add row 
+            ////var datei = document.getElementById("fechai_vig").value.split('/');
+            ////var datef = document.getElementById("fechaf_vig").value.split('/');
+            ////var dateii = new Date(datei[2], datei[1] - 1, datei[0]);
+            ////var dateff = new Date(datef[2], datef[1] - 1, datef[0]);
 
-                    var anios = ej2 - ej1;
-                    ////var resdate = dateff - dateii;
+            var anios = ej2 - ej1;
+            ////var resdate = dateff - dateii;
 
-                    var meses = 1 + (pe2 - pe1) + (anios * 12);
-                    if (meses > 1 & (montoo > 0 | ligada())) {
-                        for (var i = 1; i <= meses; i++) {
-                            var date = "";
-                            var monto = "";
-                            if (i === 1) {
-                                ////if (tipo !== "P") {
-                                if (tipoR !== "2") {
-                                    if (tipo == "PC") {
-                                        ////date = document.getElementById("fechai_vig").value;
-                                        monto = montoo;
-                                        //////addRowRec(table, i, date, monto, tipo);
-                                        //////primerDiaT(table, i, datei, monto, tipo);
-                                        primerDiaT(table, i, pe1, ej1, monto, tipoR);
-                                    }
-                                } else {
-                                    ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
-                                    //////date = date.addDays(-1);
-                                    ////dates.setDate(dates.getDate() - 1);
-                                    ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                    monto = montoo;
-                                    //////addRowRec(table, i, date, monto, tipo);
-                                    ////ultimoDiaT(table, i, datei, monto, tipo);
-                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
-                                }
+            var meses = 1 + (pe2 - pe1) + (anios * 12);
+            if (meses > 1 & (montoo > 0 | ligada())) {
+                for (var i = 1; i <= meses; i++) {
+                    var date = "";
+                    var monto = "";
+                    if (i === 1) {
+                        ////if (tipo !== "P") {
+                        if (tipoR !== "2") {
+                            if (tipo == "PC") {
+                                ////date = document.getElementById("fechai_vig").value;
+                                monto = montoo;
+                                //////addRowRec(table, i, date, monto, tipo);
+                                //////primerDiaT(table, i, datei, monto, tipo);
+                                primerDiaT(table, i, pe1, ej1, monto, tipoR);
                             }
-                            else {
-                                ////if (tipo !== "P") {
-                                if (tipoR !== "2") {
-                                    if (tipo == "PC") {
-                                        //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
-                                        //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                        monto = montoo;
-                                        //////primerDiaT(table, i, datei, monto, tipo);
-                                        primerDiaT(table, i, pe1, ej1, monto, tipoR);
-                                    }
-                                } else {
-                                    ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
-                                    //////date = date.addDays(-1);
-                                    ////dates.setDate(dates.getDate() - 1);
-                                    ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
-                                    monto = montoo;
-                                    //////addRowRec(table, i, date, monto, tipo);
-                                    ////ultimoDiaT(table, i, datei, monto, tipo);
-                                    ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
-                                }
-                            }
+                        } else {
+                            ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                            //////date = date.addDays(-1);
+                            ////dates.setDate(dates.getDate() - 1);
+                            ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            monto = montoo;
+                            //////addRowRec(table, i, date, monto, tipo);
+                            ////ultimoDiaT(table, i, datei, monto, tipo);
+                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
                         }
-
+                    }
+                    else {
+                        ////if (tipo !== "P") {
+                        if (tipoR !== "2") {
+                            if (tipo == "PC") {
+                                //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
+                                //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                                monto = montoo;
+                                //////primerDiaT(table, i, datei, monto, tipo);
+                                primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                            }
+                        } else {
+                            ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
+                            //////date = date.addDays(-1);
+                            ////dates.setDate(dates.getDate() - 1);
+                            ////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
+                            monto = montoo;
+                            //////addRowRec(table, i, date, monto, tipo);
+                            ////ultimoDiaT(table, i, datei, monto, tipo);
+                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
+                        }
                     }
                 }
-                else {
-                    $(".table_rec").css("display", "none");
-                    //campo.checked = false;
-                }
-            } else {
-                $(".table_rec").css("display", "none");
+
             }
+        }
+        else {
+            $(".table_rec").css("display", "none");
+            //campo.checked = false;
+        }
+    } else {
+        $(".table_rec").css("display", "none");
+    }
 
 
 }
@@ -443,9 +443,10 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
 
     $.ajax({
         type: "POST",
-        url: '../Listas/getUltimoDia',
+        //url: '../Listas/getUltimoDia',
+        url: '../Listas/getPrimerLunes',
         dataType: "json",
-        data: { ejercicio: ejercicio, periodo: (periodo - 1 + num) },
+        data: { ejercicio: ejercicio, periodo: (periodo - 1 + 1 + num) },
         success: function (data) {
             document.getElementById("loader").style.display = "none";
             var dd = data.split('/');

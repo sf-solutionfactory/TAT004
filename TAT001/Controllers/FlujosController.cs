@@ -347,7 +347,7 @@ namespace TAT001.Controllers
                 }
                 else if (res.Equals("2"))//CORREO DE FIN DE WORKFLOW
                 {
-                    return RedirectToAction("Index", "Correos", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
+                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
                 }
                 else if (res.Equals("3"))//Rechazado
                 {

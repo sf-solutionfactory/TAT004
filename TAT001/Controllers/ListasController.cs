@@ -671,6 +671,20 @@ namespace TAT001.Controllers
             JsonResult jl = Json(nextFridat.ToShortDateString(), JsonRequestBehavior.AllowGet);
             return jl;
         }
+        [HttpPost]
+        public JsonResult getPrimerLunes(string ejercicio, string periodo)
+        {
+            int e = int.Parse(ejercicio);
+            int p = int.Parse(periodo);
+            Calendario445 c4 = new Calendario445();
+            DateTime f = c4.getPrimerDia(e, p);
+            int daysUntilMonday = ((int)DayOfWeek.Monday - (int)f.DayOfWeek + 7) % 7;
+
+            DateTime nextMonday = f.AddDays(daysUntilMonday);
+
+            JsonResult jl = Json(nextMonday.ToShortDateString(), JsonRequestBehavior.AllowGet);
+            return jl;
+        }
 
         [HttpPost]
         public JsonResult getUltimoDia(string ejercicio, string periodo)

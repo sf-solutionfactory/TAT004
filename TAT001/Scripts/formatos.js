@@ -1,5 +1,22 @@
 ﻿
 
+var precio = document.getElementsByClassName("precio");
+for (var i = 0; i < precio.length; i++) {
+    var val = precio[i].innerHTML;
+    if (val == "") val = precio[i].value;
+    val = toShow(val);
+    precio[i].innerHTML = val;
+    precio[i].value = val;
+}
+var porc = document.getElementsByClassName("porcentaje");
+for (var i = 0; i < porc.length; i++) {
+    var val = porc[i].innerHTML;
+    if (val == "") val = porc[i].value;
+    val = toShowPorc(val);
+    porc[i].innerHTML = val;
+    porc[i].value = val;
+}
+
 function toNum(string) {
     if (string !== "" && string != undefined) {
         var _miles = $("#miles").val();

@@ -34,6 +34,7 @@ namespace TAT001.Entities
         public string TSOLM { get; set; }
         public string TSOLC { get; set; }
         public string TRECU { get; set; }
+        public bool NEGO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }

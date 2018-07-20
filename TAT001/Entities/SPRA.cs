@@ -22,6 +22,7 @@ namespace TAT001.Entities
             this.CATEGORIATs = new HashSet<CATEGORIAT>();
             this.GALLTs = new HashSet<GALLT>();
             this.MATERIALGPTs = new HashSet<MATERIALGPT>();
+            this.MATERIALTs = new HashSet<MATERIALT>();
             this.PAGINATs = new HashSet<PAGINAT>();
             this.PERIODOTs = new HashSet<PERIODOT>();
             this.PUESTOTs = new HashSet<PUESTOT>();
@@ -42,7 +43,6 @@ namespace TAT001.Entities
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
             this.WORKFTs = new HashSet<WORKFT>();
-            this.MATERIALTs = new HashSet<MATERIALT>();
         }
     
         public string ID { get; set; }
@@ -58,6 +58,8 @@ namespace TAT001.Entities
         public virtual ICollection<GALLT> GALLTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MATERIALGPT> MATERIALGPTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MATERIALT> MATERIALTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGINAT> PAGINATs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -98,7 +100,5 @@ namespace TAT001.Entities
         public virtual ICollection<WARNING> WARNINGs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MATERIALT> MATERIALTs { get; set; }
     }
 }

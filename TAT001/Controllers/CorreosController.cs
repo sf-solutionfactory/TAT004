@@ -24,6 +24,8 @@ namespace TAT001.Controllers
             ViewBag.url = "http://localhost:64497";
             ViewBag.url = "http://192.168.1.77";
             ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");
+            ViewBag.miles = dOCUMENTOes.PAI.MILES;//LEJGG 090718
+            ViewBag.dec = dOCUMENTOes.PAI.DECIMAL;//LEJGG 090718
             return View(dOCUMENTOes);
         }
 
@@ -44,6 +46,8 @@ namespace TAT001.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.miles = dOCUMENTO.PAI.MILES;//LEJGG 090718
+            ViewBag.dec = dOCUMENTO.PAI.DECIMAL;//LEJGG 090718
             return View(dOCUMENTO);
         }
 

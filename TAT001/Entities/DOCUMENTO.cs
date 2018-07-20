@@ -41,6 +41,7 @@ namespace TAT001.Entities
         public string TIPO_RECURRENTE { get; set; }
         public Nullable<decimal> CANTIDAD_EV { get; set; }
         public string USUARIOC_ID { get; set; }
+        public string USUARIOD_ID { get; set; }
         public Nullable<System.DateTime> FECHAD { get; set; }
         public Nullable<System.DateTime> FECHAC { get; set; }
         public Nullable<System.TimeSpan> HORAC { get; set; }
@@ -97,12 +98,11 @@ namespace TAT001.Entities
         public string GALL_ID { get; set; }
         public Nullable<int> CONCEPTO_ID { get; set; }
         public string DOCUMENTO_SAP { get; set; }
-        public string USUARIOD_ID { get; set; }
         public Nullable<decimal> PORC_APOYO { get; set; }
+        public Nullable<bool> LIGADA { get; set; }
         public List<TAT001.Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
         public List<DOCUMENTOF> DOCUMENTOF { get; set; }
         public List<DOCUMENTOREC> DOCUMENTOREC { get; set; }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
