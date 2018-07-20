@@ -28,8 +28,23 @@ $('body').on('focusout', '.input_oper', function () {
 
     var tr = $(this).closest('tr'); //Obtener el row 
 
-    //$(this).val(toShow($(this).val()));
-
+    //B20180720 MGC Formato a valores en la tabla
+    //Moneda
+    if ($(this).hasClass("mon")) {
+        var val = toNum($(this).val());
+        $(this).val(toShow(val));
+    }
+    //Numero
+    if ($(this).hasClass("num")) {
+        var val = toNum($(this).val());
+        $(this).val(toShowNum(val));
+    }
+    //Porcentaje
+    if ($(this).hasClass("porc")) {
+        var val = toNum($(this).val());
+        $(this).val(toShowPorc(val));
+    }
+   
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
 
@@ -43,12 +58,12 @@ $('body').on('focusout', '.input_oper', function () {
 
         //Se dispara el evento desde el total
         if ($(this).hasClass("total") & !$(this).hasClass("cat")) {
-            var total_val = $(this).val();
+            var total_val = toNum($(this).val());//B20180720 MGC Formato a valores en la tabla
             //Agregar los valores a 0 y agregar el total
             updateTotalRow(tr, "", "X", total_val, "", tipo);
             //alert("total" + total_val);
         } else if ($(this).hasClass("total") & $(this).hasClass("cat")) {
-            var total_val = $(this).val();
+            var total_val = toNum($(this).val());//B20180720 MGC Formato a valores en la tabla
             updateTotalRow(tr, "", "X", total_val, "X", tipo);
         } else {
             updateTotalRow(tr, "", "", 0, "", tipo);
@@ -104,6 +119,7 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
     //Validar si las operaciones se hacen por renglón o solo agregar el valor del total
     if (totals != "X") {
         var col3 = tr.find("td:eq(" + (3) + ") input").val();
+        col3 = toNum(col3)//B20180720 MGC Formato a valores en la tabla
         var col4 = 0;
 
         if (tipo == "m") {
@@ -111,7 +127,7 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
         } else if (tipo == "p") {
             col4 = tr.find("td:eq(" + (4) + ")").text();
         }
-
+        col4 = toNum(col4)//B20180720 MGC Formato a valores en la tabla
         col4 = convertP(col4);
 
         if ($.isNumeric(col4)) {
@@ -121,20 +137,25 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
         var col5 = col3 * col4;
         //Apoyo por pieza
         //Modificar el input
-        tr.find("td:eq(" + (5) + ")").text(col5.toFixed(2));
+        //tr.find("td:eq(" + (5) + ")").text(col5.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+        tr.find("td:eq(" + (5) + ")").text(toShow(col5));//B20180720 MGC Formato a valores en la tabla
 
         //Costo con apoyo
         var col6 = col3 - col5;
-        tr.find("td:eq(" + (6) + ")").text(col6.toFixed(2));
+        //tr.find("td:eq(" + (6) + ")").text(col6.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+        tr.find("td:eq(" + (6) + ")").text(toShow(col6));//B20180720 MGC Formato a valores en la tabla
 
         //Estimado apoyo
-        var col8 = tr.find("td:eq(" + (8) + ") input").val();
+        var col8 = tr.find("td:eq(" + (8) + ") input").val();//B20180720 MGC Formato a valores en la tabla
+        col8 = toNum(col8)//B20180720 MGC Formato a valores en la tabla
         var col9 = col5 * col8;
         //col14 = col14.toFixed(2);
         if (tipo == "m") {
-            tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+            //tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (9) + ") input").val(toShow(col9));//B20180720 MGC Formato a valores en la tabla
         } else if (tipo == "p") {
-            tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));
+            //tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (9) + ")").text(toShow(col9));//B20180720 MGC Formato a valores en la tabla
         }
 
 
@@ -143,22 +164,31 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
         total_val = parseFloat(total_val);
         var col9 = total_val;
         if (cat == "") {
-            tr.find("td:eq(" + (3) + ") input").val("0.00");
+            //tr.find("td:eq(" + (3) + ") input").val("0.00");//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (3) + ") input").val(toShow("0"));//B20180720 MGC Formato a valores en la tabla
             if (tdp_apoyo != "X") {
                 if (tipo == "m") {
-                    tr.find("td:eq(" + (4) + ") input").val("0.00");
+                    //tr.find("td:eq(" + (4) + ") input").val("0.00");//B20180720 MGC Formato a valores en la tabla
+                    tr.find("td:eq(" + (4) + ") input").val(toShowPorc("0"));//B20180720 MGC Formato a valores en la tabla
                 } else if (tipo == "p") {
-                    tr.find("td:eq(" + (4) + ")").val("0.00");
+                    //tr.find("td:eq(" + (4) + ")").val("0.00");//B20180720 MGC Formato a valores en la tabla
+                    tr.find("td:eq(" + (4) + ")").val(toShowPorc("0"));//B20180720 MGC Formato a valores en la tabla
                 }
             }
-            tr.find("td:eq(" + (5) + ")").text("0.00");
-            tr.find("td:eq(" + (6) + ")").text("0.00");
-            tr.find("td:eq(" + (7) + ") input").val("0.00");
-            tr.find("td:eq(" + (8) + ") input").val("0.00");
+            //tr.find("td:eq(" + (5) + ")").text("0.00");//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (5) + ")").text(toShow("0"));//B20180720 MGC Formato a valores en la tabla
+            //tr.find("td:eq(" + (6) + ")").text("0.00");//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (6) + ")").text(toShow("0"));//B20180720 MGC Formato a valores en la tabla
+            //tr.find("td:eq(" + (7) + ") input").val("0.00");//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (7) + ") input").val(toShow("0"));//B20180720 MGC Formato a valores en la tabla
+            //tr.find("td:eq(" + (8) + ") input").val("0.00");//B20180720 MGC Formato a valores en la tabla
+            tr.find("td:eq(" + (8) + ") input").val(toShowNum("0"));//B20180720 MGC Formato a valores en la tabla
             if (tipo == "m") {
-                tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+                //tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+                tr.find("td:eq(" + (9) + ") input").val(toShow(col9));//B20180720 MGC Formato a valores en la tabla
             } else if (tipo == "p") {
-                tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));
+                //tr.find("td:eq(" + (9) + ")").text(col9.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+                tr.find("td:eq(" + (9) + ")").text(toShow(col9));//B20180720 MGC Formato a valores en la tabla
             }
 
         } else if (cat == "X") {
@@ -171,7 +201,7 @@ function updateTotalRow(tr, tdp_apoyo, totals, total_val, cat, tipo) {
             tr.find("td:eq(" + (6) + ")").text("");
             tr.find("td:eq(" + (7) + ")").text("");
             tr.find("td:eq(" + (8) + ")").text("");
-            tr.find("td:eq(" + (9) + ") input").val(col9.toFixed(2));
+            tr.find("td:eq(" + (9) + ") input").val(toShow(col9));//B20180720 MGC Formato a valores en la tabla
         }
     }
 
@@ -229,9 +259,8 @@ function totalFooter() {
                     col9 = $(this).find("td:eq(" + coltotal + ") input").val();
                 } else {
                     col9 = $(this).find("td:eq(" + (coltotal) + ")").text();
-
                 }
-
+                col9 = toNum(col9);//B20180720 MGC Formato a valores en la tabla
                 col9 = convertI(col9);
 
                 if ($.isNumeric(col9)) {
@@ -270,11 +299,13 @@ function updateTotalRowp() {
             $(tabname).find("tr[role='row']").each(function (index) {
                 var col4 = 0;
                 col4 = $(this).find("td:eq(" + (colpor) + ")").text();
+                col4 = toNum(col4);//B20180720 MGC Formato a valores en la tabla
                 col4 = parseFloat(col4);
 
                 colt = (col4 * ed_monto) / 100;
 
-                $(this).find("td:eq(" + (coltotal) + ")").text(colt.toFixed(2));
+                //$(this).find("td:eq(" + (coltotal) + ")").text(colt.toFixed(2));//B20180720 MGC Formato a valores en la tabla
+                $(this).find("td:eq(" + (coltotal) + ")").text(toShowNum(colt));//B20180720 MGC Formato a valores en la tabla
                 total += colt;
 
             });
@@ -344,14 +375,14 @@ function copiarTableControl() {
 
                     var matkl_id = matkl;
 
-
-                    //Definir si es tipo m
-                    var tipo = "";
-                    if ($(this).hasClass("tipom")) {
-                        tipo = "m";
-                    } else if ($(this).hasClass("tipop")) {
-                        tipo = "p"
-                    }
+                    //B20180720 MGC Formato a valores en la tabla
+                    ////Definir si es tipo m
+                    //var tipo = "";
+                    //if ($(this).hasClass("tipom")) {
+                    //    tipo = "m";
+                    //} else if ($(this).hasClass("tipop")) {
+                    //    tipo = "p"
+                    //}
 
                     //Saber si los valores se tienen como texto del td o input
                     var costo_unitario = 0;
@@ -360,6 +391,7 @@ function copiarTableControl() {
                     } else {
                         costo_unitario = $(this).find("td:eq(" + (3) + ") input").val();
                     }
+                    costo_unitario = toNum(costo_unitario);//B20180720 MGC Formato a valores en la tabla
 
                     var porc_apoyo = 0;
                     if ($(this).find("td:eq(" + (4) + ")").hasClass("ni")) {
@@ -367,6 +399,7 @@ function copiarTableControl() {
                     } else {
                         porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
                     }
+                    porc_apoyo = toNum(porc_apoyo);//B20180720 MGC Formato a valores en la tabla
                     //var porc_apoyo = $(this).find("td:eq(" + (4) + ") input").val();
                     var monto_apoyo = 0;
                     if ($(this).find("td:eq(" + (5) + ")").hasClass("ni")) {
@@ -374,6 +407,7 @@ function copiarTableControl() {
                     } else {
                         monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
                     }
+                    monto_apoyo = toNum(monto_apoyo);//B20180720 MGC Formato a valores en la tabla
                     //var monto_apoyo = $(this).find("td:eq(" + (5) + ") input").val();
                     var precio_sug = 0;
                     if ($(this).find("td:eq(" + (7) + ")").hasClass("ni")) {
@@ -381,6 +415,7 @@ function copiarTableControl() {
                     } else {
                         precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
                     }
+                    precio_sug = toNum(precio_sug);//B20180720 MGC Formato a valores en la tabla
                     //var precio_sug = $(this).find("td:eq(" + (7) + ") input").val();
                     var volumen_est = 0;
                     if ($(this).find("td:eq(" + (8) + ")").hasClass("ni")) {
@@ -388,6 +423,7 @@ function copiarTableControl() {
                     } else {
                         volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
                     }
+                    volumen_est = toNum(volumen_est);//B20180720 MGC Formato a valores en la tabla
                     //var volumen_est = $(this).find("td:eq(" + (8) + ") input").val();
                     var total = 0;
                     if ($(this).find("td:eq(" + (9) + ")").hasClass("ni")) {
@@ -395,6 +431,7 @@ function copiarTableControl() {
                     } else {
                         total = $(this).find("td:eq(" + (9) + ") input").val();
                     }
+                    total = toNum(total);//B20180720 MGC Formato a valores en la tabla
                     //var total = $(this).find("td:eq(" + (9) + ") input").val();
 
                     var item = {};
