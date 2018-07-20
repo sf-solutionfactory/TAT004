@@ -1106,6 +1106,7 @@
     <Content Include="Views\CartaD\Details.cshtml" />
     <Content Include="Views\CartaD\Index.cshtml" />
     <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
+    <Content Include="Views\CartaV\Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
