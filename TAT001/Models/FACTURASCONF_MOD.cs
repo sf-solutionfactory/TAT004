@@ -23,5 +23,10 @@ namespace TAT001.Models
         public bool EJERCICIOK { get; set; }
         public bool BILL_DOC { get; set; }
         public bool BELNR { get; set; }
+        //jemo 09-07-2018 inicio
+        public bool IMPORTE_FAC { get; set; }
+        public bool PAYER { get; set; }
+        public bool DESCRIPCION { get; set; }
+        //jemo 09-07-2018 fin
     }
 }

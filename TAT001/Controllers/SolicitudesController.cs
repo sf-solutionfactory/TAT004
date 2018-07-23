@@ -1,4 +1,5 @@
-﻿using ExcelDataReader;
+﻿using EntityFramework.BulkInsert.Extensions;
+using ExcelDataReader;
 using Newtonsoft.Json;
 using SimpleImpersonation;
 using System;
@@ -1057,7 +1058,9 @@ namespace TAT001.Controllers
                             docf.EJERCICIOK = docb.DOCUMENTOBORRFs.ElementAt(j).EJERCICIOK;
                             docf.BILL_DOC = docb.DOCUMENTOBORRFs.ElementAt(j).BILL_DOC;
                             docf.BELNR = docb.DOCUMENTOBORRFs.ElementAt(j).BELNR;
-
+                            docf.IMPORTE_FAC = docb.DOCUMENTOBORRFs.ElementAt(j).IMPORTE_FAC; //jemo 18-07-2018
+                            docf.PAYER = docb.DOCUMENTOBORRFs.ElementAt(j).PAYER;//jemo 18-07-2018
+                            docf.DESCRIPCION = docb.DOCUMENTOBORRFs.ElementAt(j).NAME1;//jemo 18-07-2018
                             docfl.Add(docf);
                         }
                         d.DOCUMENTOF = docfl;
@@ -1560,6 +1563,12 @@ namespace TAT001.Controllers
                     {
                         borrador_param = "";
                     }
+                    //jemo 11-07-2018 inicio
+                    if (unafact == "false")
+                    {
+                        dOCUMENTO.TSOL_ID = db.TSOLs.Where(x => x.ID == dOCUMENTO.TSOL_ID).Select(x => x.TSOLM).SingleOrDefault();
+                    }
+                    //jemo 11-07-2018 fin
                     if (borrador_param.Equals("borrador"))
                     {
                         //Eliminar borrador anterior 
@@ -2089,29 +2098,63 @@ namespace TAT001.Controllers
                     }
 
                     //Guardar los documentos f para el documento guardado
+                    //jemo 12-07-2018 inicio
                     try
                     {
-                        for (int j = 0; j < dOCUMENTO.DOCUMENTOF.Count; j++)
+                        if (dOCUMENTO.DOCUMENTOF.Count == 1)
                         {
-                            try
+                            List<DOCUMENTOF> facts = new List<DOCUMENTOF>();
+                            string[] fact = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
+                            for (int k = 0; k < fact.Length; k++)
                             {
                                 DOCUMENTOF docF = new DOCUMENTOF();
-                                docF = dOCUMENTO.DOCUMENTOF[j];
+                                docF = dOCUMENTO.DOCUMENTOF[0];
                                 docF.NUM_DOC = dOCUMENTO.NUM_DOC;
-
-                                db.DOCUMENTOFs.Add(docF);
-                                db.SaveChanges();
+                                docF.POS = k + 1;
+                                docF.FACTURAK = fact[k];
+                                facts.Add(new DOCUMENTOF
+                                {
+                                    NUM_DOC = dOCUMENTO.NUM_DOC,
+                                    POS = k + 1,
+                                    FACTURA = docF.FACTURA,
+                                    FECHA = docF.FECHA,
+                                    PROVEEDOR = docF.PROVEEDOR,
+                                    CONTROL = docF.CONTROL,
+                                    AUTORIZACION = docF.AUTORIZACION,
+                                    VENCIMIENTO = docF.VENCIMIENTO,
+                                    EJERCICIOK = docF.EJERCICIOK,
+                                    BILL_DOC = docF.BILL_DOC,
+                                    BELNR = docF.BELNR,
+                                    IMPORTE_FAC = docF.IMPORTE_FAC,
+                                    PAYER = docF.PAYER,
+                                    FACTURAK = fact[k]
+                                });
                             }
-                            catch (Exception e)
+                            db.BulkInsert(facts);
+                        }
+                        else
+                        {
+                            for (int j = 0; j < dOCUMENTO.DOCUMENTOF.Count; j++)
                             {
+                                try
+                                {
+                                    DOCUMENTOF docF = new DOCUMENTOF();
+                                    docF = dOCUMENTO.DOCUMENTOF[j];
+                                    docF.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    db.DOCUMENTOFs.Add(docF);
+                                    db.SaveChanges();
+                                }
+                                catch (Exception e)
+                                {
 
+                                }
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
 
                     }
+                    catch (Exception e)
+                    { }
+                    //jemo 12-07-2018 fin
                     //Guardar registros de recurrencias  RSG 28.05.2018------------------
                     if (dOCUMENTO.DOCUMENTOREC != null)
                         if (dOCUMENTO.DOCUMENTOREC.Count > 0)
@@ -2851,7 +2894,9 @@ namespace TAT001.Controllers
                         dbf.EJERCICIOK = doc.DOCUMENTOF[i].EJERCICIOK;
                         dbf.BILL_DOC = doc.DOCUMENTOF[i].BILL_DOC;
                         dbf.BELNR = doc.DOCUMENTOF[i].BELNR;
-
+                        dbf.NAME1 = doc.DOCUMENTOF[i].DESCRIPCION;//jemo 18-07-2018
+                        dbf.PAYER = doc.DOCUMENTOF[i].PAYER;//jemo 18-07-2018
+                        dbf.IMPORTE_FAC = doc.DOCUMENTOF[i].IMPORTE_FAC;//jemo 18-07-2018
                         db.DOCUMENTOBORRFs.Add(dbf);
                         db.SaveChanges();
                     }
@@ -5185,58 +5230,60 @@ namespace TAT001.Controllers
                     {
                         doc.FACTURA = null;
                     }
-                    try
-                    {
-                        doc.FECHA = Convert.ToDateTime(dt.Rows[i][1]); //Fecha
-                    }
-                    catch (Exception e)
-                    {
-                        doc.FECHA = null;
-                    }
-                    try
-                    {
-                        var provs = dt.Rows[i][2];
-                        doc.PROVEEDOR = provs + ""; //Proveedor
-                        PROVEEDOR prov = proveedor(doc.PROVEEDOR);
-                        if (prov != null)//Validar si el proveedor existe
-                        {
+                    //jemo 10-17-2018 inicio
+                    //try
+                    //{
+                    //    doc.FECHA = Convert.ToDateTime(dt.Rows[i][1]); //Fecha
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    doc.FECHA = null;
+                    //}
+                    //try
+                    //{
+                    //    var provs = dt.Rows[i][2];
+                    //    doc.PROVEEDOR = provs + ""; //Proveedor
+                    //    PROVEEDOR prov = proveedor(doc.PROVEEDOR);
+                    //    if (prov != null)//Validar si el proveedor existe
+                    //    {
 
-                            doc.PROVEEDOR_TXT = prov.NOMBRE.ToString(); //Descripción
-                            doc.PROVEEDOR_ACTIVO = true;
-                        }
-                        else
-                        {
-                            doc.PROVEEDOR_ACTIVO = false;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        doc.PROVEEDOR_ACTIVO = false;
-                    }
-                    try
-                    {
-                        doc.CONTROL = (string)dt.Rows[i][3]; //Control   
-                    }
-                    catch (Exception e)
-                    {
-                        doc.CONTROL = "";
-                    }
-                    try
-                    {
-                        doc.AUTORIZACION = (string)dt.Rows[i][4]; //Autorización                        
-                    }
-                    catch (Exception e)
-                    {
-                        doc.AUTORIZACION = "";
-                    }
-                    try
-                    {
-                        doc.VENCIMIENTO = Convert.ToDateTime(dt.Rows[i][5]); //Vencimiento
-                    }
-                    catch (Exception e)
-                    {
-                        doc.VENCIMIENTO = null;
-                    }
+                    //        doc.PROVEEDOR_TXT = prov.NOMBRE.ToString(); //Descripción
+                    //        doc.PROVEEDOR_ACTIVO = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        doc.PROVEEDOR_ACTIVO = false;
+                    //    }
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    doc.PROVEEDOR_ACTIVO = false;
+                    //}
+                    //try
+                    //{
+                    //    doc.CONTROL = (string)dt.Rows[i][3]; //Control   
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    doc.CONTROL = "";
+                    //}
+                    //try
+                    //{
+                    //    doc.AUTORIZACION = (string)dt.Rows[i][4]; //Autorización                        
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    doc.AUTORIZACION = "";
+                    //}
+                    //try
+                    //{
+                    //    doc.VENCIMIENTO = Convert.ToDateTime(dt.Rows[i][5]); //Vencimiento
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    doc.VENCIMIENTO = null;
+                    //}
+                    //jemo 10-17-2018 fin
                     try
                     {
                         doc.FACTURAK = (string)dt.Rows[i][6]; //Facturak
@@ -5274,7 +5321,14 @@ namespace TAT001.Controllers
                     ld.Add(doc);
                     pos++;
                 }
-
+                //jemo 10-17-2018 inicio
+                List<CLIENTE> cli = db.CLIENTEs.ToList();
+                var c = cli.Join(ld, s => s.KUNNR, l => l.PAYER, (s, l) => new { ku = s.KUNNR, na = s.NAME1 }).ToList();
+                for (int i = 0; i < ld.Count; i++)
+                {
+                    ld[i].DESCRIPCION = c.Where(x => x.ku == ld[i].PAYER).Select(x => x.na).ToList()[0].ToString();
+                }
+                //jemo 10-17-2018 fin
                 reader.Close();
 
             }
@@ -5284,7 +5338,7 @@ namespace TAT001.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult LoadConfigSoporte(string sociedad, string pais, string tsol, string nulos)
+        public JsonResult LoadConfigSoporte(string sociedad, string pais, string tsol, string nulos, string class_doc)//jemo 09-07-2018
         {
             if (nulos == null)
             {
@@ -5295,7 +5349,16 @@ namespace TAT001.Controllers
             try
             {
                 FACTURASCONF f = db.FACTURASCONFs.Where(fi => fi.SOCIEDAD_ID.Equals(sociedad) && fi.PAIS_ID.Equals(pais) && fi.TSOL.Equals(tsol)).FirstOrDefault();
-
+                //jemo 09-07-2018 inicio
+                if (class_doc == "true")
+                {
+                    string s = db.TSOLs.Where(x => x.ID == tsol).Select(x => x.TSOLM).SingleOrDefault();
+                    if (String.IsNullOrEmpty(s) == false)
+                    {
+                        f = db.FACTURASCONFs.Where(fi => fi.SOCIEDAD_ID.Equals(sociedad) && fi.PAIS_ID.Equals(pais) && fi.TSOL.Equals(s)).FirstOrDefault();
+                    }
+                }
+                //jemo 09-07-2018 fin
                 if (f != null)
                 {
                     fc.NUM_DOC = null;
@@ -5314,7 +5377,11 @@ namespace TAT001.Controllers
                     fc.EJERCICIOK = f.EJERCICIOK;
                     fc.BILL_DOC = f.BILL_DOC;
                     fc.BELNR = f.BELNR;
-
+                    //jemo 09-07-2018 inicio
+                    fc.IMPORTE_FAC = f.IMPORTE_FAC; 
+                    fc.PAYER = f.PAYER;
+                    fc.DESCRIPCION = f.DESCRIPCION;
+                    //jemo 09-07-2018 fin
                     //fc.FACTURA = true; 
                     //fc.FECHA = true; 
                     //fc.PROVEEDOR = true;
