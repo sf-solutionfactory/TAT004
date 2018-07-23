@@ -65,16 +65,17 @@
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
-            @if (ViewBag.relacionadan != "")
-            {
-                <div class="input-field col s4">
-                    <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
-                    <label for="txt_rel" id="lbl_rel">Relacionada</label>
-                </div>
-            }
         </div>
+        if (ViewBag.relacionadan != "")
+        {
+            <div class="input-field col s2">
+                <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
+                <label for="txt_rel" id="lbl_rel">Relacionada</label>
+            </div>
+        }
     }
     <style>
+
 
         .div_left {
             float: left;
@@ -138,7 +139,7 @@
             background-color: red;
         }
     </style>
-    <div class="col s8 right-align @*div_right*@">
+    <div class="col s6 right-align @*div_right*@">
         @*//B20180625 MGC 2018.06.26*@
         @if (ViewBag.relacionada == "")
         {
@@ -173,7 +174,6 @@
         <hr class="hr_color .pink.darken-1" />
     </div>
 </div>
-
 <div class="row">
     <div class="col s12">
         <ul class="tabs" id="tabs">
@@ -227,7 +227,7 @@
                                     }
                                     else
                                     {
-                                        @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id" })
+                                        @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id", @onchange = "selectTsol(this.value)" })
                                         <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
                                         <input type="text" id="tsolant_id" value="@ViewBag.TSOL_ANT" disabled="disabled" hidden />
                                     }
@@ -768,51 +768,51 @@
                                         @*//B20180625 MGC 2018.06.27*@
                                         for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
                                         {
-                                    <tr>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
-                                        </td>
-                                        <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
-                                        </td>
-                                    </tr>
+                                            <tr>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
+                                                </td>
+                                            </tr>
                                         }
                                     }
                                 </tbody>
@@ -1102,8 +1102,8 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                    archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                        ;
+                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                              ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
@@ -1285,7 +1285,6 @@
                                             <td>
                                                 @Model.DOCUMENTOREC[i].PORC
                                             </td>
-
                                             <td>
                                                 @Model.DOCUMENTOREC[i].DOC_REF
                                             </td>
@@ -1315,9 +1314,8 @@
                     </div>
                 </div>
             </div>
-
             <div class="col s12">
-                <div  id="div_objq"  class="card-panel hide">
+                <div id="div_objq" class="card-panel hide">
                     @*<h5>Recurrente</h5>*@
                     <input type="hidden" id="txt_trec" />
                     <div class="row" style="margin-bottom:0;">
@@ -1353,45 +1351,52 @@
                         <h5>Distribución</h5>
                         <div class="row" style="margin-bottom:0">
                             @*<input type="button" id="matcat" value="Get materiales cat" />*@
-                            <div class="col s12">
-                                <label>
-                                    @if (ViewBag.ligada != null)//RSG 09.07.2018
-                                    {
-                                        <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
-                                    }
-                                    <span>Solicitud ligada a facturación </span>
-                                </label>
-                                <script>
-                                    function cambiaLigada(campo) {
-                                        if (campo.checked) {
-                                            $("#select_neg").val("P");
-                                            $("#select_dis").val("C");
-                                            $("#select_negi").val("P");
-                                            $("#select_disi").val("C");
-                                            $("#select_neg").prop("disabled", "disabled");
-                                            $("#select_dis").prop("disabled", "disabled");
-                                            $("#select_neg").change();
-                                            $("#select_dis").change();
-                                            $("#div_objq").removeClass("hide");
-                                        } else {
-                                            $("#select_neg").prop("disabled", false);
-                                            $("#select_dis").prop("disabled", false);
-                                            $("#select_neg").change();
-                                            $("#select_dis").change();
-                                            $("#div_objq").addClass("hide");
+                            @Html.HiddenFor(model => model.LIGADA, new { @id = "txt_ligada" })
+                            @if (ViewBag.relacionadan == "")
+                            {
+                                <div class="col s12">
+                                    <label>
+                                        @if (ViewBag.ligada != null)//RSG 09.07.2018
+                                        {
+                                            <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
                                         }
+                                        else
+                                        {
+                                            <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                        }
+                                        <span>Solicitud ligada a facturación </span>
+                                    </label>
+                                    <script>
 
-                                        var elem = document.getElementById('select_neg');
-                                        var instance = M.Select.init(elem, []);
-                                        elem = document.getElementById('select_dis');
-                                        instance = M.Select.init(elem, []);
-                                    }
-                                </script>
-                            </div>
+                                        function cambiaLigada(campo) {
+                                            if (campo.checked) {
+                                                $("#select_neg").val("P");
+                                                $("#select_dis").val("C");
+                                                $("#select_negi").val("P");
+                                                $("#select_disi").val("C");
+                                                $("#select_neg").prop("disabled", "disabled");
+                                                $("#select_dis").prop("disabled", "disabled");
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").removeClass("hide");
+                                                $("#txt_ligada").val("X");
+                                            } else {
+                                                $("#select_neg").prop("disabled", false);
+                                                $("#select_dis").prop("disabled", false);
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").addClass("hide");
+                                                $("#txt_ligada").val("");
+                                            }
+
+                                            var elem = document.getElementById('select_neg');
+                                            var instance = M.Select.init(elem, []);
+                                            elem = document.getElementById('select_dis');
+                                            instance = M.Select.init(elem, []);
+                                        }
+                                    </script>
+                                </div>
+                            }
                             <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
                             <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
                             <div class="input-field col s6">
@@ -1424,8 +1429,7 @@
                         </div>
                     </div>
                 </div>
-
-                @if (ViewBag.ligada != null)//RSG 09.07.2018
+                @if (ViewBag.ligada != null & ViewBag.relacionadan == "")//RSG 09.07.2018
                 {
                     <script>
                         $("#select_neg").prop("disabled", "disabled");
@@ -1500,7 +1504,6 @@
                                     <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                                 </div>
                             } @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
-
                             <div id="div_picker"></div>
                             <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                 <thead>

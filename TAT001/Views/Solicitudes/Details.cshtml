@@ -814,7 +814,8 @@
                                         </div>
                                         <script>
                                             //function calcValor() {
-                                            document.getElementById("txt_venta").value = toNum(document.getElementById("MONTO_DOC_MD").value) * toNum(document.getElementById("PORC_APOYO").value) / 100
+                                            var venta = ((document.getElementById("MONTO_DOC_MD").value) / (document.getElementById("PORC_APOYO").value)) * 100;
+                                            document.getElementById("txt_venta").value = venta;
                                             //}
                                         </script>
                                     </div>

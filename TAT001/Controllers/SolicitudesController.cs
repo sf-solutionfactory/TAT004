@@ -812,6 +812,13 @@ namespace TAT001.Controllers
                     d.DOCUMENTO_REF = rel;
                     relacionada_neg = d.TIPO_TECNICO;
                     ViewBag.TSOL_ANT = d.TSOL_ID;
+                    ViewBag.LIGADA = d.LIGADA;//RSG 09.07.2018
+                    try//RSG 09.07.2018
+                    {
+                        bmonto_apoyo = (decimal)d.PORC_APOYO;
+                    }
+                    catch
+                    { }
 
                     if (d != null)
                     {
@@ -1564,9 +1571,11 @@ namespace TAT001.Controllers
                         borrador_param = "";
                     }
                     //jemo 11-07-2018 inicio
-                    if (unafact == "false")
+                    if (unafact == "true")
                     {
-                        dOCUMENTO.TSOL_ID = db.TSOLs.Where(x => x.ID == dOCUMENTO.TSOL_ID).Select(x => x.TSOLM).SingleOrDefault();
+                        string masi = db.TSOLs.Where(x => x.ID == dOCUMENTO.TSOL_ID).Select(x => x.TSOLM).SingleOrDefault();
+                        if (masi != null)
+                            dOCUMENTO.TSOL_ID = masi;
                     }
                     //jemo 11-07-2018 fin
                     if (borrador_param.Equals("borrador"))
@@ -1615,6 +1624,10 @@ namespace TAT001.Controllers
                         dOCUMENTO.VTWEG = payer.VTWEG;
                         dOCUMENTO.SPART = payer.SPART;
 
+                        if (chk_ligada == "on")
+                            dOCUMENTO.LIGADA = true;
+                        else
+                            dOCUMENTO.LIGADA = false;
 
                         //Guardar el documento
                         db.DOCUMENTOes.Add(dOCUMENTO);
@@ -5378,7 +5391,7 @@ namespace TAT001.Controllers
                     fc.BILL_DOC = f.BILL_DOC;
                     fc.BELNR = f.BELNR;
                     //jemo 09-07-2018 inicio
-                    fc.IMPORTE_FAC = f.IMPORTE_FAC; 
+                    fc.IMPORTE_FAC = f.IMPORTE_FAC;
                     fc.PAYER = f.PAYER;
                     fc.DESCRIPCION = f.DESCRIPCION;
                     //jemo 09-07-2018 fin

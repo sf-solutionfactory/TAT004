@@ -1212,6 +1212,8 @@ $(document).ready(function () {
                 $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
+            //bmonto_apoyo
+            $('#bmonto_apoyo').val(toNum($('#bmonto_apoyo').val()));
 
             $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
             $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
@@ -1399,7 +1401,7 @@ $(window).on('load', function () {
 
     //B20180625 MGC 2018.06.26 Verificar si hay algún borrador mostrar la sección de facturas
     var check = $("#check_facturas").val();
-    if (!isRelacionada() && !isReversa()) {
+    if (/*!isRelacionada() &&*/ !isReversa()) {
         $('#tsol_id').change();
     }
 
@@ -1545,6 +1547,8 @@ $(window).on('load', function () {
     if (sneg == "P" && sdis == "M") {
         $('#bmonto_apoyo').val(bmonto_apoyo);
         $('#bmonto_apoyo').trigger("focusout");
+    } else if ($('#chk_ligada').is(":checked")) {//RSG 09.07.2018
+        $('#bmonto_apoyo').val(toShowPorc(bmonto_apoyo));
     }
 
     var tipocambio = $('#tipo_cambio').val();//B20180625 MGC 2018.07.02
