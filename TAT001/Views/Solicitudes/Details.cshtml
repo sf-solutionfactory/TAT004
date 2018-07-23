@@ -15,6 +15,7 @@
 }
 @try
 {
+    <script src="~/Scripts/formatos.js"></script>
     <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">//LEJ 09.07.18
     <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">//LEJ 09.07.18
     <div class="row" style="margin-bottom:0">
@@ -154,17 +155,17 @@
                                     </div>
                                     <div class="modal-footer right">
                                         <a href="#!" class="modal-action modal-close btn-flat">No</a>
-                                        <a class="modal-action btn-flat" href="@Url.Action(" Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
+                                        <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
                                     </div>
                                 </div>
                             }
                         }
                     }
-                    else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL.PADRE))
+                    else if (Model.D.ESTATUS.Equals("A") && (Model.D.TSOL.PADRE) && Model.D.DOCUMENTORECs.Count < 1)
                     {
                         if (Model.D.USUARIOC_ID == ViewBag.usuario.ID)
                         {
-                            <a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversar</a>
+                            <a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="CPR" })" class="btn-small">Reversar</a>
                             <button type="button" class="btn-small  " data-target="list_rela" id="btn_rela">Crear solicitud relacionada</button>
                             @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
                             <ul id='list_rela' class='dropdown-content'>
@@ -176,7 +177,7 @@
                                             <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NC" })" id="lbl_nc">Nota de crédito</a></li>
                                             <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="NCI" })" id="lbl_nc">Nota de crédito Int</a></li>
                                             <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol="OP" })" id="lbl_op">Orden de pago</a></li>*@
-                                        <li><a href="@Url.Action(" Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol=inte.ID })" id="lbl_@inte.ID">@inte.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </a></li>
+                                        <li><a href="@Url.Action("Create", "Solicitudes" , new { id_d=Model.D.NUM_DOC.ToString(), tsol=inte.ID })" id="lbl_@inte.ID">@inte.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 </a></li>
                                     }
                                 }
                             </ul>
@@ -210,7 +211,7 @@
                                 </div>
                                 <div class="modal-footer right">
                                     <a href="#!" class="modal-action modal-close btn-flat">No</a>
-                                    <a class="modal-action btn-flat" href="@Url.Action(" Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
+                                    <a class="modal-action btn-flat" href="@Url.Action("Cancelar", "Solicitudes" , new { id=Model.D.NUM_DOC })">Si</a>
                                 </div>
                             </div>
                         }
@@ -220,7 +221,7 @@
                     <button type="button" class="btn-small  " data-target="list_carta" id="btn_carta">Carta</button>
                     @*<button type="button" class="btn-small  " id="btn_cancel">Cancelar</button>*@
                     <ul id='list_carta' class='dropdown-content'>
-                        <li><a href="@Url.Action(" Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
+                        <li><a href="@Url.Action("Index", "CartaF" , new { id=Model.D.NUM_DOC })" id="lbl_list">Lista de cartas</a></li>
                         @if (Model.D.ESTATUS_WF.Equals("S"))
                         {
                             <li><a href="@Url.Action("Create", "CartaV" , new { id=Model.D.NUM_DOC })" id="lbl_genc">Generar carta</a></li>
@@ -286,7 +287,7 @@
                                         @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
                                     </div>
                                     <div class="col s4 right-align">
-                                        <a href="@Url.Action(" Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
+                                        <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
                                     </div>
                                 </div>
                             </div>
@@ -590,7 +591,7 @@
                                                             <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
                                                             @if (iteem.DOC_REF > 0)
                                                             {
-                                                                <td><a href="@Url.Action(" Details", new { id=iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                                <td><a href="@Url.Action("Details", new { id=iteem.DOC_REF })">@iteem.DOC_REF</a></td>
                                                             }
                                                             else
                                                             {
@@ -791,26 +792,31 @@
                 <div class="row">
                     @if (Model.D.LIGADA != null)
                     {
-                        if ((bool)Model.D.LIGADA & Model.D.DOCUMENTORECs.Count ==0)
+                        if ((bool)Model.D.LIGADA & Model.D.DOCUMENTORECs.Count == 0)
                         {
                             <div class="col s6 offset-s6">
                                 <div class="card-panel">
                                     <h5>Base para aplicar</h5>
                                     <div class="row" style="margin-bottom:0px;">
                                         <div class="input-field col s6">
-                                            <input type="text" value="@Model.D.PORC_APOYO" class="porcentaje" disabled="disabled" />
+                                            <input type="text" value="@Model.D.PORC_APOYO" class="porcentaje" disabled="disabled" id="PORC_APOYO" />
                                             <label for="txt_porc">Porcentaje apoyo</label>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
-                                            <input type="text" value="0.00" class="precio" disabled="disabled" />
+                                            <input type="text" value="0.00" class="precio" disabled="disabled" id="txt_venta" onload="calcValor()" />
                                             <label for="txt_porc">Venta del mes</label>
                                         </div>
                                         <div class="input-field col s6">
-                                            <input type="text" value="@Model.D.MONTO_DOC_MD" class="precio" disabled="disabled" />
+                                            <input type="text" value="@Model.D.MONTO_DOC_MD" class="precio" disabled="disabled" id="MONTO_DOC_MD" />
                                             <label for="txt_porc">Monto base</label>
                                         </div>
+                                        <script>
+                                            //function calcValor() {
+                                            document.getElementById("txt_venta").value = toNum(document.getElementById("MONTO_DOC_MD").value) * toNum(document.getElementById("PORC_APOYO").value) / 100
+                                            //}
+                                        </script>
                                     </div>
                                 </div>
                             </div>
@@ -1708,7 +1714,7 @@
                                                                     @item.HORAC.Value.ToString().Split('.')[0]
                                                                 </td>*@
                                                             <td>
-                                                                <a href="@Url.Action(" Details", new { id=item.NUM_DOC })" class="btn-small">Ver</a>
+                                                                <a href="@Url.Action("Details", new { id=item.NUM_DOC })" class="btn-small">Ver</a>
                                                             </td>
                                                         </tr>
                                                     }
