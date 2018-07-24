@@ -113,6 +113,22 @@
     <Property Name="LUGARFECHX" Type="bit" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="100" />
     <Property Name="MONEDA" Type="nchar" MaxLength="10" />
+    <Property Name="PAYERNOM" Type="nvarchar" MaxLength="100" />
+    <Property Name="PAYERNOMX" Type="bit" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+    <Property Name="COMENTARIOX" Type="bit" />
+    <Property Name="COMPROMISOK" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOKX" Type="bit" />
+    <Property Name="COMPROMISOC" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOCX" Type="bit" />
+    <Property Name="SECOND_TABX" Type="bit" />
+    <Property Name="COSTO_UNX" Type="bit" />
+    <Property Name="APOYOX" Type="bit" />
+    <Property Name="APOYOPX" Type="bit" />
+    <Property Name="COSTOAPX" Type="bit" />
+    <Property Name="PRECIOX" Type="bit" />
+    <Property Name="APOYO_ESTX" Type="bit" />
+    <Property Name="APOYO_REAX" Type="bit" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -1827,8 +1843,8 @@
     <Property Name="ID_ZC" Type="nvarchar" MaxLength="5" Nullable="false" />
     <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CARPETAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CARPETAV">
     <Key>
       <PropertyRef Name="USUARIO_ID" />
@@ -1840,8 +1856,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="ICON" Type="nvarchar" MaxLength="20" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR">
     <Key>
       <PropertyRef Name="ID" />
@@ -1857,8 +1873,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.CREADOR2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="CREADOR2">
     <Key>
       <PropertyRef Name="ID" />
@@ -1875,8 +1891,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DET_APROBV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DET_APROBV">
     <Key>
       <PropertyRef Name="BUKRS" />
@@ -1888,8 +1904,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.DOCUMENTOV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="DOCUMENTOV">
     <Key>
       <PropertyRef Name="POS" />
@@ -1964,8 +1980,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
     <Property Name="CIUDAD" Type="nvarchar" MaxLength="50" />
     <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.PAGINAV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PAGINAV">
     <Key>
       <PropertyRef Name="ID" />
@@ -1985,8 +2001,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
     <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TAT001.dbo.WARNINGV' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="WARNINGV">
     <Key>
       <PropertyRef Name="PAGINA_ID" />

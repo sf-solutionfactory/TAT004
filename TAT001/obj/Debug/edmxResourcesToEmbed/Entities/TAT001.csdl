@@ -129,6 +129,22 @@
     <Property Name="LUGARFECHX" Type="Boolean" />
     <Property Name="MONTO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="MONEDA" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="PAYERNOM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PAYERNOMX" Type="Boolean" />
+    <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="COMENTARIOX" Type="Boolean" />
+    <Property Name="COMPROMISOK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="COMPROMISOKX" Type="Boolean" />
+    <Property Name="COMPROMISOC" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="COMPROMISOCX" Type="Boolean" />
+    <Property Name="SECOND_TABX" Type="Boolean" />
+    <Property Name="COSTO_UNX" Type="Boolean" />
+    <Property Name="APOYOX" Type="Boolean" />
+    <Property Name="APOYOPX" Type="Boolean" />
+    <Property Name="COSTOAPX" Type="Boolean" />
+    <Property Name="PRECIOX" Type="Boolean" />
+    <Property Name="APOYO_ESTX" Type="Boolean" />
+    <Property Name="APOYO_REAX" Type="Boolean" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
     <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />

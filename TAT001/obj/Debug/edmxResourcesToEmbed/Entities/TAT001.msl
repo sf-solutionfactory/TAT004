@@ -116,6 +116,22 @@
           <ScalarProperty Name="LUGARFECHX" ColumnName="LUGARFECHX" />
           <ScalarProperty Name="MONTO" ColumnName="MONTO" />
           <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="PAYERNOM" ColumnName="PAYERNOM" />
+          <ScalarProperty Name="PAYERNOMX" ColumnName="PAYERNOMX" />
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+          <ScalarProperty Name="COMENTARIOX" ColumnName="COMENTARIOX" />
+          <ScalarProperty Name="COMPROMISOK" ColumnName="COMPROMISOK" />
+          <ScalarProperty Name="COMPROMISOKX" ColumnName="COMPROMISOKX" />
+          <ScalarProperty Name="COMPROMISOC" ColumnName="COMPROMISOC" />
+          <ScalarProperty Name="COMPROMISOCX" ColumnName="COMPROMISOCX" />
+          <ScalarProperty Name="SECOND_TABX" ColumnName="SECOND_TABX" />
+          <ScalarProperty Name="COSTO_UNX" ColumnName="COSTO_UNX" />
+          <ScalarProperty Name="APOYOX" ColumnName="APOYOX" />
+          <ScalarProperty Name="APOYOPX" ColumnName="APOYOPX" />
+          <ScalarProperty Name="COSTOAPX" ColumnName="COSTOAPX" />
+          <ScalarProperty Name="PRECIOX" ColumnName="PRECIOX" />
+          <ScalarProperty Name="APOYO_ESTX" ColumnName="APOYO_ESTX" />
+          <ScalarProperty Name="APOYO_REAX" ColumnName="APOYO_REAX" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
