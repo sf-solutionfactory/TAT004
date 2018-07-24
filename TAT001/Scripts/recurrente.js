@@ -89,10 +89,10 @@ function cambiaRec() {
         }
     } else {
 
-        var pe1 = document.getElementById("periodoi_id").value;
-        var pe2 = document.getElementById("periodof_id").value;
-        var ej1 = document.getElementById("anioi_id").value;
-        var ej2 = document.getElementById("aniof_id").value;
+        //var pe1 = document.getElementById("periodoi_id").value;
+        //var pe2 = document.getElementById("periodof_id").value;
+        //var ej1 = document.getElementById("anioi_id").value;
+        //var ej2 = document.getElementById("aniof_id").value;
     }
     if (campo.checked) {
         if (montoo === "") {

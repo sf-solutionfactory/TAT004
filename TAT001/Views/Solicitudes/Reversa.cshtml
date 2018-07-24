@@ -16,7 +16,8 @@
     </div>
     <div class="modal-footer">
         <a class="btn-flat" id="btn_si">NO</a>
-        <a href="@Url.Action("Index")" class="btn-flat">SI</a>
+        @*<a href="@Url.Action("Index")" class="btn-flat">SI</a>*@
+        <a href="@Url.Action("Reversar",new { id = Model.NUM_DOC, tsol="CPR"})" class="btn-flat">SI</a>
     </div>
 </div>
 @*@using (Html.BeginForm("Carga", "Presupuesto", FormMethod.Post, new { enctype = "multipart/form-data", id = "formulario" }))*@

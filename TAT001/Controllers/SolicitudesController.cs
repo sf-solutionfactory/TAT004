@@ -1480,6 +1480,8 @@ namespace TAT001.Controllers
                     }
                     //Tipo técnico
                     dOCUMENTO.TIPO_TECNICO = select_neg;
+                    if (chk_ligada == "on")
+                        dOCUMENTO.TIPO_TECNICO = "P";
 
                     ////Obtener el número de documento
                     //decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
@@ -1827,6 +1829,7 @@ namespace TAT001.Controllers
                                         docP.PORC_APOYO = docmod.PORC_APOYO;
                                         //docP.MONTO_APOYO = docmod.MONTO_APOYO;
                                         docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
+
                                         docP.MONTO_APOYO = Math.Round(docP.MONTO_APOYO, 2);//RSG 16.05.2018
                                         docP.PRECIO_SUG = docmod.PRECIO_SUG;
                                         docP.VOLUMEN_EST = docmod.VOLUMEN_EST;
@@ -1835,7 +1838,6 @@ namespace TAT001.Controllers
                                         docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
                                         docP.APOYO_EST = docmod.APOYO_EST;
                                         docP.APOYO_REAL = docmod.APOYO_REAL;
-
 
                                     }
                                     else
@@ -1949,6 +1951,12 @@ namespace TAT001.Controllers
                                     }
                                     else if (select_neg == "P")
                                     {
+                                        if(d.LIGADA == true)
+                                        {
+                                            docP.APOYO_REAL = 0;
+                                            docP.APOYO_EST = 0;
+                                            docP.PORC_APOYO = 0;
+                                        }
                                         //Categoría por porcentaje
                                         for (int k = 0; k < docml.Count; k++)
                                         {
@@ -1957,6 +1965,29 @@ namespace TAT001.Controllers
                                                 DOCUMENTOM docM = new DOCUMENTOM();
                                                 docM = docml[k];
                                                 docM.POS = k + 1;
+
+                                                if (d.LIGADA == true & d != null)
+                                                {
+
+                                                    foreach (DOCUMENTOP dep in d.DOCUMENTOPs.Where(x => x.POS == docM.POS_ID))
+                                                    {
+                                                        DOCUMENTOM dm = dep.DOCUMENTOMs.Where(x => x.POS == docM.POS).FirstOrDefault();
+                                                        //docM.APOYO_EST = ;
+                                                        docM.APOYO_REAL = dm.APOYO_EST;
+                                                        docM.MATNR = dm.MATNR;
+                                                        //dmm.NUM_DOC = dm.NUM_DOC;
+                                                        docM.PORC_APOYO = dm.PORC_APOYO;
+                                                        docM.POS_ID = dm.POS_ID;
+                                                        docM.VALORH = dm.VALORH;
+                                                        docM.VIGENCIA_A = dm.VIGENCIA_A;
+                                                        docM.VIGENCIA_DE = dm.VIGENCIA_DE;
+
+
+                                                        docP.APOYO_REAL += docM.APOYO_REAL;
+                                                        docP.APOYO_EST += docM.APOYO_EST;
+                                                        docP.PORC_APOYO += (decimal)docM.PORC_APOYO;
+                                                    }
+                                                }
 
                                                 db.DOCUMENTOMs.Add(docM);
                                                 db.SaveChanges();//RSG
@@ -2109,6 +2140,8 @@ namespace TAT001.Controllers
                     {
 
                     }
+
+
 
                     //Guardar los documentos f para el documento guardado
                     //jemo 12-07-2018 inicio

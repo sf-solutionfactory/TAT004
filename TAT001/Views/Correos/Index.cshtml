@@ -302,7 +302,7 @@
                                     @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
                                     @id = "lbl_userid"
                                 })
-                                @Html.EditorFor(model => model.MONTO_DOC_MD, new
+                                @*@Html.EditorFor(model => model.MONTO_DOC_MD, new
                                 {
                                     htmlAttributes = new
                                     {
@@ -310,14 +310,10 @@
                                         @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
                                         @class = "precio"
                                     }
-                                })
+                                })*@
+                                <input type="text" disabled="disabled" value="@ViewBag.monto" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " />
                             </div>
-                            @* ------------------------------------------------------------------------LEJ 09-07-18 *@
-                            <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
-                            <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
-                            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-                            <script src="../../Scripts/formatos.js"></script>
-                            @* ------------------------------------------------------------------------LEJ 09-07-18 *@
+                           
                         </div>
                     </td>
                 </tr>

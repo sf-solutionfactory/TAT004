@@ -734,18 +734,27 @@
         var ban = 0;
         if (document.getElementById("file_carta").files.length > 0) {
             var inputs = $(".cpC").find($("input[type=checkbox]"));
-            $(".cpC :input[type=checkbox]").each(function () {
-                var _xid = $(this).attr('id');
-                var checkedTrue = $('#' + _xid + ':checked').length > 0;
-                if (checkedTrue) {
-                    ban++;
-                    var _pTb = _xid.split('b');
-                    var tt = $("#Tt-" + _pTb[1]).text();
-                    var arrTt = tt.split('-');
-                    $("#pos").val(tt[0]);
-                    $('#btn_guardar').click();
-                }
-            });
+            if (ligada()) {
+                ban++;
+                //var _pTb = _xid.split('b');
+                //var tt = $("#Tt-" + _pTb[1]).text();
+                //var arrTt = tt.split('-');
+                //$("#pos").val(tt[0]);
+                $('#btn_guardar').click();
+            } else {
+                $(".cpC :input[type=checkbox]").each(function () {
+                    var _xid = $(this).attr('id');
+                    var checkedTrue = $('#' + _xid + ':checked').length > 0;
+                    if (checkedTrue) {
+                        ban++;
+                        var _pTb = _xid.split('b');
+                        var tt = $("#Tt-" + _pTb[1]).text();
+                        var arrTt = tt.split('-');
+                        $("#pos").val(tt[0]);
+                        $('#btn_guardar').click();
+                    }
+                });
+            }
             if (ban == 0) {
                 msg = "Seleccionar una Distribucion";
                 M.toast({ html: msg })

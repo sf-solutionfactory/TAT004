@@ -139,7 +139,18 @@
             background-color: red;
         }
     </style>
-    <div class="col s6 right-align @*div_right*@">
+    @{
+        string classa = "";
+    }
+    @if (ViewBag.relacionadan != "")
+    {
+        classa = "s6";
+    }
+    else
+    {
+        classa = "s8";
+    }
+    <div class="col @classa right-align">
         @*//B20180625 MGC 2018.06.26*@
         @if (ViewBag.relacionada == "")
         {
@@ -156,8 +167,6 @@
             <input type="text" id="borradore" name="borradore" value="@ViewBag.borradore" hidden /> @*//B20180625 MGC2 2018.07.04*@
         }
         <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
-        @*@if (ViewBag.reversan != "X")
-            {*@
         <a id="btn_guardarh" class="btn btn-small disabled" onclick="guardah()">Guardar</a>
         <script>
             function guardah() {
@@ -167,7 +176,6 @@
                 document.getElementById("btn_guardarh").classList.add("disabled");//RSG 26.04.2018
             }
         </script>
-        @*}*@
     </div>
     <div class="div_bottom">
         <hr class="hr_bw" />
@@ -222,6 +230,10 @@
                                 @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
                                     @if (ViewBag.relacionada == "")
+                                    {
+                                        @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "');" })
+                                    }
+                                    else if (ViewBag.ligada)
                                     {
                                         @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "');" })
                                     }
@@ -1102,13 +1114,13 @@
                         </div>
                     }
                     @{List<TAT001.Entities.DOCUMENTOA>
-                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                              ;
+                                                                      archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                          ;
                         if (ViewBag.relacionadan != "" && archivos.Count > 0)
                         {
                             string[] nombrefile;
                             <div class="card-panel">
-                                <h5>Documentos de Soporte @ViewBag.relacionadan</h5>
+                                <h5>Documentos de Soporte</h5>
                                 <div class="row" style="margin-bottom:0">
                                     @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
                                     {

@@ -290,11 +290,33 @@ namespace TAT001.Services
                 ddp.APOYO_EST = dpm.APOYO_EST;
                 ddp.APOYO_REAL = dpm.APOYO_REAL;
                 ddp.CANTIDAD = dpm.CANTIDAD;
+
+                DOCUMENTOP dpp = dOCpADRE.DOCUMENTOPs.Where(x => x.POS == ddp.POS).FirstOrDefault();
+                foreach (DOCUMENTOM dm in dpp.DOCUMENTOMs)
+                {
+                    DOCUMENTOM dmm = new DOCUMENTOM();
+                    dmm.APOYO_EST = dm.APOYO_EST;
+                    dmm.APOYO_REAL = dm.APOYO_REAL;
+                    dmm.MATNR = dm.MATNR;
+                    //dmm.NUM_DOC = dm.NUM_DOC;
+                    dmm.PORC_APOYO = dm.PORC_APOYO;
+                    dmm.POS = dm.POS;
+                    dmm.POS_ID = dm.POS_ID;
+                    dmm.VALORH = dm.VALORH;
+                    dmm.VIGENCIA_A = dm.VIGENCIA_A;
+                    dmm.VIGENCIA_DE = dm.VIGENCIA_DE;
+
+                    ddp.DOCUMENTOMs.Add(dmm);
+                }
+
                 dOCUMENTO.DOCUMENTOPs.Add(ddp);
                 dOCUMENTO.MONTO_DOC_MD += ddp.APOYO_EST;
             }
 
-
+            foreach (DOCUMENTOP dpp in dOCpADRE.DOCUMENTOPs)
+            {
+               
+            }
             ////HTTPPOST
             DOCUMENTO d = new DOCUMENTO();
             if (dOCUMENTO.DOCUMENTO_REF > 0)

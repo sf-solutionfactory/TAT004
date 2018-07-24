@@ -407,6 +407,9 @@
     <Compile Include="Entities\DOCUMENTOF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOL.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTOM.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -752,6 +755,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Calendario445.cs" />
     <Compile Include="Services\Email.cs" />
+    <Compile Include="Services\FormatosC.cs" />
     <Compile Include="Services\ProcesaFlujo2.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
     <Compile Include="Services\Reversa.cs" />
@@ -1063,10 +1067,7 @@
     <Content Include="Views\Solicitudes\Create.cshtml" />
     <Content Include="Views\Listas\getPeriodo.cshtml" />
     <Content Include="Views\Correos\Index.cshtml" />
-    <Content Include="Views\Correos\Create.cshtml" />
-    <Content Include="Views\Correos\Delete.cshtml" />
     <Content Include="Views\Correos\Details.cshtml" />
-    <Content Include="Views\Correos\Edit.cshtml" />
     <Content Include="Views\GALL\Index.cshtml" />
     <Content Include="Views\GALL\Details.cshtml" />
     <Content Include="Views\GALL\Edit.cshtml" />
@@ -1106,6 +1107,7 @@
     <Content Include="Views\CartaD\Details.cshtml" />
     <Content Include="Views\CartaD\Index.cshtml" />
     <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
+    <Content Include="Views\Correos\Recurrente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

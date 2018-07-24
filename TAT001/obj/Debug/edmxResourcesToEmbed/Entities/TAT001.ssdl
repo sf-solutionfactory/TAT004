@@ -792,6 +792,17 @@
     <Property Name="IMPORTE_FAC" Type="decimal" Precision="13" Scale="5" />
     <Property Name="PAYER" Type="nvarchar" MaxLength="10" />
   </EntityType>
+  <EntityType Name="DOCUMENTOL">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FECHAF" Type="date" />
+    <Property Name="MONTO_VENTA" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
       <PropertyRef Name="NUM_DOC" />
@@ -2784,6 +2795,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOL" Type="Self.DOCUMENTOL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOL">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTOM_DOCUMENTOP">
     <End Role="DOCUMENTOP" Type="Self.DOCUMENTOP" Multiplicity="1" />
     <End Role="DOCUMENTOM" Type="Self.DOCUMENTOM" Multiplicity="*" />
@@ -4214,6 +4237,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOBORRN" EntityType="Self.DOCUMENTOBORRN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOBORRP" EntityType="Self.DOCUMENTOBORRP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOL" EntityType="Self.DOCUMENTOL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOM" EntityType="Self.DOCUMENTOM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
@@ -4686,6 +4710,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="Self.FK_DOCUMENTOL_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOL" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
       <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />

@@ -30,9 +30,6 @@ namespace TAT001.Entities
         public string PAYER { get; set; }
         public string DESCRIPCION { get; set; }
 
-
-
-
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }
 }

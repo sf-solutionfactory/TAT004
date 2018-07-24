@@ -563,7 +563,7 @@ $(document).ready(function () {
         if ($(this).is(":checked")) {
             $(".table_sop").css("display", "none");
             $("#file_facturat").css("display", "block");
-            
+
         } else {
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
@@ -1466,13 +1466,14 @@ $(window).on('load', function () {
         //$('#select_dis').formSelect();
     }
 
-    //una factura
     var check = $("#check_facturas").val();
-    if (check === false) {//jemo 11-07-2018
-        $('#check_factura').prop('checked', true);
-    } else {
+    if (check === "false") {//jemo 11-07-2018
         $('#check_factura').prop('checked', false);
+    } else {
+        $('#check_factura').prop('checked', true);
     }
+    $('#check_factura').trigger('change');//jemo 11-07-2018
+
 
 
     $('#gall_id').change(); //Cambio en allowance
@@ -1538,9 +1539,11 @@ $(window).on('load', function () {
     //B20180625 MGC 2018.06.28
     if (borr == "true") {
         //Agregar el monto
-        $('#monto_dis').val(monto);//RSG 09.07.2018
+        //$('#monto_dis').val(monto);//RSG 09.07.2018
         $('#monto_dis').val(toShow(monto));
     }
+    if (isRelacionada())
+        $('#monto_dis').val(toShow(monto));//RSG 09.07.2018
 
     //Agregar el porcentaje de apoyo //B20180625 MGC 2018.06.28
     //Porcentaje y material
@@ -3316,12 +3319,22 @@ function updateFooter() {
         //if ($.isNumeric(col4)) {
         //    total += col4;
         //}
+
+        var tipo = document.getElementById("select_neg").value + document.getElementById("select_dis").value;//RSG 09.07.2018---------------
         //LEJ 09.07.18----------------------------------------I
         if (_decimales === '.') {
-            var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
-            col4 = convertI(col4);
-            if ($.isNumeric(col4)) {
+
+            if (tipo == "PC") {//RSG 09.07.2018---------------
+                var porc = toNum($(this).find("td.PORC input").val());
+                var monto = toNum($("#monto_dis").val());
+                col4 = monto * porc / 100;
                 total += col4;
+            } else {//RSG 09.07.2018---------------
+                var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+                col4 = convertI(col4);
+                if ($.isNumeric(col4)) {
+                    total += col4;
+                }
             }
         }
         else if (_decimales === ',') {
@@ -3334,7 +3347,6 @@ function updateFooter() {
             }
             col4 = convertI(col4);
 
-            var tipo = document.getElementById("select_neg").value + document.getElementById("select_dis").value;//RSG 09.07.2018---------------
             if (tipo == "PC") {
                 var porc = toNum($(this).find("td.PORC input").val());
                 var monto = toNum($("#monto_dis").val());
@@ -4168,7 +4180,8 @@ function evalInfoTab(ret, e) {
     var fact = "";
     //fact = evaluarInfoFacturas();
     //Facuras Add MGC B20180705 2018.07.05 evaluar si es una relacionada
-    if (!isReversa() & !isRelacionada()) {
+    //if (!isReversa() & !isRelacionada()) {
+        if (!isReversa() /*& !isRelacionada()*/) {
         fact = evaluarInfoFacturas();
     }
     if (fact != "") {
@@ -5071,7 +5084,7 @@ function evaluarValInt(v) {
         var is_num = $.isNumeric(n);
         var iNum = parseFloat(n.replace(',', '.'))
         //if (iNum > 0 & is_num == true) {//RSG 09.07.2018
-            if ((iNum > 0 | ligada())& is_num == true) {
+        if ((iNum > 0 | ligada()) & is_num == true) {
             return true;
         } else {
             return false;

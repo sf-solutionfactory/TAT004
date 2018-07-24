@@ -51,7 +51,9 @@ function soportes(tsol, spras) {
             if (data === "") {
                 $("#tabs_rec").addClass("disabled");
             } else {
-                $("#tabs_rec").removeClass("disabled");
+                if (!isRelacionada()) {
+                    $("#tabs_rec").removeClass("disabled");
+                }
             }
         }
     });

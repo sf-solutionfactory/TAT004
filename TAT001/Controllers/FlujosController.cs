@@ -302,10 +302,10 @@ namespace TAT001.Controllers
                 {
                     DOCUMENTOT dts = new DOCUMENTOT();
                     dts.NUM_DOC = f.NUM_DOC;
-                    dts.TSFORM_ID = ts.ID;
+                    dts.TSFORM_ID = ts.POS;
                     try
                     {
-                        string temp = Request.Form["chk-" + ts.ID].ToString();
+                        string temp = Request.Form["chk-" + ts.POS].ToString();
                         if (temp == "on")
                             dts.CHECKS = true;
                         c = true;
