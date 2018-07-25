@@ -133,8 +133,6 @@ namespace TAT001.Controllers
 
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN LA VISTA///////////////////////////////////////
-                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-
                 //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol............
                 bool fact = false;
                 try
@@ -145,311 +143,333 @@ namespace TAT001.Controllers
                 {
 
                 }
-                //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
 
-                //B20180710 MGC 2018.07.18 total es input o text
+                //B20180720P MGC 2018.07.25
                 string trclass = "";
                 bool editmonto = false; //B20180710 MGC 2018.07.18 editar el monto en porcentaje categoría
-
-                foreach (var item in con)
+                var cabeza = new List<string>();
+                bool varligada = Convert.ToBoolean(d.LIGADA);
+                if (varligada != true)
                 {
-                    lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
-                }
+                    var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
-                for (int i = 0; i < lista.Count; i++)
-                {
-                    contadorTabla = 0;
+                    ////B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol............
+                    //bool fact = false;
+                    //try
+                    //{
+                    //    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                    //}
+                    //catch (Exception)
+                    //{
 
-                    DateTime a1 = DateTime.Parse(lista[i].Remove(lista[i].Length / 2));
-                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
+                    //}
+                    //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
 
-                    var con2 = db.DOCUMENTOPs
-                                          .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new {
-                                              x.NUM_DOC,
-                                              x.MATNR,
-                                              x.MATKL,
-                                              y.MAKTX,
-                                              x.MONTO,
-                                              y.PUNIT,
-                                              x.PORC_APOYO,
-                                              x.MONTO_APOYO,
-                                              resta = (x.MONTO - x.MONTO_APOYO),
-                                              x.PRECIO_SUG,
-                                              x.APOYO_EST,
-                                              x.APOYO_REAL
-                                          ,
-                                              x.VOLUMEN_EST,
-                                              x.VOLUMEN_REAL
-                                          }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL
-                                          .ToList();
+                    //B20180710 MGC 2018.07.18 total es input o text
+                    //string trclass = "";//B20180710 MGC 2018.07.18 editar el monto en porcentaje categoría
+                    //bool editmonto = false; //B20180710 MGC 2018.07.18 editar el monto en porcentaje categoría
 
-                    //Definición si la distribución es monto o porcentaje
-                    string porclass = "";//B20180710 MGC 2018.07.18 total es input o text
-                    string totalm = "";//B20180710 MGC 2018.07.18 total es input o text
-                    if (d.TIPO_TECNICO == "M")
+                    foreach (var item in con)
                     {
-                        porclass = " tipom";
-                        totalm = " total";
-                        trclass = " total";
-                    }
-                    else if (d.TIPO_TECNICO == "P")
-                    {
-                        porclass = " tipop";
-                        totalm = " ni";
+                        lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
                     }
 
-                    if (con2.Count > 0)
+                    for (int i = 0; i < lista.Count; i++)
                     {
-                        foreach (var item2 in con2)
-                        {
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            listacuerpoc lc1 = new listacuerpoc();
-                            lc1.val = item2.MATNR.TrimStart('0');
-                            lc1.clase = "ni";
-                            armadoCuerpoTab.Add(lc1);
+                        contadorTabla = 0;
 
-                            listacuerpoc lc2 = new listacuerpoc();
-                            lc2.val = item2.MATKL;
-                            lc2.clase = "ni";
-                            armadoCuerpoTab.Add(lc2);
+                        DateTime a1 = DateTime.Parse(lista[i].Remove(lista[i].Length / 2));
+                        DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
 
-                            listacuerpoc lc3 = new listacuerpoc();
-                            lc3.val = item2.MAKTX;
-                            lc3.clase = "ni";
-                            armadoCuerpoTab.Add(lc3);
+                        var con2 = db.DOCUMENTOPs
+                                              .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                              .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new
+                                              {
+                                                  x.NUM_DOC,
+                                                  x.MATNR,
+                                                  x.MATKL,
+                                                  y.MAKTX,
+                                                  x.MONTO,
+                                                  y.PUNIT,
+                                                  x.PORC_APOYO,
+                                                  x.MONTO_APOYO,
+                                                  resta = (x.MONTO - x.MONTO_APOYO),
+                                                  x.PRECIO_SUG,
+                                                  x.APOYO_EST,
+                                                  x.APOYO_REAL
+                                              ,
+                                                  x.VOLUMEN_EST,
+                                                  x.VOLUMEN_REAL
+                                              }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL
+                                              .ToList();
 
-                            //Costo unitario
-                            listacuerpoc lc4 = new listacuerpoc();
-                            lc4.val = "$" + Math.Round(item2.MONTO, 2).ToString();
-                            lc4.clase = "input_oper numberd input_dc mon" + porclass;
-                            armadoCuerpoTab.Add(lc4);
-
-                            //Porcentaje de apoyo
-                            listacuerpoc lc5 = new listacuerpoc();
-                            lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString() + "%";
-                            lc5.clase = "input_oper numberd porc input_dc" + porclass;
-                            armadoCuerpoTab.Add(lc5);
-
-                            //Apoyo por pieza
-                            listacuerpoc lc6 = new listacuerpoc();
-                            lc6.val = "$" + Math.Round(item2.MONTO_APOYO, 2).ToString();
-                            lc6.clase = "input_oper numberd costoa input_dc mon" + porclass;
-                            armadoCuerpoTab.Add(lc6);
-
-                            //Costo con apoyo
-                            listacuerpoc lc7 = new listacuerpoc();
-                            lc7.val = "$" + Math.Round(item2.resta, 2).ToString();
-                            lc7.clase = "input_oper numberd costoa input_dc mon" + porclass;//Importante costoa para validación en vista
-                            armadoCuerpoTab.Add(lc7);
-
-                            //Precio Sugerido
-                            listacuerpoc lc8 = new listacuerpoc();
-                            lc8.val = "$" + Math.Round(item2.PRECIO_SUG, 2).ToString();
-                            lc8.clase = "input_oper numberd input_dc mon" + porclass;
-                            armadoCuerpoTab.Add(lc8);
-
-                            //Modificación 9 y 10 dependiendo del campo de factura en tsol
-                            //fact = true es real
-                            //Volumen
-                            listacuerpoc lc9 = new listacuerpoc();
-                            if (fact)
-                            {
-                                lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2).ToString();
-                            }
-                            else
-                            {
-                                lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2).ToString();
-                            }
-                            lc9.clase = "input_oper numberd input_dc num" + porclass;
-                            armadoCuerpoTab.Add(lc9);
-
-                            //Apoyo estimado
-                            listacuerpoc lc10 = new listacuerpoc();
-                            if (fact)
-                            {
-                                lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
-                            }
-                            else
-                            {
-                                lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
-                            }
-                            lc10.clase = "input_oper numberd input_dc mon" + totalm + "" + porclass;
-                            armadoCuerpoTab.Add(lc10);
-
-                            contadorTabla++;
-                        }
-                    }
-                    else
-                    {
-                        var con3 = db.DOCUMENTOPs
-                                            .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new {
-                                                x.NUM_DOC,
-                                                x.MATNR,
-                                                x.MATKL,
-                                                y.ID,
-                                                x.MONTO,
-                                                x.PORC_APOYO,
-                                                y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50,
-                                                x.MONTO_APOYO,
-                                                resta = (x.MONTO - x.MONTO_APOYO),
-                                                x.PRECIO_SUG,
-                                                x.APOYO_EST,
-                                                x.APOYO_REAL
-                                            ,
-                                                x.VOLUMEN_EST,
-                                                x.VOLUMEN_REAL
-                                            }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL})
-                                            .ToList();
+                        //Definición si la distribución es monto o porcentaje
+                        string porclass = "";//B20180710 MGC 2018.07.18 total es input o text
+                        string totalm = "";//B20180710 MGC 2018.07.18 total es input o text
                         if (d.TIPO_TECNICO == "M")
                         {
-                            trclass = "total";
+                            porclass = " tipom";
+                            totalm = " total";
+                            trclass = " total";
                         }
                         else if (d.TIPO_TECNICO == "P")
                         {
-                            editmonto = true;
+                            porclass = " tipop";
+                            totalm = " ni";
                         }
 
-
-                        foreach (var item2 in con3)
+                        if (con2.Count > 0)
                         {
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            listacuerpoc lc1 = new listacuerpoc();
-                            lc1.val = "";
-                            lc1.clase = "ni";
-                            armadoCuerpoTab.Add(lc1);
-
-                            listacuerpoc lc2 = new listacuerpoc();
-                            lc2.val = item2.MATKL;
-                            lc2.clase = "ni";
-                            armadoCuerpoTab.Add(lc2);
-
-                            listacuerpoc lc3 = new listacuerpoc();
-                            lc3.val = item2.TXT50;
-                            lc3.clase = "ni";
-                            armadoCuerpoTab.Add(lc3);
-
-                            //Costo unitario
-                            listacuerpoc lc4 = new listacuerpoc();
-                            //lc4.val = Math.Round(item2.MONTO, 2).ToString();
-                            lc4.val = "";
-                            lc4.clase = "ni";
-                            armadoCuerpoTab.Add(lc4);
-
-                            //Porcentaje de apoyo
-                            listacuerpoc lc5 = new listacuerpoc();
-                            //lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
-                            //Definición si la distribución es monto o porcentaje
-                            if (d.TIPO_TECNICO == "M")
+                            foreach (var item2 in con2)
                             {
-                                lc5.val = "";
-                            }
-                            else if (d.TIPO_TECNICO == "P")
-                            {
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                listacuerpoc lc1 = new listacuerpoc();
+                                lc1.val = item2.MATNR.TrimStart('0');
+                                lc1.clase = "ni";
+                                armadoCuerpoTab.Add(lc1);
+
+                                listacuerpoc lc2 = new listacuerpoc();
+                                lc2.val = item2.MATKL;
+                                lc2.clase = "ni";
+                                armadoCuerpoTab.Add(lc2);
+
+                                listacuerpoc lc3 = new listacuerpoc();
+                                lc3.val = item2.MAKTX;
+                                lc3.clase = "ni";
+                                armadoCuerpoTab.Add(lc3);
+
+                                //Costo unitario
+                                listacuerpoc lc4 = new listacuerpoc();
+                                lc4.val = "$" + Math.Round(item2.MONTO, 2).ToString();
+                                lc4.clase = "input_oper numberd input_dc mon" + porclass;
+                                armadoCuerpoTab.Add(lc4);
+
+                                //Porcentaje de apoyo
+                                listacuerpoc lc5 = new listacuerpoc();
                                 lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString() + "%";
+                                lc5.clase = "input_oper numberd porc input_dc" + porclass;
+                                armadoCuerpoTab.Add(lc5);
+
+                                //Apoyo por pieza
+                                listacuerpoc lc6 = new listacuerpoc();
+                                lc6.val = "$" + Math.Round(item2.MONTO_APOYO, 2).ToString();
+                                lc6.clase = "input_oper numberd costoa input_dc mon" + porclass;
+                                armadoCuerpoTab.Add(lc6);
+
+                                //Costo con apoyo
+                                listacuerpoc lc7 = new listacuerpoc();
+                                lc7.val = "$" + Math.Round(item2.resta, 2).ToString();
+                                lc7.clase = "input_oper numberd costoa input_dc mon" + porclass;//Importante costoa para validación en vista
+                                armadoCuerpoTab.Add(lc7);
+
+                                //Precio Sugerido
+                                listacuerpoc lc8 = new listacuerpoc();
+                                lc8.val = "$" + Math.Round(item2.PRECIO_SUG, 2).ToString();
+                                lc8.clase = "input_oper numberd input_dc mon" + porclass;
+                                armadoCuerpoTab.Add(lc8);
+
+                                //Modificación 9 y 10 dependiendo del campo de factura en tsol
+                                //fact = true es real
+                                //Volumen
+                                listacuerpoc lc9 = new listacuerpoc();
+                                if (fact)
+                                {
+                                    lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2).ToString();
+                                }
+                                else
+                                {
+                                    lc9.val = Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2).ToString();
+                                }
+                                lc9.clase = "input_oper numberd input_dc num" + porclass;
+                                armadoCuerpoTab.Add(lc9);
+
+                                //Apoyo estimado
+                                listacuerpoc lc10 = new listacuerpoc();
+                                if (fact)
+                                {
+                                    lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
+                                }
+                                else
+                                {
+                                    lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
+                                }
+                                lc10.clase = "input_oper numberd input_dc mon" + totalm + "" + porclass;
+                                armadoCuerpoTab.Add(lc10);
+
+                                contadorTabla++;
                             }
-
-                            //lc5.clase = "input_oper numberd input_dc";
-                            lc5.clase = "ni";
-                            armadoCuerpoTab.Add(lc5);
-
-                            //Apoyo por pieza
-                            listacuerpoc lc6 = new listacuerpoc();
-                            //lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
-                            lc6.val = "";
-                            lc6.clase = "ni";
-                            armadoCuerpoTab.Add(lc6);
-
-                            //Costo con apoyo
-                            listacuerpoc lc7 = new listacuerpoc();
-                            //lc7.val = Math.Round(item2.resta, 2).ToString();
-                            lc7.val = "";
-                            lc7.clase = "ni";
-                            armadoCuerpoTab.Add(lc7);
-
-                            //Precio Sugerido
-                            listacuerpoc lc8 = new listacuerpoc();
-                            //lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
-                            lc8.val = "";
-                            lc8.clase = "ni";
-                            armadoCuerpoTab.Add(lc8);
-                            //Modificación 9 y 10 dependiendo del campo de factura en tsol
-                            //fact = true es real
-
-                            //Volumen
-                            listacuerpoc lc9 = new listacuerpoc();
-                            if (fact)
-                            {
-                                //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
-                                lc9.val = "";
-                            }
-                            else
-                            {
-                                //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
-                                lc9.val = "";
-                            }
-                            lc9.clase = "ni";
-                            armadoCuerpoTab.Add(lc9);
-
-                            //Apoyo
-                            listacuerpoc lc10 = new listacuerpoc();
-                            if (fact)
-                            {
-                                lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
-                            }
-                            else
-                            {
-                                lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
-                            }
-                            //Definición si la distribución es monto o porcentaje
+                        }
+                        else
+                        {
+                            var con3 = db.DOCUMENTOPs
+                                                .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                                .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new
+                                                {
+                                                    x.NUM_DOC,
+                                                    x.MATNR,
+                                                    x.MATKL,
+                                                    y.ID,
+                                                    x.MONTO,
+                                                    x.PORC_APOYO,
+                                                    y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50,
+                                                    x.MONTO_APOYO,
+                                                    resta = (x.MONTO - x.MONTO_APOYO),
+                                                    x.PRECIO_SUG,
+                                                    x.APOYO_EST,
+                                                    x.APOYO_REAL
+                                                ,
+                                                    x.VOLUMEN_EST,
+                                                    x.VOLUMEN_REAL
+                                                }) //B20180710 MGC 2018.07.10 Se agregó x.VOLUMEN_EST, x.VOLUMEN_REAL})
+                                                .ToList();
                             if (d.TIPO_TECNICO == "M")
                             {
-                                lc10.clase = "input_oper numberd input_dc total cat mon";
+                                trclass = "total";
                             }
                             else if (d.TIPO_TECNICO == "P")
                             {
-                                lc10.clase = "ni";
+                                editmonto = true;
                             }
 
-                            armadoCuerpoTab.Add(lc10);
 
-                            contadorTabla++;
+                            foreach (var item2 in con3)
+                            {
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                listacuerpoc lc1 = new listacuerpoc();
+                                lc1.val = "";
+                                lc1.clase = "ni";
+                                armadoCuerpoTab.Add(lc1);
+
+                                listacuerpoc lc2 = new listacuerpoc();
+                                lc2.val = item2.MATKL;
+                                lc2.clase = "ni";
+                                armadoCuerpoTab.Add(lc2);
+
+                                listacuerpoc lc3 = new listacuerpoc();
+                                lc3.val = item2.TXT50;
+                                lc3.clase = "ni";
+                                armadoCuerpoTab.Add(lc3);
+
+                                //Costo unitario
+                                listacuerpoc lc4 = new listacuerpoc();
+                                //lc4.val = Math.Round(item2.MONTO, 2).ToString();
+                                lc4.val = "";
+                                lc4.clase = "ni";
+                                armadoCuerpoTab.Add(lc4);
+
+                                //Porcentaje de apoyo
+                                listacuerpoc lc5 = new listacuerpoc();
+                                //lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString();
+                                //Definición si la distribución es monto o porcentaje
+                                if (d.TIPO_TECNICO == "M")
+                                {
+                                    lc5.val = "";
+                                }
+                                else if (d.TIPO_TECNICO == "P")
+                                {
+                                    lc5.val = Math.Round(item2.PORC_APOYO, 2).ToString() + "%";
+                                }
+
+                                //lc5.clase = "input_oper numberd input_dc";
+                                lc5.clase = "ni";
+                                armadoCuerpoTab.Add(lc5);
+
+                                //Apoyo por pieza
+                                listacuerpoc lc6 = new listacuerpoc();
+                                //lc6.val = Math.Round(item2.MONTO_APOYO, 2).ToString();
+                                lc6.val = "";
+                                lc6.clase = "ni";
+                                armadoCuerpoTab.Add(lc6);
+
+                                //Costo con apoyo
+                                listacuerpoc lc7 = new listacuerpoc();
+                                //lc7.val = Math.Round(item2.resta, 2).ToString();
+                                lc7.val = "";
+                                lc7.clase = "ni";
+                                armadoCuerpoTab.Add(lc7);
+
+                                //Precio Sugerido
+                                listacuerpoc lc8 = new listacuerpoc();
+                                //lc8.val = Math.Round(item2.PRECIO_SUG, 2).ToString();
+                                lc8.val = "";
+                                lc8.clase = "ni";
+                                armadoCuerpoTab.Add(lc8);
+                                //Modificación 9 y 10 dependiendo del campo de factura en tsol
+                                //fact = true es real
+
+                                //Volumen
+                                listacuerpoc lc9 = new listacuerpoc();
+                                if (fact)
+                                {
+                                    //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString();
+                                    lc9.val = "";
+                                }
+                                else
+                                {
+                                    //lc9.val = Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString();
+                                    lc9.val = "";
+                                }
+                                lc9.clase = "ni";
+                                armadoCuerpoTab.Add(lc9);
+
+                                //Apoyo
+                                listacuerpoc lc10 = new listacuerpoc();
+                                if (fact)
+                                {
+                                    lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2).ToString();
+                                }
+                                else
+                                {
+                                    lc10.val = "$" + Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2).ToString();
+                                }
+                                //Definición si la distribución es monto o porcentaje
+                                if (d.TIPO_TECNICO == "M")
+                                {
+                                    lc10.clase = "input_oper numberd input_dc total cat mon";
+                                }
+                                else if (d.TIPO_TECNICO == "P")
+                                {
+                                    lc10.clase = "ni";
+                                }
+
+                                armadoCuerpoTab.Add(lc10);
+
+                                contadorTabla++;
+                            }
                         }
+                        numfilasTabla.Add(contadorTabla);
                     }
-                    numfilasTabla.Add(contadorTabla);
-                }
 
-                var cabeza = new List<string>();
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault());
-                //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                //fact = true es real
-                //Volumen
-                if (fact)
-                {
-                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
+                    //var cabeza = new List<string>(); //B20180720P MGC 2018.07.25
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault());
+                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                    //fact = true es real
+                    //Volumen
+                    if (fact)
+                    {
+                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
+                    }
+                    else
+                    {
+                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
+                    }
+                    //Apoyo
+                    if (fact)
+                    {
+                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                    }
+                    else
+                    {
+                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
+                    }
                 }
-                else
-                {
-                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
-                }
-                //Apoyo
-                if (fact)
-                {
-                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
-                }
-                else
-                {
-                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
-                }
-
                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN LA VISTA///////////////////////////////////////
@@ -556,6 +576,9 @@ namespace TAT001.Controllers
                 ViewBag.factura = fact;//B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                 ViewBag.trclass = trclass;//B20180710 MGC 2018.07.18 total es input o text
                 ViewBag.editmonto = editmonto;//B20180710 MGC 2018.07.18 total es input o text
+
+                //B20180720P MGC 2018.07.25
+                ViewBag.varligada = varligada;
 
                 return View(cv);
             }
@@ -689,10 +712,6 @@ namespace TAT001.Controllers
 
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
-                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-                //B20180710 MGC 2018.07.17 Modificación de monto
-                //v.monto = monto_enviar; //B20180720P MGC
-                //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
                 bool fact = false;
                 try
                 {
@@ -703,394 +722,416 @@ namespace TAT001.Controllers
 
                 }
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
-
-                foreach (var item in con)
-                {
-                    encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
-                }
-
-                //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
-                //B20180720P MGC Guardar Carta.......................................................................
-                //int pos = 0; //B20180720P MGC Guardar Carta
-
-                //try
-                //{
-                //    pos = db.CARTAs.Where(ca => ca.NUM_DOC == v.num_doc).Max(ca => ca.POS);
-                //    pos++;
-                //}
-                //catch (Exception)
-                //{
-
-                //}
-
-                ////Guardar carta
-                //if (guardar_param == "guardar_param")
-                //{
-                //    CARTA car = new CARTA();
-                //    car.NUM_DOC = v.num_doc;
-                //    car.POS = pos;
-
-                //    try
-                //    {
-                //        db.CARTAs.Add(car);
-                //        db.SaveChanges();
-                //    }
-                //    catch (Exception e)
-                //    {
-
-                //    }
-                //}
-                //B20180720P MGC Guardar Carta......................................................................
-
-                //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
-                int indexp = 1; //B20180710 MGC 2018.07.17
-                for (int i = 0; i < encabezadoFech.Count; i++)
-                {
-                    contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
-                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
-
-                    var con2 = db.DOCUMENTOPs
-                                      .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL, x.VIGENCIA_DE, x.VIGENCIA_AL }) //B20180710 MGC 2018.07.19
-                                      .ToList();
-
-
-                    if (con2.Count > 0)
-                    {
-                        foreach (var item2 in con2)
-                        {
-                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            //armadoCuerpoTab.Add(item2.MATKL);
-                            //armadoCuerpoTab.Add(item2.MAKTX);                        
-                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-
-                            try
-                            {
-                                docmod = v.DOCUMENTOP.Where(x => x.MATNR == item2.MATNR.TrimStart('0')).FirstOrDefault();
-
-                                if (docmod != null)
-                                {
-                                    armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                                    armadoCuerpoTab.Add(item2.MATKL);
-                                    armadoCuerpoTab.Add(item2.MAKTX);
-
-                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
-                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
-                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
-                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
-                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
-                                    ////B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                                    ////fact = true es real
-                                    ////Apoyo
-                                    //if (fact)
-                                    //{
-                                    //    if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
-                                    //}
-                                    //else
-                                    //{
-                                    //    if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
-                                    //}
-                                    //Volumen
-                                    //Volumen
-                                    if (v.apoyoEst_x == true)
-                                    {
-                                        if (fact)
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
-                                            //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
-                                        }
-                                        else
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
-                                            //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                        }
-                                    }
-
-                                    //Apoyo
-                                    if (v.apoyoRea_x == true)
-                                    {
-                                        if (fact)
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
-                                        }
-                                        else
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
-                                        }
-                                    }
-
-                                    //Guardar carta
-                                    if (guardar_param == "guardar_param")
-                                    {
-                                        CARTAP carp = new CARTAP();
-                                        //Armado para registro en bd
-                                        carp.NUM_DOC = v.num_doc;
-                                        carp.POS_ID = pos;
-                                        carp.POS = indexp;
-                                        //carp.MATNR = item2.MATNR.TrimStart('0');
-                                        carp.MATNR = item2.MATNR;
-                                        carp.MATKL = item2.MATKL;
-                                        carp.CANTIDAD = 1;
-                                        if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
-                                        if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
-                                        if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
-                                        if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
-
-                                        //Volumen
-                                        if (v.apoyoEst_x == true)
-                                        {
-                                            if (fact)
-                                            {
-                                                carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
-                                                carp.VOLUMEN_EST = 0;
-                                            }
-                                            else
-                                            {
-                                                carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                                carp.VOLUMEN_REAL = 0;
-                                            }
-                                        }
-
-                                        //Apoyo
-                                        if (v.apoyoRea_x == true)
-                                        {
-                                            if (fact)
-                                            {
-                                                carp.APOYO_REAL = docmod.APOYO_REAL;
-                                                carp.APOYO_EST = 0;
-                                            }
-                                            else
-                                            {
-                                                carp.APOYO_EST = docmod.APOYO_EST;
-                                                carp.APOYO_REAL = 0;
-                                            }
-                                        }
-
-                                        //Fechas
-                                        carp.VIGENCIA_DE = item2.VIGENCIA_DE;
-                                        carp.VIGENCIA_AL = item2.VIGENCIA_AL;
-
-                                        try
-                                        {
-                                            //Guardar en CARPETAP
-                                            db.CARTAPs.Add(carp);
-                                            db.SaveChanges();
-                                            indexp++;
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-
-                                }
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                            contadorTabla++;
-                        }
-                    }
-                    else
-                    {
-                        var con3 = db.DOCUMENTOPs
-                                            .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL, x.VIGENCIA_DE, x.VIGENCIA_AL }) //B20180710 MGC 2018.07.19
-                                            .ToList();
-
-                        foreach (var item2 in con3)
-                        {
-                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            //armadoCuerpoTab.Add("");
-                            //armadoCuerpoTab.Add(item2.MATKL);
-                            //armadoCuerpoTab.Add(item2.TXT50);
-                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-
-                            try
-                            {
-                                docmod = v.DOCUMENTOP.Where(x => x.MATKL_ID == item2.MATKL).FirstOrDefault();
-
-                                if (docmod != null)
-                                {
-                                    armadoCuerpoTab.Add("");
-                                    armadoCuerpoTab.Add(item2.MATKL);
-                                    armadoCuerpoTab.Add(item2.TXT50);
-
-                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
-                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
-                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
-                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
-                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
-                                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                                    //fact = true es real
-                                    //Apoyo
-                                    //if (fact)
-                                    //{
-                                    //    if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
-                                    //}
-                                    //else
-                                    //{
-                                    //    if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
-                                    //}
-
-                                    //Volumen
-                                    if (v.apoyoEst_x == true)
-                                    {
-                                        if (fact)
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
-                                            //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
-                                        }
-                                        else
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
-                                            //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                        }
-                                    }
-
-                                    //Apoyo
-                                    if (v.apoyoRea_x == true)
-                                    {
-                                        if (fact)
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
-                                        }
-                                        else
-                                        {
-                                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
-                                        }
-                                    }
-
-
-                                    //Guardar carta
-                                    if (guardar_param == "guardar_param")
-                                    {
-                                        CARTAP carp = new CARTAP();
-                                        //Armado para registro en bd
-                                        carp.NUM_DOC = v.num_doc;
-                                        carp.POS_ID = pos;
-                                        carp.POS = indexp;
-                                        carp.MATNR = "";
-                                        carp.MATKL = item2.MATKL;
-                                        carp.CANTIDAD = 1;
-                                        if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
-                                        if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
-                                        if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
-                                        if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
-
-                                        //Volumen
-                                        if (v.apoyoEst_x == true)
-                                        {
-                                            if (fact)
-                                            {
-                                                carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
-                                                carp.VOLUMEN_EST = 0;
-                                            }
-                                            else
-                                            {
-                                                carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                                carp.VOLUMEN_REAL = 0;
-                                            }
-                                        }
-
-                                        //Apoyo
-                                        if (v.apoyoRea_x == true)
-                                        {
-                                            if (fact)
-                                            {
-                                                carp.APOYO_REAL = docmod.APOYO_REAL;
-                                                carp.APOYO_EST = 0;
-                                            }
-                                            else
-                                            {
-                                                carp.APOYO_REAL = 0;
-                                                carp.APOYO_EST = docmod.APOYO_EST;
-                                            }
-                                        }
-
-                                        //Fechas
-                                        carp.VIGENCIA_DE = item2.VIGENCIA_DE;
-                                        carp.VIGENCIA_AL = item2.VIGENCIA_AL;
-
-                                        try
-                                        {
-                                            //Guardar en CARPETAP
-                                            db.CARTAPs.Add(carp);
-                                            db.SaveChanges();
-                                            indexp++;
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                            contadorTabla++;
-                        }
-                    }
-                    numfilasTab.Add(contadorTabla);
-                }
-
                 var cabeza = new List<string>();
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
-                if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
-                //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                //fact = true es real
-                //Volumen
-                if (v.apoyoEst_x == true)
+                bool varligada = Convert.ToBoolean(d.LIGADA);
+                if (varligada != true)
                 {
-                    if (fact)
-                    {
-                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
-                    }
-                    else
-                    {
-                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
-                    }
-                }
-                //Apoyo
-                if (v.apoyoRea_x == true)
-                {
-                    if (fact)
-                    {
-                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
-                    }
-                    else
-                    {
-                        cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
-                    }
-                }
+                    var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+                    //B20180710 MGC 2018.07.17 Modificación de monto
+                    //v.monto = monto_enviar; //B20180720P MGC
+                    //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
+                    //bool fact = false;
+                    //try
+                    //{
+                    //    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                    //}
+                    //catch (Exception)
+                    //{
 
+                    //}
+                    ////B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
+
+                    foreach (var item in con)
+                    {
+                        encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                    }
+
+                    //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
+                    //B20180720P MGC Guardar Carta.......................................................................
+                    //int pos = 0; //B20180720P MGC Guardar Carta
+
+                    //try
+                    //{
+                    //    pos = db.CARTAs.Where(ca => ca.NUM_DOC == v.num_doc).Max(ca => ca.POS);
+                    //    pos++;
+                    //}
+                    //catch (Exception)
+                    //{
+
+                    //}
+
+                    ////Guardar carta
+                    //if (guardar_param == "guardar_param")
+                    //{
+                    //    CARTA car = new CARTA();
+                    //    car.NUM_DOC = v.num_doc;
+                    //    car.POS = pos;
+
+                    //    try
+                    //    {
+                    //        db.CARTAs.Add(car);
+                    //        db.SaveChanges();
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+
+                    //    }
+                    //}
+                    //B20180720P MGC Guardar Carta......................................................................
+
+                    //B20180710 MGC 2018.07.19 Provisional obtener la siguiente posición para carta......................
+                    int indexp = 1; //B20180710 MGC 2018.07.17
+                    for (int i = 0; i < encabezadoFech.Count; i++)
+                    {
+                        contadorTabla = 0;
+                        DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
+                        DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
+
+                        var con2 = db.DOCUMENTOPs
+                                          .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL, x.VIGENCIA_DE, x.VIGENCIA_AL }) //B20180710 MGC 2018.07.19
+                                          .ToList();
+
+
+                        if (con2.Count > 0)
+                        {
+                            foreach (var item2 in con2)
+                            {
+                                //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                //armadoCuerpoTab.Add(item2.MATKL);
+                                //armadoCuerpoTab.Add(item2.MAKTX);                        
+                                //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+
+                                try
+                                {
+                                    docmod = v.DOCUMENTOP.Where(x => x.MATNR == item2.MATNR.TrimStart('0')).FirstOrDefault();
+
+                                    if (docmod != null)
+                                    {
+                                        armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                        armadoCuerpoTab.Add(item2.MATKL);
+                                        armadoCuerpoTab.Add(item2.MAKTX);
+
+                                        if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                        if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                        if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                        if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                        if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                        ////B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                        ////fact = true es real
+                                        ////Apoyo
+                                        //if (fact)
+                                        //{
+                                        //    if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                        //}
+                                        //else
+                                        //{
+                                        //    if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                        //}
+                                        //Volumen
+                                        //Volumen
+                                        if (v.apoyoEst_x == true)
+                                        {
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
+                                                //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
+                                                //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                            }
+                                        }
+
+                                        //Apoyo
+                                        if (v.apoyoRea_x == true)
+                                        {
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
+                                            }
+                                        }
+
+                                        //Guardar carta
+                                        if (guardar_param == "guardar_param")
+                                        {
+                                            CARTAP carp = new CARTAP();
+                                            //Armado para registro en bd
+                                            carp.NUM_DOC = v.num_doc;
+                                            carp.POS_ID = pos;
+                                            carp.POS = indexp;
+                                            //carp.MATNR = item2.MATNR.TrimStart('0');
+                                            carp.MATNR = item2.MATNR;
+                                            carp.MATKL = item2.MATKL;
+                                            carp.CANTIDAD = 1;
+                                            if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
+                                            if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
+                                            if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
+                                            if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+
+                                            //Volumen
+                                            if (v.apoyoEst_x == true)
+                                            {
+                                                if (fact)
+                                                {
+                                                    carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                                    carp.VOLUMEN_EST = 0;
+                                                }
+                                                else
+                                                {
+                                                    carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                                    carp.VOLUMEN_REAL = 0;
+                                                }
+                                            }
+
+                                            //Apoyo
+                                            if (v.apoyoRea_x == true)
+                                            {
+                                                if (fact)
+                                                {
+                                                    carp.APOYO_REAL = docmod.APOYO_REAL;
+                                                    carp.APOYO_EST = 0;
+                                                }
+                                                else
+                                                {
+                                                    carp.APOYO_EST = docmod.APOYO_EST;
+                                                    carp.APOYO_REAL = 0;
+                                                }
+                                            }
+
+                                            //Fechas
+                                            carp.VIGENCIA_DE = item2.VIGENCIA_DE;
+                                            carp.VIGENCIA_AL = item2.VIGENCIA_AL;
+
+                                            try
+                                            {
+                                                //Guardar en CARPETAP
+                                                db.CARTAPs.Add(carp);
+                                                db.SaveChanges();
+                                                indexp++;
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+                                contadorTabla++;
+                            }
+                        }
+                        else
+                        {
+                            var con3 = db.DOCUMENTOPs
+                                                .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                                .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL, x.VIGENCIA_DE, x.VIGENCIA_AL }) //B20180710 MGC 2018.07.19
+                                                .ToList();
+
+                            foreach (var item2 in con3)
+                            {
+                                //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                //armadoCuerpoTab.Add("");
+                                //armadoCuerpoTab.Add(item2.MATKL);
+                                //armadoCuerpoTab.Add(item2.TXT50);
+                                //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+
+                                try
+                                {
+                                    docmod = v.DOCUMENTOP.Where(x => x.MATKL_ID == item2.MATKL).FirstOrDefault();
+
+                                    if (docmod != null)
+                                    {
+                                        armadoCuerpoTab.Add("");
+                                        armadoCuerpoTab.Add(item2.MATKL);
+                                        armadoCuerpoTab.Add(item2.TXT50);
+
+                                        if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                        if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                        if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                        if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                        if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                        //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                        //fact = true es real
+                                        //Apoyo
+                                        //if (fact)
+                                        //{
+                                        //    if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                        //}
+                                        //else
+                                        //{
+                                        //    if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                        //}
+
+                                        //Volumen
+                                        if (v.apoyoEst_x == true)
+                                        {
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
+                                                //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
+                                                //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                            }
+                                        }
+
+                                        //Apoyo
+                                        if (v.apoyoRea_x == true)
+                                        {
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
+                                            }
+                                        }
+
+
+                                        //Guardar carta
+                                        if (guardar_param == "guardar_param")
+                                        {
+                                            CARTAP carp = new CARTAP();
+                                            //Armado para registro en bd
+                                            carp.NUM_DOC = v.num_doc;
+                                            carp.POS_ID = pos;
+                                            carp.POS = indexp;
+                                            carp.MATNR = "";
+                                            carp.MATKL = item2.MATKL;
+                                            carp.CANTIDAD = 1;
+                                            if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
+                                            if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
+                                            if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
+                                            if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+
+                                            //Volumen
+                                            if (v.apoyoEst_x == true)
+                                            {
+                                                if (fact)
+                                                {
+                                                    carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                                    carp.VOLUMEN_EST = 0;
+                                                }
+                                                else
+                                                {
+                                                    carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                                    carp.VOLUMEN_REAL = 0;
+                                                }
+                                            }
+
+                                            //Apoyo
+                                            if (v.apoyoRea_x == true)
+                                            {
+                                                if (fact)
+                                                {
+                                                    carp.APOYO_REAL = docmod.APOYO_REAL;
+                                                    carp.APOYO_EST = 0;
+                                                }
+                                                else
+                                                {
+                                                    carp.APOYO_REAL = 0;
+                                                    carp.APOYO_EST = docmod.APOYO_EST;
+                                                }
+                                            }
+
+                                            //Fechas
+                                            carp.VIGENCIA_DE = item2.VIGENCIA_DE;
+                                            carp.VIGENCIA_AL = item2.VIGENCIA_AL;
+
+                                            try
+                                            {
+                                                //Guardar en CARPETAP
+                                                db.CARTAPs.Add(carp);
+                                                db.SaveChanges();
+                                                indexp++;
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+                                contadorTabla++;
+                            }
+                        }
+                        numfilasTab.Add(contadorTabla);
+                    }
+
+                    //var cabeza = new List<string>(); //B20180720P MGC 2018.07.25
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
+                    if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                    //fact = true es real
+                    //Volumen
+                    if (v.apoyoEst_x == true)
+                    {
+                        if (fact)
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                        else
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                    }
+                    //Apoyo
+                    if (v.apoyoRea_x == true)
+                    {
+                        if (fact)
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                        else
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                    }
+                }
+                else
+                {
+                    v.monto_x = false;//B20180720P MGC 2018.07.25
+                }
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN PDF///////////////////////////////////////
@@ -1159,9 +1200,6 @@ namespace TAT001.Controllers
                 DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
-                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-                //B20180710 MGC 2018.07.17 Modificación de monto
-                v.monto = monto_enviar;
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
                 bool fact = false;
                 try
@@ -1173,163 +1211,187 @@ namespace TAT001.Controllers
 
                 }
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
-
-                foreach (var item in con)
+                //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
+                v.monto = monto_enviar;
+                var cabeza = new List<string>();
+                bool varligada = Convert.ToBoolean(d.LIGADA);
+                if (varligada != true)
                 {
-                    encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
-                }
+                    var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+                    //B20180710 MGC 2018.07.17 Modificación de monto
+                    //v.monto = monto_enviar;
+                    ////B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol............
+                    //bool fact = false;
+                    //try
+                    //{
+                    //    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                    //}
+                    //catch (Exception)
+                    //{
 
-                for (int i = 0; i < encabezadoFech.Count; i++)
-                {
-                    contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
-                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
+                    //}
+                    ////B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
 
-                    var con2 = db.DOCUMENTOPs
-                                      .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                      .ToList();
-
-
-                    if (con2.Count > 0)
+                    foreach (var item in con)
                     {
-                        foreach (var item2 in con2)
+                        encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                    }
+
+                    for (int i = 0; i < encabezadoFech.Count; i++)
+                    {
+                        contadorTabla = 0;
+                        DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
+                        DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
+
+                        var con2 = db.DOCUMENTOPs
+                                          .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                          .ToList();
+
+
+                        if (con2.Count > 0)
                         {
-                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            //armadoCuerpoTab.Add(item2.MATKL);
-                            //armadoCuerpoTab.Add(item2.MAKTX);                        
-                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-
-                            try
+                            foreach (var item2 in con2)
                             {
-                                docmod = v.DOCUMENTOP.Where(x => x.MATNR == item2.MATNR.TrimStart('0')).FirstOrDefault();
+                                //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                //armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                //armadoCuerpoTab.Add(item2.MATKL);
+                                //armadoCuerpoTab.Add(item2.MAKTX);                        
+                                //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
 
-                                if (docmod != null)
+                                try
                                 {
-                                    armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                                    armadoCuerpoTab.Add(item2.MATKL);
-                                    armadoCuerpoTab.Add(item2.MAKTX);
+                                    docmod = v.DOCUMENTOP.Where(x => x.MATNR == item2.MATNR.TrimStart('0')).FirstOrDefault();
 
-                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
-                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
-                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
-                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
-                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
-                                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                                    //fact = true es real
-                                    //Apoyo
-                                    if (fact)
+                                    if (docmod != null)
                                     {
-                                        if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
-                                    }
-                                    else
-                                    {
-                                        if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                        armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                        armadoCuerpoTab.Add(item2.MATKL);
+                                        armadoCuerpoTab.Add(item2.MAKTX);
+
+                                        if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                        if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                        if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                        if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                        if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                        //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                        //fact = true es real
+                                        //Apoyo
+                                        if (fact)
+                                        {
+                                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                        }
+                                        else
+                                        {
+                                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                        }
                                     }
                                 }
-                            }
-                            catch (Exception e)
-                            {
+                                catch (Exception e)
+                                {
 
+                                }
+                                contadorTabla++;
                             }
-                            contadorTabla++;
                         }
+                        else
+                        {
+                            var con3 = db.DOCUMENTOPs
+                                                .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                                .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                                .ToList();
+
+                            foreach (var item2 in con3)
+                            {
+                                //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
+                                //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
+                                //armadoCuerpoTab.Add("");
+                                //armadoCuerpoTab.Add(item2.MATKL);
+                                //armadoCuerpoTab.Add(item2.TXT50);
+                                //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+
+                                try
+                                {
+                                    docmod = v.DOCUMENTOP.Where(x => x.MATKL_ID == item2.MATKL).FirstOrDefault();
+
+                                    if (docmod != null)
+                                    {
+                                        armadoCuerpoTab.Add("");
+                                        armadoCuerpoTab.Add(item2.MATKL);
+                                        armadoCuerpoTab.Add(item2.TXT50);
+
+                                        if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
+                                        if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
+                                        if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
+                                        if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
+                                        if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
+                                        //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                                        //fact = true es real
+                                        //Apoyo
+                                        if (fact)
+                                        {
+                                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                        }
+                                        else
+                                        {
+                                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+                                contadorTabla++;
+                            }
+                        }
+                        numfilasTab.Add(contadorTabla);
+                    }
+
+                    //var cabeza = new List<string>();//B20180720P MGC 2018.07.25
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
+                    if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
+                    //fact = true es real
+                    //Apoyo
+                    if (fact)
+                    {
+                        if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
                     }
                     else
                     {
-                        var con3 = db.DOCUMENTOPs
-                                            .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                            .ToList();
-
-                        foreach (var item2 in con3)
-                        {
-                            //B20180710 MGC 2018.07.17 Pasar los documentos almacenados pero con los nuevos valores editados
-                            //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
-                            //armadoCuerpoTab.Add("");
-                            //armadoCuerpoTab.Add(item2.MATKL);
-                            //armadoCuerpoTab.Add(item2.TXT50);
-                            //if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            //if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            //if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            //if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-
-                            try
-                            {
-                                docmod = v.DOCUMENTOP.Where(x => x.MATKL_ID == item2.MATKL).FirstOrDefault();
-
-                                if (docmod != null)
-                                {
-                                    armadoCuerpoTab.Add("");
-                                    armadoCuerpoTab.Add(item2.MATKL);
-                                    armadoCuerpoTab.Add(item2.TXT50);
-
-                                    if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO, 2).ToString()); }
-                                    if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PORC_APOYO, 2).ToString()); }
-                                    if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.MONTO_APOYO, 2).ToString()); }
-                                    if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((docmod.MONTO - docmod.MONTO_APOYO), 2).ToString()); }
-                                    if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(docmod.PRECIO_SUG, 2).ToString()); }
-                                    //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                                    //fact = true es real
-                                    //Apoyo
-                                    if (fact)
-                                    {
-                                        if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
-                                    }
-                                    else
-                                    {
-                                        if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                            contadorTabla++;
-                        }
+                        if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
                     }
-                    numfilasTab.Add(contadorTabla);
-                }
-
-                var cabeza = new List<string>();
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
-                if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
-                //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
-                //fact = true es real
-                //Apoyo
-                if (fact)
-                {
-                    if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
                 }
                 else
                 {
-                    if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    v.monto_x = false;//B20180720P MGC 2018.07.25
                 }
+                    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN PDF///////////////////////////////////////
-                var cabeza2 = new List<string>();
+                    /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN PDF///////////////////////////////////////
+                    var cabeza2 = new List<string>();
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "posC2").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "tipoC2").Select(x => x.TEXTO).FirstOrDefault());
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "fechaC2").Select(x => x.TEXTO).FirstOrDefault());

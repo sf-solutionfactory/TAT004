@@ -208,7 +208,8 @@
                 @*AQUI VA LA TABLA*@
                 @{ int tablas = Model.listaFechas.Count; }@*SE RECIBE LA N CANTIDAD DE TABLAS A GENERAR*@
                 @{ int cols = Model.numColEncabezado.Count(); } @*SE RECIBE LA CANTIDAD DE COLUMNAS A CONTENER LA TABLA*@
-                @{ int tamaño = 600 / cols; }
+                @{ int tamaño = 0;
+                    try { tamaño = 600 / cols; } catch (Exception) { tamaño = 0; } }@*//B20180720P MGC 2018.07.25*@
                 @{int pos = 0; }
                 <input id="isfactura" name="isfactura" type="hidden" value="@ViewBag.factura"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                 @for (int a = 0; a < tablas; a++)
@@ -428,39 +429,43 @@
                     </tbody>
                 </table>
                 @*Tabla para ser enviada siempre está oculta*@
-                <div class="row">
-                    <div class="col l8 m8 s12">
-                        <div class="col l1 s1">
-                            <label>
-                                <input type="checkbox" name="monto_x" value="true" id="monto_x" @Html.Raw((Model.monto_x) ? "checked=\"checked\"" : "") />
-                                <span style="height:0"></span>
-                            </label>
-                        </div>
-                        <div class="input-field col l10 m10" style="margin-bottom:0;">
-                            @Html.HiddenFor(model => model.monto)
-                            @Html.HiddenFor(model => model.moneda)
-                            @{ string monto = @ViewBag.mon;
-                                bool editmonto = @ViewBag.editmonto;
-                                string editmontos = editmonto + "";
-                                editmontos = editmontos.ToLower();}
-                            <input id="monto_texto" name="monto_texto" type="hidden" value="@monto">
-                            <input id="monto_enviar" name="monto_enviar" type="hidden" value="">
-                            <input id="guardar_param" name="guardar_param" type="hidden" value="">
-                            <input id="editmonto_texto" name="editmonto_texto" type="hidden" value="@editmontos">@*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
-                            @{ if (editmonto == false)
-                                {
-                                    @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
-                                }
-                                else
-                                {
-                                    @Html.EditorFor(model => model.monto, new { htmlAttributes = new { @id = "ed_monto" } })
-                                    @Html.LabelFor(model => model.monto, monto + " (" + Model.moneda + ")", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+                @*//B20180720P MGC 2018.07.25*@
+                @if (ViewBag.varligada != true)
+                {
+                    <div class="row">
+                        <div class="col l8 m8 s12">
+                            <div class="col l1 s1">
+                                <label>
+                                    <input type="checkbox" name="monto_x" value="true" id="monto_x" @Html.Raw((Model.monto_x) ? "checked=\"checked\"" : "") />
+                                    <span style="height:0"></span>
+                                </label>
+                            </div>
+                            <div class="input-field col l10 m10" style="margin-bottom:0;">
+                                @Html.HiddenFor(model => model.monto)
+                                @Html.HiddenFor(model => model.moneda)
+                                @{ string monto = @ViewBag.mon;
+                                    bool editmonto = @ViewBag.editmonto;
+                                    string editmontos = editmonto + "";
+                                    editmontos = editmontos.ToLower();}
+                                <input id="monto_texto" name="monto_texto" type="hidden" value="@monto">
+                                <input id="monto_enviar" name="monto_enviar" type="hidden" value="">
+                                <input id="guardar_param" name="guardar_param" type="hidden" value="">
+                                <input id="editmonto_texto" name="editmonto_texto" type="hidden" value="@editmontos">@*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                                @{ if (editmonto == false)
+                                    {
+                                        @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.monto, new { htmlAttributes = new { @id = "ed_monto" } })
+                                        @Html.LabelFor(model => model.monto, monto + " (" + Model.moneda + ")", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
 
+                                    }
                                 }
-                            }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 <br />
                 <br />
 
