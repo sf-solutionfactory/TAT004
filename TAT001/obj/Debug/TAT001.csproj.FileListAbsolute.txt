@@ -497,3 +497,4 @@ C:\Users\SF\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CoreCompileIn
 C:\Users\SF\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csproj.CopyComplete
 C:\Users\SF\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.dll
 C:\Users\SF\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.pdb
+C:\Users\SF\Documents\GitHub\TAT004\TAT001\obj\Debug\TAT001.csprojAssemblyReference.cache

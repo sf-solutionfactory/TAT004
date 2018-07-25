@@ -1430,7 +1430,7 @@ namespace TAT001.Controllers
 
         //B20180720P MGC 2018.07.23
         // GET: Lista de cartas
-        public ActionResult Lista(decimal id)
+        public ActionResult Lista(decimal id, string swf)
         {
             int pagina = 230; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -1456,6 +1456,10 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
                 TempData["id"] = id;
+
+                //B20180720P MGC 2018.07.25 Obtener el statuswf para reedireccionar a d o a v
+                TempData["ESTATUS_WF"] = swf;
+
                 var lista = db.CARTAs.Where(a => a.NUM_DOC.Equals(id)).ToList();
                 return View(lista);
             }
