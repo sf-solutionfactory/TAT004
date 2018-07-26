@@ -148,6 +148,8 @@
     <Property Name="PRECIOX" Type="Boolean" />
     <Property Name="APOYO_ESTX" Type="Boolean" />
     <Property Name="APOYO_REAX" Type="Boolean" />
+    <Property Name="VOLUMEN_ESTX" Type="Boolean" />
+    <Property Name="VOLUMEN_REAX" Type="Boolean" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>

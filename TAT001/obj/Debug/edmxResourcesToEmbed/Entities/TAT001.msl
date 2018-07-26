@@ -69,6 +69,8 @@
     <EntitySetMapping Name="CARTAs">
       <EntityTypeMapping TypeName="TAT001Model.CARTA">
         <MappingFragment StoreEntitySet="CARTA">
+          <ScalarProperty Name="VOLUMEN_REAX" ColumnName="VOLUMEN_REAX" />
+          <ScalarProperty Name="VOLUMEN_ESTX" ColumnName="VOLUMEN_ESTX" />
           <ScalarProperty Name="APOYO_REAX" ColumnName="APOYO_REAX" />
           <ScalarProperty Name="APOYO_ESTX" ColumnName="APOYO_ESTX" />
           <ScalarProperty Name="PRECIOX" ColumnName="PRECIOX" />

@@ -215,8 +215,15 @@ namespace TAT001.Models
                     int tablas = v.listaFechas.Count; //SE RECIBE LA N CANTIDAD DE TABLAS A GENERAR
                     int cols = v.numColEncabezado.Count; // SE RECIBE LA CANTIDAD DE COLUMNAS A CONTENER LA TABLA
                     int tamaño = 0;
-                    tamaño = 600 / cols;
-
+                    //B20180726 MGC 2018.07.26
+                    try
+                    {
+                        tamaño = 600 / cols;
+                    }
+                    catch (Exception)
+                    {
+                        tamaño = 0;
+                    }
                     for (int a = 0; a < tablas; a++)
                     {
                         PdfPTable tablasN = new PdfPTable(cols);
