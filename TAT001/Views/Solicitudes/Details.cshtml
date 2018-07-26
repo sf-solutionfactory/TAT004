@@ -1377,7 +1377,7 @@ else
                                                                 @miCi.TSOL_ID
                                                             </td>
                                                             <td>
-                                                                @miCi.NUM_DOC
+                                                                <a href="@Url.Action("Details",new { id = miCi.NUM_DOC})">@miCi.NUM_DOC</a> 
                                                             </td>
                                                             <td>
                                                                 @miCi.DOCUMENTO_SAP
@@ -1396,8 +1396,8 @@ else
                                                 </tbody>
                                             </table>
                                         }
-                                        else
-                                        {
+                                                                            else
+                                                                            {
                                             <table class="table striped" id="table" style="width:100%; font-size:12px;">
                                                 <thead>
                                                     <tr class="header">

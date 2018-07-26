@@ -58,7 +58,7 @@
         </div>
         <div class="col s12 m4 l2">
             <div class="input-field col s6">
-                @Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })
+                @*@Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })*@
                 @Html.LabelFor(model => model.USUARIO.BUNIT, "BU", new { @id = "lbl_bu" })
             </div>
             <div class="input-field col s6">
@@ -1601,7 +1601,8 @@
                                             @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
                                         </td>
                                         <td>
-                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)
+                                            @*@Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)*@
+                                            <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6");"   />
                                         </td>
                                         <td>
                                             @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)

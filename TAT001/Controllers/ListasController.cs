@@ -276,19 +276,42 @@ namespace TAT001.Controllers
             TAT001Entities db = new TAT001Entities();
             //var c = db.DOCUMENTOes.Where(a => a.DOCUMENTO_REF.Equals(num_doc));
             decimal num = (decimal.Parse(num_doc));
-            var c = (from D in db.DOCUMENTOes
-                     join T in db.TSOLTs
-                     on D.TSOL_ID equals T.TSOL_ID
-                     join TA in db.TALLs
-                     on D.TALL_ID equals TA.ID
-                     join G in db.GALLTs
-                     on TA.GALL_ID equals G.GALL_ID
-                     where D.DOCUMENTO_REF == num
-                     & T.SPRAS_ID == spras
-                     & G.SPRAS_ID == spras
-                     select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
-            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
-            return cc;
+            DOCUMENTO d = db.DOCUMENTOes.Find(num);
+            if (d.DOCUMENTORECs.Count > 0)
+            {
+                var c = (from DR in db.DOCUMENTORECs
+                         join D in db.DOCUMENTOes
+                         on DR.DOC_REF  equals D.NUM_DOC
+                         join T in db.TSOLTs
+                         on D.TSOL_ID equals T.TSOL_ID
+                         join TA in db.TALLs
+                         on D.TALL_ID equals TA.ID
+                         join G in db.GALLTs
+                         on TA.GALL_ID equals G.GALL_ID
+                         where DR.NUM_DOC == num
+                         & T.SPRAS_ID == spras
+                         & G.SPRAS_ID == spras
+                         & D.NUM_DOC != 0
+                         select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
+                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                return cc;
+            }
+            else
+            {
+                var c = (from D in db.DOCUMENTOes
+                         join T in db.TSOLTs
+                         on D.TSOL_ID equals T.TSOL_ID
+                         join TA in db.TALLs
+                         on D.TALL_ID equals TA.ID
+                         join G in db.GALLTs
+                         on TA.GALL_ID equals G.GALL_ID
+                         where D.DOCUMENTO_REF == num
+                         & T.SPRAS_ID == spras
+                         & G.SPRAS_ID == spras
+                         select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
+                JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+                return cc;
+            }
         }
         [HttpGet]
         public JsonResult Paises(string bukrs)

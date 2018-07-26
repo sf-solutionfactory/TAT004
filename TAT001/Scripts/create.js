@@ -563,11 +563,12 @@ $(document).ready(function () {
         if ($(this).is(":checked")) {
             $(".table_sop").css("display", "none");
             $("#file_facturat").css("display", "block");
+            $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
 
         } else {
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
-            //$("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
+            $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
             //$("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
             //Add row 
             addRowSop(table);
@@ -3071,7 +3072,8 @@ function updateTableCathtml(t, j, index, p, v) {
         if (i == j) {
             //$(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));//RSG 09.07.2018
             //$(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
-            $(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
+            ////$(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
+            $(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(5)));
             $(this).find("td:eq(" + va + ") input").val(toShow(v.toFixed(2)));
         }
         i++;

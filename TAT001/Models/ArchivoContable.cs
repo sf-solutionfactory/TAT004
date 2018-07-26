@@ -571,7 +571,7 @@ namespace TAT001.Models
                                     materi = docm[j].MATNR;
                                     material = db.MATERIALs.Where(x => x.ID == materi).First();
                                     grupos = conp[i].MATERIALGP.Split('+');
-                                    grupo = grupos.Where(x => x == material.MATERIALGP_ID).First();
+                                    grupo = grupos.Where(x => x == material.MATERIALGP_ID).FirstOrDefault();
                                     if (String.IsNullOrEmpty(grupo) == false)
                                     {
                                         conta.TAX_CODE = conp[i].TAXCODEGP;

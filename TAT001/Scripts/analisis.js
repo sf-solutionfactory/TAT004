@@ -1,5 +1,7 @@
 ﻿
 function asignarSolicitud(num, num2) {
+    num = toNum(num);
+    num2 = toNum(num2);
     $.ajax({
         type: "POST",
         url: 'getSolicitud',

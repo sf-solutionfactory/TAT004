@@ -18,15 +18,17 @@ for (var i = 0; i < porc.length; i++) {
 }
 
 function toNum(string) {
-    if (string !== "" && string != undefined) {
-        var _miles = $("#miles").val();
-        var _decimales = $("#dec").val();
-        string = string.replace('$', '');
-        string = string.replace('%', '');
-        string = string.replace(_miles, '');
-        string = string.replace(_decimales, '.');
-    } else {
-        string = "0.00";
+    if (!$.isNumeric(string)) {
+        if (string !== "" && string != undefined) {
+            var _miles = $("#miles").val();
+            var _decimales = $("#dec").val();
+            string = string.replace('$', '');
+            string = string.replace('%', '');
+            string = string.replace(_miles, '');
+            string = string.replace(_decimales, '.');
+        } else {
+            string = "0.00";
+        }
     }
     return string;
 }

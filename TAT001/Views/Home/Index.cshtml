@@ -349,9 +349,18 @@
                     <tr>
                         @if (item.TSOL.PADRE)
                         {
-                            <td class=" details-control" style="cursor:pointer">
-                                <i class="material-icons">add</i>
-                            </td>
+                            if (item.DOCUMENTORECs.Count > 0)
+                            {
+                                <td class=" details-control" style="cursor:pointer">
+                                    <i class="material-icons">expand_more</i>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class=" details-control" style="cursor:pointer">
+                                    <i class="material-icons">add</i>
+                                </td>
+                            }
                         }
                         else
                         {

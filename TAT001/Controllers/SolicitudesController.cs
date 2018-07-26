@@ -1951,7 +1951,7 @@ namespace TAT001.Controllers
                                     }
                                     else if (select_neg == "P")
                                     {
-                                        if(d.LIGADA == true)
+                                        if (d.LIGADA == true)
                                         {
                                             docP.APOYO_REAL = 0;
                                             docP.APOYO_EST = 0;
@@ -1983,9 +1983,9 @@ namespace TAT001.Controllers
                                                         docM.VIGENCIA_DE = dm.VIGENCIA_DE;
 
 
-                                                        docP.APOYO_REAL += docM.APOYO_REAL;
-                                                        docP.APOYO_EST += docM.APOYO_EST;
-                                                        docP.PORC_APOYO += (decimal)docM.PORC_APOYO;
+                                                        //docP.APOYO_REAL += docM.APOYO_REAL;
+                                                        //docP.APOYO_EST += docM.APOYO_EST;
+                                                        //docP.PORC_APOYO += (decimal)docM.PORC_APOYO;
                                                     }
                                                 }
 
@@ -1998,6 +1998,17 @@ namespace TAT001.Controllers
                                             }
                                         }
 
+                                        if (d.LIGADA == true & d != null)
+                                        {
+                                            foreach (DOCUMENTOP dep in d.DOCUMENTOPs.Where(x=>x.POS == docP.POS))
+                                            {
+                                                docP.APOYO_REAL += dep.APOYO_EST;
+                                                //docP.APOYO_EST += dep.;
+                                                docP.PORC_APOYO += (decimal)dep.PORC_APOYO;
+                                            }
+
+                                            db.SaveChanges();//RSG
+                                        }
                                     }
                                     //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
                                 }
