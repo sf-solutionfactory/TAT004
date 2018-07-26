@@ -64,7 +64,7 @@ namespace TAT001.Controllers
             ViewBag.Pos = flujo[0];
             ViewBag.url = "http://localhost:64497";
             ViewBag.url = "http://192.168.1.77";
-            ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.AbsolutePath, "");
+            ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "");
 
             DOCUMENTOL dl = dOCUMENTO.DOCUMENTOLs.OrderByDescending(x => x.POS).FirstOrDefault();
             FormatosC fc = new FormatosC();

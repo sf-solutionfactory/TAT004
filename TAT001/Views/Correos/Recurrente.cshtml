@@ -10,7 +10,7 @@
     <title>Index</title>
     <style>
         .divs {
-            width: 800px;
+            width: 500px;
             height: 100px;
             margin-right: 10px;
             margin-bottom: 30px;
@@ -121,7 +121,7 @@
                         text-transform: uppercase;
                         vertical-align: middle;
                         -webkit-tap-highlight-color: transparent;"
-               href="mailto:LA_TAT@kellogg.com?Subject=TAT:Rejected-@Model.NUM_DOC-@ViewBag.Pos" onclick="f1();" target="_top">
+               href="@ViewBag.url@Url.Action("Cancelar", "Recurrencias", new { id = Model.NUM_DOC })" target="_top">
                 Cancelar recurrencia
             </a>
         </div>

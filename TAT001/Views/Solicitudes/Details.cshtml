@@ -806,7 +806,8 @@ else
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s6">
-                                            <input type="text" value="0.00" class="precio" disabled="disabled" id="txt_venta" onload="calcValor()" />
+                                            @*<input type="text" value="0.00" class="precio" disabled="disabled" id="txt_venta" onload="calcValor()" />*@
+                                            <input type="text" value="@Model.D.DOCUMENTOLs.FirstOrDefault().MONTO_VENTA" class="precio" disabled="disabled" id="txt_venta" />
                                             <label for="txt_porc">Venta del mes</label>
                                         </div>
                                         <div class="input-field col s6">
@@ -815,8 +816,8 @@ else
                                         </div>
                                         <script>
                                             //function calcValor() {
-                                            var venta = ((document.getElementById("MONTO_DOC_MD").value) / (document.getElementById("PORC_APOYO").value)) * 100;
-                                            document.getElementById("txt_venta").value = venta;
+                                            ////var venta = ((document.getElementById("MONTO_DOC_MD").value) / (document.getElementById("PORC_APOYO").value)) * 100;
+                                            ////document.getElementById("txt_venta").value = venta;
                                             //}
                                         </script>
                                     </div>
