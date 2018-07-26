@@ -113,6 +113,22 @@
     <Property Name="LUGARFECHX" Type="bit" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="100" />
     <Property Name="MONEDA" Type="nchar" MaxLength="10" />
+    <Property Name="PAYERNOM" Type="nvarchar" MaxLength="100" />
+    <Property Name="PAYERNOMX" Type="bit" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+    <Property Name="COMENTARIOX" Type="bit" />
+    <Property Name="COMPROMISOK" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOKX" Type="bit" />
+    <Property Name="COMPROMISOC" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOCX" Type="bit" />
+    <Property Name="SECOND_TABX" Type="bit" />
+    <Property Name="COSTO_UNX" Type="bit" />
+    <Property Name="APOYOX" Type="bit" />
+    <Property Name="APOYOPX" Type="bit" />
+    <Property Name="COSTOAPX" Type="bit" />
+    <Property Name="PRECIOX" Type="bit" />
+    <Property Name="APOYO_ESTX" Type="bit" />
+    <Property Name="APOYO_REAX" Type="bit" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -801,7 +817,7 @@
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="FECHAF" Type="date" />
     <Property Name="MONTO_VENTA" Type="decimal" Precision="13" Scale="5" />
-    <Property Name="ESTATUS" Type="bit" Nullable="false" />
+    <Property Name="ESTATUS" Type="bit" />
   </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>

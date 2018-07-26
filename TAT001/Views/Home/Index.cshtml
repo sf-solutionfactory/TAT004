@@ -8,6 +8,7 @@
     List<TAT001.Entities.CLIENTE> lst = ViewBag.Clientes as List<TAT001.Entities.CLIENTE>;
     List<TAT001.Entities.CUENTA> lstC = ViewBag.Cuentas as List<TAT001.Entities.CUENTA>;
     List<TAT001.Entities.DOCUMENTOF> lstD = ViewBag.DOCF as List<TAT001.Entities.DOCUMENTOF>;
+    //ViewBag.BORRADOR = "Mensaje de creación";
 }
 
 
@@ -41,21 +42,21 @@
 @*////jemo inicio 4/07/2018*@
 
 @*@section noticia{
-    @if (true)
-    {
-        <div style="width:320px;"></div>
-                <div class="parallax-container" >
-                    <div class="parallax">
-                        <img src="~/images/parallax.jpg" />
+        @if (true)
+        {
+            <div style="width:320px;"></div>
+                    <div class="parallax-container" >
+                        <div class="parallax">
+                            <img src="~/images/parallax.jpg" />
+                        </div>
                     </div>
-                </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var elems = document.querySelectorAll('.parallax');
-                    var instances = M.Parallax.init(elems, []);
-                });</script>
-    }
-}*@
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var elems = document.querySelectorAll('.parallax');
+                        var instances = M.Parallax.init(elems, []);
+                    });</script>
+        }
+    }*@
 <!--BOTONES-->
 <div class="row">
     @if (ViewBag.delegados != null)
@@ -98,6 +99,28 @@
 </div>
 <!--MENSAJES-->
 <div>
+    <style>
+
+        /*#toast-container {*/
+        /*.toast {
+            padding: 10px 16px;
+            font-weight: 400;
+            overflow: hidden;
+            font-size: 16px;
+        }
+
+            .toast:before {
+                content: "\e656";
+                font-size: 24px;
+                color: white;
+                display: inline-block;
+                position: relative;
+                float: left;
+                margin: 0 10px 0 0;
+                font-family: "Material-Design-Icons";
+            }*/
+        /*}*/
+    </style>
     @*//B20180625 MGC 2018.06.26*@
     @if (ViewBag.BORRADOR != null)
     {
@@ -106,7 +129,7 @@
             <script>
         $(document).ready(function () {
             function docMessage(msg) {
-                M.toast({ html: msg });
+                M.toast({html: '<span style="padding-right:15px;"><i class="material-icons">error</i></span>  ' + msg });
             }
 
             var message = '@ViewBag.BORRADOR';

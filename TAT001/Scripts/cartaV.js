@@ -305,7 +305,7 @@ function updateTotalRowp() {
                 colt = (col4 * ed_monto) / 100;
 
                 //$(this).find("td:eq(" + (coltotal) + ")").text(colt.toFixed(2));//B20180720 MGC Formato a valores en la tabla
-                $(this).find("td:eq(" + (coltotal) + ")").text(toShowNum(colt));//B20180720 MGC Formato a valores en la tabla
+                $(this).find("td:eq(" + (coltotal) + ")").text(toShow(colt));//B20180720 MGC Formato a valores en la tabla //B20180720P MGC
                 total += colt;
 
             });

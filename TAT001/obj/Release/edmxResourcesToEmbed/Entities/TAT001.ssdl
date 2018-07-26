@@ -113,6 +113,22 @@
     <Property Name="LUGARFECHX" Type="bit" />
     <Property Name="MONTO" Type="nvarchar" MaxLength="100" />
     <Property Name="MONEDA" Type="nchar" MaxLength="10" />
+    <Property Name="PAYERNOM" Type="nvarchar" MaxLength="100" />
+    <Property Name="PAYERNOMX" Type="bit" />
+    <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+    <Property Name="COMENTARIOX" Type="bit" />
+    <Property Name="COMPROMISOK" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOKX" Type="bit" />
+    <Property Name="COMPROMISOC" Type="nvarchar" MaxLength="250" />
+    <Property Name="COMPROMISOCX" Type="bit" />
+    <Property Name="SECOND_TABX" Type="bit" />
+    <Property Name="COSTO_UNX" Type="bit" />
+    <Property Name="APOYOX" Type="bit" />
+    <Property Name="APOYOPX" Type="bit" />
+    <Property Name="COSTOAPX" Type="bit" />
+    <Property Name="PRECIOX" Type="bit" />
+    <Property Name="APOYO_ESTX" Type="bit" />
+    <Property Name="APOYO_REAX" Type="bit" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -685,6 +701,7 @@
     <Property Name="CONCEPTO_ID" Type="int" />
     <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
     <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="LIGADA" Type="bit" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -718,6 +735,9 @@
     <Property Name="EJERCICIOK" Type="nchar" MaxLength="4" />
     <Property Name="BILL_DOC" Type="nchar" MaxLength="10" />
     <Property Name="BELNR" Type="nchar" MaxLength="10" />
+    <Property Name="IMPORTE_FAC" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="PAYER" Type="nvarchar" MaxLength="10" />
+    <Property Name="NAME1" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="DOCUMENTOBORRM">
     <Key>
@@ -787,6 +807,17 @@
     <Property Name="BELNR" Type="nchar" MaxLength="10" />
     <Property Name="IMPORTE_FAC" Type="decimal" Precision="13" Scale="5" />
     <Property Name="PAYER" Type="nvarchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="DOCUMENTOL">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FECHAF" Type="date" />
+    <Property Name="MONTO_VENTA" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="bit" />
   </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
@@ -1404,6 +1435,16 @@
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="TALL">
     <Key>
       <PropertyRef Name="ID" />
@@ -1570,6 +1611,13 @@
     <Property Name="TREVERSA_ID" Type="int" Nullable="false" />
     <Property Name="TXT100" Type="nvarchar" MaxLength="100" />
   </EntityType>
+  <EntityType Name="TS_CAMPO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="TS_FORM">
     <Key>
       <PropertyRef Name="ID" />
@@ -1604,6 +1652,7 @@
     <Property Name="TSOLM" Type="nvarchar" MaxLength="10" />
     <Property Name="TSOLC" Type="nvarchar" MaxLength="10" />
     <Property Name="TRECU" Type="nchar" MaxLength="1" />
+    <Property Name="NEGO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -2762,6 +2811,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOL" Type="Self.DOCUMENTOL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOL">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTOM_DOCUMENTOP">
     <End Role="DOCUMENTOP" Type="Self.DOCUMENTOP" Multiplicity="1" />
     <End Role="DOCUMENTOM" Type="Self.DOCUMENTOM" Multiplicity="*" />
@@ -2860,11 +2921,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_DOCUMENTOTS_TS_FORM">
-    <End Role="TS_FORM" Type="Self.TS_FORM" Multiplicity="1" />
+  <Association Name="FK_DOCUMENTOTS_TS_CAMPO">
+    <End Role="TS_CAMPO" Type="Self.TS_CAMPO" Multiplicity="1" />
     <End Role="DOCUMENTOTS" Type="Self.DOCUMENTOTS" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="TS_FORM">
+      <Principal Role="TS_CAMPO">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="DOCUMENTOTS">
@@ -3716,6 +3777,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TS_FORM_TS_CAMPO">
+    <End Role="TS_CAMPO" Type="Self.TS_CAMPO" Multiplicity="1" />
+    <End Role="TS_FORM" Type="Self.TS_FORM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TS_CAMPO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TS_FORM">
+        <PropertyRef Name="POS" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TS_FORMT_SPRAS">
     <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
     <End Role="TS_FORMT" Type="Self.TS_FORMT" Multiplicity="*" />
@@ -3728,11 +3801,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TS_FORMT_TS_FORM">
-    <End Role="TS_FORM" Type="Self.TS_FORM" Multiplicity="1" />
+  <Association Name="FK_TS_FORMT_TS_CAMPO">
+    <End Role="TS_CAMPO" Type="Self.TS_CAMPO" Multiplicity="1" />
     <End Role="TS_FORMT" Type="Self.TS_FORMT" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="TS_FORM">
+      <Principal Role="TS_CAMPO">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="TS_FORMT">
@@ -4095,6 +4168,37 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -4149,6 +4253,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOBORRN" EntityType="Self.DOCUMENTOBORRN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOBORRP" EntityType="Self.DOCUMENTOBORRP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOL" EntityType="Self.DOCUMENTOL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOM" EntityType="Self.DOCUMENTOM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
@@ -4199,6 +4304,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAX_LAND" EntityType="Self.TAX_LAND" Schema="dbo" store:Type="Tables" />
@@ -4213,6 +4319,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="TRETENCIONT" EntityType="Self.TRETENCIONT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TREVERSA" EntityType="Self.TREVERSA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TREVERSAT" EntityType="Self.TREVERSAT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TS_CAMPO" EntityType="Self.TS_CAMPO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TS_FORM" EntityType="Self.TS_FORM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TS_FORMT" EntityType="Self.TS_FORMT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TSOL" EntityType="Self.TSOL" Schema="dbo" store:Type="Tables" />
@@ -4620,6 +4727,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
     </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="Self.FK_DOCUMENTOL_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOL" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOM_DOCUMENTOP" Association="Self.FK_DOCUMENTOM_DOCUMENTOP">
       <End Role="DOCUMENTOP" EntitySet="DOCUMENTOP" />
       <End Role="DOCUMENTOM" EntitySet="DOCUMENTOM" />
@@ -4652,8 +4763,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOTS" EntitySet="DOCUMENTOTS" />
     </AssociationSet>
-    <AssociationSet Name="FK_DOCUMENTOTS_TS_FORM" Association="Self.FK_DOCUMENTOTS_TS_FORM">
-      <End Role="TS_FORM" EntitySet="TS_FORM" />
+    <AssociationSet Name="FK_DOCUMENTOTS_TS_CAMPO" Association="Self.FK_DOCUMENTOTS_TS_CAMPO">
+      <End Role="TS_CAMPO" EntitySet="TS_CAMPO" />
       <End Role="DOCUMENTOTS" EntitySet="DOCUMENTOTS" />
     </AssociationSet>
     <AssociationSet Name="FK_FLUJO_DOCUMENTO" Association="Self.FK_FLUJO_DOCUMENTO">
@@ -4928,12 +5039,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
       <End Role="TS_FORM" EntitySet="TS_FORM" />
     </AssociationSet>
+    <AssociationSet Name="FK_TS_FORM_TS_CAMPO" Association="Self.FK_TS_FORM_TS_CAMPO">
+      <End Role="TS_CAMPO" EntitySet="TS_CAMPO" />
+      <End Role="TS_FORM" EntitySet="TS_FORM" />
+    </AssociationSet>
     <AssociationSet Name="FK_TS_FORMT_SPRAS" Association="Self.FK_TS_FORMT_SPRAS">
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="TS_FORMT" EntitySet="TS_FORMT" />
     </AssociationSet>
-    <AssociationSet Name="FK_TS_FORMT_TS_FORM" Association="Self.FK_TS_FORMT_TS_FORM">
-      <End Role="TS_FORM" EntitySet="TS_FORM" />
+    <AssociationSet Name="FK_TS_FORMT_TS_CAMPO" Association="Self.FK_TS_FORMT_TS_CAMPO">
+      <End Role="TS_CAMPO" EntitySet="TS_CAMPO" />
       <End Role="TS_FORMT" EntitySet="TS_FORMT" />
     </AssociationSet>
     <AssociationSet Name="FK_TSOL_RANGO" Association="Self.FK_TSOL_RANGO">

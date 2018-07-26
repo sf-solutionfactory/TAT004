@@ -6,7 +6,7 @@ var interval; //B20180625 MGC 2018.07.04
 var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
 var proverror = "";//B20180625 MGC 2018.06.27
-
+var importe_fac = 0; // jemo 25-07-2018
 $(document).ready(function () {
 
     //Validar que los labels esten activos
@@ -1144,7 +1144,17 @@ $(document).ready(function () {
             msg += ' ,Financiera';
             res = FinancieraTab;
         }
-
+        //jemo inicio 24-07-2018
+        //validacion de importe de facturas contra monto de distribucion
+        var checkf = $('#check_factura').is(':checked');
+        if (checkf) {
+            var monto = parseFloat(toNum($('#monto_dis').val()));
+            if (importe_fac !== monto) {
+                msg += ', Informacion: Importet total de las facturas sea igual al monto en Distribucion';
+                res = false;
+            }
+        }
+        //jemo fin 24-07-2018
         msg += '!';
         if (res) {
             //loadFilesf();
@@ -2394,7 +2404,7 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
         }//} else {
         //  //Tabla desde excel
         //}
-
+        importe_fac = 0;
         //Obtener la configuración de las columnas
         var sociedad = $('#sociedad_id').val();
         //Obtener el país ID
@@ -2430,6 +2440,10 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
                                 if (!check | i == "POS") {
                                     var valtd = $(this).find(rowcl).text();
                                     item[i] = valtd;
+                                    //jemo inicio 24-07-2018
+                                    if (i === 'IMPORTE_FAC') {
+                                        importe_fac = importe_fac + parseFloat(valtd).toFixed(2);
+                                    }//jemo inicio 24-07-2018
                                 } else {
                                     //Obtener los valores como textos de los inputs
                                     var valtd = $(this).find(rowcl + " input").val();
@@ -3724,7 +3738,7 @@ function loadExcelSop(file) {
     var formData = new FormData();
 
     formData.append("FileUpload", file);
-
+    importe_fac = 0;//jemo 25-17-2018
     var table = $('#table_sop').DataTable();
     table.clear().draw();
     $.ajax({
@@ -3746,25 +3760,29 @@ function loadExcelSop(file) {
                     var addedRow = table.row.add([
                         dataj.POS,
                         dataj.FACTURA,
-                        //jemo 10-17-2018 inicio
-                        //"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
-                        //dataj.PROVEEDOR,
-                        //dataj.PROVEEDOR_TXT,
-                        //dataj.CONTROL,
-                        //dataj.AUTORIZACION,
-                        //"" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
-                        //jemo 10-17-2018 inicio
-                        dataj.FACTURAK,
+                        //jemo 25-17-2018 inicio
+                        "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        "",//dataj.PROVEEDOR,
+                        "",//dataj.PROVEEDOR_TXT,
+                        "",//dataj.CONTROL,
+                        "",//dataj.AUTORIZACION,
+                        "",//"" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
+                        "",//dataj.FACTURAK,
+                        //jemo 25-17-2018 inicio
                         dataj.EJERCICIOK,
+                        //jemo 25-17-2018 inicio
+                        dataj.PAYER,
+                        dataj.DESCRIPCION,
                         dataj.BILL_DOC,
+                        dataj.IMPORTE_FACT,
                         ""//dataj.BELNR
-                        //jemo 10-17-2018 fin
+                        //jemo 25-17-2018 fin
                     ]).draw(false).node();
 
                     if (dataj.PROVEEDOR_ACTIVO == false) {
                         $(addedRow).find('td.PROVEEDOR').addClass("errorProveedor");
                     }
-
+                    importe_fac += parseFloat(toNum(dataj.IMPORTE_FACT));//jemo inicio 25-07-2018
                 });
                 //Aplicar configuración de columnas en las tablas
                 ocultarColumnasTablaSoporteDatos();
@@ -4012,14 +4030,17 @@ function ocultarColumnasTablaSoporteDatos() {
     var pais = $('#pais_id').val();
     //Obtener el tipo de solicitud
     var tsol_id = $('#tsol_id').val();
-    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
-
+    //jemo 25-07-2018 inicio
+    //obtener activacion de multiple
+    var clase_doc = $('#check_factura').is(':checked');
+    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id, clase_doc);
+    //jemo 25-07-2018 fin
 }
-
-function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+//jemo 25-07-2018 inicio
+function ocultarColumnasTablaSoporte(sociedad, pais, tsol, class_doc) {
     var table = $('#table_sop').DataTable();
 
-    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "");
+    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "", class_doc);
 
     if (data !== null || data !== "") {
         //True son los visibles
@@ -4039,15 +4060,16 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
         //table.column('PROVEEDOR_TXT:name').visible(prov_txt);
     }
 }
-
-function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
+//jemo 25-07-2018 fin
+//jemo 25-07-2018 inicio
+function configColumnasTablaSoporte(sociedad, pais, tsol, nu, class_doc) {
 
     dataConfig = null;
     var localdataConfig = null;
     $.ajax({
         type: "POST",
         url: 'LoadConfigSoporte',
-        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu },
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu, "class_doc": class_doc },
 
         success: function (data) {
 
@@ -4064,6 +4086,7 @@ function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
     localdataConfig = dataConfig;
     return localdataConfig;
 }
+//jemo 25-07-2018 fin
 
 function asignardataConfig(val) {
     dataConfig = null;

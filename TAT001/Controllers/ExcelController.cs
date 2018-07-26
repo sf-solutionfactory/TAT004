@@ -1075,7 +1075,7 @@ namespace TAT001.Controllers
         {
             List<HttpPostedFileBase> archiArr = new List<HttpPostedFileBase>();
             List<DOCUMENTOA> docupA = new List<DOCUMENTOA>();
-            SolicitudesController sc = new SolicitudesController();
+            SolicitudesController3 sc = new SolicitudesController3();
             int numFiles = 0;
 
             //REVISAR SI HAY ARCHIVOS POR SUBIR
@@ -1207,7 +1207,7 @@ namespace TAT001.Controllers
         public void guardaArchivos(decimal numDoc)
         {
             IEnumerable<HttpPostedFileBase> archivosRE = (IEnumerable<HttpPostedFileBase>)Session["arcReales"];
-            SolicitudesController sc = new SolicitudesController();
+            SolicitudesController3 sc = new SolicitudesController3();
             string errorString = "";
             //Guardar los documentos cargados en la sección de soporte
             var res = "";

@@ -242,8 +242,9 @@
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
     <Compile Include="Controllers\RecurrenciasController.cs" />
-    <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
+    <Compile Include="Controllers\SolicitudesController2.cs" />
+    <Compile Include="Controllers\SolicitudesController3.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
@@ -877,9 +878,9 @@
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\cartaV.js" />
+    <Content Include="Scripts\create.js" />
     <Content Include="Scripts\edit - antes.js" />
     <Content Include="Scripts\edit.js" />
-    <Content Include="Scripts\create.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />
@@ -1108,6 +1109,8 @@
     <Content Include="Views\CartaD\Index.cshtml" />
     <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
     <Content Include="Views\Correos\Recurrente.cshtml" />
+    <Content Include="Views\CartaV\DetailsPos.cshtml" />
+    <Content Include="Views\CartaV\Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

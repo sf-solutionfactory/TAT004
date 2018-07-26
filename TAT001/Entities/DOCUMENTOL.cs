@@ -18,7 +18,7 @@ namespace TAT001.Entities
         public int POS { get; set; }
         public Nullable<System.DateTime> FECHAF { get; set; }
         public Nullable<decimal> MONTO_VENTA { get; set; }
-        public bool ESTATUS { get; set; }
+        public Nullable<bool> ESTATUS { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

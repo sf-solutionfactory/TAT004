@@ -5330,17 +5330,18 @@ namespace TAT001.Controllers
                     //    doc.VENCIMIENTO = null;
                     //}
                     //jemo 10-17-2018 fin
+                    //jemo 25-17-2018 inicio
                     try
                     {
-                        doc.FACTURAK = (string)dt.Rows[i][6]; //Facturak
+                        doc.BILL_DOC = dt.Rows[i][1].ToString(); //Bill_doc
                     }
                     catch (Exception e)
                     {
-                        doc.FACTURAK = null;
+                        doc.BILL_DOC = null;
                     }
                     try
                     {
-                        int ej = Convert.ToInt32(dt.Rows[i][7]);
+                        int ej = Convert.ToInt32(dt.Rows[i][2]);
                         doc.EJERCICIOK = Convert.ToString(ej); //Ejerciciok
                     }
                     catch (Exception e)
@@ -5349,20 +5350,29 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.BILL_DOC = (string)dt.Rows[i][8]; //Bill_doc
+                        doc.PAYER = (string)dt.Rows[i][3]; //Cliente
                     }
                     catch (Exception e)
                     {
-                        doc.BILL_DOC = null;
+                        doc.PAYER = null;
                     }
                     try
                     {
-                        doc.BELNR = (string)dt.Rows[i][9]; //Belnr
+                        doc.IMPORTE_FACT = dt.Rows[i][4].ToString(); //Importe factura
+                    }
+                    catch (Exception e)
+                    {
+                        doc.IMPORTE_FACT = null;
+                    }
+                    try
+                    {
+                        doc.BELNR = (string)dt.Rows[i][5]; //Belnr
                     }
                     catch (Exception e)
                     {
                         doc.BELNR = null;
                     }
+                    //jemo 25-17-2018 fin
 
                     ld.Add(doc);
                     pos++;

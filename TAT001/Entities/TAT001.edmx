@@ -118,6 +118,22 @@
           <Property Name="LUGARFECHX" Type="bit" />
           <Property Name="MONTO" Type="nvarchar" MaxLength="100" />
           <Property Name="MONEDA" Type="nchar" MaxLength="10" />
+          <Property Name="PAYERNOM" Type="nvarchar" MaxLength="100" />
+          <Property Name="PAYERNOMX" Type="bit" />
+          <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+          <Property Name="COMENTARIOX" Type="bit" />
+          <Property Name="COMPROMISOK" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPROMISOKX" Type="bit" />
+          <Property Name="COMPROMISOC" Type="nvarchar" MaxLength="250" />
+          <Property Name="COMPROMISOCX" Type="bit" />
+          <Property Name="SECOND_TABX" Type="bit" />
+          <Property Name="COSTO_UNX" Type="bit" />
+          <Property Name="APOYOX" Type="bit" />
+          <Property Name="APOYOPX" Type="bit" />
+          <Property Name="COSTOAPX" Type="bit" />
+          <Property Name="PRECIOX" Type="bit" />
+          <Property Name="APOYO_ESTX" Type="bit" />
+          <Property Name="APOYO_REAX" Type="bit" />
         </EntityType>
         <EntityType Name="CARTAP">
           <Key>
@@ -806,7 +822,7 @@
           <Property Name="POS" Type="int" Nullable="false" />
           <Property Name="FECHAF" Type="date" />
           <Property Name="MONTO_VENTA" Type="decimal" Precision="13" Scale="5" />
-          <Property Name="ESTATUS" Type="bit" Nullable="false" />
+          <Property Name="ESTATUS" Type="bit" />
         </EntityType>
         <EntityType Name="DOCUMENTOM">
           <Key>
@@ -5277,6 +5293,22 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
           <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
+          <Property Name="PAYERNOM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PAYERNOMX" Type="Boolean" />
+          <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="COMENTARIOX" Type="Boolean" />
+          <Property Name="COMPROMISOK" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMPROMISOKX" Type="Boolean" />
+          <Property Name="COMPROMISOC" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="COMPROMISOCX" Type="Boolean" />
+          <Property Name="SECOND_TABX" Type="Boolean" />
+          <Property Name="COSTO_UNX" Type="Boolean" />
+          <Property Name="APOYOX" Type="Boolean" />
+          <Property Name="APOYOPX" Type="Boolean" />
+          <Property Name="COSTOAPX" Type="Boolean" />
+          <Property Name="PRECIOX" Type="Boolean" />
+          <Property Name="APOYO_ESTX" Type="Boolean" />
+          <Property Name="APOYO_REAX" Type="Boolean" />
         </EntityType>
         <EntityType Name="CARTAP">
           <Key>
@@ -10536,7 +10568,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="POS" Type="Int32" Nullable="false" />
           <Property Name="FECHAF" Type="DateTime" Precision="0" />
           <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
-          <Property Name="ESTATUS" Type="Boolean" Nullable="false" />
+          <Property Name="ESTATUS" Type="Boolean" />
           <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
         </EntityType>
         <Association Name="FK_DOCUMENTOL_DOCUMENTO">
@@ -10625,6 +10657,22 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CARTAs">
             <EntityTypeMapping TypeName="TAT001Model.CARTA">
               <MappingFragment StoreEntitySet="CARTA">
+                <ScalarProperty Name="APOYO_REAX" ColumnName="APOYO_REAX" />
+                <ScalarProperty Name="APOYO_ESTX" ColumnName="APOYO_ESTX" />
+                <ScalarProperty Name="PRECIOX" ColumnName="PRECIOX" />
+                <ScalarProperty Name="COSTOAPX" ColumnName="COSTOAPX" />
+                <ScalarProperty Name="APOYOPX" ColumnName="APOYOPX" />
+                <ScalarProperty Name="APOYOX" ColumnName="APOYOX" />
+                <ScalarProperty Name="COSTO_UNX" ColumnName="COSTO_UNX" />
+                <ScalarProperty Name="SECOND_TABX" ColumnName="SECOND_TABX" />
+                <ScalarProperty Name="COMPROMISOCX" ColumnName="COMPROMISOCX" />
+                <ScalarProperty Name="COMPROMISOC" ColumnName="COMPROMISOC" />
+                <ScalarProperty Name="COMPROMISOKX" ColumnName="COMPROMISOKX" />
+                <ScalarProperty Name="COMPROMISOK" ColumnName="COMPROMISOK" />
+                <ScalarProperty Name="COMENTARIOX" ColumnName="COMENTARIOX" />
+                <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+                <ScalarProperty Name="PAYERNOMX" ColumnName="PAYERNOMX" />
+                <ScalarProperty Name="PAYERNOM" ColumnName="PAYERNOM" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
                 <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />

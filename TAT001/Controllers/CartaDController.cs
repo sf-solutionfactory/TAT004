@@ -130,80 +130,86 @@ namespace TAT001.Controllers
 
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN LA VISTA///////////////////////////////////////
-                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-
-                foreach (var item in con)
-                {
-                    lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
-                }
-
-                for (int i = 0; i < lista.Count; i++)
-                {
-                    contadorTabla = 0;
-
-                    DateTime a1 = DateTime.Parse(lista[i].Remove(lista[i].Length / 2));
-                    DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
-
-                    var con2 = db.DOCUMENTOPs
-                                          .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                          .ToList();
-
-                    if (con2.Count > 0)
-                    {
-                        foreach (var item2 in con2)
-                        {
-                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.MAKTX);
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
-                            contadorTabla++;
-                        }
-                    }
-                    else
-                    {
-                        var con3 = db.DOCUMENTOPs
-                                            .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                            .ToList();
-
-                        foreach (var item2 in con3)
-                        {
-                            armadoCuerpoTab.Add("");
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.TXT50);
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
-                            armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
-                            contadorTabla++;
-                        }
-                    }
-                    numfilasTabla.Add(contadorTabla);
-                }
-
+                //B20180720P MGC 2018.07.25
                 var cabeza = new List<string>();
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                bool varligada = Convert.ToBoolean(d.LIGADA);
+                if (varligada != true)
+                {
+                    var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
+                    foreach (var item in con)
+                    {
+                        lista.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                    }
+
+                    for (int i = 0; i < lista.Count; i++)
+                    {
+                        contadorTabla = 0;
+
+                        DateTime a1 = DateTime.Parse(lista[i].Remove(lista[i].Length / 2));
+                        DateTime a2 = DateTime.Parse(lista[i].Remove(0, lista[i].Length / 2));
+
+                        var con2 = db.DOCUMENTOPs
+                                              .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                              .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                              .ToList();
+
+                        if (con2.Count > 0)
+                        {
+                            foreach (var item2 in con2)
+                            {
+                                armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                armadoCuerpoTab.Add(item2.MATKL);
+                                armadoCuerpoTab.Add(item2.MAKTX);
+                                armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                contadorTabla++;
+                            }
+                        }
+                        else
+                        {
+                            var con3 = db.DOCUMENTOPs
+                                                .Where(x => x.NUM_DOC.Equals(id) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                                .Join(db.MATERIALGPs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                                .ToList();
+
+                            foreach (var item2 in con3)
+                            {
+                                armadoCuerpoTab.Add("");
+                                armadoCuerpoTab.Add(item2.MATKL);
+                                armadoCuerpoTab.Add(item2.TXT50);
+                                armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
+                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                contadorTabla++;
+                            }
+                        }
+                        numfilasTabla.Add(contadorTabla);
+                    }
+
+
+                    //var cabeza = new List<string>();//B20180720P MGC 2018.07.25
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                }
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN LA VISTA///////////////////////////////////////
                 var cabeza2 = new List<string>();
                 cabeza2.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "posC2").Select(x => x.TEXTO).FirstOrDefault());
@@ -304,6 +310,10 @@ namespace TAT001.Controllers
                 cv.monto_x = true;
                 cv.monto = d.MONTO_DOC_MD.ToString();
                 cv.moneda = d.MONEDA_ID;
+
+                //B20180720P MGC 2018.07.25
+                ViewBag.varligada = varligada;
+
                 return View(cv);
             }
         }
@@ -326,78 +336,88 @@ namespace TAT001.Controllers
                 DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
-                var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
-
-                foreach (var item in con)
-                {
-                    encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
-                }
-
-                for (int i = 0; i < encabezadoFech.Count; i++)
-                {
-                    contadorTabla = 0;
-                    DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
-                    DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
-
-                    var con2 = db.DOCUMENTOPs
-                                      .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                      .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                      .ToList();
-
-
-                    if (con2.Count > 0)
-                    {
-                        foreach (var item2 in con2)
-                        {
-                            armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.MAKTX);
-                            if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            contadorTabla++;
-                        }
-                    }
-                    else
-                    {
-                        var con3 = db.DOCUMENTOPs
-                                            .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
-                                            .Join(db.CATEGORIAs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
-                                            .ToList();
-
-                        foreach (var item2 in con3)
-                        {
-                            armadoCuerpoTab.Add("");
-                            armadoCuerpoTab.Add(item2.MATKL);
-                            armadoCuerpoTab.Add(item2.TXT50);
-                            if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                            if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                            if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                            if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                            if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
-                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
-                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
-                            contadorTabla++;
-                        }
-                    }
-                    numfilasTab.Add(contadorTabla);
-                }
-
+                //B20180720P MGC 2018.07.25
                 var cabeza = new List<string>();
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
-                cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
-                if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
-                if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
+                bool varligada = Convert.ToBoolean(d.LIGADA);
+                if (varligada != true)
+                {
+                    var con = db.DOCUMENTOPs.Select(x => new { x.NUM_DOC, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(v.num_doc)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
+
+                    foreach (var item in con)
+                    {
+                        encabezadoFech.Add(item.Key.VIGENCIA_DE.ToString() + item.Key.VIGENCIA_AL.ToString());
+                    }
+
+                    for (int i = 0; i < encabezadoFech.Count; i++)
+                    {
+                        contadorTabla = 0;
+                        DateTime a1 = DateTime.Parse(encabezadoFech[i].Remove(encabezadoFech[i].Length / 2));
+                        DateTime a2 = DateTime.Parse(encabezadoFech[i].Remove(0, encabezadoFech[i].Length / 2));
+
+                        var con2 = db.DOCUMENTOPs
+                                          .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                          .Join(db.MATERIALs, x => x.MATNR, y => y.ID, (x, y) => new { x.MATNR, x.MATKL, y.MAKTX, x.MONTO, y.PUNIT, x.PORC_APOYO, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                          .ToList();
+
+
+                        if (con2.Count > 0)
+                        {
+                            foreach (var item2 in con2)
+                            {
+                                armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
+                                armadoCuerpoTab.Add(item2.MATKL);
+                                armadoCuerpoTab.Add(item2.MAKTX);
+                                if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                contadorTabla++;
+                            }
+                        }
+                        else
+                        {
+                            var con3 = db.DOCUMENTOPs
+                                                .Where(x => x.NUM_DOC.Equals(v.num_doc) & x.VIGENCIA_DE == a1 && x.VIGENCIA_AL == a2)
+                                                .Join(db.CATEGORIAs, x => x.MATKL, y => y.ID, (x, y) => new { x.NUM_DOC, x.MATNR, x.MATKL, y.ID, x.MONTO, x.PORC_APOYO, y.CATEGORIATs.Where(a => a.SPRAS_ID.Equals(d.CLIENTE.SPRAS)).FirstOrDefault().TXT50, x.MONTO_APOYO, resta = (x.MONTO - x.MONTO_APOYO), x.PRECIO_SUG, x.APOYO_EST, x.APOYO_REAL })
+                                                .ToList();
+
+                            foreach (var item2 in con3)
+                            {
+                                armadoCuerpoTab.Add("");
+                                armadoCuerpoTab.Add(item2.MATKL);
+                                armadoCuerpoTab.Add(item2.TXT50);
+                                if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
+                                if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
+                                if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
+                                if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
+                                if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
+                                if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
+                                contadorTabla++;
+                            }
+                        }
+                        numfilasTab.Add(contadorTabla);
+                    }
+
+                    //var cabeza = new List<string>();//B20180720P MGC 2018.07.25
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "materialC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "categoriaC").Select(x => x.TEXTO).FirstOrDefault());
+                    cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "descripcionC").Select(x => x.TEXTO).FirstOrDefault());
+                    if (v.costoun_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costouC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyo_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopoC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyop_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyopiC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.costoap_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "costoaC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
+                    if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
+                }
+                else
+                {
+                    v.monto_x = false;//B20180720P MGC 2018.07.25
+                }
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 2 RECURRENCIAS EN PDF///////////////////////////////////////
