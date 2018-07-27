@@ -129,6 +129,8 @@
     <Property Name="PRECIOX" Type="bit" />
     <Property Name="APOYO_ESTX" Type="bit" />
     <Property Name="APOYO_REAX" Type="bit" />
+    <Property Name="VOLUMEN_ESTX" Type="bit" />
+    <Property Name="VOLUMEN_REAX" Type="bit" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -896,6 +898,7 @@
     <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
     <Property Name="PORC" Type="decimal" Precision="13" Scale="5" />
     <Property Name="DOC_REF" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="FECHAV" Type="date" />
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
@@ -1172,6 +1175,7 @@
     <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
     <Property Name="DECIMAL" Type="nchar" MaxLength="1" Nullable="false" />
     <Property Name="MILES" Type="nchar" MaxLength="1" Nullable="false" />
+    <Property Name="BACKORDER" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>

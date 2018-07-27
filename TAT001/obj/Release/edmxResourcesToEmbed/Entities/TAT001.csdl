@@ -148,6 +148,8 @@
     <Property Name="PRECIOX" Type="Boolean" />
     <Property Name="APOYO_ESTX" Type="Boolean" />
     <Property Name="APOYO_REAX" Type="Boolean" />
+    <Property Name="VOLUMEN_ESTX" Type="Boolean" />
+    <Property Name="VOLUMEN_REAX" Type="Boolean" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -990,6 +992,7 @@
     <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
+    <Property Name="FECHAV" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
@@ -1323,6 +1326,7 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+    <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>

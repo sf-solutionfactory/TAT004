@@ -224,6 +224,7 @@ namespace TAT001.Controllers
                 }
             DocumentoFlujo DF = new DocumentoFlujo();
             DF.D = dOCUMENTO;
+            ViewBag.pais = dOCUMENTO.PAIS_ID + ".png"; //RSG 29.09.2018
             DF.F = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderByDescending(a => a.POS).FirstOrDefault();
             //DF.F.ESTATUS = "";
             ViewBag.ts = db.TS_FORM.Where(a => a.BUKRS_ID.Equals(DF.D.SOCIEDAD_ID) & a.LAND_ID.Equals(DF.D.PAIS_ID)).ToList();

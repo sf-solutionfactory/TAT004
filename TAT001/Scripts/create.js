@@ -676,6 +676,7 @@ $(document).ready(function () {
         var _miles = $("#miles").val();
         var _decimales = $("#dec").val();
         //LEJ 09.07.18----------------------------
+        $("label[for='montos_doc_ml2']").addClass("active");//RSG 29.07.2018
         var res = evalDistribucionTab(true, e);
         if (res) {
 
