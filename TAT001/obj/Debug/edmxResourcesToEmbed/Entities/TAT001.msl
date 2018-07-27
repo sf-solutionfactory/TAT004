@@ -69,6 +69,8 @@
     <EntitySetMapping Name="CARTAs">
       <EntityTypeMapping TypeName="TAT001Model.CARTA">
         <MappingFragment StoreEntitySet="CARTA">
+          <ScalarProperty Name="VOLUMEN_REAX" ColumnName="VOLUMEN_REAX" />
+          <ScalarProperty Name="VOLUMEN_ESTX" ColumnName="VOLUMEN_ESTX" />
           <ScalarProperty Name="APOYO_REAX" ColumnName="APOYO_REAX" />
           <ScalarProperty Name="APOYO_ESTX" ColumnName="APOYO_ESTX" />
           <ScalarProperty Name="PRECIOX" ColumnName="PRECIOX" />
@@ -842,6 +844,7 @@
     <EntitySetMapping Name="DOCUMENTORECs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOREC">
         <MappingFragment StoreEntitySet="DOCUMENTOREC">
+          <ScalarProperty Name="FECHAV" ColumnName="FECHAV" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="POS" ColumnName="POS" />
           <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
@@ -1129,6 +1132,7 @@
     <EntitySetMapping Name="PAIS">
       <EntityTypeMapping TypeName="TAT001Model.PAI">
         <MappingFragment StoreEntitySet="PAIS">
+          <ScalarProperty Name="BACKORDER" ColumnName="BACKORDER" />
           <ScalarProperty Name="LAND" ColumnName="LAND" />
           <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
           <ScalarProperty Name="LANDX" ColumnName="LANDX" />

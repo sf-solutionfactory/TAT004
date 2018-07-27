@@ -283,7 +283,7 @@ namespace TAT001.Controllers
                                 lc9.clase = "input_oper numberd input_dc num" + porclass;
                                 armadoCuerpoTab.Add(lc9);
 
-                                //Apoyo estimado
+                                //Apoyo
                                 listacuerpoc lc10 = new listacuerpoc();
                                 if (fact)
                                 {
@@ -508,9 +508,11 @@ namespace TAT001.Controllers
                 cv.apoyop_x = true;
                 cv.costoap_x = true;
                 cv.precio_x = true;
-                cv.apoyoEst_x = true; //Volumen
-                cv.apoyoRea_x = true; //Apoyo
-                                      /////////////////////////////////
+                //cv.apoyoEst_x = true; //Volumen //B20180726 MGC 2018.07.26
+                //cv.apoyoRea_x = true; //Apoyo //B20180726 MGC 2018.07.26
+                cv.volumen_x = true; //Volumen //B20180726 MGC 2018.07.26 
+                cv.apoyototal_x = true; //Apoyo //B20180726 MGC 2018.07.26
+                                        /////////////////////////////////
 
                 //TABLA 2 RECURRENCIAS
                 cv.numColEncabezado2 = cabeza2;////////NUMERO DE COLUMNAS PARA LAS TABLAS
@@ -593,6 +595,22 @@ namespace TAT001.Controllers
             v.monto = monto_enviar; //B20180720P MGC
             int pos = 0;//B20180720P MGC Guardar Carta
 
+            //B20180726 MGC 2018.07.26
+            bool fact = false;
+            DOCUMENTO d = new DOCUMENTO();
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                try
+                {
+                     d= db.DOCUMENTOes.Find(v.num_doc);
+                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+
             CARTA ca = new CARTA();
             ca.NUM_DOC = v.num_doc;
             ca.CLIENTE = v.cliente;
@@ -662,8 +680,20 @@ namespace TAT001.Controllers
             ca.APOYOPX = v.apoyop_x;
             ca.COSTOAPX = v.costoap_x;
             ca.PRECIOX = v.precio_x;
-            ca.APOYO_ESTX = v.apoyoEst_x; //Volumen 
-            ca.APOYO_REAX = v.apoyoRea_x; //Apoyo
+            //B20180726 MGC 2018.07.26
+            //ca.APOYO_ESTX = v.apoyoEst_x; //Volumen 
+            //ca.APOYO_REAX = v.apoyoRea_x; //Apoyo
+            if (fact)
+            {
+                ca.VOLUMEN_REAX = v.volumen_x; //Volumen 
+                ca.APOYO_REAX = v.apoyototal_x; //Apoyo
+            }
+            else
+            {
+                ca.APOYO_ESTX = v.volumen_x; //Volumen 
+                ca.APOYO_ESTX = v.apoyototal_x; //Apoyo
+            }
+            
 
             //CartaFEsqueleto cfe = new CartaFEsqueleto();//B20180720P MGC Guardar Carta
             //TEXTOCARTAF f = new TEXTOCARTAF();//B20180720P MGC Guardar Carta
@@ -708,19 +738,12 @@ namespace TAT001.Controllers
                 List<int> numfilasTab = new List<int>();
 
                 int contadorTabla = 0;
-                DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
+                //B20180726 MGC 2018.07.26
+                //DOCUMENTO d = db.DOCUMENTOes.Find(v.num_doc);
 
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
-                bool fact = false;
-                try
-                {
-                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
-                }
-                catch (Exception)
-                {
 
-                }
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
                 var cabeza = new List<string>();
                 bool varligada = Convert.ToBoolean(d.LIGADA);
@@ -839,11 +862,12 @@ namespace TAT001.Controllers
                                         //}
                                         //Volumen
                                         //Volumen
-                                        if (v.apoyoEst_x == true)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.volumen_x == true)
                                         {
                                             if (fact)
                                             {
-                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
                                                 //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                             }
                                             else
@@ -854,11 +878,12 @@ namespace TAT001.Controllers
                                         }
 
                                         //Apoyo
-                                        if (v.apoyoRea_x == true)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.apoyototal_x == true)
                                         {
                                             if (fact)
                                             {
-                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
                                             }
                                             else
                                             {
@@ -878,17 +903,23 @@ namespace TAT001.Controllers
                                             carp.MATNR = item2.MATNR;
                                             carp.MATKL = item2.MATKL;
                                             carp.CANTIDAD = 1;
-                                            if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
-                                            if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
-                                            if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
-                                            if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+                                            //B20180726 MGC 2018.07.26
+                                            //if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
+                                            //if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
+                                            //if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
+                                            //if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+                                            carp.MONTO = docmod.MONTO;
+                                            carp.PORC_APOYO = docmod.PORC_APOYO;
+                                            carp.MONTO_APOYO = docmod.MONTO_APOYO;
+                                            carp.PRECIO_SUG = docmod.PRECIO_SUG;
 
                                             //Volumen
-                                            if (v.apoyoEst_x == true)
+                                            //B20180726 MGC 2018.07.26
+                                            if (v.volumen_x == true)
                                             {
                                                 if (fact)
                                                 {
-                                                    carp.VOLUMEN_REAL = docmod.VOLUMEN_EST;
+                                                    carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                                     carp.VOLUMEN_EST = 0;
                                                 }
                                                 else
@@ -899,11 +930,12 @@ namespace TAT001.Controllers
                                             }
 
                                             //Apoyo
-                                            if (v.apoyoRea_x == true)
+                                            //B20180726 MGC 2018.07.26
+                                            if (v.apoyototal_x == true)
                                             {
                                                 if (fact)
                                                 {
-                                                    carp.APOYO_REAL = docmod.APOYO_EST;
+                                                    carp.APOYO_REAL = docmod.APOYO_REAL;
                                                     carp.APOYO_EST = 0;
                                                 }
                                                 else
@@ -990,7 +1022,8 @@ namespace TAT001.Controllers
                                         //}
 
                                         //Volumen
-                                        if (v.apoyoEst_x == true)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.volumen_x == true)
                                         {
                                             if (fact)
                                             {
@@ -1005,7 +1038,8 @@ namespace TAT001.Controllers
                                         }
 
                                         //Apoyo
-                                        if (v.apoyoRea_x == true)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.apoyototal_x == true)
                                         {
                                             if (fact)
                                             {
@@ -1029,13 +1063,19 @@ namespace TAT001.Controllers
                                             carp.MATNR = "";
                                             carp.MATKL = item2.MATKL;
                                             carp.CANTIDAD = 1;
-                                            if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
-                                            if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
-                                            if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
-                                            if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+                                            //B20180726 MGC 2018.07.26
+                                            //if (v.costoun_x == true) { carp.MONTO = docmod.MONTO; }
+                                            //if (v.apoyo_x == true) { carp.PORC_APOYO = docmod.PORC_APOYO; }
+                                            //if (v.apoyop_x == true) { carp.MONTO_APOYO = docmod.MONTO_APOYO; }
+                                            //if (v.precio_x == true) { carp.PRECIO_SUG = docmod.PRECIO_SUG; }
+                                            carp.MONTO = docmod.MONTO; 
+                                            carp.PORC_APOYO = docmod.PORC_APOYO; 
+                                            carp.MONTO_APOYO = docmod.MONTO_APOYO; 
+                                            carp.PRECIO_SUG = docmod.PRECIO_SUG;
 
                                             //Volumen
-                                            if (v.apoyoEst_x == true)
+                                            //B20180726 MGC 2018.07.26
+                                            if (v.volumen_x== true)
                                             {
                                                 if (fact)
                                                 {
@@ -1050,7 +1090,8 @@ namespace TAT001.Controllers
                                             }
 
                                             //Apoyo
-                                            if (v.apoyoRea_x == true)
+                                            //B20180726 MGC 2018.07.26
+                                            if (v.apoyototal_x == true)
                                             {
                                                 if (fact)
                                                 {
@@ -1104,7 +1145,8 @@ namespace TAT001.Controllers
                     //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                     //fact = true es real
                     //Volumen
-                    if (v.apoyoEst_x == true)
+                    //B20180726 MGC 2018.07.26
+                    if (v.volumen_x == true)
                     {
                         if (fact)
                         {
@@ -1116,7 +1158,8 @@ namespace TAT001.Controllers
                         }
                     }
                     //Apoyo
-                    if (v.apoyoRea_x == true)
+                    //B20180726 MGC 2018.07.26
+                    if (v.apoyototal_x == true)
                     {
                         if (fact)
                         {
@@ -1285,13 +1328,30 @@ namespace TAT001.Controllers
                                         //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                                         //fact = true es real
                                         //Apoyo
-                                        if (fact)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.volumen_x == true)
                                         {
-                                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
+                                            }
                                         }
-                                        else
+                                        //Volumen
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.apoyototal_x == true)
                                         {
-                                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
+                                            }
                                         }
                                     }
                                 }
@@ -1343,13 +1403,30 @@ namespace TAT001.Controllers
                                         //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                                         //fact = true es real
                                         //Apoyo
-                                        if (fact)
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.volumen_x == true)
                                         {
-                                            if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString()); }
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.VOLUMEN_EST), 2).ToString());
+                                            }
                                         }
-                                        else
+                                        //Volumen
+                                        //B20180726 MGC 2018.07.26
+                                        if (v.apoyototal_x == true)
                                         {
-                                            if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString()); }
+                                            if (fact)
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_REAL), 2).ToString());
+                                            }
+                                            else
+                                            {
+                                                armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(docmod.APOYO_EST), 2).ToString());
+                                            }
                                         }
                                     }
                                 }
@@ -1374,14 +1451,31 @@ namespace TAT001.Controllers
                     if (v.precio_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "preciosC").Select(x => x.TEXTO).FirstOrDefault()); }
                     //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                     //fact = true es real
-                    //Apoyo
-                    if (fact)
+                    //Volumen
+                    //B20180726 MGC 2018.07.26
+                    if (v.volumen_x == true)
                     {
-                        if (v.apoyoRea_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault()); }
+                        if (fact)
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumenrC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                        else
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "volumeneC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
                     }
-                    else
+                    //Apoyo
+                    //B20180726 MGC 2018.07.26
+                    if (v.apoyototal_x == true)
                     {
-                        if (v.apoyoEst_x == true) { cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault()); }
+                        if (fact)
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyorC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
+                        else
+                        {
+                            cabeza.Add(db.TEXTOCVs.Where(x => x.SPRAS_ID == user.SPRAS_ID & x.CAMPO == "apoyoeC").Select(x => x.TEXTO).FirstOrDefault());
+                        }
                     }
                 }
                 else
@@ -2089,8 +2183,20 @@ namespace TAT001.Controllers
                 cv.apoyop_x = Convert.ToBoolean(cs.APOYOPX);
                 cv.costoap_x = Convert.ToBoolean(cs.COSTOAPX);
                 cv.precio_x = Convert.ToBoolean(cs.PRECIOX);
-                cv.apoyoEst_x = Convert.ToBoolean(cs.APOYO_ESTX); //Volumen
-                cv.apoyoRea_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                //B20180726 MGC 2018.07.26
+                //cv.apoyoEst_x = Convert.ToBoolean(cs.APOYO_ESTX); //Volumen
+                //cv.apoyoRea_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                if (fact)
+                {
+                    cv.volumen_x = Convert.ToBoolean(cs.VOLUMEN_REAX); //Volumen
+                    cv.apoyototal_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                }
+                else
+                {
+                    cv.volumen_x = Convert.ToBoolean(cs.VOLUMEN_ESTX); //Volumen
+                    cv.apoyototal_x = Convert.ToBoolean(cs.APOYO_ESTX); //Apoyo
+                }
+                
 
                 //TABLA 2 RECURRENCIAS
                 cv.numColEncabezado2 = cabeza2;////////NUMERO DE COLUMNAS PARA LAS TABLAS
@@ -2328,6 +2434,16 @@ namespace TAT001.Controllers
                 //B20180720P MGC 2018.07.23
                 //ViewBag.miles = d.PAI.MILES;//LEJGG 090718
                 //ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
+                //B20180726 MGC 2018.07.26
+                bool fact = false;
+                try
+                {
+                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                }
+                catch (Exception)
+                {
+
+                }
 
                 List<string> encabezadoFech = new List<string>();
                 List<string> armadoCuerpoTab = new List<string>(); //B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución se agrego los objetos
@@ -2414,8 +2530,19 @@ namespace TAT001.Controllers
                 v.apoyop_x = Convert.ToBoolean(cs.APOYOPX);
                 v.costoap_x = Convert.ToBoolean(cs.COSTOAPX);
                 v.precio_x = Convert.ToBoolean(cs.PRECIOX);
-                v.apoyoEst_x = Convert.ToBoolean(cs.APOYO_ESTX); //Volumen
-                v.apoyoRea_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                //B20180726 MGC 2018.07.26
+                //v.apoyoEst_x = Convert.ToBoolean(cs.APOYO_ESTX); //Volumen
+                //v.apoyoRea_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                if (fact)
+                {
+                    v.volumen_x = Convert.ToBoolean(cs.VOLUMEN_REAX); //Volumen
+                    v.apoyototal_x = Convert.ToBoolean(cs.APOYO_REAX); //Apoyo
+                }
+                else
+                {
+                    v.volumen_x = Convert.ToBoolean(cs.VOLUMEN_ESTX); //Volumen
+                    v.apoyototal_x = Convert.ToBoolean(cs.APOYO_ESTX); //Apoyo
+                }
 
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN LA VISTA///////////////////////////////////////
@@ -2424,15 +2551,15 @@ namespace TAT001.Controllers
                 var con = db.CARTAPs.Select(x => new { x.NUM_DOC, x.POS_ID, x.VIGENCIA_DE, x.VIGENCIA_AL }).Where(a => a.NUM_DOC.Equals(id) & a.POS_ID.Equals(pos)).GroupBy(f => new { f.VIGENCIA_DE, f.VIGENCIA_AL }).ToList();
 
                 //B20180710 MGC 2018.07.12 Modificación 9 y 10 dependiendo del campo de factura en tsol............
-                bool fact = false;
-                try
-                {
-                    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
-                }
-                catch (Exception)
-                {
+                //bool fact = false;
+                //try
+                //{
+                //    fact = db.TSOLs.Where(ts => ts.ID == d.TSOL_ID).FirstOrDefault().FACTURA;
+                //}
+                //catch (Exception)
+                //{
 
-                }
+                //}
 
                 foreach (var item in con)
                 {
@@ -2483,7 +2610,8 @@ namespace TAT001.Controllers
                             if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round((item2.MONTO - item2.MONTO_APOYO), 2).ToString()); }
                             if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
 
-                            if (v.apoyoEst_x == true)
+                            //B20180726 MGC 2018.07.26
+                            if (v.volumen_x == true)
                             {
                                 if (fact)
                                 {
@@ -2498,7 +2626,8 @@ namespace TAT001.Controllers
                             }
 
                             //Apoyo
-                            if (v.apoyoRea_x == true)
+                            //B20180726 MGC 2018.07.26
+                            if (v.apoyototal_x == true)
                             {
                                 if (fact)
                                 {
@@ -2552,7 +2681,8 @@ namespace TAT001.Controllers
                             if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
 
                             //Volumen
-                            if (v.apoyoEst_x == true)
+                            //B20180726 MGC 2018.07.26
+                            if (v.volumen_x == true)
                             {
                                 if (fact)
                                 {
@@ -2567,7 +2697,8 @@ namespace TAT001.Controllers
                             }
 
                             //Apoyo
-                            if (v.apoyoRea_x == true)
+                            //B20180726 MGC 2018.07.26
+                            if (v.apoyototal_x == true)
                             {
                                 if (fact)
                                 {
@@ -2597,7 +2728,8 @@ namespace TAT001.Controllers
                 //B20180710 MGC 2018.07.12 Apoyo es real o es estimado
                 //fact = true es real
                 //Volumen
-                if (v.apoyoEst_x == true)
+                //B20180726 MGC 2018.07.26
+                if (v.volumen_x == true)
                 {
                     if (fact)
                     {
@@ -2609,7 +2741,8 @@ namespace TAT001.Controllers
                     }
                 }
                 //Apoyo
-                if (v.apoyoRea_x == true)
+                //B20180726 MGC 2018.07.26
+                if (v.apoyototal_x == true)
                 {
                     if (fact)
                     {

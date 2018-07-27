@@ -83,6 +83,8 @@ namespace TAT001.Entities
         public Nullable<bool> PRECIOX { get; set; }
         public Nullable<bool> APOYO_ESTX { get; set; }
         public Nullable<bool> APOYO_REAX { get; set; }
+        public Nullable<bool> VOLUMEN_ESTX { get; set; }
+        public Nullable<bool> VOLUMEN_REAX { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public virtual USUARIO USUARIO { get; set; }

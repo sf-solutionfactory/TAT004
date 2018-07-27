@@ -279,14 +279,14 @@
                                             <th style="text-align:center">
                                                 <b>@Model.numColEncabezado[8]</b>
                                                 <label>
-                                                    <input type="checkbox" name="apoyoEst_x" value="true" id="apoyoEst_x" @Html.Raw((Model.apoyoEst_x) ? "checked=\"checked\"" : "") />
+                                                    <input type="checkbox" name="volumen_x" value="true" id="apoyoEst_x" @Html.Raw((Model.volumen_x) ? "checked=\"checked\"" : "") /> @*//B20180726 MGC 2018.07.26*@
                                                     <span style="height:1"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
                                                 <b>@Model.numColEncabezado[9]</b>
                                                 <label>
-                                                    <input type="checkbox" name="apoyoRea_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyoRea_x) ? "checked=\"checked\"" : "") />
+                                                    <input type="checkbox" name="apoyototal_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyototal_x) ? "checked=\"checked\"" : "") /> @*//B20180726 MGC 2018.07.26*@
                                                     <span style="height:1"></span>
                                                 </label>
                                             </th>
@@ -356,25 +356,6 @@
                     }
                     @*Tabla para ser enviada siempre está oculta*@
                     <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
-                        @*
-                            <thead>
-                                <tr>
-                                    <th>Pos</th>
-                                    <th>Vigencia De</th>
-                                    <th>Vigencia Al</th>
-                                    <th>Material</th>
-                                    <th>Categoría</th>
-                                    <th>Categoría ID</th>
-                                    <th>Costo unitario</th>
-                                    <th>% Apoyo</th>
-                                    <th>Apoyo por pieza</th>
-                                    <th>Precio sugerido</th>
-                                    <th>Volumen estimado</th>
-                                    <th>Volumen real</th>
-                                    <th>Apoyo estimado</th>
-                                    <th>Apoyo real</th>
-                                </tr>
-                            </thead>*@
                         <tbody>
                             @if (Model.DOCUMENTOP != null)
                             {

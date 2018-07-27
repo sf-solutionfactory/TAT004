@@ -134,6 +134,8 @@
           <Property Name="PRECIOX" Type="bit" />
           <Property Name="APOYO_ESTX" Type="bit" />
           <Property Name="APOYO_REAX" Type="bit" />
+          <Property Name="VOLUMEN_ESTX" Type="bit" />
+          <Property Name="VOLUMEN_REAX" Type="bit" />
         </EntityType>
         <EntityType Name="CARTAP">
           <Key>
@@ -901,6 +903,7 @@
           <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
           <Property Name="PORC" Type="decimal" Precision="13" Scale="5" />
           <Property Name="DOC_REF" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="FECHAV" Type="date" />
         </EntityType>
         <EntityType Name="DOCUMENTOSAP">
           <Key>
@@ -1177,6 +1180,7 @@
           <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" />
           <Property Name="DECIMAL" Type="nchar" MaxLength="1" Nullable="false" />
           <Property Name="MILES" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="BACKORDER" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="PERIODO">
           <Key>
@@ -5309,6 +5313,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PRECIOX" Type="Boolean" />
           <Property Name="APOYO_ESTX" Type="Boolean" />
           <Property Name="APOYO_REAX" Type="Boolean" />
+          <Property Name="VOLUMEN_ESTX" Type="Boolean" />
+          <Property Name="VOLUMEN_REAX" Type="Boolean" />
         </EntityType>
         <EntityType Name="CARTAP">
           <Key>
@@ -6151,6 +6157,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
           <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
+          <Property Name="FECHAV" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="DOCUMENTOSAP">
           <Key>
@@ -6484,6 +6491,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
           <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
           <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
+          <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PERIODO">
           <Key>
@@ -10657,6 +10665,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CARTAs">
             <EntityTypeMapping TypeName="TAT001Model.CARTA">
               <MappingFragment StoreEntitySet="CARTA">
+                <ScalarProperty Name="VOLUMEN_REAX" ColumnName="VOLUMEN_REAX" />
+                <ScalarProperty Name="VOLUMEN_ESTX" ColumnName="VOLUMEN_ESTX" />
                 <ScalarProperty Name="APOYO_REAX" ColumnName="APOYO_REAX" />
                 <ScalarProperty Name="APOYO_ESTX" ColumnName="APOYO_ESTX" />
                 <ScalarProperty Name="PRECIOX" ColumnName="PRECIOX" />
@@ -11430,6 +11440,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTORECs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOREC">
               <MappingFragment StoreEntitySet="DOCUMENTOREC">
+                <ScalarProperty Name="FECHAV" ColumnName="FECHAV" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
                 <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
@@ -11717,6 +11728,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="PAIS">
             <EntityTypeMapping TypeName="TAT001Model.PAI">
               <MappingFragment StoreEntitySet="PAIS">
+                <ScalarProperty Name="BACKORDER" ColumnName="BACKORDER" />
                 <ScalarProperty Name="LAND" ColumnName="LAND" />
                 <ScalarProperty Name="SPRAS" ColumnName="SPRAS" />
                 <ScalarProperty Name="LANDX" ColumnName="LANDX" />

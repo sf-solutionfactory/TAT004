@@ -47,7 +47,7 @@
             </p>
         </div>
         <div class="child_div_1">
-            @if (!ViewBag.nota)//Se genera reversa en TATLeerCorreo
+            @if (ViewBag.nota | Model.PAI.BACKORDER)//Se genera reversa en TATLeerCorreo
             {
                 <a type="button" class="btn-small" id="btn_cancel"
                    style="height: 32.4px;line-height: 32.4px;
@@ -69,7 +69,7 @@
                         text-transform: uppercase;
                         vertical-align: middle;
                         -webkit-tap-highlight-color: transparent;"
-                   href="mailto:LA_TAT@kellogg.com?Subject=TAT:Recurrent-@Model.NUM_DOC" target="_top">
+                   href="@ViewBag.url@Url.Action("Create", "Solicitudes", new {id_d= Model.NUM_DOC, tsol="NC" })" target="_top">
                     Generar recurrencia
                 </a>
             }
@@ -95,7 +95,7 @@
                         text-transform: uppercase;
                         vertical-align: middle;
                         -webkit-tap-highlight-color: transparent;"
-                   href="@ViewBag.url@Url.Action("Create", "Solicitudes", new {id_d= Model.NUM_DOC, tsol="NC" })" target="_top">
+                   href="mailto:LA_TAT@kellogg.com?Subject=TAT:Recurrent-@Model.NUM_DOC" target="_top">
                     Generar recurrencia
                 </a>
             }

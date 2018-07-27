@@ -61,5 +61,20 @@ namespace TAT001.Services
 
             return dia;
         }
+
+        public DateTime getNextViernes(DateTime f)
+        {
+            int daysUntilFriday = ((int)DayOfWeek.Friday - (int)f.DayOfWeek + 7) % 7;
+            DateTime nextFridat = f.AddDays(daysUntilFriday);
+            return nextFridat;
+        }
+
+        public DateTime getNextLunes(DateTime f)
+        {
+            int daysUntilMonday = ((int)DayOfWeek.Monday - (int)f.DayOfWeek + 7) % 7;
+
+            DateTime nextMonday = f.AddDays(daysUntilMonday);
+            return nextMonday;
+        }
     }
 }

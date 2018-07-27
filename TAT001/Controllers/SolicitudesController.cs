@@ -1402,7 +1402,7 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
-                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada)
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn)
         {
 
             bool prueba = true;
@@ -1610,7 +1610,7 @@ namespace TAT001.Controllers
                             Session["BORRADOR"] = "Borrador almacenado";
                         }
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -2000,7 +2000,7 @@ namespace TAT001.Controllers
 
                                         if (d.LIGADA == true & d != null)
                                         {
-                                            foreach (DOCUMENTOP dep in d.DOCUMENTOPs.Where(x=>x.POS == docP.POS))
+                                            foreach (DOCUMENTOP dep in d.DOCUMENTOPs.Where(x => x.POS == docP.POS))
                                             {
                                                 docP.APOYO_REAL += dep.APOYO_EST;
                                                 //docP.APOYO_EST += dep.;
@@ -2224,33 +2224,47 @@ namespace TAT001.Controllers
                                     ////drec.DOC_REF = drec.NUM_DOC;//RSG 09.07.2018
                                     ////drec.ESTATUS = "P";//RSG 09.07.2018
                                     if (dOCUMENTO.TIPO_TECNICO != "P")
-                                    {
-                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
-                                        dOCUMENTO.FECHAI_VIG = drec.FECHAF;
-                                        //dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);//RSG 11.06.2018
-                                        int ppp = c4.getPeriodo(drec.FECHAF.Value);
-                                        dOCUMENTO.FECHAF_VIG = c4.getUltimoDia(drec.FECHAF.Value.Year, ppp);//RSG 11.06.2018
-                                        dOCUMENTO.TIPO_RECURRENTE = "M";
+                                    {//RSG 29.07.2018 -DELETE
+                                        ////Calendario445 c4 = new Calendario445();//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAI_VIG = drec.FECHAF;
+                                        //////dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);//RSG 11.06.2018
+                                        ////int ppp = c4.getPeriodo(drec.FECHAF.Value);
+                                        ////dOCUMENTO.FECHAF_VIG = c4.getUltimoDia(drec.FECHAF.Value.Year, ppp);//RSG 11.06.2018
+                                        ////dOCUMENTO.TIPO_RECURRENTE = "M";
                                     }
                                     else
-                                    {
-                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
-                                        dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);//RSG 11.06.2018
-                                        //dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);//RSG 11.06.2018
-                                        dOCUMENTO.FECHAF_VIG = drec.FECHAF;
+                                    {//RSG 29.07.2018 - delete
+                                        ////Calendario445 c4 = new Calendario445();//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);//RSG 11.06.2018
+                                        //////dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAF_VIG = drec.FECHAF;
                                         dOCUMENTO.TIPO_RECURRENTE = "P";
                                     }
-                                    foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)
-                                    {
-                                        po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
-                                        po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
-                                    }
+                                    ////foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)//RSG 29.07.2018 - delete
+                                    ////{
+                                    ////    po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
+                                    ////    po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
+                                    ////}
                                 }
                                 if (drec.MONTO_BASE == null) //RSG 31.05.2018-------------------
                                     drec.MONTO_BASE = 0;
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
                                 dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+
+                                //RSG 29.07.2018-add----------------------------------
+                                drec.FECHAV = drec.FECHAF;
+                                Calendario445 cal = new Calendario445();
+                                if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                                    drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                                else
+                                    drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                                drec.EJERCICIO = drec.FECHAV.Value.Year;
+                                drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+                                int num = int.Parse(sel_nn);
+                                int pos = drec.POS % num;
+                                //RSG 29.07.2018-add----------------------------------
+
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
@@ -2454,7 +2468,7 @@ namespace TAT001.Controllers
                         db.SaveChanges();
                     }
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Home");
                 }
                 catch (Exception e)
                 {
@@ -4680,7 +4694,7 @@ namespace TAT001.Controllers
                     ViewBag.error = errorString;
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);
             ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION", dOCUMENTO.TSOL_ID);
@@ -4780,7 +4794,7 @@ namespace TAT001.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Solicitudes");
+                return RedirectToAction("Index", "Home");
             }
         }
 

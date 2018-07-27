@@ -443,10 +443,11 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
 
     $.ajax({
         type: "POST",
-        //url: '../Listas/getUltimoDia',
-        url: '../Listas/getPrimerLunes',
+        url: '../Listas/getUltimoDia',
+        //url: '../Listas/getPrimerLunes',
         dataType: "json",
-        data: { ejercicio: ejercicio, periodo: (periodo - 1 + 1 + num) },
+        data: { ejercicio: ejercicio, periodo: (periodo - 1  + num) },
+        //data: { ejercicio: ejercicio, periodo: (periodo - 1 + 1 + num) },
         success: function (data) {
             document.getElementById("loader").style.display = "none";
             var dd = data.split('/');
@@ -611,6 +612,32 @@ function toShow(string) {
 function toShowPorc(string) {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
+    var xx = parseFloat(string).toFixed(2);
+    xx = xx.replace('.', _decimales);
+    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
+    if (xx != '') {
+        if (_decimales === '.') {
+            //Hace la conversion a 2 decimales
+            var _xv = xx.replace(',', '');
+            xx = _xv;
+            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
+        } else if (_decimales === ',') {
+            var _xv = xx.replace('.', '');
+            xx = _xv.replace(',', '.');
+            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+            _xpf = _xpf.replace('.', ',');
+            string = (_xpf.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ".") + '%');
+        }
+    }
+    else {
+        $(this).val("$ 0" + _decimales + "00");
+    }
+    return string;
+}
+
+function toShowPorc5(string) {
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(5);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
@@ -619,7 +646,7 @@ function toShowPorc(string) {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
             xx = _xv;
-            string = (parseFloat(xx).toFixed(5).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '%');
+            string = (parseFloat(xx).toFixed(5).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
         } else if (_decimales === ',') {
             var _xv = xx.replace('.', '');
             xx = _xv.replace(',', '.');

@@ -102,10 +102,16 @@ namespace TAT001.Models
         public bool costoap_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
         public string precio { get; set; }//TEXTO ENCABEZADO
         public bool precio_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
-        public string apoyoEst { get; set; }//TEXTO ENCABEZADO
-        public bool apoyoEst_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
-        public string apoyoRea { get; set; }//TEXTO ENCABEZADO
-        public bool apoyoRea_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        //B20180726 MGC 2018.07.26
+        //public string apoyoEst { get; set; }//TEXTO ENCABEZADO
+        //public bool apoyoEst_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        //public string apoyoRea { get; set; }//TEXTO ENCABEZADO
+        //public bool apoyoRea_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        //B20180726 MGC 2018.07.26
+        public string volumen { get; set; }//TEXTO ENCABEZADO
+        public bool volumen_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
+        public string apoyototal { get; set; }//TEXTO ENCABEZADO
+        public bool apoyototal_x { get; set; }//PARA MOSTRAR O NO LA COLUMNA
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////DATOS PARA LA TABLA DE RECURRENCIAS DOCUMENTOREC///////////////////////////////////////////////
         public List<string> numColEncabezado2 { get; set; }//NUMERO DE COLUMNAS PARA EL ENCABEZADO

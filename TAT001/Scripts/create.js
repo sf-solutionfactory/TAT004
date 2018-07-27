@@ -2764,9 +2764,12 @@ $('body').on('focusout', '.input_sop_f', function () {
 
 $('body').on('focusout', '#bmonto_apoyo', function () {
     var val = $(this).val();
-    updateTableValIndex(9, val);
+    $(this).val(toShowPorc(val));//RSG 09.07.208
+    val = $(this).val();
 
-    var val = $(this).val(toShowPorc(val));//RSG 09.07.208
+    if (!ligada()) {//RSG 29.07.2018
+        updateTableValIndex(9, val);
+    }
 });
 
 //$('body').on('focusout', '#monto_dis', function () {
@@ -3073,7 +3076,11 @@ function updateTableCathtml(t, j, index, p, v) {
             //$(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));//RSG 09.07.2018
             //$(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
             ////$(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
-            $(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(5)));
+            if (isRelacionada()) //RSG 09.07.2018
+                $(this).find("td:eq(" + vd + ") input").val(toShowPorc5(p.toFixed(5)));
+            else
+                $(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
+
             $(this).find("td:eq(" + va + ") input").val(toShow(v.toFixed(2)));
         }
         i++;

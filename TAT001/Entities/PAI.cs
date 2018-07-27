@@ -36,6 +36,7 @@ namespace TAT001.Entities
         public string SOCIEDAD_ID { get; set; }
         public string DECIMAL { get; set; }
         public string MILES { get; set; }
+        public bool BACKORDER { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CLIENTE> CLIENTEs { get; set; }
