@@ -553,7 +553,7 @@ namespace TAT001.Controllers
         public ActionResult Reversar(decimal id, string tsol)
         {
             Services.Reversa r = new Services.Reversa();
-            int a = r.creaReversa(id.ToString(), "RP");
+            decimal a = r.creaReversa(id.ToString(), "RP");
             return RedirectToAction("Index", "Home");
         }
         // GET: Solicitudes/Create

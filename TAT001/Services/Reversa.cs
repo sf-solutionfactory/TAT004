@@ -10,7 +10,7 @@ namespace TAT001.Services
 {
     public class Reversa
     {
-        public int creaReversa(string id_d, string tsol)
+        public decimal creaReversa(string id_d, string tsol)
         {
             string dates = DateTime.Now.ToString("dd/MM/yyyy");
             DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
@@ -486,7 +486,7 @@ namespace TAT001.Services
                 //ViewBag.error = errorString;
             }
 
-            return 1;
+            return dOCUMENTO.NUM_DOC;
         }
 
 

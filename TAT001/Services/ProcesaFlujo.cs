@@ -265,7 +265,8 @@ namespace TAT001.Services
                                             if (tl != null)
                                             {
                                                 //nuevo.USUARIOA_ID = db.DET_TAX.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
-                                                nuevo.USUARIOA_ID = db.DET_TAXEO.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
+                                                //nuevo.USUARIOA_ID = db.DET_TAXEO.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
+                                                nuevo.USUARIOA_ID = db.DET_TAXEOC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.KUNNR == d.PAYER_ID & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
                                                 d.ESTATUS_WF = "T";
                                             }
                                             else
@@ -563,7 +564,18 @@ namespace TAT001.Services
             //-------------------------------------------------------------------------------------------------------------------------------//
             //-------------------------------------------------------------------------------------------------------------------------------//
             //-------------------------------------------------------------------------------------------------------------------------------//
-            
+            if (correcto.Equals(""))
+            {
+                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).OrderByDescending(x => x.POS).FirstOrDefault();
+                string corr = "";
+                if (conta.WORKFP.ACCION.TIPO == "P")
+                {
+                    conta.ESTATUS = "A";
+                    conta.FECHAM = DateTime.Now;
+                    corr = procesa(conta, recurrente);
+                }
+            }
+
             return correcto;
         }
 

@@ -40,48 +40,105 @@ namespace TAT001.Controllers
                         dz = db.DOCUMENTOAs.Where(x => x.NUM_DOC == de && x.CLASE != "OTR").FirstOrDefault();
                         if (dz == null || dz != null)
                         {
-                            dx.Add(dOCUMENTOes[i]);
+                            if (dOCUMENTOes[i].TSOL.NEGO==true)//para el ultimo filtro
+                            {
+                                if (dOCUMENTOes[i].ESTATUS_WF == "P")//LEJ 19.07.2018---------------------------I
+                                {
+                                    if (dOCUMENTOes[i].FLUJOes.Count > 0)
+                                    {
+                                        if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
+                                        {
+                                            //(Pendiente Validación TS)
+                                            if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
+                                            {
+                                                dx.Add(dOCUMENTOes[i]);
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (dOCUMENTOes[i].ESTATUS_WF == "R")//(Pendiente Corrección)
+                                {
+                                    if (dOCUMENTOes[i].FLUJOes.Count > 0)
+                                    {
+                                        dx.Add(dOCUMENTOes[i]);
+                                    }
+                                }
+                                else if (dOCUMENTOes[i].ESTATUS_WF == "T")//(Pendiente Taxeo)
+                                {
+                                    if (dOCUMENTOes[i].TSOL_ID == "NCIA")
+                                    {
+                                        if (dOCUMENTOes[i].PAIS_ID == "CO")//(sólo Colombia)
+                                        {
+                                            dx.Add(dOCUMENTOes[i]);
+                                        }
+                                    }
+                                }
+                                else if (dOCUMENTOes[i].ESTATUS_WF == "A")//(Por Contabilizar)
+                                {
+                                    if (dOCUMENTOes[i].ESTATUS == "P")
+                                    {
+                                        dx.Add(dOCUMENTOes[i]);
+                                    }
+                                }
+                                else if (dOCUMENTOes[i].ESTATUS_SAP == "E")//Error en SAP
+                                {
+                                    // dx.Add(dOCUMENTOes[i]);
+                                }
+                                else if (dOCUMENTOes[i].ESTATUS_SAP == "X")//Succes en SAP
+                                {
+                                    dx.Add(dOCUMENTOes[i]);
+                                }
+                            }
+                            //LEJ 19.07.2018----------------------------------------------------------------T
+                            // dx.Add(dOCUMENTOes[i]);
                         }
                     }
                 }
-                var uId = dx[0].USUARIOC_ID;
-                var clUsu = db.USUARIOs.Where(x => x.ID == uId).FirstOrDefault();
-                var clSoc = dx[0].SOCIEDAD_ID;
-                int n = 0;
-                var isNumeric = int.TryParse(dx[0].CIUDAD, out n);
-                var clCd = "";
-                var clEdo = "";
-                if (isNumeric)
+                if (dx.Count > 0)
                 {
-                    int c = Convert.ToInt32(dx[0].CIUDAD);
-                    var cd = db.CITIES.Where(i => i.ID == c).FirstOrDefault();
-                    var edo = db.STATES.Where(i => i.ID == cd.STATE_ID).FirstOrDefault();
-                    clCd = cd.NAME;
-                    clEdo = edo.NAME;
+                    var uId = dx[0].USUARIOC_ID;
+                    var clUsu = db.USUARIOs.Where(x => x.ID == uId).FirstOrDefault();
+                    var clSoc = dx[0].SOCIEDAD_ID;
+                    int n = 0;
+                    var isNumeric = int.TryParse(dx[0].CIUDAD, out n);
+                    var clCd = "";
+                    var clEdo = "";
+                    if (isNumeric)
+                    {
+                        int c = Convert.ToInt32(dx[0].CIUDAD);
+                        var cd = db.CITIES.Where(i => i.ID == c).FirstOrDefault();
+                        var edo = db.STATES.Where(i => i.ID == cd.STATE_ID).FirstOrDefault();
+                        clCd = cd.NAME;
+                        clEdo = edo.NAME;
+                    }
+                    else
+                    {
+                        clCd = dx[0].CIUDAD;
+                        clEdo = dx[0].ESTADO;
+                    }
+                    ViewBag.clCorreo = clUsu.EMAIL;
+                    var cl = db.CLIENTEs.Where(a => a.KUNNR == pay & a.VKORG == vkorg).FirstOrDefault();
+                    ViewBag.clCon = cl.CONTAC;
+                    ViewBag.clName = cl.NAME1;
+                    ViewBag.clDir = cl.STRAS_GP;
+                    DateTime hoy = DateTime.Now;
+                    ViewBag.fi = fi;
+                    ViewBag.ff = ff;
+                    ViewBag.clPayId = pay;
+                    ViewBag.clFunci = clUsu.NOMBRE + " " + clUsu.APELLIDO_P + " " + clUsu.APELLIDO_M;
+                    ViewBag.clPos = db.PUESTOTs.Where(x => x.PUESTO_ID == clUsu.PUESTO_ID && x.SPRAS_ID == "ES").Select(s => s.TXT50).FirstOrDefault();
+                    ViewBag.FechaH = DateTime.Now.ToShortDateString();
+                    ViewBag.KellCom = db.SOCIEDADs.Where(s => s.BUKRS == clSoc).Select(r => r.NAME1).FirstOrDefault();
+                    ViewBag.cd = clCd;
+                    ViewBag.edo = clEdo;
+                    ViewBag.idf = _idN;
+                    ViewBag.vk = vkorg;
+                    ViewBag.vtw = vtweg;
+                    ViewBag.clCorreo2 = clUsu.EMAIL.Replace('@','/').Replace('.','*').Replace('-','+');
                 }
-                else
-                {
-                    clCd = dx[0].CIUDAD;
-                    clEdo = dx[0].ESTADO;
-                }
-                ViewBag.clCorreo = clUsu.EMAIL;
-                var cl = db.CLIENTEs.Where(a => a.KUNNR == pay & a.VKORG == vkorg).FirstOrDefault();
-                ViewBag.clCon = cl.CONTAC;
-                ViewBag.clName = cl.NAME1;
-                ViewBag.clDir = cl.STRAS_GP;
-                DateTime hoy = DateTime.Now;
-                ViewBag.fi = fi;
-                ViewBag.ff = ff;
-                ViewBag.clPayId = pay;
-                ViewBag.clFunci = clUsu.NOMBRE + " " + clUsu.APELLIDO_P + " " + clUsu.APELLIDO_M;
-                ViewBag.clPos = db.PUESTOTs.Where(x => x.PUESTO_ID == clUsu.PUESTO_ID && x.SPRAS_ID == "ES").Select(s => s.TXT50).FirstOrDefault();
-                ViewBag.FechaH = DateTime.Now.ToShortDateString();
-                ViewBag.KellCom = db.SOCIEDADs.Where(s => s.BUKRS == clSoc).Select(r => r.NAME1).FirstOrDefault();
-                ViewBag.cd = clCd;
-                ViewBag.edo = clEdo;
-                ViewBag.idf = _idN;
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 e.ToString();
             }
             return View(dx);
@@ -142,7 +199,7 @@ namespace TAT001.Controllers
                 myResponse.Close();
                 mail.IsBodyHtml = true;
                 mail.Body = result;
-                smtp.Send(mail);
+                //smtp.Send(mail);
             }
             catch (Exception ex)
             {
@@ -198,7 +255,7 @@ namespace TAT001.Controllers
 
                 //mail.To.Add("rogelio.sanchez@sf-solutionfactory.com");
                 //mail.To.Add(correo);
-                mail.Subject = "Negociaciones cliente: "+ pay;
+                mail.Subject = "Negociaciones cliente: " + pay;
 
                 try
                 {
@@ -214,7 +271,7 @@ namespace TAT001.Controllers
                     myResponse.Close();
                     mail.IsBodyHtml = true;
                     mail.Body = result;
-                    client.Send(mail);
+                    // client.Send(mail);
                 }
                 catch (Exception ex)
                 {

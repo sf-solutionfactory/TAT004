@@ -690,7 +690,7 @@
                 var _papo = $("#papo-" + i + '-' + y).text();
                 var _mnt = $("#mnt-" + i + '-' + y).text();
                 var _psu = $("#psu-" + i + '-' + y).text();
-                var _ape = $("#ape-" + i + '-' + y).text();
+                var _ape = $("#ape-" + i + '-' + (y)).text();
 
                 //Convertimos a 2 decimales
                 _cant = parseFloat(_cant).toFixed(2);

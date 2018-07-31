@@ -211,7 +211,9 @@
                 @{ int tamaño = 0;
                     try { tamaño = 600 / cols; } catch (Exception) { tamaño = 0; } }@*//B20180720P MGC 2018.07.25*@
                     @{int pos = 0; }
-                    <input id="isfactura" name="isfactura" type="hidden" value="@ViewBag.factura"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
+                    @{string facturap = ""; try { facturap = @ViewBag.factura + ""; facturap = facturap.ToLower(); } catch (Exception) { facturap = ""; } }@*B20180730 MGC 2018.07.30 Mostrar real o estimado*@
+
+                    <input id="isfactura" name="isfactura" type="hidden" value="@facturap"> @*B20180710 MGC 2018.07.10 Modificaciones para editar los campos de distribución*@
                     @for (int a = 0; a < tablas; a++)
                     {
                         <div class="row">

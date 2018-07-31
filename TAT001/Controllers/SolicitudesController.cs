@@ -240,7 +240,7 @@ namespace TAT001.Controllers
             Models.PresupuestoModels carga = new Models.PresupuestoModels();
             ViewBag.ultMod = carga.consultarUCarga();
 
-            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS != "X" & a.PADRE == false).ToList();
+            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS == "M" & a.PADRE == false).ToList();
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
             ////var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
             ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
@@ -554,7 +554,7 @@ namespace TAT001.Controllers
         public ActionResult Reversar(decimal id, string tsol)
         {
             Services.Reversa r = new Services.Reversa();
-            int a = r.creaReversa(id.ToString(), "RP");
+            decimal a = r.creaReversa(id.ToString(), "RP");
             return RedirectToAction("Index", "Home");
         }
         // GET: Solicitudes/Create
@@ -745,7 +745,7 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X" & sol.ADICIONA == false)
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,
@@ -3457,7 +3457,7 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X" & sol.ADICIONA==false)
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,

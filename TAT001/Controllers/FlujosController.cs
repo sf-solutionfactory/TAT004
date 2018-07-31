@@ -314,7 +314,7 @@ namespace TAT001.Controllers
                     {
                         dts.CHECKS = false;
                     }
-                    int tt = db.DOCUMENTOTS.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) & a.TSFORM_ID == ts.ID).Count();
+                    int tt = db.DOCUMENTOTS.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) & a.TSFORM_ID == ts.POS).Count();
                     if (tt == 0)
                         ddt.Add(dts);
                     else

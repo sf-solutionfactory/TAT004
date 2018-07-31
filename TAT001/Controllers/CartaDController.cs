@@ -6,6 +6,7 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using TAT001.Entities;
 using TAT001.Models;
+using TAT001.Services; //B20180730 MGC 2018.07.30 Formatos
 
 namespace TAT001.Controllers
 {
@@ -108,6 +109,13 @@ namespace TAT001.Controllers
                 PUESTOT pp = new PUESTOT();
                 d = db.DOCUMENTOes.Include("SOCIEDAD").Include("USUARIO").Where(a => a.NUM_DOC.Equals(id)).First();
 
+                //Formatos para numeros
+                d.PAI = db.PAIS.Where(a => a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
+                string miles = d.PAI.MILES; //B20180730 MGC 2018.07.30 Formatos
+                string decimales = d.PAI.DECIMAL; //B20180730 MGC 2018.07.30 Formatos
+
+                FormatosC format = new FormatosC(); //B20180730 MGC 2018.07.30 Formatos
+
                 //B20180726 MGC 2018.07.26
                 bool fact = false;
                 try
@@ -172,25 +180,34 @@ namespace TAT001.Controllers
                                 armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
                                 armadoCuerpoTab.Add(item2.MATKL);
                                 armadoCuerpoTab.Add(item2.MAKTX);
-                                armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                                //armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShowPorc(Math.Round(item2.PORC_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.resta, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.PRECIO_SUG, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 //B20180726 MGC 2018.07.26
                                 //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
                                 //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                //Volumen y apoyo
                                 if (fact)
                                     {
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 }
                                     else
                                     {
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 }
-
                                 contadorTabla++;
                             }
                         }
@@ -206,23 +223,32 @@ namespace TAT001.Controllers
                                 armadoCuerpoTab.Add("");
                                 armadoCuerpoTab.Add(item2.MATKL);
                                 armadoCuerpoTab.Add(item2.TXT50);
-                                armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());
-                                armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());
+                                //armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShowPorc(Math.Round(item2.PORC_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.resta, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                //armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                armadoCuerpoTab.Add(format.toShow(Math.Round(item2.PRECIO_SUG, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 //B20180726 MGC 2018.07.26
                                 //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
                                 //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
                                 if (fact)
                                 {
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 }
                                 else
                                 {
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());
-                                    armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                 }
                                 contadorTabla++;
                             }
@@ -404,7 +430,13 @@ namespace TAT001.Controllers
                     {
 
                     }
-                
+
+                //Formatos para numeros
+                d.PAI = db.PAIS.Where(a => a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
+                string miles = d.PAI.MILES; //B20180730 MGC 2018.07.30 Formatos
+                string decimales = d.PAI.DECIMAL; //B20180730 MGC 2018.07.30 Formatos
+
+                FormatosC format = new FormatosC(); //B20180730 MGC 2018.07.30 Formatos
 
                 /////////////////////////////////////////////DATOS PARA LA TABLA 1 MATERIALES EN EL PDF///////////////////////////////////////
                 //B20180720P MGC 2018.07.25
@@ -438,11 +470,27 @@ namespace TAT001.Controllers
                                 armadoCuerpoTab.Add(item2.MATNR.TrimStart('0'));
                                 armadoCuerpoTab.Add(item2.MATKL);
                                 armadoCuerpoTab.Add(item2.MAKTX);
-                                if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                                if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                                if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                                if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                                if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                if (v.costoun_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.apoyo_x == true)
+                                {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShowPorc(Math.Round(item2.PORC_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.apoyop_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.costoap_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.resta, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.precio_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.PRECIO_SUG, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
                                 //B20180726 MGC 2018.07.26
                                 //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
                                 //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
@@ -452,12 +500,14 @@ namespace TAT001.Controllers
                                 {
                                     if (fact)
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                         //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                     }
                                     else
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                         //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
                                     }
                                 }
@@ -468,11 +518,13 @@ namespace TAT001.Controllers
                                 {
                                     if (fact)
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                     }
                                     else
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                     }
                                 }
                                 contadorTabla++;
@@ -490,11 +542,26 @@ namespace TAT001.Controllers
                                 armadoCuerpoTab.Add("");
                                 armadoCuerpoTab.Add(item2.MATKL);
                                 armadoCuerpoTab.Add(item2.TXT50);
-                                if (v.costoun_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString()); }
-                                if (v.apoyo_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString()); }
-                                if (v.apoyop_x == true) { armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString()); }
-                                if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString()); }
-                                if (v.precio_x == true) { armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString()); }
+                                if (v.costoun_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.MONTO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.apoyo_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.PORC_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos                                    
+                                    armadoCuerpoTab.Add(format.toShowPorc(Math.Round(item2.PORC_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.apoyop_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.MONTO_APOYO, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.MONTO_APOYO, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                //if (v.costoap_x == true) { armadoCuerpoTab.Add(Math.Round(item2.resta, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                if (v.costoap_x == true) {
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.resta, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                }
+                                if (v.precio_x == true) {
+                                    //armadoCuerpoTab.Add(Math.Round(item2.PRECIO_SUG, 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                    armadoCuerpoTab.Add(format.toShow(Math.Round(item2.PRECIO_SUG, 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                    }
                                 //B20180726 MGC 2018.07.26
                                 //if (v.apoyoEst_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString()); }
                                 //if (v.apoyoRea_x == true) { armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString()); }
@@ -504,14 +571,16 @@ namespace TAT001.Controllers
                                 {
                                     if (fact)
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                         //carp.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
                                     }
                                     else
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.VOLUMEN_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShowNum(Math.Round(Convert.ToDecimal(item2.VOLUMEN_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
                                         //carp.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                    }
+                                        }
                                 }
 
                                 //Apoyo
@@ -520,12 +589,14 @@ namespace TAT001.Controllers
                                 {
                                     if (fact)
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());
-                                    }
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_REAL), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_REAL), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                        }
                                     else
                                     {
-                                        armadoCuerpoTab.Add(Math.Round(Convert.ToDouble(item2.APOYO_EST), 2).ToString());
-                                    }
+                                        //armadoCuerpoTab.Add(Math.Round(Convert.(item2.APOYO_EST), 2).ToString());//B20180730 MGC 2018.07.30 Formatos
+                                        armadoCuerpoTab.Add(format.toShow(Math.Round(Convert.ToDecimal(item2.APOYO_EST), 2), decimales));//B20180730 MGC 2018.07.30 Formatos
+                                        }
                                 }
                                 contadorTabla++;
                             }
