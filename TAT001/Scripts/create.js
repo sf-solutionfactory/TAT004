@@ -626,14 +626,32 @@ $(document).ready(function () {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
+       //B20180801 MGC Textos
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        //B20180801 MGC Textos
+        //if (mostrar) {
+        //    $('#lbl_volumen').html("Volumen real");
+        //    $('#lbl_apoyo').html("Apoyo real");
+        //} else {
+        //    $('#lbl_volumen').html("Volumen estimado");
+        //    $('#lbl_apoyo').html("Apoyo estimado");
+        //}
+        var vol ="";
+        var ap = "";
         if (mostrar) {
-            $('#lbl_volumen').html("Volumen real");
-            $('#lbl_apoyo').html("Apoyo real");
+            vol = $('#lbl_volr').val();//B20180801 MGC Textos
+            ap = $('#lbl_apr').val();//B20180801 MGC Textos
         } else {
-            $('#lbl_volumen').html("Volumen estimado");
-            $('#lbl_apoyo').html("Apoyo estimado");
+            vol = $('#lbl_vole').val();//B20180801 MGC Textos
+            ap = $('#lbl_ape').val();//B20180801 MGC Textos
         }
+        if (vol != "") {
+            $('#thead_disvolumen').html(vol);//B20180801 MGC Textos
+        }
+        if (ap != "") {
+            $('#thead_disapoyo').html(ap);//B20180801 MGC Textos
+        }
+        
 
         var res = evalSoporteTab(true, e);
         if (res) {

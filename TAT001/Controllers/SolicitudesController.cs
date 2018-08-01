@@ -587,6 +587,8 @@ namespace TAT001.Controllers
             string notas_soporte = "";//MGC B20180625 MGC
             string tipo_cambio = "";//MGC B20180625 MGC
             string addrowst = "X"; //Add MGC B20180705 2018.07.05
+
+            string usuariotextos = "";
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -599,6 +601,9 @@ namespace TAT001.Controllers
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+
+                usuariotextos = user.SPRAS_ID;//B20180801 MGC Textos
 
                 List<TREVERSAT> ldocr = new List<TREVERSAT>();
                 decimal rel = 0;
@@ -657,7 +662,7 @@ namespace TAT001.Controllers
                 {
                     addrowst = "";
                 }
-
+       
 
                 //Validar si es una reversa
                 string isrn = "";
@@ -1385,6 +1390,51 @@ namespace TAT001.Controllers
                 ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
             }
             //-----------------------------------------------------------------LEJ 09.07.18
+
+            //B20180801 MGC Textos....................................................................................................
+            string txt_volumenr = "";//B20180801 MGC Textos
+            string txt_apoyor = "";//B20180801 MGC Textos
+            string txt_volumene = "";//B20180801 MGC Textos
+            string txt_apoyoe = "";//B20180801 MGC Textos
+
+            try
+            {
+                txt_volumenr = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disvolumenReal")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                txt_volumene = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disvolumenEst")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                txt_apoyor = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("txt_apoyor")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {                
+                txt_apoyoe = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("txt_apoyoe")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+
+            ViewBag.apoyor = txt_apoyor;
+            ViewBag.volumenr = txt_volumenr;
+            ViewBag.apoyoe = txt_apoyoe;
+            ViewBag.volumene = txt_volumene;
+            //B20180801 MGC Textos....................................................................................................
             return View(d);
         }
 
@@ -1403,7 +1453,8 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
-                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn)
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn
+                ,string lbl_volr, string lbl_apr, string lbl_vole, string lbl_ape) //B20180801 MGC Textos
         {
 
             bool prueba = true;
@@ -2721,6 +2772,13 @@ namespace TAT001.Controllers
 
             ViewBag.borrador = "error"; //MGC B20180625 MGC
             ViewBag.borradore = borrador_param; //B20180625 MGC2 2018.07.04 
+
+            //B20180801 MGC Textos....................................................................................................
+            ViewBag.apoyor = lbl_apr;
+            ViewBag.volumenr = lbl_volr;
+            ViewBag.apoyoe = lbl_ape;
+            ViewBag.volumene = lbl_vole;
+            //B20180801 MGC Textos....................................................................................................
 
 
             return View(dOCUMENTO);
