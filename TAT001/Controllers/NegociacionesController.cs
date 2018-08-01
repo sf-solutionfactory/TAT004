@@ -135,7 +135,7 @@ namespace TAT001.Controllers
                     ViewBag.idf = _idN;
                     ViewBag.vk = vkorg;
                     ViewBag.vtw = vtweg;
-                    ViewBag.clCorreo2 = clUsu.EMAIL.Replace('@','/').Replace('.','*').Replace('-','+');
+                    ViewBag.clCorreo2 = correo.Replace('@','/').Replace('.','*').Replace('-','+');
                 }
             }
             catch (Exception e)

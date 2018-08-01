@@ -296,7 +296,7 @@
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT020, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
                                     @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @id = "lbl_tsol" })
                                 </div>
                                 <div class="input-field col s12">
@@ -799,7 +799,7 @@
                                     @foreach (var iteem in Model.D.DOCUMENTORs)
                                     {
                                         <div class="input-field col s12">
-                                            <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session[" spras"].ToString())).FirstOrDefault().TXT100" />
+                                            <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
                                             <label for="txt_trev">Tipo de reversa</label>
                                         </div>
                                         <div class="input-field col s12">

@@ -1,6 +1,4 @@
-﻿
-
-function llenaCat(vkorg, vtweg, spart, kunnr) {
+﻿function llenaCat(vkorg, vtweg, spart, kunnr) {
     //document.getElementById("loader").style.display = "initial";
     var soc = document.getElementById("sociedad_id").value;
     $("#select_categoria").find('option').remove().end();
@@ -66,7 +64,51 @@ $(document).ready(function () {
             }
         ]
     });
+    //LEJ 31.07.2018---------------------
+    var _rec = $('#valRec').val();
+    if (_rec > 0 || _rec != '') {
+        $('#check_recurrente').prop('checked', true);
+        showPrTable();
+    }
+    if ($('#chk_ligada').is(":checked")) {
+        $("#div_objq").removeClass("hide");
+        $("#txt_ligada").val("X");
+    } else {
+        $("#div_objq").addClass("hide");
+        $("#txt_ligada").val("");
+    }
+    //LEJ 31.07.2018---------------------
 });
+//LEJ 31.07.2018---------------------
+function showPrTable() {
+    var _table = $('#table_rec').DataTable();
+    _table.clear().draw(true);
+    var t = $('#table_dis').DataTable();
+    if ($('#check_recurrente').is(":checked")) {
+        $('#table_rech > tbody  > tr').each(function () {
+            var pos = $(this).find('td').eq(1).text();
+            var fecha = $(this).find('td').eq(2).text().trim().split(' ');
+            var mt = $(this).find('td').eq(3).text();
+            var porc = $(this).find('td').eq(4).text();
+            if ($('#miles').val() === ',') {
+                var _mt = parseFloat(mt);
+                var _porc = parseFloat(porc);
+                fillTable(_table, pos, fecha[0], "$" + _mt.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','), _porc.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "%");
+            } else if ($('#miles').val() === '.') {
+                mt = mt.toFixed(2).replace('.', ',');
+                porc = porc.toFixed(2).replace('.', ',');
+                fillTable(_table, pos, fecha[0], "$" + mt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'), porc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + "%");
+            }
+        });
+        $(".table_rec").css("display", "table");
+    }
+}
+//LEJ 31.07.2018---------------------
+function fillTable(t, no, fecha, mt, porc) {
+    t.row.add([
+        no, $("#tsol_id").val(), fecha, mt, porc
+    ]).draw(false).node();
+}
 
 function cambiaRec() {
     var campo = document.getElementById("check_recurrente");
@@ -589,7 +631,7 @@ function toShow(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '') {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -615,7 +657,7 @@ function toShowPorc(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '') {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -641,7 +683,7 @@ function toShowPorc5(string) {
     var xx = parseFloat(string).toFixed(5);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '') {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -667,7 +709,7 @@ function toShowNum(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '') {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');

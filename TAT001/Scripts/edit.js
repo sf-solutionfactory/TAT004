@@ -8,7 +8,24 @@ var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inacti
 var proverror = "";//B20180625 MGC 2018.06.27
 
 $(document).ready(function () {
-
+    $.ajax({
+        url: "../Listas/TipoRecurrencia",
+        type: "POST",
+        async: true,
+        timeout: 30000,
+        //dataType: "json",
+        data: { tsol: "NC" },
+        success: function (data) {
+            $("#txt_trec").val(data);
+            if (data === "") {
+                $("#tabs_rec").addClass("disabled");
+            } else {
+                if (!isRelacionada()) {
+                    $("#tabs_rec").removeClass("disabled");
+                }
+            }
+        }
+    });
     //Validar que los labels esten activos
     //Información
     $("label[for='notas_txt']").addClass("active");
@@ -100,10 +117,26 @@ $(document).ready(function () {
                 "name": 'EJERCICIOK',
                 "className": 'EJERCICIOK'
             },
+            //lej 25-07-2018 
+            {
+                "name": 'PAYER',
+                "className": 'PAYER'
+            },
+            {
+                "name": 'DESCRIPCION',
+                "className": 'DESCRIPCION'
+            },
+            //lej 25-07-2018 
             {
                 "name": 'BILL_DOC',
                 "className": 'BILL_DOC'
             },
+            //lej 25-07-2018 
+            {
+                "name": 'IMPORTE_FAC',
+                "className": 'IMPORTE_FAC'
+            },
+            //lej 25-07-2018 
             {
                 "name": 'BELNR',
                 "className": 'BELNR'
@@ -543,17 +576,21 @@ $(document).ready(function () {
         var table = $('#table_sop').DataTable();
         table.clear().draw(true);
         if ($(this).is(":checked")) {
+            $(".table_sop").css("display", "none");
+            $("#file_facturat").css("display", "block");
+            // $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
+            //Add row 
+            // addRowSop(table);
+            //Hide columns
+            //ocultarColumnasTablaSoporteDatos();
+        } else {
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
-            $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
+            // $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
             //Add row 
             addRowSop(table);
             //Hide columns
             ocultarColumnasTablaSoporteDatos();
-        } else {
-            $(".table_sop").css("display", "none");
-            $("#file_facturat").css("display", "block");
-            $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
         }
 
         $('.file_sop').val('');
@@ -836,6 +873,7 @@ $(document).ready(function () {
                     $('#monto_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                     $('#montos_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
                 }
+                $("label[for='montos_doc_ml2']").addClass("active");//LEJ 26.07.18
                 //LEJ 09.07.18-------------------------------------------------------------------------------------------Termina
             } else {
                 $('#monto_doc_ml2').val(monto);
@@ -1212,6 +1250,8 @@ $(document).ready(function () {
             }
             $('#borrador_param').val(borrador);//B20180625 MGC2 2018.07.04
 
+            ////$('#fechai_vig').val($('#fechai_vig').val() +" 12:00:00 p.m.");//RSG 01.08.2018
+            ////$('#fechaf_vig').val($('#fechaf_vig').val() +" 12:00:00 p.m.");//RSG 01.08.2018
 
             //Termina provisional
             $('#btn_guardar').click();
@@ -1384,6 +1424,7 @@ $(window).on('load', function () {
     var check = $("#check_facturas").val();
     if (!isRelacionada() && !isReversa()) {
         $('#tsol_id').change();
+        //selectTsol($('#tsol_id').val());//LEJ 24.07.18
     }
 
     //B20180625 MGC 2018.06.29 Verificar porcentaje de apoyo
@@ -1449,11 +1490,13 @@ $(window).on('load', function () {
 
     //una factura
     var check = $("#check_facturas").val();
-    if (check == "true") {
-        $('#check_factura').prop('checked', true);
-    } else {
+    if (check === "false") {//jemo 11-07-2018
         $('#check_factura').prop('checked', false);
+    } else {
+        $('#check_factura').prop('checked', true);
     }
+    $('#check_factura').trigger('change');//jemo 11-07-2018
+
 
 
     $('#gall_id').change(); //Cambio en allowance
@@ -1606,6 +1649,47 @@ $(window).on('load', function () {
         $('#tipo_cambio').val(mt); //B20180625 MGC 2018.07.02
     }
 });
+
+//LEJ 30.07.2018--------------------------------------I
+function _ff() {
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    var datei = $("#fechai_vig").val().split(" ")[0];
+    var _anoi = datei.split('/')[2];
+    $.ajax({
+        type: "POST",
+        url: 'getPeriodo',
+        dataType: "json",
+        data: { "fecha": datei },
+        success: function (data) {
+            var _xd = data;
+            $("#periodoi_id").val(parseInt(data));
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+        },
+        async: true
+    });
+    var datef = $("#fechaf_vig").val().split(" ")[0];
+    var _anof = datef.split('/')[2];
+    $.ajax({
+        type: "POST",
+        url: 'getPeriodo',
+        dataType: "json",
+        data: { "fecha": datef },
+        success: function (data) {
+            var _xd = data;
+            $("#periodof_id").val(parseInt(data));
+
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+        },
+        async: true
+    });
+    $("#anioi_id").val(_anoi);
+    $("#aniof_id").val(_anof);
+}
+//LEJ 30.07.2018--------------------------------------T
 
 //B20180625 MGC 2018.07.04 para el auto-guardado del borrador
 $(document).on('mousemove keyup keypress', function () {
@@ -2124,7 +2208,7 @@ function copiarTableVistaSop() {
         $('#check_factura').trigger('change');
         $(".table_sop").css("display", "table");
         var rowsn = 0;
-        if ($("#check_factura").is(':checked')) {
+        if ($("#check_factura").is(':checked') == false) { //lej 24-07-2018
             //Tabla con inputs
             rowsn = 1;
         } else {
@@ -2143,35 +2227,38 @@ function copiarTableVistaSop() {
 
 
             //var pos = $(this).find("td.POS").text();
-            var pos = $(this).find("td:eq(0) input").val(); //B20180625 MGC 2018.06.27
+            var pos = $(this).find("td:eq(0)").text(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27
+            var factura = $(this).find("td:eq(1) ").text(); //B20180625 MGC 2018.06.27
             //var fecha = $(this).find("td.FECHA").text();
-            var fecha = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27
+            var fecha = $(this).find("td:eq(2) ").text(); //B20180625 MGC 2018.06.27
 
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(3) ").text(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(5) input").val(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(5) ").text(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(6) ").text(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(7) ").text(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
-
+            //LEJ 25.07.18------------------I
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
+            var facturak = $(this).find("td:eq(8)").text();
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
+            var ejerciciok = $(this).find("td:eq(9)").text();
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var bill_doc = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
+            var pay = $(this).find("td:eq(10)").text();
+            var des = $(this).find("td:eq(11)").text();
+            var bill_doc = $(this).find("td:eq(12)").text();
             //var belnr = $(this).find("td.BELNR").text();
-            var belnr = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
-
+            var imp_fact = $(this).find("td:eq(13)").text();
+            var belnr = $(this).find("td:eq(14)").text();
+            //LEJ 25.07.18---------------------T
             ////var proverror = "";//B20180625 MGC 2018.06.27
 
             if ($("#check_factura").is(':checked')) {
@@ -2184,7 +2271,10 @@ function copiarTableVistaSop() {
                 vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0] + "\">";
                 facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak + "\">";
                 ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok + "\">";
+                pay = "<input class=\"PAYER input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + pay + "\">";//LEJ 25-07-2018
+                des = "<input class=\"DESCRIPCION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + des + "\">";//LEJ 25-07-2018
                 bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
+                imp_fact = "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + imp_fact + "\">"//LEJ 25-07-2018
                 belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
 
             } else {
@@ -2209,7 +2299,7 @@ function copiarTableVistaSop() {
 
             var t = $('#table_sop').DataTable();
             //addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
-            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr, "");//lej 25.07.18
 
             //Quitar el row
             $(this).remove();
@@ -2373,7 +2463,8 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
         var pais = $('#pais_id').val();
         //Obtener el tipo de solicitud
         var tsol_id = $('#tsol_id').val();
-        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X");
+        var clase_doc = $('#check_factura').is(':checked');
+        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X", clase_doc);
 
         $("#table_sop > tbody  > tr[role='row']").each(function () {
 
@@ -2396,12 +2487,23 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
                                 //Obtener el valor guardado en la tabla
                                 var rowcl = 'td.' + i;
                                 //Obtener los valores como textos en la celda
-                                if (!check | i == "POS") {
-                                    var valtd = $(this).find(rowcl).text();
+                                // if (!check | i == "POS") {
+                                //LEJ 27.07.18
+                                if (!check) {//Para un renglon
+                                    if ($(this).find('td input.' + i).length) {
+                                        var valtd = $(this).find('td input.' + i).val();//lej 26.07.18
+                                    } else {
+                                        var valtd = $(this).find(rowcl).text();
+                                    }
                                     item[i] = valtd;
-                                } else {
+                                } else {//para cuando es multiple
+                                    //LEJ 27.07.18
                                     //Obtener los valores como textos de los inputs
-                                    var valtd = $(this).find(rowcl + " input").val();
+                                    if ($(this).find('td input.' + i).length) {
+                                        var valtd = $(this).find(rowcl + " input").val();
+                                    } else {
+                                        var valtd = $(this).find(rowcl).text();
+                                    }
                                     item[i] = valtd;
                                 }
 
@@ -2719,7 +2821,6 @@ $('body').on('focusout', '.input_sop_f', function () {
 $('body').on('focusout', '#bmonto_apoyo', function () {
     var val = $(this).val();
     updateTableValIndex(9, val);
-
     var val = $(this).val(toShowPorc(val));//RSG 09.07.208
 });
 
@@ -3676,7 +3777,7 @@ function loadExcelSop(file) {
     var formData = new FormData();
 
     formData.append("FileUpload", file);
-
+    importe_fac = 0;
     var table = $('#table_sop').DataTable();
     table.clear().draw();
     $.ajax({
@@ -3693,27 +3794,34 @@ function loadExcelSop(file) {
 
                 $.each(data, function (i, dataj) {
 
-                    var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
-                    var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
+                    //var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
+                    //var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
                     var addedRow = table.row.add([
                         dataj.POS,
                         dataj.FACTURA,
-                        "" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
-                        dataj.PROVEEDOR,
-                        dataj.PROVEEDOR_TXT,
-                        dataj.CONTROL,
-                        dataj.AUTORIZACION,
-                        "" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
-                        dataj.FACTURAK,
+                        //jemo 10-17-2018 inicio
+                        "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        "",//dataj.PROVEEDOR,
+                        "",//dataj.PROVEEDOR_TXT,
+                        "",//dataj.CONTROL,
+                        "",//dataj.AUTORIZACION,
+                        "",//"" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
+                        "",//dataj.FACTURAK,
+                        //jemo 10-17-2018 inicio
                         dataj.EJERCICIOK,
+                        //jemo 10-17-2018 inicio
+                        dataj.PAYER,
+                        dataj.DESCRIPCION,
                         dataj.BILL_DOC,
-                        dataj.BELNR
+                        dataj.IMPORTE_FACT,
+                        ""//dataj.BELNR
+                        //jemo 10-17-2018 fin
                     ]).draw(false).node();
 
                     if (dataj.PROVEEDOR_ACTIVO == false) {
                         $(addedRow).find('td.PROVEEDOR').addClass("errorProveedor");
                     }
-
+                    importe_fac += parseFloat(toNum(dataj.IMPORTE_FACT));//jemo inicio 24-07-2018
                 });
                 //Aplicar configuración de columnas en las tablas
                 ocultarColumnasTablaSoporteDatos();
@@ -3729,6 +3837,7 @@ function loadExcelSop(file) {
 
 }
 
+
 function selectTsol(sol) {
 
     //Obtener el tipo de solicitud NC
@@ -3736,13 +3845,13 @@ function selectTsol(sol) {
     //El valor de sol se obtiene de la vista
     //Obtener el valor de la configuración almacenada en la columna FACTURA
     //de la tabla TSOL en bd
-    var mostrar = isFactura2(sol);
-    var table = $('#table_sop').DataTable();
+    var mostrar = isFactura2(sol);//LEJ 04.07.18
+    var table = $('#table_sop').DataTable();//LEJ 04.07.18
     //if (sol == "NC" | sol == "NCI" | sol == "OP") {
     if (mostrar) {
-        $('#ref_soporte').css("display", "table");
+        $('#ref_soporte').css("display", "table");//LEJ 04.07.18
         //Checar si mostrar la tabla o el archivo
-        $('#check_factura').trigger('change');
+        $('#check_factura').trigger('change');//LEJ 04.07.18
     } else {
 
         table.clear().draw();
@@ -3812,36 +3921,74 @@ function addRowSop(t) {
         "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"VENCIMIENTO input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"PEJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"EJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        ""//B20180625 MGC 2018.06.27
+        "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",//LEJ 25.07.18
+        "X"
     );
 }
 
-function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr) {
+function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr, _x) {
     //var t = $('#table_sop').DataTable();
-
-    t.row.add([
-        pos, //POS
-        fac,
-        fecha,
-        prov,
-        provt,
-        control,
-        aut,
-        ven,
-        fack,
-        eje,
-        bill,
-        belnr
-    ]).draw(false).node(); //B20180625 MGC 2018.06.27
-
-    //B20180625 MGC 2018.06.27
-    if (proverror != "") {
-        $(r).find('td.PROVEEDOR').addClass(proverror);
-        $(r).find("td.PROVEEDOR_TXT").text("");
+    //LEJ 25.07.18
+    if (_x == "X") {
+        t.row.add([
+            pos, //POS
+            fac,
+            fecha,
+            prov,
+            provt,
+            control,
+            aut,
+            ven,
+            fack,
+            eje,
+            pay,
+            des,
+            bill,
+            impf,
+            belnr
+        ]).draw(false).node(); //B20180625 MGC 2018.06.27
     }
+    else if (_x == "") {
+        t.row.add([
+            pos, //POS
+            //fac,
+            "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURA" + "\" name=\"\" value=\"" + fac.trim() + "\">",
+            fecha,
+            // prov,
+            "<input class=\"PROVEEDOR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PROVEEDOR" + "\" name=\"\" value=\"" + prov.trim() + "\">",
+            // provt,
+            "<input class=\"input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + provt.trim() + "\">",
+            //control,
+            "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "CONTROL" + "\" name=\"\" value=\"" + control.trim() + "\">",
+            // aut,
+            "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "AUTORIZACION" + "\" name=\"\" value=\"" + aut.trim() + "\">",
+            ven,
+            //fack,
+            "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURAK" + "\" name=\"" + "FACTURAK" + "\" value=\"" + fack.trim() + "\">",
+            // eje,
+            "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "EJERCICIOK" + "\" name=\"" + "EJERCICIOK" + "\" value=\"" + eje.trim() + "\">",
+            //pay,
+            "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PAYER" + "\" name=\"\" value=\"" + pay.trim() + "\">",
+            //des,
+            "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "DESCRIPCION" + "\" name=\"\" value=\"" + des.trim() + "\">",
+            // bill,
+            "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BILL_DOC" + "\" name=\"\" value=\"" + bill.trim() + "\">",
+            //impf,
+            "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "IMPORTE_FAC" + "\" name=\"\" value=\"" + impf.trim() + "\">",
+            // belnr
+            "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BELNR" + "\" name=\"\" value=\"" + belnr.trim() + "\">"
+        ]).draw(false).node(); //LEJ 2018.07.26
+    }
+    //B20180625 MGC 2018.06.27
+    /* if (proverror != "") {
+         $(r).find('td.PROVEEDOR').addClass(proverror);
+         $(r).find("td.PROVEEDOR_TXT").text("");
+     }*/
 
 }
 
@@ -3954,14 +4101,22 @@ function ocultarColumnasTablaSoporteDatos() {
     var pais = $('#pais_id').val();
     //Obtener el tipo de solicitud
     var tsol_id = $('#tsol_id').val();
-    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
+    //lej 25.07.18
+    var clase_doc = $('#check_factura').is(':checked');
+    //lej 25.07.18 
+    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id, clase_doc);
 
 }
 
-function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+//lej 25.07.18
+function ocultarColumnasTablaSoporte(sociedad, pais, tsol, class_doc) {
     var table = $('#table_sop').DataTable();
-
-    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "");
+    var _xn = [];
+    $("#table_sop thead tr th").each(function () {
+        _xn.push($(this).html());
+    });
+    //lej 25.07.18
+    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "", class_doc);
 
     if (data !== null || data !== "") {
         //True son los visibles
@@ -3982,14 +4137,15 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
     }
 }
 
-function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
+//lej 25.07.18
+function configColumnasTablaSoporte(sociedad, pais, tsol, nu, class_doc) {
 
     dataConfig = null;
     var localdataConfig = null;
     $.ajax({
         type: "POST",
         url: 'LoadConfigSoporte',
-        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu },
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu, "class_doc": class_doc },
 
         success: function (data) {
 
@@ -4403,7 +4559,7 @@ function evaluarInfoFacturas() {
         //Tabla con inputs
         check = true;
     }
-
+    //---LEJ---\\\
     //Evaluar referencia a facturas 
     var tsol_id = $('#tsol_id').val();
     var mostrar = isFactura2(tsol_id);
@@ -4473,7 +4629,9 @@ function evaluarInfoFacturas() {
                 }
                 //Validar facturak
                 if ($(this).find('td.FACTURAK').length) {
-                    var fk = textval($(this), check, "FACTURAK");
+                    //var _xle = $(this).find('input.FACTURAK').val();
+                    // var fk = textval($(this).find('input.FACTURAK').val(), check, "FACTURAK");//LEJ 26.07.18
+                    var fk = textval($(this), check, "FACTURAK");//LEJ 26.07.18
                     res = valcolumn(fk, "FACTURAK");
                     if (res != "") {
                         return false;
@@ -4667,10 +4825,10 @@ function textval(tr, check, column) {
     var rowcl = 'td.' + column;
     //Obtener los valores como textos en la celda
     if (!check) {
-        val = tr.find(rowcl).text();
+        val = tr.find(rowcl + " input").val();//lej 26.07.18
     } else {
         //Obtener los valores como textos de los inputs
-        val = tr.find(rowcl + " input").val();
+        val = tr.find(rowcl).text();//lej 26.07.18
     }
     return val;
 }
@@ -5254,10 +5412,10 @@ function selectCliente(valu) {
                     $("label[for='vtweg']").addClass("active");
                     //Si la solicitud es una relacionada, obtener el nombre y email del contacto almacenado en DOCUMENTO
                     if (!$('#payer_id').hasClass("prelacionada")) {
-                        $('#payer_nombre').val(data.PAYER_NOMBRE);
-                        $("label[for='payer_nombre']").addClass("active");
-                        $('#payer_email').val(data.PAYER_EMAIL);
-                        $("label[for='payer_email']").addClass("active");
+                        ////$('#payer_nombre').val(data.PAYER_NOMBRE);//RSG 01.08.2018
+                        ////$("label[for='payer_nombre']").addClass("active");
+                        ////$('#payer_email').val(data.PAYER_EMAIL);
+                        ////$("label[for='payer_email']").addClass("active");
                     }
                     $("#txt_vkorg").val(data.VKORG);//RSG 05.07.2018
                     $("#txt_vtweg").val(data.VTWEG2);//RSG 05.07.2018
