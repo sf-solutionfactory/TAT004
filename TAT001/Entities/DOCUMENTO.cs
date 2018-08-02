@@ -101,6 +101,9 @@ namespace TAT001.Entities
         public string DOCUMENTO_SAP { get; set; }
         public Nullable<decimal> PORC_APOYO { get; set; }
         public Nullable<bool> LIGADA { get; set; }
+        public Nullable<bool> OBJETIVOQ { get; set; }
+        public Nullable<int> FRECUENCIA_LIQ { get; set; }
+        public Nullable<decimal> OBJQ_PORC { get; set; }
         public List<TAT001.Models.DOCUMENTOP_MOD> DOCUMENTOP { get; set; }
         public List<DOCUMENTOF> DOCUMENTOF { get; set; }
         public List<DOCUMENTOREC> DOCUMENTOREC { get; set; }

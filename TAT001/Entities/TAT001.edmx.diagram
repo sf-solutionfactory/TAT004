@@ -308,6 +308,7 @@
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
         <EntityTypeShape EntityType="TAT001Model.DOCUMENTOL" Width="1.5" PointX="25.5" PointY="82.625" />
         <AssociationConnector Association="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" />
+        <EntityTypeShape EntityType="TAT001Model.APPSETTING" Width="1.5" PointX="17.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

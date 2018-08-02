@@ -13,6 +13,15 @@
           <Property Name="DESCCRIPCION" Type="nvarchar" MaxLength="50" />
           <Property Name="TIPO" Type="nchar" MaxLength="1" Nullable="false" />
         </EntityType>
+        <EntityType Name="APPSETTING">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
+          <Property Name="VALUE" Type="nvarchar" MaxLength="255" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="CAMPOS">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -709,6 +718,9 @@
           <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
           <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
           <Property Name="LIGADA" Type="bit" />
+          <Property Name="OBJETIVOQ" Type="bit" />
+          <Property Name="FRECUENCIA_LIQ" Type="int" />
+          <Property Name="OBJQ_PORC" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -4222,6 +4234,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
         </Function>
         <EntityContainer Name="TAT001ModelStoreContainer">
           <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="APPSETTING" EntityType="Self.APPSETTING" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" Schema="dbo" store:Type="Tables" />
@@ -5960,6 +5973,9 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
           <NavigationProperty Name="DOCUMENTOLs" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
+          <Property Name="OBJETIVOQ" Type="Boolean" />
+          <Property Name="FRECUENCIA_LIQ" Type="Int32" />
+          <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -10448,6 +10464,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
             <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
           </AssociationSet>
+          <EntitySet Name="APPSETTINGs" EntityType="TAT001Model.APPSETTING" />
         </EntityContainer>
         <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
           <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -10591,6 +10608,15 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="APPSETTING">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -11199,6 +11225,9 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOes">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTO">
               <MappingFragment StoreEntitySet="DOCUMENTO">
+                <ScalarProperty Name="OBJQ_PORC" ColumnName="OBJQ_PORC" />
+                <ScalarProperty Name="FRECUENCIA_LIQ" ColumnName="FRECUENCIA_LIQ" />
+                <ScalarProperty Name="OBJETIVOQ" ColumnName="OBJETIVOQ" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
                 <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
@@ -12762,6 +12791,16 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APPSETTINGs">
+            <EntityTypeMapping TypeName="TAT001Model.APPSETTING">
+              <MappingFragment StoreEntitySet="APPSETTING">
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

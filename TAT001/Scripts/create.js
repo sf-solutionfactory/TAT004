@@ -1227,6 +1227,9 @@ $(document).ready(function () {
             //bmonto_apoyo
             $('#bmonto_apoyo').val(toNum($('#bmonto_apoyo').val()));
 
+            //objq
+            $('#objPORC').val(toNum($('#objPORC').val()));//RSG 01.08.2018
+
             $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
             $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
@@ -3393,6 +3396,9 @@ function updateFooter() {
     }
     //LEJ 09.07.18----------------------------------------------------------------------------T
     //$('#total_dis').text("$" + total);
+    if (isRelacionada()) {
+        $("#monto_dis").val(toShow(total));
+    }
 }
 
 function convertI(i) {

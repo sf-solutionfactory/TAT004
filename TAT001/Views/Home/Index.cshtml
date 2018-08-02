@@ -425,7 +425,7 @@
                                                 <div class="lbl_pending">Pendiente Validación TS</div>
                                             </td>*@
                                         <td class="">
-                                            <span class="lbl_ts yellow darken-2 white-text new badge" data-badge-caption=" ">Validación TS</span>
+                                            <span class="lbl_ts yellow darken-2 white-text new badge" data-badge-caption=" ">Pendiente validación TS</span>
                                         </td>
                                     }
                                     else
@@ -434,7 +434,7 @@
                                                 <div class="lbl_pending">Pendiente @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</div>
                                             </td>*@
                                         <td class="">
-                                            <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente </span> @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</span>
+                                            <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente aprobador </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID*@</span>
                                         </td>
                                     }
                                 }
@@ -480,7 +480,10 @@
                                         <div class="lbl_approved">Aprobada</div>
                                     </td>*@
                                 <td class="">
-                                    <span class="lbl_approved new badge green darken-1 white-text" data-badge-caption=" ">Aprobada</span>
+                                    @if (item.TSOL.PADRE)
+                                    {
+                                        <span class="new badge green darken-1 white-text" data-badge-caption=" ">@item.TSOL.TSOLTs.Where(x => x.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 <span class="lbl_approved">bierta</span></span>
+                                    }
                                 </td>
                             }
                         }
@@ -491,7 +494,7 @@
                                 @if (item.FLUJOes.Count > 0)
                                 {
                                     @*<div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>*@
-                                    <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección </span> @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</span>
+                                    <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
                                 }
                             </td>
                         }
