@@ -1415,7 +1415,7 @@ namespace TAT001.Controllers
             }
             try
             {
-                txt_apoyor = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("txt_apoyor")).FirstOrDefault().TEXTOS;
+                txt_apoyor = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disapoyoReal")).FirstOrDefault().TEXTOS;
             }
             catch (Exception)
             {
@@ -1423,7 +1423,7 @@ namespace TAT001.Controllers
             }
             try
             {                
-                txt_apoyoe = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("txt_apoyoe")).FirstOrDefault().TEXTOS;
+                txt_apoyoe = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disapoyoEst")).FirstOrDefault().TEXTOS;
             }
             catch (Exception)
             {

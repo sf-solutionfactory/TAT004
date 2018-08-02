@@ -613,12 +613,12 @@ $(document).ready(function () {
 
     $('#tab_temp').on("click", function (e) {
         //$('#gall_id').change();
-        evalInfoTab(false, e);
+        //evalInfoTab(false, e);
     });
 
     $('#tab_soporte').on("click", function (e) {
 
-        evalTempTab(false, e);
+        //evalTempTab(false, e);
 
     });
 
@@ -653,11 +653,11 @@ $(document).ready(function () {
         }
         
 
-        var res = evalSoporteTab(true, e);
+        var res = true;//evalSoporteTab(true, e);
         if (res) {
-            var restemp = evalTempTab(true, e);
+            var restemp = true;//evalTempTab(true, e);
             if (restemp) {
-                resinfo = evalInfoTab(true, e);
+                resinfo = true;//evalInfoTab(true, e);
                 if (!resinfo) {
                     msg = 'Verificar valores en los campos de Información!';
                     M.toast({ html: msg });
@@ -2649,12 +2649,16 @@ $('body').on('click', '.pc', function () {
     $(this).prop('disabled', true);
 });
 
-$('body').on('focusout', '.input_oper', function () {
+//B20180801 MGC Textos
+$('body').on('keydown', '.input_oper', function (e) {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
-
+    //alert("press");
     //Obtener el tipo de negociación
     var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
 
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
@@ -2663,8 +2667,48 @@ $('body').on('focusout', '.input_oper', function () {
             //Se dispara el evento desde el total
             if ($(this).hasClass("total")) {
                 var total_val = $(this).val().replace("$", "");
+                var key = e.which;
+                if (dis == "M" & key == 13) {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                    $(this).addClass("keyup");
+                } 
+            }
+        }
+    }
+
+});
+
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+
+    //Obtener el tipo de negociación
+    var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
+
+    //Solo a cantidades
+    if ($(this).hasClass("numberd")) {
+        //Total aplica nadamás para el monto                
+        if (neg == "M") {
+            //Se dispara el evento desde el total
+            if ($(this).hasClass("total")) {
+                var total_val = $(this).val().replace("$", "");
+                if (dis == "C") {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                } else if (dis == "M") {
+                    if (!$(this).hasClass("keyup")) {
+                        updateTotalRow(t, tr, "", "", 0);//B20180801 MGC Textos
+                    } else {
+                        updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                        $(this).removeClass("keyup");
+                    }
+                }
+                
                 //Agregar los valores a 0 y agregar el total
-                updateTotalRow(t, tr, "", "X", total_val);
+                //updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                
             } else {
                 updateTotalRow(t, tr, "", "", 0);
             }
