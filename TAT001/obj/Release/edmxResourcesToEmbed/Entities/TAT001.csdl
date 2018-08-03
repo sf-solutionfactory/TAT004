@@ -795,6 +795,9 @@
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
     <NavigationProperty Name="DOCUMENTOLs" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
+    <Property Name="OBJETIVOQ" Type="Boolean" />
+    <Property Name="FRECUENCIA_LIQ" Type="Int32" />
+    <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -5283,6 +5286,7 @@
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
       <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
     </AssociationSet>
+    <EntitySet Name="APPSETTINGs" EntityType="TAT001Model.APPSETTING" />
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5426,4 +5430,13 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="APPSETTING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
 </Schema>

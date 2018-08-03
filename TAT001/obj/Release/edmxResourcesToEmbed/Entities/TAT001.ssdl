@@ -8,6 +8,15 @@
     <Property Name="DESCCRIPCION" Type="nvarchar" MaxLength="50" />
     <Property Name="TIPO" Type="nchar" MaxLength="1" Nullable="false" />
   </EntityType>
+  <EntityType Name="APPSETTING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
+    <Property Name="VALUE" Type="nvarchar" MaxLength="255" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="CAMPOS">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -704,6 +713,9 @@
     <Property Name="DOCUMENTO_SAP" Type="nvarchar" MaxLength="10" />
     <Property Name="PORC_APOYO" Type="decimal" Precision="13" Scale="5" />
     <Property Name="LIGADA" Type="bit" />
+    <Property Name="OBJETIVOQ" Type="bit" />
+    <Property Name="FRECUENCIA_LIQ" Type="int" />
+    <Property Name="OBJQ_PORC" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -4217,6 +4229,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
   </Function>
   <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="APPSETTING" EntityType="Self.APPSETTING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" Schema="dbo" store:Type="Tables" />

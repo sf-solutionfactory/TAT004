@@ -55,7 +55,7 @@ namespace TAT001.Controllers
             ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
             return View(dOCUMENTO);
         }
-        
+
         // GET: Correos
         public ActionResult Recurrente(decimal id)
         {
@@ -71,10 +71,42 @@ namespace TAT001.Controllers
             ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
             ViewBag.mes = dl.FECHAF.Value.Month;
             ViewBag.venta = fc.toShow((decimal)dl.MONTO_VENTA, dOCUMENTO.PAI.DECIMAL);
-            DOCUMENTOREC dr =  db.DOCUMENTORECs.Where(x => x.DOC_REF==dOCUMENTO.NUM_DOC).FirstOrDefault();
+            DOCUMENTOREC dr = db.DOCUMENTORECs.Where(x => x.DOC_REF == dOCUMENTO.NUM_DOC).FirstOrDefault();
             ViewBag.objetivo = fc.toShow((decimal)dr.MONTO_BASE, dOCUMENTO.PAI.DECIMAL);
             ViewBag.porc = fc.toShowPorc((decimal)dr.PORC, dOCUMENTO.PAI.DECIMAL);
-            if(dl.MONTO_VENTA < dr.MONTO_BASE)
+            if (dl.MONTO_VENTA < dr.MONTO_BASE)
+            {
+                ViewBag.tsol = dOCUMENTO.TSOL.TSOLR;
+                ViewBag.nota = false;
+            }
+            else
+            {
+                ViewBag.tsol = "";
+                ViewBag.nota = true;
+            }
+
+            return View(dOCUMENTO);
+        }
+
+        // GET: Correos
+        public ActionResult Backorder(decimal id)
+        {
+            var dOCUMENTO = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
+            var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
+            ViewBag.Pos = flujo[0];
+            ViewBag.url = "http://localhost:64497";
+            ViewBag.url = "http://192.168.1.77";
+            ViewBag.url = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, "");
+
+            DOCUMENTOL dl = dOCUMENTO.DOCUMENTOLs.OrderByDescending(x => x.POS).FirstOrDefault();
+            FormatosC fc = new FormatosC();
+            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.mes = dl.FECHAF.Value.Month;
+            ViewBag.venta = fc.toShow((decimal)dl.MONTO_VENTA, dOCUMENTO.PAI.DECIMAL);
+            DOCUMENTOREC dr = db.DOCUMENTORECs.Where(x => x.DOC_REF == dOCUMENTO.NUM_DOC).FirstOrDefault();
+            ViewBag.objetivo = fc.toShow((decimal)dr.MONTO_BASE, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.porc = fc.toShowPorc((decimal)dr.PORC, dOCUMENTO.PAI.DECIMAL);
+            if (dl.MONTO_VENTA < dr.MONTO_BASE)
             {
                 ViewBag.tsol = dOCUMENTO.TSOL.TSOLR;
                 ViewBag.nota = false;

@@ -22,6 +22,7 @@ namespace TAT001.Controllers
     {
         private TAT001Entities db = new TAT001Entities();
 
+        #region anterior
         [AllowAnonymous]
         public ActionResult Enviar(decimal id)
         {
@@ -3295,5 +3296,107 @@ namespace TAT001.Controllers
             doc.DOCUMENTOREC = docs;
             return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
         }
+
+        #endregion anterior
+
+        [HttpGet]
+        public ActionResult Backorder(decimal id_d, string pais)
+        {
+            int pagina = 203; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title += " ";
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".png";
+                }
+                catch
+                {
+                    if (pais != "")
+                    {
+                        ViewBag.pais = pais + ".png";
+                        Session["pais"] = pais;
+                    }
+                    else
+                    {
+                        //ViewBag.pais = "mx.png";
+                        ////return RedirectToAction("Pais", "Home");
+                    }
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            if (id_d == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id_d);
+            if (dOCUMENTO == null)
+            {
+                return HttpNotFound();
+            }
+            dOCUMENTO.CLIENTE = db.CLIENTEs.Where(a => a.VKORG.Equals(dOCUMENTO.VKORG)
+                                                    & a.VTWEG.Equals(dOCUMENTO.VTWEG)
+                                                    & a.SPART.Equals(dOCUMENTO.SPART)
+                                                    & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
+            dOCUMENTO.DOCUMENTOF = db.DOCUMENTOFs.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).ToList();
+
+            //ViewBag.workflow = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderBy(a => a.POS).ToList();
+            var vbFl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id_d)).OrderBy(a => a.POS).ToList();
+            FLUJO fvbfl = new FLUJO();
+            //recuperamos si existe algun valor en fljunegoc
+            var flng = db.FLUJNEGOes.Where(a => a.NUM_DOC.Equals(id_d)).ToList();
+            if (flng.Count > 0)
+            {
+                for (int i = 0; i < flng.Count; i++)
+                {
+                    var kn = flng[i].KUNNR;
+                    var clName = db.CLIENTEs.Where(c => c.KUNNR == kn).Select(s => s.NAME1).FirstOrDefault();
+                    fvbfl = new FLUJO();
+                    fvbfl.NUM_DOC = flng[i].NUM_DOC;
+                    fvbfl.FECHAC = flng[i].FECHAC;
+                    fvbfl.FECHAM = flng[i].FECHAM;
+                    fvbfl.USUARIOA_ID = clName;// + "(Cliente)";
+                    fvbfl.COMENTARIO = flng[i].COMENTARIO;
+                    vbFl.Add(fvbfl);
+                }
+            }
+            ViewBag.workflow = vbFl;
+
+            DocumentoFlujo DF = new DocumentoFlujo();
+            DF.D = dOCUMENTO;
+            ViewBag.pais = dOCUMENTO.PAIS_ID + ".png"; //RSG 29.09.2018
+            DF.F = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id_d)).OrderByDescending(a => a.POS).FirstOrDefault();
+            //DF.F.ESTATUS = "";
+            ViewBag.ts = db.TS_FORM.Where(a => a.BUKRS_ID.Equals(DF.D.SOCIEDAD_ID) & a.LAND_ID.Equals(DF.D.PAIS_ID)).ToList();
+            ViewBag.tts = db.DOCUMENTOTS.Where(a => a.NUM_DOC.Equals(DF.D.NUM_DOC)).ToList();
+
+            if (DF.D.DOCUMENTO_REF != null)
+                ViewBag.Title += DF.D.DOCUMENTO_REF + "-";
+            ViewBag.Title += id_d;
+
+            Models.PresupuestoModels carga = new Models.PresupuestoModels();
+            ViewBag.ultMod = carga.consultarUCarga();
+
+            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS == "M" & a.PADRE == false).ToList();
+            //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
+            ////var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
+            ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
+            ViewBag.dec = DF.D.PAI.DECIMAL;//LEJGG 090718
+
+            return View(DF);
+        }
+        // GET: Solicitudes/Create
     }
 }

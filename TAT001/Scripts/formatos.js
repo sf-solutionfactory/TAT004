@@ -17,6 +17,15 @@ for (var i = 0; i < porc.length; i++) {
     porc[i].value = val;
 }
 
+var numb = document.getElementsByClassName("numero");
+for (var i = 0; i < numb.length; i++) {
+    var val = numb[i].innerHTML;
+    if (val == "") val = numb[i].value;
+    val = toShowNum(val);
+    numb[i].innerHTML = val;
+    numb[i].value = val;
+}
+
 function toNum(string) {
     if (!$.isNumeric(string)) {
         if (string !== "" && string != undefined) {
@@ -39,7 +48,7 @@ function toShow(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '' & $.isNumeric(xx)) {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -54,7 +63,7 @@ function toShow(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        string = ("$ 0" + _decimales + "00");
     }
     return string;
 }
@@ -65,7 +74,7 @@ function toShowPorc(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '' & $.isNumeric(xx)) {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -80,7 +89,7 @@ function toShowPorc(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        string = ("$ 0" + _decimales + "00");
     }
     return string;
 }
@@ -91,7 +100,7 @@ function toShowNum(string) {
     var xx = parseFloat(string).toFixed(2);
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (xx != '') {
+    if (string != '' & $.isNumeric(xx)) {
         if (_decimales === '.') {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
@@ -106,7 +115,7 @@ function toShowNum(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        string = ("$ 0" + _decimales + "00");
     }
     return string;
 }

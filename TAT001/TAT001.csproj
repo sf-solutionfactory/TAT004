@@ -1114,6 +1114,8 @@
     <Content Include="Views\Correos\Recurrente.cshtml" />
     <Content Include="Views\CartaV\DetailsPos.cshtml" />
     <Content Include="Views\CartaV\Lista.cshtml" />
+    <Content Include="Views\Correos\Backorder.cshtml" />
+    <Content Include="Views\Recurrencias\Backorder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -2263,7 +2263,8 @@ namespace TAT001.Controllers
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
                                 dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
-
+                                if (dOCUMENTO.TIPO_RECURRENTE != "1" & dOCUMENTO.OBJETIVOQ == true)
+                                    dOCUMENTO.TIPO_RECURRENTE = "3";
                                 //RSG 29.07.2018-add----------------------------------
                                 drec.FECHAV = drec.FECHAF;
                                 Calendario445 cal = new Calendario445();

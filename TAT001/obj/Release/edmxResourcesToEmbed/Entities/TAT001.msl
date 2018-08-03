@@ -603,6 +603,9 @@
     <EntitySetMapping Name="DOCUMENTOes">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTO">
         <MappingFragment StoreEntitySet="DOCUMENTO">
+          <ScalarProperty Name="OBJQ_PORC" ColumnName="OBJQ_PORC" />
+          <ScalarProperty Name="FRECUENCIA_LIQ" ColumnName="FRECUENCIA_LIQ" />
+          <ScalarProperty Name="OBJETIVOQ" ColumnName="OBJETIVOQ" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
           <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
@@ -2166,6 +2169,16 @@
           <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
           <ScalarProperty Name="POS" ColumnName="POS" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="APPSETTINGs">
+      <EntityTypeMapping TypeName="TAT001Model.APPSETTING">
+        <MappingFragment StoreEntitySet="APPSETTING">
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+          <ScalarProperty Name="VALUE" ColumnName="VALUE" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
