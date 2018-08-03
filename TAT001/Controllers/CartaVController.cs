@@ -609,6 +609,9 @@ namespace TAT001.Controllers
                 //B20180720P MGC 2018.07.25
                 ViewBag.varligada = varligada;
 
+                //B20180801 MGC Formato
+                ViewBag.montoformat = format.toShow(Convert.ToDecimal(d.MONTO_DOC_MD), decimales);
+
                 return View(cv);
             }
         }
@@ -619,7 +622,7 @@ namespace TAT001.Controllers
         //public ActionResult Create([Bind(Include = "num_doc, listaCuerpo, DOCUMENTOP")] CartaV v)
         public ActionResult Create(CartaV v, string monto_enviar, string guardar_param)
         {
-            v.monto = monto_enviar; //B20180720P MGC
+            //v.monto = monto_enviar; //B20180720P MGC //B20180801 MGC Formato
             int pos = 0;//B20180720P MGC Guardar Carta
 
             //B20180726 MGC 2018.07.26
@@ -728,7 +731,21 @@ namespace TAT001.Controllers
                 ca.VOLUMEN_ESTX = v.volumen_x; //Volumen 
                 ca.APOYO_ESTX = v.apoyototal_x; //Apoyo
             }
-            
+
+            //B20180801 MGC Formato
+            //v.monto = monto_enviar;
+            decimal montod = 0;
+            try
+            {
+                montod = Convert.ToDecimal(monto_enviar);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            v.monto = format.toShow(montod, decimales);
+
 
             //CartaFEsqueleto cfe = new CartaFEsqueleto();//B20180720P MGC Guardar Carta
             //TEXTOCARTAF f = new TEXTOCARTAF();//B20180720P MGC Guardar Carta
@@ -1338,7 +1355,20 @@ namespace TAT001.Controllers
                 }
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
                 //B20180710 MGC 2018.07.17 Modificación 9 y 10 dependiendo del campo de factura en tsol..............
-                v.monto = monto_enviar;
+
+                //B20180801 MGC Formato
+                //v.monto = monto_enviar;
+                decimal montod = 0;
+                try
+                {
+                    montod = Convert.ToDecimal(monto_enviar);
+                }
+                catch (Exception)
+                {
+
+                }
+                v.monto = format.toShow(montod, decimales);
+                 
                 var cabeza = new List<string>();
                 bool varligada = Convert.ToBoolean(d.LIGADA);
                 if (varligada != true)
@@ -2536,6 +2566,20 @@ namespace TAT001.Controllers
                 //ViewBag.trclass = trclass;//B20180710 MGC 2018.07.18 total es input o text
                 //ViewBag.editmonto = editmonto;//B20180710 MGC 2018.07.18 total es input o text
 
+                //B20180801 MGC Formato
+                //v.monto = monto_enviar;
+                decimal montod = 0;
+                try
+                {
+                    montod = Convert.ToDecimal(cv.monto);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                cv.monto = format.toShow(montod, decimales);
+
                 return View(cv);
             }
         }
@@ -3010,6 +3054,20 @@ namespace TAT001.Controllers
                 v.numColEncabezado2 = cabeza2;
                 v.numfilasTabla2 = con4.Count();
                 v.listaCuerpoRec = armadoCuerpoTab2;
+
+                //B20180801 MGC Formato
+                //v.monto = monto_enviar;
+                decimal montod = 0;
+                try
+                {
+                    montod = Convert.ToDecimal(v.monto);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                v.monto = format.toShow(montod, decimales);
 
                 CartaV carta = v;
                 CartaVEsqueleto cve = new CartaVEsqueleto();

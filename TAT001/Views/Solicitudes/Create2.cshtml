@@ -168,7 +168,7 @@
             <a id="btn_borradore" class="btn btn-small" style="display :@display">Descartar Borrador</a>@*//B20180625 MGC2 2018.07.04*@
             <input type="text" id="borradore" name="borradore" value="@ViewBag.borradore" hidden /> @*//B20180625 MGC2 2018.07.04*@
         }
-        <a href="@Url.Action(" Index", "Home" )" class="btn btn-small">Cancelar</a>
+        <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
         <a id="btn_guardarh" class="btn btn-small disabled" onclick="guardah()">Guardar</a>
         <script>
             function guardah() {
@@ -491,7 +491,6 @@
                                         var userC = document.getElementById("USUARIOD_ID");
                                         if (userC == undefined)
                                             /**/
-                                            /**/
                                             var user = '@ViewBag.usuario.ID';
                         /**/
                         /**/
@@ -534,7 +533,7 @@
                                 </script>
                                 <input type="hidden" id="txt_vkorg" />
                                 <input type="hidden" id="txt_vtweg" />
-                                <input type="hidden" id="txt_spras" value="@Session[" spras"].ToString()" />
+                                <input type="hidden" id="txt_spras" value="@Session["spras"].ToString()" />
                                 <div class="input-field col s12">
                                     <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
                                     <label for="cli_name">Nombre</label>
@@ -583,7 +582,7 @@
                                         </label>
                                         <label class="col s6">
                                             <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
-                                            <span>Por periodo</span>
+                                            <span>Por periodo (445)</span>
                                         </label>
                                     </div>
                                     <script>
@@ -743,8 +742,8 @@
                                 <p>
                                     <label>
                                         <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
-                                        <input id="check_factura" type="checkbox" checked="checked" />
-                                        <span>Multiples</span>
+                                        <input id="check_factura" type="checkbox" @*checked="checked"*@ /><!--RSG 01.08.2018-->
+                                        <span>Múltiples</span>
                                     </label>
                                 </p>
                                 @*Cargar archivo excel soporte*@
@@ -759,7 +758,7 @@
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
                                 </div>
-                                <table class="table_sop display" id="table_sop" cellspacing="0" style="width:100%;display:none">
+                                <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
                                     <thead>
                                         <tr>
                                             <th>Pos</th>
@@ -770,8 +769,8 @@
                                             <th>Control</th>
                                             <th>Autorización</th>
                                             <th>Vencimiento</th>
-                                            <th>Factura k</th>
-                                            <th>Ejercicio k</th>
+                                            <th>Factura Kellogg</th>
+                                            <th>Año</th>
                                             <th>Payer</th>@*@18-07-2018 jemo *@
                                             <th>Descripcion</th>@*@18-07-2018 jemo *@
                                             <th>Bill doc</th>
@@ -1125,8 +1124,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                    ;
+                                                                                      archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                          ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1244,7 +1243,7 @@
             <div id="Recurrente_cont" class="row">
                 <div class="col s12 l8 offset-l2">
                     <div class="card horizontal green white-text">
-                        <div class="col s12" style="margin-bottom:0;">
+                        <div class="col s12" style="margin-bottom0;">
                             <p>
                                 Esta pestaña se debe llenar solamente si necesitas que tu solicitud se genere automáticamente durante los periodos seleccionados
                             </p>
@@ -1255,7 +1254,7 @@
                     <div class="card-panel">
                         @*<h5>Recurrente</h5>*@
                         <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;">
+                        <div class="row" style="margin-bottom:0;overflow:auto;">
                             <p>
                                 <label>
                                     @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
@@ -1263,7 +1262,7 @@
                                     <span>Documento recurrente</span>
                                 </label>
                             </p>
-                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;"><!--RSG 01.08.2018-->
                                 <thead>
                                     <tr>
                                         <th>NO</th>
@@ -1341,25 +1340,88 @@
                     <div id="div_objq" class="card-panel hide">
                         @*<h5>Recurrente</h5>*@
                         <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;">
+                        <div class="row" style="margin-bottom:0;"><!--RSG 01.08.2018-->
                             <p>
                                 <label>
                                     @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <input id="check_objetivoq" name="check_objetivoq" type="checkbox" onchange="objetivoQ(this.checked);" />
                                     <span>Objetivo Q</span>
                                 </label>
+                                <script>
+                                    function objetivoQ(ban) {
+                                        if (ban) {
+                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                            if (lengthT > 0) {
+                                                document.getElementById('table_objQ').classList.remove("hide");
+                                                var total = 0;
+                                                var porc = 0;
+                                                var fecha = "";
+                                                var tsol = "";
+                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
+                                                    fecha = ($(this).find("td.FECHA").text());
+                                                    tsol = $(this).find("td.TSOL").text();
+                                                });
+                                                document.getElementById("obqTSOL").innerText = tsol;
+                                                document.getElementById("obqFECHA").innerText = fecha;
+                                                document.getElementById("obqMONTO").innerText = toShow(total);
+                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
+                                            }
+                                        }
+                                        else {
+                                            document.getElementById('table_objQ').classList.add("hide");
+                                        }
+                                    }
+                                    function updateObjQ() {
+                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                        if (lengthT > 0) {
+                                            var total = 0;
+                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                            });
+                                            document.getElementById("obqMONTO").innerText = toShow(total);
+                                        }
+
+                                    }
+                                </script>
                             </p>
-                            <p>
-                                <div class="input-field col s4">
-                                    <select id="sel_nn">
-                                        <option>Mensual</option>
-                                        <option>Trimestral</option>
-                                        <option>Semestral</option>
-                                        <option>Anual</option>
-                                    </select>
-                                    <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
-                                </div>
-                            </p>
+                            <div style="overflow:auto;">
+                                <table id="table_objQ" class="display hide" cellspacing="0" style="font-size:12px;">
+                                    <thead>
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>TSOL</th>
+                                            <th>FECHA</th>
+                                            <th>Monto</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Q</td>
+                                            <td id="obqTSOL"></td>
+                                            <td id="obqFECHA"></td>
+                                            <td id="obqMONTO"></td>
+                                            @*<td><input type="text" id="objPORC" style="width:150px;font-size:12px;height:2rem;" name="objPORC" onchange="this.value = toShowPorc(this.value);" class="input_dcp"/></td>*@
+                                            <td>
+                                                @Html.EditorFor(model => model.OBJQ_PORC, new { htmlAttributes = new { @id = "objPORC", @class = "input_dcp ", @style = "width:150px;font-size:12px;height:2rem;", @onchange = "this.value = toShowPorc(this.value);" } })
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p>
+                            <div class="input-field col l4 m4 s12">
+                                <select id="sel_nn" name="sel_nn">
+                                    <option value="1" selected="selected">Mensual</option>
+                                    <option value="3">Trimestral</option>
+                                    <option value="6">Semestral</option>
+                                    <option value="12">Anual</option>
+                                </select>
+                                <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
+                            </div>
+                        </p>
                         </div>
                     </div>
                 </div>
@@ -1557,7 +1619,7 @@
                                     </div>
                                 } @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
                                 <div id="div_picker"></div>
-                                <table id="table_dis" class="display" cellspacing="0" style="display:none;width:100%">
+                                <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                     <thead>
                                         <tr>
                                             <th></th> @*ID*@
@@ -1593,7 +1655,7 @@
                             </div>
                         </div>
                         @*Tabla para ser enviada siempre está oculta*@
-                        <table id="table_dish" class="display" cellspacing="0" style="display:none;width:100%">
+                        <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
                             @*
                                 <thead>
                                     <tr>
@@ -1642,7 +1704,7 @@
                                             </td>
                                             <td>
                                                 @*@Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)*@
-                                                <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString(" N6");" />
+                                                <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6");" />
                                             </td>
                                             <td>
                                                 @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
@@ -1707,7 +1769,7 @@
                                     </div>
                                     <div class=" input-field col s6">
                                         <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
-                                        <label for="montos_doc_ml2">Monto en USD</label>
+                                        <label for="montos_doc_ml2" class="active">Monto en USD</label>
                                     </div>
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.MONTO_DOC_ML, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
@@ -1814,91 +1876,91 @@
                                     </div>
                                 </div>
                                 <script>
-                        var clearing = [];
-                        function getClearing(gall) {
+                            var clearing = [];
+                            function getClearing(gall) {
+                                $("#div_clearing").empty();
+                                clearing = [];
+                                /**/
+                                /**/
+                                /**/
+                                /**/
+                                var bukrs = '@Model.SOCIEDAD_ID';
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            var land = '@Model.PAIS_ID';
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            var ejercicio = '@Model.EJERCICIO';
+                            /**/
+                            /**/
+                            /**/
+                            /**/
+                            $.ajax({
+                                type: "POST",
+                                url: '../Listas/clearing',
+                                dataType: "json",
+                                data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+
+                                success: function (data) {
+                                    if (data !== null || data !== "") {
+                                        //RSG 26.04.2018----------------
+                                        clearing.push(data.ABONO);
+                                        clearing.push(data.CARGO);
+                                        clearing.push(data.CLEARING);
+                                        clearing.push(data.LIMITE);
+                                        //RSG 26.04.2018----------------
+                                    }
+
+                                },
+                                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                                    //M.toast({ html: httpStatusMessage });
+                                },
+                                async: false
+                            });
+
+                        }
+                        function formaClearing() {
+                            getClearing(document.getElementById("tall_id").value);
                             $("#div_clearing").empty();
-                            clearing = [];
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            var bukrs = '@Model.SOCIEDAD_ID';
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        var land = '@Model.PAIS_ID';
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        var ejercicio = '@Model.EJERCICIO';
-                        /**/
-                        /**/
-                        /**/
-                        /**/
-                        $.ajax({
-                            type: "POST",
-                            url: '../Listas/clearing',
-                            dataType: "json",
-                            data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+                            //var monto = document.getElementById("monto_dis").value;
+                            var monto = $('#monto_doc_md').val();
+                            var div = "<ul class='collection'><li class='collection-item'>";
+                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            div += "</li><li class='collection-item'>";
 
-                            success: function (data) {
-                                if (data !== null || data !== "") {
-                                    //RSG 26.04.2018----------------
-                                    clearing.push(data.ABONO);
-                                    clearing.push(data.CARGO);
-                                    clearing.push(data.CLEARING);
-                                    clearing.push(data.LIMITE);
-                                    //RSG 26.04.2018----------------
-                                }
-
-                            },
-                            error: function (xhr, httpStatusMessage, customErrorMessage) {
-                                //M.toast({ html: httpStatusMessage });
-                            },
-                            async: false
-                        });
-
-                    }
-                    function formaClearing() {
-                        getClearing(document.getElementById("tall_id").value);
-                        $("#div_clearing").empty();
-                        //var monto = document.getElementById("monto_dis").value;
-                        var monto = $('#monto_doc_md').val();
-                        var div = "<ul class='collection'><li class='collection-item'>";
-                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
-                        div += "</li><li class='collection-item'>";
-
-                        if (clearing[3] == null) {
-                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-                        } else {
-                            if (clearing[2] != null) {
-                                if (monto <= clearing[3]) {
-                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-                                    div += "</li><li class='collection-item'>";
-                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
-                                    div += "</li>";
-                                } else {
-                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
-                                    div += "</li><li class='collection-item'>";
-                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
-                                    div += "</li>";
+                            if (clearing[3] == null) {
+                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                            } else {
+                                if (clearing[2] != null) {
+                                    if (monto <= clearing[3]) {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                                        div += "</li>";
+                                    } else {
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                                        div += "</li><li class='collection-item'>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                                        div += "</li>";
+                                    }
                                 }
                             }
+                            div += "</li>";
+                            div += "</ul>";
+                            $("#div_clearing").append(div);
                         }
-                        div += "</li>";
-                        div += "</ul>";
-                        $("#div_clearing").append(div);
-                    }
                                 </script>
                             </div>
                             @*<div class="card-panel">
@@ -2116,36 +2178,36 @@
         </div>
     }
     @*@if (ViewBag.original == null)
-                {
+            {
         <script>
-                        function analisis() {
+                    function analisis() {
 
-                            var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
-                            var monto = document.getElementById("monto_dis").value;//RSG 12.06.2018
-                            document.getElementById("analisis1").innerHTML = "$" + monto;
-                            document.getElementById("analisis4").innerHTML = "$" + monto;
-                            document.getElementById("analisis5").innerHTML = "$" + monto;
-                        }
+                        var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
+                        var monto = document.getElementById("monto_dis").value;//RSG 12.06.2018
+                        document.getElementById("analisis1").innerHTML = "$" + monto;
+                        document.getElementById("analisis4").innerHTML = "$" + monto;
+                        document.getElementById("analisis5").innerHTML = "$" + monto;
+                    }
         </script>
-                }
-                else
-                {
+            }
+            else
+            {
         <script>
-                        function analisis() {
+                    function analisis() {
 
-                            var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
-                            var monto = document.getElementById("monto_dis").value;
-                            var original = @ViewBag.original;
-                            var aplicado = @ViewBag.sumaRel;
-                            document.getElementById("analisis1").innerHTML = "$" + (monto);
-                            document.getElementById("analisis2").innerHTML = "$" + (original);
-                            document.getElementById("analisis3").innerHTML = "$" + (aplicado);
-                            document.getElementById("analisis4").innerHTML = "$" + (original - aplicado- monto);
-                            document.getElementById("analisis5").innerHTML = "$" + (monto);
-                            if ((original - aplicado - monto) < 0) {
-                                document.getElementById("a4").classList.add("red");
-                                document.getElementById("a4").classList.add("white-text");
-                            }
+                        var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
+                        var monto = document.getElementById("monto_dis").value;
+                        var original = @ViewBag.original;
+                        var aplicado = @ViewBag.sumaRel;
+                        document.getElementById("analisis1").innerHTML = "$" + (monto);
+                        document.getElementById("analisis2").innerHTML = "$" + (original);
+                        document.getElementById("analisis3").innerHTML = "$" + (aplicado);
+                        document.getElementById("analisis4").innerHTML = "$" + (original - aplicado- monto);
+                        document.getElementById("analisis5").innerHTML = "$" + (monto);
+                        if ((original - aplicado - monto) < 0) {
+                            document.getElementById("a4").classList.add("red");
+                            document.getElementById("a4").classList.add("white-text");
                         }
+                    }
         </script>
-                }*@
+            }*@

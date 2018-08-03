@@ -219,6 +219,7 @@
     <Compile Include="Controllers\Catalogos\TxcController.cs" />
     <Compile Include="Controllers\Catalogos\TxlController.cs" />
     <Compile Include="Controllers\Catalogos\TxnController.cs" />
+    <Compile Include="Controllers\Configuracion\NOTICIAsController.cs" />
     <Compile Include="Controllers\Configuracion\PpagController.cs" />
     <Compile Include="Controllers\Configuracion\TaxeohController.cs" />
     <Compile Include="Controllers\Configuracion\TaxeopController.cs" />
@@ -911,6 +912,7 @@
     <Content Include="Scripts\recurrente.js" />
     <Content Include="Scripts\sideMenu.js" />
     <Content Include="Scripts\soporte.js" />
+    <Content Include="Scripts\subirNoticias.js" />
     <Content Include="Scripts\tableHeadFixer.js" />
     <Content Include="Scripts\ValidarDecimalesTP.js" />
     <Content Include="Scripts\ValidarEdC.js" />
@@ -1057,7 +1059,6 @@
     <Content Include="Views\Negociaciones\Delete.cshtml" />
     <Content Include="Views\Negociaciones\Details.cshtml" />
     <Content Include="Views\Negociaciones\Edit.cshtml" />
-    <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Recurrencias\Create2.cshtml" />
     <Content Include="Views\Excel\Details.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
@@ -1116,6 +1117,12 @@
     <Content Include="Views\CartaV\Lista.cshtml" />
     <Content Include="Views\Correos\Backorder.cshtml" />
     <Content Include="Views\Recurrencias\Backorder.cshtml" />
+    <Content Include="Views\NOTICIAs\Index.cshtml" />
+    <Content Include="Views\NOTICIAs\Create.cshtml" />
+    <Content Include="Views\NOTICIAs\Delete.cshtml" />
+    <Content Include="Views\NOTICIAs\Details.cshtml" />
+    <Content Include="Views\NOTICIAs\Edit.cshtml" />
+    <Content Include="Views\Solicitudes\Create2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

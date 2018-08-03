@@ -72,7 +72,7 @@
         {
             <div class="input-field col s2">
                 <input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />
-                <label for="txt_rel" id="lbl_rel">Relacionada</label>
+                <label for="txt_rel" id="lbl_relt">Relacionada</label>
             </div>
         }
     }
@@ -226,11 +226,11 @@
                             <input type="hidden" id="USUARIOD_ID" name="USUARIOD_ID" value="@User.Identity.Name" />
                         }
                         <div class="card-panel">
-                            <h5>Tipo de solicitud y Clasificación</h5>
+                            <h5 id="head_solclas">Tipo de solicitud y Clasificación</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="form-group col s12">
                                     @*@Html.LabelFor(model => model.TSOL_ID, "TSOL_ID", htmlAttributes: new { @class = "control-label col-md-2" })*@
-                                    @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.TSOL_ID, "Tipo de solicitud", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tiposol" }) @*B20180801 MGC Textos*@
                                     <div class="col-md-10">
                                         @if (ViewBag.relacionada == "")
                                         {
@@ -277,7 +277,7 @@
                                     </div>*@
                                 @*@Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })*@
                                 <div class="form-group col s12">
-                                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tall" }) @*B20180801 MGC Textos*@
                                     <div class="col-md-10">
                                         @if (ViewBag.relacionada == "")
                                         {
@@ -298,11 +298,11 @@
                         </div>
                         @*Datos del país*@
                         <div class="card-panel">
-                            <h5>Datos del país</h5>
+                            <h5 id="head_datospais">Datos del país</h5>@*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="col s6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_sociedad" })@*B20180801 MGC Textos*@
                                         <div class="col-md-10">
                                             @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @id = "sociedad_id", @class = "form-control", @disabled = "disabled" } })
                                         </div>
@@ -311,26 +311,26 @@
                                 @{TAT001.Entities.PAI pais = ViewBag.PAIS_ID;
                                     <div class="col s6">
                                         <div class="form-group hidden">
-                                            @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden" })
+                                            @Html.LabelFor(model => model.PAIS_ID, "Subregión", htmlAttributes: new { @class = "control-label col-md-2 hidden", @id = "lbl_pais" }) @*B20180801 MGC Textos*@
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @id = "pais_id", @class = "form-control hidden", @disabled = "disabled", @Value = pais.LAND } })
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
                                             <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
-                                            <label for="pais_txt">Subregión</label>
+                                            <label id="lbl_paiss" for="pais_txt">Subregión</label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
                                 }
                                 <div>
                                     <div class="input-field col s6">
                                         @Html.EditorFor(model => model.SOCIEDAD.REGION, new { htmlAttributes = new { @id = "region_id", @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.SOCIEDAD.REGION, "Región", htmlAttributes: new { @for = "region_id" })
+                                        @Html.LabelFor(model => model.SOCIEDAD.REGION, "Región", htmlAttributes: new { @for = "region_id", @id = "lbl_region" }) @*B20180801 MGC Textos*@
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control " + @ViewBag.relacionada } })
-                                    @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id" })
+                                    @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id", @id = "lbl_estado" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <link href="~/Content/autocomplete.css" rel="stylesheet" />
                                 <script src="~/Scripts/autocomplete1.10.2.js"></script>
@@ -373,7 +373,7 @@
                                 <script src="~/Scripts/createa.js"></script>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control " + @ViewBag.relacionada } })
-                                    @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id" })
+                                    @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id", @id = "lbl_ciudad" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <script>
                                     auto(document).ready(function () {
@@ -408,18 +408,18 @@
                         </div>
                         @*Información General*@
                         <div class="card-panel">
-                            <h5>Información General</h5>
+                            <h5 id="head_geninfo">Información General</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
                                     <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
-                                    <label for="fechad">Fecha</label>
+                                    <label id="lbl_fechad" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
                                     <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
-                                    <label for="periodo">Periodo</label>
+                                    <label id="lbl_periodo" for="periodo">Periodo</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
                                     var elemdp = document.querySelector('#fechad');
@@ -450,15 +450,15 @@
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
                                     <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
-                                    <label for="ejercicio">Ejercicio</label>
+                                    <label id="lbl_ejercicio" for="ejercicio">Ejercicio</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " + @ViewBag.relacionada } })
-                                    <label for="concepto">Concepto*</label>
+                                    <label id="lbl_concepto" for="concepto">Concepto*</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea " + @ViewBag.relacionada, @id = "notas_txt", onkeyup = "maxchar();" })
-                                    @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt" })
+                                    @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt", @id = "lbl_notas" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
                                     function maxchar(w) {
@@ -478,11 +478,11 @@
                     <div class="col s12 m6 l6">
                         @*Información Cliente*@
                         <div class="card-panel">
-                            <h5>Información del cliente</h5>
+                            <h5 id="head_infocli">Información del cliente</h5>@*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })
-                                    @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id" })
+                                    @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id", @id = "lbl_payer" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
                             auto(document).ready(function () {
@@ -536,53 +536,53 @@
                                 <input type="hidden" id="txt_spras" value="@Session["spras"].ToString()" />
                                 <div class="input-field col s12">
                                     <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
-                                    <label for="cli_name">Nombre</label>
+                                    <label id="lbl_nombrecli" for="cli_name">Nombre</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field  col s12">
                                     <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
-                                    <label for="parvw">Tipo de cliente</label>
+                                    <label id="lbl_parvwcli" for="parvw">Tipo de cliente</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg" })
+                                    @Html.LabelFor(model => model.VKORG, "Razón Social", htmlAttributes: new { @class = "control-label col-md-2", @for = "vkorg", @id = "lbl_vkorg" }) @*B20180801 MGC Textos*@
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.VKORG, new { htmlAttributes = new { @disabled = "disabled", @id = "vkorg", @class = "form-control" } })
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
                                     <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
-                                    <label for="stcd1">Tax ID</label>
+                                    <label id="lbl_stcdcli" for="stcd1">Tax ID</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.LabelFor(model => model.VTWEG, "Canal", htmlAttributes: new { @class = "control-label col-md-2", @for = "vtweg" })
+                                    @Html.LabelFor(model => model.VTWEG, "Canal", htmlAttributes: new { @class = "control-label col-md-2", @for = "vtweg", @id = "lbl_vtweg" }) @*B20180801 MGC Textos*@
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.VTWEG, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg", @class = "form-control" } })
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " + @ViewBag.relacionada } })
-                                    @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
+                                    @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre", @id = "lbl_payernom" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
-                                    @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
+                                    @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email", @id = "lbl_payeremail" }) @*B20180801 MGC Textos*@
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col s12 m6 l6">
                         <div class="card-panel">
-                            <h5>Vigencia</h5>
+                            <h5 id="head_vigencia">Vigencia</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 @if (ViewBag.relacionada == "")
                                 {
                                     <div class="col s12">
                                         <label class="col s6">
                                             <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
-                                            <span>Por fecha</span>
+                                            <span id="span_pfecha">Por fecha</span> @*B20180801 MGC Textos*@
                                         </label>
                                         <label class="col s6">
                                             <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
-                                            <span>Por periodo (445)</span>
+                                            <span id="span_pperiodo">Por periodo</span> @*B20180801 MGC Textos*@
                                         </label>
                                     </div>
                                     <script>
@@ -617,13 +617,13 @@
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                             <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechade" }) @*B20180801 MGC Textos*@
                                         </div>
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                             <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechahasta" }) @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
                                     <script>
@@ -646,7 +646,7 @@
                                         <div class="col s12">
                                             <div class="input-field col s8">
                                                 @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                <label>De</label>
+                                                <label id="lbl_perdiodode">De</label> @*B20180801 MGC Textos*@
                                             </div>
                                             <div class="input-field col s4">
                                                 @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
@@ -654,7 +654,7 @@
                                         </div><div class="col s12">
                                             <div class="input-field col s8">
                                                 @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                <label>Hasta</label>
+                                                <label id="lbl_periodohasta">Hasta</label> @*B20180801 MGC Textos*@
                                             </div>
                                             <div class="input-field col s4">
                                                 @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
@@ -722,12 +722,12 @@
                                         <div class="input-field col s6">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde" })@*B20180801 MGC Textos*@
                                         </div>
                                         <div class="input-field col s6">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta" })@*B20180801 MGC Textos*@
                                         </div>
                                     </div>
                                 }
@@ -737,19 +737,19 @@
                     </div>
                     <div id="ref_soporte" style="display:none" class="col s12">
                         <div class="card-panel">
-                            <h5>Referencia de Facturas</h5>
+                            <h5 id="head_reffact">Referencia de Facturas</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0;">
                                 <p>
                                     <label>
                                         <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
                                         <input id="check_factura" type="checkbox" @*checked="checked"*@ /><!--RSG 01.08.2018-->
-                                        <span>Múltiples</span>
+                                        <span id="span_multi">Multiples</span> @*B20180801 MGC Textos*@
                                     </label>
                                 </p>
                                 @*Cargar archivo excel soporte*@
                                 <div id="file_facturat" class="file-field input-field" style="display:none">
                                     <div class="btn">
-                                        <span>File</span>
+                                        <span id="span_filefact">File</span> @*B20180801 MGC Textos*@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
@@ -761,21 +761,21 @@
                                 <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
                                     <thead>
                                         <tr>
-                                            <th>Pos</th>
-                                            <th>Factura</th>
-                                            <th>Fecha Factura</th>
-                                            <th>Proveedor</th>
-                                            <th>Proveedor Desc</th>
-                                            <th>Control</th>
-                                            <th>Autorización</th>
-                                            <th>Vencimiento</th>
-                                            <th>Factura Kellogg</th>
-                                            <th>Año</th>
-                                            <th>Payer</th>@*@18-07-2018 jemo *@
-                                            <th>Descripcion</th>@*@18-07-2018 jemo *@
-                                            <th>Bill doc</th>
-                                            <th>Importe Factura</th>@*@18-07-2018 jemo *@
-                                            <th>Belnr</th>
+                                            <th id="thead_pos">Pos</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_fact">Factura</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_fecha">Fecha Factura</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_prov">Proveedor</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_provdesc">Proveedor Desc</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_control">Control</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_aut">Autorización</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_ven">Vencimiento</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_factk">Factura k</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_ejercicio">Ejercicio k</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_payer">Payer</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
+                                            <th id="thead_desc">Descripcion</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
+                                            <th id="thead_bill">Bill doc</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_importe">Importe Factura</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
+                                            <th id="thead_belnr">Belnr</th> @*B20180801 MGC Textos*@
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -893,13 +893,13 @@
                                                  <i class="material-icons prefix">date_range</i>
                                                 @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                                  <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
                                              </div>
                                              <div class="input-field col s12">
                                                  <i class="material-icons prefix">date_range</i>
                                                  @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
                                                  <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
                                              </div>
                                          </div>
                                          <script>
@@ -996,12 +996,12 @@
                                              <div class="input-field col s6">
                                                  <i class="material-icons prefix">date_range</i>
                                                  @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
                                              </div>
                                              <div class="input-field col s6">
                                                  <i class="material-icons prefix">date_range</i>
                                                  @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
                                              </div>
                                          </div>
                                      }
@@ -1101,8 +1101,8 @@
                         {
 
                             <div class="card-panel">
-                                <h5>Documentos de Soporte2</h5>
-                                <label>* Campos obligatorios</label>
+                                <h5 id="head_docssoporter">Documentos de Soporte2</h5> @*B20180801 MGC Textos*@
+                                <label id="lbl_camposobl">* Campos obligatorios</label> @*B20180801 MGC Textos*@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
                                         <form action="#">
@@ -1130,7 +1130,7 @@
                             {
                                 string[] nombrefile;
                                 <div class="card-panel">
-                                    <h5>Documentos de Soporte</h5>
+                                    <h5 id="head_docssoporte">Documentos de Soporte</h5>
                                     <div class="row" style="margin-bottom:0">
                                         @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
                                         {
@@ -1140,7 +1140,7 @@
                                                 {
                                                     nombrefile = archivos[i].PATH.Split('\\');
                                                     <div class="file-field input-field">
-                                                        <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
+                                                        <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button> @*B20180801 MGC Textos*@
                                                         <div class="file-path-wrapper">
                                                             <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
                                                         </div>
@@ -1160,12 +1160,12 @@
                         @if (ViewBag.reversan != "X")
                         {
                             <div class="card-panel">
-                                <h5>Notas</h5>
+                                <h5 id="head_notas">Notas</h5> @*B20180801 MGC Textos*@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
-                                            <label for="notas_soporte"></label>
+                                            <label id="lbl_notassoporte" for="notas_soporte"></label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
                                     <script>
@@ -1187,14 +1187,14 @@
                         {
                             <input type="hidden" id="txt_rev" name="txt_rev" value="@ViewBag.reversa" disabled="disabled" />
                             <div class="card-panel">
-                                <h5>Soporte de reverso</h5>
+                                <h5 id="head_soprev">Soporte de reverso</h5> @*B20180801 MGC Textos*@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
-                                        <label name="labels_soporte2" hidden>Carta</label><label class="lbl_nec" hidden></label>
+                                        <label id="lbl_sopcarta" name="labels_soporte2" hidden>Carta</label><label class="lbl_nec" hidden></label> @*B20180801 MGC Textos*@
                                         <input type="text" value="Reversa" name="labels_soporte" hidden />
                                         <div class="file-field input-field">
                                             <div class="btn-small" style="float:left;">
-                                                <span>Examinar</span>
+                                                <span id="span_filereversa">Examinar</span> @*B20180801 MGC Textos*@
                                                 <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
@@ -1206,12 +1206,12 @@
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
                                         <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
-                                        <label for="fechad">Fecha</label>
+                                        <label id="lbl_fechadrev" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                     </div>
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
-                                            <label for="notas_soporte">Razón del reverso</label>
+                                            <label id="lbl_notasrev" for="notas_soporte">Razón del reverso</label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
                                     <script>
@@ -1227,7 +1227,7 @@
                                         }
                                     </script>
                                     <div class="form-group col s12">
-                                        @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2" })
+                                        @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tiporev" }) @*B20180801 MGC Textos*@
                                         <div class="col-md-10">
                                             @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
                                         </div>
@@ -1244,638 +1244,584 @@
                 <div class="col s12 l8 offset-l2">
                     <div class="card horizontal green white-text">
                         <div class="col s12" style="margin-bottom0;">
-                            <p>
-                                Esta pestaña se debe llenar solamente si necesitas que tu solicitud se genere automáticamente durante los periodos seleccionados
-                            </p>
+                            <p id="p_recurr">
+                                @*B20180801 MGC Textos*@
+                            Esta pestaña se debe llenar solamente si necesitas que tu solicitud se genere automáticamente durante los periodos seleccionados
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div class="card-panel">
+                    @*<h5>Recurrente</h5>*@
+                    <input type="hidden" id="txt_trec" />
+                    <div class="row" style="margin-bottom:0;">
+                        <p>
+                            <label>
+                                @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                <span id="span_docrec">Documento recurrente</span>@*B20180801 MGC Textos*@
+                            </label>
+                        </p>
+                        <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;"><!--RSG 01.08.2018-->
+                            <thead>
+                                <tr>
+                                    <th id="thead_rnumero">NO</th>@*B20180801 MGC Textos*@
+                                    <th id="thead_rtiposol">TSOL</th>@*B20180801 MGC Textos*@
+                                    <th id="thead_rfecha">FECHA</th>@*B20180801 MGC Textos*@
+                                    <th id="thead_rmonto">Monto</th>@*B20180801 MGC Textos*@
+                                    <th id="thead_rporc">Porcentaje</th>@*B20180801 MGC Textos*@
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
+                        <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>TSOL</th>
+                                    <th>FECHA</th>
+                                    <th>Monto</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.DOCUMENTOREC != null)
+            {
+
+                for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.DOCUMENTOREC[i].NUM_DOC
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].POS
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].FECHAF
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].MONTO_BASE
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].PORC
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].DOC_REF
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].EJERCICIO
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].ESTATUS
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].MONTO_FIJO
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].MONTO_GRS
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].MONTO_NET
+                        </td>
+                        <td>
+                            @Model.DOCUMENTOREC[i].PERIODO
+                        </td>
+                    </tr>
+}
+}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col s12">
+                <div id="div_objq" class="card-panel hide">
+                    @*<h5>Recurrente</h5>*@
+                    <input type="hidden" id="txt_trec" />
+                    <div class="row" style="margin-bottom:0;"><!--RSG 01.08.2018-->
+                        <p>
+                            <label>
+                                @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                <span id="span_objq">Objetivo Q</span> @*B20180801 MGC Textos*@
+                            </label>
+                        </p>
+                        <p>
+                            <div class="input-field col s4">
+                                <select id="sel_nn">
+                                    <option id="opt_mmes" value="1">Mensual</option> @*B20180801 MGC Textos*@
+                                    <option id="opt_tmes" value="3">Trimestral</option> @*B20180801 MGC Textos*@
+                                    <option id="opt_smes" value="6">Semestral</option> @*B20180801 MGC Textos*@
+                                    <option id="opt_ames" value="12">Anual</option> @*B20180801 MGC Textos*@
+                                </select>
+                                <label id="lbl_selnn" for="sel_nn">Frecuencia de liquidación / Orden de pago</label> @*B20180801 MGC Textos*@
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Distribución*@
+        <div id="Distribucion_cont">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <div class="card-panel">
+                        @*<a class="btn" id="btn_getmat"><i class="material-icons left">add</i>GetMatServer</a>*@
+                        <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
+                        <h5 id="head_dis">Distribución</h5> @*B20180801 MGC Textos*@
+                        <div class="row" style="margin-bottom:0">
+                            @*<input type="button" id="matcat" value="Get materiales cat" />*@
+                            @Html.HiddenFor(model => model.LIGADA, new { @id = "txt_ligada" })
+                            @if (ViewBag.relacionadan == "")
+                            {
+                                <div class="col s12">
+                                    <label>
+                                        @if (ViewBag.ligada != null)//RSG 09.07.2018
+                                        {
+                                            <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                        }
+                                        <span id="span_ligada">Solicitud ligada a facturación </span>@*B20180801 MGC Textos*@
+                                    </label>
+                                    <script>
+
+                                        function cambiaLigada(campo) {
+                                            if (campo.checked) {
+                                                $("#select_neg").val("P");
+                                                $("#select_dis").val("C");
+                                                $("#select_negi").val("P");
+                                                $("#select_disi").val("C");
+                                                $("#select_neg").prop("disabled", "disabled");
+                                                $("#select_dis").prop("disabled", "disabled");
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").removeClass("hide");
+                                                $("#txt_ligada").val("X");
+                                            } else {
+                                                $("#select_neg").prop("disabled", false);
+                                                $("#select_dis").prop("disabled", false);
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").addClass("hide");
+                                                $("#txt_ligada").val("");
+                                            }
+
+                                            var elem = document.getElementById('select_neg');
+                                            var instance = M.Select.init(elem, []);
+                                            elem = document.getElementById('select_dis');
+                                            instance = M.Select.init(elem, []);
+                                        }
+                                    </script>
+                                </div>
+                            }
+                            <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
+                            <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
+                            <div class="input-field col s6">
+                                <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
+                                    <option id="opt_negm" value="M">Monto</option>@*B20180801 MGC Textos*@
+                                    <option id="opt_negp" value="P">Porcentaje</option>@*B20180801 MGC Textos*@
+                                </select>
+                                <label id="lbl_tiponeg">Tipo de negociación</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <select id="select_dis" name="select_dis" onchange="selectMonto(this.value,'X')">
+                                    <option id="opt_dism" value="M">Material</option>@*B20180801 MGC Textos*@
+                                    <option id="opt_disc" value="C">Categoría</option>@*B20180801 MGC Textos*@
+                                </select>
+                                <label id="lbl_tipodis">Distribución</label>@*B20180801 MGC Textos*@
+                            </div>
+                            <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
+                                @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tipodis2" })@*B20180801 MGC Textos*@
+                                <div class="col-md-10">
+                                    @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
+                                </div>
+                            </div>
+                            @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
+                            @*<div id="div_categoria2" class="form-group col s6" style="display:none">
+                                    @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                @if (ViewBag.ligada != null & ViewBag.relacionadan == "")//RSG 09.07.2018
+                {
+                    <script>
+                        $("#select_neg").prop("disabled", "disabled");
+                        $("#select_dis").prop("disabled", "disabled");
+
+                        var elem = document.getElementById('select_neg');
+                        var instance = M.Select.init(elem, []);
+                        elem = document.getElementById('select_dis');
+                        instance = M.Select.init(elem, []);
+                    </script>
+                }
+                <div id="div_montobase" class="col s12 m6 l6" style="display:none">
+                    <div class="card-panel">
+                        <h5 id="head_montob">Monto Base</h5>@*B20180801 MGC Textos*@
+                        <div class="row" style="margin-bottom:0">
+                            @if (ViewBag.ligada != null)
+                            {
+                                @*if (Model.PAI.BACKORDER)
+                                    {
+                                        <div class="input-field col s6">
+                                            <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                            <label for="bmonto_apoyo">% Apoyo</label>
+                                        </div>
+                                    }*@
+                                <div class="input-field col s6">
+                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" disabled="disabled" />
+                                    <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
+                                </div>
+
+                                <div class="input-field col s6">
+                                    <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden />@*//B20180625 MGC 2018.06.28*@
+                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control", @disabled = "disabled" })
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id", @id = "lbl_monedadis" })@*B20180801 MGC Textos*@
+                                </div>
+
+                                @*if (Model.PAI.BACKORDER)
+                                    {
+                                        <div class="input-field col s6">
+                                            <input value="$ 29,200.14" id="monto_venta" type="text" class="precio @ViewBag.reversa" disabled="disabled" />
+                                            <label for="monto_venta">Venta del mes</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <input value="" id="monto_back" type="text" class="precio @ViewBag.reversa" onblur="this.value = toShow(this.value);" />
+                                            <label for="monto_back">Backorder</label>
+                                        </div>
+                                    }*@
+
+                            }
+                            else
+                            {
+                                <div class="input-field col s6">
+                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                    <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
+                                </div>
+                                <div class="input-field col s6">
+                                    <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
+                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id", @id = "lbl_monedadis" })@*B20180801 MGC Textos*@
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div id="div_apoyobase" class="col s12 m6 l6" style="display:none">
+                    <div class="card-panel">
+                        <h5 id="head_baseaplicar">Base para aplicar %</h5> @*B20180801 MGC Textos*@
+                        <div class="row" style="margin-bottom:0">
+                            <div class="input-field col s6">
+                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                <label id="lbl_porcapoyo" for="bmonto_apoyo">% Apoyo</label>@*B20180801 MGC Textos*@
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col s12">
                     <div class="card-panel">
-                        @*<h5>Recurrente</h5>*@
-                        <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;overflow:auto;">
-                            <p>
-                                <label>
-                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                    <span>Documento recurrente</span>
-                                </label>
-                            </p>
-                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;"><!--RSG 01.08.2018-->
+                        <h5 id="head_mecnegociacion">Mecánica de Negociación</h5> @*B20180801 MGC Textos*@
+                        <div class="row" style="margin-bottom:0;">
+                            @if (ViewBag.relacionadan == "")
+                            {
+                                <div class="file-field input-field" id="cargar_excel" style="display:none">
+                                    <div class="btn">
+                                        <span id="span_fileload">Examinar</span>  @*B20180801 MGC Textos*@
+                                        <input id="file_dis" type="file">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
+                                </div>
+                                <div id="div_btns_row" style="display:none">
+                                    <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>  @*B20180801 MGC Textos*@
+                                    <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>  @*B20180801 MGC Textos*@
+                                </div>
+                            }@*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla deshabilitar para relacionadas*@
+                            @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
+                            @if (ViewBag.addrowt == "X")
+                            {
+                                <input type="text" id="txt_addrowt" name="txt_addrowt" value="@ViewBag.addrowt" disabled="disabled" hidden /> @*//Add MGC B20180705 2018.07.05*@
+                                <div id="div_btns_row" style="display:none">
+                                    <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
+                                    <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
+                                </div>
+                            } @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
+                            <div id="div_picker"></div>
+                            @*B20180801 MGC Textos dinamicos para la tabla.........................................*@
+                            <input type="text" id="lbl_volr" name="lbl_volr" value="@ViewBag.volumenr" style="display:none" />
+                            <input type="text" id="lbl_apr" name="lbl_apr" value="@ViewBag.apoyor" style="display:none" />
+                            <input type="text" id="lbl_vole" name="lbl_vole" value="@ViewBag.volumene" style="display:none" />
+                            <input type="text" id="lbl_ape" name="lbl_ape" value="@ViewBag.apoyoe" style="display:none" />
+                            @*B20180801 MGC Textos dinamicos para la tabla.........................................*@
+                            <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                 <thead>
                                     <tr>
-                                        <th>NO</th>
-                                        <th>TSOL</th>
-                                        <th>FECHA</th>
-                                        <th>Monto</th>
-                                        <th>Porcentaje</th>
+                                        <th></th> @*ID*@
+                                        <th></th> @*Detalle*@
+                                        <th></th> @*Seleccionar*@
+                                        <th id="thead_disvde">Vigencia De</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_disval">Vigencia Al</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_dismat">Material</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_discat">Categoría</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_disdesc">Descripción</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_discostou">Costo unitario</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_disporc">% Apoyo</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_disapoyop">Apoyo por pieza</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_discosto">Costo con apoyo</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_dispsug">Precio sugerido</th>@*B20180801 MGC Textos*@
+                                        @*<th id="lbl_volumen">Volumen estimado</th>B20180801 MGC Textos*@
+                                        <th id="thead_disvolumen">Volumen</th>@*B20180801 MGC Textos*@
+                                        @*
+                                            <th id="lbl_apoyoee">Estimado apoyo</th>*@<!--RSG 05.06.2018-->
+                                        @*<th id="lbl_apoyo">Estimado apoyo</th>B20180801 MGC Textos*@
+                                        <th id="thead_disapoyo">Apoyo</th> @*B20180801 MGC Textos*@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                            </table>
-                            @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
-                            <table id="table_rech" class="display" cellspacing="0" style="display:none">
-                                <thead>
+                                <tfoot id="tfoot_dis" style="">
+                                    @*//display:none*@
                                     <tr>
-                                        <th>NO</th>
-                                        <th>TSOL</th>
-                                        <th>FECHA</th>
-                                        <th>Monto</th>
-                                        <th>Porcentaje</th>
+                                        @*
+                                            <th colspan="14" style="text-align:right">Total:</th>*@<!--RSG 05.06.2018-->
+                                        <th colspan="14" style="text-align:right">Total:</th>
+                                        <th id="total_dis"></th>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model.DOCUMENTOREC != null)
-                                    {
-
-                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].NUM_DOC
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].POS
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].FECHAF
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].PORC
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].DOC_REF
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].EJERCICIO
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].ESTATUS
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].MONTO_GRS
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].MONTO_NET
-                                                </td>
-                                                <td>
-                                                    @Model.DOCUMENTOREC[i].PERIODO
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="col s12">
-                    <div id="div_objq" class="card-panel hide">
-                        @*<h5>Recurrente</h5>*@
-                        <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;"><!--RSG 01.08.2018-->
-                            <p>
-                                <label>
-                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_objetivoq" name="check_objetivoq" type="checkbox" onchange="objetivoQ(this.checked);" />
-                                    <span>Objetivo Q</span>
-                                </label>
-                                <script>
-                                    function objetivoQ(ban) {
-                                        if (ban) {
-                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                            if (lengthT > 0) {
-                                                document.getElementById('table_objQ').classList.remove("hide");
-                                                var total = 0;
-                                                var porc = 0;
-                                                var fecha = "";
-                                                var tsol = "";
-                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
-                                                    fecha = ($(this).find("td.FECHA").text());
-                                                    tsol = $(this).find("td.TSOL").text();
-                                                });
-                                                document.getElementById("obqTSOL").innerText = tsol;
-                                                document.getElementById("obqFECHA").innerText = fecha;
-                                                document.getElementById("obqMONTO").innerText = toShow(total);
-                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
-                                            }
-                                        }
-                                        else {
-                                            document.getElementById('table_objQ').classList.add("hide");
-                                        }
-                                    }
-                                    function updateObjQ() {
-                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                        if (lengthT > 0) {
-                                            var total = 0;
-                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                            });
-                                            document.getElementById("obqMONTO").innerText = toShow(total);
-                                        }
-
-                                    }
-                                </script>
-                            </p>
-                            <div style="overflow:auto;">
-                                <table id="table_objQ" class="display hide" cellspacing="0" style="font-size:12px;">
-                                    <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>TSOL</th>
-                                            <th>FECHA</th>
-                                            <th>Monto</th>
-                                            <th>Porcentaje</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Q</td>
-                                            <td id="obqTSOL"></td>
-                                            <td id="obqFECHA"></td>
-                                            <td id="obqMONTO"></td>
-                                            @*<td><input type="text" id="objPORC" style="width:150px;font-size:12px;height:2rem;" name="objPORC" onchange="this.value = toShowPorc(this.value);" class="input_dcp"/></td>*@
-                                            <td>
-                                                @Html.EditorFor(model => model.OBJQ_PORC, new { htmlAttributes = new { @id = "objPORC", @class = "input_dcp ", @style = "width:150px;font-size:12px;height:2rem;", @onchange = "this.value = toShowPorc(this.value);" } })
+                    @*Tabla para ser enviada siempre está oculta*@
+                    <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
+                        @*
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Vigencia De</th>
+                                    <th>Vigencia Al</th>
+                                    <th>Material</th>
+                                    <th>Categoría</th>
+                                    <th>Categoría ID</th>
+                                    <th>Costo unitario</th>
+                                    <th>% Apoyo</th>
+                                    <th>Apoyo por pieza</th>
+                                    <th>Precio sugerido</th>
+                                    <th>Volumen estimado</th>
+                                    <th>Volumen real</th>
+                                    <th>Apoyo estimado</th>
+                                    <th>Apoyo real</th>
+                                </tr>
+                            </thead>*@
+                        <tbody>
+                            @if (Model.DOCUMENTOP != null)
+                            {
+                                for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL_ID)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
+                                        </td>
+                                        <td>
+                                            @*@Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)*@
+                                            <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6");" />
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_REAL)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_EST)
+                                        </td>
+                                        <td>
+                                            @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_REAL)
                                         </td>
                                     </tr>
-                                </tbody>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @*Tabla para ser enviada siempre está oculta*@
+                </div>
+            </div>
+        </div>
+        @*Financiera*@
+        <div id="Financiera_cont">
+            <div class="row">
+                <div class="col s12 m6 l6">
+                    <div class="card-panel">
+                        <div class="row" style="margin-bottom:0">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                    <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
+                                    @Html.HiddenFor(model => model.MONTO_DOC_MD)
+                                </div>
+                                <div class="input-field col s6">
+                                    @*<div class="form-group">
+                                    *@
+                                    @*<div class="col-md-10">
+                                    *@
+                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
+                                    @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id", @id = "lbl_monedafin" })@*B20180801 MGC Textos*@
+                                    @*
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.MONEDA_ID, new { htmlAttributes = new { @id = "monedas_id", @class = "form-control", @style = "display: none" } })   @*@style = "display: none"*@
+                                    </div>
+                                </div>
+                                <div class="form-group input-field col s6">
+                                    @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active", @id = "lbl_tipocambio" })@*B20180801 MGC Textos*@
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada, @Value = ViewBag.tcambio } })
+                                    </div>
+                                </div>
+                                <div class=" input-field col s6">
+                                    <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                    <label id="lbl_montodoc2" for="montos_doc_ml2" class="active">Monto en USD</label>@*B20180801 MGC Textos*@
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MONTO_DOC_ML, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" }) @*B20180801 MGC Textos*@
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.MONTO_DOC_ML, new { htmlAttributes = new { @class = "form-control", @style = "display: none" } })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MONTO_DOC_ML2, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.MONTO_DOC_ML2, new { htmlAttributes = new { @id = "monto_doc_ml2", @class = "form-control", @style = "display: none" } })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-panel">
+                        <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
+                        <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
+
+                        <div class="row" style="margin-bottom:0">
+                            <table class="tg">
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label id="lbl_presupuestocanal">Presupuesto canal</label>@*B20180801 MGC Textos*@
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_vtweg"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_canal"></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="tg-yw4l">
+                                        <label id="lbl_presupuestocliente">Presupuesto cliente</label>@*B20180801 MGC Textos*@
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_kunnr"></label>
+                                    </td>
+                                    <td class="tg-yw4l">
+                                        <label id="p_banner"></label>
+                                    </td>
+                                </tr>
                             </table>
                         </div>
-                        <p>
-                            <div class="input-field col l4 m4 s12">
-                                <select id="sel_nn" name="sel_nn">
-                                    <option value="1" selected="selected">Mensual</option>
-                                    <option value="3">Trimestral</option>
-                                    <option value="6">Semestral</option>
-                                    <option value="12">Anual</option>
-                                </select>
-                                <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
-                            </div>
-                        </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @*Distribución*@
-            <div id="Distribucion_cont">
-                <div class="row">
-                    <div class="col s12 m6 l6">
                         <div class="card-panel">
-                            @*<a class="btn" id="btn_getmat"><i class="material-icons left">add</i>GetMatServer</a>*@
-                            <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
-                            <h5>Distribución</h5>
-                            <div class="row" style="margin-bottom:0">
-                                @*<input type="button" id="matcat" value="Get materiales cat" />*@
-                                @Html.HiddenFor(model => model.LIGADA, new { @id = "txt_ligada" })
-                                @if (ViewBag.relacionadan == "")
-                                {
-                                    <div class="col s12">
-                                        <label>
-                                            @if (ViewBag.ligada != null)//RSG 09.07.2018
-                                            {
-                                                <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
-                                            }
-                                            else
-                                            {
-                                                <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
-                                            }
-                                            <span>Solicitud ligada a facturación </span>
-                                        </label>
-                                        <script>
-
-                                            function cambiaLigada(campo) {
-                                                if (campo.checked) {
-                                                    $("#select_neg").val("P");
-                                                    $("#select_dis").val("C");
-                                                    $("#select_negi").val("P");
-                                                    $("#select_disi").val("C");
-                                                    $("#select_neg").prop("disabled", "disabled");
-                                                    $("#select_dis").prop("disabled", "disabled");
-                                                    $("#select_neg").change();
-                                                    $("#select_dis").change();
-                                                    $("#div_objq").removeClass("hide");
-                                                    $("#txt_ligada").val("X");
-                                                } else {
-                                                    $("#select_neg").prop("disabled", false);
-                                                    $("#select_dis").prop("disabled", false);
-                                                    $("#select_neg").change();
-                                                    $("#select_dis").change();
-                                                    $("#div_objq").addClass("hide");
-                                                    $("#txt_ligada").val("");
-                                                }
-
-                                                var elem = document.getElementById('select_neg');
-                                                var instance = M.Select.init(elem, []);
-                                                elem = document.getElementById('select_dis');
-                                                instance = M.Select.init(elem, []);
-                                            }
-                                        </script>
-                                    </div>
-                                }
-                                <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
-                                <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
-                                <div class="input-field col s6">
-                                    <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
-                                        <option value="M">Monto</option>
-                                        <option value="P">Porcentaje</option>
-                                    </select>
-                                    <label>Tipo de negociación</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <select id="select_dis" name="select_dis" onchange="selectMonto(this.value,'X')">
-                                        <option value="M">Material</option>
-                                        <option value="C">Categoría</option>
-                                    </select>
-                                    <label>Distribución</label>
-                                </div>
-                                <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
-                                    @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
-                                    </div>
-                                </div>
-                                @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
-                                @*<div id="div_categoria2" class="form-group col s6" style="display:none">
-                                        @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
-                                        </div>
-                                    </div>*@
-                            </div>
-                        </div>
-                    </div>
-                    @if (ViewBag.ligada != null & ViewBag.relacionadan == "")//RSG 09.07.2018
-                    {
-                        <script>
-                            $("#select_neg").prop("disabled", "disabled");
-                            $("#select_dis").prop("disabled", "disabled");
-
-                            var elem = document.getElementById('select_neg');
-                            var instance = M.Select.init(elem, []);
-                            elem = document.getElementById('select_dis');
-                            instance = M.Select.init(elem, []);
-                        </script>
-                    }
-                    <div id="div_montobase" class="col s12 m6 l6" style="display:none">
-                        <div class="card-panel">
-                            <h5>Monto Base</h5>
-                            <div class="row" style="margin-bottom:0">
-                                @if (ViewBag.ligada != null)
-                                {
-                                    @*if (Model.PAI.BACKORDER)
-                                        {
-                                            <div class="input-field col s6">
-                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
-                                                <label for="bmonto_apoyo">% Apoyo</label>
-                                            </div>
-                                        }*@
-                                    <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" disabled="disabled" />
-                                        <label for="monto_dis">Monto</label>
-                                    </div>
-
-                                    <div class="input-field col s6">
-                                        <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden />@*//B20180625 MGC 2018.06.28*@
-                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control", @disabled = "disabled" })
-                                        @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
-                                    </div>
-
-                                    @*if (Model.PAI.BACKORDER)
-                                        {
-                                            <div class="input-field col s6">
-                                                <input value="$ 29,200.14" id="monto_venta" type="text" class="precio @ViewBag.reversa" disabled="disabled" />
-                                                <label for="monto_venta">Venta del mes</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input value="" id="monto_back" type="text" class="precio @ViewBag.reversa" onblur="this.value = toShow(this.value);" />
-                                                <label for="monto_back">Backorder</label>
-                                            </div>
-                                        }*@
-
-                                }
-                                else
-                                {
-                                    <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
-                                        <label for="monto_dis">Monto</label>
-                                    </div>
-                                    <div class="input-field col s6">
-                                        <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
-                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
-                                        @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div id="div_apoyobase" class="col s12 m6 l6" style="display:none">
-                        <div class="card-panel">
-                            <h5>Base para aplicar %</h5>
-                            <div class="row" style="margin-bottom:0">
-                                <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
-                                    <label for="bmonto_apoyo">% Apoyo</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12">
-                        <div class="card-panel">
-                            <h5>Mecánica de Negociación</h5>
-                            <div class="row" style="margin-bottom:0;">
-                                @if (ViewBag.relacionadan == "")
-                                {
-                                    <div class="file-field input-field" id="cargar_excel" style="display:none">
-                                        <div class="btn">
-                                            <span>Examinar</span>
-                                            <input id="file_dis" type="file">
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
-                                        </div>
-                                    </div>
-                                    <div id="div_btns_row" style="display:none">
-                                        <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
-                                        <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
-                                    </div>
-                                }@*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla deshabilitar para relacionadas*@
-                                @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
-                                @if (ViewBag.addrowt == "X")
-                                {
-                                    <input type="text" id="txt_addrowt" name="txt_addrowt" value="@ViewBag.addrowt" disabled="disabled" hidden /> @*//Add MGC B20180705 2018.07.05*@
-                                    <div id="div_btns_row" style="display:none">
-                                        <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
-                                        <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
-                                    </div>
-                                } @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
-                                <div id="div_picker"></div>
-                                <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
-                                    <thead>
-                                        <tr>
-                                            <th></th> @*ID*@
-                                            <th></th> @*Detalle*@
-                                            <th></th> @*Seleccionar*@
-                                            <th>Vigencia De</th>
-                                            <th>Vigencia Al</th>
-                                            <th>Material</th>
-                                            <th>Categoría</th>
-                                            <th>Descripción</th>
-                                            <th>Costo unitario</th>
-                                            <th>% Apoyo</th>
-                                            <th>Apoyo por pieza</th>
-                                            <th>Costo con apoyo</th>
-                                            <th>Precio sugerido</th>
-                                            <th id="lbl_volumen">Volumen estimado</th>
-                                            @*
-                                                <th id="lbl_apoyoee">Estimado apoyo</th>*@<!--RSG 05.06.2018-->
-                                            <th id="lbl_apoyo">Estimado apoyo</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                    <tfoot id="tfoot_dis" style="">
-                                        @*//display:none*@
-                                        <tr>
-                                            @*
-                                                <th colspan="14" style="text-align:right">Total:</th>*@<!--RSG 05.06.2018-->
-                                            <th colspan="14" style="text-align:right">Total:</th>
-                                            <th id="total_dis"></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                        @*Tabla para ser enviada siempre está oculta*@
-                        <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
-                            @*
-                                <thead>
-                                    <tr>
-                                        <th>Pos</th>
-                                        <th>Vigencia De</th>
-                                        <th>Vigencia Al</th>
-                                        <th>Material</th>
-                                        <th>Categoría</th>
-                                        <th>Categoría ID</th>
-                                        <th>Costo unitario</th>
-                                        <th>% Apoyo</th>
-                                        <th>Apoyo por pieza</th>
-                                        <th>Precio sugerido</th>
-                                        <th>Volumen estimado</th>
-                                        <th>Volumen real</th>
-                                        <th>Apoyo estimado</th>
-                                        <th>Apoyo real</th>
-                                    </tr>
-                                </thead>*@
-                            <tbody>
-                                @if (Model.DOCUMENTOP != null)
-                                {
-                                    for (var i = 0; i < Model.DOCUMENTOP.Count; i++)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].POS)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_DE)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].VIGENCIA_AL)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].MATNR)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].MATKL_ID)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO)
-                                            </td>
-                                            <td>
-                                                @*@Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)*@
-                                                <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6");" />
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].PRECIO_SUG)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_EST)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].VOLUMEN_REAL)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_EST)
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOP[i].APOYO_REAL)
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                        @*Tabla para ser enviada siempre está oculta*@
-                    </div>
-                </div>
-            </div>
-            @*Financiera*@
-            <div id="Financiera_cont">
-                <div class="row">
-                    <div class="col s12 m6 l6">
-                        <div class="card-panel">
-                            <div class="row" style="margin-bottom:0">
-                                <div class="row">
-                                    <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
-                                        <label for="monto_doc_md">Monto</label>
-                                        @Html.HiddenFor(model => model.MONTO_DOC_MD)
-                                    </div>
-                                    <div class="input-field col s6">
-                                        @*<div class="form-group">
-                                        *@
-                                        @*<div class="col-md-10">
-                                        *@
-                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
-                                        @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
-                                        @*
-                                                </div>
-                                            </div>*@
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.MONEDA_ID, new { htmlAttributes = new { @id = "monedas_id", @class = "form-control", @style = "display: none" } })   @*@style = "display: none"*@
-                                        </div>
-                                    </div>
-                                    <div class="form-group input-field col s6">
-                                        @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada, @Value = ViewBag.tcambio } })
-                                        </div>
-                                    </div>
-                                    <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
-                                        <label for="montos_doc_ml2" class="active">Monto en USD</label>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.MONTO_DOC_ML, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.MONTO_DOC_ML, new { htmlAttributes = new { @class = "form-control", @style = "display: none" } })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.MONTO_DOC_ML2, htmlAttributes: new { @class = "control-label col-md-2", @style = "display: none" })
-                                        <div class="col-md-10">
-                                            @Html.EditorFor(model => model.MONTO_DOC_ML2, new { htmlAttributes = new { @id = "monto_doc_ml2", @class = "form-control", @style = "display: none" } })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-panel">
-                            <h5>Análisis Presupuesto</h5>
-                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
-
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg">
                                     <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label id="lbl_regsap">Registrado en SAP</label>@*B20180801 MGC Textos*@
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
+                                            <label id="pc_c"></label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label id="lbl_regsapp">Por registrar en SAP</label>@*B20180801 MGC Textos*@
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
+                                            <label id="pc_a"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label id="lbl_procesotat">En proceso TAT</label>@*B20180801 MGC Textos*@
                                         </td>
                                         <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
+                                            <label id="pc_p"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label id="lbl_consumido">Consumido</label>@*B20180801 MGC Textos*@
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="pc_t"></label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tg-yw4l" colspan="2">
+                                            <label id="lbl_presudisponible">Presupuesto disponible</label>@*B20180801 MGC Textos*@
+                                        </td>
+                                        <td class="tg-yw4l">
+                                            <label id="consu"></label>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Registrado en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Por registrar en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>En proceso TAT</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Consumido</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Presupuesto disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="consu"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="col s12 m6 l6">
-                            <!--RSG 22.05.2018-->
-                            <div class="card-panel">
-                                <div class="row">
-                                    <h5>Cuentas</h5>
-                                    <div class="col s12">
-                                        <div id="div_clearing">
-                                        </div>
+                </div>
+                <div>
+                    <div class="col s12 m6 l6">
+                        <!--RSG 22.05.2018-->
+                        <div class="card-panel">
+                            <div class="row">
+                                <h5 id="head_cuentas">Cuentas</h5>@*B20180801 MGC Textos*@
+                                <div class="col s12">
+                                    <div id="div_clearing">
                                     </div>
                                 </div>
-                                <script>
+                            </div>
+                            <script>
                             var clearing = [];
                             function getClearing(gall) {
                                 $("#div_clearing").empty();
@@ -1961,72 +1907,9 @@
                             div += "</ul>";
                             $("#div_clearing").append(div);
                         }
-                                </script>
-                            </div>
-                            @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <ul class="collection">
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Importe solicitud
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis1">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto provisión original
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis2">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto aplicado
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis3">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a4">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Remanente/Exceso
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis4">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a5">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto total
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis5">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>*@
-                            <div class="card-panel">
+                            </script>
+                        </div>
+                        @*<div class="card-panel">
                                 <h5>Análisis Solicitud</h5>
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
@@ -2037,7 +1920,7 @@
                                                         Importe solicitud
                                                     </div>
                                                     <div class="col s6 right-align">
-                                                        <span id="s_montob">-</span>
+                                                        <span id="analisis1">-</span>
                                                     </div>
                                                 </div>
                                             </li>
@@ -2047,136 +1930,204 @@
                                                         Monto provisión original
                                                     </div>
                                                     <div class="col s6 right-align">
-                                                        <span id="s_montop">-</span>
+                                                        <span id="analisis2">-</span>
                                                     </div>
                                                 </div>
                                             </li>
+
                                             <li class="collection-item">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
                                                         Monto aplicado
                                                     </div>
                                                     <div class="col s6 right-align">
-                                                        <span id="s_montoa">-</span>
+                                                        <span id="analisis3">-</span>
                                                     </div>
                                                 </div>
                                             </li>
+
                                             <li class="collection-item" id="a4">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
-                                                        Remanente/(Exceso)
+                                                        Remanente/Exceso
                                                     </div>
                                                     <div class="col s6 right-align">
-                                                        <span id="s_rema">-</span>
+                                                        <span id="analisis4">-</span>
                                                     </div>
                                                 </div>
                                             </li>
+
                                             <li class="collection-item" id="a5">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
                                                         Monto total
                                                     </div>
                                                     <div class="col s6 right-align">
-                                                        <span id="s_total">-</span>
+                                                        <span id="analisis5">-</span>
                                                     </div>
                                                 </div>
                                             </li>
+
                                         </ul>
                                     </div>
                                 </div>
+                            </div>*@
+                        <div class="card-panel">
+                            <h5 id="head_solicitudanalisis">Análisis Solicitud</h5>@*B20180801 MGC Textos*@
+                            <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                    <ul class="collection">
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div id="div_importesolicitud" class="col s6">
+                                                    @*B20180801 MGC Textos*@
+                                                    Importe solicitud
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montob">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div id="div_montoprov" class="col s6">
+                                                    @*B20180801 MGC Textos*@
+                                                    Monto provisión original
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montop">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div id="div_montoapli" class="col s6">
+                                                    @*B20180801 MGC Textos*@
+                                                    Monto aplicado
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_montoa">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item" id="a4">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div id="div_remanente" class="col s6">
+                                                    @*B20180801 MGC Textos*@
+                                                    Remanente/(Exceso)
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_rema">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item" id="a5">
+                                            <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                                <div id="div_montototal" class="col s6">
+                                                    @*B20180801 MGC Textos*@
+                                                    Monto total
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <span id="s_total">-</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <table class="tg">
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Importe solicitud</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto provisión original</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto aplicado</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr id="s_color">
-                                                <td class="tg-yw4l">
-                                                    <label id="">Remanente/(Exceso)</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto a</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impa"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto b</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impb"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto c</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impc"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Retención</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_ret"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto total</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>*@
                         </div>
+                        @*<div class="card-panel">
+                                <h5>Análisis Solicitud</h5>
+                                <div class="row" style="margin-bottom:0">
+                                    <table class="tg">
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Importe solicitud</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id=""></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Monto provisión original</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id=""></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Monto aplicado</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id=""></label>
+                                            </td>
+                                        </tr>
+                                        <tr id="s_color">
+                                            <td class="tg-yw4l">
+                                                <label id="">Remanente/(Exceso)</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id=""></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Impuesto a</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="s_impa"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Impuesto b</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="s_impb"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Impuesto c</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="s_impc"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Retención</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id="s_ret"></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tg-yw4l">
+                                                <label>Monto total</label>
+                                            </td>
+                                            <td class="tg-yw4l">
+                                                <label id=""></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>*@
                     </div>
                 </div>
             </div>
-            @* SCRIPT ------------------------------------------------------------------------------------------ LEJ 09.07.18*@
-            <script src="~/Scripts/ValidarFormatoDecimalesC.js"></script>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
-                </div>
+        </div>
+        @* SCRIPT ------------------------------------------------------------------------------------------ LEJ 09.07.18*@
+        <script src="~/Scripts/ValidarFormatoDecimalesC.js"></script>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
             </div>
         </div>
-    }
+    </div>
+}
     @*@if (ViewBag.original == null)
             {
         <script>

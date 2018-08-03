@@ -22,6 +22,56 @@ $('body').on('focusout', '#ed_monto', function (e) {
     if (total > monto) {
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     }
+    var ed_monto = $('#ed_monto').val();
+    $('#ed_monto').val(toShow(ed_monto))
+});
+
+//B20180801 MGC Textos
+$('body').on('keydown', '.total', function (e) {
+
+    var key = e.which;
+    if (key == 13) {
+        
+        var tr = $(this).closest('tr'); //Obtener el row 
+
+        //B20180720 MGC Formato a valores en la tabla
+        //Moneda
+        if ($(this).hasClass("mon")) {
+            var val = toNum($(this).val());
+            $(this).val(toShow(val));
+        }
+        //Numero
+        if ($(this).hasClass("num")) {
+            var val = toNum($(this).val());
+            $(this).val(toShowNum(val));
+        }
+        //Porcentaje
+        if ($(this).hasClass("porc")) {
+            var val = toNum($(this).val());
+            $(this).val(toShowPorc(val));
+        }
+
+        //Solo a cantidades
+        if ($(this).hasClass("numberd")) {
+
+            //Definir si es tipo m
+            var tipo = "";
+            if ($(this).hasClass("tipom")) {
+                tipo = "m";
+            } else if ($(this).hasClass("tipop")) {
+                tipo = "p"
+            }
+
+            //Se dispara el evento desde el total
+            if ($(this).hasClass("total") & !$(this).hasClass("cat")) {
+                var total_val = toNum($(this).val());
+                //Agregar los valores a 0 y agregar el total
+                updateTotalRow(tr, "", "X", total_val, "", tipo);
+                $(this).addClass("keyup");
+            }
+        }
+    }
+
 });
 
 $('body').on('focusout', '.input_oper', function () {
@@ -59,8 +109,17 @@ $('body').on('focusout', '.input_oper', function () {
         //Se dispara el evento desde el total
         if ($(this).hasClass("total") & !$(this).hasClass("cat")) {
             var total_val = toNum($(this).val());//B20180720 MGC Formato a valores en la tabla
+
+            if (!$(this).hasClass("keyup")) {
+                updateTotalRow(tr, "", "", 0, "", tipo);//B20180801 MGC Textos
+            } else {
+                //Agregar los valores a 0 y agregar el total
+                updateTotalRow(tr, "", "X", total_val, "", tipo); //B20180801 MGC Textos
+                $(this).removeClass("keyup");
+            }
+        
             //Agregar los valores a 0 y agregar el total
-            updateTotalRow(tr, "", "X", total_val, "", tipo);
+            //updateTotalRow(tr, "", "X", total_val, "", tipo);//B20180801 MGC Textos
             //alert("total" + total_val);
         } else if ($(this).hasClass("total") & $(this).hasClass("cat")) {
             var total_val = toNum($(this).val());//B20180720 MGC Formato a valores en la tabla
@@ -286,6 +345,7 @@ function updateTotalRowp() {
 
     //Obtener la cantidad asignada por el usuario como total
     var ed_monto = $('#ed_monto').val();
+    ed_monto = toNum(ed_monto);//B20180801 MGC Formato
     ed_monto = parseFloat(ed_monto);
 
     // ed_monto -- 100%
