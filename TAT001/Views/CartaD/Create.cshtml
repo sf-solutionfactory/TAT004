@@ -332,6 +332,7 @@
                     @*//B20180720P MGC 2018.07.25*@
                     @if (ViewBag.varligada != true)
                     {
+                        string montoformat = @ViewBag.montoformat; //B20180801 MGC Formato
                         <div class="row">
                             <div class="col l8 m8 s12">
                                 <div class="col l1 s1">
@@ -344,7 +345,8 @@
                                     @Html.HiddenFor(model => model.monto)
                                     @Html.HiddenFor(model => model.moneda)
                                     @{ string monto = @ViewBag.mon; }
-                                    @Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })
+                                    @*@Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })*@ @*//B20180801 MGC Formato*@
+                                    @Html.LabelFor(model => model.monto, monto + " " + montoformat + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" }) @*//B20180801 MGC Formato*@
                                 </div>
                             </div>
                         </div>

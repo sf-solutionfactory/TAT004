@@ -398,6 +398,20 @@ namespace TAT001.Controllers
                 //B20180720P MGC 2018.07.25
                 ViewBag.varligada = varligada;
 
+                //B20180801 MGC Formato
+                //v.monto = monto_enviar;
+                decimal montod = 0;
+                try
+                {
+                    montod = Convert.ToDecimal(cv.monto);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                @ViewBag.montoformat = format.toShow(montod, decimales);
+
                 return View(cv);
             }
         }
@@ -686,6 +700,19 @@ namespace TAT001.Controllers
                 v.numColEncabezado2 = cabeza2;
                 v.numfilasTabla2 = con4.Count();
                 v.listaCuerpoRec = armadoCuerpoTab2;
+
+                //B20180801 MGC Formato
+                decimal montod = 0;
+                try
+                {
+                    montod = Convert.ToDecimal(v.monto);
+                }
+                catch (Exception)
+                {
+
+                }
+
+                v.monto = format.toShow(montod, decimales);
 
                 CartaD carta = v;
                 CartaDEsqueleto cve = new CartaDEsqueleto();

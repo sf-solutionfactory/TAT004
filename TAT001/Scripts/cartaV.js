@@ -22,6 +22,8 @@ $('body').on('focusout', '#ed_monto', function (e) {
     if (total > monto) {
         M.toast({ html: 'Monto de distribución es mayor al monto de la solicitud' });
     }
+    var ed_monto = $('#ed_monto').val();
+    $('#ed_monto').val(toShow(ed_monto))
 });
 
 //B20180801 MGC Textos
@@ -343,6 +345,7 @@ function updateTotalRowp() {
 
     //Obtener la cantidad asignada por el usuario como total
     var ed_monto = $('#ed_monto').val();
+    ed_monto = toNum(ed_monto);//B20180801 MGC Formato
     ed_monto = parseFloat(ed_monto);
 
     // ed_monto -- 100%
