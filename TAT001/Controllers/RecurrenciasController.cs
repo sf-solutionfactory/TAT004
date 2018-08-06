@@ -3397,6 +3397,12 @@ namespace TAT001.Controllers
 
             return View(DF);
         }
-        // GET: Solicitudes/Create
+
+
+        [HttpPost]
+        public ActionResult Backorder([Bind(Include ="NUM_DOC")] DOCUMENTO D, string BACKORDER)
+        {
+            return RedirectToAction("Backorder", new { id_d = D.NUM_DOC});
+        }
     }
 }

@@ -477,14 +477,16 @@
                                             <input type="text" value="@Model.D.MONTO_DOC_MD" class="precio" disabled="disabled" id="MONTO_DOC_MD" />
                                             <label for="txt_porc">Monto base</label>
                                         </div>
-
-                                        <div class="input-field col s6">
-                                            <input type="text" value="0.00" class="precio" id="BACKORDER" name="BACKORDER" onchange="this.value = toShow(this.value);" onfocus="this.select();"/>
-                                            <label for="BACKORDER">BackOrder</label>
-                                        </div>
-                                        <div class="col s12 m12 right-align">
-                                            <input type="submit" value="Recalcular" class="btn-small" />
-                                        </div>
+                                        <form method="post">
+                                            @Html.HiddenFor(model => model.D.NUM_DOC)
+                                            <div class="input-field col s6">
+                                                <input type="text" value="0.00" class="precio" id="BACKORDER" name="BACKORDER" onchange="this.value = toShow(this.value);" onfocus="this.select();" />
+                                                <label for="BACKORDER">BackOrder</label>
+                                            </div>
+                                            <div class="col s12 m12 right-align">
+                                                <input type="submit" value="Recalcular" class="btn-small" />
+                                            </div>
+                                        </form>
                                         <script>
                                             //function calcValor() {
                                             ////var venta = ((document.getElementById("MONTO_DOC_MD").value) / (document.getElementById("PORC_APOYO").value)) * 100;
