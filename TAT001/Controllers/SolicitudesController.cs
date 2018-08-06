@@ -7683,5 +7683,21 @@ namespace TAT001.Controllers
             return cc;
         }
 
+        [HttpPost]
+        public string enviarcorreo()
+        {
+            string res = "true";
+            decimal nnum = Convert.ToDecimal("1000000748");
+
+            Email em = new Email();
+            string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+
+            UrlDirectory = UrlDirectory.Replace("Solicitudes/enviarcorreo", "Solicitudes/Create");
+
+            em.enviaMailC(nnum, true, Session["spras"].ToString(), UrlDirectory);
+
+            return res;
+        }
+
     }
 }

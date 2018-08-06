@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
@@ -33,10 +34,10 @@ namespace TAT001.Services
                     //ViewBag.acciones = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id) & a.ESTATUS.Equals("P") & a.USUARIOA_ID.Equals(User.Identity.Name)).FirstOrDefault();
 
                     string mailt = ConfigurationManager.AppSettings["mailt"];
-                    string mtest = ConfigurationManager.AppSettings["mailtest"];
+                    string mtest = "X";// ConfigurationManager.AppSettings["mailtest"]; //B20180803 MGC Correos
                     string mailTo = "";
                     if (mtest == "X")
-                        mailTo = "rogelio.sanchez@sf-solutionfactory.com";
+                        mailTo = "gallegos1993@live.com.mx"; //B20180803 MGC Correos
                     else
                         mailTo = workflow.USUARIO.EMAIL;
                     CONMAIL conmail = db.CONMAILs.Find(mailt);
@@ -69,7 +70,7 @@ namespace TAT001.Services
                         UrlDirectory = UrlDirectory.Replace("Solicitudes/Create", "Correos/Index");
                         UrlDirectory = UrlDirectory.Replace("Solicitudes/Details", "Correos/Index");
                         UrlDirectory = UrlDirectory.Replace("Solicitudes/Edit", "Correos/Index");
-                        UrlDirectory += "/" + dOCUMENTO.NUM_DOC;
+                        UrlDirectory += "/" + dOCUMENTO.NUM_DOC+ "?mail=true"; //B20180803 MGC Correos
                         HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
                         myRequest.Method = "GET";
                         WebResponse myResponse = myRequest.GetResponse();
@@ -78,7 +79,10 @@ namespace TAT001.Services
                         sr.Close();
                         myResponse.Close();
 
-                        mail.Body = result;
+                        //mail.Body = result;//B20180803 MGC Correos
+
+                        mail.AlternateViews.Add(Mail_Body(result));//B20180803 MGC Correos
+                        mail.IsBodyHtml = true;//B20180803 MGC Correos
 
                         client.Send(mail);
 
@@ -88,5 +92,20 @@ namespace TAT001.Services
             }
             //return View(dOCUMENTO);
         }
+
+        private AlternateView Mail_Body(string strr)
+        {
+            string path = "C:/Users/SF/Documents/GitHub/TAT004/TAT001/images/logo_kellogg.png";// HttpContext.Current.Server.MapPath(@"images/6792532.jpg");
+            LinkedResource Img = new LinkedResource(path, MediaTypeNames.Image.Jpeg);
+            Img.ContentId = "logo_img";
+
+            strr = strr.Replace("\"miimg_id\"", "cid:logo_img");
+
+            AlternateView AV =
+            AlternateView.CreateAlternateViewFromString(strr, null, MediaTypeNames.Text.Html);
+            AV.LinkedResources.Add(Img);
+            return AV;
+        }
+
     }
 }

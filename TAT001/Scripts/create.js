@@ -1409,6 +1409,27 @@ $(document).ready(function () {
         eliminarBorrador(false);
         document.getElementById("loader").style.display = "none";
     });
+
+    $('#btn_imagen').on("click", function (e) {
+        $.ajax({
+            type: "POST",
+            url: 'enviarcorreo',
+            //dataType: "json",
+            data: {},
+
+            success: function (data) {
+
+                if (data != null || data != "") {
+                    M.toast({ html: "Correo data: " + data });
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: "Correo error" });
+                
+            },
+            async: false
+        });
+    });
 });
 
 //Cuando se termina de cargar la página
