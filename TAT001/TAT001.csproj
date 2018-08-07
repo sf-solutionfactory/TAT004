@@ -1123,6 +1123,7 @@
     <Content Include="Views\NOTICIAs\Details.cshtml" />
     <Content Include="Views\NOTICIAs\Edit.cshtml" />
     <Content Include="Views\Solicitudes\Create2.cshtml" />
+    <Content Include="Views\Recurrencias\Cancelar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

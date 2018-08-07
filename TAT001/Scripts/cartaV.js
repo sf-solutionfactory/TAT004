@@ -287,7 +287,7 @@ function updateFooter(flag) {
 
     total = totalFooter();
 
-    var texto = armarMonto(total.toFixed(2));
+    var texto = armarMonto(toShow(total.toFixed(2)));//RSG 01.08.2018
 
     //Obtener el monto original
     if (flag) {

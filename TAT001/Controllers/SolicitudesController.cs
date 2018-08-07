@@ -270,7 +270,9 @@ namespace TAT001.Controllers
             {
                 string url = ConfigurationManager.AppSettings["URL_SAVE"];
                 //Crear el directorio
-                var dir = createDir(url, num_doc.ToString());
+                DOCUMENTO du = db.DOCUMENTOes.Find(num_doc);//RSG 01.08.2018
+                //var dir = createDir(url, num_doc.ToString());
+                var dir = createDir(url, num_doc.ToString(), du.EJERCICIO.ToString());//RSG 01.08.2018
 
                 //Evaluar que se creo el directorio
                 if (dir.Equals(""))
@@ -300,7 +302,8 @@ namespace TAT001.Controllers
                                 string path = "";
                                 string filename = file.FileName;
                                 errorfiles = "";
-                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
+                                //res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
+                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path, du.EJERCICIO.ToString());//RSG 01.08.2018
 
                                 if (errorfiles == "")
                                 {
@@ -1458,7 +1461,7 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, OBJQ_PORC")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
-                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn, string check_objetivoq, 
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn, string check_objetivoq,
                 string lbl_volr, string lbl_apr, string lbl_vole, string lbl_ape) //B20180801 MGC Textos
         {
             bool prueba = true;
@@ -2363,7 +2366,8 @@ namespace TAT001.Controllers
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
-                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                        //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                         //Evaluar que se creo el directorio
                         if (dir.Equals(""))
@@ -2390,7 +2394,8 @@ namespace TAT001.Controllers
                                         string path = "";
                                         string filename = file.FileName;
                                         errorfiles = "";
-                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);
+                                        //res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
+                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path, dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                                         if (errorfiles == "")
                                         {
@@ -4074,6 +4079,13 @@ namespace TAT001.Controllers
                                                     & a.SPART.Equals(dOCUMENTO.SPART)
                                                     & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
             dOCUMENTO.DOCUMENTOF = db.DOCUMENTOFs.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).ToList();
+            //LEJ 03.08.2018----i
+            for (int i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+            {
+                var _x = dOCUMENTO.DOCUMENTOF[i].PAYER;
+                dOCUMENTO.DOCUMENTOF[i].DESCRIPCION = db.CLIENTEs.Where(c => c.KUNNR == _x).Select(o => o.NAME1).FirstOrDefault();
+            }
+            //LEJ 03.08.2018----t
             DocumentoFlujo DF = new DocumentoFlujo();
             DF.D = dOCUMENTO;
             ViewBag.df = DF;
@@ -4784,7 +4796,9 @@ namespace TAT001.Controllers
                     //Obtener las variables con los datos de sesión y ruta
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     //Crear el directorio
-                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+
+                    //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                     //Evaluar que se creo el directorio
                     ////if (dir.Equals(""))
@@ -4886,7 +4900,8 @@ namespace TAT001.Controllers
                                     string path = "";
                                     string filename = file.FileName;
                                     errorfiles = "";
-                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);
+                                    //res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
+                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path, d.EJERCICIO.ToString());//RSG 01.08.2018
 
                                     if (errorfiles == "")
                                     {
@@ -5437,14 +5452,16 @@ namespace TAT001.Controllers
                     {
                         doc.MATNR = dt.Rows[i][2].ToString(); //Material
                         MATERIAL mat = material(doc.MATNR);
-                        if (mat != null)//Validar si el material existe
+                        if (mat != null & ld.Where(x => x.MATNR.Equals(doc.MATNR)).Count() == 0)//Validar si el material existe
                         {
                             //doc.MATKL = (string)dt.Rows[i][4]; //Categoría se toma de la bd
-                            CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            ////CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            MATERIALGPT cat = getCategoriaS(material: doc.MATNR); //Categoría//RSG 01.08.2018
                             try
                             {
                                 doc.MATKL = cat.TXT50.ToString();
-                                doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                                //doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                                doc.MATKL_ID = cat.MATERIALGP_ID.ToString();//RSG 01.08.2018
                             }
                             catch (Exception e)
                             {
@@ -7221,20 +7238,22 @@ namespace TAT001.Controllers
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     HttpPostedFileBase file = Request.Files[i];
                     string filename = file.FileName;
-                    res = SaveFile(file, url, "100", out error, out path);
+                    //res = SaveFile(file, url, "100", out error, out path);//RSG 01.08.2018
+                    res = SaveFile(file, url, "100", out error, out path, "2018");//RSG 01.08.2018
                 }
             }
 
             return res;
         }
 
-        public string createDir(string path, string documento)
+        public string createDir(string path, string documento, string ejercicio)
         {
 
             string ex = "";
 
             // Specify the path to save the uploaded file to.
-            string savePath = path + documento + "\\";
+            //string savePath = path + documento + "\\";
+            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
             // Create the path and file name to check for duplicates.
             string pathToCheck = savePath;
@@ -7266,7 +7285,7 @@ namespace TAT001.Controllers
             return ex;
         }
 
-        public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved)
+        public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved, string ejercicio)
         {
             string ex = "";
             //string exdir = "";
@@ -7274,7 +7293,8 @@ namespace TAT001.Controllers
             string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
 
             // Specify the path to save the uploaded file to.
-            string savePath = path + documento + "\\";
+            //string savePath = path + documento + "\\";//RSG 01.08.2018
+            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
             // Create the path and file name to check for duplicates.
             string pathToCheck = savePath;
@@ -7584,26 +7604,31 @@ namespace TAT001.Controllers
         }
 
         [HttpPost]
-        public CATEGORIAT getCategoriaS(string material)
+        //public CATEGORIAT getCategoriaS(string material)
+        public MATERIALGPT getCategoriaS(string material)
         {
             if (material == null)
                 material = "";
-
+            material = completaMaterial(material);
             TAT001Entities db = new TAT001Entities();
 
             MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
-            CATEGORIAT cat = new CATEGORIAT();
+            //CATEGORIAT cat = new CATEGORIAT();
+            MATERIALGPT cat = new MATERIALGPT();//RSG 01.08.2018
 
-            if (m != null && m.MATKL_ID != "")
+            //if (m != null && m.MATKL_ID != "")
+            if (m != null && m.MATERIALGP_ID != "")//RSG 01.08.2018
             {
                 string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                //cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                cat = db.MATERIALGPs.Where(c => c.ID == m.MATERIALGP_ID && c.ACTIVO == true)//RSG 01.08.2018
                             .Join(
-                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            db.MATERIALGPTs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
                             c => c.ID,
-                            ct => ct.CATEGORIA_ID,
+                            //ct => ct.CATEGORIA_ID,
+                            ct => ct.MATERIALGP_ID,//RSG 01.08.2018
                             (c, ct) => ct)
                         .FirstOrDefault();
             }

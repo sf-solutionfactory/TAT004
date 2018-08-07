@@ -37,6 +37,7 @@
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
+<input id="mult" name="mult" type="hidden" value="@_df.D.DOCUMENTOF.Count">@*LEJ 03-08-18*@
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -77,8 +78,6 @@
         </div>
     }
     <style>
-
-
         .div_left {
             float: left;
         }
@@ -692,7 +691,7 @@
                                 <p>
                                     <label>
                                         <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
-                                        <input id="check_factura" type="checkbox" checked="checked" />
+                                        <input id="check_factura" type="checkbox" checked="checked" disabled />
                                         <span>Multiples Facturas</span>
                                     </label>
                                 </p>
@@ -752,7 +751,7 @@
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].PROVEEDOR
                                                         </td>
-                                                        <td></td>
+                                                        <td> @_df.D.DOCUMENTOF[i].IMPORTE_FAC</td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].CONTROL
                                                         </td>
@@ -824,7 +823,7 @@
                                         <th>NO</th>
                                         <th>TSOL</th>
                                         <th>FECHA</th>
-                                        <th>Monto</th>
+                                        <th width="150px">Monto</th>@*LEJ 06.08.2018*@
                                         <th>Porcentaje</th>
                                     </tr>
                                 </thead>
@@ -843,49 +842,49 @@
                                 </thead>
                                 <tbody>
                                     @if (Model.DOCUMENTOREC != null)
-                        {
-                            for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].NUM_DOC
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].POS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].FECHAF
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_BASE
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].PORC
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].DOC_REF
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].EJERCICIO
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].ESTATUS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_FIJO
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_GRS
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].MONTO_NET
-                                    </td>
-                                    <td>
-                                        @Model.DOCUMENTOREC[i].PERIODO
-                                    </td>
-                                </tr>
-                }
-            }
+                                    {
+                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].NUM_DOC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].POS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].FECHAF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PORC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].DOC_REF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].EJERCICIO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].ESTATUS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_GRS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_NET
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PERIODO
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -893,31 +892,31 @@
                 </div>
                 <div class="col s12">
                     @*LEJ 31.07.2018*@
-                <div id="div_objq" class="card-panel hide">
-                    <input type="hidden" id="txt_trec" />
-                    <div class="row" style="margin-bottom:0;">
-                        <p>
-                            <label>
-                                @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                <span>Objetivo Q</span>
-                            </label>
-                        </p>
-                        <p>
-                            <div class="input-field col s4">
-                                <select id="sel_nn">
-                                    <option value="1">Mensual</option>
-                                    <option value="3">Trimestral</option>
-                                    <option value="6">Semestral</option>
-                                    <option value="12">Anual</option>
-                                </select>
-                                <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
-                            </div>
-                        </p>
+                    <div id="div_objq" class="card-panel hide">
+                        <input type="hidden" id="txt_trec" />
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <label>
+                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <span>Objetivo Q</span>
+                                </label>
+                            </p>
+                            <p>
+                                <div class="input-field col s4">
+                                    <select id="sel_nn">
+                                        <option value="1">Mensual</option>
+                                        <option value="3">Trimestral</option>
+                                        <option value="6">Semestral</option>
+                                        <option value="12">Anual</option>
+                                    </select>
+                                    <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
+                                </div>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            @*LEJ 31.07.2018*@
+                @*LEJ 31.07.2018*@
             </div>
             @*Soporte*@
             <div id="Soporte_cont">

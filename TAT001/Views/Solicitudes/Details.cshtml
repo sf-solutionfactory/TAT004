@@ -569,6 +569,8 @@
                                     </div>
                                 </div>
                             </div>*@
+
+                        @*///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
                         @if (Model.D.DOCUMENTORECs.Count() > 0)
                         {
                             <div class="col s12 m12 l12" style="font-size:12px;">
@@ -576,44 +578,127 @@
                                     <div class="row">
                                         <h5>Recurrencia</h5>
                                     </div>
+
+                                    @{ var caso = Model.D.TIPO_RECURRENTE; }
+                                    @*@if (Convert.ToInt32(caso) != 3)*@
+                                    @*{*@
+                                    @*<table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Pos</th>
+                                                    <th>Periodo</th>
+                                                    <th>Tipo</th>
+                                                    <th>Documento</th>
+                                                    <th>Fecha</th>
+
+                                                    @if (Convert.ToInt32(caso) == 1)
+                                                    {
+                                                        <th>Monto</th>
+                                                    }
+                                                    else if (Convert.ToInt32(caso) == 2)
+                                                    {
+                                                        <th>%</th>
+                                                        <th>Objetivo</th>
+                                                    }
+                                                    <th>Estatus</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var iteem in Model.D.DOCUMENTORECs)
+                                                {
+                                                    <tr>
+                                                        <td>@iteem.POS/@Model.D.DOCUMENTORECs.Count()</td>
+                                                        @{ string periodo = "P" + iteem.PERIODO + "-" + iteem.EJERCICIO; }
+                                                        <td>@periodo</td>
+                                                        <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
+                                                        @if (iteem.DOC_REF > 0)
+                                                        {
+                                                            <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+                                                        <td>@iteem.FECHAF.Value.ToShortDateString()</td>
+
+                                                        @if (Convert.ToInt32(caso) == 1)
+                                                        {
+                                                            <td class="precio">@iteem.MONTO_BASE</td>
+                                                        }
+                                                        else if (Convert.ToInt32(caso) == 2)
+                                                        {
+                                                            <td class="porcentaje">@Math.Round(iteem.PORC.Value, 2)</td>
+                                                            <td class="precio">@iteem.MONTO_BASE</td>
+                                                        }
+
+                                                        @if (iteem.ESTATUS == "P")
+                                                        {
+                                                            <td>Contabilizado</td>
+                                                        }
+                                                        else if (iteem.ESTATUS == "C")
+                                                        {
+
+                                                            <td>Cancelado</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Pendiente</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>*@
+                                    @*//}
+                                        //else
+                                        //{*@
                                     <div class="row">
                                         <div class="col s12">
                                             <table>
                                                 <thead>
                                                     <tr>
                                                         <th>Pos</th>
+                                                        <th>Periodo</th>
                                                         <th>Tipo</th>
                                                         <th>Documento</th>
                                                         <th>Fecha</th>
-                                                        <th>Monto</th>
                                                         <th>%</th>
-                                                        <th>Aplicado</th>
+                                                        <th>Objetivo</th>
+                                                        <th>Estatus</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach (var iteem in Model.D.DOCUMENTORECs)
                                                     {
                                                         <tr>
-                                                            <td>@iteem.POS</td>
+                                                            <td>@iteem.POS/@Model.D.DOCUMENTORECs.Count()</td>
+                                                            @{ string periodo = "P" + iteem.PERIODO + "-" + iteem.EJERCICIO; }
+                                                            <td>@periodo</td>
                                                             <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
                                                             @if (iteem.DOC_REF > 0)
                                                             {
-                                                                <td><a href="@Url.Action("Details", new { id=iteem.DOC_REF })">@iteem.DOC_REF</a></td>
+                                                                <td><a href="@Url.Action("Details", new { id = iteem.DOC_REF })">@iteem.DOC_REF</a></td>
                                                             }
                                                             else
                                                             {
                                                                 <td></td>
                                                             }
-                                                            <td>@iteem.FECHAV.Value.ToShortDateString()</td>
-                                                            <td class="precio">@iteem.MONTO_BASE</td>
+
+                                                            <td>@iteem.FECHAF.Value.ToShortDateString()</td>
                                                             <td class="porcentaje">@Math.Round(iteem.PORC.Value, 2)</td>
+                                                            <td class="precio">@iteem.MONTO_BASE</td>
+
                                                             @if (iteem.ESTATUS == "P")
                                                             {
-                                                                <td><i class="material-icons">check</i></td>
+                                                                <td>Contabilizado</td>
+                                                            }
+                                                            else if (iteem.ESTATUS == "C")
+                                                            {
+                                                                @*<td><i class="material-icons">close</i></td>*@
+                                                                <td>Cancelado</td>
                                                             }
                                                             else
                                                             {
-                                                                <td><i class="material-icons">close</i></td>
+                                                                <td>Pendiente</td>
                                                             }
                                                         </tr>
                                                     }
@@ -621,12 +706,56 @@
                                             </table>
                                         </div>
                                     </div>
+                                    <br />
+                                    @if (Convert.ToInt32(caso) == 3)
+                                    {
+                                        decimal? totalMon = 0;
+                                        string fechaE = "", periodoE = "";
+                                        foreach (var iteem in Model.D.DOCUMENTORECs)
+                                        {
+                                            totalMon = totalMon + iteem.MONTO_BASE;
+                                            fechaE = iteem.FECHAF.Value.ToShortDateString();
+                                            periodoE = "P" + iteem.PERIODO + "-" + iteem.EJERCICIO;
+                                        }
+                                        <div class="row">
+                                            <h5>Objetivo Q</h5>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pos</th>
+                                                        <th>Periodo</th>
+                                                        <th>Tipo</th>
+                                                        <th>Documento</th>
+                                                        <th>Fecha</th>
+                                                        <th>%</th>
+                                                        <th>Objetivo</th>
+                                                        <th>Estatus</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Q</td>
+                                                        <td>@periodoE</td>
+                                                        <td>@Model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50</td>
+                                                        <td>No generado</td>
+                                                        <td>@fechaE</td>
+                                                        <td class="porcentaje">@Model.D.OBJQ_PORC</td>
+                                                        <td class="precio">@totalMon</td>
+                                                        <td>Pendiente</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
                                 </div>
                             </div>
+                            @*</div>
+                                </div>*@
                         }
                     </div>
                 </div>
             }
+            @*///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
             <div id="supp" class="col s12">
                 @{
                     List<TAT001.Entities.DOCUMENTOA>
@@ -1942,11 +2071,11 @@
                     <div class="row" style="margin-bottom:0">
                         <h5>Workflow</h5>
                         @*
-            <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-            <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-            <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
-            <link href="~/Content/dataTable.css" rel="stylesheet" />
-            <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />*@
+                            <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+                            <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+                            <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+                            <link href="~/Content/dataTable.css" rel="stylesheet" />
+                            <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />*@
                         <table class="table highlight responsive-table" id="table">
                             <thead>
                                 <tr>
@@ -1970,18 +2099,18 @@
                             </thead>
                             <tbody>
                                 @foreach (TAT001.Entities.FLUJO f in ViewBag.workflow)
-                {
-                    <tr>
-                        <td width=""> @Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M) </td>
-                        <td width=""> @Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION) </td>
-                        <td width=""> @f.FECHAC.Value.ToShortDateString() </td>
-                        <td width=""> @f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0] </td>
-                        <td width=""> @f.FECHAM.Value.ToShortDateString() </td>
-                        <td width=""> @f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0] </td>
-                        <td width=""> @Html.DisplayFor(modelItem => f.ESTATUS) </td>
-                        <td width="30%"> @Html.DisplayFor(modelItem => f.COMENTARIO) </td>
-                    </tr>
-}
+                                {
+                                    <tr>
+                                        <td width=""> @Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M) </td>
+                                        <td width=""> @Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION) </td>
+                                        <td width=""> @f.FECHAC.Value.ToShortDateString() </td>
+                                        <td width=""> @f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0] </td>
+                                        <td width=""> @f.FECHAM.Value.ToShortDateString() </td>
+                                        <td width=""> @f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0] </td>
+                                        <td width=""> @Html.DisplayFor(modelItem => f.ESTATUS) </td>
+                                        <td width="30%"> @Html.DisplayFor(modelItem => f.COMENTARIO) </td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>

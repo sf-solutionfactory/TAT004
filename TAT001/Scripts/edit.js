@@ -8,7 +8,7 @@ var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inacti
 var proverror = "";//B20180625 MGC 2018.06.27
 
 $(document).ready(function () {
-    $.ajax({
+        $.ajax({
         url: "../Listas/TipoRecurrencia",
         type: "POST",
         async: true,
@@ -151,13 +151,6 @@ $(document).ready(function () {
         event.returnvalue = false;
         event.cancel = true;
     });
-
-
-    //$('#sendTable').click(function (e) {
-
-    //    event.returnvalue = false;
-    //    event.cancel = true;
-    //});
 
     //Evaluar la extensión y tamaño del archivo a cargar
     $('.file_soporte').change(function () {
@@ -1419,7 +1412,10 @@ $(document).ready(function () {
 
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
-
+    //LEJ 03.08.2018-----------------------------------------------
+    $("#bmonto_apoyo").val(parseFloat($("#bmonto_apoyo").val()).toFixed(2) + "%");
+    cambiaLigada(document.getElementById("chk_ligada"));
+    //LEJ 03.08.2018-----------------------------------------------
     //B20180625 MGC 2018.06.26 Verificar si hay algún borrador mostrar la sección de facturas
     var check = $("#check_facturas").val();
     if (!isRelacionada() && !isReversa()) {
@@ -1795,7 +1791,7 @@ function guardarBorrador(asyncv) {
         url: 'Borrador',
         dataType: "json",
         data: form.serialize() + "&notas_soporte = " + notas_soporte + "&unafact = " + unafact + "&select_neg = " + select_neg + "&select_dis = " + select_dis +
-        "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
+            "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
         //data: {
         //    object: form.serialize(), "notas_soporte": notas_soporte, "unafact": unafact, "select_neg": select_neg, "select_dis": select_dis,
         //    "select_negi": select_negi, "select_disi": select_disi, "bmonto_apoyo": bmonto_apoyo, "monedadis": monedadis},
@@ -2199,10 +2195,15 @@ function copiarTableVista(update, borr, ne) { //Add MGC B20180705 2018.07.05 Cam
 }
 
 function copiarTableVistaSop() {
-
+    var _xdec = $("#dec").val();
+    var _xm = $("#miles").val();
     var lengthT = $("table#table_soph tbody tr").length;
 
     if (lengthT > 0) {
+        if (lengthT > 1) {
+            //Para decir que es multiple
+            $('#check_factura').prop('checked', true);
+        }
         //Obtener los valores de la tabla para agregarlos a la tabla de la vista en información
         //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
         $('#check_factura').trigger('change');
@@ -2256,27 +2257,22 @@ function copiarTableVistaSop() {
             var des = $(this).find("td:eq(11)").text();
             var bill_doc = $(this).find("td:eq(12)").text();
             //var belnr = $(this).find("td.BELNR").text();
-            var imp_fact = $(this).find("td:eq(13)").text();
+            var imp_fact = $(this).find("td:eq(4)").text();//lej 03.08.2018
+            if (_xdec == '.') {
+                var ifc = parseFloat(imp_fact).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                imp_fact = "$" + ifc;
+            } else if (_xdec == ',') {
+                var ifc = parseFloat(imp_fact).toFixed(2);
+                ifc = ifc.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                imp_fact = "$" + ifc;
+            }
+            var desc = $(this).find("td:eq(13)").text();//lej 03.08.2018
             var belnr = $(this).find("td:eq(14)").text();
-            //LEJ 25.07.18---------------------T
+            //LEJ 03.08.18---------------------T
             ////var proverror = "";//B20180625 MGC 2018.06.27
 
             if ($("#check_factura").is(':checked')) {
-
-                factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
-                ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
-                prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
-                control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
-                autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion + "\">";
-                vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0] + "\">";
-                facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak + "\">";
-                ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok + "\">";
-                pay = "<input class=\"PAYER input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + pay + "\">";//LEJ 25-07-2018
-                des = "<input class=\"DESCRIPCION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + des + "\">";//LEJ 25-07-2018
-                bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
-                imp_fact = "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + imp_fact + "\">"//LEJ 25-07-2018
-                belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
-
+                //LEJ 03.08.2018
             } else {
 
                 //B20180625 MGC 2018.06.27
@@ -2821,7 +2817,7 @@ $('body').on('focusout', '.input_sop_f', function () {
 $('body').on('focusout', '#bmonto_apoyo', function () {
     var val = $(this).val();
     updateTableValIndex(9, val);
-    var val = $(this).val(toShowPorc(val));//RSG 09.07.208
+    $(this).val(toShowPorc(val));//RSG 09.07.2018 lej 03.08.2018
 });
 
 //$('body').on('focusout', '#monto_dis', function () {
@@ -2975,6 +2971,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         //Estimado apoyo
         var col13 = "";
         if (_decimales === '.') {
+            var _xxxxx = tr.find("td:eq(" + (13 + index) + ") input").val();
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
         } else if (_decimales === ',') {
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
@@ -3793,9 +3790,17 @@ function loadExcelSop(file) {
             if (data !== null || data !== "") {
 
                 $.each(data, function (i, dataj) {
+                    //lej 03.08.2018
+                    var _decimales = $("#dec").val();
+                    var _imp_fac = parseFloat(dataj.IMPORTE_FACT).toFixed(2);
+                    if (_decimales == '.') {
+                        _imp_fac = _imp_fac.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    } if (_decimales == ',') {
 
-                    //var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
-                    //var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
+                        _imp_fac = _imp_fac.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    }
+                    _imp_fac = "$" + _imp_fac;
+                    //lej 03.08.2018
                     var addedRow = table.row.add([
                         dataj.POS,
                         dataj.FACTURA,
@@ -3813,7 +3818,7 @@ function loadExcelSop(file) {
                         dataj.PAYER,
                         dataj.DESCRIPCION,
                         dataj.BILL_DOC,
-                        dataj.IMPORTE_FACT,
+                        _imp_fac,//lej 03.08.2018
                         ""//dataj.BELNR
                         //jemo 10-17-2018 fin
                     ]).draw(false).node();
@@ -3953,43 +3958,38 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
             belnr
         ]).draw(false).node(); //B20180625 MGC 2018.06.27
     }
+    //LEJ 03.08.18--i
     else if (_x == "") {
         t.row.add([
             pos, //POS
-            //fac,
-            "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURA" + "\" name=\"\" value=\"" + fac.trim() + "\">",
+            fac,
+            // "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURA" + "\" name=\"\" value=\"" + fac.trim() + "\">",
             fecha,
-            // prov,
-            "<input class=\"PROVEEDOR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PROVEEDOR" + "\" name=\"\" value=\"" + prov.trim() + "\">",
-            // provt,
-            "<input class=\"input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + provt.trim() + "\">",
-            //control,
-            "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "CONTROL" + "\" name=\"\" value=\"" + control.trim() + "\">",
-            // aut,
-            "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "AUTORIZACION" + "\" name=\"\" value=\"" + aut.trim() + "\">",
+            prov,
+            //"<input class=\"PROVEEDOR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PROVEEDOR" + "\" name=\"\" value=\"" + prov.trim() + "\">",
+            provt,
+            //"<input class=\"input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + provt.trim() + "\">",
+            control,
+            //"<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "CONTROL" + "\" name=\"\" value=\"" + control.trim() + "\">",
+            aut,
+            //"<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "AUTORIZACION" + "\" name=\"\" value=\"" + aut.trim() + "\">",
             ven,
-            //fack,
-            "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURAK" + "\" name=\"" + "FACTURAK" + "\" value=\"" + fack.trim() + "\">",
-            // eje,
-            "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "EJERCICIOK" + "\" name=\"" + "EJERCICIOK" + "\" value=\"" + eje.trim() + "\">",
-            //pay,
-            "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PAYER" + "\" name=\"\" value=\"" + pay.trim() + "\">",
-            //des,
-            "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "DESCRIPCION" + "\" name=\"\" value=\"" + des.trim() + "\">",
-            // bill,
-            "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BILL_DOC" + "\" name=\"\" value=\"" + bill.trim() + "\">",
-            //impf,
-            "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "IMPORTE_FAC" + "\" name=\"\" value=\"" + impf.trim() + "\">",
-            // belnr
-            "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BELNR" + "\" name=\"\" value=\"" + belnr.trim() + "\">"
+            fack,
+            //"<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURAK" + "\" name=\"" + "FACTURAK" + "\" value=\"" + fack.trim() + "\">",
+            eje,
+            //"<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "EJERCICIOK" + "\" name=\"" + "EJERCICIOK" + "\" value=\"" + eje.trim() + "\">",
+            pay,
+            //"<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PAYER" + "\" name=\"\" value=\"" + pay.trim() + "\">",
+            des,
+            //"<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "DESCRIPCION" + "\" name=\"\" value=\"" + des.trim() + "\">",
+            bill,
+            //"<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BILL_DOC" + "\" name=\"\" value=\"" + bill.trim() + "\">",
+            impf,
+            //"<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "IMPORTE_FAC" + "\" name=\"\" value=\"" + impf.trim() + "\">",
+            belnr
+            // "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BELNR" + "\" name=\"\" value=\"" + belnr.trim() + "\">"
         ]).draw(false).node(); //LEJ 2018.07.26
-    }
-    //B20180625 MGC 2018.06.27
-    /* if (proverror != "") {
-         $(r).find('td.PROVEEDOR').addClass(proverror);
-         $(r).find("td.PROVEEDOR_TXT").text("");
-     }*/
-
+    }  //LEJ 03.08.18--t
 }
 
 function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa, porcentaje, porcentaje_cat) {
@@ -5263,8 +5263,8 @@ function selectMonto(val, message) {
     ta.clear().draw();
 
     //Reset los valores
-    $('#monto_dis').val("");
-    $('#bmonto_apoyo').val("");
+    //$('#monto_dis').val(""); //lej 03.08.2018
+    // $('#bmonto_apoyo').val(""); //lej 03.08.2018
 
     //Obtener la negociación
     var select_neg = $('#select_neg').val();

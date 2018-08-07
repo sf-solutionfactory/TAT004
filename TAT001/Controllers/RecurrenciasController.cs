@@ -1817,12 +1817,12 @@ namespace TAT001.Controllers
             }
         }
 
-        public ActionResult Cancelar()
-        {
-            Session["sol_tipo"] = null;
+        //public ActionResult Cancelar()
+        //{
+        //    Session["sol_tipo"] = null;
 
-            return RedirectToAction("Index", "Solicitudes");
-        }
+        //    return RedirectToAction("Index", "Solicitudes");
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -3404,5 +3404,121 @@ namespace TAT001.Controllers
         {
             return RedirectToAction("Backorder", new { id_d = D.NUM_DOC});
         }
+
+
+        //GET
+        ///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////
+        public ActionResult Cancelar(decimal id)
+        {
+            //ViewBag.TitlePag = id;
+            int pagina = 203; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title += " ";
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".png";
+                }
+                catch
+                {
+                    //if (pais != "")
+                    //{
+                    //    ViewBag.pais = pais + ".png";
+                    //    Session["pais"] = pais;
+                    //}
+                    //else
+                    //{
+                    //    //ViewBag.pais = "mx.png";
+                    //    ////return RedirectToAction("Pais", "Home");
+                    //}
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            DOCUMENTOR d = new DOCUMENTOR();
+            d.NUM_DOC = id;
+
+            return View(d);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cancelar(int id, HttpPostedFileBase file, [Bind(Include = "COMENTARIO")] DOCUMENTOR miDocR)
+        {
+            if (file != null & miDocR != null)
+            {
+                List<string> li = new List<string>();
+                SolicitudesController3 sc = new SolicitudesController3();
+                Reversa rv = new Reversa();
+                DOCUMENTOREC docRe = new DOCUMENTOREC();
+                docRe = db.DOCUMENTORECs.Where(x => x.DOC_REF == id).FirstOrDefault();
+                docRe.ESTATUS = "C";
+                db.Entry(docRe).State = EntityState.Modified;
+                List<DOCUMENTOREC> docRes = db.DOCUMENTORECs.Where(x=>x.NUM_DOC.Equals(docRe.NUM_DOC) & x.POS > docRe.POS).ToList();
+                foreach(DOCUMENTOREC dR in docRes)
+                {
+                    dR.ESTATUS = "C";
+                    db.Entry(dR).State = EntityState.Modified;
+                }
+                db.SaveChanges();
+
+                string tsolR = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault().TSOL.TSOLR;
+                decimal numR = rv.creaReversa(id.ToString(), tsolR);
+
+                DOCUMENTOR docR = new DOCUMENTOR();
+                docR.NUM_DOC = numR;
+                docR.TREVERSA_ID = 1;
+                docR.USUARIOC_ID = User.Identity.Name;
+                docR.FECHAC = DateTime.Now;
+                docR.COMENTARIO = miDocR.COMENTARIO;
+                db.DOCUMENTORs.Add(docR);
+
+                string fileExt = System.IO.Path.GetExtension(file.FileName);
+                string nombreV = file.FileName;
+                string url = ConfigurationManager.AppSettings["URL_SAVE"];
+                string nomNum = numR.ToString();
+                var dir = sc.createDir(url, nomNum);
+                if (dir.Equals(""))
+                {
+                    string errorfiles = "";
+                    string path = "";
+                    var res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
+                }
+                url = url + nomNum + @"\" + nombreV;
+
+                DOCUMENTOA docA = new DOCUMENTOA();
+                docA.NUM_DOC = numR;
+                docA.POS = 1;
+                docA.TIPO = fileExt.Replace(".", "");
+                docA.CLASE = "OTR";
+                docA.STEP_WF = 1;
+                docA.USUARIO_ID = User.Identity.Name;
+                docA.PATH = url;
+                docA.ACTIVO = true;
+                db.DOCUMENTOAs.Add(docA);
+
+                db.SaveChanges();
+                li.Add(numR.ToString());
+                TempData["docs_masiva"] = li;
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Cancelar", "Recurrencias", new { id = id });
+            }
+        }
+        ///////////////////////////////CAMBIOS LGPP FIN//////////////////////////
     }
 }

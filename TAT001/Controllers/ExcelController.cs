@@ -77,36 +77,6 @@ namespace TAT001.Controllers
             }
         }
 
-        //jemo inicio
-        public FileResult Index3()
-        {
-            int pagina = 221; //ID EN BASE DE DATOS
-            string u = User.Identity.Name;
-            var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-            ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-            ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-            ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
-            ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-            ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-            ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-            ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
-            try
-            {
-                string p = Session["pais"].ToString();
-                ViewBag.pais = p + ".svg";
-            }
-            catch
-            {
-                //return RedirectToAction("Pais", "Home");
-            }
-            Session["spras"] = user.SPRAS_ID;
-            Models.CargaMasivaModels carga = new Models.CargaMasivaModels();
-            carga.GenerarListaCliPro(Server.MapPath("~/pdfTemp/"));
-            return File(Server.MapPath("~/pdfTemp/ListaClienteProveedores.xlsx"), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ListaClienteProveedores.xlsx");
-        }
-        //jemo fin 4/07/2018
-
         public ActionResult Index2(string hola)
         {
             int pagina = 221; //ID EN BASE DE DATOS
@@ -129,6 +99,7 @@ namespace TAT001.Controllers
 
             Session["spras"] = user.SPRAS_ID;
 
+            List<string> li = new List<string>();
             HttpPostedFileBase file;
             if (hola != null)
             {
@@ -212,10 +183,10 @@ namespace TAT001.Controllers
             Session["spras"] = user.SPRAS_ID;
 
             ViewBag.data1 = Session["ds1"];
-            //ViewBag.data2 = Session["ds2"];
-            //ViewBag.data3 = Session["ds3"];
-            //ViewBag.data4 = Session["ds4"];
-            //ViewBag.data5 = Session["ds5"];
+            ViewBag.data2 = Session["ds2"];
+            ViewBag.data3 = Session["ds3"];
+            ViewBag.data4 = Session["ds4"];
+            ViewBag.data5 = Session["ds5"];
             //DataSet hoja1 = (DataSet)(Session["ds1"]);
             //DataSet hoja2 = (DataSet)(Session["ds2"]);
             //DataSet hoja3 = (DataSet)(Session["ds3"]);
@@ -242,6 +213,11 @@ namespace TAT001.Controllers
             //List<string> li = new List<string>();
 
             //LECTURA DEL CONENIDO DEL EXCEL PARA LA CARGA MASIVA
+            int colHoja1 = dsHoja1.Tables[0].Columns.Count;
+            int colHoja2 = dsHoja2.Tables[0].Columns.Count;
+            int colHoja3 = dsHoja3.Tables[0].Columns.Count;
+            int colHoja4 = dsHoja4.Tables[0].Columns.Count;
+            int colHoja5 = dsHoja5.Tables[0].Columns.Count;
 
             //SECCION 1.- LOGICA PARA LA INSERCION DE LA PRIMER HOJA (Las hojas posteriores dependen de la validacion de est)
             for (int i = 1; i < dsHoja1.Tables[0].Rows.Count; i++)
@@ -1362,122 +1338,129 @@ namespace TAT001.Controllers
             DataSet tab = (DataSet)(Session["ds2"]);
             int ind1 = 0;
 
-            for (var i = 1; i < tab.Tables[0].Rows.Count; i++)
+            if (tab.Tables[0].Columns.Count == 10)
             {
-                if (tab.Tables[0].Rows[i][0].ToString() == NUM_DOC)
+                for (var i = 1; i < tab.Tables[0].Rows.Count; i++)
                 {
-                    DOCUMENTOP docup = new DOCUMENTOP();
-                    int j = i;
-                    docup.NUM_DOC = Convert.ToInt32(tab.Tables[0].Rows[i][0].ToString().Trim());
-                    docup.POS = 0;
-                    string mat = tab.Tables[0].Rows[i][3].ToString().Trim();
-                    string mat2 = tab.Tables[0].Rows[i][4].ToString().Trim();
+                    if (tab.Tables[0].Rows[i][0].ToString() == NUM_DOC)
+                    {
+                        DOCUMENTOP docup = new DOCUMENTOP();
+                        int j = i;
+                        docup.NUM_DOC = Convert.ToInt32(tab.Tables[0].Rows[i][0].ToString().Trim());
+                        docup.POS = 0;
+                        string mat = tab.Tables[0].Rows[i][3].ToString().Trim();
+                        string mat2 = tab.Tables[0].Rows[i][4].ToString().Trim();
 
-                    if ((mat != null | mat != "") & (mat2 != null | mat2 != ""))
-                    {
-                        ind1 = 1;
-                    }
-                    else if ((mat != null | mat != "") & (mat2 == null | mat2 == ""))
-                    {
-                        ind1 = 1;
-                    }
-                    else if ((mat == null | mat == "") & (mat2 != null | mat2 != ""))
-                    {
-                        ind1 = 0;
-                    }
-
-                    if (ind1 == 1)
-                    {
-                        //mat = mat.TrimStart('0').Trim();
-                        if (IsNumeric(mat))
+                        if ((mat != null | mat != "") & (mat2 != null | mat2 != ""))
                         {
-                            var e = db.MATERIALs.Where(x => x.ID == mat).Select(x => x.ID);
-                            if (e.Count() > 0)
-                            {
-                                docup.MATNR = "<td>" + mat + "</td>";
-                                docup.MATKL = "<td></td>";
-                            }
-                            else
-                            {
-                                docup.MATNR = "<td class='red white-text'>" + mat + "</td>";
-                                docup.MATKL = "<td></td>";
-                            }
+                            ind1 = 1;
                         }
-                    }
-                    else
-                    {
-                        var a = db.MATERIALs.Where(x => x.MATKL_ID == mat2).Select(x => x.MATKL_ID);
-                        if (a.Count() > 0)
+                        else if ((mat != null | mat != "") & (mat2 == null | mat2 == ""))
                         {
-                            docup.MATNR = "<td></td>";
-                            docup.MATKL = "<td>" + mat2 + "</td>";
+                            ind1 = 1;
+                        }
+                        else if ((mat == null | mat == "") & (mat2 != null | mat2 != ""))
+                        {
+                            ind1 = 0;
+                        }
+
+                        if (ind1 == 1)
+                        {
+                            //mat = mat.TrimStart('0').Trim();
+                            if (IsNumeric(mat))
+                            {
+                                var e = db.MATERIALs.Where(x => x.ID == mat).Select(x => x.ID);
+                                if (e.Count() > 0)
+                                {
+                                    docup.MATNR = "<td>" + mat + "</td>";
+                                    docup.MATKL = "<td></td>";
+                                }
+                                else
+                                {
+                                    docup.MATNR = "<td class='red white-text'>" + mat + "</td>";
+                                    docup.MATKL = "<td></td>";
+                                }
+                            }
                         }
                         else
                         {
-                            docup.MATNR = "<td></td>";
-                            docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>";
+                            var a = db.MATERIALs.Where(x => x.MATKL_ID == mat2).Select(x => x.MATKL_ID);
+                            if (a.Count() > 0)
+                            {
+                                docup.MATNR = "<td></td>";
+                                docup.MATKL = "<td>" + mat2 + "</td>";
+                            }
+                            else
+                            {
+                                docup.MATNR = "<td></td>";
+                                docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>";
+                            }
                         }
+
+                        //if (mat == "")
+                        //{ docup.MATNR = "<td class='red white-text'>" + mat + "</td>"; }
+                        //else
+                        //{
+                        //    if (IsNumeric(mat))
+                        //    {
+                        //        var e = db.MATERIALs.Where(x => x.ID == mat).Select(x => x.ID);
+                        //        if (e.Count() > 0)
+                        //        {
+                        //            docup.MATNR = "<td>" + mat + "</td>";
+                        //        }
+                        //        else
+                        //        {
+                        //            docup.MATNR = "<td class='red white-text'>" + mat + "</td>";
+                        //            ldp2.Add(i);
+                        //        }
+                        //    }
+                        //}
+
+
+                        //if (mat2 == "")
+                        //{ docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>"; }
+                        //else
+                        //{
+                        //    var a = db.MATERIALs.Where(x => x.MATKL_ID == mat2).Select(x => x.MATKL_ID);
+                        //    if (a.Count() > 0)
+                        //    {
+                        //        docup.MATKL = "<td>" + mat2 + "</td>";
+                        //    }
+                        //    else
+                        //    {
+                        //        docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>";
+                        //    }
+                        //}
+
+                        string mon = tab.Tables[0].Rows[i][5].ToString().Trim();
+                        if (mon == "") { docup.MONTO = 0.00M; }
+                        else { docup.MONTO = Convert.ToDecimal(mon); }
+
+                        string por = tab.Tables[0].Rows[i][6].ToString().Trim();
+                        if (por == "") { docup.PORC_APOYO = 0.00M; }
+                        else { docup.PORC_APOYO = Convert.ToDecimal(por); }
+
+                        string apo = tab.Tables[0].Rows[i][9].ToString().Trim();
+                        if (apo == "") { docup.APOYO_EST = 0.00M; }
+                        else { docup.APOYO_EST = Convert.ToDecimal(apo); }
+
+                        string pre = tab.Tables[0].Rows[i][7].ToString().Trim();
+                        if (pre == "") { docup.PRECIO_SUG = 0.00M; }
+                        else { docup.PRECIO_SUG = Convert.ToDecimal(pre); }
+
+                        string vol = tab.Tables[0].Rows[i][8].ToString().Trim();
+                        if (vol == "") { docup.VOLUMEN_EST = 0.00M; }
+                        else { docup.VOLUMEN_EST = Convert.ToDecimal(vol); }
+
+                        docup.VIGENCIA_DE = Convert.ToDateTime(tab.Tables[0].Rows[i][1].ToString().Trim());
+                        docup.VIGENCIA_AL = Convert.ToDateTime(tab.Tables[0].Rows[i][2].ToString().Trim());
+                        ldp.Add(docup);
                     }
-
-                    //if (mat == "")
-                    //{ docup.MATNR = "<td class='red white-text'>" + mat + "</td>"; }
-                    //else
-                    //{
-                    //    if (IsNumeric(mat))
-                    //    {
-                    //        var e = db.MATERIALs.Where(x => x.ID == mat).Select(x => x.ID);
-                    //        if (e.Count() > 0)
-                    //        {
-                    //            docup.MATNR = "<td>" + mat + "</td>";
-                    //        }
-                    //        else
-                    //        {
-                    //            docup.MATNR = "<td class='red white-text'>" + mat + "</td>";
-                    //            ldp2.Add(i);
-                    //        }
-                    //    }
-                    //}
-
-
-                    //if (mat2 == "")
-                    //{ docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>"; }
-                    //else
-                    //{
-                    //    var a = db.MATERIALs.Where(x => x.MATKL_ID == mat2).Select(x => x.MATKL_ID);
-                    //    if (a.Count() > 0)
-                    //    {
-                    //        docup.MATKL = "<td>" + mat2 + "</td>";
-                    //    }
-                    //    else
-                    //    {
-                    //        docup.MATKL = "<td class='red white-text'>" + mat2 + "</td>";
-                    //    }
-                    //}
-
-                    string mon = tab.Tables[0].Rows[i][5].ToString().Trim();
-                    if (mon == "") { docup.MONTO = 0.00M; }
-                    else { docup.MONTO = Convert.ToDecimal(mon); }
-
-                    string por = tab.Tables[0].Rows[i][6].ToString().Trim();
-                    if (por == "") { docup.PORC_APOYO = 0.00M; }
-                    else { docup.PORC_APOYO = Convert.ToDecimal(por); }
-
-                    string apo = tab.Tables[0].Rows[i][9].ToString().Trim();
-                    if (apo == "") { docup.APOYO_EST = 0.00M; }
-                    else { docup.APOYO_EST = Convert.ToDecimal(apo); }
-
-                    string pre = tab.Tables[0].Rows[i][7].ToString().Trim();
-                    if (pre == "") { docup.PRECIO_SUG = 0.00M; }
-                    else { docup.PRECIO_SUG = Convert.ToDecimal(pre); }
-
-                    string vol = tab.Tables[0].Rows[i][8].ToString().Trim();
-                    if (vol == "") { docup.VOLUMEN_EST = 0.00M; }
-                    else { docup.VOLUMEN_EST = Convert.ToDecimal(vol); }
-
-                    docup.VIGENCIA_DE = Convert.ToDateTime(tab.Tables[0].Rows[i][1].ToString().Trim());
-                    docup.VIGENCIA_AL = Convert.ToDateTime(tab.Tables[0].Rows[i][2].ToString().Trim());
-                    ldp.Add(docup);
                 }
+            }
+            else
+            {
+                ldp = null;
             }
 
             JsonResult jr = Json(ldp, JsonRequestBehavior.AllowGet);
@@ -1496,177 +1479,184 @@ namespace TAT001.Controllers
             d = db.PAIS.Where(x => x.LANDX == d).Select(x => x.LAND).FirstOrDefault();
             string cabeza = "";
 
-            for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
+            if (tab.Tables[0].Columns.Count == 11)
             {
-                string ind = "";
-                string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
-                if (numDo == NUM_DOC)
+                for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
                 {
-                    DOCUMENTOF docupF = new DOCUMENTOF();
-
-                    var exist = db.FACTURASCONFs.Where(x => x.SOCIEDAD_ID == c & x.PAIS_ID == d & x.TSOL == a).FirstOrDefault();
-                    if (exist != null)
+                    string ind = "";
+                    string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
+                    if (numDo == NUM_DOC)
                     {
-                        docupF.NUM_DOC = Convert.ToInt32(tab.Tables[0].Rows[m][0].ToString().Trim());
-                        docupF.POS = 0;
+                        DOCUMENTOF docupF = new DOCUMENTOF();
 
-                        if (exist.FACTURA == true)
+                        var exist = db.FACTURASCONFs.Where(x => x.SOCIEDAD_ID == c & x.PAIS_ID == d & x.TSOL == a).FirstOrDefault();
+                        if (exist != null)
                         {
-                            if (tab.Tables[0].Rows[m][1].ToString() == null | tab.Tables[0].Rows[m][1].ToString() == "")
+                            docupF.NUM_DOC = Convert.ToInt32(tab.Tables[0].Rows[m][0].ToString().Trim());
+                            docupF.POS = 0;
+
+                            if (exist.FACTURA == true)
                             {
-                                ind = "no";
-                                ldf3.Add("1");
+                                if (tab.Tables[0].Rows[m][1].ToString() == null | tab.Tables[0].Rows[m][1].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("1");
+                                }
+                                else
+                                {
+                                    docupF.FACTURA = tab.Tables[0].Rows[m][1].ToString().Trim();
+                                }
+                            }
+                            else { docupF.FACTURA = "0"; }
+
+                            if (exist.FECHA == true)
+                            {
+                                if (tab.Tables[0].Rows[m][2].ToString() == null | tab.Tables[0].Rows[m][2].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("2");
+                                }
+                                else
+                                {
+                                    docupF.FECHA = Convert.ToDateTime(tab.Tables[0].Rows[m][2].ToString().Trim());
+                                }
+                            }
+                            else { docupF.FECHA = null; }
+
+                            if (exist.PROVEEDOR == true)
+                            {
+                                if (tab.Tables[0].Rows[m][3].ToString() == null | tab.Tables[0].Rows[m][3].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("3");
+                                }
+                                else
+                                {
+                                    docupF.PROVEEDOR = tab.Tables[0].Rows[m][3].ToString().Trim();
+                                }
+                            }
+                            else { docupF.PROVEEDOR = "0"; }
+
+                            if (exist.CONTROL == true)
+                            {
+                                if (tab.Tables[0].Rows[m][4].ToString() == null | tab.Tables[0].Rows[m][4].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("4");
+                                }
+                                else
+                                {
+                                    docupF.CONTROL = tab.Tables[0].Rows[m][4].ToString().Trim();
+                                }
+                            }
+                            else { docupF.CONTROL = "0"; }
+
+                            if (exist.AUTORIZACION == true)
+                            {
+                                if (tab.Tables[0].Rows[m][5].ToString() == null | tab.Tables[0].Rows[m][5].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("5");
+                                }
+                                else
+                                {
+                                    docupF.AUTORIZACION = tab.Tables[0].Rows[m][5].ToString().Trim();
+                                }
+                            }
+                            else { docupF.AUTORIZACION = "0"; }
+
+                            if (exist.VENCIMIENTO == true)
+                            {
+                                if (tab.Tables[0].Rows[m][6].ToString() == null | tab.Tables[0].Rows[m][6].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("6");
+                                }
+                                else
+                                {
+                                    docupF.VENCIMIENTO = Convert.ToDateTime(tab.Tables[0].Rows[m][6].ToString().Trim());
+                                }
+                            }
+                            else { docupF.VENCIMIENTO = null; }
+
+                            if (exist.FACTURAK == true)
+                            {
+                                if (tab.Tables[0].Rows[m][7].ToString() == null | tab.Tables[0].Rows[m][7].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("7");
+                                }
+                                else
+                                {
+                                    docupF.FACTURAK = tab.Tables[0].Rows[m][7].ToString().Trim();
+                                }
+                            }
+                            else { docupF.FACTURAK = "0"; }
+
+                            if (exist.EJERCICIOK == true)
+                            {
+                                if (tab.Tables[0].Rows[m][8].ToString() == null | tab.Tables[0].Rows[m][8].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("8");
+                                }
+                                else
+                                {
+                                    docupF.EJERCICIOK = tab.Tables[0].Rows[m][8].ToString().Trim();
+                                }
+                            }
+                            else { docupF.EJERCICIOK = "0"; }
+
+                            if (exist.BILL_DOC == true)
+                            {
+                                if (tab.Tables[0].Rows[m][9].ToString() == null | tab.Tables[0].Rows[m][9].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("9");
+                                }
+                                else
+                                {
+                                    docupF.BILL_DOC = tab.Tables[0].Rows[m][9].ToString().Trim();
+                                }
+                            }
+                            else { docupF.BILL_DOC = "0"; }
+
+                            if (exist.BELNR == true)
+                            {
+                                if (tab.Tables[0].Rows[m][10].ToString() == null | tab.Tables[0].Rows[m][10].ToString() == "")
+                                {
+                                    ind = "no";
+                                    ldf3.Add("10");
+                                }
+                                else
+                                {
+                                    docupF.BELNR = tab.Tables[0].Rows[m][10].ToString().Trim();
+                                }
+                            }
+                            else { docupF.BELNR = "0"; }
+
+                            if (ind != "no")
+                            {
+                                cabeza = "<tr class='green white-text'>";
                             }
                             else
                             {
-                                docupF.FACTURA = tab.Tables[0].Rows[m][1].ToString().Trim();
+                                cabeza = "<tr class='red white-text'>";
                             }
-                        }
-                        else { docupF.FACTURA = "0"; }
-
-                        if (exist.FECHA == true)
-                        {
-                            if (tab.Tables[0].Rows[m][2].ToString() == null | tab.Tables[0].Rows[m][2].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("2");
-                            }
-                            else
-                            {
-                                docupF.FECHA = Convert.ToDateTime(tab.Tables[0].Rows[m][2].ToString().Trim());
-                            }
-                        }
-                        else { docupF.FECHA = null; }
-
-                        if (exist.PROVEEDOR == true)
-                        {
-                            if (tab.Tables[0].Rows[m][3].ToString() == null | tab.Tables[0].Rows[m][3].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("3");
-                            }
-                            else
-                            {
-                                docupF.PROVEEDOR = tab.Tables[0].Rows[m][3].ToString().Trim();
-                            }
-                        }
-                        else { docupF.PROVEEDOR = "0"; }
-
-                        if (exist.CONTROL == true)
-                        {
-                            if (tab.Tables[0].Rows[m][4].ToString() == null | tab.Tables[0].Rows[m][4].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("4");
-                            }
-                            else
-                            {
-                                docupF.CONTROL = tab.Tables[0].Rows[m][4].ToString().Trim();
-                            }
-                        }
-                        else { docupF.CONTROL = "0"; }
-
-                        if (exist.AUTORIZACION == true)
-                        {
-                            if (tab.Tables[0].Rows[m][5].ToString() == null | tab.Tables[0].Rows[m][5].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("5");
-                            }
-                            else
-                            {
-                                docupF.AUTORIZACION = tab.Tables[0].Rows[m][5].ToString().Trim();
-                            }
-                        }
-                        else { docupF.AUTORIZACION = "0"; }
-
-                        if (exist.VENCIMIENTO == true)
-                        {
-                            if (tab.Tables[0].Rows[m][6].ToString() == null | tab.Tables[0].Rows[m][6].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("6");
-                            }
-                            else
-                            {
-                                docupF.VENCIMIENTO = Convert.ToDateTime(tab.Tables[0].Rows[m][6].ToString().Trim());
-                            }
-                        }
-                        else { docupF.VENCIMIENTO = null; }
-
-                        if (exist.FACTURAK == true)
-                        {
-                            if (tab.Tables[0].Rows[m][7].ToString() == null | tab.Tables[0].Rows[m][7].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("7");
-                            }
-                            else
-                            {
-                                docupF.FACTURAK = tab.Tables[0].Rows[m][7].ToString().Trim();
-                            }
-                        }
-                        else { docupF.FACTURAK = "0"; }
-
-                        if (exist.EJERCICIOK == true)
-                        {
-                            if (tab.Tables[0].Rows[m][8].ToString() == null | tab.Tables[0].Rows[m][8].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("8");
-                            }
-                            else
-                            {
-                                docupF.EJERCICIOK = tab.Tables[0].Rows[m][8].ToString().Trim();
-                            }
-                        }
-                        else { docupF.EJERCICIOK = "0"; }
-
-                        if (exist.BILL_DOC == true)
-                        {
-                            if (tab.Tables[0].Rows[m][9].ToString() == null | tab.Tables[0].Rows[m][9].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("9");
-                            }
-                            else
-                            {
-                                docupF.BILL_DOC = tab.Tables[0].Rows[m][9].ToString().Trim();
-                            }
-                        }
-                        else { docupF.BILL_DOC = "0"; }
-
-                        if (exist.BELNR == true)
-                        {
-                            if (tab.Tables[0].Rows[m][10].ToString() == null | tab.Tables[0].Rows[m][10].ToString() == "")
-                            {
-                                ind = "no";
-                                ldf3.Add("10");
-                            }
-                            else
-                            {
-                                docupF.BELNR = tab.Tables[0].Rows[m][10].ToString().Trim();
-                            }
-                        }
-                        else { docupF.BELNR = "0"; }
-
-                        if (ind != "no")
-                        {
-                            cabeza = "<tr class='green white-text'>";
-                        }
-                        else
-                        {
-                            cabeza = "<tr class='red white-text'>";
-                        }
 
 
-                        ldf.Add(docupF);
-                        ldf2.Add(cabeza);
-                        //ldf.Add(docupF);
+                            ldf.Add(docupF);
+                            ldf2.Add(cabeza);
+                            //ldf.Add(docupF);
+                        }
                     }
                 }
+                ldf.Add(ldf2);
             }
-            ldf.Add(ldf2);
+            else
+            {
+                ldf = null;
+            }
 
             JsonResult jr = Json(ldf, JsonRequestBehavior.AllowGet);
             return jr;
@@ -1681,65 +1671,72 @@ namespace TAT001.Controllers
             IEnumerable<HttpPostedFileBase> archivos = (IEnumerable<HttpPostedFileBase>)(Session["archivosSop"]);
             string ind1 = "", ind2 = "";
 
-            for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
+            if (tab.Tables[0].Columns.Count == 3)
             {
-                DOCUMENTOA docupA = new DOCUMENTOA();
-                List<object> lda2 = new List<object>();
-                string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
-                string nom = tab.Tables[0].Rows[m][1].ToString().Trim();
-                string rut = tab.Tables[0].Rows[m][2].ToString().Trim();
-
-                numDo = numDo.TrimStart('0').Trim();
-                if (IsNumeric(numDo))
+                for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
                 {
-                    if (numDo == NUM_DOC)
+                    DOCUMENTOA docupA = new DOCUMENTOA();
+                    List<object> lda2 = new List<object>();
+                    string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
+                    string nom = tab.Tables[0].Rows[m][1].ToString().Trim();
+                    string rut = tab.Tables[0].Rows[m][2].ToString().Trim();
+
+                    numDo = numDo.TrimStart('0').Trim();
+                    if (IsNumeric(numDo))
                     {
-                        docupA.NUM_DOC = Convert.ToDecimal(numDo);
+                        if (numDo == NUM_DOC)
+                        {
+                            docupA.NUM_DOC = Convert.ToDecimal(numDo);
 
-                        var tsop = db.TSOPORTEs.Where(x => x.DESCRIPCION == nom & x.ACTIVO == true).FirstOrDefault();
-                        if (tsop != null)
-                        {
-                            docupA.USUARIO_ID = (nom);
-                            ind1 = "";
-                        }
-                        else
-                        {
-                            docupA.USUARIO_ID = ("<" + nom);
-                            ind1 = "r";
-                        }
-
-                        foreach (HttpPostedFileBase file in archivos)
-                        {
-                            if (file != null)
+                            var tsop = db.TSOPORTEs.Where(x => x.DESCRIPCION == nom & x.ACTIVO == true).FirstOrDefault();
+                            if (tsop != null)
                             {
-                                if (file.ContentLength > 0)
+                                docupA.USUARIO_ID = (nom);
+                                ind1 = "";
+                            }
+                            else
+                            {
+                                docupA.USUARIO_ID = ("<" + nom);
+                                ind1 = "r";
+                            }
+
+                            foreach (HttpPostedFileBase file in archivos)
+                            {
+                                if (file != null)
                                 {
-                                    string nombreV = file.FileName.ToUpper();
-                                    if (nombreV == rut.ToUpper())
+                                    if (file.ContentLength > 0)
                                     {
-                                        docupA.PATH = rut;
-                                        ind2 = "";
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        docupA.PATH = ("<" + rut);
-                                        ind2 = "r";
+                                        string nombreV = file.FileName.ToUpper();
+                                        if (nombreV == rut.ToUpper())
+                                        {
+                                            docupA.PATH = rut;
+                                            ind2 = "";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            docupA.PATH = ("<" + rut);
+                                            ind2 = "r";
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        lda.Add(docupA);
-                        lda2.Add(ind1);
-                        lda2.Add(ind2);
-                        lda3.Add(lda2);
+                            lda.Add(docupA);
+                            lda2.Add(ind1);
+                            lda2.Add(ind2);
+                            lda3.Add(lda2);
+                        }
                     }
                 }
+                //lda.Add(ind1);
+                //lda.Add(ind2);
+                lda.Add(lda3);
             }
-            //lda.Add(ind1);
-            //lda.Add(ind2);
-            lda.Add(lda3);
+            else
+            {
+                lda = null;
+            }
             JsonResult jr = Json(lda, JsonRequestBehavior.AllowGet);
             return jr;
         }
@@ -1793,71 +1790,79 @@ namespace TAT001.Controllers
                 jaja = "";
             }
 
-            for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
+            if (tab.Tables[0].Columns.Count == 7)
             {
-                DOCUMENTOF docupF = new DOCUMENTOF();
-                List<object> textoPayer = new List<object>();
-                List<object> validacionInt1 = new List<object>();
-                string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
-                string fac = tab.Tables[0].Rows[m][1].ToString().Trim();
-                string bil = tab.Tables[0].Rows[m][2].ToString().Trim();
-                string año = tab.Tables[0].Rows[m][3].ToString().Trim();
-                string pay = tab.Tables[0].Rows[m][4].ToString().Trim();
-                string imp = tab.Tables[0].Rows[m][5].ToString().Trim();
-                string fol = tab.Tables[0].Rows[m][6].ToString().Trim();
-                string ind = "";
-
-                string cus = db.CLIENTEs.Where(x => x.KUNNR == pay).Select(x => x.NAME1).FirstOrDefault();
-
-                numDo = numDo.TrimStart('0').Trim();
-                if (IsNumeric(numDo))
+                for (int m = 1; m < tab.Tables[0].Rows.Count; m++)
                 {
-                    if (numDo == NUM_DOC)
+                    DOCUMENTOF docupF = new DOCUMENTOF();
+                    List<object> textoPayer = new List<object>();
+                    List<object> validacionInt1 = new List<object>();
+                    string numDo = tab.Tables[0].Rows[m][0].ToString().Trim();
+                    string fac = tab.Tables[0].Rows[m][1].ToString().Trim();
+                    string bil = tab.Tables[0].Rows[m][2].ToString().Trim();
+                    string año = tab.Tables[0].Rows[m][3].ToString().Trim();
+                    string pay = tab.Tables[0].Rows[m][4].ToString().Trim();
+                    string imp = tab.Tables[0].Rows[m][5].ToString().Trim();
+                    string fol = tab.Tables[0].Rows[m][6].ToString().Trim();
+                    string ind = "";
+
+                    string cus = db.CLIENTEs.Where(x => x.KUNNR == pay).Select(x => x.NAME1).FirstOrDefault();
+
+                    numDo = numDo.TrimStart('0').Trim();
+                    if (IsNumeric(numDo))
                     {
-                        docupF.NUM_DOC = Convert.ToDecimal(numDo);
-                        docupF.FACTURA = fac;
-                        if (fac.Length > 50)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                        if (numDo == NUM_DOC)
+                        {
+                            docupF.NUM_DOC = Convert.ToDecimal(numDo);
+                            docupF.FACTURA = fac;
+                            if (fac.Length > 50)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        docupF.BILL_DOC = bil;
-                        if (bil.Length > 10)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                            docupF.BILL_DOC = bil;
+                            if (bil.Length > 10)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        docupF.EJERCICIOK = año;
-                        if (año.Length > 4)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                            docupF.EJERCICIOK = año;
+                            if (año.Length > 4)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        docupF.PAYER = pay;
-                        if (pay.Length > 10)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                            docupF.PAYER = pay;
+                            if (pay.Length > 10)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        textoPayer.Add(cus);
-                        docupF.IMPORTE_FAC = Convert.ToDecimal(imp);
-                        if (imp.Length > 13)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                            textoPayer.Add(cus);
+                            docupF.IMPORTE_FAC = Convert.ToDecimal(imp);
+                            if (imp.Length > 13)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        docupF.BELNR = fol;
-                        if (fol.Length > 10)
-                        { validacionInt1.Add("red"); ind = ":V"; }
-                        else { validacionInt1.Add("gre"); }
+                            docupF.BELNR = fol;
+                            if (fol.Length > 10)
+                            { validacionInt1.Add("red"); ind = ":V"; }
+                            else { validacionInt1.Add("gre"); }
 
-                        validacionInt1.Add(ind);
+                            validacionInt1.Add(ind);
 
-                        ldf.Add(docupF);
-                        listaTextosPayer.Add(textoPayer);
-                        validacionExt1.Add(validacionInt1);
+                            ldf.Add(docupF);
+                            listaTextosPayer.Add(textoPayer);
+                            validacionExt1.Add(validacionInt1);
+                        }
                     }
                 }
+                ldf.Add(listaTextosPayer);
+                ldf.Add(validacionExt1);
+                ldf.Add(jaja);
+            }
+            else
+            {
+                ldf = null;
             }
 
-            ldf.Add(listaTextosPayer);
-            ldf.Add(validacionExt1);
-            ldf.Add(jaja);
+
             JsonResult jr = Json(ldf, JsonRequestBehavior.AllowGet);
             return jr;
         }
