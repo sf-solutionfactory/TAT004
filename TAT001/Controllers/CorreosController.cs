@@ -61,6 +61,83 @@ namespace TAT001.Controllers
 
             ViewBag.kunnr = cli.KUNNR;
             ViewBag.vtweg = cli.VTWEG;
+
+            Services.FormatosC format = new FormatosC();
+
+            PRESUPUESTO_MOD presu = new PRESUPUESTO_MOD();
+            presu = getPresupuesto(dOCUMENTO.PAYER_ID);
+
+            decimal pcanal = 0;
+            try
+            {
+                pcanal = Convert.ToDecimal(presu.P_CANAL) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal pbanner = 0;
+            try
+            {
+                pbanner = Convert.ToDecimal(presu.P_BANNER) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal pcc = 0;
+            try
+            {
+                pcc = Convert.ToDecimal(presu.PC_C) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal pca = 0;
+            try
+            {
+                pca = Convert.ToDecimal(presu.PC_A) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal pcp = 0;
+            try
+            {
+                pcp = Convert.ToDecimal(presu.PC_P) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal pct = 0;
+            try
+            {
+                pct = Convert.ToDecimal(presu.PC_T) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            decimal consu = 0;
+            try
+            {
+                consu = Convert.ToDecimal(presu.CONSU) / 1;
+            }
+            catch (Exception)
+            {
+
+            }
+            ViewBag.pcan = format.toShow(pcanal,dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pban = format.toShow(pbanner, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pcc = format.toShow(pcc, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pca = format.toShow(pca, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pcp = format.toShow(pcp, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pct = format.toShow(pct, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.consu = format.toShow(consu, dOCUMENTO.PAI.DECIMAL);
+
             //B20180803 MGC Presupuesto............
 
             return View(dOCUMENTO);
@@ -246,6 +323,50 @@ namespace TAT001.Controllers
             }
 
             return id_cl;
+        }
+
+        public PRESUPUESTO_MOD getPresupuesto(string kunnr)
+        {
+            PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+            try
+            {
+                if (kunnr == null)
+                    kunnr = "";
+
+                //Obtener presupuesto
+                string mes = DateTime.Now.Month.ToString();
+                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
+                if (presupuesto != null)
+                {
+                    if (String.IsNullOrEmpty(clien))
+                    {
+                        pm.P_CANAL = presupuesto[0].VAL;
+                        pm.P_BANNER = presupuesto[1].VAL;
+                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+                        pm.PC_A = presupuesto[8].VAL;
+                        pm.PC_P = presupuesto[9].VAL;
+                        pm.PC_T = presupuesto[10].VAL;
+                        pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+                    }
+                    else
+                    {
+                        pm.P_CANAL = presupuesto[0].VAL;
+                        pm.P_BANNER = presupuesto[0].VAL;
+                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+                        pm.PC_A = presupuesto[8].VAL;
+                        pm.PC_P = presupuesto[9].VAL;
+                        pm.PC_T = presupuesto[10].VAL;
+                        pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return pm;
         }
     }
 }
