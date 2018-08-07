@@ -20,7 +20,7 @@ namespace TAT001.Controllers.Configuracion
         // GET: NOTICIAs
         public ActionResult Index()
         {
-            int pagina = 721; //ID EN BASE DE DATOS
+            int pagina = 911; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -70,7 +70,7 @@ namespace TAT001.Controllers.Configuracion
         // GET: NOTICIAs/Create
         public ActionResult Create()
         {
-            int pagina = 721; //ID EN BASE DE DATOS
+            int pagina = 912; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
@@ -127,7 +127,7 @@ namespace TAT001.Controllers.Configuracion
                 }
             }
             ViewBag.error = "Ya existe un registro con esos datos";
-            int pagina = 721; //ID EN BASE DE DATOS
+            int pagina = 912; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;

@@ -1416,7 +1416,6 @@ $(document).ready(function () {
         ////Enviar el parametro al controlador para tratarlo como borrador
         //$('#borrador_param').val("borrador");
         //$('#btn_guardar').click();
-
     });
 
 
@@ -1722,6 +1721,9 @@ function guardarBorrador(asyncv) {
         $('#MONTO_DOC_MD').val(0);
         $('#monto_doc_md').val(0);
     }
+
+    //bmonto_apoyo
+    $('#bmonto_apoyo').val(toNum($('#bmonto_apoyo').val()));//RSG 01.08.2018
 
     $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
     $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18

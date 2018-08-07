@@ -4,13 +4,12 @@
     //ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <style>
+
     #carga {
         display: none;
     }
 </style>
-
 @using (Html.BeginForm("ArchivoA", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     if (ViewBag.usuario.ID == "admin")
@@ -38,6 +37,10 @@
             <a href="@Url.Action("Archivo", "Excel")">
                 <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
             </a>
+            @*//jemo inicio 4/07/2018*@
+            <a href="@Url.Action("Index3", "Excel")">
+                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
+            </a>
         </div>
     }
     else
@@ -46,9 +49,14 @@
             <a href="@Url.Action("Archivo", "Excel")">
                 <i class='material-icons green-text'>archive</i>FORMATO ARCHIVO
             </a>
+            @*//jemo inicio 4/07/2018*@
+            <a href="@Url.Action("Index3", "Excel")">
+                <i class='material-icons green-text'>archive</i>LISTADO CLIENTE PROVEEDOR
+            </a>
+            @*//jemo fin 4/07/2018*@
         </div>
     }
-    <div class="row">
+    @*<div class="row">
         <div class="row" style="height:10px;width:100%;">
             <div class="col l7 pink darken-1" style="height:10px;padding:0;"></div>
             <div class="col l3 pink darken-4" style="height:10px;padding:0;">
@@ -58,9 +66,9 @@
             </div>
             <div class="col l2 yellow" style="height:10px;padding:0;"></div>
         </div>
-    </div>
+    </div>*@
 }
-
+<div class="card-panel">
 @using (Html.BeginForm("Masiva", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     int? contMas = ViewBag.contenidoMas;
@@ -81,7 +89,7 @@
                 </div>
             </div>
             <div class="row col s2 m2 l2">
-                <input type="submit" value="Subir layout" class="btn btn-default btn-large red white-text" />
+                <input type="submit" value="Subir layout" class="btn-small red white-text" />
             </div>
         </div>
     }
@@ -100,17 +108,17 @@
                 </div>
             </div>
             <div class="row col s2 m2 l2">
-                <input type="submit" value="Subir layout" class="btn btn-default btn-large" />
+                <input type="submit" value="Subir layout" class="btn-small" />
             </div>
         </div>
     }
 }
 @using (Html.BeginForm("Soportes", "Excel", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                int? cont = ViewBag.contenidoSop;
+{
+    int? cont = ViewBag.contenidoSop;
 
-                if (cont == 1)
-                {
+    if (cont == 1)
+    {
         <div class="row">
             <div class="row col s10 m10 l10">
                 <div class="file-field input-field">
@@ -148,6 +156,7 @@
         </div>
     }
 }
+</div>
 <script type="text/javascript">
     $(function () {
         $("#sube").on('click', function (e) {

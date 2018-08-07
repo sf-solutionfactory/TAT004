@@ -898,19 +898,88 @@
                             <p>
                                 <label>
                                     @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                    <span>Objetivo Q</span>
+                                    <input id="check_objetivoq" name="check_objetivoq" type="checkbox" onchange="objetivoQ(this.checked);" />
+                                    <span id="span_objq">Objetivo Q</span> @*B20180801 MGC Textos*@
                                 </label>
+                                <script>
+                                    function objetivoQ(ban) {
+                                        if (ban) {
+                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                            if (lengthT > 0) {
+                                                document.getElementById('table_objQ').classList.remove("hide");
+                                                var total = 0;
+                                                var porc = 0;
+                                                var fecha = "";
+                                                var tsol = "";
+                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
+                                                    fecha = ($(this).find("td.FECHA").text());
+                                                    tsol = $(this).find("td.TSOL").text();
+                                                });
+                                                document.getElementById("obqTSOL").innerText = tsol;
+                                                document.getElementById("obqFECHA").innerText = fecha;
+                                                document.getElementById("obqMONTO").innerText = toShow(total);
+                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
+                                            }
+                                        }
+                                        else {
+                                            document.getElementById('table_objQ').classList.add("hide");
+                                        }
+                                    }
+                                    function updateObjQ() {
+                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                        if (lengthT > 0) {
+                                            var total = 0;
+                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                            });
+                                            document.getElementById("obqMONTO").innerText = toShow(total);
+                                        }
+
+                                    }
+                                </script>
+                                @if (Model.OBJETIVOQ == true)
+                                {
+                                    <script>
+                                        document.getElementById("check_objetivoq").checked = true;
+                                    </script>
+                                }
                             </p>
+                            <div style="overflow:auto;">
+                                <table id="table_objQ" class="display hide" cellspacing="0" style="font-size:12px;">
+                                    <thead>
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>TSOL</th>
+                                            <th>FECHA</th>
+                                            <th>Monto</th>
+                                            <th>Porcentaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Q</td>
+                                            <td id="obqTSOL"></td>
+                                            <td id="obqFECHA"></td>
+                                            <td id="obqMONTO"></td>
+                                            @*<td><input type="text" id="objPORC" style="width:150px;font-size:12px;height:2rem;" name="objPORC" onchange="this.value = toShowPorc(this.value);" class="input_dcp"/></td>*@
+                                            <td>
+                                                @Html.EditorFor(model => model.OBJQ_PORC, new { htmlAttributes = new { @id = "objPORC", @class = "input_dcp ", @style = "width:150px;font-size:12px;height:2rem;", @onchange = "this.value = toShowPorc(this.value);" } })
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                             <p>
-                                <div class="input-field col s4">
-                                    <select id="sel_nn">
-                                        <option value="1">Mensual</option>
-                                        <option value="3">Trimestral</option>
-                                        <option value="6">Semestral</option>
-                                        <option value="12">Anual</option>
+                                <div class="input-field col l4 m4 s12">
+                                    <select id="sel_nn" name="sel_nn">
+                                        <option id="opt_mmes" value="1">Mensual</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_tmes" value="3">Trimestral</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_smes" value="6">Semestral</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_ames" value="12">Anual</option> @*B20180801 MGC Textos*@
                                     </select>
-                                    <label for="sel_nn">Frecuencia de liquidación / Orden de pago</label>
+                                    <label id="lbl_selnn" for="sel_nn">Frecuencia de liquidación / Orden de pago</label> @*B20180801 MGC Textos*@
                                 </div>
                             </p>
                         </div>
