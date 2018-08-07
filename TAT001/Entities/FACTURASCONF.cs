@@ -30,5 +30,6 @@ namespace TAT001.Entities
         public bool IMPORTE_FAC { get; set; }
         public bool PAYER { get; set; }
         public bool DESCRIPCION { get; set; }
+        public bool SOCIEDAD { get; set; }
     }
 }

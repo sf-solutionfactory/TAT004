@@ -3402,6 +3402,13 @@ namespace TAT001.Controllers
         [HttpPost]
         public ActionResult Backorder([Bind(Include ="NUM_DOC")] DOCUMENTO D, string BACKORDER)
         {
+            DOCUMENTOL dl = db.DOCUMENTOLs.Where(x => x.NUM_DOC.Equals(D.NUM_DOC)).OrderByDescending(x => x.POS).FirstOrDefault();
+            FormatosC fc = new FormatosC();
+            BACKORDER = fc.toNum(BACKORDER, dl.DOCUMENTO.PAI.MILES, dl.DOCUMENTO.PAI.DECIMAL).ToString();
+            dl.BACKORDER = decimal.Parse(BACKORDER);
+            db.Entry(dl).State = EntityState.Modified;
+            db.SaveChanges();
+
             return RedirectToAction("Backorder", new { id_d = D.NUM_DOC});
         }
 

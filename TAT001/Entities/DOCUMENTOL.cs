@@ -19,6 +19,7 @@ namespace TAT001.Entities
         public Nullable<System.DateTime> FECHAF { get; set; }
         public Nullable<decimal> MONTO_VENTA { get; set; }
         public Nullable<bool> ESTATUS { get; set; }
+        public Nullable<decimal> BACKORDER { get; set; }
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
     }

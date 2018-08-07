@@ -757,6 +757,7 @@
           <Property Name="IMPORTE_FAC" Type="decimal" Precision="13" Scale="5" />
           <Property Name="PAYER" Type="nvarchar" MaxLength="10" />
           <Property Name="NAME1" Type="nvarchar" MaxLength="50" />
+          <Property Name="SOCIEDAD" Type="nchar" MaxLength="4" />
         </EntityType>
         <EntityType Name="DOCUMENTOBORRM">
           <Key>
@@ -837,6 +838,7 @@
           <Property Name="FECHAF" Type="date" />
           <Property Name="MONTO_VENTA" Type="decimal" Precision="13" Scale="5" />
           <Property Name="ESTATUS" Type="bit" />
+          <Property Name="BACKORDER" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTOM">
           <Key>
@@ -926,6 +928,14 @@
           <Property Name="EJERCICIO" Type="int" />
           <Property Name="CUENTA_C" Type="nchar" MaxLength="10" />
           <Property Name="CUENTA_A" Type="nchar" MaxLength="10" />
+          <Property Name="REGISTRO_PR" Type="nchar" MaxLength="10" />
+          <Property Name="REGISTRO_NO" Type="nchar" MaxLength="10" />
+          <Property Name="REGISTRO_RE" Type="nchar" MaxLength="10" />
+          <Property Name="REGISTRO_AP" Type="nchar" MaxLength="10" />
+          <Property Name="BLART" Type="nchar" MaxLength="2" />
+          <Property Name="LIFNR" Type="nchar" MaxLength="10" />
+          <Property Name="KUNNR" Type="nchar" MaxLength="10" />
+          <Property Name="IMPORTE" Type="decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTOTS">
           <Key>
@@ -958,6 +968,7 @@
           <Property Name="IMPORTE_FAC" Type="bit" Nullable="false" />
           <Property Name="PAYER" Type="bit" Nullable="false" />
           <Property Name="DESCRIPCION" Type="bit" Nullable="false" />
+          <Property Name="SOCIEDAD" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="FLUJNEGO">
           <Key>
@@ -6014,6 +6025,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
+          <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="DOCUMENTOBORRM">
           <Key>
@@ -6185,6 +6197,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+          <Property Name="REGISTRO_PR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="REGISTRO_NO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="REGISTRO_RE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="REGISTRO_AP" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="BLART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="LIFNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
         </EntityType>
         <EntityType Name="DOCUMENTOT">
           <Key>
@@ -6219,6 +6239,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="IMPORTE_FAC" Type="Boolean" Nullable="false" />
           <Property Name="PAYER" Type="Boolean" Nullable="false" />
           <Property Name="DESCRIPCION" Type="Boolean" Nullable="false" />
+          <Property Name="SOCIEDAD" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="FLUJNEGO">
           <Key>
@@ -10595,6 +10616,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
           <Property Name="ESTATUS" Type="Boolean" />
           <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
+          <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
         </EntityType>
         <Association Name="FK_DOCUMENTOL_DOCUMENTO">
           <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
@@ -11320,6 +11342,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOBORRFs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRF">
               <MappingFragment StoreEntitySet="DOCUMENTOBORRF">
+                <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
                 <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
                 <ScalarProperty Name="POS" ColumnName="POS" />
                 <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
@@ -11488,6 +11511,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOSAPs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOSAP">
               <MappingFragment StoreEntitySet="DOCUMENTOSAP">
+                <ScalarProperty Name="IMPORTE" ColumnName="IMPORTE" />
+                <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+                <ScalarProperty Name="LIFNR" ColumnName="LIFNR" />
+                <ScalarProperty Name="BLART" ColumnName="BLART" />
+                <ScalarProperty Name="REGISTRO_AP" ColumnName="REGISTRO_AP" />
+                <ScalarProperty Name="REGISTRO_RE" ColumnName="REGISTRO_RE" />
+                <ScalarProperty Name="REGISTRO_NO" ColumnName="REGISTRO_NO" />
+                <ScalarProperty Name="REGISTRO_PR" ColumnName="REGISTRO_PR" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
                 <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
@@ -11508,6 +11539,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="FACTURASCONFs">
             <EntityTypeMapping TypeName="TAT001Model.FACTURASCONF">
               <MappingFragment StoreEntitySet="FACTURASCONF">
+                <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
                 <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
                 <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
                 <ScalarProperty Name="TSOL" ColumnName="TSOL" />
@@ -12786,6 +12818,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOLs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOL">
               <MappingFragment StoreEntitySet="DOCUMENTOL">
+                <ScalarProperty Name="BACKORDER" ColumnName="BACKORDER" />
                 <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
                 <ScalarProperty Name="MONTO_VENTA" ColumnName="MONTO_VENTA" />
                 <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />

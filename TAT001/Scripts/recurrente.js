@@ -101,6 +101,10 @@ function showPrTable() {
             }
         });
         $(".table_rec").css("display", "table");
+
+        if ($('#check_objetivoq').is(":checked")) {
+            objetivoQ(true);
+        }
     }
 }
 //LEJ 31.07.2018---------------------
@@ -108,7 +112,7 @@ function fillTable(t, no, fecha, mt, porc) {
     t.row.add([
         no, $("#tsol_id").val(), fecha,
         // mt,
-        "<input class=\"numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + mt + "\">",//LEJ 03.08.2018
+        "<input class=\"numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + mt + "\" onchange='updateObjQ()'>",//LEJ 03.08.2018
         porc
     ]).draw(false).node();
 }

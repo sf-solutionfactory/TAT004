@@ -4089,8 +4089,12 @@ namespace TAT001.Controllers
             DocumentoFlujo DF = new DocumentoFlujo();
             DF.D = dOCUMENTO;
             ViewBag.df = DF;
-            DOCUMENTOREC dr = new DOCUMENTOREC();
+            //DOCUMENTOREC dr = new DOCUMENTOREC();
             d.DOCUMENTOREC = db.DOCUMENTORECs.Where(x => x.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+            foreach(DOCUMENTOREC dr in d.DOCUMENTOREC)
+            {
+                dr.FECHAF = dr.FECHAV;
+            }
             //LEJ 24.07.2018------------------------------------------------------------
             return View(d);
         }
@@ -4107,9 +4111,10 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID,USUARIOD_ID, OBJQ_PORC")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
-                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat, string txt_sop_borr)
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo,
+                string catmat, string txt_sop_borr, string chk_ligada, string sel_nn, string check_objetivoq)
         {
             if (ModelState.IsValid)
             {
@@ -4166,6 +4171,18 @@ namespace TAT001.Controllers
 
                 //Tipo cambio dolares TIPO_CAMBIOL2
                 d.TIPO_CAMBIOL2 = getUkursUSD(d.MONEDA_ID, "USD", out errorString);
+
+                if (chk_ligada == "on")//RSG 01.08.2018
+                    dOCUMENTO.TIPO_TECNICO = "P";
+
+                dOCUMENTO.OBJETIVOQ = false;//RSG 01.08.2018----------------add start
+                if (check_objetivoq == "on")
+                    dOCUMENTO.OBJETIVOQ = true;
+                if ((bool)dOCUMENTO.OBJETIVOQ)
+                    dOCUMENTO.OBJQ_PORC = dOCUMENTO.OBJQ_PORC;
+                if (sel_nn != null)
+                    dOCUMENTO.FRECUENCIA_LIQ = int.Parse(sel_nn);//RSG 01.08.2018----------------add end
+
 
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
                 //Si la distribución es categoría se obtienen las categorías
@@ -4600,6 +4617,20 @@ namespace TAT001.Controllers
                             if (drec.PORC == null)
                                 drec.PORC = 0;
                             dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+
+                            //----------------------------------------------------
+                            if (dOCUMENTO.TIPO_RECURRENTE != "1" & dOCUMENTO.OBJETIVOQ == true)
+                                dOCUMENTO.TIPO_RECURRENTE = "3";
+                            //////RSG 29.07.2018-add----------------------------------
+                            ////drec.FECHAV = drec.FECHAF;
+                            ////Calendario445 cal = new Calendario445();
+                            ////if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                            ////    drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                            ////else
+                            ////    drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                            ////drec.EJERCICIO = drec.FECHAV.Value.Year;
+                            ////drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+                            //----------------------------------------------------
 
                             drec.FECHAV = drec.FECHAF;
                             Calendario445 cal = new Calendario445();

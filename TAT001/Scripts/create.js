@@ -2868,6 +2868,8 @@ var proveedorVal = "";
 var dataConfig = null;
 
 function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
+    if (!$.isNumeric(total_val))//RSG 01.08.2018
+        total_val = toNum(total_val);
     //LEJ 09.07.18
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
@@ -4281,7 +4283,7 @@ function evalInfoTab(ret, e) {
     //fact = evaluarInfoFacturas();
     //Facuras Add MGC B20180705 2018.07.05 evaluar si es una relacionada
     //if (!isReversa() & !isRelacionada()) {
-        if (!isReversa() /*& !isRelacionada()*/) {
+    if (!isReversa() /*& !isRelacionada()*/) {
         fact = evaluarInfoFacturas();
     }
     if (fact != "") {

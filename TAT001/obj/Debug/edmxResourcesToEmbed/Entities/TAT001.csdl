@@ -836,6 +836,7 @@
     <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
+    <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
   </EntityType>
   <EntityType Name="DOCUMENTOBORRM">
     <Key>
@@ -1007,6 +1008,14 @@
     <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+    <Property Name="REGISTRO_PR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="REGISTRO_NO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="REGISTRO_RE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="REGISTRO_AP" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="BLART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="LIFNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOT">
     <Key>
@@ -1041,6 +1050,7 @@
     <Property Name="IMPORTE_FAC" Type="Boolean" Nullable="false" />
     <Property Name="PAYER" Type="Boolean" Nullable="false" />
     <Property Name="DESCRIPCION" Type="Boolean" Nullable="false" />
+    <Property Name="SOCIEDAD" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
@@ -5417,6 +5427,7 @@
     <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="ESTATUS" Type="Boolean" />
     <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
+    <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <Association Name="FK_DOCUMENTOL_DOCUMENTO">
     <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />

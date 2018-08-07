@@ -30,6 +30,7 @@ namespace TAT001.Entities
         public Nullable<decimal> IMPORTE_FAC { get; set; }
         public string PAYER { get; set; }
         public string NAME1 { get; set; }
+        public string SOCIEDAD { get; set; }
     
         public virtual DOCUMENTBORR DOCUMENTBORR { get; set; }
     }

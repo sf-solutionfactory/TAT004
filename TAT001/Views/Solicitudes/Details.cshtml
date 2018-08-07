@@ -683,7 +683,7 @@
                                                                 <td></td>
                                                             }
 
-                                                            <td>@iteem.FECHAF.Value.ToShortDateString()</td>
+                                                            <td>@iteem.FECHAV.Value.ToShortDateString()</td>
                                                             <td class="porcentaje">@Math.Round(iteem.PORC.Value, 2)</td>
                                                             <td class="precio">@iteem.MONTO_BASE</td>
 
@@ -714,7 +714,7 @@
                                         foreach (var iteem in Model.D.DOCUMENTORECs)
                                         {
                                             totalMon = totalMon + iteem.MONTO_BASE;
-                                            fechaE = iteem.FECHAF.Value.ToShortDateString();
+                                            fechaE = iteem.FECHAV.Value.ToShortDateString();
                                             periodoE = "P" + iteem.PERIODO + "-" + iteem.EJERCICIO;
                                         }
                                         <div class="row">
