@@ -95,7 +95,10 @@ namespace TAT001.Services
 
         private AlternateView Mail_Body(string strr)
         {
-            string path = "C:/Users/matias/Documents/GitHub/TAT004/TAT001/images/logo_kellogg.png";// HttpContext.Current.Server.MapPath(@"images/6792532.jpg");
+
+            string path = HttpContext.Current.Server.MapPath("/images/logo_kellogg.png");
+
+            //string path = "C:/Users/matias/Documents/GitHub/TAT004/TAT001/images/logo_kellogg.png";// HttpContext.Current.Server.MapPath(@"images/6792532.jpg");
             LinkedResource Img = new LinkedResource(path, MediaTypeNames.Image.Jpeg);
             Img.ContentId = "logo_img";
 
