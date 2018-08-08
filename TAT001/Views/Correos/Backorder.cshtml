@@ -33,6 +33,19 @@
 </head>
 <body>
     <div style="height:50px; background-color:#d11d53; width:100%; z-index:1000;top:0px;left:0px; position:fixed;">
+        @*//B20180803 MGC Correos......................................*@
+        @{ string mail = ViewBag.mail;}
+        @if (mail == "X")
+        {
+            <img src="miimg_id" />
+        }
+        else
+        {
+            <img src="~/images/logo_kellogg.png" />
+        }
+        @*//B20180803 MGC Correos......................................*@
+        <div style="display:inline-block;width:200px;"></div>
+        <h5 style="display:inline; text-align:center;color:white;font-size:30px;">AGREGAR BACKORDER</h5>
     </div>
     <div class="container" style="width:1300px">
         <br />
@@ -76,30 +89,30 @@
             }
         </div>
         @*<div class="child_div_1">
-            <a type="button" class="btn-small" id="btn_cancel"
-               style="height: 32.4px;line-height: 32.4px;
-                        font-size: 13px;
-                        text-decoration: none;
-                        color: #fff;
-                        background-color: #f29414;
-                        text-align: center;
-                        letter-spacing: .5px;
-                        -webkit-transition: background-color .2s ease-out;
-                        transition: background-color .2s ease-out;
-                        cursor: pointer;
-                        border: none;
-                        border-radius: 2px;
-                        display: inline-block;
-                        height: 36px;
-                        line-height: 36px;
-                        padding: 0 2rem;
-                        text-transform: uppercase;
-                        vertical-align: middle;
-                        -webkit-tap-highlight-color: transparent;"
-               href="@ViewBag.url@Url.Action("Cancelar", "Recurrencias", new { id = Model.NUM_DOC })" target="_top">
-                Cancelar recurrencia
-            </a>
-        </div>*@
+                <a type="button" class="btn-small" id="btn_cancel"
+                   style="height: 32.4px;line-height: 32.4px;
+                            font-size: 13px;
+                            text-decoration: none;
+                            color: #fff;
+                            background-color: #f29414;
+                            text-align: center;
+                            letter-spacing: .5px;
+                            -webkit-transition: background-color .2s ease-out;
+                            transition: background-color .2s ease-out;
+                            cursor: pointer;
+                            border: none;
+                            border-radius: 2px;
+                            display: inline-block;
+                            height: 36px;
+                            line-height: 36px;
+                            padding: 0 2rem;
+                            text-transform: uppercase;
+                            vertical-align: middle;
+                            -webkit-tap-highlight-color: transparent;"
+                   href="@ViewBag.url@Url.Action("Cancelar", "Recurrencias", new { id = Model.NUM_DOC })" target="_top">
+                    Cancelar recurrencia
+                </a>
+            </div>*@
     </div>
     <div style="display:inline-block;">
         <div class="container" style="width:1000px">

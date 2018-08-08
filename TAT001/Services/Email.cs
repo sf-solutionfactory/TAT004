@@ -15,7 +15,7 @@ namespace TAT001.Services
     public class Email
     {
         private TAT001Entities db = new TAT001Entities();
-        public void enviaMailC(decimal id, bool ban, string spras, string UrlDirectory)
+        public void enviaMailC(decimal id, bool ban, string spras, string UrlDirectory, string page)
         {
             //int pagina = 203; //ID EN BASE DE DATOS
             //ViewBag.Title = "Solicitud";
@@ -67,10 +67,12 @@ namespace TAT001.Services
                             mail.Subject = workflow.ESTATUS + dOCUMENTO.NUM_DOC + "-" + DateTime.Now.ToShortTimeString();
                         mail.IsBodyHtml = true;
                         //UrlDirectory = UrlDirectory.Substring(0, UrlDirectory.LastIndexOf("/"));
-                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Create", "Correos/Index");
-                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Details", "Correos/Index");
-                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Edit", "Correos/Index");
-                        UrlDirectory += "/" + dOCUMENTO.NUM_DOC + "?mail=true"; //B20180803 MGC Correos
+                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Create", "Correos/" + page);
+                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Details", "Correos/" + page);
+                        UrlDirectory = UrlDirectory.Replace("Solicitudes/Edit", "Correos/" + page);
+                        UrlDirectory = UrlDirectory.Replace("Flujos/Procesa", "Correos/" + page);
+                        //UrlDirectory += "/" + dOCUMENTO.NUM_DOC + "?mail=true"; //B20180803 MGC Correos
+                        UrlDirectory += "/" + dOCUMENTO.NUM_DOC + ""; //B20180803 MGC Correos
                         HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(UrlDirectory);
                         myRequest.Method = "GET";
                         WebResponse myResponse = myRequest.GetResponse();

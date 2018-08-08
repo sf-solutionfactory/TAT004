@@ -33,6 +33,19 @@
 </head>
 <body>
     <div style="height:50px; background-color:#d11d53; width:100%; z-index:1000;top:0px;left:0px; position:fixed;">
+        @*//B20180803 MGC Correos......................................*@
+        @{ string mail = ViewBag.mail;}
+        @if (mail == "X")
+        {
+            <img src="miimg_id" />
+        }
+        else
+        {
+            <img src="~/images/logo_kellogg.png" />
+        }
+        @*//B20180803 MGC Correos......................................*@
+        <div style="display:inline-block;width:200px;"></div>
+        <h5 style="display:inline; text-align:center;color:white;font-size:30px;">GENERAR RECURRENTE</h5>
     </div>
     <div class="container" style="width:1300px">
         <br />

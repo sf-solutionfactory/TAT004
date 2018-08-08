@@ -1554,6 +1554,8 @@ $(window).on('load', function () {
         $('#monto_dis').val(m);
     }
 
+    selectCliente($('#payer_id').val());//RSG 01.08.2018
+
     //Add MGC B20180705 2018.07.05 ne no eliminar
     //Obtener el parámetro para no eliminar renglones
     var ne = "";

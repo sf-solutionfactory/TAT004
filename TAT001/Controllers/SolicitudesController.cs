@@ -473,19 +473,19 @@ namespace TAT001.Controllers
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
-                else if (c.Equals("1"))//CORREO
+                else if (res.Equals("1") | res.Equals("2") | res.Equals("3"))//CORREO
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
-
-                }
-                else if (c.Equals("2"))//CORREO DE FIN DE WORKFLOW
-                {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
-                }
-                else if (c.Equals("3"))//Rechazado
-                {
-                    //return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
+                    //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
+                    Email em = new Email();
+                    string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                    if (res.Equals("1") | res.Equals("2"))//CORREO
+                    {
+                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                    }
+                    else
+                    {
+                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Details");
+                    }
                 }
                 else
                 {
@@ -719,6 +719,10 @@ namespace TAT001.Controllers
                 ViewBag.FECHAD_REV = freversa;
                 ViewBag.TREVERSA = new SelectList(ldocr, "TREVERSA_ID", "TXT100");
 
+                DOCUMENTBORR tmp = db.DOCUMENTBORRs.Find(user.ID);//RSG 01.08.2018
+                if (tmp != null)
+                    Session["pais"] = tmp.PAIS_ID;
+
                 if (rel == 0)
                 {
                     try//RSG 15.05.2018
@@ -775,7 +779,7 @@ namespace TAT001.Controllers
 
                 SOCIEDAD id_bukrs = new SOCIEDAD();
                 var id_pais = new PAI();
-                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
+                //var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();//RSG 01.08.2018
 
                 List<TAT001.Models.GALL_MOD> list_grupo = new List<GALL_MOD>();
                 //Grupos de solicitud
@@ -1020,6 +1024,7 @@ namespace TAT001.Controllers
                     {
                         docb = db.DOCUMENTBORRs.Find(user.ID);
                         ViewBag.LIGADA = docb.LIGADA;//RSG 09.07.2018
+                        p = docb.PAIS_ID;//RSG 01.08.2018
                     }
                     catch (Exception e)
                     {
@@ -1161,6 +1166,7 @@ namespace TAT001.Controllers
                 //Datos del país
                 //var id_pais = db.PAIS.Where(pais => pais.LAND.Equals(id_bukrs.LAND)).FirstOrDefault();//RSG 15.05.2018
 
+                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true & (m.WAERS.Equals(id_bukrs.WAERS) | m.WAERS.Equals("USD"))).ToList();//RSG 01.08.2018
                 var id_states = (from st in db.STATES
                                  join co in db.COUNTRIES
                                  on st.COUNTRY_ID equals co.ID
@@ -2481,7 +2487,7 @@ namespace TAT001.Controllers
                             {
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory);
+                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
                             }
                         }
                     }
@@ -2641,7 +2647,8 @@ namespace TAT001.Controllers
                                      st.COUNTRY_ID
                                  }).ToList();
 
-                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();
+                //var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true).ToList();//RSG 01.08.2018
+                var id_waers = db.MONEDAs.Where(m => m.ACTIVO == true & (m.WAERS.Equals(id_bukrs.WAERS) | m.WAERS.Equals("USD"))).ToList();//RSG 01.08.2018
 
                 List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
 
@@ -3843,6 +3850,7 @@ namespace TAT001.Controllers
 
 
                 List<TAT001.Entities.CITy> id_city = new List<TAT001.Entities.CITy>();
+                id_waers = db.MONEDAs.Where(m => m.ACTIVO == true & (m.WAERS.Equals(id_bukrs.WAERS) | m.WAERS.Equals("USD"))).ToList();//RSG 01.08.2018
 
                 ViewBag.SOCIEDAD_ID = id_bukrs;
                 ViewBag.PAIS_ID = id_pais;
@@ -4985,7 +4993,7 @@ namespace TAT001.Controllers
                     {
                         Email em = new Email();
                         string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory);
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
                     }
                 }
                 catch (Exception ee)

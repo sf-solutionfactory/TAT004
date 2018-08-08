@@ -224,7 +224,7 @@ namespace TAT001.Services
                                         d.ESTATUS_WF = "A";
                                         if (paso_a.EMAIL.Equals("X"))
                                             correcto = "2";
-                                        if(recurrente == "X")
+                                        if (recurrente == "X")
                                         {
                                             FLUJO nuevos = new FLUJO();
                                             nuevos.WORKF_ID = paso_a.ID;
@@ -554,6 +554,8 @@ namespace TAT001.Services
                 db.FLUJOes.Add(nuevo);
                 db.Entry(actual).State = EntityState.Modified;
                 d.ESTATUS_WF = "R";
+                if (next.ACCION.TIPO == "S")
+                    d.ESTATUS_WF = "S";
 
                 db.SaveChanges();
 

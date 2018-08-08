@@ -30,6 +30,8 @@ namespace TAT001.Controllers
             //ViewBag.dec = dOCUMENTOes.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
             ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            if (mail == null)
+                mail = true;
             //B20180803 MGC Correos............
             string mailv = "";
             if (mail != null)
@@ -143,7 +145,7 @@ namespace TAT001.Controllers
         }
 
         // GET: Correos/Details/5
-        public ActionResult Details(decimal id)
+        public ActionResult Details(decimal id, bool? mail)
         {
             if (id == null)
             {
@@ -163,11 +165,25 @@ namespace TAT001.Controllers
             //ViewBag.dec = dOCUMENTO.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
             ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            if (mail == null)
+                mail = true;
+            //B20180803 MGC Correos............
+            string mailv = "";
+            if (mail != null)
+            {
+                if (mail == true)
+                {
+                    mailv = "X";
+                }
+            }
+
+            ViewBag.mail = mailv;
+            //B20180803 MGC Correos............
             return View(dOCUMENTO);
         }
 
         // GET: Correos
-        public ActionResult Recurrente(decimal id)
+        public ActionResult Recurrente(decimal id, bool? mail)
         {
             var dOCUMENTO = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
             var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
@@ -194,12 +210,25 @@ namespace TAT001.Controllers
                 ViewBag.tsol = "";
                 ViewBag.nota = true;
             }
+            if (mail == null)
+                mail = true;
+            //B20180803 MGC Correos............
+            string mailv = "";
+            if (mail != null)
+            {
+                if (mail == true)
+                {
+                    mailv = "X";
+                }
+            }
 
+            ViewBag.mail = mailv;
+            //B20180803 MGC Correos............
             return View(dOCUMENTO);
         }
 
         // GET: Correos
-        public ActionResult Backorder(decimal id)
+        public ActionResult Backorder(decimal id, bool? mail)
         {
             var dOCUMENTO = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault();
             var flujo = db.FLUJOes.Where(x => x.NUM_DOC == id).OrderByDescending(o => o.POS).Select(s => s.POS).ToList();
@@ -226,7 +255,20 @@ namespace TAT001.Controllers
                 ViewBag.tsol = "";
                 ViewBag.nota = true;
             }
+            if (mail == null)
+                mail = true;
+            //B20180803 MGC Correos............
+            string mailv = "";
+            if (mail != null)
+            {
+                if (mail == true)
+                {
+                    mailv = "X";
+                }
+            }
 
+            ViewBag.mail = mailv;
+            //B20180803 MGC Correos............
             return View(dOCUMENTO);
         }
 

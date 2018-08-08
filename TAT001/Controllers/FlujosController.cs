@@ -17,7 +17,7 @@ namespace TAT001.Controllers
     public class FlujosController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
-
+        #region ocultar
         // GET: Flujos
         public ActionResult Index()
         {
@@ -254,6 +254,7 @@ namespace TAT001.Controllers
             }
             base.Dispose(disposing);
         }
+#endregion ocultar
         [HttpGet]
         public ActionResult Procesa(decimal id, string accion)
         {
@@ -340,19 +341,20 @@ namespace TAT001.Controllers
                 {
                     return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
-                else if (res.Equals("1"))//CORREO
+                else if (res.Equals("1") | res.Equals("2") | res.Equals("3"))//CORREO
                 {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
-
-                }
-                else if (res.Equals("2"))//CORREO DE FIN DE WORKFLOW
-                {
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
-                }
-                else if (res.Equals("3"))//Rechazado
-                {
-                    //return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
-                    return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "R" });
+                    //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
+                    Email em = new Email();
+                    string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                    if (res.Equals("1") | res.Equals("2"))//CORREO
+                    {
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                    }
+                    else
+                    {
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Details");
+                    }
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
                 else
                 {

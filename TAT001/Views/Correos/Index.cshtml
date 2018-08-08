@@ -52,6 +52,11 @@
             <img src="~/images/logo_kellogg.png" />
         }
         @*//B20180803 MGC Correos......................................*@
+        @if (Model.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO == "A")
+        {
+            <div style="display:inline-block;width:200px;"></div>
+            <h5 style="display:inline; text-align:center;color:white;font-size:30px;">MAIL APROBACIÓN</h5>
+        }
     </div>
     <div class="container" style="width:1300px">
         <br />
