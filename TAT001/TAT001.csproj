@@ -244,8 +244,8 @@
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
     <Compile Include="Controllers\RecurrenciasController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
-    <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\SolicitudesController3.cs" />
+    <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
@@ -884,6 +884,7 @@
     <Content Include="Scripts\cartaV.js" />
     <Content Include="Scripts\correos.js" />
     <Content Include="Scripts\create.js" />
+    <Content Include="Scripts\create2.js" />
     <Content Include="Scripts\edit - antes.js" />
     <Content Include="Scripts\edit.js" />
     <Content Include="Scripts\createa.js" />
@@ -1070,7 +1071,7 @@
     <Content Include="Views\ccat\Edit.cshtml" />
     <Content Include="Views\CartaV\Create2.cshtml" />
     <Content Include="Views\CartaV\Create.cshtml" />
-    <Content Include="Views\Solicitudes\Create.cshtml" />
+    <Content Include="Views\Solicitudes\Create3.cshtml" />
     <Content Include="Views\Listas\getPeriodo.cshtml" />
     <Content Include="Views\Correos\Index.cshtml" />
     <Content Include="Views\Correos\Details.cshtml" />
@@ -1125,6 +1126,7 @@
     <Content Include="Views\NOTICIAs\Edit.cshtml" />
     <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Recurrencias\Cancelar.cshtml" />
+    <Content Include="Views\Solicitudes\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

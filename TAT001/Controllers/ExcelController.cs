@@ -1242,7 +1242,7 @@ namespace TAT001.Controllers
         public void guardaArchivos(decimal numDoc)
         {
             IEnumerable<HttpPostedFileBase> archivosRE = (IEnumerable<HttpPostedFileBase>)Session["arcReales"];
-            SolicitudesController3 sc = new SolicitudesController3();
+            SolicitudesController sc = new SolicitudesController();
             string errorString = "";
             //Guardar los documentos cargados en la sección de soporte
             var res = "";
@@ -1270,7 +1270,7 @@ namespace TAT001.Controllers
                 string url = ConfigurationManager.AppSettings["URL_SAVE"];
                 //Crear el directorio
                 string nomNum = numDoc.ToString();
-                var dir = sc.createDir(url, nomNum);
+                var dir = sc.createDir(url, nomNum, DateTime.Now.Year.ToString());
 
                 //Evaluar que se creo el directorio
                 if (dir.Equals(""))
@@ -1280,7 +1280,7 @@ namespace TAT001.Controllers
                         string errorfiles = "";
                         string path = "";
                         errorfiles = "";
-                        res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
+                        res = sc.SaveFile(file, url, nomNum, out errorfiles, out path, DateTime.Now.Year.ToString());
                         var cambio = db.DOCUMENTOAs.Where(x => x.NUM_DOC == numDoc & x.PATH == file.FileName).FirstOrDefault();
                         if (cambio != null)
                         {

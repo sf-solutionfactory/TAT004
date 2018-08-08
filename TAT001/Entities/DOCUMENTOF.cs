@@ -31,5 +31,6 @@ namespace TAT001.Entities
     
         public virtual DOCUMENTO DOCUMENTO { get; set; }
         public string DESCRIPCION { get; internal set; }
+        public string SOCIEDAD { get; internal set; }
     }
 }

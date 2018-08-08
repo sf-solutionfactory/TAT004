@@ -698,6 +698,7 @@
     <EntitySetMapping Name="DOCUMENTOBORRFs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRF">
         <MappingFragment StoreEntitySet="DOCUMENTOBORRF">
+          <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
           <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
           <ScalarProperty Name="POS" ColumnName="POS" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
@@ -866,6 +867,14 @@
     <EntitySetMapping Name="DOCUMENTOSAPs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOSAP">
         <MappingFragment StoreEntitySet="DOCUMENTOSAP">
+          <ScalarProperty Name="IMPORTE" ColumnName="IMPORTE" />
+          <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+          <ScalarProperty Name="LIFNR" ColumnName="LIFNR" />
+          <ScalarProperty Name="BLART" ColumnName="BLART" />
+          <ScalarProperty Name="REGISTRO_AP" ColumnName="REGISTRO_AP" />
+          <ScalarProperty Name="REGISTRO_RE" ColumnName="REGISTRO_RE" />
+          <ScalarProperty Name="REGISTRO_NO" ColumnName="REGISTRO_NO" />
+          <ScalarProperty Name="REGISTRO_PR" ColumnName="REGISTRO_PR" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
           <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
@@ -886,6 +895,7 @@
     <EntitySetMapping Name="FACTURASCONFs">
       <EntityTypeMapping TypeName="TAT001Model.FACTURASCONF">
         <MappingFragment StoreEntitySet="FACTURASCONF">
+          <ScalarProperty Name="SOCIEDAD" ColumnName="SOCIEDAD" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
           <ScalarProperty Name="PAIS_ID" ColumnName="PAIS_ID" />
           <ScalarProperty Name="TSOL" ColumnName="TSOL" />
@@ -2164,6 +2174,7 @@
     <EntitySetMapping Name="DOCUMENTOLs">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOL">
         <MappingFragment StoreEntitySet="DOCUMENTOL">
+          <ScalarProperty Name="BACKORDER" ColumnName="BACKORDER" />
           <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
           <ScalarProperty Name="MONTO_VENTA" ColumnName="MONTO_VENTA" />
           <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />

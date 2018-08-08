@@ -224,6 +224,7 @@ namespace TAT001.Controllers
                 }
             DocumentoFlujo DF = new DocumentoFlujo();
             DF.D = dOCUMENTO;
+            ViewBag.pais = dOCUMENTO.PAIS_ID + ".png"; //RSG 29.09.2018
             DF.F = db.FLUJOes.Where(a => a.NUM_DOC.Equals(id)).OrderByDescending(a => a.POS).FirstOrDefault();
             //DF.F.ESTATUS = "";
             ViewBag.ts = db.TS_FORM.Where(a => a.BUKRS_ID.Equals(DF.D.SOCIEDAD_ID) & a.LAND_ID.Equals(DF.D.PAIS_ID)).ToList();
@@ -239,7 +240,7 @@ namespace TAT001.Controllers
             Models.PresupuestoModels carga = new Models.PresupuestoModels();
             ViewBag.ultMod = carga.consultarUCarga();
 
-            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS != "X" & a.PADRE == false).ToList();
+            ViewBag.TSOL_RELA = db.TSOLs.Where(a => a.ESTATUS == "M" & a.PADRE == false).ToList();
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
             ////var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
             ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
@@ -269,7 +270,9 @@ namespace TAT001.Controllers
             {
                 string url = ConfigurationManager.AppSettings["URL_SAVE"];
                 //Crear el directorio
-                var dir = createDir(url, num_doc.ToString());
+                DOCUMENTO du = db.DOCUMENTOes.Find(num_doc);//RSG 01.08.2018
+                //var dir = createDir(url, num_doc.ToString());
+                var dir = createDir(url, num_doc.ToString(), du.EJERCICIO.ToString());//RSG 01.08.2018
 
                 //Evaluar que se creo el directorio
                 if (dir.Equals(""))
@@ -299,7 +302,8 @@ namespace TAT001.Controllers
                                 string path = "";
                                 string filename = file.FileName;
                                 errorfiles = "";
-                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
+                                //res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
+                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path, du.EJERCICIO.ToString());//RSG 01.08.2018
 
                                 if (errorfiles == "")
                                 {
@@ -586,6 +590,9 @@ namespace TAT001.Controllers
             string notas_soporte = "";//MGC B20180625 MGC
             string tipo_cambio = "";//MGC B20180625 MGC
             string addrowst = "X"; //Add MGC B20180705 2018.07.05
+
+            string usuariotextos = "";//B20180801 MGC Textos
+
             using (TAT001Entities db = new TAT001Entities())
             {
                 string p = "";
@@ -598,6 +605,9 @@ namespace TAT001.Controllers
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+
+                usuariotextos = user.SPRAS_ID;//B20180801 MGC Textos
 
                 List<TREVERSAT> ldocr = new List<TREVERSAT>();
                 decimal rel = 0;
@@ -744,7 +754,7 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X" & sol.ADICIONA == false)
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,
@@ -827,17 +837,20 @@ namespace TAT001.Controllers
                         ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
                         ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
                         ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50", selectedValue: d.TALL_ID); //B20180618 v1 MGC 2018.06.18
-                        TSOLT_MOD tsmod = new TSOLT_MOD();
+                        //TSOLT_MOD tsmod = new TSOLT_MOD();
+                        TSOLT tsmod = new TSOLT();//RSG 30.07.2018
                         try
                         {
-                            tsmod = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();
-
+                            //tsmod = list_sol.Where(id => id.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();
+                            tsmod = db.TSOLTs.Where(x => x.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();//RSG 30.07.2018
                         }
                         catch
                         {
-                            tsmod.TEXT = "";
+                            //tsmod.TEXT = "";//RSG 30.07.2018
+                            tsmod.TXT50 = "";
                         }
-                        ViewBag.TSOL_IDI = tsmod.TEXT.ToString();
+                        //ViewBag.TSOL_IDI = tsmod.text.ToString();//RSG 30.07.2018
+                        ViewBag.TSOL_IDI = tsmod.TXT50.ToString();
                         TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
                         ViewBag.GALL_IDI = gall_mod.TEXT;
                         ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
@@ -1384,6 +1397,52 @@ namespace TAT001.Controllers
                 ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
             }
             //-----------------------------------------------------------------LEJ 09.07.18
+
+            //B20180801 MGC Textos....................................................................................................
+            string txt_volumenr = "";//B20180801 MGC Textos
+            string txt_apoyor = "";//B20180801 MGC Textos
+            string txt_volumene = "";//B20180801 MGC Textos
+            string txt_apoyoe = "";//B20180801 MGC Textos
+
+            try
+            {
+                txt_volumenr = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disvolumenReal")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                txt_volumene = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disvolumenEst")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                txt_apoyor = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disapoyoReal")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+            try
+            {
+                txt_apoyoe = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(usuariotextos) && a.CAMPO_ID.Equals("thead_disapoyoEst")).FirstOrDefault().TEXTOS;
+            }
+            catch (Exception)
+            {
+
+            }
+
+            ViewBag.apoyor = txt_apoyor;
+            ViewBag.volumenr = txt_volumenr;
+            ViewBag.apoyoe = txt_apoyoe;
+            ViewBag.volumene = txt_volumene;
+            //B20180801 MGC Textos....................................................................................................
+
             return View(d);
         }
 
@@ -1399,12 +1458,12 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, OBJQ_PORC")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
-                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada)
+                string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn, string check_objetivoq,
+                string lbl_volr, string lbl_apr, string lbl_vole, string lbl_ape) //B20180801 MGC Textos
         {
-
             bool prueba = true;
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -1482,6 +1541,14 @@ namespace TAT001.Controllers
                     dOCUMENTO.TIPO_TECNICO = select_neg;
                     if (chk_ligada == "on")
                         dOCUMENTO.TIPO_TECNICO = "P";
+
+                    dOCUMENTO.OBJETIVOQ = false;//RSG 01.08.2018----------------add start
+                    if (check_objetivoq == "on")
+                        dOCUMENTO.OBJETIVOQ = true;
+                    if ((bool)dOCUMENTO.OBJETIVOQ)
+                        dOCUMENTO.OBJQ_PORC = dOCUMENTO.OBJQ_PORC;
+                    if (sel_nn != null)
+                        dOCUMENTO.FRECUENCIA_LIQ = int.Parse(sel_nn);//RSG 01.08.2018----------------add end
 
                     ////Obtener el número de documento
                     //decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
@@ -1610,7 +1677,7 @@ namespace TAT001.Controllers
                             Session["BORRADOR"] = "Borrador almacenado";
                         }
 
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -1951,7 +2018,7 @@ namespace TAT001.Controllers
                                     }
                                     else if (select_neg == "P")
                                     {
-                                        if(d.LIGADA == true)
+                                        if (d.LIGADA == true)
                                         {
                                             docP.APOYO_REAL = 0;
                                             docP.APOYO_EST = 0;
@@ -1983,9 +2050,9 @@ namespace TAT001.Controllers
                                                         docM.VIGENCIA_DE = dm.VIGENCIA_DE;
 
 
-                                                        docP.APOYO_REAL += docM.APOYO_REAL;
-                                                        docP.APOYO_EST += docM.APOYO_EST;
-                                                        docP.PORC_APOYO += (decimal)docM.PORC_APOYO;
+                                                        //docP.APOYO_REAL += docM.APOYO_REAL;
+                                                        //docP.APOYO_EST += docM.APOYO_EST;
+                                                        //docP.PORC_APOYO += (decimal)docM.PORC_APOYO;
                                                     }
                                                 }
 
@@ -1998,6 +2065,17 @@ namespace TAT001.Controllers
                                             }
                                         }
 
+                                        if (d.LIGADA == true & d != null)
+                                        {
+                                            foreach (DOCUMENTOP dep in d.DOCUMENTOPs.Where(x => x.POS == docP.POS))
+                                            {
+                                                docP.APOYO_REAL += dep.APOYO_EST;
+                                                //docP.APOYO_EST += dep.;
+                                                docP.PORC_APOYO += (decimal)dep.PORC_APOYO;
+                                            }
+
+                                            db.SaveChanges();//RSG
+                                        }
                                     }
                                     //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
                                 }
@@ -2213,33 +2291,48 @@ namespace TAT001.Controllers
                                     ////drec.DOC_REF = drec.NUM_DOC;//RSG 09.07.2018
                                     ////drec.ESTATUS = "P";//RSG 09.07.2018
                                     if (dOCUMENTO.TIPO_TECNICO != "P")
-                                    {
-                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
-                                        dOCUMENTO.FECHAI_VIG = drec.FECHAF;
-                                        //dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);//RSG 11.06.2018
-                                        int ppp = c4.getPeriodo(drec.FECHAF.Value);
-                                        dOCUMENTO.FECHAF_VIG = c4.getUltimoDia(drec.FECHAF.Value.Year, ppp);//RSG 11.06.2018
-                                        dOCUMENTO.TIPO_RECURRENTE = "M";
+                                    {//RSG 29.07.2018 -DELETE
+                                        ////Calendario445 c4 = new Calendario445();//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAI_VIG = drec.FECHAF;
+                                        //////dOCUMENTO.FECHAF_VIG = drec.FECHAF.Value.AddMonths(1).AddDays(-1);//RSG 11.06.2018
+                                        ////int ppp = c4.getPeriodo(drec.FECHAF.Value);
+                                        ////dOCUMENTO.FECHAF_VIG = c4.getUltimoDia(drec.FECHAF.Value.Year, ppp);//RSG 11.06.2018
+                                        ////dOCUMENTO.TIPO_RECURRENTE = "M";
                                     }
                                     else
-                                    {
-                                        Calendario445 c4 = new Calendario445();//RSG 11.06.2018
-                                        dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);//RSG 11.06.2018
-                                        //dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);//RSG 11.06.2018
-                                        dOCUMENTO.FECHAF_VIG = drec.FECHAF;
+                                    {//RSG 29.07.2018 - delete
+                                        ////Calendario445 c4 = new Calendario445();//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAI_VIG = c4.getPrimerDia(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month);//RSG 11.06.2018
+                                        //////dOCUMENTO.FECHAI_VIG = new DateTime(drec.FECHAF.Value.Year, drec.FECHAF.Value.Month, 1);//RSG 11.06.2018
+                                        ////dOCUMENTO.FECHAF_VIG = drec.FECHAF;
                                         dOCUMENTO.TIPO_RECURRENTE = "P";
                                     }
-                                    foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)
-                                    {
-                                        po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
-                                        po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
-                                    }
+                                    ////foreach (DOCUMENTOP po in dOCUMENTO.DOCUMENTOPs)//RSG 29.07.2018 - delete
+                                    ////{
+                                    ////    po.VIGENCIA_DE = dOCUMENTO.FECHAI_VIG;
+                                    ////    po.VIGENCIA_AL = dOCUMENTO.FECHAF_VIG;
+                                    ////}
                                 }
                                 if (drec.MONTO_BASE == null) //RSG 31.05.2018-------------------
                                     drec.MONTO_BASE = 0;
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
                                 dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+                                if (dOCUMENTO.TIPO_RECURRENTE != "1" & dOCUMENTO.OBJETIVOQ == true)
+                                    dOCUMENTO.TIPO_RECURRENTE = "3";
+                                //RSG 29.07.2018-add----------------------------------
+                                drec.FECHAV = drec.FECHAF;
+                                Calendario445 cal = new Calendario445();
+                                if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                                    drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                                else
+                                    drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                                drec.EJERCICIO = drec.FECHAV.Value.Year;
+                                drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+                                ////int num = int.Parse(sel_nn);
+                                ////int pos = drec.POS % num;
+                                //RSG 29.07.2018-add----------------------------------
+
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
@@ -2273,7 +2366,8 @@ namespace TAT001.Controllers
                         //Obtener las variables con los datos de sesión y ruta
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
-                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                        //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                         //Evaluar que se creo el directorio
                         if (dir.Equals(""))
@@ -2300,7 +2394,8 @@ namespace TAT001.Controllers
                                         string path = "";
                                         string filename = file.FileName;
                                         errorfiles = "";
-                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);
+                                        //res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
+                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path, dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                                         if (errorfiles == "")
                                         {
@@ -2443,7 +2538,7 @@ namespace TAT001.Controllers
                         db.SaveChanges();
                     }
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Home");
                 }
                 catch (Exception e)
                 {
@@ -2695,6 +2790,14 @@ namespace TAT001.Controllers
 
             ViewBag.borrador = "error"; //MGC B20180625 MGC
             ViewBag.borradore = borrador_param; //B20180625 MGC2 2018.07.04 
+
+
+            //B20180801 MGC Textos....................................................................................................
+            ViewBag.apoyor = lbl_apr;
+            ViewBag.volumenr = lbl_volr;
+            ViewBag.apoyoe = lbl_ape;
+            ViewBag.volumene = lbl_vole;
+            //B20180801 MGC Textos....................................................................................................
 
 
             return View(dOCUMENTO);
@@ -3431,7 +3534,7 @@ namespace TAT001.Controllers
                 }
                 else
                 {
-                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X")
+                    list_sol = tsols_val.Where(sol => sol.ESTATUS != "X" & sol.ADICIONA == false)
                                         .Join(
                                         db.TSOLTs.Where(solt => solt.SPRAS_ID == user.SPRAS_ID),
                                         sol => sol.ID,
@@ -3489,6 +3592,7 @@ namespace TAT001.Controllers
                     d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).Include(a => a.USUARIO).Include(a => a.FLUJOes).FirstOrDefault();
                     if (d.ESTATUS_WF != "R")
                         return RedirectToAction("Index", "Home");
+                    ViewBag.x_ligada = d.LIGADA;//LEJ 30.07.2018
                     tsol = d.TSOL_ID;
                     docsrel = db.DOCUMENTOes.Where(docr => docr.DOCUMENTO_REF == rel).ToList();
                     id_bukrs = db.SOCIEDADs.Where(soc => soc.BUKRS == d.SOCIEDAD_ID && soc.ACTIVO == true).FirstOrDefault();
@@ -3504,17 +3608,21 @@ namespace TAT001.Controllers
                         ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT", selectedValue: d.TSOL_ID);
                         ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT", selectedValue: d.GALL_ID);
                         ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50", selectedValue: d.TALL_ID); //B20180618 v1 MGC 2018.06.18
-                        TSOLT_MOD tsmod = new TSOLT_MOD();
+                        //TSOLT_MOD tsmod = new TSOLT_MOD();//RSG 01.08.2018
+                        TSOLT tsmod = new TSOLT();
                         try
                         {
-                            tsmod = list_sol.Where(ids => ids.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();
+                            //tsmod = list_sol.Where(ids => ids.TSOL_ID.Equals(d.TSOL_ID)).FirstOrDefault();//RSG 01.08.2018
+                            tsmod = db.TSOLTs.Where(ids => ids.TSOL_ID.Equals(d.TSOL_ID) & ids.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault();//RSG 01.08.2018
 
                         }
                         catch
                         {
-                            tsmod.TEXT = "";
+                            //tsmod.TEXT = "";//RSG 01.08.2018
+                            tsmod.TXT50 = "";//RSG 01.08.2018
                         }
-                        ViewBag.TSOL_IDI = tsmod.TEXT.ToString();
+                        //ViewBag.TSOL_IDI = tsmod.TEXT.ToString();//RSG 01.08.2018
+                        ViewBag.TSOL_IDI = tsmod.TXT50.ToString();//RSG 01.08.2018
                         TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(ids => ids.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
                         ViewBag.GALL_IDI = gall_mod.TEXT;
                         ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
@@ -3607,6 +3715,7 @@ namespace TAT001.Controllers
                                 docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
                                 docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
                                 docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;//RSG 01.08.2018
                                 docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                                 docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
                                 docP.APOYO_EST = docpl[j].APOYO_EST;
@@ -3678,6 +3787,17 @@ namespace TAT001.Controllers
                 }
                 else
                 {
+                    DOCUMENTBORR docb = new DOCUMENTBORR();//LEJ 23.07.2018
+                    try
+                    {
+                        docb = db.DOCUMENTBORRs.Find(user.ID);//LEJ 23.07.2018
+                        var _vbx = db.DOCUMENTOes.Where(x => x.NUM_DOC == 1000000770).FirstOrDefault();
+                        ViewBag.LIGADA = docb.LIGADA;//LEJ 23.07.2018
+                    }
+                    catch (Exception e)
+                    {
+                        //
+                    }
                     ViewBag.TSOL_ID = new SelectList(list_sol, "TSOL_ID", "TEXT");
                     ViewBag.GALL_ID = new SelectList(list_grupo, "GALL_ID", "TEXT");
                     ViewBag.TALL_ID = new SelectList(id_clas, "TALL_ID", "TXT50"); //B20180618 v1 MGC 2018.06.18
@@ -3947,7 +4067,35 @@ namespace TAT001.Controllers
 
             ViewBag.miles = d.PAI.MILES;//LEJGG 090718
             ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
-
+            //LEJ 24.07.2018------------------------------------------------------------
+            var nmid = decimal.Parse(id_d);
+            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Where(x => x.NUM_DOC == nmid).FirstOrDefault();
+            if (dOCUMENTO == null)
+            {
+                return HttpNotFound();
+            }
+            dOCUMENTO.CLIENTE = db.CLIENTEs.Where(a => a.VKORG.Equals(dOCUMENTO.VKORG)
+                                                    & a.VTWEG.Equals(dOCUMENTO.VTWEG)
+                                                    & a.SPART.Equals(dOCUMENTO.SPART)
+                                                    & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
+            dOCUMENTO.DOCUMENTOF = db.DOCUMENTOFs.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).ToList();
+            //LEJ 03.08.2018----i
+            for (int i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+            {
+                var _x = dOCUMENTO.DOCUMENTOF[i].PAYER;
+                dOCUMENTO.DOCUMENTOF[i].DESCRIPCION = db.CLIENTEs.Where(c => c.KUNNR == _x).Select(o => o.NAME1).FirstOrDefault();
+            }
+            //LEJ 03.08.2018----t
+            DocumentoFlujo DF = new DocumentoFlujo();
+            DF.D = dOCUMENTO;
+            ViewBag.df = DF;
+            //DOCUMENTOREC dr = new DOCUMENTOREC();
+            d.DOCUMENTOREC = db.DOCUMENTORECs.Where(x => x.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+            foreach(DOCUMENTOREC dr in d.DOCUMENTOREC)
+            {
+                dr.FECHAF = dr.FECHAV;
+            }
+            //LEJ 24.07.2018------------------------------------------------------------
             return View(d);
         }
 
@@ -3963,9 +4111,10 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID,USUARIOD_ID, OBJQ_PORC")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
-                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo, string catmat, string txt_sop_borr)
+                string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi, string bmonto_apoyo,
+                string catmat, string txt_sop_borr, string chk_ligada, string sel_nn, string check_objetivoq)
         {
             if (ModelState.IsValid)
             {
@@ -4022,6 +4171,18 @@ namespace TAT001.Controllers
 
                 //Tipo cambio dolares TIPO_CAMBIOL2
                 d.TIPO_CAMBIOL2 = getUkursUSD(d.MONEDA_ID, "USD", out errorString);
+
+                if (chk_ligada == "on")//RSG 01.08.2018
+                    dOCUMENTO.TIPO_TECNICO = "P";
+
+                dOCUMENTO.OBJETIVOQ = false;//RSG 01.08.2018----------------add start
+                if (check_objetivoq == "on")
+                    dOCUMENTO.OBJETIVOQ = true;
+                if ((bool)dOCUMENTO.OBJETIVOQ)
+                    dOCUMENTO.OBJQ_PORC = dOCUMENTO.OBJQ_PORC;
+                if (sel_nn != null)
+                    dOCUMENTO.FRECUENCIA_LIQ = int.Parse(sel_nn);//RSG 01.08.2018----------------add end
+
 
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
                 //Si la distribución es categoría se obtienen las categorías
@@ -4422,9 +4583,202 @@ namespace TAT001.Controllers
                         d.DOCUMENTOPs.Remove(d.DOCUMENTOPs.ElementAt(i));
                     }
                 }
+                List<DOCUMENTOREC> ddd = new List<DOCUMENTOREC>();
+                ddd.AddRange(d.DOCUMENTORECs);
+                foreach (DOCUMENTOREC dree in ddd)//RSG 01.08.2018
+                {
+                    d.DOCUMENTORECs.Remove(dree);
+                }
 
                 db.Entry(d).State = EntityState.Modified;
                 db.SaveChanges();
+
+
+                //Guardar registros de recurrencias  RSG 01.08.2018------------------
+
+                if (dOCUMENTO.DOCUMENTOREC != null)
+                    if (dOCUMENTO.DOCUMENTOREC.Count > 0)
+                    {
+                        foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
+                        {
+                            drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            if (drec.POS == 1)
+                            {
+                                if (dOCUMENTO.TIPO_TECNICO != "P")
+                                {
+                                }
+                                else
+                                {//RSG 29.07.2018 - delete
+                                    dOCUMENTO.TIPO_RECURRENTE = "P";
+                                }
+                            }
+                            if (drec.MONTO_BASE == null)
+                                drec.MONTO_BASE = 0;
+                            if (drec.PORC == null)
+                                drec.PORC = 0;
+                            dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+
+                            //----------------------------------------------------
+                            if (dOCUMENTO.TIPO_RECURRENTE != "1" & dOCUMENTO.OBJETIVOQ == true)
+                                dOCUMENTO.TIPO_RECURRENTE = "3";
+                            //////RSG 29.07.2018-add----------------------------------
+                            ////drec.FECHAV = drec.FECHAF;
+                            ////Calendario445 cal = new Calendario445();
+                            ////if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                            ////    drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                            ////else
+                            ////    drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                            ////drec.EJERCICIO = drec.FECHAV.Value.Year;
+                            ////drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+                            //----------------------------------------------------
+
+                            drec.FECHAV = drec.FECHAF;
+                            Calendario445 cal = new Calendario445();
+                            if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                                drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                            else
+                                drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                            drec.EJERCICIO = drec.FECHAV.Value.Year;
+                            drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+
+                            d.DOCUMENTORECs.Add(drec);
+                        }
+                        db.Entry(d).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }//Guardar registros de recurrencias  RSG 01.08.2018-------------------
+
+
+                try //Guardar los documentosf cargados en la sección de soporte
+                {
+                    //lej 26-07-2018 inicio--------------
+                    try
+                    {
+                        if (dOCUMENTO.DOCUMENTOF.Count == 1)
+                        {
+                            //Si hay solo un registro se modifica
+                            var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+                            if (_df.Count == 1)
+                            {
+                                string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
+                                for (int k = 0; k < _f.Length; k++)
+                                {
+                                    DOCUMENTOF docF = new DOCUMENTOF();
+                                    docF = dOCUMENTO.DOCUMENTOF[0];
+                                    _df[k].NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df[k].FACTURA = docF.FACTURA;
+                                    _df[k].PROVEEDOR = docF.PROVEEDOR;
+                                    _df[k].CONTROL = docF.CONTROL;
+                                    _df[k].AUTORIZACION = docF.AUTORIZACION;
+                                    _df[k].FACTURAK = docF.FACTURAK;
+                                    _df[k].EJERCICIOK = docF.EJERCICIOK;
+                                    _df[k].BILL_DOC = docF.BILL_DOC;
+                                    _df[k].BELNR = docF.BELNR;
+                                    _df[k].IMPORTE_FAC = docF.IMPORTE_FAC;
+                                    _df[k].PAYER = docF.PAYER;
+                                    //paso a una nueva variable
+                                    var _dataFac = _df[k];
+                                    db.Entry(_dataFac).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                }
+                            }
+                            if (_df.Count > 1)//si hay mas de 1 documentof
+                            {
+                                for (var i = 0; i < _df.Count; i++)
+                                {
+                                    //Si encuentra solo un registro, lo borro
+                                    db.Entry(_df[i]).State = EntityState.Deleted;
+                                    db.SaveChanges();
+                                }
+                                string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
+                                for (int k = 0; k < _f.Length; k++)
+                                {
+                                    DOCUMENTOF docF = new DOCUMENTOF();
+                                    var _df2 = new DOCUMENTOF();
+                                    docF = dOCUMENTO.DOCUMENTOF[0];
+                                    _df2.POS = docF.POS;
+                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.FACTURA = docF.FACTURA;
+                                    _df2.PROVEEDOR = docF.PROVEEDOR;
+                                    _df2.CONTROL = docF.CONTROL;
+                                    _df2.AUTORIZACION = docF.AUTORIZACION;
+                                    _df2.FACTURAK = docF.FACTURAK;
+                                    _df2.EJERCICIOK = docF.EJERCICIOK;
+                                    _df2.BILL_DOC = docF.BILL_DOC;
+                                    _df2.BELNR = docF.BELNR;
+                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                    _df2.PAYER = docF.PAYER;
+                                    db.DOCUMENTOFs.Add(_df2);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+                        else if (dOCUMENTO.DOCUMENTOF.Count > 1)
+                        {
+                            var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+                            var _df2 = new DOCUMENTOF();
+                            if (_df.Count == 1)
+                            {
+                                //Si encuentra solo un registro, lo borro
+                                db.Entry(_df[0]).State = EntityState.Deleted;
+                                db.SaveChanges();
+                                for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+                                {
+                                    _df2 = new DOCUMENTOF();
+                                    DOCUMENTOF docF = new DOCUMENTOF();
+                                    docF = dOCUMENTO.DOCUMENTOF[i];
+                                    _df2.POS = docF.POS;
+                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.FACTURA = docF.FACTURA;
+                                    _df2.PROVEEDOR = docF.PROVEEDOR;
+                                    _df2.CONTROL = docF.CONTROL;
+                                    _df2.AUTORIZACION = docF.AUTORIZACION;
+                                    _df2.FACTURAK = docF.FACTURAK;
+                                    _df2.EJERCICIOK = docF.EJERCICIOK;
+                                    _df2.BILL_DOC = docF.BILL_DOC;
+                                    _df2.BELNR = docF.BELNR;
+                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                    _df2.PAYER = docF.PAYER;
+                                    //paso a una nueva variable
+                                    db.DOCUMENTOFs.Add(_df2);
+                                    db.SaveChanges();
+                                }
+                            }
+                            if (_df.Count > 1)//si hay mas de 1 documentof
+                            {
+                                for (var i = 0; i < _df.Count; i++)
+                                {
+                                    //Si encuentra solo un registro, lo borro
+                                    db.Entry(_df[i]).State = EntityState.Deleted;
+                                    db.SaveChanges();
+                                }
+                                for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+                                {
+                                    _df2 = new DOCUMENTOF();
+                                    DOCUMENTOF docF = new DOCUMENTOF();
+                                    docF = dOCUMENTO.DOCUMENTOF[i];
+                                    _df2.POS = docF.POS;
+                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.FACTURA = docF.FACTURA;
+                                    _df2.PROVEEDOR = docF.PROVEEDOR;
+                                    _df2.CONTROL = docF.CONTROL;
+                                    _df2.AUTORIZACION = docF.AUTORIZACION;
+                                    _df2.FACTURAK = docF.FACTURAK;
+                                    _df2.EJERCICIOK = docF.EJERCICIOK;
+                                    _df2.BILL_DOC = docF.BILL_DOC;
+                                    _df2.BELNR = docF.BELNR;
+                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                    _df2.PAYER = docF.PAYER;
+                                    db.DOCUMENTOFs.Add(_df2);
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    { }
+                    //lej 26-07-2018 fin-----------------
+                }
+                catch (Exception e) { }
 
                 //Guardar los documentos cargados en la sección de soporte
                 var res = "";
@@ -4473,7 +4827,9 @@ namespace TAT001.Controllers
                     //Obtener las variables con los datos de sesión y ruta
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     //Crear el directorio
-                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+
+                    //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
+                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                     //Evaluar que se creo el directorio
                     ////if (dir.Equals(""))
@@ -4575,7 +4931,8 @@ namespace TAT001.Controllers
                                     string path = "";
                                     string filename = file.FileName;
                                     errorfiles = "";
-                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);
+                                    //res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
+                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path, d.EJERCICIO.ToString());//RSG 01.08.2018
 
                                     if (errorfiles == "")
                                     {
@@ -4669,7 +5026,7 @@ namespace TAT001.Controllers
                     ViewBag.error = errorString;
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             ViewBag.TALL_ID = new SelectList(db.TALLs, "ID", "DESCRIPCION", dOCUMENTO.TALL_ID);
             ViewBag.TSOL_ID = new SelectList(db.TSOLs, "ID", "DESCRIPCION", dOCUMENTO.TSOL_ID);
@@ -4677,6 +5034,23 @@ namespace TAT001.Controllers
             ViewBag.VKORG = new SelectList(db.CLIENTEs, "VKORG", "NAME1", dOCUMENTO.VKORG);
             ViewBag.PAIS_ID = new SelectList(db.PAIS, "LAND", "SPRAS", dOCUMENTO.PAIS_ID);
             ViewBag.SOCIEDAD_ID = new SelectList(db.SOCIEDADs, "BUKRS", "BUTXT", dOCUMENTO.SOCIEDAD_ID);
+
+            //LEJ 24.07.2018------------------------------------------------------------
+            DOCUMENTO dOCUMENTO_ = db.DOCUMENTOes.Find(dOCUMENTO.NUM_DOC);
+            if (dOCUMENTO_ == null)
+            {
+                return HttpNotFound();
+            }
+            dOCUMENTO_.CLIENTE = db.CLIENTEs.Where(a => a.VKORG.Equals(dOCUMENTO.VKORG)
+                                                    & a.VTWEG.Equals(dOCUMENTO.VTWEG)
+                                                    & a.SPART.Equals(dOCUMENTO.SPART)
+                                                    & a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).First();
+            dOCUMENTO_.DOCUMENTOF = db.DOCUMENTOFs.Where(a => a.NUM_DOC.Equals(dOCUMENTO.NUM_DOC)).ToList();
+            DocumentoFlujo DF = new DocumentoFlujo();
+            DF.D = dOCUMENTO_;
+            ViewBag.df = DF;
+            //LEJ 24.07.2018------------------------------------------------------------
+
             return View(dOCUMENTO);
         }
 
@@ -4769,7 +5143,7 @@ namespace TAT001.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Solicitudes");
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -5109,14 +5483,16 @@ namespace TAT001.Controllers
                     {
                         doc.MATNR = dt.Rows[i][2].ToString(); //Material
                         MATERIAL mat = material(doc.MATNR);
-                        if (mat != null)//Validar si el material existe
+                        if (mat != null & ld.Where(x => x.MATNR.Equals(doc.MATNR)).Count() == 0)//Validar si el material existe
                         {
                             //doc.MATKL = (string)dt.Rows[i][4]; //Categoría se toma de la bd
-                            CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            ////CATEGORIAT cat = getCategoriaS(material: doc.MATNR); //Categoría
+                            MATERIALGPT cat = getCategoriaS(material: doc.MATNR); //Categoría//RSG 01.08.2018
                             try
                             {
                                 doc.MATKL = cat.TXT50.ToString();
-                                doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                                //doc.MATKL_ID = cat.CATEGORIA_ID.ToString();
+                                doc.MATKL_ID = cat.MATERIALGP_ID.ToString();//RSG 01.08.2018
                             }
                             catch (Exception e)
                             {
@@ -5330,17 +5706,18 @@ namespace TAT001.Controllers
                     //    doc.VENCIMIENTO = null;
                     //}
                     //jemo 10-17-2018 fin
+                    //jemo 25-17-2018 inicio
                     try
                     {
-                        doc.FACTURAK = (string)dt.Rows[i][6]; //Facturak
+                        doc.BILL_DOC = dt.Rows[i][1].ToString(); //Bill_doc
                     }
                     catch (Exception e)
                     {
-                        doc.FACTURAK = null;
+                        doc.BILL_DOC = null;
                     }
                     try
                     {
-                        int ej = Convert.ToInt32(dt.Rows[i][7]);
+                        int ej = Convert.ToInt32(dt.Rows[i][2]);
                         doc.EJERCICIOK = Convert.ToString(ej); //Ejerciciok
                     }
                     catch (Exception e)
@@ -5349,20 +5726,29 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.BILL_DOC = (string)dt.Rows[i][8]; //Bill_doc
+                        doc.PAYER = (string)dt.Rows[i][3]; //Cliente
                     }
                     catch (Exception e)
                     {
-                        doc.BILL_DOC = null;
+                        doc.PAYER = null;
                     }
                     try
                     {
-                        doc.BELNR = (string)dt.Rows[i][9]; //Belnr
+                        doc.IMPORTE_FACT = dt.Rows[i][4].ToString(); //Importe factura
+                    }
+                    catch (Exception e)
+                    {
+                        doc.IMPORTE_FACT = null;
+                    }
+                    try
+                    {
+                        doc.BELNR = (string)dt.Rows[i][5]; //Belnr
                     }
                     catch (Exception e)
                     {
                         doc.BELNR = null;
                     }
+                    //jemo 25-17-2018 fin
 
                     ld.Add(doc);
                     pos++;
@@ -5382,6 +5768,17 @@ namespace TAT001.Controllers
             return jl;
         }
 
+        //LEJ 30.07.2018---------------------------------------------I
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult getPeriodo(DateTime fecha)
+        {
+            Calendario445 c = new Calendario445();
+            var _f = c.getPeriodo(fecha);
+            JsonResult jl = Json(_f, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+        //LEJ 30.07.2018---------------------------------------------T
         [HttpPost]
         [AllowAnonymous]
         public JsonResult LoadConfigSoporte(string sociedad, string pais, string tsol, string nulos, string class_doc)//jemo 09-07-2018
@@ -6872,20 +7269,22 @@ namespace TAT001.Controllers
                     string url = ConfigurationManager.AppSettings["URL_SAVE"];
                     HttpPostedFileBase file = Request.Files[i];
                     string filename = file.FileName;
-                    res = SaveFile(file, url, "100", out error, out path);
+                    //res = SaveFile(file, url, "100", out error, out path);//RSG 01.08.2018
+                    res = SaveFile(file, url, "100", out error, out path, "2018");//RSG 01.08.2018
                 }
             }
 
             return res;
         }
 
-        public string createDir(string path, string documento)
+        public string createDir(string path, string documento, string ejercicio)
         {
 
             string ex = "";
 
             // Specify the path to save the uploaded file to.
-            string savePath = path + documento + "\\";
+            //string savePath = path + documento + "\\";
+            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
             // Create the path and file name to check for duplicates.
             string pathToCheck = savePath;
@@ -6917,7 +7316,7 @@ namespace TAT001.Controllers
             return ex;
         }
 
-        public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved)
+        public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved, string ejercicio)
         {
             string ex = "";
             //string exdir = "";
@@ -6925,7 +7324,8 @@ namespace TAT001.Controllers
             string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
 
             // Specify the path to save the uploaded file to.
-            string savePath = path + documento + "\\";
+            //string savePath = path + documento + "\\";//RSG 01.08.2018
+            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
             // Create the path and file name to check for duplicates.
             string pathToCheck = savePath;
@@ -7235,26 +7635,31 @@ namespace TAT001.Controllers
         }
 
         [HttpPost]
-        public CATEGORIAT getCategoriaS(string material)
+        //public CATEGORIAT getCategoriaS(string material)
+        public MATERIALGPT getCategoriaS(string material)
         {
             if (material == null)
                 material = "";
-
+            material = completaMaterial(material);
             TAT001Entities db = new TAT001Entities();
 
             MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
-            CATEGORIAT cat = new CATEGORIAT();
+            //CATEGORIAT cat = new CATEGORIAT();
+            MATERIALGPT cat = new MATERIALGPT();//RSG 01.08.2018
 
-            if (m != null && m.MATKL_ID != "")
+            //if (m != null && m.MATKL_ID != "")
+            if (m != null && m.MATERIALGP_ID != "")//RSG 01.08.2018
             {
                 string u = User.Identity.Name;
                 var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                //cat = db.CATEGORIAs.Where(c => c.ID == m.MATKL_ID && c.ACTIVO == true)
+                cat = db.MATERIALGPs.Where(c => c.ID == m.MATERIALGP_ID && c.ACTIVO == true)//RSG 01.08.2018
                             .Join(
-                            db.CATEGORIATs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
+                            db.MATERIALGPTs.Where(ct => ct.SPRAS_ID == user.SPRAS_ID),
                             c => c.ID,
-                            ct => ct.CATEGORIA_ID,
+                            //ct => ct.CATEGORIA_ID,
+                            ct => ct.MATERIALGP_ID,//RSG 01.08.2018
                             (c, ct) => ct)
                         .FirstOrDefault();
             }
@@ -7323,7 +7728,7 @@ namespace TAT001.Controllers
             TAT001.Models.SOLICITUD_MOD sm = new SOLICITUD_MOD();
 
             //Obtener info solicitud
-            if (num == null | num == "")
+            if (num == null | num == "" | num == "0.00")
             {
                 sm.S_NUM = num = "";
             }

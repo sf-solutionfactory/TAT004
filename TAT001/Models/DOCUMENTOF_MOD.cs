@@ -25,6 +25,7 @@ namespace TAT001.Models
         public string IMPORTE_FACT { get; set; }
         public string PAYER { get; set; }
         public string DESCRIPCION { get; set; }
+        public string SOCIEDAD { get; set; }
         //jemo 10-17-2018 fin
     }
 }

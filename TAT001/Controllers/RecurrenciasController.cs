@@ -3466,7 +3466,7 @@ namespace TAT001.Controllers
             if (file != null & miDocR != null)
             {
                 List<string> li = new List<string>();
-                SolicitudesController3 sc = new SolicitudesController3();
+                SolicitudesController sc = new SolicitudesController();
                 Reversa rv = new Reversa();
                 DOCUMENTOREC docRe = new DOCUMENTOREC();
                 docRe = db.DOCUMENTORECs.Where(x => x.DOC_REF == id).FirstOrDefault();
@@ -3495,12 +3495,12 @@ namespace TAT001.Controllers
                 string nombreV = file.FileName;
                 string url = ConfigurationManager.AppSettings["URL_SAVE"];
                 string nomNum = numR.ToString();
-                var dir = sc.createDir(url, nomNum);
+                var dir = sc.createDir(url, nomNum, DateTime.Now.Year.ToString());
                 if (dir.Equals(""))
                 {
                     string errorfiles = "";
                     string path = "";
-                    var res = sc.SaveFile(file, url, nomNum, out errorfiles, out path);
+                    var res = sc.SaveFile(file, url, nomNum, out errorfiles, out path, DateTime.Now.Year.ToString());
                 }
                 url = url + nomNum + @"\" + nombreV;
 

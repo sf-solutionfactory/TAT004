@@ -27,6 +27,7 @@ namespace TAT001.Models
         public bool IMPORTE_FAC { get; set; }
         public bool PAYER { get; set; }
         public bool DESCRIPCION { get; set; }
+        public bool SOCIEDAD { get; internal set; }
         //jemo 09-07-2018 fin
     }
 }

@@ -481,7 +481,8 @@
                             <h5 id="head_infocli">Información del cliente</h5>@*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })
+                                    @*@Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })*@
+                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada } })
                                     @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id", @id = "lbl_payer" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -763,6 +764,7 @@
                                         <tr>
                                             <th id="thead_pos">Pos</th> @*B20180801 MGC Textos*@
                                             <th id="thead_fact">Factura</th> @*B20180801 MGC Textos*@
+                                            <th>Sociedad</th>@*@03-08-2018 jemo *@
                                             <th id="thead_fecha">Fecha Factura</th> @*B20180801 MGC Textos*@
                                             <th id="thead_prov">Proveedor</th> @*B20180801 MGC Textos*@
                                             <th id="thead_provdesc">Proveedor Desc</th> @*B20180801 MGC Textos*@
@@ -788,51 +790,54 @@
                                             @*//B20180625 MGC 2018.06.27*@
                                             for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
                                             {
-                                                <tr>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].SOCIEDAD)@*//B20180625 JEMO 2018.08.03*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td></td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                            </td>
+                                            <td>
+                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
+                                            </td>
+                                        </tr>
                                             }
                                         }
                                     </tbody>
@@ -1349,7 +1354,12 @@
                                 <input id="check_objetivoq" name="check_objetivoq" type="checkbox" onchange="objetivoQ(this.checked);" />
                                 <span id="span_objq">Objetivo Q</span> @*B20180801 MGC Textos*@
                             </label>
-
+                            @if (Model.OBJETIVOQ == true)
+                            {
+                                <script>
+                                    document.getElementById("check_objetivoq").checked = true;
+                                </script>
+                            }
                             <script>
                                 function objetivoQ(ban) {
                                     if (ban) {
