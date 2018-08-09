@@ -14,6 +14,12 @@ namespace TAT001
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+               name: "Details",
+               url: "Solicitudes/Details/{id}/{ejercicio}",
+               defaults: new { controller = "Solicitudes", action = "Details", id = UrlParameter.Optional, ejercicio = UrlParameter.Optional }
+           );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
@@ -23,6 +29,7 @@ namespace TAT001
                  name: "Procesa",
                  url: "{controller}/{action}/{id}/{accion}"
              );
+
         }
     }
 }

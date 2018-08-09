@@ -118,8 +118,9 @@ namespace TAT001.Controllers
         }
 
         // GET: Solicitudes/Details/5
-        public ActionResult Details(decimal id, string pais)
+        public ActionResult Details(decimal id, string ejercicio, string pais)
         {
+            ////var _dp1 = db.DOCUMENTOes.Find(new object[] { id, ejercicio });
             int pagina = 203; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -272,7 +273,7 @@ namespace TAT001.Controllers
                 //Crear el directorio
                 DOCUMENTO du = db.DOCUMENTOes.Find(num_doc);//RSG 01.08.2018
                 //var dir = createDir(url, num_doc.ToString());
-                var dir = createDir(url, num_doc.ToString(), du.EJERCICIO.ToString());//RSG 01.08.2018
+                var dir = new Files().createDir(url, num_doc.ToString(), du.EJERCICIO.ToString());//RSG 01.08.2018
 
                 //Evaluar que se creo el directorio
                 if (dir.Equals(""))
@@ -303,7 +304,7 @@ namespace TAT001.Controllers
                                 string filename = file.FileName;
                                 errorfiles = "";
                                 //res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path);
-                                res = SaveFile(file, url, num_doc.ToString(), out errorfiles, out path, du.EJERCICIO.ToString());//RSG 01.08.2018
+                                res = new Files().SaveFile(file, url, num_doc.ToString(), out errorfiles, out path, du.EJERCICIO.ToString());//RSG 01.08.2018
 
                                 if (errorfiles == "")
                                 {
@@ -430,11 +431,12 @@ namespace TAT001.Controllers
                         //MONEDAL2_ID moneda en USD
                         _dc.MONEDAL2_ID = "USD";
 
+                        TCambio tcambio = new TCambio();//RSG 01.08.2018
                         //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                        _dc.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, _dc.MONEDA_ID, out errorString);
+                        _dc.TIPO_CAMBIOL = tcambio.getUkurs(id_bukrs.WAERS, _dc.MONEDA_ID, out errorString);
 
                         //Tipo cambio dolares TIPO_CAMBIOL2
-                        _dc.TIPO_CAMBIOL2 = getUkursUSD(_dc.MONEDA_ID, "USD", out errorString);
+                        _dc.TIPO_CAMBIOL2 = tcambio.getUkursUSD(_dc.MONEDA_ID, "USD", out errorString);
                         db.Entry(_dc).State = EntityState.Modified;
                         db.SaveChanges();
                         if (!errorString.Equals(""))
@@ -1612,8 +1614,9 @@ namespace TAT001.Controllers
                     {
 
                     }
+                    TCambio tcambio = new TCambio();//RSG 01.08.2018
                     //Obtener el monto de la sociedad
-                    dOCUMENTO.MONTO_DOC_ML = getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
+                    dOCUMENTO.MONTO_DOC_ML = tcambio.getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
                     //if (!errorString.Equals("") && !borrador_param.Equals("borrador")) //B20180625 MGC 2018.07.03
                     if (!errorString.Equals("")) //B20180625 MGC 2018.07.03
                     {
@@ -1631,10 +1634,10 @@ namespace TAT001.Controllers
                     dOCUMENTO.MONEDAL2_ID = "USD";
 
                     //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                    dOCUMENTO.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL = tcambio.getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
 
                     //Tipo cambio dolares TIPO_CAMBIOL2
-                    dOCUMENTO.TIPO_CAMBIOL2 = getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL2 = tcambio.getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
                     if (!errorString.Equals(""))
                     {
                         throw new Exception();
@@ -1688,12 +1691,12 @@ namespace TAT001.Controllers
                     }
                     else
                     {
-
+                        Rangos rangos = new Rangos();//RSG 01.08.2018
                         //Obtener el número de documento
-                        decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
+                        decimal N_DOC = rangos.getSolID(dOCUMENTO.TSOL_ID);
                         dOCUMENTO.NUM_DOC = N_DOC;
                         //Actualizar el rango
-                        updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
+                        rangos.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
 
                         dOCUMENTO.VKORG = payer.VKORG;
@@ -1896,7 +1899,7 @@ namespace TAT001.Controllers
                                             docmod.MATNR = "";
                                         }
                                         docP.MATNR = docmod.MATNR;
-                                        docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                        docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
                                         docP.MATKL = docmod.MATKL_ID;
                                         docP.CANTIDAD = 1;
                                         docP.MONTO = docmod.MONTO;
@@ -2109,7 +2112,7 @@ namespace TAT001.Controllers
                                         dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR = "";
                                     }
                                     docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
-                                    docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                    docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
                                     docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
                                     docP.CANTIDAD = 1;
                                     docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
@@ -2374,7 +2377,7 @@ namespace TAT001.Controllers
                         string url = ConfigurationManager.AppSettings["URL_SAVE"];
                         //Crear el directorio
                         //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
-                        var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
+                        var dir = new Files().createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                         //Evaluar que se creo el directorio
                         if (dir.Equals(""))
@@ -2402,7 +2405,7 @@ namespace TAT001.Controllers
                                         string filename = file.FileName;
                                         errorfiles = "";
                                         //res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
-                                        res = SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path, dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
+                                        res = new Files().SaveFile(file, url, dOCUMENTO.NUM_DOC.ToString(), out errorfiles, out path, dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                                         if (errorfiles == "")
                                         {
@@ -2903,8 +2906,9 @@ namespace TAT001.Controllers
                     var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
                     dOCUMENTO.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
 
+                    TCambio tcambio = new TCambio();
                     //Obtener el monto de la sociedad
-                    dOCUMENTO.MONTO_DOC_ML = getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
+                    dOCUMENTO.MONTO_DOC_ML = tcambio.getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
 
                     //MONTO_DOC_ML2 
                     var MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
@@ -2917,10 +2921,10 @@ namespace TAT001.Controllers
                     dOCUMENTO.MONEDAL2_ID = "USD";
 
                     //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                    dOCUMENTO.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL = tcambio.getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
 
                     //Tipo cambio dolares TIPO_CAMBIOL2
-                    dOCUMENTO.TIPO_CAMBIOL2 = getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL2 = tcambio.getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
 
                     //Obtener datos del payer
                     CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
@@ -3216,120 +3220,121 @@ namespace TAT001.Controllers
             carga.contDescarga(archivo, ref contentyp, ref nombre);
             return File(archivo, contentyp, nombre);
         }
-        public decimal getValSoc(string waers, string moneda_id, decimal monto_doc_md, out string errorString)
-        {
-            decimal val = 0;
 
-            //Siempre la conversión va a la sociedad    
+        //public decimal getValSoc(string waers, string moneda_id, decimal monto_doc_md, out string errorString)
+        //{
+        //    decimal val = 0;
 
-            var UKURS = getUkurs(waers, moneda_id, out errorString);
+        //    //Siempre la conversión va a la sociedad    
 
-            if (errorString.Equals(""))
-            {
+        //    var UKURS = getUkurs(waers, moneda_id, out errorString);
 
-                decimal uk = Convert.ToDecimal(UKURS);
+        //    if (errorString.Equals(""))
+        //    {
 
-                if (UKURS > 0)
-                {
-                    val = uk * Convert.ToDecimal(monto_doc_md);
-                }
-            }
+        //        decimal uk = Convert.ToDecimal(UKURS);
 
-            return val;
-        }
+        //        if (UKURS > 0)
+        //        {
+        //            val = uk * Convert.ToDecimal(monto_doc_md);
+        //        }
+        //    }
 
-        public decimal getUkurs(string waers, string moneda_id, out string errorString)
-        {
-            decimal ukurs = 0;
-            errorString = string.Empty;
-            using (TAT001Entities db = new TAT001Entities())
-            {
-                try
-                {
-                    //Siempre la conversión va a la sociedad    
-                    var date = DateTime.Now.Date;
-                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(date)).FirstOrDefault();
-                    if (tcambio == null)
-                    {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers)).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(max)).FirstOrDefault();
-                    }
+        //    return val;
+        //}
 
-                    ukurs = Convert.ToDecimal(tcambio.UKURS);
+        //public decimal getUkurs(string waers, string moneda_id, out string errorString)
+        //{
+        //    decimal ukurs = 0;
+        //    errorString = string.Empty;
+        //    using (TAT001Entities db = new TAT001Entities())
+        //    {
+        //        try
+        //        {
+        //            //Siempre la conversión va a la sociedad    
+        //            var date = DateTime.Now.Date;
+        //            var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(date)).FirstOrDefault();
+        //            if (tcambio == null)
+        //            {
+        //                var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers)).Max(a => a.GDATU);
+        //                tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(max)).FirstOrDefault();
+        //            }
 
-                }
-                catch (Exception e)
-                {
-                    errorString = "detail: conversion " + moneda_id + " to " + waers + " in date " + DateTime.Now.Date;
-                    return 0;
-                }
-            }
+        //            ukurs = Convert.ToDecimal(tcambio.UKURS);
 
-            return ukurs;
-        }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            errorString = "detail: conversion " + moneda_id + " to " + waers + " in date " + DateTime.Now.Date;
+        //            return 0;
+        //        }
+        //    }
 
-        public decimal getUkursUSD(string waers, string waersusd, out string errorString)
-        {
-            decimal ukurs = 0;
-            errorString = string.Empty;
-            using (TAT001Entities db = new TAT001Entities())
-            {
-                try
-                {
-                    var date = DateTime.Now.Date;
-                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(date)).FirstOrDefault();
-                    if (tcambio == null)
-                    {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd)).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(max)).FirstOrDefault();
-                    }
+        //    return ukurs;
+        //}
 
-                    ukurs = Convert.ToDecimal(tcambio.UKURS);
-                }
-                catch (Exception e)
-                {
-                    errorString = "detail: conversion " + waers + " to " + waersusd + " in date " + DateTime.Now.Date;
-                    return 0;
-                }
+        //public decimal getUkursUSD(string waers, string waersusd, out string errorString)
+        //{
+        //    decimal ukurs = 0;
+        //    errorString = string.Empty;
+        //    using (TAT001Entities db = new TAT001Entities())
+        //    {
+        //        try
+        //        {
+        //            var date = DateTime.Now.Date;
+        //            var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(date)).FirstOrDefault();
+        //            if (tcambio == null)
+        //            {
+        //                var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd)).Max(a => a.GDATU);
+        //                tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(max)).FirstOrDefault();
+        //            }
 
-            }
+        //            ukurs = Convert.ToDecimal(tcambio.UKURS);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            errorString = "detail: conversion " + waers + " to " + waersusd + " in date " + DateTime.Now.Date;
+        //            return 0;
+        //        }
 
-            return ukurs;
-        }
+        //    }
 
-        public RANGO getRango(string TSOL_ID)
-        {
-            RANGO rango = new RANGO();
-            using (TAT001Entities db = new TAT001Entities())
-            {
+        //    return ukurs;
+        //}
 
-                rango = (from r in db.RANGOes
-                         join s in db.TSOLs
-                         on r.ID equals s.RANGO_ID
-                         where s.ID == TSOL_ID && r.ACTIVO == true
-                         select r).FirstOrDefault();
+        //public RANGO getRango(string TSOL_ID)
+        //{
+        //    RANGO rango = new RANGO();
+        //    using (TAT001Entities db = new TAT001Entities())
+        //    {
 
-            }
+        //        rango = (from r in db.RANGOes
+        //                 join s in db.TSOLs
+        //                 on r.ID equals s.RANGO_ID
+        //                 where s.ID == TSOL_ID && r.ACTIVO == true
+        //                 select r).FirstOrDefault();
 
-            return rango;
+        //    }
 
-        }
+        //    return rango;
 
-        public decimal getSolID(string TSOL_ID)
-        {
+        //}
 
-            decimal id = 0;
+        //public decimal getSolID(string TSOL_ID)
+        //{
 
-            RANGO rango = getRango(TSOL_ID);
+        //    decimal id = 0;
 
-            if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
-            {
-                rango.ACTUAL++;
-                id = (decimal)rango.ACTUAL;
-            }
+        //    RANGO rango = getRango(TSOL_ID);
 
-            return id;
-        }
+        //    if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
+        //    {
+        //        rango.ACTUAL++;
+        //        id = (decimal)rango.ACTUAL;
+        //    }
+
+        //    return id;
+        //}
 
         public STATE getEstado(int id)
         {
@@ -3365,20 +3370,20 @@ namespace TAT001.Controllers
         }
 
 
-        public void updateRango(string TSOL_ID, decimal actual)
-        {
+        //public void updateRango(string TSOL_ID, decimal actual)
+        //{
 
-            RANGO rango = getRango(TSOL_ID);
+        //    RANGO rango = getRango(TSOL_ID);
 
-            if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
-            {
-                rango.ACTUAL = actual;
-            }
+        //    if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
+        //    {
+        //        rango.ACTUAL = actual;
+        //    }
 
-            db.Entry(rango).State = EntityState.Modified;
-            db.SaveChanges();
+        //    db.Entry(rango).State = EntityState.Modified;
+        //    db.SaveChanges();
 
-        }
+        //}
 
         // GET: Solicitudes/Edit/5
 
@@ -4154,8 +4159,9 @@ namespace TAT001.Controllers
                 d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
 
                 string errorString = "";
+                TCambio tcambio = new TCambio();
                 //Obtener el monto de la sociedad
-                d.MONTO_DOC_ML = getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(d.MONTO_DOC_MD), out errorString);
+                d.MONTO_DOC_ML = tcambio.getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(d.MONTO_DOC_MD), out errorString);
                 if (!errorString.Equals(""))
                 {
                     throw new Exception();
@@ -4172,10 +4178,10 @@ namespace TAT001.Controllers
                 d.MONEDAL2_ID = "USD";
 
                 //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                d.TIPO_CAMBIOL = getUkurs(d.SOCIEDAD.WAERS, d.MONEDA_ID, out errorString);
+                d.TIPO_CAMBIOL = tcambio.getUkurs(d.SOCIEDAD.WAERS, d.MONEDA_ID, out errorString);
 
                 //Tipo cambio dolares TIPO_CAMBIOL2
-                d.TIPO_CAMBIOL2 = getUkursUSD(d.MONEDA_ID, "USD", out errorString);
+                d.TIPO_CAMBIOL2 = tcambio.getUkursUSD(d.MONEDA_ID, "USD", out errorString);
 
                 //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
                 //Si la distribución es categoría se obtienen las categorías
@@ -4230,7 +4236,7 @@ namespace TAT001.Controllers
                                         docmod.MATNR = "";
                                     }
                                     docP.MATNR = docmod.MATNR;
-                                    docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                    docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
                                     docP.MATKL = docmod.MATKL_ID;
                                     docP.CANTIDAD = 1;
                                     docP.MONTO = docmod.MONTO;
@@ -4403,7 +4409,7 @@ namespace TAT001.Controllers
                                     dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR = "";
                                 }
                                 docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
-                                docP.MATNR = completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
                                 docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
                                 docP.CANTIDAD = 1;
                                 docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
@@ -4808,7 +4814,7 @@ namespace TAT001.Controllers
                     //Crear el directorio
 
                     //var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString());
-                    var dir = createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
+                    var dir = new Files().createDir(url, dOCUMENTO.NUM_DOC.ToString(), dOCUMENTO.EJERCICIO.ToString());//RSG 01.08.2018
 
                     //Evaluar que se creo el directorio
                     ////if (dir.Equals(""))
@@ -4911,7 +4917,7 @@ namespace TAT001.Controllers
                                     string filename = file.FileName;
                                     errorfiles = "";
                                     //res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path);//RSG 01.08.2018
-                                    res = SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path, d.EJERCICIO.ToString());//RSG 01.08.2018
+                                    res = new Files().SaveFile(file, url, d.NUM_DOC.ToString(), out errorfiles, out path, d.EJERCICIO.ToString());//RSG 01.08.2018
 
                                     if (errorfiles == "")
                                     {
@@ -7260,103 +7266,103 @@ namespace TAT001.Controllers
                     HttpPostedFileBase file = Request.Files[i];
                     string filename = file.FileName;
                     //res = SaveFile(file, url, "100", out error, out path);//RSG 01.08.2018
-                    res = SaveFile(file, url, "100", out error, out path, "2018");//RSG 01.08.2018
+                    res = new Files().SaveFile(file, url, "100", out error, out path, "2018");//RSG 01.08.2018
                 }
             }
 
             return res;
         }
 
-        public string createDir(string path, string documento, string ejercicio)
-        {
+        //public string createDir(string path, string documento, string ejercicio)
+        //{
 
-            string ex = "";
+        //    string ex = "";
 
-            // Specify the path to save the uploaded file to.
-            //string savePath = path + documento + "\\";
-            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
+        //    // Specify the path to save the uploaded file to.
+        //    //string savePath = path + documento + "\\";
+        //    string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
-            // Create the path and file name to check for duplicates.
-            string pathToCheck = savePath;
+        //    // Create the path and file name to check for duplicates.
+        //    string pathToCheck = savePath;
 
-            try
-            {
-                ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
-                ////{
-                if (!System.IO.File.Exists(pathToCheck))
-                {
-                    //No existe, se necesita crear
-                    DirectoryInfo dir = new DirectoryInfo(pathToCheck);
+        //    try
+        //    {
+        //        ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
+        //        ////{
+        //        if (!System.IO.File.Exists(pathToCheck))
+        //        {
+        //            //No existe, se necesita crear
+        //            DirectoryInfo dir = new DirectoryInfo(pathToCheck);
 
-                    dir.Create();
+        //            dir.Create();
 
-                }
-                ////}
+        //        }
+        //        ////}
 
-                //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
-                //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
-                //System.IO.File.Copy(copyFrom, savePath);
-                //f.CopyTo(savePath,true);
-            }
-            catch (Exception e)
-            {
-                ex = "No se puede crear el directorio para guardar los archivos";
-            }
+        //        //file.SaveAs(Server.MapPath(savePath)); //Guardarlo el cualquier parte dentro del proyecto <add key="URL_SAVE" value="\Archivos\" />
+        //        //System.IO.File.Create(savePath,100,FileOptions.DeleteOnClose, )
+        //        //System.IO.File.Copy(copyFrom, savePath);
+        //        //f.CopyTo(savePath,true);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ex = "No se puede crear el directorio para guardar los archivos";
+        //    }
 
-            return ex;
-        }
+        //    return ex;
+        //}
 
-        public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved, string ejercicio)
-        {
-            string ex = "";
-            //string exdir = "";
-            // Get the name of the file to upload.
-            string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
+        //public string SaveFile(HttpPostedFileBase file, string path, string documento, out string exception, out string pathsaved, string ejercicio)
+        //{
+        //    string ex = "";
+        //    //string exdir = "";
+        //    // Get the name of the file to upload.
+        //    string fileName = file.FileName;//System.IO.Path.GetExtension(file.FileName);    // must be declared in the class above
 
-            // Specify the path to save the uploaded file to.
-            //string savePath = path + documento + "\\";//RSG 01.08.2018
-            string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
+        //    // Specify the path to save the uploaded file to.
+        //    //string savePath = path + documento + "\\";//RSG 01.08.2018
+        //    string savePath = path + ejercicio + "\\" + documento + "\\";//RSG 01.08.2018
 
-            // Create the path and file name to check for duplicates.
-            string pathToCheck = savePath;
+        //    // Create the path and file name to check for duplicates.
+        //    string pathToCheck = savePath;
 
-            // Append the name of the file to upload to the path.
-            savePath += fileName;
+        //    // Append the name of the file to upload to the path.
+        //    savePath += fileName;
 
-            // Call the SaveAs method to save the uploaded
-            // file to the specified directory.
-            //file.SaveAs(Server.MapPath(savePath));
+        //    // Call the SaveAs method to save the uploaded
+        //    // file to the specified directory.
+        //    //file.SaveAs(Server.MapPath(savePath));
 
-            //file to domain
-            //Parte para guardar archivo en el servidor
-            ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
-            ////{
-            //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
-            try
-            {
-
-
-                //Guardar el archivo
-                file.SaveAs(savePath);
+        //    //file to domain
+        //    //Parte para guardar archivo en el servidor
+        //    ////using (Impersonation.LogonUser("192.168.1.77", "EQUIPO", "0906", LogonType.NewCredentials))
+        //    ////{
+        //    //fileName = file.SaveAs(file, Server.MapPath("~/Nueva carpeta/") + file.FileName);
+        //    try
+        //    {
 
 
-            }
-            catch (Exception e)
-            {
-                ex = "";
-                ex = fileName;
-            }
-            ////}
+        //        //Guardar el archivo
+        //        file.SaveAs(savePath);
 
-            //Guardarlo en la base de datos
-            if (ex == "")
-            {
 
-            }
-            pathsaved = savePath;
-            exception = ex;
-            return fileName;
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ex = "";
+        //        ex = fileName;
+        //    }
+        //    ////}
+
+        //    //Guardarlo en la base de datos
+        //    if (ex == "")
+        //    {
+
+        //    }
+        //    pathsaved = savePath;
+        //    exception = ex;
+        //    return fileName;
+        //}
 
         [HttpPost]
         [AllowAnonymous]
@@ -7452,7 +7458,7 @@ namespace TAT001.Controllers
             if (material == null)
                 material = "";
             //RSG 07.06.2018---------------------------------------------
-            material = completaMaterial(material);
+            material = new Cadena().completaMaterial(material);
             //RSG 07.06.2018---------------------------------------------
 
             TAT001Entities db = new TAT001Entities();
@@ -7479,7 +7485,7 @@ namespace TAT001.Controllers
             if (mat == null)
                 mat = "";
             //RSG 07.06.2018---------------------------------------------
-            mat = completaMaterial(mat);
+            mat = new Cadena().completaMaterial(mat);
             //RSG 07.06.2018---------------------------------------------
 
             MaterialVal matt = db.MATERIALs.Where(m => m.ID == mat && m.ACTIVO == true).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATKL_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
@@ -7553,7 +7559,7 @@ namespace TAT001.Controllers
             if (material == null)
                 material = "";
             //RSG 07.06.2018---------------------------------------------
-            material = completaMaterial(material);
+            material = new Cadena().completaMaterial(material);
             //RSG 07.06.2018---------------------------------------------
 
             TAT001Entities db = new TAT001Entities();
@@ -7630,7 +7636,7 @@ namespace TAT001.Controllers
         {
             if (material == null)
                 material = "";
-            material = completaMaterial(material);
+            material = new Cadena().completaMaterial(material);
             TAT001Entities db = new TAT001Entities();
 
             MATERIAL m = db.MATERIALs.Where(mat => mat.ID.Equals(material)).FirstOrDefault();
@@ -7693,24 +7699,24 @@ namespace TAT001.Controllers
             doc.DOCUMENTOREC = docs;
             return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
         }
-        private string completaMaterial(string material)//RSG 07.06.2018---------------------------------------------
-        {
-            string m = material;
-            try
-            {
-                long matnr1 = long.Parse(m);
-                int l = 18 - m.Length;
-                for (int i = 0; i < l; i++)
-                {
-                    m = "0" + m;
-                }
-            }
-            catch
-            {
+        //private string completaMaterial(string material)//RSG 07.06.2018---------------------------------------------
+        //{
+        //    string m = material;
+        //    try
+        //    {
+        //        long matnr1 = long.Parse(m);
+        //        int l = 18 - m.Length;
+        //        for (int i = 0; i < l; i++)
+        //        {
+        //            m = "0" + m;
+        //        }
+        //    }
+        //    catch
+        //    {
 
-            }
-            return m;
-        }
+        //    }
+        //    return m;
+        //}
 
         [HttpPost]
         public JsonResult getSolicitud(string num, string num2)//RSG 07.06.2018---------------------------------------------

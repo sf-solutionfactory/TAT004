@@ -568,7 +568,7 @@ namespace TAT001.Services
             //-------------------------------------------------------------------------------------------------------------------------------//
             if (correcto.Equals(""))
             {
-                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).OrderByDescending(x => x.POS).FirstOrDefault();
+                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x=>x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                 string corr = "";
                 if (conta.WORKFP.ACCION.TIPO == "P")
                 {

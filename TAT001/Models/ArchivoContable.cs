@@ -27,12 +27,20 @@ namespace TAT001.Models
                 {
                     if (relacion == 0)
                     {
-                        tab = db.CONPOSAPHs.First(x => x.TIPO_SOL == doc.TSOL_ID
+                        tab = db.CONPOSAPHs.Where(x => x.TIPO_SOL == doc.TSOL.TSOLC
                         && x.SOCIEDAD == doc.SOCIEDAD_ID
                         && x.FECHA_FINVIG >= doc.FECHAF_VIG
                         && x.FECHA_INIVIG <= DateTime.Today
-                        && x.TIPO_DOC != "KG"
-                        );
+                        && x.TIPO_DOC != "KG").FirstOrDefault();
+                        if (tab == null)
+                        {
+                            tab = db.CONPOSAPHs.First(x => x.TIPO_SOL == doc.TSOL_ID
+                            && x.SOCIEDAD == doc.SOCIEDAD_ID
+                            && x.FECHA_FINVIG >= doc.FECHAF_VIG
+                            && x.FECHA_INIVIG <= DateTime.Today
+                            && x.TIPO_DOC != "KG"
+                            );
+                        }
                     }
                     else
                     {

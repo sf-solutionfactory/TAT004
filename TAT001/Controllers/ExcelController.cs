@@ -1242,7 +1242,7 @@ namespace TAT001.Controllers
         public void guardaArchivos(decimal numDoc)
         {
             IEnumerable<HttpPostedFileBase> archivosRE = (IEnumerable<HttpPostedFileBase>)Session["arcReales"];
-            SolicitudesController sc = new SolicitudesController();
+            Files sc = new Files();
             string errorString = "";
             //Guardar los documentos cargados en la sección de soporte
             var res = "";

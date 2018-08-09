@@ -3466,7 +3466,7 @@ namespace TAT001.Controllers
             if (file != null & miDocR != null)
             {
                 List<string> li = new List<string>();
-                SolicitudesController sc = new SolicitudesController();
+                Files sc = new Files();
                 Reversa rv = new Reversa();
                 DOCUMENTOREC docRe = new DOCUMENTOREC();
                 docRe = db.DOCUMENTORECs.Where(x => x.DOC_REF == id).FirstOrDefault();
