@@ -957,9 +957,10 @@ namespace TAT001.Controllers
                             string c = pf.procesa(f, "");
                             if (c == "1")
                             {
+                                string image = Server.MapPath("~/images/logo_kellogg.png");
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
                             }
                         }
                     }

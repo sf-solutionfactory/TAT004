@@ -480,13 +480,14 @@ namespace TAT001.Controllers
                     //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
                     Email em = new Email();
                     string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
+                    string image = Server.MapPath("~/images/logo_kellogg.png");
                     if (res.Equals("1") | res.Equals("2"))//CORREO
                     {
-                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
                     }
                     else
                     {
-                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Details");
+                        em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Details", image);
                     }
                 }
                 else
@@ -2490,7 +2491,8 @@ namespace TAT001.Controllers
                             {
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                                string image = Server.MapPath("~/images/logo_kellogg.png");
+                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
                             }
                         }
                     }
@@ -4999,7 +5001,8 @@ namespace TAT001.Controllers
                     {
                         Email em = new Email();
                         string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index");
+                        string image = Server.MapPath("~/images/logo_kellogg.png");
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
                     }
                 }
                 catch (Exception ee)

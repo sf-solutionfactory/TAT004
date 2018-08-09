@@ -15,7 +15,7 @@ namespace TAT001.Services
     public class Email
     {
         private TAT001Entities db = new TAT001Entities();
-        public void enviaMailC(decimal id, bool ban, string spras, string UrlDirectory, string page)
+        public void enviaMailC(decimal id, bool ban, string spras, string UrlDirectory, string page, string image)
         {
             //int pagina = 203; //ID EN BASE DE DATOS
             //ViewBag.Title = "Solicitud";
@@ -83,7 +83,7 @@ namespace TAT001.Services
 
                         //mail.Body = result;//B20180803 MGC Correos
 
-                        mail.AlternateViews.Add(Mail_Body(result));//B20180803 MGC Correos
+                        mail.AlternateViews.Add(Mail_Body(result, image));//B20180803 MGC Correos
                         mail.IsBodyHtml = true;//B20180803 MGC Correos
 
                         client.Send(mail);
@@ -95,10 +95,11 @@ namespace TAT001.Services
             //return View(dOCUMENTO);
         }
 
-        private AlternateView Mail_Body(string strr)
+        private AlternateView Mail_Body(string strr, string path)
         {
 
-            string path = HttpContext.Current.Server.MapPath("/images/logo_kellogg.png");
+            //string path = "";
+            //path = HttpContext.Current.Server.MapPath("/images/logo_kellogg.png");
 
             //string path = "C:/Users/matias/Documents/GitHub/TAT004/TAT001/images/logo_kellogg.png";// HttpContext.Current.Server.MapPath(@"images/6792532.jpg");
             LinkedResource Img = new LinkedResource(path, MediaTypeNames.Image.Jpeg);

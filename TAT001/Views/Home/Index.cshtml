@@ -91,7 +91,7 @@
         {
             <button id="btnExport" name="excel" class="btn-small" type="submit" value="Excel"></button>
         }
-        @Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" }) 
+        @Html.ActionLink("Enviar Negociaciones", "Edit", "Negociaciones", null, new { @class = "btn-small red", @onclick = "document.getElementById('loader').style.display = 'initial';" })
     </div>
     <div class="col s12 right-align" style="margin-top:5px;">
 
@@ -482,7 +482,17 @@
                                 <td class="">
                                     @if (item.TSOL.PADRE)
                                     {
-                                        <span class="new badge green darken-1 white-text" data-badge-caption=" ">@item.TSOL.TSOLTs.Where(x => x.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 <span class="lbl_approved">bierta</span></span>
+                                        <span class="new badge green darken-1 white-text" data-badge-caption=" ">@item.TSOL.TSOLTs.Where(x => x.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 <span class="lbl_approved">Abierta</span></span>
+                                    }
+                                    else
+                                    {
+                                        if (item.ESTATUS_SAP != null)
+                                        {
+                                            if (item.ESTATUS_SAP.Equals("P"))
+                                            {
+                                                <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
+                                            }
+                                        }
                                     }
                                 </td>
                             }

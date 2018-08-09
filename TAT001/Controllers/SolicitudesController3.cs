@@ -2480,7 +2480,8 @@ namespace TAT001.Controllers
                             {
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "index");
+                                string image = Server.MapPath("~/images/logo_kellogg.png");
+                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "index",  image);
                             }
                         }
                     }
@@ -5014,7 +5015,8 @@ namespace TAT001.Controllers
                     {
                         Email em = new Email();
                         string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "index");
+                        string image = Server.MapPath("~/images/logo_kellogg.png");
+                        em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "index", image);
                     }
                 }
                 catch (Exception ee)
