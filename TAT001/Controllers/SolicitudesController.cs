@@ -1399,14 +1399,7 @@ namespace TAT001.Controllers
             //RSG 13.06.2018--------------------------------------------------------
             //}//RSG 13.06.2018--------------------------------------------------------
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
-            //var paisMon = Session["pais"].ToString();//------------------------LEJ 09.07.18
-            d.PAI = db.PAIS.Where(a => a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
-            if (d.PAI != null)
-            {
-                ViewBag.miles = d.PAI.MILES;//LEJGG 090718
-                ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
-            }
-            //-----------------------------------------------------------------LEJ 09.07.18
+            
 
             //B20180801 MGC Textos....................................................................................................
             string txt_volumenr = "";//B20180801 MGC Textos
@@ -1452,6 +1445,15 @@ namespace TAT001.Controllers
             ViewBag.apoyoe = txt_apoyoe;
             ViewBag.volumene = txt_volumene;
             //B20180801 MGC Textos....................................................................................................
+            //var paisMon = Session["pais"].ToString();//------------------------LEJ 09.07.18
+            d.PAI = db.PAIS.Where(a => a.LAND.Equals(d.PAIS_ID)).FirstOrDefault();
+            if (d.PAI != null)
+            {
+                ViewBag.miles = d.PAI.MILES;//LEJGG 090718
+                ViewBag.dec = d.PAI.DECIMAL;//LEJGG 090718
+            }
+            //-----------------------------------------------------------------LEJ 09.07.18
+            ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
 
             return View(d);
         }
@@ -2812,6 +2814,15 @@ namespace TAT001.Controllers
             ViewBag.volumene = lbl_vole;
             //B20180801 MGC Textos....................................................................................................
 
+            //-----------------------------------------------------------------LEJ 09.07.18
+            dOCUMENTO.PAI = db.PAIS.Where(a => a.LAND.Equals(p)).FirstOrDefault();
+            if (dOCUMENTO.PAI != null)
+            {
+                ViewBag.miles = dOCUMENTO.PAI.MILES;//LEJGG 090718
+                ViewBag.dec = dOCUMENTO.PAI.DECIMAL;//LEJGG 090718
+            }
+            //-----------------------------------------------------------------LEJ 09.07.18
+            ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
 
             return View(dOCUMENTO);
         }

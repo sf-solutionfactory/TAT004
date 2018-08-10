@@ -364,7 +364,16 @@
                         }
                         else
                         {
-                            <td></td>
+                            if (item.DOCUMENTORECs.Count > 0)
+                            {
+                                <td class=" details-control" style="cursor:pointer">
+                                    <i class="material-icons">expand_more</i>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
                         }
 
                         @if (item.FLUJOes.Count > 0)
@@ -403,127 +412,110 @@
                         <td>
                             @item.FECHAC.Value.Month
                         </td>
+                        @{
+                            string estatus = "";
+                            if (item.ESTATUS != null) { estatus += item.ESTATUS; } else { estatus += " "; }
+                            if (item.ESTATUS_C != null) { estatus += item.ESTATUS_C; } else { estatus += " "; }
+                            if (item.ESTATUS_SAP != null) { estatus += item.ESTATUS_SAP; } else { estatus += " "; }
+                            if (item.ESTATUS_WF != null) { estatus += item.ESTATUS_WF; } else { estatus += " "; }
+                            if (item.FLUJOes.Count > 0)
+                            {
+                                estatus += item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO;
+                            }
+                            else
+                            {
+                                estatus += " ";
+                            }
+                            if (item.TSOL.PADRE) { estatus += "P"; } else { estatus += " "; }
 
-                        @if (item.ESTATUS_C == "C")
+                            // "XCXXXX" ----------->CANCELADA
+                            // "XXXPRX" ----------->PENDIENTE TS
+                            // "XXXPAX" ----------->PENDIENTE APROBADOR
+                            // "CXXAXX" ----------->PENDIENTE APROBADOR
+                        }
+                        @*@if (item.ESTATUS_C == "C")*@
+                        @if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "^.[C]"))
                         {
-                            @*<td class="red darken-1 white-text">
-                                    <div class="lbl_cancelled">Cancelada</div>
-                                </td>*@
                             <td class="">
                                 <span class="lbl_cancelled new badge red darken-1 white-text" data-badge-caption=" ">Cancelada</span>
                             </td>
                         }
-                        else if (item.ESTATUS_WF.Equals("P"))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[P][R]."))
                         {
-                            if (item.FLUJOes.Count > 0)
-                            {
-                                if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
-                                {
-                                    if (item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
-                                    {
-                                        @*<td class="yellow darken-2 white-text">
-                                                <div class="lbl_pending">Pendiente Validación TS</div>
-                                            </td>*@
-                                        <td class="">
-                                            <span class="lbl_ts yellow darken-2 white-text new badge" data-badge-caption=" ">Pendiente validación TS</span>
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        @*<td class="yellow darken-2 white-text">
-                                                <div class="lbl_pending">Pendiente @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID</div>
-                                            </td>*@
-                                        <td class="">
-                                            <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente aprobador </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID*@</span>
-                                        </td>
-                                    }
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
-                        }
-                        else if (item.ESTATUS_WF.Equals("A"))
-                        {
-                            if (item.ESTATUS.Equals("C"))
-                            {
-                                @*<td class="green darken-1 white-text">
-                                        <div class="lbl_txt">Por gen .txt</div>
-                                    </td>*@
-                                <td class="">
-                                    <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
-                                </td>
-                            }
-                            else if (item.ESTATUS.Equals("P"))
-                            {
-                                <td class="">
-                                    <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
-                                </td>
-                            }
-                            else if (item.ESTATUS.Equals("N"))
-                            {
-                                @*<td class="green darken-1 white-text">
-                                        <div class="lbl_txt">Por gen .txt</div>
-                                    </td>*@
-                                <td class="">
-                                    <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
-                                </td>
-                            }
-                            else
-                            {
-                                @*<td class="green darken-1 white-text">
-                                        <div class="lbl_approved">Aprobada</div>
-                                    </td>*@
-                                <td class="">
-                                    @if (item.TSOL.PADRE)
-                                    {
-                                        <span class="new badge green darken-1 white-text" data-badge-caption=" ">@item.TSOL.TSOLTs.Where(x => x.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 <span class="lbl_approved">Abierta</span></span>
-                                    }
-                                    else
-                                    {
-                                        if (item.ESTATUS_SAP != null)
-                                        {
-                                            if (item.ESTATUS_SAP.Equals("P"))
-                                            {
-                                                <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
-                                            }
-                                        }
-                                    }
-                                </td>
-                            }
-                        }
-                        else if (item.ESTATUS_WF.Equals("R"))
-                        {
-                            @*<td class="red darken-1 white-text">*@
                             <td class="">
-                                @if (item.FLUJOes.Count > 0)
-                                {
-                                    @*<div class="lbl_rejected">Pendiente corrección @item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID</div>*@
-                                    <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
-                                }
+                                <span class="lbl_ts yellow darken-2 white-text new badge" data-badge-caption=" ">Pendiente validación TS</span>
                             </td>
                         }
-                        else if (item.ESTATUS_WF.Equals("S"))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[P][A]."))
                         {
-                            @*<td class="yellow darken-2 white-text">
-                                    <div class="lbl_soporte">Pendiente firma</div>
-                                </td>*@
+                            <td class="">
+                                <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente aprobador </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID*@</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[C]..[A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[P]..[A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[N]..[A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[P][A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[X][A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_txt new badge red darken-1 white-text" data-badge-caption=" ">Error en contabiización</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A].[P]"))
+                        {
+                            <td class="">
+                                <span class="new badge green darken-1 white-text" data-badge-caption=" ">@item.TSOL.TSOLTs.Where(x => x.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50 <span class="lbl_approved">Abierta</span></span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A].."))
+                        {
+                            <td class="">
+                                <span class="new badge green darken-1 white-text" data-badge-caption=" ">Registrada en SAP</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R].."))
+                        {
+                            <td class="">
+                                <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R][S]."))
+                        {
+                            <td class="">
+                                <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario TS </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[S].."))
+                        {
                             <td class="">
                                 <span class="lbl_soporte new badge yellow darken-2 white-text" data-badge-caption=" ">Pendiente firma</span>
                             </td>
                         }
-                        else if (item.ESTATUS_WF.Equals("T"))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[T].."))
                         {
-                            @*<td class="yellow darken-2 white-text">
-                                    <div class="lbl_tax">Pendiente Tax</div>
-                                </td>*@
                             <td class="">
-                                <span class="lbl_tax new badge yellow darken-2 white-text" data-badge-caption=" ">Pendiente Tax</span>
+                                <span class="lbl_tax new badge yellow darken-2 white-text" data-badge-caption=" ">Pendiente tax</span>
                             </td>
                         }
                         else
@@ -572,7 +564,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.CONCEPTO)
                         </td>
-                        <td>
+                        <td class="precio">
                             @Html.DisplayFor(modelItem => item.MONTO_DOC_ML)
                         </td>
                         <td>
@@ -611,6 +603,10 @@
                 }
             </tbody>
         </table>
+
+        <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
+        <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
+        <script src="~/Scripts/formatos.js"></script><!--RSG 01.08.2018-->
         <iframe id="txtArea1" style="display:none"></iframe>
         <script>
     $(document).ready(function () {

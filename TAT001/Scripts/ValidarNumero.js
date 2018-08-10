@@ -54,34 +54,36 @@
 
     //Para validar los decimales del costo unitario
     $('body').on('focusout', '.input_dc', function () {
-        var xx = $(this).val().replace("$",'');
-        if (_decimales == ".") {
-            var _xx = xx.replace(',', '');
-            xx = _xx;
-        }
-        if (_decimales == ",") {
-            if (xx.indexOf(",") >= 0) {
-                var _xx = xx.replace('.', '');
-                _xx = _xx.replace(',', '.');
-                xx = _xx;
-            }
-        }
-        if (xx != '') {
-            //Hace la conversion a 2 decimales
-            var _re = parseFloat(xx).toFixed(2);
-            //if para decimales es una coma es el siguiente proceso
-            if (_decimales == ",") {
-                if (_re.indexOf(".") >= 0) {
-                    var _rex = _re;
-                    _rex = _rex.replace('.', ',');
-                    _re = _rex;
-                }
-            }
-            $(this).val("$" + _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
-        }
-        else {
-            $(this).val($(this).val());
-        }
+        //var xx = $(this).val().replace("$",'');
+        //if (_decimales == ".") {
+        //    var _xx = xx.replace(',', '');
+        //    xx = _xx;
+        //}
+        //if (_decimales == ",") {
+        //    if (xx.indexOf(",") >= 0) {
+        //        var _xx = xx.replace('.', '');
+        //        _xx = _xx.replace(',', '.');
+        //        xx = _xx;
+        //    }
+        //}
+        //if (xx != '') {
+        //    //Hace la conversion a 2 decimales
+        //    var _re = parseFloat(xx).toFixed(2);
+        //    //if para decimales es una coma es el siguiente proceso
+        //    if (_decimales == ",") {
+        //        if (_re.indexOf(".") >= 0) {
+        //            var _rex = _re;
+        //            _rex = _rex.replace('.', ',');
+        //            _re = _rex;
+        //        }
+        //    }
+        //    $(this).val("$" + _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        //}
+        //else {
+        //    $(this).val($(this).val());
+        //}
+
+        $(this).val(toShow($(this).val()));
     });
 
     //Separa el %apoyo
@@ -136,90 +138,94 @@
 
     //Para validar los decimales del %apoyo
     $('body').on('focusout', '.input_dcp', function () {
-        var xx = $(this).val();
-        if (_decimales == ".") {
-            var _xx = xx.replace(',', '');
-            xx = _xx.replace('%', '');
-        }
-        if (_decimales == ",") {
-            //if (xx.indexOf(",") >= 0) {
-            //    var _xx = xx;
-            //    _xx = _xx.replace(',', '.');
-            //    xx = _xx;
-            //}
-            var _xx = xx.replace('.', '');
-            _xx = _xx.replace(',', '.');
-            xx = _xx.replace('%', '');
-            //}
-            //if (xx.indexOf("$") >= 0) {
-            //    var _xx2 = xx;
-            //    _xx2 = _xx2.replace('$', '');
-            //    xx = _xx2;
-            //}
-        }
-        if (xx != '') {
-            //Hace la conversion a 2 decimales
-            var _re = parseFloat(xx).toFixed(2);
-            //if para decimales es una coma es el siguiente proceso
-            if (_decimales == ",") {
-                if (_re.indexOf(".") >= 0) {
-                    var _rex = _re;
-                    _rex = _rex.replace('.', ',');
-                    _re = _rex;
-                }
-            }
-            if (_decimales == ".") {
-                _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-            if (_decimales == ",") {
-                _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-            $(this).val(_re + "%");
-        }
-        else {
-            $(this).val($(this).val());
-        }
+        //var xx = $(this).val();
+        //if (_decimales == ".") {
+        //    var _xx = xx.replace(',', '');
+        //    xx = _xx.replace('%', '');
+        //}
+        //if (_decimales == ",") {
+        //    //if (xx.indexOf(",") >= 0) {
+        //    //    var _xx = xx;
+        //    //    _xx = _xx.replace(',', '.');
+        //    //    xx = _xx;
+        //    //}
+        //    var _xx = xx.replace('.', '');
+        //    _xx = _xx.replace(',', '.');
+        //    xx = _xx.replace('%', '');
+        //    //}
+        //    //if (xx.indexOf("$") >= 0) {
+        //    //    var _xx2 = xx;
+        //    //    _xx2 = _xx2.replace('$', '');
+        //    //    xx = _xx2;
+        //    //}
+        //}
+        //if (xx != '') {
+        //    //Hace la conversion a 2 decimales
+        //    var _re = parseFloat(xx).toFixed(2);
+        //    //if para decimales es una coma es el siguiente proceso
+        //    if (_decimales == ",") {
+        //        if (_re.indexOf(".") >= 0) {
+        //            var _rex = _re;
+        //            _rex = _rex.replace('.', ',');
+        //            _re = _rex;
+        //        }
+        //    }
+        //    if (_decimales == ".") {
+        //        _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //    }
+        //    if (_decimales == ",") {
+        //        _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        //    }
+        //    $(this).val(_re + "%");
+        //}
+        //else {
+        //    $(this).val($(this).val());
+        //}
+
+        $(this).val(toShowPorc($(this).val()));
     });
 
     //Para validar los decimales del %apoyo
     $('body').on('focusout', '.input_dcv', function () {
-        var xx = $(this).val();
-        if (_decimales == ".") {
-            var _xx = xx.replace(',', '');
-            xx = _xx;
-        }
-        if (_decimales == ",") {
-            //if (xx.indexOf(",") >= 0) {
-            //    var _xx = xx;
-            //    _xx = _xx.replace(',', '.');
-            //    xx = _xx;
-            //}
-            var _xx = xx.replace('.', '');
-            _xx = _xx.replace(',', '.');
-            xx = _xx;
-        }
-        if (xx != '') {
-            //Hace la conversion a 2 decimales
-            var _re = parseFloat(xx).toFixed(2);
-            //if para decimales es una coma es el siguiente proceso
-            if (_decimales == ",") {
-                if (_re.indexOf(".") >= 0) {
-                    var _rex = _re;
-                    _rex = _rex.replace('.', ',');
-                    _re = _rex;
-                }
-            }
-            if (_decimales == ".") {
-                _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-            if (_decimales == ",") {
-                _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-            $(this).val(_re);
-        }
-        else {
-            $(this).val($(this).val());
-        }
+        //var xx = $(this).val();
+        //if (_decimales == ".") {
+        //    var _xx = xx.replace(',', '');
+        //    xx = _xx;
+        //}
+        //if (_decimales == ",") {
+        //    //if (xx.indexOf(",") >= 0) {
+        //    //    var _xx = xx;
+        //    //    _xx = _xx.replace(',', '.');
+        //    //    xx = _xx;
+        //    //}
+        //    var _xx = xx.replace('.', '');
+        //    _xx = _xx.replace(',', '.');
+        //    xx = _xx;
+        //}
+        //if (xx != '') {
+        //    //Hace la conversion a 2 decimales
+        //    var _re = parseFloat(xx).toFixed(2);
+        //    //if para decimales es una coma es el siguiente proceso
+        //    if (_decimales == ",") {
+        //        if (_re.indexOf(".") >= 0) {
+        //            var _rex = _re;
+        //            _rex = _rex.replace('.', ',');
+        //            _re = _rex;
+        //        }
+        //    }
+        //    if (_decimales == ".") {
+        //        _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //    }
+        //    if (_decimales == ",") {
+        //        _re = _re.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        //    }
+        //    $(this).val(_re);
+        //}
+        //else {
+        //    $(this).val($(this).val());
+        //}
+
+        $(this).val(toShowNum($(this).val()));
     });
     // Para que no ingresen letras en la fecha
     $('body').on('keydown', '.input_fe', function (e) {

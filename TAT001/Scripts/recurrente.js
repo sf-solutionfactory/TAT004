@@ -623,7 +623,10 @@ function toNum(string) {
             var _decimales = $("#dec").val();
             string = string.replace('$', '');
             string = string.replace('%', '');
-            string = string.replace(_miles, '');
+            //string = string.replace(_miles, '');
+            if (_miles === '.')
+                _miles = '\\.';
+            string = string.replace(new RegExp(_miles, 'g'), '');
             string = string.replace(_decimales, '.');
         } else {
             string = "0.00";
@@ -631,8 +634,8 @@ function toNum(string) {
     }
     return string;
 }
-
 function toShow(string) {
+    string = toNum(string);
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
@@ -643,13 +646,13 @@ function toShow(string) {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
             xx = _xv;
-            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
         } else if (_decimales === ',') {
             var _xv = xx.replace('.', '');
             xx = _xv.replace(',', '.');
             var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
             _xpf = _xpf.replace('.', ',');
-            string = ("$" + _xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+            string = ("$" + _xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
         }
     }
     else {
@@ -659,6 +662,7 @@ function toShow(string) {
 }
 
 function toShowPorc(string) {
+    string = toNum(string);
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
@@ -675,7 +679,7 @@ function toShowPorc(string) {
             xx = _xv.replace(',', '.');
             var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
             _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ".") + '%');
+            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
         }
     }
     else {
@@ -685,6 +689,7 @@ function toShowPorc(string) {
 }
 
 function toShowPorc5(string) {
+    string = toNum(string);
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(5);
@@ -701,7 +706,7 @@ function toShowPorc5(string) {
             xx = _xv.replace(',', '.');
             var _xpf = parseFloat(xx.replace(',', '.')).toFixed(5);
             _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ".") + '%');
+            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
         }
     }
     else {
@@ -711,6 +716,7 @@ function toShowPorc5(string) {
 }
 
 function toShowNum(string) {
+    string = toNum(string);
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
@@ -721,13 +727,13 @@ function toShowNum(string) {
             //Hace la conversion a 2 decimales
             var _xv = xx.replace(',', '');
             xx = _xv;
-            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
         } else if (_decimales === ',') {
             var _xv = xx.replace('.', '');
             xx = _xv.replace(',', '.');
             var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
             _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
         }
     }
     else {

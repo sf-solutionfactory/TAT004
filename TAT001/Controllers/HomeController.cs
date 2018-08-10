@@ -41,6 +41,12 @@ namespace TAT001.Controllers
                 {
                     string p = Session["pais"].ToString();
                     ViewBag.pais = p + ".png";
+                    PAI pa = db.PAIS.Find(p);
+                    if (pa != null)
+                    {
+                        ViewBag.miles = pa.MILES;//LEJGG 090718
+                        ViewBag.dec = pa.DECIMAL;//LEJGG 090718
+                    }
                 }
                 catch
                 {

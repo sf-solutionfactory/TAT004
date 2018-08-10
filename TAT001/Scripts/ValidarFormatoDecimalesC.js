@@ -5,26 +5,27 @@
     var _mdec = $("#monto_dis").val();
     //Para validar los decimales del costo unitario
     $('body').on('focusout', '#monto_dis', function () {
-        var xx = $(this).val().replace("$", "");
-        var _miles = $("#miles").val();
-        var _decimales = $("#dec").val();
-        if (xx != '') {
-            if (_decimales === '.') {
-                //Hace la conversion a 2 decimales
-                var _xv = xx.replace(',', '');
-                xx = _xv;
-                $(this).val("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-            } else if (_decimales === ',') {
-                var _xv = xx.replace('.', '');
-                xx = _xv.replace(',', '.');
-                var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-                _xpf = _xpf.replace('.', ',');
-                $(this).val("$" + _xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-            }
-        }
-        else {
-            $(this).val("$ 0.00");
-        }
+        //var xx = $(this).val().replace("$", "");
+        //var _miles = $("#miles").val();
+        //var _decimales = $("#dec").val();
+        //if (xx != '') {
+        //    if (_decimales === '.') {
+        //        //Hace la conversion a 2 decimales
+        //        var _xv = xx.replace(',', '');
+        //        xx = _xv;
+        //        $(this).val("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        //    } else if (_decimales === ',') {
+        //        var _xv = xx.replace('.', '');
+        //        xx = _xv.replace(',', '.');
+        //        var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+        //        _xpf = _xpf.replace('.', ',');
+        //        $(this).val("$" + _xpf.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+        //    }
+        //}
+        //else {
+        //    $(this).val("$ 0.00");
+        //}
+        $(this).val(toShow($(this).val()));
     });
     //Para que no ingrese letras ni signos extra
     $('body').on('keydown', '#monto_dis', function (e) {

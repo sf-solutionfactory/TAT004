@@ -513,7 +513,7 @@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_id" } })
-                                        @Html.LabelFor(model => model.D.CLIENTE.KUNNR)
+                                        @Html.LabelFor(model => model.D.CLIENTE.KUNNR, "Cliente")
                                     </div>
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
@@ -1006,7 +1006,7 @@
                                                     @if (Model.D.TSOL.FACTURA == false)
                                                     {
                                                         <th>Volumen estimado</th>
-                                                        <th>Estimado apoyo</th>
+                                                        <th>Apoyo estimado</th>
                                                     }
                                                     else
                                                     {
