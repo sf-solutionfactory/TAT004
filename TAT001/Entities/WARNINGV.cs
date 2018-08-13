@@ -20,7 +20,7 @@ namespace TAT001.Entities
         public string TIPO { get; set; }
         public string SPRAS_ID { get; set; }
         public string WARNING { get; set; }
-        public Nullable<bool> ACTIVO { get; set; }
         public string POSICION { get; set; }
+        public Nullable<bool> ACTIVO { get; set; }
     }
 }

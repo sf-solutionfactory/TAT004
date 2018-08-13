@@ -20,15 +20,15 @@ namespace TAT001.Controllers
                 ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
                 ViewBag.nombre = user.NOMBRE + " " + user.APELLIDO_P + " " + user.APELLIDO_M;
                 ViewBag.email = user.EMAIL;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 try
                 {
                     string p = Session["pais"].ToString();
-                    ViewBag.pais = p + ".svg";
+                    ViewBag.pais = p + ".png";
                 }
                 catch
                 {
-                    return RedirectToAction("Pais", "Home");
+                    //return RedirectToAction("Pais", "Home");
                 }
             }
             return View();

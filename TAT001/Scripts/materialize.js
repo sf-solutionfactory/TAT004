@@ -4883,6 +4883,7 @@ $jscomp.polyfill = function (e, r, p, m) {
                 var toast = document.createElement('div');
                 toast.classList.add('toast');
 
+
                 // Add custom classes onto toast
                 if (!!this.options.classes.length) {
                     $(toast).addClass(this.options.classes);
@@ -6613,7 +6614,12 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Approximate with half of window size
 
         if ($textarea.css('display') !== 'hidden') {
-            hiddenDiv.css('width', $textarea.width() + 'px');
+            var wid = $textarea.width();
+            if (wid != 0) {
+                hiddenDiv.css('width', $textarea.width() + 'px');
+            } else {
+                hiddenDiv.css('width', '500px');
+            }
         } else {
             hiddenDiv.css('width', $(window).width() / 2 + 'px');
         }
@@ -6623,7 +6629,8 @@ $jscomp.polyfill = function (e, r, p, m) {
          * original height of the textarea
          */
         if ($textarea.data('original-height') <= hiddenDiv.innerHeight()) {
-            $textarea.css('height', hiddenDiv.innerHeight() + 'px');
+            //$textarea.css('height', (hiddenDiv.innerHeight() / 2) + 'px');
+            $textarea.css('height', $textarea.data('original-height') + 'px');
         } else if ($textarea[0].value.length < $textarea.data('previous-length')) {
             /**
              * In case the new height is less than original height, it
@@ -8228,7 +8235,7 @@ $jscomp.polyfill = function (e, r, p, m) {
                 var windowWidth = window.innerWidth;
                 var windowHeight = window.innerHeight;
                 var backdrop = this.$el.find('.fab-backdrop');
-                var fabColor = anchor.css('background-color');
+                var fabColor = this.$anchor.css('background-color');
 
                 this.offsetX = this.btnLeft - windowWidth / 2 + this.btnWidth / 2;
                 this.offsetY = windowHeight - this.btnBottom;
@@ -11561,6 +11568,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             key: "getInstance",
             value: function getInstance(el) {
                 var domElem = !!el.jquery ? el[0] : el;
+                //return domElem[0].M_Select;
                 return domElem.M_Select;
             }
         }, {

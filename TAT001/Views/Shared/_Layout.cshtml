@@ -5,37 +5,66 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
     <meta name="theme-color" content="#d81b60" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>*@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <title>@ViewBag.Title - TAT 2.0</title>
     @Styles.Render("~/Content/materialize")
     @Scripts.Render("~/bundles/materialize")
 </head>
-<body>
+<body onkeydown="javascript:EnterKeyFilter();" style="background-color:#f4f4f4;">
+    <div style="width:100%;height:100%;z-index:999;display:none;position:fixed;padding:0;
+                margin:0;top:0;left:0;;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
+        <div style="padding-left:50%;padding-top:20%;">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="navbar-fixed" style="z-index: 998;">
         <nav class="nav-extended">
             <div class="nav-wrapper pink darken-1" @*style="background-repeat: repeat-x;background-image: url(/images/header-transient.png);"*@>
-                <a href="@Url.Action("Index", "Home")" class="brand-logo">
+                <a href="@Url.Action("Index", "Home")" class="brand-logo left">
                     <img src="~/images/logo_kellogg.png" style="padding-top: 8px; padding-left: 8px;" />
                 </a>
-                @if (ViewBag.flag != true)
-                {
-                    <ul id="nav_mobile" class="right hide-on-med-and-down" runat="server">
-                        <li>
-                            <a href="#" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
-                                <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home")';return false;" />
-                            </a>
-                        </li>
-                        <li>
-                            @using Microsoft.AspNet.Identity
-                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                <a href="javascript:document.getElementById('logoutForm').submit()" id="lbl_loggoff">Salir</a>
-                            }
-                        </li>
-                    </ul>
-                }
+                <ul id="nav_mobile" class="right" runat="server">
+                    @if (ViewBag.flag != true)
+                    {
+                        if (ViewBag.pais != ".png" & ViewBag.pais != null & ViewBag.pais != "")
+                        {
+                            <li>
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                    <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                    <input type="button" id="imgPais" class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
+                                </a>
+                            </li>
+                        }
+                    }
+                    <li>
+                        @using Microsoft.AspNet.Identity
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a href="javascript:document.getElementById('logoutForm').submit()" id="lbl_loggoff">Salir</a>
+                        }
+                    </li>
+                </ul>
             </div>
         </nav>
     </div>
@@ -56,16 +85,16 @@
                 </div>
                 <table>
                     <tr>
-                        <td>
+                        <td style="display:none;">
                             <a href="#!user" style="padding: 0;">
                                 <img class="circle" src="~/images/sf-logo.jpg" />
                             </a>
                         </td>
                         <td>
                             <div class="white-text">
-                                <a href='#!name' style='padding: 0;'><span class='white-text name' style='margin: 0'>@ViewBag.usuario.NOMBRE @ViewBag.usuario.APELLIDO_P @ViewBag.usuario.APELLIDO_M</span></a>
-                                <a href='#!name' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.usuario.EMAIL</span></a>
-                                <a href='#!name' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.rol</span></a>
+                                <a href='@Url.Action("Details", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text name' style='margin: 0'>@ViewBag.usuario.NOMBRE @ViewBag.usuario.APELLIDO_P @ViewBag.usuario.APELLIDO_M</span></a>
+                                <a href='@Url.Action("Edit", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.usuario.EMAIL</span></a>
+                                <a href='@Url.Action("Edit", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.rol</span></a>
                             </div>
                         </td>
                     </tr>
@@ -142,10 +171,15 @@
                         }
                     }
                 }
-
             </ul>
         </li>
     </ul>
+    @*@RenderSection("noticia")
+
+    <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
+    </div>*@
+    @*<div id="container" class="container body-content">
+        </div>*@
     <div class="row" style="margin-bottom:0;">
         <div id="div-menu" class="col s1" style="width:320px;margin-top:8px;">
             <div id="btn-menu">
@@ -163,7 +197,6 @@
     <div id="container" class="container body-content">
         @Styles.Render("~/Content/menu")
         @Scripts.Render("~/bundles/menu")
-
         @RenderBody()
         <hr />
         <footer>
@@ -195,12 +228,35 @@
         foreach (TEXTO t in ViewBag.textos)
         {
             <script>
-                var elem = document.getElementById("@t.CAMPO_ID").innerHTML = "@t.TEXTOS";
+                try {
+                    var elem = document.getElementById("@t.CAMPO_ID").innerHTML = "@t.TEXTOS";
+                } catch (e) {
+                    try {
+                        var divs = document.getElementsByClassName("@t.CAMPO_ID");
+                        [].slice.call(divs).forEach(function (div) {
+                            div.innerHTML = "@t.TEXTOS";
+                        });
+                    }
+                    catch (ee) {
+
+                    }
+                 }
             </script>
         }
     }
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)*@
+    <script>
+        function EnterKeyFilter() {
+            var enter = window.event.target.id;
+            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
+                if (window.event.keyCode == 13) {
+                    event.returnValue = false;
+                    event.cancel = true;
+                }
+            }
+        }
+    </script>
 </body>
 </html>

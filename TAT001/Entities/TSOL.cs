@@ -17,9 +17,10 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TSOL()
         {
+            this.CONSOPORTEs = new HashSet<CONSOPORTE>();
+            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
             this.TSOL1 = new HashSet<TSOL>();
             this.TSOLTs = new HashSet<TSOLT>();
-            this.DOCUMENTOes = new HashSet<DOCUMENTO>();
         }
     
         public string ID { get; set; }
@@ -27,13 +28,23 @@ namespace TAT001.Entities
         public string TSOLR { get; set; }
         public string RANGO_ID { get; set; }
         public string ESTATUS { get; set; }
+        public bool FACTURA { get; set; }
+        public bool PADRE { get; set; }
+        public bool ADICIONA { get; set; }
+        public string TSOLM { get; set; }
+        public string TSOLC { get; set; }
+        public string TRECU { get; set; }
+        public bool NEGO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
+        public virtual RANGO RANGO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOL> TSOL1 { get; set; }
         public virtual TSOL TSOL2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOLT> TSOLTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
     }
 }

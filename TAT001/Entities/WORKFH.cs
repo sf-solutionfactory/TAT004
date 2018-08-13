@@ -23,9 +23,11 @@ namespace TAT001.Entities
         public string ID { get; set; }
         public string DESCRIPCION { get; set; }
         public string TSOL_ID { get; set; }
-        public string ESTATUS { get; set; }
+        public Nullable<bool> ESTATUS { get; set; }
         public string USUARIO_ID { get; set; }
         public Nullable<System.DateTime> FECHAC { get; set; }
+        public string BUKRS { get; set; }
+        public Nullable<int> ROL_ID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFV> WORKFVs { get; set; }

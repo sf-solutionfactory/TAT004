@@ -8,26 +8,58 @@
 }
 
 <div class="row">
-    <div class="input-field col s6">
-        @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @disabled = "disabled" } })
-        @Html.LabelFor(model => model.URL)
+    <div class="col s12 right-align">
+        <a class="btn-small" href="@Url.Action("Index", "Warnings",new { id = Model.ID })">
+            <i class='material-icons'>warning</i>
+        </a>
+        <a class="btn-small" href="@Url.Action("Index", "Textos",new { id = Model.ID })">
+            <i class='material-icons'>text_fields</i>
+        </a>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn-small" })
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-small" })
+
     </div>
-    <div class="input-field col s6">
-        @Html.EditorFor(model => model.TITULO, new { htmlAttributes = new { @disabled = "disabled" } })
-        @Html.LabelFor(model => model.TITULO)
-    </div>
-    <div class="input-field col s6">
-        @Html.EditorFor(model => model.ICON, new { htmlAttributes = new { @disabled = "disabled" } })
-        @Html.LabelFor(model => model.ICON)
+</div>
+<div class="row">
+    <div class="col s6">
+        <div class="card-panel">
+            <div class="row">
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.URL)
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.TITULO, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.TITULO)
+                </div>
+                <div class="input-field col s12">
+                    @Html.EditorFor(model => model.ICON, new { htmlAttributes = new { @disabled = "disabled" } })
+                    @Html.LabelFor(model => model.ICON)
+                </div>
+                @*<div class="col s6">
+                        @Html.DisplayNameFor(model => model.MOSTRAR)
+                        <div class="switch">
+                            <label>
+                                <input type="checkbox" disabled="disabled" name="MOSTRAR" value="true" id="MOSTRAR" @Html.Raw((Model.MOSTRAR) ? "checked=\"checked\"" : "") />
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
     </div>
     <div class="col s6">
-        @Html.DisplayNameFor(model => model.MOSTRAR)
-        <div class="switch">
-            <label>
-                @*@Html.CheckBoxFor(model => model.MOSTRAR, new { @disabled = "disabled", @id = "sel-act" })*@
-                <input type="checkbox" disabled="disabled" name="MOSTRAR" value="true" id="MOSTRAR" @Html.Raw((Model.MOSTRAR) ? "checked=\"checked\"" : "") />
-                <span class="lever"></span>
-            </label>
+        <div class="card-panel">
+            <h5>Traducciones</h5>
+            <div class="row">
+                @foreach (var item in Model.PAGINATs)
+                {
+                    <div class=" input-field col s12">
+                        @Html.EditorFor(modelItem => item.TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
+                        <label for="TXT50">@item.SPRA.DESCRIPCION</label>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -39,9 +71,3 @@
     //var instance = M.Select.init(elem, options);
     document.getElementsByName("MOSTRAR").remove();
 </script>
-<div class="row">
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</div>

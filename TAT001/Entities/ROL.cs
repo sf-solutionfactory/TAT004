@@ -18,7 +18,7 @@ namespace TAT001.Entities
         public ROL()
         {
             this.MIEMBROS = new HashSet<MIEMBRO>();
-            this.PERMISO_PAGINA = new HashSet<PERMISO_PAGINA>();
+            this.ROLTs = new HashSet<ROLT>();
         }
     
         public int ID { get; set; }
@@ -29,6 +29,6 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MIEMBRO> MIEMBROS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PERMISO_PAGINA> PERMISO_PAGINA { get; set; }
+        public virtual ICollection<ROLT> ROLTs { get; set; }
     }
 }

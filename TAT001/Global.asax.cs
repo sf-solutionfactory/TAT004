@@ -17,6 +17,8 @@ namespace TAT001
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            System.Security.Cryptography.RSACryptoServiceProvider.UseMachineKeyStore = true;
+            System.Security.Cryptography.DSACryptoServiceProvider.UseMachineKeyStore = true;
         }
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)

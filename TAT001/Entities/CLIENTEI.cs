@@ -19,7 +19,9 @@ namespace TAT001.Entities
         public string SPART { get; set; }
         public string KUNNR { get; set; }
         public string MWSKZ { get; set; }
+        public bool ACTIVO { get; set; }
     
         public virtual CLIENTE CLIENTE { get; set; }
+        public virtual IMPUESTO IMPUESTO { get; set; }
     }
 }

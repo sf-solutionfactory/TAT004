@@ -61,9 +61,18 @@ namespace TAT001.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            try
+            {
+                Session["pais"] = null;
+                FormsAuthentication.SignOut();
+            }
+            catch
+            {
+
+            }
             LoginViewModel m = new LoginViewModel();
             m.ID = "admin";
-            m.Password = "admin";
+            //m.Password = "admin";
             ViewBag.ReturnUrl = returnUrl;
             return View(m);
         }
@@ -113,23 +122,26 @@ namespace TAT001.Controllers
             {
                 user = db.USUARIOs.Where(a => a.ID.Equals(user.ID) && a.PASS.Equals(pass)).FirstOrDefault();
             }
-                //user =  Repository.GetUserDetails(user);
+            //user =  Repository.GetUserDetails(user);
 
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(model.ID, false);
 
                 //var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, user.MIEMBROS.FirstOrDefault().ROL.NOMBRE);
-                var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddMinutes(20), false, "Administrador");
+                var authTicket = new FormsAuthenticationTicket(1, user.ID, DateTime.Now, DateTime.Now.AddDays(1), false, "Administrador");
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);
+                //return RedirectToAction("Index", "Home");
+                if (returnUrl != null)
+                    return Redirect(returnUrl);
                 return RedirectToAction("Index", "Home");
             }
 
             else
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                ModelState.AddModelError("", "Usuario/contraseña incorrecta.");
                 return View(model);
             }
         }
@@ -141,9 +153,16 @@ namespace TAT001.Controllers
         public ActionResult LogOff()
         {
             //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            Session["pais"] = null;
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                Session["pais"] = null;
+                FormsAuthentication.SignOut();
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         //
