@@ -7,6 +7,7 @@ namespace TAT001.Models
 {
     public class DOCUMENTOP_MOD
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public decimal POS { get; set; }
         public string MATNR { get; set; }

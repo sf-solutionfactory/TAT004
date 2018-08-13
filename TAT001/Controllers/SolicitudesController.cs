@@ -118,7 +118,7 @@ namespace TAT001.Controllers
         }
 
         // GET: Solicitudes/Details/5
-        public ActionResult Details(decimal id, string ejercicio, string pais)
+        public ActionResult Details(decimal id, decimal ejercicio, string pais)
         {
             ////var _dp1 = db.DOCUMENTOes.Find(new object[] { id, ejercicio });
             int pagina = 203; //ID EN BASE DE DATOS
@@ -160,7 +160,7 @@ namespace TAT001.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(id);
+            DOCUMENTO dOCUMENTO = db.DOCUMENTOes.Find(new object[] { ejercicio, id});
             if (dOCUMENTO == null)
             {
                 return HttpNotFound();
@@ -184,6 +184,7 @@ namespace TAT001.Controllers
                     var clName = db.CLIENTEs.Where(c => c.KUNNR == kn).Select(s => s.NAME1).FirstOrDefault();
                     fvbfl = new FLUJO();
                     fvbfl.NUM_DOC = flng[i].NUM_DOC;
+                    fvbfl.EJER_DOC = flng[i].EJER_DOC;
                     fvbfl.FECHAC = flng[i].FECHAC;
                     fvbfl.FECHAM = flng[i].FECHAM;
                     fvbfl.USUARIOA_ID = clName;// + "(Cliente)";
@@ -253,6 +254,7 @@ namespace TAT001.Controllers
         public ActionResult Details(IEnumerable<HttpPostedFileBase> files_soporte, string[] labels_soporte, int pos)
         {
             decimal num_doc = decimal.Parse(Request.Form["D.NUM_DOC"].ToString());
+            decimal ejer = decimal.Parse(Request.Form["D.EJER_DOC"].ToString());
             var res = "";
             string errorMessage = "";
             int numFiles = 0;
@@ -312,6 +314,7 @@ namespace TAT001.Controllers
                                     var ext = System.IO.Path.GetExtension(filename);
                                     i++;
                                     doc.NUM_DOC = num_doc;
+                                    doc.EJER_DOC = ejer;
                                     doc.POS = i;
                                     doc.TIPO = ext.Replace(".", "");
                                     try
@@ -936,6 +939,7 @@ namespace TAT001.Controllers
                                 //Documentos de la provisión
                                 DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
                                 docP.NUM_DOC = d.NUM_DOC;
+                                docP.EJER_DOC = d.EJER_DOC;
                                 docP.POS = docpl[j].POS;
                                 docP.MATNR = docpl[j].MATNR;
                                 if (j == 0 && docP.MATNR == "")
@@ -1696,11 +1700,12 @@ namespace TAT001.Controllers
                     {
                         Rangos rangos = new Rangos();//RSG 01.08.2018
                         //Obtener el número de documento
-                        decimal N_DOC = rangos.getSolID(dOCUMENTO.TSOL_ID);
+                        Calendario445 cal = new Calendario445();
+                        dOCUMENTO.EJER_DOC = cal.getEjercicio(DateTime.Now);
+                        decimal N_DOC = rangos.getSolID(dOCUMENTO.TSOL_ID, dOCUMENTO.EJER_DOC);
                         dOCUMENTO.NUM_DOC = N_DOC;
                         //Actualizar el rango
-                        rangos.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
-
+                        rangos.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC, dOCUMENTO.EJER_DOC);
 
                         dOCUMENTO.VKORG = payer.VKORG;
                         dOCUMENTO.VTWEG = payer.VTWEG;
@@ -1765,6 +1770,7 @@ namespace TAT001.Controllers
                                 {
                                     DOCUMENTOR docr = new DOCUMENTOR();
                                     docr.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    docr.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                     docr.TREVERSA_ID = Convert.ToInt32(TREVERSA);
                                     docr.USUARIOC_ID = User.Identity.Name;
                                     docr.FECHAC = dates;
@@ -1794,6 +1800,7 @@ namespace TAT001.Controllers
                         {
                             DOCUMENTON doc_notas = new DOCUMENTON();
                             doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            doc_notas.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                             doc_notas.POS = 1;
                             doc_notas.STEP = 1;
                             doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
@@ -1896,6 +1903,7 @@ namespace TAT001.Controllers
                                     if (docmod != null)
                                     {
                                         docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                         docP.POS = docmod.POS;
                                         if (docmod.MATNR == null || docmod.MATNR == "")
                                         {
@@ -1923,6 +1931,7 @@ namespace TAT001.Controllers
                                     else
                                     {
                                         docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                         docP.POS = docpl[j].POS;
                                         docP.MATNR = docpl[j].MATNR;
                                         docP.MATKL = docpl[j].MATKL;
@@ -1979,7 +1988,7 @@ namespace TAT001.Controllers
                                             col = "R";
                                         }
                                         docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col, dOCUMENTO.EJER_DOC);
                                     }
 
                                     //Obtener apoyo estimado
@@ -2109,6 +2118,7 @@ namespace TAT001.Controllers
                                     DOCUMENTOP docP = new DOCUMENTOP();
 
                                     docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    docP.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                     docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
                                     if (dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR == null)
                                     {
@@ -2146,7 +2156,7 @@ namespace TAT001.Controllers
                                             col = "R";
                                         }
                                         docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col, dOCUMENTO.NUM_DOC);
                                     }
 
                                     //Obtener apoyo estimado
@@ -2247,11 +2257,13 @@ namespace TAT001.Controllers
                                 DOCUMENTOF docF = new DOCUMENTOF();
                                 docF = dOCUMENTO.DOCUMENTOF[0];
                                 docF.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                docF.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                 docF.POS = k + 1;
                                 docF.FACTURAK = fact[k];
                                 facts.Add(new DOCUMENTOF
                                 {
                                     NUM_DOC = dOCUMENTO.NUM_DOC,
+                                    EJER_DOC = dOCUMENTO.EJER_DOC,//RSG EJER
                                     POS = k + 1,
                                     FACTURA = docF.FACTURA,
                                     FECHA = docF.FECHA,
@@ -2278,6 +2290,7 @@ namespace TAT001.Controllers
                                     DOCUMENTOF docF = new DOCUMENTOF();
                                     docF = dOCUMENTO.DOCUMENTOF[j];
                                     docF.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    docF.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                     db.DOCUMENTOFs.Add(docF);
                                     db.SaveChanges();
                                 }
@@ -2299,6 +2312,7 @@ namespace TAT001.Controllers
                             foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
                             {
                                 drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                drec.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                 if (drec.POS == 1)
                                 {
                                     ////drec.DOC_REF = drec.NUM_DOC;//RSG 09.07.2018
@@ -2416,6 +2430,7 @@ namespace TAT001.Controllers
                                             var ext = System.IO.Path.GetExtension(filename);
                                             i++;
                                             doc.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                            doc.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                                             doc.POS = i;
                                             doc.TIPO = ext.Replace(".", "");
                                             try
@@ -2481,6 +2496,7 @@ namespace TAT001.Controllers
                             f.WF_VERSION = wf.VERSION;
                             f.WF_POS = wp.POS;
                             f.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            f.EJER_DOC = dOCUMENTO.EJER_DOC;//RSG EJER
                             f.POS = 1;
                             f.LOOP = 1;
                             f.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
@@ -3728,6 +3744,7 @@ namespace TAT001.Controllers
                                 //Documentos de la provisión
                                 DOCUMENTOP_MOD docP = new DOCUMENTOP_MOD();
                                 docP.NUM_DOC = d.NUM_DOC;
+                                docP.EJER_DOC = d.EJER_DOC;//RSG EJER
                                 docP.POS = docpl[j].POS;
                                 docP.MATNR = docpl[j].MATNR;
                                 if (j == 0 && docP.MATNR == "")
@@ -4076,6 +4093,7 @@ namespace TAT001.Controllers
                     var clName = db.CLIENTEs.Where(c => c.KUNNR == kn).Select(s => s.NAME1).FirstOrDefault();
                     fvbfl = new FLUJO();
                     fvbfl.NUM_DOC = flng[i].NUM_DOC;
+                    fvbfl.EJER_DOC = flng[i].EJER_DOC;
                     fvbfl.FECHAC = flng[i].FECHAC;
                     fvbfl.FECHAM = flng[i].FECHAM;
                     fvbfl.USUARIOA_ID = clName + "(Cliente)";
@@ -4326,7 +4344,7 @@ namespace TAT001.Controllers
                                         col = "R";
                                     }
                                     docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col, dOCUMENTO.NUM_DOC);
                                 }
 
                                 //Obtener apoyo estimado
@@ -4416,6 +4434,7 @@ namespace TAT001.Controllers
                                 DOCUMENTOP docP = new DOCUMENTOP();
 
                                 docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                docP.EJER_DOC = dOCUMENTO.EJER_DOC;
                                 docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
                                 if (dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR == null)
                                 {
@@ -4453,7 +4472,7 @@ namespace TAT001.Controllers
                                         col = "R";
                                     }
                                     docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col, dOCUMENTO.NUM_DOC);
                                 }
 
                                 //Obtener apoyo estimado
@@ -4572,6 +4591,7 @@ namespace TAT001.Controllers
                             dm.APOYO_EST = dom.APOYO_EST;
                             dm.APOYO_REAL = dom.APOYO_REAL;
                             dm.NUM_DOC = dom.NUM_DOC;
+                            dm.EJER_DOC = dom.EJER_DOC;
                             dm.PORC_APOYO = dom.PORC_APOYO;
                             dm.POS = dom.POS;
                             dm.POS_ID = dom.POS_ID;
@@ -4614,6 +4634,7 @@ namespace TAT001.Controllers
                         foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
                         {
                             drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            drec.EJER_DOC = dOCUMENTO.EJER_DOC;
                             if (drec.POS == 1)
                             {
                                 if (dOCUMENTO.TIPO_TECNICO != "P")
@@ -4695,6 +4716,7 @@ namespace TAT001.Controllers
                                     docF = dOCUMENTO.DOCUMENTOF[0];
                                     _df2.POS = docF.POS;
                                     _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.EJER_DOC = dOCUMENTO.EJER_DOC;
                                     _df2.FACTURA = docF.FACTURA;
                                     _df2.PROVEEDOR = docF.PROVEEDOR;
                                     _df2.CONTROL = docF.CONTROL;
@@ -4726,6 +4748,7 @@ namespace TAT001.Controllers
                                     docF = dOCUMENTO.DOCUMENTOF[i];
                                     _df2.POS = docF.POS;
                                     _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.EJER_DOC = dOCUMENTO.EJER_DOC;
                                     _df2.FACTURA = docF.FACTURA;
                                     _df2.PROVEEDOR = docF.PROVEEDOR;
                                     _df2.CONTROL = docF.CONTROL;
@@ -4756,6 +4779,7 @@ namespace TAT001.Controllers
                                     docF = dOCUMENTO.DOCUMENTOF[i];
                                     _df2.POS = docF.POS;
                                     _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    _df2.EJER_DOC = dOCUMENTO.EJER_DOC;
                                     _df2.FACTURA = docF.FACTURA;
                                     _df2.PROVEEDOR = docF.PROVEEDOR;
                                     _df2.CONTROL = docF.CONTROL;
@@ -4938,6 +4962,7 @@ namespace TAT001.Controllers
                                         var ext = System.IO.Path.GetExtension(filename);
                                         i++;
                                         doc.NUM_DOC = d.NUM_DOC;
+                                        doc.EJER_DOC = d.EJER_DOC;
                                         doc.POS = i;
                                         doc.TIPO = ext.Replace(".", "");
                                         try
@@ -5168,6 +5193,7 @@ namespace TAT001.Controllers
                     nuevo.FECHAM = nuevo.FECHAC;
                     nuevo.LOOP = 0;
                     nuevo.NUM_DOC = actual.NUM_DOC;
+                    nuevo.EJER_DOC = actual.EJER_DOC;
                     nuevo.POS = actual.POS + 1;
                     nuevo.USUARIOA_ID = User.Identity.Name;
                     nuevo.WF_POS = fin.POS;
@@ -6963,7 +6989,7 @@ namespace TAT001.Controllers
 
 
         public List<DOCUMENTOM> addCatItems(List<CategoriaMaterial> categorias, string kunnr, string catid,
-            string soc_id, decimal numdoc, int posid, DateTime? vig_de, DateTime? vig_a, string neg, string dis, decimal total, decimal totaldoc, string col)
+            string soc_id, decimal numdoc, int posid, DateTime? vig_de, DateTime? vig_a, string neg, string dis, decimal total, decimal totaldoc, string col, decimal ejer)
         {
             //if (kunnr == null)
             //{
@@ -7191,6 +7217,7 @@ namespace TAT001.Controllers
                 {
                     DOCUMENTOM dm = new DOCUMENTOM();
                     dm.NUM_DOC = numdoc;
+                    dm.EJER_DOC = ejer;
                     dm.POS_ID = posid;
                     dm.MATNR = docm.MATNR;
                     dm.VIGENCIA_DE = vig_de;

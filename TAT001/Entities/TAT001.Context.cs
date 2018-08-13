@@ -28,6 +28,7 @@ namespace TAT001.Entities
         }
     
         public virtual DbSet<ACCION> ACCIONs { get; set; }
+        public virtual DbSet<APPSETTING> APPSETTINGs { get; set; }
         public virtual DbSet<CAMPOS> CAMPOS { get; set; }
         public virtual DbSet<CAMPOZKE24> CAMPOZKE24 { get; set; }
         public virtual DbSet<CAMPOZKE24T> CAMPOZKE24T { get; set; }
@@ -68,6 +69,7 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOBORRN> DOCUMENTOBORRNs { get; set; }
         public virtual DbSet<DOCUMENTOBORRP> DOCUMENTOBORRPs { get; set; }
         public virtual DbSet<DOCUMENTOF> DOCUMENTOFs { get; set; }
+        public virtual DbSet<DOCUMENTOL> DOCUMENTOLs { get; set; }
         public virtual DbSet<DOCUMENTOM> DOCUMENTOMs { get; set; }
         public virtual DbSet<DOCUMENTON> DOCUMENTONs { get; set; }
         public virtual DbSet<DOCUMENTOP> DOCUMENTOPs { get; set; }
@@ -110,6 +112,7 @@ namespace TAT001.Entities
         public virtual DbSet<PUESTO> PUESTOes { get; set; }
         public virtual DbSet<PUESTOT> PUESTOTs { get; set; }
         public virtual DbSet<RANGO> RANGOes { get; set; }
+        public virtual DbSet<RANGONUM> RANGONUMs { get; set; }
         public virtual DbSet<REGION> REGIONs { get; set; }
         public virtual DbSet<RETENCION> RETENCIONs { get; set; }
         public virtual DbSet<RETENCIONT> RETENCIONTs { get; set; }
@@ -162,8 +165,6 @@ namespace TAT001.Entities
         public virtual DbSet<DOCUMENTOV> DOCUMENTOVs { get; set; }
         public virtual DbSet<PAGINAV> PAGINAVs { get; set; }
         public virtual DbSet<WARNINGV> WARNINGVs { get; set; }
-        public virtual DbSet<DOCUMENTOL> DOCUMENTOLs { get; set; }
-        public virtual DbSet<APPSETTING> APPSETTINGs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

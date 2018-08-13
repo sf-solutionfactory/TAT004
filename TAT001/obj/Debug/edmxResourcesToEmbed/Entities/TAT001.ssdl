@@ -72,9 +72,11 @@
   </EntityType>
   <EntityType Name="CARTA">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="FECHAC" Type="datetime" />
@@ -143,10 +145,12 @@
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS_ID" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS_ID" Type="int" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
@@ -639,8 +643,10 @@
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" />
     <Property Name="TALL_ID" Type="nvarchar" MaxLength="10" />
@@ -719,9 +725,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="TIPO" Type="nchar" MaxLength="4" />
@@ -805,9 +813,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOF">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="FACTURA" Type="nvarchar" MaxLength="50" />
@@ -825,9 +835,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOL">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="FECHAF" Type="date" />
@@ -837,10 +849,12 @@
   </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS_ID" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS_ID" Type="numeric" Precision="5" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
@@ -854,9 +868,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="STEP" Type="int" />
@@ -865,9 +881,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="numeric" Precision="5" Scale="0" Nullable="false" />
     <Property Name="MATNR" Type="nvarchar" MaxLength="18" Nullable="false" />
@@ -886,9 +904,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOR">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="TREVERSA_ID" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TREVERSA_ID" Type="int" Nullable="false" />
     <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
@@ -897,9 +917,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOREC">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="FECHAF" Type="date" />
@@ -916,8 +938,10 @@
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="BUKRS" Type="nchar" MaxLength="4" />
     <Property Name="EJERCICIO" Type="int" />
@@ -934,9 +958,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOTS">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="TSFORM_ID" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSFORM_ID" Type="int" Nullable="false" />
     <Property Name="CHECKS" Type="bit" />
@@ -967,8 +993,11 @@
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
+      <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="KUNNR" Type="nchar" MaxLength="10" />
@@ -981,6 +1010,7 @@
       <PropertyRef Name="WORKF_ID" />
       <PropertyRef Name="WF_VERSION" />
       <PropertyRef Name="WF_POS" />
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
       <PropertyRef Name="DETPOS" />
@@ -988,6 +1018,7 @@
     <Property Name="WORKF_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="WF_VERSION" Type="int" Nullable="false" />
     <Property Name="WF_POS" Type="int" Nullable="false" />
+    <Property Name="EJER_DOC" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="int" Nullable="false" />
     <Property Name="DETPOS" Type="int" Nullable="false" />
@@ -1380,12 +1411,21 @@
   </EntityType>
   <EntityType Name="RANGO">
     <Key>
+      <PropertyRef Name="EJERCICIO" />
       <PropertyRef Name="ID" />
     </Key>
+    <Property Name="EJERCICIO" Type="numeric" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="INICIO" Type="numeric" Precision="18" Scale="0" />
     <Property Name="FIN" Type="numeric" Precision="18" Scale="0" />
     <Property Name="ACTUAL" Type="numeric" Precision="18" Scale="0" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RANGONUM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="REGION">
@@ -1680,6 +1720,7 @@
     <Property Name="TSOLC" Type="nvarchar" MaxLength="10" />
     <Property Name="TRECU" Type="nchar" MaxLength="1" />
     <Property Name="NEGO" Type="bit" Nullable="false" />
+    <Property Name="CARTA" Type="bit" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -2121,9 +2162,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="CARTA" Type="Self.CARTA" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="CARTA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2145,10 +2188,12 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="CARTAP" Type="Self.CARTAP" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="CARTA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS" />
       </Principal>
       <Dependent Role="CARTAP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS_ID" />
       </Dependent>
@@ -2769,9 +2814,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOA" Type="Self.DOCUMENTOA" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2831,9 +2878,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOF">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2843,9 +2892,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOL" Type="Self.DOCUMENTOL" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOL">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2855,10 +2906,12 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOM" Type="Self.DOCUMENTOM" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTOP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS" />
       </Principal>
       <Dependent Role="DOCUMENTOM">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS_ID" />
       </Dependent>
@@ -2869,9 +2922,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTON" Type="Self.DOCUMENTON" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTON">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2881,9 +2936,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOP" Type="Self.DOCUMENTOP" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2893,9 +2950,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOR">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2917,9 +2976,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOREC" Type="Self.DOCUMENTOREC" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOREC">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2929,9 +2990,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOSAP" Type="Self.DOCUMENTOSAP" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOSAP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2941,9 +3004,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="DOCUMENTOTS" Type="Self.DOCUMENTOTS" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOTS">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2965,9 +3030,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="FLUJO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3397,6 +3464,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="PUESTOT">
         <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RANGO_RANGONUM">
+    <End Role="RANGONUM" Type="Self.RANGONUM" Multiplicity="1" />
+    <End Role="RANGO" Type="Self.RANGO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RANGONUM">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RANGO">
+        <PropertyRef Name="ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3840,11 +3919,11 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TSOL_RANGO">
-    <End Role="RANGO" Type="Self.RANGO" Multiplicity="1" />
+  <Association Name="FK_TSOL_RANGONUM">
+    <End Role="RANGONUM" Type="Self.RANGONUM" Multiplicity="1" />
     <End Role="TSOL" Type="Self.TSOL" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="RANGO">
+      <Principal Role="RANGONUM">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="TSOL">
@@ -4324,6 +4403,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="PUESTO" EntityType="Self.PUESTO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PUESTOT" EntityType="Self.PUESTOT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RANGO" EntityType="Self.RANGO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RANGONUM" EntityType="Self.RANGONUM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="REGION" EntityType="Self.REGION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RETENCION" EntityType="Self.RETENCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RETENCIONT" EntityType="Self.RETENCIONT" Schema="dbo" store:Type="Tables" />
@@ -4939,6 +5019,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="PUESTOT" EntitySet="PUESTOT" />
     </AssociationSet>
+    <AssociationSet Name="FK_RANGO_RANGONUM" Association="Self.FK_RANGO_RANGONUM">
+      <End Role="RANGONUM" EntitySet="RANGONUM" />
+      <End Role="RANGO" EntitySet="RANGO" />
+    </AssociationSet>
     <AssociationSet Name="FK_RETENCIONT_RETENCION" Association="Self.FK_RETENCIONT_RETENCION">
       <End Role="RETENCION" EntitySet="RETENCION" />
       <End Role="RETENCIONT" EntitySet="RETENCIONT" />
@@ -5079,8 +5163,8 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="TS_CAMPO" EntitySet="TS_CAMPO" />
       <End Role="TS_FORMT" EntitySet="TS_FORMT" />
     </AssociationSet>
-    <AssociationSet Name="FK_TSOL_RANGO" Association="Self.FK_TSOL_RANGO">
-      <End Role="RANGO" EntitySet="RANGO" />
+    <AssociationSet Name="FK_TSOL_RANGONUM" Association="Self.FK_TSOL_RANGONUM">
+      <End Role="RANGONUM" EntitySet="RANGONUM" />
       <End Role="TSOL" EntitySet="TSOL" />
     </AssociationSet>
     <AssociationSet Name="FK_TSOL_TSOL" Association="Self.FK_TSOL_TSOL">

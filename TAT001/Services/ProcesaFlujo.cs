@@ -18,7 +18,8 @@ namespace TAT001.Services
             if (f.ESTATUS.Equals("I"))//---------------------------NUEVO REGISTRO
             {
                 actual.NUM_DOC = f.NUM_DOC;
-                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                actual.EJER_DOC = f.EJER_DOC;
+                DOCUMENTO d = db.DOCUMENTOes.Find(new object[] { actual.EJER_DOC, actual.NUM_DOC });
                 actual.COMENTARIO = f.COMENTARIO;
                 actual.ESTATUS = f.ESTATUS;
                 actual.FECHAC = f.FECHAC;
@@ -121,7 +122,7 @@ namespace TAT001.Services
             }
             else if (f.ESTATUS.Equals("A"))   //---------------------EN PROCESO DE APROBACIÓN
             {
-                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) &  a.EJER_DOC.Equals(f.EJER_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
 
                 if (actual.ESTATUS.Equals("A"))
                     return "1";//-----------------YA FUE PROCESADA
@@ -152,7 +153,7 @@ namespace TAT001.Services
                         {
                             if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
                             {
-                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                DOCUMENTO d = db.DOCUMENTOes.Find(new object[] { actual.EJER_DOC, actual.NUM_DOC });
                                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
 
                                 FLUJO nuevo = new FLUJO();
@@ -341,7 +342,7 @@ namespace TAT001.Services
                         {
                             if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
                             {
-                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                DOCUMENTO d = db.DOCUMENTOes.Find(new object[] { actual.EJER_DOC, actual.NUM_DOC });
 
                                 ArchivoContable sa = new ArchivoContable();
                                 string file = sa.generarArchivo(d.NUM_DOC, 0);
@@ -378,7 +379,7 @@ namespace TAT001.Services
                         {
                             if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
                             {
-                                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                                DOCUMENTO d = db.DOCUMENTOes.Find(new object[] { actual.EJER_DOC, actual.NUM_DOC });
                                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
 
                                 FLUJO nuevo = new FLUJO();
@@ -509,7 +510,7 @@ namespace TAT001.Services
             }
             else if (f.ESTATUS.Equals("R"))//Rechazada
             {
-                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) & a.EJER_DOC.Equals(f.EJER_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
                 WORKFP paso_a = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS.Equals(actual.WF_POS)).FirstOrDefault();
 
                 int next_step_a = 0;
@@ -538,7 +539,7 @@ namespace TAT001.Services
                 nuevo.DETPOS = 1;
                 nuevo.DETVER = actual.DETVER;
                 nuevo.LOOP = 1;//-----------------------------------
-                DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
+                DOCUMENTO d = db.DOCUMENTOes.Find(new object[] { actual.EJER_DOC, actual.NUM_DOC });
                 nuevo.USUARIOD_ID = d.USUARIOD_ID;
                 DateTime fecha = DateTime.Now.Date;
                 TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
@@ -568,7 +569,7 @@ namespace TAT001.Services
             //-------------------------------------------------------------------------------------------------------------------------------//
             if (correcto.Equals(""))
             {
-                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x=>x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC & x.EJER_DOC.Equals(f.EJER_DOC)).Include(x=>x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                 string corr = "";
                 if (conta.WORKFP.ACCION.TIPO == "P")
                 {
@@ -588,7 +589,7 @@ namespace TAT001.Services
             bool fin = false;
             TAT001Entities db = new TAT001Entities();
             DET_AGENTEC dap = new DET_AGENTEC();
-            FLUJO f_actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).FirstOrDefault();
+            FLUJO f_actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.EJER_DOC.Equals(d.EJER_DOC)).FirstOrDefault();
             //DET_AGENTEH dah = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID &
             //                    a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.VERSION == f_actual.DETVER).FirstOrDefault();
             List<DET_AGENTEC> dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID == d.PAIS_ID &
@@ -610,7 +611,7 @@ namespace TAT001.Services
                 }
                 else
                 {
-                    FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
+                    FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.EJER_DOC.Equals(d.EJER_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
                     if (ffl.DETPOS == 99)
                         ppos = 1;
                     ffl.DETPOS = ffl.DETPOS - 1;

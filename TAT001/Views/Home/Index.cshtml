@@ -386,14 +386,14 @@
                             }
                             else
                             {
-                                <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                                <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC , ejercicio = item.EJER_DOC})'" style="cursor:pointer">
                                     @item.NUM_DOC
                                 </td>
                             }
                         }
                         else
                         {
-                            <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC })'" style="cursor:pointer">
+                            <td onclick="document.location='@Url.Action("Details", "Solicitudes", new { id = item.NUM_DOC , ejercicio = item.EJER_DOC })'" style="cursor:pointer">
                                 @item.NUM_DOC
                             </td>
                         }

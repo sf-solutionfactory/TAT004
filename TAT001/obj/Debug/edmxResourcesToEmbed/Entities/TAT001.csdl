@@ -13,6 +13,15 @@
     <Property Name="TIPO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_ACCION" FromRole="ACCION" ToRole="WORKFP" />
   </EntityType>
+  <EntityType Name="APPSETTING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
   <EntityType Name="CAMPOS">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -79,9 +88,11 @@
   </EntityType>
   <EntityType Name="CARTA">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="FECHAC" Type="DateTime" Precision="3" />
@@ -129,9 +140,6 @@
     <Property Name="LUGARFECHX" Type="Boolean" />
     <Property Name="MONTO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="MONEDA" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
-    <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
-    <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
     <Property Name="PAYERNOM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="PAYERNOMX" Type="Boolean" />
     <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -150,13 +158,18 @@
     <Property Name="APOYO_REAX" Type="Boolean" />
     <Property Name="VOLUMEN_ESTX" Type="Boolean" />
     <Property Name="VOLUMEN_REAX" Type="Boolean" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
+    <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS_ID" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS_ID" Type="Int32" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
@@ -703,8 +716,10 @@
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSOL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="TALL_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -777,6 +792,9 @@
     <Property Name="DOCUMENTO_SAP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="LIGADA" Type="Boolean" />
+    <Property Name="OBJETIVOQ" Type="Boolean" />
+    <Property Name="FRECUENCIA_LIQ" Type="Int32" />
+    <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
     <NavigationProperty Name="CARTAs" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="DOCUMENTO" ToRole="CARTA" />
     <NavigationProperty Name="CLIENTE" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="DOCUMENTO" ToRole="CLIENTE" />
     <NavigationProperty Name="GALL" Relationship="Self.FK_DOCUMENTO_GALL" FromRole="DOCUMENTO" ToRole="GALL" />
@@ -787,6 +805,7 @@
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_DOCUMENTO_USUARIO" FromRole="DOCUMENTO" ToRole="USUARIO" />
     <NavigationProperty Name="DOCUMENTOAs" Relationship="Self.FK_DOCUMENTOA_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOA" />
     <NavigationProperty Name="DOCUMENTOFs" Relationship="Self.FK_DOCUMENTOF_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOF" />
+    <NavigationProperty Name="DOCUMENTOLs" Relationship="Self.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
     <NavigationProperty Name="DOCUMENTONs" Relationship="Self.FK_DOCUMENTON_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTON" />
     <NavigationProperty Name="DOCUMENTOPs" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOP" />
     <NavigationProperty Name="DOCUMENTORs" Relationship="Self.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
@@ -794,16 +813,14 @@
     <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
-    <NavigationProperty Name="DOCUMENTOLs" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
-    <Property Name="OBJETIVOQ" Type="Boolean" />
-    <Property Name="FRECUENCIA_LIQ" Type="Int32" />
-    <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="TIPO" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
@@ -835,8 +852,8 @@
     <Property Name="IMPORTE_FAC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
     <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
   </EntityType>
   <EntityType Name="DOCUMENTOBORRM">
     <Key>
@@ -893,9 +910,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOF">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="FACTURA" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -912,12 +931,29 @@
     <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOF_DOCUMENTO" FromRole="DOCUMENTOF" ToRole="DOCUMENTO" />
   </EntityType>
+  <EntityType Name="DOCUMENTOL">
+    <Key>
+      <PropertyRef Name="EJER_DOC" />
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
+    <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="FECHAF" Type="DateTime" Precision="0" />
+    <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="Boolean" />
+    <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
+  </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS_ID" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS_ID" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
@@ -932,9 +968,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTON">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="STEP" Type="Int32" />
@@ -944,9 +982,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
     <Property Name="MATNR" Type="String" MaxLength="18" FixedLength="false" Unicode="true" Nullable="false" />
@@ -967,9 +1007,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOR">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="TREVERSA_ID" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TREVERSA_ID" Type="Int32" Nullable="false" />
     <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
@@ -980,9 +1022,11 @@
   </EntityType>
   <EntityType Name="DOCUMENTOREC">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="FECHAF" Type="DateTime" Precision="0" />
@@ -995,19 +1039,20 @@
     <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
     <Property Name="FECHAV" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="BUKRS" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="EJERCICIO" Type="Int32" />
     <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
     <Property Name="REGISTRO_PR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="REGISTRO_NO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="REGISTRO_RE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
@@ -1016,12 +1061,15 @@
     <Property Name="LIFNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOT">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="TSFORM_ID" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TSFORM_ID" Type="Int32" Nullable="false" />
     <Property Name="CHECKS" Type="Boolean" />
@@ -1054,8 +1102,11 @@
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
+      <PropertyRef Name="EJER_DOC" />
+      <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
@@ -1068,6 +1119,7 @@
       <PropertyRef Name="WORKF_ID" />
       <PropertyRef Name="WF_VERSION" />
       <PropertyRef Name="WF_POS" />
+      <PropertyRef Name="EJER_DOC" />
       <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
       <PropertyRef Name="DETPOS" />
@@ -1075,6 +1127,7 @@
     <Property Name="WORKF_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="WF_VERSION" Type="Int32" Nullable="false" />
     <Property Name="WF_POS" Type="Int32" Nullable="false" />
+    <Property Name="EJER_DOC" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="POS" Type="Int32" Nullable="false" />
     <Property Name="DETPOS" Type="Int32" Nullable="false" />
@@ -1329,6 +1382,7 @@
     <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="DECIMAL" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="MILES" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_PAIS" FromRole="PAIS" ToRole="CLIENTE" />
     <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_PAIS" FromRole="PAIS" ToRole="CUENTA" />
     <NavigationProperty Name="DET_AGENTEC" Relationship="Self.FK_DET_AGENTEC_PAIS" FromRole="PAIS" ToRole="DET_AGENTEC" />
@@ -1339,7 +1393,6 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
-    <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>
@@ -1547,14 +1600,25 @@
   </EntityType>
   <EntityType Name="RANGO">
     <Key>
+      <PropertyRef Name="EJERCICIO" />
       <PropertyRef Name="ID" />
     </Key>
+    <Property Name="EJERCICIO" Type="Decimal" Precision="4" Scale="0" Nullable="false" />
     <Property Name="ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="INICIO" Type="Decimal" Precision="18" Scale="0" />
     <Property Name="FIN" Type="Decimal" Precision="18" Scale="0" />
     <Property Name="ACTUAL" Type="Decimal" Precision="18" Scale="0" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="TSOLs" Relationship="Self.FK_TSOL_RANGO" FromRole="RANGO" ToRole="TSOL" />
+    <NavigationProperty Name="RANGONUM" Relationship="Self.FK_RANGO_RANGONUM" FromRole="RANGO" ToRole="RANGONUM" />
+  </EntityType>
+  <EntityType Name="RANGONUM">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="RANGOes" Relationship="Self.FK_RANGO_RANGONUM" FromRole="RANGONUM" ToRole="RANGO" />
+    <NavigationProperty Name="TSOLs" Relationship="Self.FK_TSOL_RANGONUM" FromRole="RANGONUM" ToRole="TSOL" />
   </EntityType>
   <EntityType Name="REGION">
     <Key>
@@ -1939,9 +2003,10 @@
     <Property Name="TSOLC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="TRECU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="NEGO" Type="Boolean" Nullable="false" />
+    <Property Name="CARTA" Type="Boolean" />
     <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
-    <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
+    <NavigationProperty Name="RANGONUM" Relationship="Self.FK_TSOL_RANGONUM" FromRole="TSOL" ToRole="RANGONUM" />
     <NavigationProperty Name="TSOL1" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL" ToRole="TSOL1" />
     <NavigationProperty Name="TSOL2" Relationship="Self.FK_TSOL_TSOL" FromRole="TSOL1" ToRole="TSOL" />
     <NavigationProperty Name="TSOLTs" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOL" ToRole="TSOLT" />
@@ -2479,9 +2544,11 @@
     <End Role="CARTA" Type="Self.CARTA" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="CARTA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -2503,10 +2570,12 @@
     <End Role="CARTAP" Type="Self.CARTAP" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="CARTA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS" />
       </Principal>
       <Dependent Role="CARTAP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS_ID" />
       </Dependent>
@@ -3181,9 +3250,11 @@
     <End Role="DOCUMENTOA" Type="Self.DOCUMENTOA" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOA">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3193,9 +3264,25 @@
     <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOF">
+        <PropertyRef Name="EJER_DOC" />
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOL" Type="Self.DOCUMENTOL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOL">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3205,9 +3292,11 @@
     <End Role="DOCUMENTON" Type="Self.DOCUMENTON" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTON">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3217,9 +3306,11 @@
     <End Role="DOCUMENTOP" Type="Self.DOCUMENTOP" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3229,9 +3320,11 @@
     <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOR">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3241,9 +3334,11 @@
     <End Role="DOCUMENTOREC" Type="Self.DOCUMENTOREC" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOREC">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3253,9 +3348,11 @@
     <End Role="DOCUMENTOSAP" Type="Self.DOCUMENTOSAP" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOSAP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3265,9 +3362,11 @@
     <End Role="DOCUMENTOTS" Type="Self.DOCUMENTOT" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOTS">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3277,9 +3376,11 @@
     <End Role="FLUJO" Type="Self.FLUJO" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="FLUJO">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -3303,10 +3404,12 @@
     <End Role="DOCUMENTOM" Type="Self.DOCUMENTOM" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTOP">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS" />
       </Principal>
       <Dependent Role="DOCUMENTOM">
+        <PropertyRef Name="EJER_DOC" />
         <PropertyRef Name="NUM_DOC" />
         <PropertyRef Name="POS_ID" />
       </Dependent>
@@ -3872,11 +3975,23 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_TSOL_RANGO">
-    <End Role="RANGO" Type="Self.RANGO" Multiplicity="1" />
+  <Association Name="FK_RANGO_RANGONUM">
+    <End Role="RANGONUM" Type="Self.RANGONUM" Multiplicity="1" />
+    <End Role="RANGO" Type="Self.RANGO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RANGONUM">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RANGO">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TSOL_RANGONUM">
+    <End Role="RANGONUM" Type="Self.RANGONUM" Multiplicity="1" />
     <End Role="TSOL" Type="Self.TSOL" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="RANGO">
+      <Principal Role="RANGONUM">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="TSOL">
@@ -4410,6 +4525,7 @@
   </Association>
   <EntityContainer Name="TAT001Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ACCIONs" EntityType="Self.ACCION" />
+    <EntitySet Name="APPSETTINGs" EntityType="Self.APPSETTING" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" />
     <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" />
     <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" />
@@ -4450,6 +4566,7 @@
     <EntitySet Name="DOCUMENTOBORRNs" EntityType="Self.DOCUMENTOBORRN" />
     <EntitySet Name="DOCUMENTOBORRPs" EntityType="Self.DOCUMENTOBORRP" />
     <EntitySet Name="DOCUMENTOFs" EntityType="Self.DOCUMENTOF" />
+    <EntitySet Name="DOCUMENTOLs" EntityType="Self.DOCUMENTOL" />
     <EntitySet Name="DOCUMENTOMs" EntityType="Self.DOCUMENTOM" />
     <EntitySet Name="DOCUMENTONs" EntityType="Self.DOCUMENTON" />
     <EntitySet Name="DOCUMENTOPs" EntityType="Self.DOCUMENTOP" />
@@ -4492,6 +4609,7 @@
     <EntitySet Name="PUESTOes" EntityType="Self.PUESTO" />
     <EntitySet Name="PUESTOTs" EntityType="Self.PUESTOT" />
     <EntitySet Name="RANGOes" EntityType="Self.RANGO" />
+    <EntitySet Name="RANGONUMs" EntityType="Self.RANGONUM" />
     <EntitySet Name="REGIONs" EntityType="Self.REGION" />
     <EntitySet Name="RETENCIONs" EntityType="Self.RETENCION" />
     <EntitySet Name="RETENCIONTs" EntityType="Self.RETENCIONT" />
@@ -4812,6 +4930,10 @@
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
       <End Role="DOCUMENTOF" EntitySet="DOCUMENTOFs" />
     </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="Self.FK_DOCUMENTOL_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTON_DOCUMENTO" Association="Self.FK_DOCUMENTON_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
       <End Role="DOCUMENTON" EntitySet="DOCUMENTONs" />
@@ -5032,8 +5154,12 @@
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="PUESTOT" EntitySet="PUESTOTs" />
     </AssociationSet>
-    <AssociationSet Name="FK_TSOL_RANGO" Association="Self.FK_TSOL_RANGO">
+    <AssociationSet Name="FK_RANGO_RANGONUM" Association="Self.FK_RANGO_RANGONUM">
+      <End Role="RANGONUM" EntitySet="RANGONUMs" />
       <End Role="RANGO" EntitySet="RANGOes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TSOL_RANGONUM" Association="Self.FK_TSOL_RANGONUM">
+      <End Role="RANGONUM" EntitySet="RANGONUMs" />
       <End Role="TSOL" EntitySet="TSOLs" />
     </AssociationSet>
     <AssociationSet Name="FK_RETENCIONT_RETENCION" Association="Self.FK_RETENCIONT_RETENCION">
@@ -5291,12 +5417,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <EntitySet Name="DOCUMENTOLs" EntityType="TAT001Model.DOCUMENTOL" />
-    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOL_DOCUMENTO">
-      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
-      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
-    </AssociationSet>
-    <EntitySet Name="APPSETTINGs" EntityType="TAT001Model.APPSETTING" />
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5305,7 +5425,7 @@
     <Property Type="String" Name="NOMBRE" Nullable="true" MaxLength="250" />
     <Property Type="String" Name="LANDX" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="VKORG" Nullable="false" MaxLength="4" />
-    <Property Type="String" Name="CANAL" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="CANAL" Nullable="true" MaxLength="62" />
     <Property Type="String" Name="CONTAC" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="CONT_EMAIL" Nullable="true" MaxLength="100" />
   </ComplexType>
@@ -5416,38 +5536,4 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
-  <EntityType Name="DOCUMENTOL">
-    <Key>
-      <PropertyRef Name="NUM_DOC" />
-      <PropertyRef Name="POS" />
-    </Key>
-    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
-    <Property Name="POS" Type="Int32" Nullable="false" />
-    <Property Name="FECHAF" Type="DateTime" Precision="0" />
-    <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
-    <Property Name="ESTATUS" Type="Boolean" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
-    <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
-  </EntityType>
-  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
-    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
-    <End Type="TAT001Model.DOCUMENTOL" Role="DOCUMENTOL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="DOCUMENTO">
-        <PropertyRef Name="NUM_DOC" />
-      </Principal>
-      <Dependent Role="DOCUMENTOL">
-        <PropertyRef Name="NUM_DOC" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="APPSETTING">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-  </EntityType>
 </Schema>

@@ -35,12 +35,13 @@ namespace TAT001.Entities
         public string TSOLC { get; set; }
         public string TRECU { get; set; }
         public bool NEGO { get; set; }
+        public Nullable<bool> CARTA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
-        public virtual RANGO RANGO { get; set; }
+        public virtual RANGONUM RANGONUM { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TSOL> TSOL1 { get; set; }
         public virtual TSOL TSOL2 { get; set; }

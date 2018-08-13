@@ -14,6 +14,7 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTOR
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int TREVERSA_ID { get; set; }
         public string USUARIOC_ID { get; set; }

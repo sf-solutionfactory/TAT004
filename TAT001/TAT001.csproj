@@ -547,6 +547,9 @@
     <Compile Include="Entities\RANGO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RANGONUM.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\REGION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

@@ -9,7 +9,7 @@ namespace TAT001.Services
 {
     public class Rangos
     {
-        public RANGO getRango(string TSOL_ID)
+        public RANGO getRango(string TSOL_ID, decimal ejer)
         {
             RANGO rango = new RANGO();
             using (TAT001Entities db = new TAT001Entities())
@@ -18,7 +18,9 @@ namespace TAT001.Services
                 rango = (from r in db.RANGOes
                          join s in db.TSOLs
                          on r.ID equals s.RANGO_ID
-                         where s.ID == TSOL_ID && r.ACTIVO == true
+                         where s.ID == TSOL_ID 
+                         && r.EJERCICIO == ejer
+                         && r.ACTIVO == true
                          select r).FirstOrDefault();
 
             }
@@ -26,14 +28,14 @@ namespace TAT001.Services
             return rango;
 
         }
-        public decimal getSolID(string TSOL_ID)
+        public decimal getSolID(string TSOL_ID, decimal ejer)
         {
 
             decimal id = 0;
 
-            RANGO rango = getRango(TSOL_ID);
+            RANGO rango = getRango(TSOL_ID, ejer);
 
-            if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
+            if (rango.ACTUAL >= rango.INICIO && rango.ACTUAL <= rango.FIN)
             {
                 rango.ACTUAL++;
                 id = (decimal)rango.ACTUAL;
@@ -42,13 +44,13 @@ namespace TAT001.Services
             return id;
         }
 
-        public void updateRango(string TSOL_ID, decimal actual)
+        public void updateRango(string TSOL_ID, decimal actual, decimal ejer)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
-                RANGO rango = getRango(TSOL_ID);
+                RANGO rango = getRango(TSOL_ID, ejer);
 
-                if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
+                if (rango.ACTUAL >= rango.INICIO && rango.ACTUAL <= rango.FIN)
                 {
                     rango.ACTUAL = actual;
                 }

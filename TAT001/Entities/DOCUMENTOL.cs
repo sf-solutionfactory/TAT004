@@ -14,6 +14,7 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTOL
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public Nullable<System.DateTime> FECHAF { get; set; }

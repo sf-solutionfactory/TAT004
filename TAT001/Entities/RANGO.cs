@@ -14,19 +14,13 @@ namespace TAT001.Entities
     
     public partial class RANGO
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RANGO()
-        {
-            this.TSOLs = new HashSet<TSOL>();
-        }
-    
+        public decimal EJERCICIO { get; set; }
         public string ID { get; set; }
         public Nullable<decimal> INICIO { get; set; }
         public Nullable<decimal> FIN { get; set; }
         public Nullable<decimal> ACTUAL { get; set; }
         public bool ACTIVO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TSOL> TSOLs { get; set; }
+        public virtual RANGONUM RANGONUM { get; set; }
     }
 }

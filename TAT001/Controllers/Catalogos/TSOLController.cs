@@ -46,7 +46,7 @@ namespace TAT001.Controllers.Catalogos
                 Session["spras"] = user.SPRAS_ID;
                 ViewBag.lan = user.SPRAS_ID;
             }
-            var tSOLs = db.TSOLs.Include(t => t.RANGO).Include(t => t.TSOL2).Include(x => x.TSOLTs).ToList();
+            var tSOLs = db.TSOLs.Include(t => t.RANGONUM).Include(t => t.TSOL2).Include(x => x.TSOLTs).ToList();
             return View(tSOLs);
         }
 
@@ -362,7 +362,7 @@ namespace TAT001.Controllers.Catalogos
         [HttpPost]
         public FileResult Descargar()
         {
-            var tSOLs = db.TSOLs.Include(t => t.RANGO).Include(t => t.TSOL2).Include(x => x.TSOLTs).ToList();
+            var tSOLs = db.TSOLs.Include(t => t.RANGONUM).Include(t => t.TSOL2).Include(x => x.TSOLTs).ToList();
             generarExcelHome(tSOLs, Server.MapPath("~/pdfTemp/"));
             return File(Server.MapPath("~/pdfTemp/DocTS" + DateTime.Now.ToShortDateString() + ".xlsx"), "application /vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DocTS" + DateTime.Now.ToShortDateString() + ".xlsx");
         }
@@ -402,7 +402,7 @@ namespace TAT001.Controllers.Catalogos
                     worksheet.Cell("B" + i).Value = new[]
                 {
                   new {
-                      BANNER       = lst[i-2].RANGO.ID
+                      BANNER       = lst[i-2].RANGONUM.ID
                       },
                     };
                     var tslt = "";

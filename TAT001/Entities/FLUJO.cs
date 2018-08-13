@@ -17,6 +17,7 @@ namespace TAT001.Entities
         public string WORKF_ID { get; set; }
         public int WF_VERSION { get; set; }
         public int WF_POS { get; set; }
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public int DETPOS { get; set; }

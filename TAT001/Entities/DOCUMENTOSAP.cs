@@ -14,6 +14,7 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTOSAP
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public string BUKRS { get; set; }
         public Nullable<int> EJERCICIO { get; set; }

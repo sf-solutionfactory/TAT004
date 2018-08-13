@@ -15,7 +15,8 @@ namespace TAT001
 
             routes.MapRoute(
                name: "Details",
-               url: "Solicitudes/Details/{id}/{ejercicio}",
+               //url: "Solicitudes/Details/{id}/{ejercicio}",
+               url: "Solicitudes/Details/{ejercicio}/{id}",
                defaults: new { controller = "Solicitudes", action = "Details", id = UrlParameter.Optional, ejercicio = UrlParameter.Optional }
            );
 

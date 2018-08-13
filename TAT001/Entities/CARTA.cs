@@ -20,6 +20,7 @@ namespace TAT001.Entities
             this.CARTAPs = new HashSet<CARTAP>();
         }
     
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public Nullable<System.DateTime> FECHAC { get; set; }

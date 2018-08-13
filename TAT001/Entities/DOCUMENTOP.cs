@@ -20,6 +20,7 @@ namespace TAT001.Entities
             this.DOCUMENTOMs = new HashSet<DOCUMENTOM>();
         }
     
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public decimal POS { get; set; }
         public string MATNR { get; set; }

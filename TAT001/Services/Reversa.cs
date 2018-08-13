@@ -346,8 +346,10 @@ namespace TAT001.Services
 
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);//RSG 02/05/2018
             Rangos rangos = new Rangos();//RSG 01.08.2018
+            Calendario445 cal = new Calendario445();
+            dOCUMENTO.EJER_DOC = cal.getEjercicio(DateTime.Now);
             //Obtener el número de documento
-            decimal N_DOC = rangos.getSolID(dOCUMENTO.TSOL_ID);
+            decimal N_DOC = rangos.getSolID(dOCUMENTO.TSOL_ID, dOCUMENTO.EJER_DOC);
             dOCUMENTO.NUM_DOC = N_DOC;
 
             //Obtener SOCIEDAD_ID                     
@@ -430,7 +432,7 @@ namespace TAT001.Services
             db.SaveChanges();
 
             //Actualizar el rango
-            rangos.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
+            rangos.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC, dOCUMENTO.EJER_DOC);
 
 
             DOCUMENTO referencia = db.DOCUMENTOes.Find(dOCUMENTO.DOCUMENTO_REF);

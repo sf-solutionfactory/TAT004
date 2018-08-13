@@ -14,6 +14,7 @@ namespace TAT001.Entities
     
     public partial class DOCUMENTOF
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS { get; set; }
         public string FACTURA { get; set; }
@@ -28,9 +29,9 @@ namespace TAT001.Entities
         public string BELNR { get; set; }
         public Nullable<decimal> IMPORTE_FAC { get; set; }
         public string PAYER { get; set; }
-    
-        public virtual DOCUMENTO DOCUMENTO { get; set; }
-        public string DESCRIPCION { get; set; }
         public string SOCIEDAD { get; set; }
+        public string DESCRIPCION { get; set; }
+
+        public virtual DOCUMENTO DOCUMENTO { get; set; }
     }
 }

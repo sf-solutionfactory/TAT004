@@ -14,6 +14,7 @@ namespace TAT001.Entities
     
     public partial class CARTAP
     {
+        public decimal EJER_DOC { get; set; }
         public decimal NUM_DOC { get; set; }
         public int POS_ID { get; set; }
         public int POS { get; set; }
