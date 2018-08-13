@@ -23,6 +23,9 @@ namespace TAT001.Entities
         public Nullable<decimal> CLEARING { get; set; }
         public Nullable<decimal> LIMITE { get; set; }
     
+        public virtual CUENTAGL CUENTAGL { get; set; }
+        public virtual CUENTAGL CUENTAGL1 { get; set; }
+        public virtual CUENTAGL CUENTAGL2 { get; set; }
         public virtual PAI PAI { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual TALL TALL { get; set; }

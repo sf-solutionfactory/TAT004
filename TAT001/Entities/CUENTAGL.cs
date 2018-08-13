@@ -12,40 +12,31 @@ namespace TAT001.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class TSOL
+    public partial class CUENTAGL
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TSOL()
+        public CUENTAGL()
         {
-            this.CONSOPORTEs = new HashSet<CONSOPORTE>();
+            this.CUENTAs = new HashSet<CUENTA>();
+            this.CUENTAs1 = new HashSet<CUENTA>();
+            this.CUENTAs2 = new HashSet<CUENTA>();
             this.DOCUMENTOes = new HashSet<DOCUMENTO>();
-            this.TSOL1 = new HashSet<TSOL>();
-            this.TSOLTs = new HashSet<TSOLT>();
+            this.DOCUMENTOes1 = new HashSet<DOCUMENTO>();
         }
     
-        public string ID { get; set; }
-        public string DESCRIPCION { get; set; }
-        public string TSOLR { get; set; }
-        public string RANGO_ID { get; set; }
-        public string ESTATUS { get; set; }
-        public bool FACTURA { get; set; }
-        public bool PADRE { get; set; }
-        public bool ADICIONA { get; set; }
-        public string TSOLM { get; set; }
-        public string TSOLC { get; set; }
-        public string TRECU { get; set; }
-        public bool NEGO { get; set; }
-        public bool CARTA { get; set; }
+        public decimal ID { get; set; }
+        public string NOMBRE { get; set; }
+        public Nullable<bool> ACTIVO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }
+        public virtual ICollection<CUENTA> CUENTAs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CUENTA> CUENTAs2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTO> DOCUMENTOes { get; set; }
-        public virtual RANGO RANGO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TSOL> TSOL1 { get; set; }
-        public virtual TSOL TSOL2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TSOLT> TSOLTs { get; set; }
+        public virtual ICollection<DOCUMENTO> DOCUMENTOes1 { get; set; }
     }
 }
