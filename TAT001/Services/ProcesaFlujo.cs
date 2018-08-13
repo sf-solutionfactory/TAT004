@@ -555,7 +555,10 @@ namespace TAT001.Services
                 db.Entry(actual).State = EntityState.Modified;
                 d.ESTATUS_WF = "R";
                 if (next.ACCION.TIPO == "S")
+                {
+                    d.ESTATUS = "R";
                     d.ESTATUS_WF = "S";
+                }
 
                 db.SaveChanges();
 

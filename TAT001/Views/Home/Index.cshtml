@@ -452,10 +452,16 @@
                                 <span class="new badge yellow darken-2 white-text" data-badge-caption=" "><span class="lbl_pending">Pendiente aprobador </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOA_ID*@</span>
                             </td>
                         }
-                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[C]..[A].."))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[N]..[A].."))
                         {
                             <td class="">
                                 <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
+                            </td>
+                        }
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[C]..[A].."))
+                        {
+                            <td class="">
+                                <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Cerrada</span>
                             </td>
                         }
                         else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[P]..[A].."))
@@ -464,19 +470,13 @@
                                 <span class="lbl_contab new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
                             </td>
                         }
-                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[N]..[A].."))
-                        {
-                            <td class="">
-                                <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por gen .txt</span>
-                            </td>
-                        }
                         else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[P][A].."))
                         {
                             <td class="">
                                 <span class="lbl_txt new badge green darken-1 white-text" data-badge-caption=" ">Por contabilizar</span>
                             </td>
                         }
-                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[X][A].."))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[E][A].."))
                         {
                             <td class="">
                                 <span class="lbl_txt new badge red darken-1 white-text" data-badge-caption=" ">Error en contabiización</span>
@@ -500,10 +500,10 @@
                                 <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
                             </td>
                         }
-                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R][S]."))
+                        else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[R]..[S].."))
                         {
                             <td class="">
-                                <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejected">Pendiente corrección usuario TS </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
+                                <span class="new badge red darken-1 white-text" data-badge-caption=" "><span class="lbl_rejecte">Pendiente corrección usuario TS </span> @*@item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID*@</span>
                             </td>
                         }
                         else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[S].."))
