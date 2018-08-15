@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="TAT001Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <ComplexType Name="split_Result">
     <Property Name="id" Type="Int32" Nullable="false" />
     <Property Name="val" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -5351,20 +5351,20 @@
       <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
       <End Role="USUARIO" EntitySet="USUARIOs" />
     </AssociationSet>
-    <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model.split_Result)">
+    <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model1.split_Result)">
       <Parameter Name="delimited" Mode="In" Type="String" />
       <Parameter Name="delimiter" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
+    <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model1.CPS_LISTA_CLI_PRO_Result)" />
     <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
-    <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
+    <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model1.CSP_CAMBIO_Result)">
       <Parameter Name="sociedad" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
+    <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model1.CSP_CARPETA_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_CONSULTARPRESUPUESTO" ReturnType="Collection(TAT001Model.CSP_CONSULTARPRESUPUESTO_Result)">
+    <FunctionImport Name="CSP_CONSULTARPRESUPUESTO" ReturnType="Collection(TAT001Model1.CSP_CONSULTARPRESUPUESTO_Result)">
       <Parameter Name="SOCIEDAD" Mode="In" Type="String" />
       <Parameter Name="ANIOC" Mode="In" Type="String" />
       <Parameter Name="ANIOS" Mode="In" Type="String" />
@@ -5374,11 +5374,11 @@
       <Parameter Name="MONEDAA" Mode="In" Type="String" />
       <Parameter Name="CPT" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PERMISO" ReturnType="Collection(TAT001Model.CSP_PERMISO_Result)">
+    <FunctionImport Name="CSP_PERMISO" ReturnType="Collection(TAT001Model1.CSP_PERMISO_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PRESU_CLIENT" ReturnType="Collection(TAT001Model.CSP_PRESU_CLIENT_Result)">
+    <FunctionImport Name="CSP_PRESU_CLIENT" ReturnType="Collection(TAT001Model1.CSP_PRESU_CLIENT_Result)">
       <Parameter Name="CLIENTE" Mode="In" Type="String" />
       <Parameter Name="PERIODO" Mode="In" Type="String" />
     </FunctionImport>
@@ -5390,10 +5390,10 @@
       <Parameter Name="auto" Mode="In" Type="String" />
       <Parameter Name="caso" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
+    <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model1.CSP_PRESUPUESTO_ADDP_Result)">
       <Parameter Name="path" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
+    <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model1.CSP_USUARIO_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="PASS" Mode="In" Type="String" />
       <Parameter Name="NOMBRE" Mode="In" Type="String" />
@@ -5420,11 +5420,11 @@
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model.sp_helpdiagramdefinition_Result)">
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model1.sp_helpdiagramdefinition_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model.sp_helpdiagrams_Result)">
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model1.sp_helpdiagrams_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>

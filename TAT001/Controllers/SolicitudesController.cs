@@ -5693,7 +5693,7 @@ namespace TAT001.Controllers
                     doc.POS = pos;
                     try
                     {
-                        doc.FACTURA = (string)dt.Rows[i][1]; //Factura
+                        doc.FACTURA = dt.Rows[i][1].ToString(); //Factura
                     }
                     catch (Exception e)
                     {
@@ -5702,7 +5702,7 @@ namespace TAT001.Controllers
                     //jemo 06-08-2018 inicio
                     try
                     {
-                        doc.SOCIEDAD = (string)dt.Rows[i][0]; //Sociedad
+                        doc.SOCIEDAD = dt.Rows[i][0].ToString(); //Sociedad
                     }
                     catch (Exception e)
                     {
@@ -5782,7 +5782,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.PAYER = (string)dt.Rows[i][4]; //Payer
+                        doc.PAYER = dt.Rows[i][4].ToString(); //Payer
                     }
                     catch (Exception e)
                     {
@@ -5798,7 +5798,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.BELNR = (string)dt.Rows[i][7]; //Folio
+                        doc.BELNR = dt.Rows[i][7].ToString(); //Folio
                     }
                     catch (Exception e)
                     {

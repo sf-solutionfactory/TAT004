@@ -63,10 +63,6 @@ $(document).ready(function () {
                 "name": 'POS',
                 "className": 'POS',
             },
-            {
-                "name": 'FACTURA',
-                "className": 'FACTURA'
-            },
             //jemo 10-07-2018 inicio
             {
                 "name": 'SOCIEDAD',
@@ -74,9 +70,19 @@ $(document).ready(function () {
             },
             //jemo 10-07-2018 fin
             {
+                "name": 'FACTURA',
+                "className": 'FACTURA'
+            },
+            {
                 "name": 'FECHA',
                 "className": 'FECHA'
             },
+            //jemo 10-07-2018 fin
+            {
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
+            },
+            //jemo 10-07-2018 inicio
             {
                 "name": 'PROVEEDOR',
                 "className": 'PROVEEDOR'
@@ -115,12 +121,6 @@ $(document).ready(function () {
                 "name": 'DESCRIPCION',
                 "className": 'DESCRIPCION'
             },
-            //jemo 10-07-2018 fin
-            {
-                "name": 'BILL_DOC',
-                "className": 'BILL_DOC'
-            },
-            //jemo 10-07-2018 inicio
             {
                 "name": 'IMPORTE_FAC',
                 "className": 'IMPORTE_FAC'
@@ -2254,34 +2254,34 @@ function copiarTableVistaSop() {
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(0) input").val(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27
+            var factura = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27
             //var fecha = $(this).find("td.FECHA").text();
-            var bukrs = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
+            var bukrs = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
 
             var fecha = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
+            var bill_doc = $(this).find("td:eq(4) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
 
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(4) input").val(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(5) input").val(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
 
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
+            var facturak = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
+            var ejerciciok = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var pay = $(this).find("td:eq(11) input").val(); //jemo 18-07-2018
-            var des = $(this).find("td:eq(12) input").val(); //jemo 18-07-2018
-            var bill_doc = $(this).find("td:eq(13) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
+            var pay = $(this).find("td:eq(12) input").val(); //jemo 18-07-2018
+            var des = $(this).find("td:eq(13) input").val(); //jemo 18-07-2018
             //var belnr = $(this).find("td.BELNR").text();
             importe_fac = importe_fac + parseFloat(($(this).find("td:eq(14) input")).val());
             var imp_fact =  //jemo 18-07-2018
@@ -3912,10 +3912,11 @@ function loadExcelSop(file) {
                     //var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
                     var addedRow = table.row.add([
                         dataj.POS,
-                        dataj.FACTURA,
                         dataj.SOCIEDAD,
+                        dataj.FACTURA,
                         //jemo 25-17-2018 inicio
                         "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.BILL_DOC,
                         "",//dataj.PROVEEDOR,
                         "",//dataj.PROVEEDOR_TXT,
                         "",//dataj.CONTROL,
@@ -3927,10 +3928,9 @@ function loadExcelSop(file) {
                         //jemo 25-17-2018 inicio
                         dataj.PAYER,
                         dataj.DESCRIPCION,
-                        dataj.BILL_DOC,
                         "$" + dataj.IMPORTE_FACT.toString().replace(/\D/g, "")//jemo 31-17-2018 inicio
                             .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ","),//jemo 31-17-2018 fin
-                        ""//dataj.BELNR
+                        dataj.BELNR
                         //jemo 25-17-2018 fin
                     ]).draw(false).node();
 
@@ -4052,9 +4052,10 @@ function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, f
 
     t.row.add([
         pos, //POS
-        fac,
         bukrs,
+        fac,
         fecha,
+        bill,
         prov,
         provt,
         control,
@@ -4064,7 +4065,6 @@ function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, f
         eje,
         pay,
         des,
-        bill,
         impf,
         belnr
     ]).draw(false).node(); //B20180625 MGC 2018.06.27
