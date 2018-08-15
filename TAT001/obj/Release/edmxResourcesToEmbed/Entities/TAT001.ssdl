@@ -382,6 +382,14 @@
     <Property Name="CLEARING" Type="numeric" Precision="10" Scale="0" />
     <Property Name="LIMITE" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
+  <EntityType Name="CUENTAGL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="NOMBRE" Type="nvarchar" MaxLength="50" />
+    <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
   <EntityType Name="DELEGAR">
     <Key>
       <PropertyRef Name="USUARIO_ID" />
@@ -716,6 +724,8 @@
     <Property Name="OBJETIVOQ" Type="bit" />
     <Property Name="FRECUENCIA_LIQ" Type="int" />
     <Property Name="OBJQ_PORC" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="CUENTAP" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="CUENTAPL" Type="numeric" Precision="10" Scale="0" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -967,6 +977,7 @@
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
+      <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
@@ -1680,6 +1691,7 @@
     <Property Name="TSOLC" Type="nvarchar" MaxLength="10" />
     <Property Name="TRECU" Type="nchar" MaxLength="1" />
     <Property Name="NEGO" Type="bit" Nullable="false" />
+    <Property Name="CARTA" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -2334,6 +2346,42 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CUENTA_CUENTAGL">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="ABONO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_CUENTAGL1">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="CARGO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_CUENTAGL2">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="CLEARING" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CUENTA_PAIS">
     <End Role="PAIS" Type="Self.PAIS" Multiplicity="1" />
     <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
@@ -2689,6 +2737,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
         <PropertyRef Name="VTWEG" />
         <PropertyRef Name="SPART" />
         <PropertyRef Name="PAYER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_CUENTAGL">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="CUENTAP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_CUENTAGL1">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="CUENTAPL" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -4262,6 +4334,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CONTACTOC" EntityType="Self.CONTACTOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRIES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CUENTA" EntityType="Self.CUENTA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CUENTAGL" EntityType="Self.CUENTAGL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DELEGAR" EntityType="Self.DELEGAR" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DET_AGENTEC" EntityType="Self.DET_AGENTEC" Schema="dbo" store:Type="Tables" />
@@ -4595,6 +4668,18 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       <End Role="CLIENTE" EntitySet="CLIENTE" />
       <End Role="CONTACTOC" EntitySet="CONTACTOC" />
     </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL" Association="Self.FK_CUENTA_CUENTAGL">
+      <End Role="CUENTAGL" EntitySet="CUENTAGL" />
+      <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL1" Association="Self.FK_CUENTA_CUENTAGL1">
+      <End Role="CUENTAGL" EntitySet="CUENTAGL" />
+      <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL2" Association="Self.FK_CUENTA_CUENTAGL2">
+      <End Role="CUENTAGL" EntitySet="CUENTAGL" />
+      <End Role="CUENTA" EntitySet="CUENTA" />
+    </AssociationSet>
     <AssociationSet Name="FK_CUENTA_PAIS" Association="Self.FK_CUENTA_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="CUENTA" EntitySet="CUENTA" />
@@ -4705,6 +4790,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_CLIENTE" Association="Self.FK_DOCUMENTO_CLIENTE">
       <End Role="CLIENTE" EntitySet="CLIENTE" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_CUENTAGL" Association="Self.FK_DOCUMENTO_CUENTAGL">
+      <End Role="CUENTAGL" EntitySet="CUENTAGL" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_CUENTAGL1" Association="Self.FK_DOCUMENTO_CUENTAGL1">
+      <End Role="CUENTAGL" EntitySet="CUENTAGL" />
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTO_GALL" Association="Self.FK_DOCUMENTO_GALL">

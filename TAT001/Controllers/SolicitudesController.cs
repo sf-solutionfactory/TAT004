@@ -2489,13 +2489,37 @@ namespace TAT001.Controllers
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
                             string c = pf.procesa(f, "");
-                            if (c == "1")
+                            while(c == "1")
                             {
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
                                 string image = Server.MapPath("~/images/logo_kellogg.png");
                                 em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
+
+                                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                                if (conta.WORKFP.ACCION.TIPO == "B")
+                                {
+                                    WORKFP wpos = db.WORKFPs.Where(x => x.ID == conta.WORKF_ID & x.VERSION == conta.WF_VERSION & x.POS == conta.WF_POS).FirstOrDefault();
+                                    //FLUJO f1 = new FLUJO();
+                                    //f1.WORKF_ID = conta.WORKF_ID;
+                                    //f1.WF_VERSION = conta.WF_VERSION;
+                                    //f1.WF_POS = (int)wpos.NEXT_STEP;
+                                    //f1.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    //f1.POS = conta.POS + 1;
+                                    //f1.LOOP = 1;
+                                    ////f1.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
+                                    ////f1.USUARIOD_ID = dOCUMENTO.USUARIOD_ID;
+                                    conta.ESTATUS = "A";
+                                    //f1.FECHAC = DateTime.Now;
+                                    conta.FECHAM = DateTime.Now;
+                                    c = pf.procesa(conta, "");
+                                }
+                                else
+                                {
+                                    c = "";
+                                }
                             }
+                           
                         }
                     }
                     catch (Exception ee)
@@ -5008,12 +5032,36 @@ namespace TAT001.Controllers
                     f.ESTATUS = "A";
                     f.FECHAM = DateTime.Now;
                     string c = pf.procesa(f, "");
-                    if (c == "1")
+                    while (c == "1")
                     {
                         Email em = new Email();
                         string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
                         string image = Server.MapPath("~/images/logo_kellogg.png");
                         em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
+
+
+                        FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                        if (conta.WORKFP.ACCION.TIPO == "B")
+                        {
+                            WORKFP wpos = db.WORKFPs.Where(x => x.ID == conta.WORKF_ID & x.VERSION == conta.WF_VERSION & x.POS == conta.WF_POS).FirstOrDefault();
+                            //FLUJO f1 = new FLUJO();
+                            //f1.WORKF_ID = conta.WORKF_ID;
+                            //f1.WF_VERSION = conta.WF_VERSION;
+                            //f1.WF_POS = (int)wpos.NEXT_STEP;
+                            //f1.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            //f1.POS = conta.POS + 1;
+                            //f1.LOOP = 1;
+                            ////f1.USUARIOA_ID = dOCUMENTO.USUARIOC_ID;
+                            ////f1.USUARIOD_ID = dOCUMENTO.USUARIOD_ID;
+                            conta.ESTATUS = "A";
+                            //f1.FECHAC = DateTime.Now;
+                            conta.FECHAM = DateTime.Now;
+                            c = pf.procesa(conta, "");
+                        }
+                        else
+                        {
+                            c = "";
+                        }
                     }
                 }
                 catch (Exception ee)

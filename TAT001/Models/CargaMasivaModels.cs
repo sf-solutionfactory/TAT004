@@ -22,7 +22,7 @@ namespace TAT001.Models
                 worksheet.Cell("A1").Value = new[]
                  {
                   new {
-                      KUNNR = "Numero Cliente"
+                      KUNNR = "Payer"
                       ,NAME1 = "Cliente"
                       ,PROVEEDOR_ID = "Numero Proveedor"
                       ,NOMBRE = "Proveedor"

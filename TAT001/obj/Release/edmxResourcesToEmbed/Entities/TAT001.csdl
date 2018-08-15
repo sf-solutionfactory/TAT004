@@ -13,6 +13,15 @@
     <Property Name="TIPO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_ACCION" FromRole="ACCION" ToRole="WORKFP" />
   </EntityType>
+  <EntityType Name="APPSETTING">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+  </EntityType>
   <EntityType Name="CAMPOS">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -129,9 +138,6 @@
     <Property Name="LUGARFECHX" Type="Boolean" />
     <Property Name="MONTO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="MONEDA" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
-    <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
-    <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
     <Property Name="PAYERNOM" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="PAYERNOMX" Type="Boolean" />
     <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -150,6 +156,9 @@
     <Property Name="APOYO_REAX" Type="Boolean" />
     <Property Name="VOLUMEN_ESTX" Type="Boolean" />
     <Property Name="VOLUMEN_REAX" Type="Boolean" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="CARTA" ToRole="DOCUMENTO" />
+    <NavigationProperty Name="USUARIO" Relationship="Self.FK_CARTA_USUARIO" FromRole="CARTA" ToRole="USUARIO" />
+    <NavigationProperty Name="CARTAPs" Relationship="Self.FK_CARTAP_CARTA" FromRole="CARTA" ToRole="CARTAP" />
   </EntityType>
   <EntityType Name="CARTAP">
     <Key>
@@ -413,9 +422,25 @@
     <Property Name="CARGO" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="CLEARING" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="LIMITE" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="CUENTAGL" Relationship="Self.FK_CUENTA_CUENTAGL" FromRole="CUENTA" ToRole="CUENTAGL" />
+    <NavigationProperty Name="CUENTAGL1" Relationship="Self.FK_CUENTA_CUENTAGL1" FromRole="CUENTA" ToRole="CUENTAGL" />
+    <NavigationProperty Name="CUENTAGL2" Relationship="Self.FK_CUENTA_CUENTAGL2" FromRole="CUENTA" ToRole="CUENTAGL" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_CUENTA_PAIS" FromRole="CUENTA" ToRole="PAIS" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_CUENTA_SOCIEDAD" FromRole="CUENTA" ToRole="SOCIEDAD" />
     <NavigationProperty Name="TALL" Relationship="Self.FK_CUENTA_TALL" FromRole="CUENTA" ToRole="TALL" />
+  </EntityType>
+  <EntityType Name="CUENTAGL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_CUENTAGL" FromRole="CUENTAGL" ToRole="CUENTA" />
+    <NavigationProperty Name="CUENTAs1" Relationship="Self.FK_CUENTA_CUENTAGL1" FromRole="CUENTAGL" ToRole="CUENTA" />
+    <NavigationProperty Name="CUENTAs2" Relationship="Self.FK_CUENTA_CUENTAGL2" FromRole="CUENTAGL" ToRole="CUENTA" />
+    <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_CUENTAGL" FromRole="CUENTAGL" ToRole="DOCUMENTO" />
+    <NavigationProperty Name="DOCUMENTOes1" Relationship="Self.FK_DOCUMENTO_CUENTAGL1" FromRole="CUENTAGL" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DELEGAR">
     <Key>
@@ -777,8 +802,15 @@
     <Property Name="DOCUMENTO_SAP" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="PORC_APOYO" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="LIGADA" Type="Boolean" />
+    <Property Name="OBJETIVOQ" Type="Boolean" />
+    <Property Name="FRECUENCIA_LIQ" Type="Int32" />
+    <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="CUENTAP" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="CUENTAPL" Type="Decimal" Precision="10" Scale="0" />
     <NavigationProperty Name="CARTAs" Relationship="Self.FK_CARTA_DOCUMENTO" FromRole="DOCUMENTO" ToRole="CARTA" />
     <NavigationProperty Name="CLIENTE" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="DOCUMENTO" ToRole="CLIENTE" />
+    <NavigationProperty Name="CUENTAGL" Relationship="Self.FK_DOCUMENTO_CUENTAGL" FromRole="DOCUMENTO" ToRole="CUENTAGL" />
+    <NavigationProperty Name="CUENTAGL1" Relationship="Self.FK_DOCUMENTO_CUENTAGL1" FromRole="DOCUMENTO" ToRole="CUENTAGL" />
     <NavigationProperty Name="GALL" Relationship="Self.FK_DOCUMENTO_GALL" FromRole="DOCUMENTO" ToRole="GALL" />
     <NavigationProperty Name="PAI" Relationship="Self.FK_DOCUMENTO_PAIS" FromRole="DOCUMENTO" ToRole="PAIS" />
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_DOCUMENTO_SOCIEDAD" FromRole="DOCUMENTO" ToRole="SOCIEDAD" />
@@ -787,6 +819,7 @@
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_DOCUMENTO_USUARIO" FromRole="DOCUMENTO" ToRole="USUARIO" />
     <NavigationProperty Name="DOCUMENTOAs" Relationship="Self.FK_DOCUMENTOA_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOA" />
     <NavigationProperty Name="DOCUMENTOFs" Relationship="Self.FK_DOCUMENTOF_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOF" />
+    <NavigationProperty Name="DOCUMENTOLs" Relationship="Self.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
     <NavigationProperty Name="DOCUMENTONs" Relationship="Self.FK_DOCUMENTON_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTON" />
     <NavigationProperty Name="DOCUMENTOPs" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOP" />
     <NavigationProperty Name="DOCUMENTORs" Relationship="Self.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
@@ -794,10 +827,6 @@
     <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
-    <NavigationProperty Name="DOCUMENTOLs" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
-    <Property Name="OBJETIVOQ" Type="Boolean" />
-    <Property Name="FRECUENCIA_LIQ" Type="Int32" />
-    <Property Name="OBJQ_PORC" Type="Decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -835,8 +864,8 @@
     <Property Name="IMPORTE_FAC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="NAME1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
     <Property Name="SOCIEDAD" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="DOCUMENTBORR" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTOBORRF" ToRole="DOCUMENTBORR" />
   </EntityType>
   <EntityType Name="DOCUMENTOBORRM">
     <Key>
@@ -911,6 +940,19 @@
     <Property Name="IMPORTE_FAC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="PAYER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOF_DOCUMENTO" FromRole="DOCUMENTOF" ToRole="DOCUMENTO" />
+  </EntityType>
+  <EntityType Name="DOCUMENTOL">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="FECHAF" Type="DateTime" Precision="0" />
+    <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="Boolean" />
+    <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOM">
     <Key>
@@ -995,8 +1037,8 @@
     <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
     <Property Name="FECHAV" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
@@ -1007,7 +1049,6 @@
     <Property Name="EJERCICIO" Type="Int32" />
     <Property Name="CUENTA_C" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="CUENTA_A" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
     <Property Name="REGISTRO_PR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="REGISTRO_NO" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="REGISTRO_RE" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
@@ -1016,6 +1057,7 @@
     <Property Name="LIFNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOT">
     <Key>
@@ -1054,6 +1096,7 @@
   </EntityType>
   <EntityType Name="FLUJNEGO">
     <Key>
+      <PropertyRef Name="NUM_DOC" />
       <PropertyRef Name="POS" />
     </Key>
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
@@ -1329,6 +1372,7 @@
     <Property Name="SOCIEDAD_ID" Type="String" MaxLength="4" FixedLength="true" Unicode="true" />
     <Property Name="DECIMAL" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="MILES" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="CLIENTEs" Relationship="Self.FK_CLIENTE_PAIS" FromRole="PAIS" ToRole="CLIENTE" />
     <NavigationProperty Name="CUENTAs" Relationship="Self.FK_CUENTA_PAIS" FromRole="PAIS" ToRole="CUENTA" />
     <NavigationProperty Name="DET_AGENTEC" Relationship="Self.FK_DET_AGENTEC_PAIS" FromRole="PAIS" ToRole="DET_AGENTEC" />
@@ -1339,7 +1383,6 @@
     <NavigationProperty Name="TAX_LAND" Relationship="Self.FK_TAX_LAND_PAIS" FromRole="PAIS" ToRole="TAX_LAND" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_PAIS" FromRole="PAIS" ToRole="TAXEOH" />
     <NavigationProperty Name="TS_FORM" Relationship="Self.FK_TS_FORM_PAIS" FromRole="PAIS" ToRole="TS_FORM" />
-    <Property Name="BACKORDER" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODO">
     <Key>
@@ -1939,6 +1982,7 @@
     <Property Name="TSOLC" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
     <Property Name="TRECU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="NEGO" Type="Boolean" Nullable="false" />
+    <Property Name="CARTA" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
     <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
@@ -2746,6 +2790,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CUENTA_CUENTAGL">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="ABONO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_CUENTAGL1">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="CARGO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CUENTA_CUENTAGL2">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CUENTA">
+        <PropertyRef Name="CLEARING" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CUENTA_PAIS">
     <End Role="PAIS" Type="Self.PAI" Multiplicity="1" />
     <End Role="CUENTA" Type="Self.CUENTA" Multiplicity="*" />
@@ -2779,6 +2859,30 @@
       </Principal>
       <Dependent Role="CUENTA">
         <PropertyRef Name="TALL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_CUENTAGL">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="CUENTAP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTO_CUENTAGL1">
+    <End Role="CUENTAGL" Type="Self.CUENTAGL" Multiplicity="0..1" />
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CUENTAGL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTO">
+        <PropertyRef Name="CUENTAPL" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3196,6 +3300,18 @@
         <PropertyRef Name="NUM_DOC" />
       </Principal>
       <Dependent Role="DOCUMENTOF">
+        <PropertyRef Name="NUM_DOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
+    <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
+    <End Role="DOCUMENTOL" Type="Self.DOCUMENTOL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTO">
+        <PropertyRef Name="NUM_DOC" />
+      </Principal>
+      <Dependent Role="DOCUMENTOL">
         <PropertyRef Name="NUM_DOC" />
       </Dependent>
     </ReferentialConstraint>
@@ -4410,6 +4526,7 @@
   </Association>
   <EntityContainer Name="TAT001Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="ACCIONs" EntityType="Self.ACCION" />
+    <EntitySet Name="APPSETTINGs" EntityType="Self.APPSETTING" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" />
     <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" />
     <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" />
@@ -4431,6 +4548,7 @@
     <EntitySet Name="CONTACTOCs" EntityType="Self.CONTACTOC" />
     <EntitySet Name="COUNTRIES" EntityType="Self.COUNTRy" />
     <EntitySet Name="CUENTAs" EntityType="Self.CUENTA" />
+    <EntitySet Name="CUENTAGLs" EntityType="Self.CUENTAGL" />
     <EntitySet Name="DELEGARs" EntityType="Self.DELEGAR" />
     <EntitySet Name="DET_AGENTE" EntityType="Self.DET_AGENTE" />
     <EntitySet Name="DET_AGENTEC" EntityType="Self.DET_AGENTEC" />
@@ -4450,6 +4568,7 @@
     <EntitySet Name="DOCUMENTOBORRNs" EntityType="Self.DOCUMENTOBORRN" />
     <EntitySet Name="DOCUMENTOBORRPs" EntityType="Self.DOCUMENTOBORRP" />
     <EntitySet Name="DOCUMENTOFs" EntityType="Self.DOCUMENTOF" />
+    <EntitySet Name="DOCUMENTOLs" EntityType="Self.DOCUMENTOL" />
     <EntitySet Name="DOCUMENTOMs" EntityType="Self.DOCUMENTOM" />
     <EntitySet Name="DOCUMENTONs" EntityType="Self.DOCUMENTON" />
     <EntitySet Name="DOCUMENTOPs" EntityType="Self.DOCUMENTOP" />
@@ -4664,6 +4783,18 @@
       <End Role="COUNTRIES" EntitySet="COUNTRIES" />
       <End Role="STATES" EntitySet="STATES" />
     </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL" Association="Self.FK_CUENTA_CUENTAGL">
+      <End Role="CUENTAGL" EntitySet="CUENTAGLs" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL1" Association="Self.FK_CUENTA_CUENTAGL1">
+      <End Role="CUENTAGL" EntitySet="CUENTAGLs" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CUENTA_CUENTAGL2" Association="Self.FK_CUENTA_CUENTAGL2">
+      <End Role="CUENTAGL" EntitySet="CUENTAGLs" />
+      <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
     <AssociationSet Name="FK_CUENTA_PAIS" Association="Self.FK_CUENTA_PAIS">
       <End Role="PAIS" EntitySet="PAIS" />
       <End Role="CUENTA" EntitySet="CUENTAs" />
@@ -4675,6 +4806,14 @@
     <AssociationSet Name="FK_CUENTA_TALL" Association="Self.FK_CUENTA_TALL">
       <End Role="TALL" EntitySet="TALLs" />
       <End Role="CUENTA" EntitySet="CUENTAs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_CUENTAGL" Association="Self.FK_DOCUMENTO_CUENTAGL">
+      <End Role="CUENTAGL" EntitySet="CUENTAGLs" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTO_CUENTAGL1" Association="Self.FK_DOCUMENTO_CUENTAGL1">
+      <End Role="CUENTAGL" EntitySet="CUENTAGLs" />
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
     </AssociationSet>
     <AssociationSet Name="FK_DELEGAR_USUARIO" Association="Self.FK_DELEGAR_USUARIO">
       <End Role="USUARIO" EntitySet="USUARIOs" />
@@ -4811,6 +4950,10 @@
     <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
       <End Role="DOCUMENTOF" EntitySet="DOCUMENTOFs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="Self.FK_DOCUMENTOL_DOCUMENTO">
+      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
+      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTON_DOCUMENTO" Association="Self.FK_DOCUMENTON_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
@@ -5291,12 +5434,6 @@
       <Parameter Name="new_diagramname" Mode="In" Type="String" />
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
-    <EntitySet Name="DOCUMENTOLs" EntityType="TAT001Model.DOCUMENTOL" />
-    <AssociationSet Name="FK_DOCUMENTOL_DOCUMENTO" Association="TAT001Model.FK_DOCUMENTOL_DOCUMENTO">
-      <End Role="DOCUMENTO" EntitySet="DOCUMENTOes" />
-      <End Role="DOCUMENTOL" EntitySet="DOCUMENTOLs" />
-    </AssociationSet>
-    <EntitySet Name="APPSETTINGs" EntityType="TAT001Model.APPSETTING" />
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5305,7 +5442,7 @@
     <Property Type="String" Name="NOMBRE" Nullable="true" MaxLength="250" />
     <Property Type="String" Name="LANDX" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="VKORG" Nullable="false" MaxLength="4" />
-    <Property Type="String" Name="CANAL" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="CANAL" Nullable="true" MaxLength="62" />
     <Property Type="String" Name="CONTAC" Nullable="true" MaxLength="100" />
     <Property Type="String" Name="CONT_EMAIL" Nullable="true" MaxLength="100" />
   </ComplexType>
@@ -5416,38 +5553,4 @@
     <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
     <Property Type="Int32" Name="OwnerID" Nullable="false" />
   </ComplexType>
-  <EntityType Name="DOCUMENTOL">
-    <Key>
-      <PropertyRef Name="NUM_DOC" />
-      <PropertyRef Name="POS" />
-    </Key>
-    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
-    <Property Name="POS" Type="Int32" Nullable="false" />
-    <Property Name="FECHAF" Type="DateTime" Precision="0" />
-    <Property Name="MONTO_VENTA" Type="Decimal" Precision="13" Scale="5" />
-    <Property Name="ESTATUS" Type="Boolean" />
-    <NavigationProperty Name="DOCUMENTO" Relationship="TAT001Model.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTOL" ToRole="DOCUMENTO" />
-    <Property Name="BACKORDER" Type="Decimal" Precision="13" Scale="5" />
-  </EntityType>
-  <Association Name="FK_DOCUMENTOL_DOCUMENTO">
-    <End Type="TAT001Model.DOCUMENTO" Role="DOCUMENTO" Multiplicity="1" />
-    <End Type="TAT001Model.DOCUMENTOL" Role="DOCUMENTOL" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="DOCUMENTO">
-        <PropertyRef Name="NUM_DOC" />
-      </Principal>
-      <Dependent Role="DOCUMENTOL">
-        <PropertyRef Name="NUM_DOC" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="APPSETTING">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="VALUE" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
-  </EntityType>
 </Schema>

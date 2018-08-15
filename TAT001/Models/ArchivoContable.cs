@@ -146,7 +146,7 @@ namespace TAT001.Models
                         + doc.MONEDA_ID.Trim() + "|"
                         + dir.HEADER_TEXT.Trim() + "|"
                         + dir.REFERENCIA.Trim() + "|"
-                        + dir.CALC_TAXT.ToString().Replace("true","X").Replace("false","") + "|"
+                        + dir.CALC_TAXT.ToString().Replace("True", "X").Replace("False", "") + "|"
                         + dir.NOTA.Trim() + "|"
                         + dir.CORRESPONDENCIA.Trim()
                         );
@@ -645,7 +645,7 @@ namespace TAT001.Models
                                 {
                                     conta.BALANCE = Conversion(Convert.ToDecimal(docp[j].APOYO_EST), clien.EXPORTACION, Convert.ToDecimal(cambio.UKURS), ref conta.AMOUNT_LC).ToString();
                                 }
-                                
+
                             }
                             else
                             {

@@ -5,7 +5,8 @@ var disdistribucion = true;
 var interval; //B20180625 MGC 2018.07.04
 var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
-
+var proverror = "";//B20180625 MGC 2018.06.27
+var importe_fac = 0; // jemo 25-07-2018
 $(document).ready(function () {
 
     //Validar que los labels esten activos
@@ -66,6 +67,12 @@ $(document).ready(function () {
                 "name": 'FACTURA',
                 "className": 'FACTURA'
             },
+            //jemo 10-07-2018 inicio
+            {
+                "name": 'SOCIEDAD',
+                "className": 'SOCIEDAD'
+            },
+            //jemo 10-07-2018 fin
             {
                 "name": 'FECHA',
                 "className": 'FECHA'
@@ -99,10 +106,26 @@ $(document).ready(function () {
                 "name": 'EJERCICIOK',
                 "className": 'EJERCICIOK'
             },
+            //jemo 10-07-2018 inicio
+            {
+                "name": 'PAYER',
+                "className": 'PAYER'
+            },
+            {
+                "name": 'DESCRIPCION',
+                "className": 'DESCRIPCION'
+            },
+            //jemo 10-07-2018 fin
             {
                 "name": 'BILL_DOC',
                 "className": 'BILL_DOC'
             },
+            //jemo 10-07-2018 inicio
+            {
+                "name": 'IMPORTE_FAC',
+                "className": 'IMPORTE_FAC'
+            },
+            //jemo 10-07-2018 inicio
             {
                 "name": 'BELNR',
                 "className": 'BELNR'
@@ -206,7 +229,9 @@ $(document).ready(function () {
             {},
             {},
             {},
-            {},
+            {
+                "className": 'PORC'//RSG 11.06.2018
+            },
             {},
             {},
             {},
@@ -220,7 +245,13 @@ $(document).ready(function () {
 
     $('#table_dis tbody').on('click', 'td.select_row', function () {
         var tr = $(this).closest('tr');
-        $(tr).toggleClass('selected');
+        //Add MGC B20180705 2018.07.05 ne no eliminar
+        if ($(tr).hasClass('ne')) {
+            M.toast({ html: 'Los materiales originales de la provisión no se pueden eliminar' });
+            $(tr).removeClass('selected');
+        } else {
+            $(tr).toggleClass('selected');
+        }
     });
 
     $('#delRow').click(function (e) {
@@ -278,6 +309,12 @@ $(document).ready(function () {
             if (vrelacionada != "") {
                 relacionada = "prelacionada";
             }
+        }
+
+        //Add MGC B20180705 2018.07.05 permitir editar el material 
+        var relacionadaed = "";
+        if (isAddt()) {
+            relacionadaed = "prelacionadaed"
         }
 
         var reversa = "";
@@ -385,7 +422,9 @@ $(document).ready(function () {
                 } else if (dis == "M") {
                     //Distribución por material                     
 
-                    var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
+                    //var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
+                    var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, relacionadaed, reversa, ddate, adate, "", "");//Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+
                     //t.row.add([
                     //    "",
                     //    "",
@@ -420,17 +459,21 @@ $(document).ready(function () {
             } else if (neg == "P") {
                 //Negociación porcentaje
                 //Obtener el porcentaje de apoyo base
-                var p_apoyo = $('#bmonto_apoyo').val();
+                //var p_apoyo = $('#bmonto_apoyo').val();//RSG 09.07.2018
+                //var m_apoyo = $('#monto_dis').val();//RSG 09.07.2018
+                var p_apoyo = toNum($('#bmonto_apoyo').val());
                 p_apoyo = parseFloat(p_apoyo) | 0;
 
-                var m_apoyo = $('#monto_dis').val();
+                //var m_apoyo = $('#monto_dis').val();//RSG 09.07.2018
+                var m_apoyo = toNum($('#monto_dis').val());//RSG 09.07.2018
                 m_apoyo = parseFloat(m_apoyo) | 0;
 
 
                 //if (p_apoyo > 0) {
                 //Distribución por categoría
                 if (dis == "C") {
-                    if (m_apoyo > 0) {
+                    //if (m_apoyo > 0) {//RSG 09.07.2018
+                    if (m_apoyo > 0 | $("#chk_ligada").is(':checked')) {
                         //Obtener la categoría
                         var cat = $('#select_categoria').val();
 
@@ -457,10 +500,11 @@ $(document).ready(function () {
                     }
                 } else if (dis == "M") {
                     //Distribución por material  
-                    var por_apoyo = "";
+                    var por_apoyo = 0;
                     por_apoyo = p_apoyo;
                     if (por_apoyo > 0) {
-                        var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "", "pm");
+                        //var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "", "pm");
+                        var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, "", reversa, ddate, adate, "", "pm", "");//Add MGC B20180705 2018.07.05 ne no eliminar después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                         //Si el porcentaje de apoyo es mayor a cero bloquear la columna de porcentaje de apoyo
                         //Eliminar los renglones que no contienen el mismo porcentaje
                         $(".pm").prop('disabled', true);
@@ -518,27 +562,29 @@ $(document).ready(function () {
             M.toast({ html: 'Seleccione un archivo' });
         }
     });
-
+    //jemo 18-07-2018 inicio
     $('#check_factura').change(function () {
         var table = $('#table_sop').DataTable();
         table.clear().draw(true);
         if ($(this).is(":checked")) {
+            $(".table_sop").css("display", "none");
+            $("#file_facturat").css("display", "block");
+            $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
+
+        } else {
             $(".table_sop").css("display", "table");
             $("#file_facturat").css("display", "none");
-            $("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
+            $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
+            //$("#check_facturas").val("true"); //B20180625 MGC 2018.06.27
             //Add row 
             addRowSop(table);
             //Hide columns
             ocultarColumnasTablaSoporteDatos();
-        } else {
-            $(".table_sop").css("display", "none");
-            $("#file_facturat").css("display", "block");
-            $("#check_facturas").val("false"); //B20180625 MGC 2018.06.27
         }
 
         $('.file_sop').val('');
     });
-
+    //jemo 18-07-2018 fin
     $('#file_sop').on('click touchstart', function () {
         $('.file_sop').val('');
     });
@@ -586,13 +632,30 @@ $(document).ready(function () {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
+        //B20180801 MGC Textos
         //if (sol == "NC" | sol == "NCI" | sol == "OP") {
+        //B20180801 MGC Textos
+        //if (mostrar) {
+        //    $('#lbl_volumen').html("Volumen real");
+        //    $('#lbl_apoyo').html("Apoyo real");
+        //} else {
+        //    $('#lbl_volumen').html("Volumen estimado");
+        //    $('#lbl_apoyo').html("Apoyo estimado");
+        //}
+        var vol = "";
+        var ap = "";
         if (mostrar) {
-            $('#lbl_volumen').html("Volumen real");
-            $('#lbl_apoyo').html("Apoyo real");
+            vol = $('#lbl_volr').val();//B20180801 MGC Textos
+            ap = $('#lbl_apr').val();//B20180801 MGC Textos
         } else {
-            $('#lbl_volumen').html("Volumen estimado");
-            $('#lbl_apoyo').html("Apoyo estimado");
+            vol = $('#lbl_vole').val();//B20180801 MGC Textos
+            ap = $('#lbl_ape').val();//B20180801 MGC Textos
+        }
+        if (vol != "") {
+            $('#thead_disvolumen').html(vol);//B20180801 MGC Textos
+        }
+        if (ap != "") {
+            $('#thead_disapoyo').html(ap);//B20180801 MGC Textos
         }
 
         var res = evalSoporteTab(true, e);
@@ -632,7 +695,11 @@ $(document).ready(function () {
     });
 
     $('#tab_fin').on("click", function (e) {
-
+        //LEJ 09.07.18----------------------------
+        var _miles = $("#miles").val();
+        var _decimales = $("#dec").val();
+        //LEJ 09.07.18----------------------------
+        $("label[for='montos_doc_ml2']").addClass("active");//RSG 29.07.2018
         var res = evalDistribucionTab(true, e);
         if (res) {
 
@@ -640,7 +707,19 @@ $(document).ready(function () {
             $("#btn_guardarh").removeClass("disabled");
 
             //Copiar el monto de distribución de la tabla footer al monto financiera
-            var total_dis = $('#total_dis').text();
+            //LEJ 09.07.18-------------------------------------------------------------Inicia
+            //var total_dis = $('#total_dis').text();
+            var total_dis = $('#total_dis').text().replace("$", '');
+            //if (_decimales === '.') {
+            //    total_dis = total_dis.replace(',', '');
+            //}
+            //else if (_decimales === ',') {
+            //    var _xtot = total_dis.replace('.', '');
+            //    _xtot = _xtot.replace(',', '.');
+            //    total_dis = _xtot;
+            //}
+            total_dis = toNum(total_dis);
+            //LEJ 09.07.18-------------------------------------------------------------Termina
             var basei = convertI(total_dis);
 
             //Obtiene el id del tipo de negociación, default envía vacío
@@ -654,20 +733,50 @@ $(document).ready(function () {
 
                 //Si las monedas son iguales, se pasa el monto
                 if (monedadis_id == monedafin_id) {
-                    $('#monto_doc_md').val(basei);
-
+                    //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                    //$('#monto_doc_md').val(basei);
+                    //Adaptacion para monedas . y ,
+                    if (_decimales === '.') {
+                        //$('#monto_doc_md').val("$" + basei.toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                        $('#monto_doc_md').val(toShow(basei.toFixed(2).toString()));
+                    } else if (_decimales === ',') {
+                        //var _xbasei = basei.toFixed(2).replace('.', ',');
+                        //$('#monto_doc_md').val("$" + _xbasei.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                        $('#monto_doc_md').val(toShow(basei.toFixed(2).toString()));
+                    }
+                    //LEJ 09.07.18------------------------------------------------------------------------------Termina
                 } else {
                     //Realizar conversión de monedas
                     var newMonto = cambioCurr(monedadis_id, monedafin_id, basei);
-                    $('#monto_doc_md').val(newMonto);
-
+                    // $('#monto_doc_md').val(newMonto);
+                    //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                    if (_decimales === '.') {
+                        //$('#monto_doc_md').val("$" + newMonto.toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                        $('#monto_doc_md').val(toShow(newMonto.toFixed(2).toString()));
+                    }
+                    else if (_decimales === ',') {
+                        //var x_newm = newMonto.toFixed(2).replace('.', ',');
+                        //$('#monto_doc_md').val("$" + x_newm.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                        $('#monto_doc_md').val(toShow(newMonto.toFixed(2).toString()));
+                    }
+                    //LEJ 09.07.18------------------------------------------------------------------------------Termina
                 }
 
             } else if (select_neg == "P") {
                 //Si no es por monto solo se copia la cantidad
 
-                $('#monto_doc_md').val(basei);
-
+                //  $('#monto_doc_md').val(basei);
+                //LEJ 09.07.18------------------------------------------------------------------------------Inicia
+                //Adaptacion para monedas . y ,
+                if (_decimales === '.') {
+                    //$('#monto_doc_md').val("$" + basei.toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                    $('#monto_doc_md').val(toShow(basei.toFixed(2).toString()));
+                } else if (_decimales === ',') {
+                    //var _xbasei = basei.toFixed(2).replace('.', ',');
+                    //$('#monto_doc_md').val("$" + _xbasei.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                    $('#monto_doc_md').val(toShow(basei.toFixed(2).toString()));
+                }
+                //LEJ 09.07.18------------------------------------------------------------------------------Termina
             }
 
             //Emular un focus out para actualizar los campos
@@ -692,7 +801,7 @@ $(document).ready(function () {
             var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
 
             asignarPresupuesto(kunnr);
-            asignarSolicitud(num, num2);//RSG 12.06.2018
+            asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
 
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });
@@ -710,27 +819,89 @@ $(document).ready(function () {
 
     //Financiera   
     $('#monto_doc_md').focusout(function (e) {
-
-        var monto_doc_md = $('#monto_doc_md').val();
+        //LEJ 09.07.18-----------------------------------------------Inicia
+        var _miles = $("#miles").val();
+        var _decimales = $("#dec").val();
+        var monto_doc_md = $('#monto_doc_md').val().replace("$", '');
+        //var is_num = $.isNumeric(monto_doc_md);
+        // var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        if (_decimales === '.') {
+            //monto_doc_md = monto_doc_md.replace(',', '');
+            monto_doc_md = toNum(monto_doc_md);
+        }
+        else if (_decimales === ',') {
+            //monto_doc_md = monto_doc_md.replace('.', '');
+            //monto_doc_md = monto_doc_md.replace(',', '.');
+            monto_doc_md = toNum(monto_doc_md);
+        }
         var is_num = $.isNumeric(monto_doc_md);
-        var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
-        if (mt > 0 & is_num == true) {
+        //var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+        var mt = parseFloat(toNum(monto_doc_md)).toFixed(2);
+        //LEJ 09.07.18----------------------------------------------Termina
+        //if (mt > 0 & is_num == true) {//RSG 09.07.2018
+        if ((mt > 0 | ligada()) & is_num == true) {
             //Obtener la moneda en la lista
             //var MONEDA_ID = $('#moneda_id').val();
-            $('#monto_doc_md').val(mt);
-
+            //$('#monto_doc_md').val(mt);
+            //LEJ 09.07.18---------------------------------------------------------------------Inicia
+            if (_decimales === '.') {
+                //$('#monto_doc_md').val("$" + mt.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                //$('#monto_doc_md').val(toShow(mt.toString()));
+                $('#monto_doc_md').val(toShow(mt.toString()));
+            }
+            else if (_decimales === ',') {
+                //var _mtx = mt.replace('.', ',').toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                //$('#monto_doc_md').val("$" + _mtx);
+                $('#monto_doc_md').val(toShow(mt.toString()));
+            }
+            //LEJ 09.07.18---------------------------------------------------------------------Termina
             //selectTcambio(MONEDA_ID, mt);
-            var tipo_cambio = $('#tipo_cambio').val();
-            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //var tipo_cambio = $('#tipo_cambio').val();
+            var tipo_cambio = $('#tipo_cambio').val().replace('$', '');//LEJ 09.07.18
+            //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            var tc = 0;//LEJ 09.07.18
+            if (_decimales === ',') {
+                //tc = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+                //tipo_cambio = tipo_cambio.replace('.', '');
+                //tipo_cambio = tipo_cambio.replace(',', '.');
+                tc = parseFloat(toNum(tipo_cambio));
+                tipo_cambio = toNum(tipo_cambio);
+            }//LEJ 09.07.18
+            else if (_decimales === '.') {
+                //tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);//LEJ 09.07.18
+                tc = parseFloat(toNum(tipo_cambio));
+            }
             //Validar el monto en tipo de cambio
             var is_num2 = $.isNumeric(tipo_cambio);
             if (tc > 0 & is_num2 == true) {
-                $('#tipo_cambio').val(tc);
+                // $('#tipo_cambio').val(tc);
+                //LEJ 09.07.18--------------------
+                //if (_decimales === '.') {
+                //    $('#tipo_cambio').val("$" + tc);
+                //}
+                //else if (_decimales === ',') {
+                //    $('#tipo_cambio').val("$" + tc.replace('.', ','));
+                //}
+
+                $('#tipo_cambio').val(toShow(tc));
+
                 var monto = mt / tc;
                 monto = parseFloat(monto).toFixed(2);
-                $('#monto_doc_ml2').val(monto);
-                $('#montos_doc_ml2').val(monto);
-                $("label[for='montos_doc_ml2']").addClass("active");
+                //$('#monto_doc_ml2').val(monto);
+                // $('#montos_doc_ml2').val(monto);
+                //$("label[for='montos_doc_ml2']").addClass("active");
+                //LEJ 09.07.18-------------------------------------------------------------------------------------------Inicia
+                if (_decimales === '.') {
+                    //$('#monto_doc_ml2').val("$" + monto.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                    //$('#montos_doc_ml2').val("$" + monto.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                    $('#montos_doc_ml2').val(toShow(monto.toString()));
+                }
+                else if (_decimales === ',') {
+                    //$('#monto_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                    //$('#montos_doc_ml2').val("$" + monto.replace('.', ',').toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                    $('#montos_doc_ml2').val(toShow(monto.toString()));
+                }
+                //LEJ 09.07.18-------------------------------------------------------------------------------------------Termina
             } else {
                 $('#monto_doc_ml2').val(monto);
                 $('#montos_doc_ml2').val(monto);
@@ -750,93 +921,239 @@ $(document).ready(function () {
         }
 
     });
+
+    $('body').on('keydown', '#tipo_cambio', function (e) {
+        var _miles = $("#miles").val(); //LEJ 09.07.18
+        var _decimales = $("#dec").val(); //LEJ 09.07.18
+        if (_decimales === ".") {
+            if (e.keyCode == 110 || e.keyCode == 190) {
+                if ($(this).val().indexOf('.') != -1) {
+                    e.preventDefault();
+                }
+            }
+            else {  // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+
+                    return;
+                }
+
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }
+        }
+        else if (_decimales === ",") {
+            if (e.keyCode == 188) {
+                if ($(this).val().indexOf(',') != -1) {
+                    e.preventDefault();
+                }
+            }
+            else {  // Allow: backspace, delete, tab, escape, enter and ','
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 188]) !== -1 ||
+                    // Allow: Ctrl+A, Command+A
+                    (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                    // Allow: home, end, left, right, down, up
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    // let it happen, don't do anything
+
+                    return;
+                }
+
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+
+    //LEJ 09.07.18---------------------------------------------Inicia
+    //--Cambio de formato monetario
+    var _Tc = toNum($("#tipo_cambio").val());
+    var _mil = $("#miles").val();
+    var _dec = $("#dec").val();
+    //if (_dec === '.') {
+    //    $("#tipo_cambio").val("$" + _Tc);
+    //}
+    //else if (_dec === ',') {
+    //    var _xtc = _Tc.replace('.', ',');
+    //    _Tc = _xtc;
+    //    $("#tipo_cambio").val("$" + _Tc);
+    //}
+    $("#tipo_cambio").val(toShow(_Tc));
+    //LEJ 09.07.18---------------------------------------------Termina
+
     $('#tipo_cambio').focusout(function (e) {
-        var tipo_cambio = $('#tipo_cambio').val();
-        var is_num = $.isNumeric(tipo_cambio);
-        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
-        //Validar el monto en tipo de cambio
-        if (tc > 0 & is_num == true) {
-            //Validar el monto
-            $('#tipo_cambio').val(tc)
-            var monto_doc_md = $('#monto_doc_md').val();
-            var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
-            var is_num2 = $.isNumeric(monto_doc_md);
-            if (mt > 0 & is_num2 == true) {
-                $('#monto_doc_md').val(mt);
+        var _miles = $("#miles").val(); //LEJ 09.07.18
+        var _decimales = $("#dec").val(); //LEJ 09.07.18
+        //var tipo_cambio = $('#tipo_cambio').val();
+        var tipo_cambio = $('#tipo_cambio').val().replace('$', ''); //LEJ 09.07.18
+        if (tipo_cambio != "") {
+            //LEJ 09.07.18------------------------I
+            //if (_decimales === '.') {
+            //    tipo_cambio = tipo_cambio.replace(',', '');
+            //}
+            //else if (_decimales === ',') {
+            //    var _xtc = tipo_cambio.replace('.', '');
+            //    _xtc = _xtc.replace(',', '.');
+            //    tipo_cambio = _xtc;
+            //}
+            tipo_cambio = toNum(tipo_cambio);
+            //LEJ 09.07.18------------------------T
+            var is_num = $.isNumeric(tipo_cambio);
+            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //Validar el monto en tipo de cambio
+            if (tc > 0 & is_num == true) {
+                //Validar el monto
+                // $('#tipo_cambio').val(tc)
+                //LEJ 10.07.18----------------------------------I
+                //if (_decimales === '.') {
+                //    $('#tipo_cambio').val("$" + tc.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+                //}
+                //else if (_decimales === ',') {
+                //    tc = tc.replace('.', ',');
+                //    $('#tipo_cambio').val("$" + tc.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+                //}
+                $('#tipo_cambio').val(toShow(tc.toString()));
+                //LEJ 10.07.18----------------------------------T
+                // var monto_doc_md = $('#monto_doc_md').val();
+                //var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+                //LEJ 09.07.18-----------------------------------------------I
+                var monto_doc_md = $('#monto_doc_md').val().replace('$', '');
+                var mt = 0;
+                //Cambiosde formato para moneda
+                if (_decimales === '.') {
+                    mt = parseFloat(toNum(monto_doc_md)).toFixed(2);
+                    monto_doc_md = mt;
+                }
+                else if (_decimales === ',') {
+                    var _xmt = toNum(monto_doc_md);
+                    //_xmt = _xmt.replace(',', '.');
+                    mt = parseFloat(_xmt).toFixed(2);
+                    monto_doc_md = mt;
+                }
+                //LEJ 09.07.18-----------------------------------------------T
+                var is_num2 = $.isNumeric(monto_doc_md);
+                //if (mt > 0 & is_num2 == true) {//RSG 09.07.2018
+                if ((mt > 0 | ligada()) & is_num == true) {
+                    //$('#monto_doc_md').val(mt);//LEJ 09.07.18
 
-                //Validar la moneda                    
-                var moneda_id = $('#moneda_id').val();
-                if (moneda_id != null && moneda_id != "") {
-                    $('#monto_doc_ml2').val();
-                    $('#montos_doc_ml2').val();
+                    //Validar la moneda                    
+                    var moneda_id = $('#moneda_id').val();
+                    if (moneda_id != null && moneda_id != "") {
+                        $('#monto_doc_ml2').val();
+                        $('#montos_doc_ml2').val();
 
-                    //Los valores son correctos, proceso para generar nuevo monto
-                    var monto = mt / tc;
-                    monto = parseFloat(monto).toFixed(2);
-                    $('#monto_doc_ml2').val(monto);
-                    $('#montos_doc_ml2').val(monto);
-                    $("label[for='montos_doc_ml2']").addClass("active");
+                        //Los valores son correctos, proceso para generar nuevo monto
+                        //var monto = mt / tc;
+                        var monto = mt / tipo_cambio;
+                        monto = parseFloat(monto).toFixed(2);
+                        //LEJ 09.07.18----------------------------I
+                        //if (_decimales === '.') {
+                        //    monto = monto;
+                        //}
+                        //else if (_decimales === ',') {
+                        //    var _xmonto = monto.replace('.', ',');
+                        //    //compruebo los millares
+                        //    var _arrM = _xmonto.split(',');
+                        //    _arrM[0] = _arrM[0].toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                        //    _xmonto = _arrM[0] + ',' + _arrM[1];
+                        //    monto = _xmonto;
+                        //}
+                        ////$('#monto_doc_ml2').val(monto);
+                        ////$('#montos_doc_ml2').val(monto);
+                        //$('#monto_doc_ml2').val("$" + monto);
+                        //$('#montos_doc_ml2').val("$" + monto);
+                        $('#montos_doc_ml2').val(toShow(monto));
+                        //LEJ 09.07.18-----------------------------T
+                        $("label[for='montos_doc_ml2']").addClass("active");
+                    }
+                    else {
+                        $('#monto_doc_md').val();
 
+                        // $('#monto_doc_ml2').val(monto);
+                        // $('#montos_doc_ml2').val(monto);
+                        //LEJ 09.07.18
+                        //$('#monto_doc_ml2').val("$" + monto);
+                        $('#monto_doc_ml2').val(toShow(monto));
+                        //$('#montos_doc_ml2').val("$" + monto);
+                        $('#montos_doc_ml2').val(toShow(monto));
+                        var msg = 'Moneda incorrecta';
+                        M.toast({ html: msg })
+                    }
                 } else {
                     $('#monto_doc_md').val();
 
-                    $('#monto_doc_ml2').val(monto);
-                    $('#montos_doc_ml2').val(monto);
-                    var msg = 'Moneda incorrecta';
-                    M.toast({ html: msg })
+                    $('#tipo_cambio').val("");
+                    $('#monto_doc_ml2').val(toShow(monto));
+                    $('#montos_doc_ml2').val(toShow(monto));
+                    $("label[for='montos_doc_ml2']").addClass("active");
+                    var msg = 'Monto incorrecto';
+                    M.toast({ html: msg });
+                    e.preventDefault();
                 }
 
             } else {
-                $('#monto_doc_md').val();
-
-                $('#tipo_cambio').val("");
-                $('#monto_doc_ml2').val(monto);
-                $('#montos_doc_ml2').val(monto);
+                //$('#monto_doc_ml2').val(monto);
+                // $('#montos_doc_ml2').val(monto);
+                //$('#monto_doc_ml2').val("$" + monto);//LEJ 09.07.18
+                //$('#montos_doc_ml2').val("$" + monto);//LEJ 09.07.18
+                $('#monto_doc_ml2').val(toShow(monto));
+                $('#montos_doc_ml2').val(toShow(monto));
                 $("label[for='montos_doc_ml2']").addClass("active");
-                var msg = 'Monto incorrecto';
+                var msg = 'Tipo de cambio incorrecto';
                 M.toast({ html: msg });
                 e.preventDefault();
             }
-
         } else {
-            $('#monto_doc_ml2').val(monto);
-            $('#montos_doc_ml2').val(monto);
-            $("label[for='montos_doc_ml2']").addClass("active");
-            var msg = 'Tipo de cambio incorrecto';
-            M.toast({ html: msg });
-            e.preventDefault();
+            //$('#monto_doc_ml2').val("$0.00");//LEJ 09.07.18
+            //$('#montos_doc_ml2').val("$0.00");//LEJ 09.07.18
+            $('#monto_doc_ml2').val(toShow(0));
+            $('#montos_doc_ml2').val(toShow(0));
         }
     });
 
     var monto_doc_md = $('#monto_doc_md').val();
     var is_num = $.isNumeric(monto_doc_md);
-    var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+    //var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
+    var mt = parseFloat(toNum(monto_doc_md)).toFixed(2);
     if (mt > 0 & is_num == true) {
         //Obtener la moneda en la lista
         //var MONEDA_ID = $('#moneda_id').val();
         $('#monto_doc_md').val(mt);
 
         //selectTcambio(MONEDA_ID, mt);
-        var tipo_cambio = $('#tipo_cambio').val();
-        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+        var tipo_cambio = toNum($('#tipo_cambio').val());
+        //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+        var tc = parseFloat(toNum(tipo_cambio)).toFixed(2);
         //Validar el monto en tipo de cambio
         var is_num2 = $.isNumeric(tipo_cambio);
         if (tc > 0 & is_num2 == true) {
             $('#tipo_cambio').val(tc);
             var monto = mt / tc;
             monto = parseFloat(monto).toFixed(2);
-            $('#monto_doc_ml2').val(monto);
-            $('#montos_doc_ml2').val(monto);
+            $('#monto_doc_ml2').val(toShow(monto));
+            $('#montos_doc_ml2').val(toShow(monto));
             $("label[for='montos_doc_ml2']").addClass("active");
         } else {
-            $('#monto_doc_ml2').val(monto);
-            $('#montos_doc_ml2').val(monto);
+            //$('#monto_doc_ml2').val(monto);
+            //$('#montos_doc_ml2').val(monto);
+            $('#monto_doc_ml2').val(toShow(monto));
+            $('#montos_doc_ml2').val(toShow(monto));
             $("label[for='montos_doc_ml2']").addClass("active");
         }
 
     } else {
-        $('#monto_doc_ml2').val(monto_doc_md);
-        $('#montos_doc_ml2').val(monto_doc_md);
+        //$('#monto_doc_ml2').val(monto_doc_md);
+        //$('#montos_doc_ml2').val(monto_doc_md);
+        $('#monto_doc_ml2').val(toShow(monto_doc_md));
+        $('#montos_doc_ml2').val(toShow(monto_doc_md));
         $("label[for='montos_doc_ml2']").addClass("active");
     }
 
@@ -857,9 +1174,11 @@ $(document).ready(function () {
     }
 
     $('#btn_guardarh').on("click", function (e) {
+        var _miles = $("#miles").val(); //LEJ 09.07.18
+        var _decimales = $("#dec").val(); //LEJ 09.07.18
         //M.toast({ html: "Guardando" })
         //document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
-        sleep(5000);
+        //sleep(5000);
         var msg = 'Verificar valores en los campos de ';
         var res = true;
         //Evaluar TabInfo values
@@ -887,12 +1206,36 @@ $(document).ready(function () {
             msg += ' ,Financiera';
             res = FinancieraTab;
         }
-
+        //jemo inicio 24-07-2018
+        //validacion de importe de facturas contra monto de distribucion
+        var checkf = $('#check_factura').is(':checked');
+        if (checkf) {
+            var monto = parseFloat(toNum($('#monto_dis').val()));
+            if (importe_fac !== monto) {
+                msg += ', Informacion: Importet total de las facturas sea igual al monto en Distribucion';
+                res = false;
+            }
+        }
+        //jemo fin 24-07-2018
         msg += '!';
         if (res) {
             //loadFilesf();
+            //LEJ 10.07.18--------------------------------------------------
             //Provisional
-            var tipo_cambio = $('#tipo_cambio').val();
+            //var tipo_cambio = $('#tipo_cambio').val().replace('$', '');
+            var tipo_cambio = toNum($('#tipo_cambio').val());
+            //if (_decimales === '.') {
+            //    tipo_cambio = tipo_cambio.replace(',', '');
+            //}
+            //else if (_decimales === ',') {
+            //    var tc = tipo_cambio.replace('.', '');
+            //    tc = tc.replace(',', '.');
+            //    tipo_cambio = tc;
+            //}
+            //LEJ 10.07.18--------------------------------------------------
+            //Para que el controlador no tenga problema
+            $('#tipo_cambio').val(tipo_cambio);
+            ////var tipo_cambio = $('#tipo_cambio').val();
             //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
             var iNum = parseFloat(tipo_cambio.replace(',', ''));
 
@@ -904,9 +1247,24 @@ $(document).ready(function () {
             } else {
                 $('#tipo_cambio').val(0);
             }
-            var tipo_cambio = $('#monto_doc_ml2').val();
+            //var tipo_cambio = $('#monto_doc_ml2').val();
+            //LEJ 10.07.18---------------------------------------------------
+            //var tipo_cambiod = $('#monto_doc_ml2').val().replace('$', '');
+            var tipo_cambiod = toNum($('#monto_doc_ml2').val());
+            //if (_decimales === '.') {
+            //    tipo_cambiod = tipo_cambiod.replace(',', '');
+            //}
+            //else if (_decimales === ',') {
+            //    var tc = tipo_cambiod.replace('.', '');
+            //    tc = tc.replace(',', '.');
+            //    tipo_cambiod = tc;
+            //}
+            //LEJ 10.07.18--------------------------------------------------
+            //Para que el controlador no tenga problema
+            $('#monto_doc_ml2').val(tipo_cambiod);
+
             //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum2 = parseFloat(toNum(tipo_cambio));
             //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
             if (iNum2 > 0) {
                 //var nums = "" + iNum2;
@@ -920,13 +1278,19 @@ $(document).ready(function () {
             //Monto
             var monto = $('#monto_doc_md').val();
             //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
-            var numm = parseFloat(monto.replace(',', ''));
+            //var numm = parseFloat(monto.replace(',', ''));
+            var numm = parseFloat(toNum(monto));
             if (numm > 0) {
                 $('#MONTO_DOC_MD').val(numm);
             } else {
                 $('#MONTO_DOC_MD').val(0);
                 $('#monto_doc_md').val(0);
             }
+            //bmonto_apoyo
+            $('#bmonto_apoyo').val(toNum($('#bmonto_apoyo').val()));
+
+            //objq
+            $('#objPORC').val(toNum($('#objPORC').val()));//RSG 01.08.2018
 
             $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
             $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
@@ -990,7 +1354,8 @@ $(document).ready(function () {
             //Provisional
             var tipo_cambio = $('#tipo_cambio').val();
             //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+            //var iNum = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum = parseFloat(toNum(tipo_cambio));
 
             if (iNum > 0) {
                 //var num = "" + iNum;
@@ -1002,7 +1367,8 @@ $(document).ready(function () {
             }
             var tipo_cambio = $('#monto_doc_ml2').val();
             //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+            //var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum2 = parseFloat(toNum(tipo_cambio));
             //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
             if (iNum2 > 0) {
                 //var nums = "" + iNum2;
@@ -1016,7 +1382,8 @@ $(document).ready(function () {
             //Monto
             var monto = $('#monto_doc_md').val();
             //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
-            var numm = parseFloat(monto.replace(',', ''));
+            //var numm = parseFloat(monto.replace(',', ''));
+            var numm = parseFloat(toNum(monto));
             if (numm > 0) {
                 $('#MONTO_DOC_MD').val(numm);
             } else {
@@ -1071,7 +1438,7 @@ $(document).ready(function () {
         ////Monto
         //var monto = $('#monto_dis').val();
         ////var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
-        //var numm = parseFloat(monto.replace(',', ''));
+        //var numm = parseFloat(toNum(monto));
         //if (numm > 0) {
         //    $('#MONTO_DOC_MD').val(numm);
         //} else {
@@ -1097,7 +1464,6 @@ $(document).ready(function () {
         ////Enviar el parametro al controlador para tratarlo como borrador
         //$('#borrador_param').val("borrador");
         //$('#btn_guardar').click();
-
     });
 
 
@@ -1112,9 +1478,11 @@ $(document).ready(function () {
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
 
+    $('#tipo_cambio').val(toShow($('#tipo_cambio').val()));
+
     //B20180625 MGC 2018.06.26 Verificar si hay algún borrador mostrar la sección de facturas
     var check = $("#check_facturas").val();
-    if (!isRelacionada() && !isReversa()) {
+    if (/*!isRelacionada() &&*/ !isReversa()) {
         $('#tsol_id').change();
     }
 
@@ -1179,13 +1547,14 @@ $(window).on('load', function () {
         //$('#select_dis').formSelect();
     }
 
-    //una factura
-    var check = $("#check_facturas").val();
-    if (check == "true") {
-        $('#check_factura').prop('checked', true);
-    } else {
+    //var check = $("#check_facturas").val();
+    if (check === "false") {//jemo 11-07-2018
         $('#check_factura').prop('checked', false);
+    } else {
+        $('#check_factura').prop('checked', true);
     }
+    $('#check_factura').trigger('change');//jemo 11-07-2018
+
 
 
     $('#gall_id').change(); //Cambio en allowance
@@ -1229,10 +1598,19 @@ $(window).on('load', function () {
         $('#monto_dis').val(m);
     }
 
+    selectCliente($('#payer_id').val());//RSG 01.08.2018
+
+    //Add MGC B20180705 2018.07.05 ne no eliminar
+    //Obtener el parámetro para no eliminar renglones
+    var ne = "";
+    if (isRelacionada() & isAddt()) {
+        ne = "ne";
+    }
     //Valores en información antes soporte
     copiarTableVistaSop();
     //Valores en  distribución    
-    copiarTableVista("", borr); //B20180625 MGC 2018.07.02
+    //copiarTableVista("", borr); //B20180625 MGC 2018.07.02
+    copiarTableVista("", borr, ne); //B20180625 MGC 2018.07.02 //Add MGC B20180705 2018.07.05 ne no eliminar
 
     updateFooter();
     //Pasar el total de la tabla al total en monto
@@ -1244,14 +1622,19 @@ $(window).on('load', function () {
     //B20180625 MGC 2018.06.28
     if (borr == "true") {
         //Agregar el monto
-        $('#monto_dis').val(monto);
+        //$('#monto_dis').val(monto);//RSG 09.07.2018
+        $('#monto_dis').val(toShow(monto));
     }
+    if (isRelacionada())
+        $('#monto_dis').val(toShow(monto));//RSG 09.07.2018
 
     //Agregar el porcentaje de apoyo //B20180625 MGC 2018.06.28
     //Porcentaje y material
     if (sneg == "P" && sdis == "M") {
         $('#bmonto_apoyo').val(bmonto_apoyo);
         $('#bmonto_apoyo').trigger("focusout");
+    } else if ($('#chk_ligada').is(":checked")) {//RSG 09.07.2018
+        $('#bmonto_apoyo').val(toShowPorc(bmonto_apoyo));
     }
 
     var tipocambio = $('#tipo_cambio').val();//B20180625 MGC 2018.07.02
@@ -1323,9 +1706,9 @@ $(window).on('load', function () {
         var optionsdpc = [];
         var instancesc = M.Select.init(elemdpc, optionsdpc);
     }
-    var mt = parseFloat(tipocambio.replace(',', '.')) //B20180625 MGC 2018.07.02
+    var mt = parseFloat(toNum(tipocambio)) //B20180625 MGC 2018.07.02
     if (mt > 0) { //B20180625 MGC 2018.07.02
-        $('#tipo_cambio').val(mt); //B20180625 MGC 2018.07.02
+        $('#tipo_cambio').val(toShow(mt)); //B20180625 MGC 2018.07.02
     }
 });
 
@@ -1364,7 +1747,7 @@ function guardarBorrador(asyncv) {
         //var numexp = num;//* 60000000000;
         //$('#tipo_cambio').val(numexp);
     } else {
-        $('#tipo_cambio').val(0);
+        $('#tipo_cambio').val(toShow(0));
     }
     var tipo_cambio = $('#monto_doc_ml2').val();
     //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
@@ -1382,13 +1765,17 @@ function guardarBorrador(asyncv) {
     //Monto
     var monto = $('#monto_dis').val();
     //var numm = parseFloat(monto.replace(',', '.')).toFixed(2);   
-    var numm = parseFloat(monto.replace(',', ''));
+    //var numm = parseFloat(monto.replace(',', ''));//RSG 09.07.2018
+    var numm = parseFloat(toNum(monto));
     if (numm > 0) {
         $('#MONTO_DOC_MD').val(numm);
     } else {
         $('#MONTO_DOC_MD').val(0);
         $('#monto_doc_md').val(0);
     }
+
+    //bmonto_apoyo
+    $('#bmonto_apoyo').val(toNum($('#bmonto_apoyo').val()));//RSG 01.08.2018
 
     $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
     $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
@@ -1496,7 +1883,8 @@ function focusoutmonto(directo) {
         var monto_doc_md = $('#monto_doc_md').val();
         var is_num = $.isNumeric(monto_doc_md);
         var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
-        if (mt > 0 & is_num == true) {
+        //if (mt > 0 & is_num == true) {//RSG 09.07.2018
+        if ((mt > 0 | ligada()) & is_num == true) {
             //Obtener la moneda en la lista
             //var MONEDA_ID = $('#moneda_id').val();
             $('#monto_doc_md').val(mt);
@@ -1507,7 +1895,7 @@ function focusoutmonto(directo) {
             //Validar el monto en tipo de cambio
             var is_num2 = $.isNumeric(tipo_cambio);
             if (tc > 0 & is_num2 == true) {
-                $('#tipo_cambio').val(tc);
+                $('#tipo_cambio').val(toShow(tc));
                 var monto = mt / tc;
                 monto = parseFloat(monto).toFixed(2);
                 $('#monto_doc_ml2').val(monto);
@@ -1587,7 +1975,8 @@ function formatDatef(vdate) {
     return d;
 }
 
-function copiarTableVista(update) {
+//function copiarTableVista(update) {
+function copiarTableVista(update, borr, ne) { //Add MGC B20180705 2018.07.05 Cambios no actualizados, ne no eliminar
 
     var lengthT = $("table#table_dish tbody tr").length;
 
@@ -1637,15 +2026,25 @@ function copiarTableVista(update) {
             var matnr = $(this).find("td:eq(" + 3 + ") input").val();
             var matkl = $(this).find("td:eq(" + 4 + ") input").val();
             var matkl_id = $(this).find("td:eq(" + 5 + ") input").val();
-            var costo_unitario = $(this).find("td:eq(" + 6 + ") input").val();
-            var porc_apoyo = $(this).find("td:eq(" + 7 + ") input").val();
-            var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
-            var precio_sug = $(this).find("td:eq(" + 9 + ") input").val();
-            var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
-            var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
+            //var costo_unitario = $(this).find("td:eq(" + 6 + ") input").val();//RSG 09.07.2018
+            //var porc_apoyo = $(this).find("td:eq(" + 7 + ") input").val();
+            //var monto_apoyo = $(this).find("td:eq(" + 8 + ") input").val();
+            //var precio_sug = $(this).find("td:eq(" + 9 + ") input").val();
+            //var volumen_est = $(this).find("td:eq(" + 10 + ") input").val();
+            //var volumen_real = $(this).find("td:eq(" + 11 + ") input").val();
 
-            var apoyo_est = $(this).find("td:eq(" + 12 + ") input").val();
-            var apoyo_real = $(this).find("td:eq(" + 13 + ") input").val();
+            //var apoyo_est = $(this).find("td:eq(" + 12 + ") input").val();
+            //var apoyo_real = $(this).find("td:eq(" + 13 + ") input").val();
+
+            var costo_unitario = toShow($(this).find("td:eq(" + 6 + ") input").val());//RSG 09.07.2018
+            var porc_apoyo = toShowPorc($(this).find("td:eq(" + 7 + ") input").val());
+            var monto_apoyo = toShow($(this).find("td:eq(" + 8 + ") input").val());
+            var precio_sug = toShow($(this).find("td:eq(" + 9 + ") input").val());
+            var volumen_est = toShowNum($(this).find("td:eq(" + 10 + ") input").val());
+            var volumen_real = toShowNum($(this).find("td:eq(" + 11 + ") input").val());
+
+            var apoyo_est = toShow($(this).find("td:eq(" + 12 + ") input").val());
+            var apoyo_real = toShow($(this).find("td:eq(" + 13 + ") input").val());
 
             var vol = 0;
             var total = 0;
@@ -1702,8 +2101,10 @@ function copiarTableVista(update) {
             var addedRow = "";
             //Si la distribución es por material
             if (dis == "M") {
-                addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
-                    calculo, pm);
+                //addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario, porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, reversa, $.trim(ddate[0]), $.trim(adate[0]),
+                //    calculo, pm);
+                addedRow = addRowMat(t, matkl_id, matnr, matkl, matkl, costo_unitario,
+                    porc_apoyo, monto_apoyo, "", precio_sug, vol, total, relacionada, "", reversa, $.trim(ddate[0]), $.trim(adate[0]), calculo, pm, ne);//Add MGC B20180705 2018.07.05 ne //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
 
 
@@ -1831,7 +2232,7 @@ function copiarTableVistaSop() {
         $('#check_factura').trigger('change');
         $(".table_sop").css("display", "table");
         var rowsn = 0;
-        if ($("#check_factura").is(':checked')) {
+        if ($("#check_factura").is(':checked') == false) { //jemo 11-07-2018
             //Tabla con inputs
             rowsn = 1;
         } else {
@@ -1846,6 +2247,7 @@ function copiarTableVistaSop() {
         var t = $('#table_sop').DataTable(); //B20180625 MGC 2018.06.27
         t.clear().draw(true);
         var i = 1;
+        importe_fac = 0;
         $('#table_soph > tbody  > tr').each(function () {
 
 
@@ -1854,36 +2256,45 @@ function copiarTableVistaSop() {
             //var factura = $(this).find("td.FACTURA").text();
             var factura = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27
             //var fecha = $(this).find("td.FECHA").text();
-            var fecha = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27
+            var bukrs = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
+
+            var fecha = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
 
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(4) input").val(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(5) input").val(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
 
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
+            var facturak = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
+            var ejerciciok = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var bill_doc = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
+            var pay = $(this).find("td:eq(11) input").val(); //jemo 18-07-2018
+            var des = $(this).find("td:eq(12) input").val(); //jemo 18-07-2018
+            var bill_doc = $(this).find("td:eq(13) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
             //var belnr = $(this).find("td.BELNR").text();
-            var belnr = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
+            importe_fac = importe_fac + parseFloat(($(this).find("td:eq(14) input")).val());
+            var imp_fact =  //jemo 18-07-2018
+                "$" + $(this).find("td:eq(14) input").val().toString().replace(/\D/g, "")//jemo 31-17-2018 inicio
+                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");//jemo 31-17-2018 fin
+            var belnr = $(this).find("td:eq(15) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
 
-            var proverror = "";//B20180625 MGC 2018.06.27
+            ////var proverror = "";//B20180625 MGC 2018.06.27
 
-            if ($("#check_factura").is(':checked')) {
+            if ($("#check_factura").is(':checked') === false) {
 
                 factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
+                bukrs = "<input class=\"SOCIEDAD input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bukrs + "\">";
                 ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
                 prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
                 control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
@@ -1891,7 +2302,10 @@ function copiarTableVistaSop() {
                 vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0] + "\">";
                 facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak + "\">";
                 ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok + "\">";
+                pay = "<input class=\"PAYER input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + pay + "\">";//jemo 18-07-2018
+                des = "<input class=\"DESCRIPCION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + des + "\">";//jemo 18-07-2018
                 bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc + "\">";
+                imp_fact = "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + imp_fact + "\">"//jemo 18-07-2018
                 belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr + "\">"
 
             } else {
@@ -1914,7 +2328,9 @@ function copiarTableVistaSop() {
 
             //var t = $('#table_dis').DataTable();
 
-            addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            var t = $('#table_sop').DataTable();
+            //addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
+            addRowSopl(t, pos, factura, bukrs, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr);//jemo 18-07-2018
 
             //Quitar el row
             $(this).remove();
@@ -1971,14 +2387,23 @@ function copiarTableControl(borrador) { //B20180625 MGC 2018.07.03
             var indexcat = t.row(tr).index();
             var matkl_id = t.row(indexcat).data()[0];
 
-            var costo_unitario = $(this).find("td:eq(" + (8 + indext) + ") input").val();
-            var porc_apoyo = $(this).find("td:eq(" + (9 + indext) + ") input").val();
-            var monto_apoyo = $(this).find("td:eq(" + (10 + indext) + ") input").val();
+            //var costo_unitario = $(this).find("td:eq(" + (8 + indext) + ") input").val();//RSG 09.07.2018
+            //var porc_apoyo = $(this).find("td:eq(" + (9 + indext) + ") input").val();
+            //var monto_apoyo = $(this).find("td:eq(" + (10 + indext) + ") input").val();
 
-            var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
-            var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
+            //var precio_sug = $(this).find("td:eq(" + (12 + indext) + ") input").val();
+            //var volumen_est = $(this).find("td:eq(" + (13 + indext) + ") input").val();
 
-            var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+            //var total = $(this).find("td:eq(" + (14 + indext) + ") input").val();
+
+            var costo_unitario = toNum($(this).find("td:eq(" + (8 + indext) + ") input").val());//RSG 09.07.2018
+            var porc_apoyo = toNum($(this).find("td:eq(" + (9 + indext) + ") input").val());
+            var monto_apoyo = toNum($(this).find("td:eq(" + (10 + indext) + ") input").val());
+
+            var precio_sug = toNum($(this).find("td:eq(" + (12 + indext) + ") input").val());
+            var volumen_est = toNum($(this).find("td:eq(" + (13 + indext) + ") input").val());
+
+            var total = toNum($(this).find("td:eq(" + (14 + indext) + ") input").val());
 
             var item = {};
 
@@ -2056,20 +2481,23 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
         var i = 1;
 
         var check = false;
-        if ($("#check_factura").is(':checked')) {
+        if ($("#check_factura").is(':checked') === false) {//19-07-2018 jemo
             //Tabla con inputs
             check = true;
         }//} else {
         //  //Tabla desde excel
         //}
-
+        importe_fac = 0;
         //Obtener la configuración de las columnas
         var sociedad = $('#sociedad_id').val();
         //Obtener el país ID
         var pais = $('#pais_id').val();
         //Obtener el tipo de solicitud
         var tsol_id = $('#tsol_id').val();
-        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X");
+        //jemo 09-07-2018 inicio
+        var clase_doc = $('#check_factura').is(':checked');
+        var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X", clase_doc);
+        //jemo 09-07-2018 fin
 
         $("#table_sop > tbody  > tr[role='row']").each(function () {
 
@@ -2093,8 +2521,12 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
                                 var rowcl = 'td.' + i;
                                 //Obtener los valores como textos en la celda
                                 if (!check | i == "POS") {
-                                    var valtd = $(this).find(rowcl).text();
+                                    var valtd = $(this).find(rowcl).text().replace("$", "").replace(",", "");//jemo inicio 06-08-2018;
                                     item[i] = valtd;
+                                    //jemo inicio 24-07-2018
+                                    if (i === 'IMPORTE_FAC') {
+                                        importe_fac = importe_fac + parseFloat(toNum(valtd)).toFixed(2);
+                                    }//jemo inicio 24-07-2018
                                 } else {
                                     //Obtener los valores como textos de los inputs
                                     var valtd = $(this).find(rowcl + " input").val();
@@ -2171,16 +2603,65 @@ function asignarPresupuesto(kunnr) {
                 //$('#pc_p').text(data.PC_P);
                 //$('#pc_t').text(data.PC_T);
                 //RSG 26.04.2018----------------
-                $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
-                $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
-                $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
-                $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
-                $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
-                $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
-                $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
+                /* $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
+                 $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
+                 $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
+                 $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
+                 $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
+                 $('#pc_t').text('$' + ((data.PC_T / 1).toFixed(2)));
+                 $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));*/
                 //RSG 26.04.2018----------------
+                //LEJ 09.07.18------------------------------------------
+                var pcan = (data.P_CANAL / 1).toFixed(2);
+                var pban = (data.P_BANNER / 1).toFixed(2);
+                var pcc = (data.PC_C / 1).toFixed(2);
+                var pca = (data.PC_A / 1).toFixed(2);
+                var pcp = (data.PC_P / 1).toFixed(2);
+                var pct = (data.PC_T / 1).toFixed(2);
+                var consu = (data.CONSU / 1).toFixed(2);
+                var _xdec = $("#dec").val();
+                var _xm = $("#miles").val();
+                if (_xdec === '.') {
+                    $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",")));
+                    $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",")));
+                    $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                    var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                    if (_xcs.indexOf("-") >= 0) {
+                        var _dsARx = _xcs;
+                        _dsARx = _dsARx.replace('-', '(');
+                        _dsARx += ")";
+                        _xcs = _dsARx;
+                    }
+                    $('#consu').text('$' + _xcs);
+                } else
+                    if (_xdec === ',') {
+                        pcan = pcan.replace('.', ',');
+                        pban = pban.replace('.', ',');
+                        pcc = pcc.replace('.', ',');
+                        pca = pca.replace('.', ',');
+                        pcp = pcp.replace('.', ',');
+                        pct = pct.replace('.', ',');
+                        consu = consu.replace('.', ',');
+                        $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                        var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                        if (_xcs.indexOf("-") >= 0) {
+                            var _dsARx = _xcs;
+                            _dsARx = _dsARx.replace('-', '(');
+                            _dsARx += ")";
+                            _xcs = _dsARx;
+                        }
+                        $('#consu').text('$' + _xcs);
+                    }
             }
-
+            //LEJ 09.07.18-----------------------------------------------
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -2197,7 +2678,8 @@ $('body').on('focusout', '#monto_dis', function () {
 
 
     if (neg == "P" && dis == "C") {
-        var monto = $('#monto_dis').val();
+        //var monto = $('#monto_dis').val();//RSG 09.07.2018
+        var monto = toNum($('#monto_dis').val());//RSG 09.07.2018
         monto = parseFloat(monto);
 
         if (monto > 0) {
@@ -2212,7 +2694,10 @@ $('body').on('focusout', '#monto_dis', function () {
 });
 
 $('body').on('click', '.prelacionada', function () {
-    $(this).prop('disabled', true);
+    //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+    if (!$(this).hasClass('prelacionadaed')) {
+        $(this).prop('disabled', true);
+    }
 });
 
 $('body').on('click', '.preversa', function () {
@@ -2227,12 +2712,16 @@ $('body').on('click', '.pc', function () {
     $(this).prop('disabled', true);
 });
 
-$('body').on('focusout', '.input_oper', function () {
+//B20180801 MGC Textos
+$('body').on('keydown', '.input_oper', function (e) {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
-
+    //alert("press");
     //Obtener el tipo de negociación
     var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
 
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
@@ -2240,9 +2729,47 @@ $('body').on('focusout', '.input_oper', function () {
         if (neg == "M") {
             //Se dispara el evento desde el total
             if ($(this).hasClass("total")) {
-                var total_val = $(this).val();
+                var total_val = $(this).val().replace("$", "");
+                var key = e.which;
+                if (dis == "M" & key == 13) {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                    $(this).addClass("keyup");
+                }
+            }
+        }
+    }
+
+});
+
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+
+    //Obtener el tipo de negociación
+    var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
+
+    //Solo a cantidades
+    if ($(this).hasClass("numberd")) {
+        //Total aplica nadamás para el monto                
+        if (neg == "M") {
+            //Se dispara el evento desde el total
+            if ($(this).hasClass("total")) {
+                var total_val = $(this).val().replace("$", "");
+                if (dis == "C") {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                } else if (dis == "M") {
+                    if (!$(this).hasClass("keyup")) {
+                        updateTotalRow(t, tr, "", "", 0);//B20180801 MGC Textos
+                    } else {
+                        updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                        $(this).removeClass("keyup");
+                    }
+                }
                 //Agregar los valores a 0 y agregar el total
-                updateTotalRow(t, tr, "", "X", total_val);
+                //updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
             } else {
                 updateTotalRow(t, tr, "", "", 0);
             }
@@ -2361,8 +2888,12 @@ $('body').on('focusout', '.input_sop_f', function () {
 
 $('body').on('focusout', '#bmonto_apoyo', function () {
     var val = $(this).val();
-    updateTableValIndex(9, val);
+    $(this).val(toShowPorc(val));//RSG 09.07.208
+    val = $(this).val();
 
+    if (!ligada()) {//RSG 29.07.2018
+        updateTableValIndex(9, val);
+    }
 });
 
 //$('body').on('focusout', '#monto_dis', function () {
@@ -2396,7 +2927,9 @@ var proveedorVal = "";
 var dataConfig = null;
 
 function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
-
+    //LEJ 09.07.18
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
     //totals = X cuando nada más se agrega el total
 
     //Add index
@@ -2411,9 +2944,80 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
 
     //Validar si las operaciones se hacen por renglón o solo agregar el valor del total
     if (totals != "X") {
-        var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
-        var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
-
+        /* var col8 = tr.find("td:eq(" + (8 + index) + ") input").val();
+         var col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+ 
+         col9 = convertP(col9);
+ 
+         if ($.isNumeric(col9)) {
+             col9 = col9 / 100;
+         }
+ 
+         var col10 = col8 * col9;
+         //Apoyo por pieza
+         //Modificar el input
+         tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
+ 
+         //Costo con apoyo
+         var col11 = col8 - col10;
+         //col11 = col11.toFixed(2);
+         tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
+ 
+         //Estimado apoyo
+         var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+         var col14 = col10 * col13;
+         //col14 = col14.toFixed(2);
+         tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+ 
+         //Agregar nada más el total
+     } else {
+         total_val = parseFloat(total_val);
+         var col14 = total_val.toFixed(2);
+         tr.find("td:eq(" + (8 + index) + ") input").val("");
+         if (tdp_apoyo != "X") {
+             tr.find("td:eq(" + (9 + index) + ") input").val("");
+         }
+         tr.find("td:eq(" + (10 + index) + ") input").val("");
+         tr.find("td:eq(" + (11 + index) + ")").text("");
+         tr.find("td:eq(" + (12 + index) + ") input").val("");
+         tr.find("td:eq(" + (13 + index) + ") input").val("");
+         tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+     }*/
+        //-----------------------------------------------------------------------------LEJGG 09.07.18
+        var col8 = "";
+        var col9 = "";
+        if (_decimales === '.') {
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val();//.replace('$', '');//RSG 09.07.2018
+            if (col8 != null) {
+                //col8 = col8.replace('$', '');
+                //var _cl8 = col8.replace(',', '');
+                //col8 = _cl8;
+                col8 = toNum(col8);
+            }
+            col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+            //var _cl9 = col9.replace(',', '');
+            //col9 = _cl9.replace('%', '');
+            col9 = toNum(col9);
+        } else if (_decimales === ',') {
+            col8 = tr.find("td:eq(" + (8 + index) + ") input").val();//.replace('$', '');//RSG 09.07.2018
+            //if (col8 != null) {
+            //    col8 = col8.replace('$', '');
+            //    col8 = col8.replace(',', '*');
+            //    col8 = col8.replace('.', '');
+            //    col8 = col8.replace('*', '.');
+            //} else
+            //    col8 = "";
+            col8 = toNum(col8);
+            col9 = tr.find("td:eq(" + (9 + index) + ") input").val();
+            //if (col9 != null) {//RSG 09.07.2018
+            //    col9 = col9.replace(',', '*');
+            //    col9 = col9.replace('.', '');
+            //    col9 = col9.replace('*', '.');
+            //    col9 = col9.replace('%', '');
+            //} else
+            //    col9 = "";
+            col9 = toNum(col9);
+        }
         col9 = convertP(col9);
 
         if ($.isNumeric(col9)) {
@@ -2423,23 +3027,75 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         var col10 = col8 * col9;
         //Apoyo por pieza
         //Modificar el input
-        tr.find("td:eq(" + (10 + index) + ") input").val(col10.toFixed(2));
+        var _c10 = col10.toFixed(2);
+        if (_decimales === '.') {
+            //tr.find("td:eq(" + (10 + index) + ") input").val("$" + _c10.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (10 + index) + ") input").val(toShow(_c10.toString()));
+        }
+        else if (_decimales === ',') {
+            _c10 = _c10.replace('.', ',');
+            //tr.find("td:eq(" + (10 + index) + ") input").val("$" + _c10.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (10 + index) + ") input").val(toShow(_c10.toString()));
+        }
 
         //Costo con apoyo
         var col11 = col8 - col10;
         //col11 = col11.toFixed(2);
-        tr.find("td:eq(" + (11 + index) + ")").text(col11.toFixed(2));
+
+        if (_decimales === '.') {
+            //tr.find("td:eq(" + (11 + index) + ")").text("$" + col11.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (11 + index) + ")").text(toShow(col11.toFixed(2).toString()));
+        } else if (_decimales === ',') {
+            col11 = col11.toFixed(2);
+            col11 = col11.replace('.', ',');
+            //tr.find("td:eq(" + (11 + index) + ")").text("$" + col11.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (11 + index) + ")").text(toShow(col11.toString()));
+        }
 
         //Estimado apoyo
-        var col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+        var col13 = "";
+        if (_decimales === '.') {
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
+            col13 = toNum(col13);
+        } else if (_decimales === ',') {
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
+            if (col13 == null) col13 = "";//RSG 09.07.2018
+            //var _c13 = col13.replace('.', '');
+            //_c13 = _c13.replace(',', '.');
+            //col13 = _c13;
+            col13 = toNum(col13);
+        }
         var col14 = col10 * col13;
         //col14 = col14.toFixed(2);
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14.toFixed(2));
+        if (_decimales === '.') {
+            //tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (14 + index) + ") input").val(toShow(col14.toFixed(2).toString()));
+        } else if (_decimales === ',') {
+            col14 = col14.toFixed(2);
+            col14 = col14.replace('.', ',');
+            //tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+            tr.find("td:eq(" + (14 + index) + ") input").val(toShow(col14.toString()));
+        }
 
         //Agregar nada más el total
-    } else {
-        total_val = parseFloat(total_val);
+    }
+    else {
+        if (_decimales === '.') {
+            //total_val = parseFloat(total_val);
+            total_val = parseFloat(toNum(total_val));
+        }
+        else if (_decimales === ',') {
+            //total_val = total_val.replace('.', '');
+            //total_val = total_val.replace(',', '.');
+            //total_val = parseFloat(total_val);
+            total_val = parseFloat(toNum(total_val));
+        }
         var col14 = total_val.toFixed(2);
+        if (_decimales === '.') {
+            col14 = col14;
+        } else if (_decimales === ',') {
+            col14 = col14.replace('.', ',');
+        }
         tr.find("td:eq(" + (8 + index) + ") input").val("");
         if (tdp_apoyo != "X") {
             tr.find("td:eq(" + (9 + index) + ") input").val("");
@@ -2448,7 +3104,8 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         tr.find("td:eq(" + (11 + index) + ")").text("");
         tr.find("td:eq(" + (12 + index) + ") input").val("");
         tr.find("td:eq(" + (13 + index) + ") input").val("");
-        tr.find("td:eq(" + (14 + index) + ") input").val(col14);
+        //tr.find("td:eq(" + (14 + index) + ") input").val("$" + col14.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+        tr.find("td:eq(" + (14 + index) + ") input").val(toShow(col14.toString()));
     }
 
     updateFooter();
@@ -2478,7 +3135,9 @@ function updateTableCat() {
     var indext = getIndex();
     var t = $('#table_dis').DataTable();
 
-    var m_base = $('#monto_dis').val();
+
+    //var m_base = $('#monto_dis').val();//RSG 09.07.2018
+    var m_base = toNum($('#monto_dis').val());//RSG 09.07.2018
     m_base = parseFloat(m_base) | 0;
 
     t.rows().every(function (rowIdx, tableLoop, rowLoop) {
@@ -2552,8 +3211,15 @@ function updateTableCathtml(t, j, index, p, v) {
     var i = 0;
     $("#table_dis > tbody  > tr[role='row']").each(function () {
         if (i == j) {
-            $(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));
-            $(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
+            //$(this).find("td:eq(" + vd + ") input").val(p.toFixed(2));//RSG 09.07.2018
+            //$(this).find("td:eq(" + va + ") input").val(v.toFixed(2));
+            ////$(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
+            if (isRelacionada()) //RSG 09.07.2018
+                $(this).find("td:eq(" + vd + ") input").val(toShowPorc5(p.toFixed(5)));
+            else
+                $(this).find("td:eq(" + vd + ") input").val(toShowPorc(p.toFixed(2)));
+
+            $(this).find("td:eq(" + va + ") input").val(toShow(v.toFixed(2)));
         }
         i++;
     });
@@ -2799,30 +3465,84 @@ function updateFooter() {
     var index = getIndex();
     coltotal = (14 + index);
 
+    //LEJ 09.07.18
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+
     var t = $('#table_dis').DataTable();
     var total = 0;
 
     $('#table_dis').find("tr").each(function (index) {
-        var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+        //var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
 
-        col4 = convertI(col4);
+        //col4 = convertI(col4);
 
-        if ($.isNumeric(col4)) {
-            total += col4;
+        //if ($.isNumeric(col4)) {
+        //    total += col4;
+        //}
+
+        var tipo = document.getElementById("select_neg").value + document.getElementById("select_dis").value;//RSG 09.07.2018---------------
+        //LEJ 09.07.18----------------------------------------I
+        if (_decimales === '.') {
+
+            if (tipo == "PC") {//RSG 09.07.2018---------------
+                var porc = toNum($(this).find("td.PORC input").val());
+                var monto = toNum($("#monto_dis").val());
+                col4 = monto * porc / 100;
+                total += col4;
+            } else {//RSG 09.07.2018---------------
+                var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+                col4 = convertI(col4);
+                if ($.isNumeric(col4)) {
+                    total += col4;
+                }
+            }
         }
+        else if (_decimales === ',') {
+            var col4 = $(this).find("td:eq(" + coltotal + ") input").val();
+            var x_col4 = '' + col4;
+            if (x_col4 != "undefined") {
+                //x_col4 = x_col4.replace('.', '');
+                //x_col4 = x_col4.replace(',', '.');
+                x_col4 = toNum(x_col4);
+                col4 = x_col4;
+            }
+            col4 = convertI(col4);
 
+            if (tipo == "PC") {
+                var porc = toNum($(this).find("td.PORC input").val());
+                var monto = toNum($("#monto_dis").val());
+                col4 = monto * porc / 100;
+            }
+            if ($.isNumeric(col4)) {
+                col4 = parseFloat(col4);
+                total += col4;
+            }
+        }
+        //LEJ 09.07.18----------------------------------------T
     });
 
     total = total.toFixed(2);
-
-    $('#total_dis').text("$" + total);
+    //LEJ 09.07.18----------------------------------------------------------------------------I
+    if (_decimales === '.') {
+        $('#total_dis').text("$" + total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+    } else if (_decimales === ',') {
+        var _total = total.toString().replace('.', ',');
+        $('#total_dis').text("$" + _total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles));
+    }
+    //LEJ 09.07.18----------------------------------------------------------------------------T
+    //$('#total_dis').text("$" + total);
+    if (isRelacionada()) {
+        $("#monto_dis").val(toShow(total));
+    }
 }
 
 function convertI(i) {
-    return typeof i === 'string' ?
-        i.replace(/[\$,]/g, '') * 1 :
-        typeof i === 'number' ?
-            i : 0;
+    return parseFloat(toNum(i));
+    //return typeof i === 'string' ?
+    //    i.replace(/[\$,]/g, '') * 1 :
+    //    typeof i === 'number' ?
+    //        i : 0;
 };
 
 function convertP(i) {
@@ -2844,7 +3564,8 @@ function format(catid, idate, fdate) {
         var total = 0;
         var categorias = GetCategoriasTableCat();
         total = GetTotalTableCat(categorias);
-        var m_base = $('#monto_dis').val();
+        //var m_base = $('#monto_dis').val();//RSG 09.07.2018
+        var m_base = toNum($('#monto_dis').val());
         m_base = parseFloat(m_base) | 0;
 
         var materiales = [];
@@ -2862,8 +3583,8 @@ function format(catid, idate, fdate) {
                 '<td>' + fdate + '</td>' +
                 '<td>' + m.MATNR + '</td>' +
                 '<td>' + m.DESC + '</td>' +
-                '<td>' + m.POR.toFixed(2) + '</td>' +
-                '<td>' + m.VAL.toFixed(2) + '</td>' +
+                '<td>' + toShowPorc(m.POR.toFixed(2)) + '</td>' +
+                '<td>' + toShow(m.VAL.toFixed(2)) + '</td>' +
                 '</tr>';
 
             rows += r;
@@ -3080,8 +3801,47 @@ function loadExcelDis(file) {
                     if (monto_apoyo > 0) {
                         dataj.PORC_APOYO = monto_apoyo;
                     }
+                    //LEJ 09.07.2018---------------------------------
+                    var _miles = $("#miles").val();
+                    var _decimales = $("#dec").val();
                     //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo);
-                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo, pm);//RSG 24.05.2018
+                    //LEJ 09.07.2018---------------------------------Inicia
+                    if (_decimales === '.') {
+                        //Remplazo el punto, lo cambio por una coma 
+                        var _xm = parseFloat(dataj.MONTO).toFixed(2);
+                        var _xpa = parseFloat(dataj.PORC_APOYO).toFixed(2);
+                        var _map = parseFloat(dataj.MONTO_APOYO).toFixed(2);
+                        var _psu = parseFloat(dataj.PRECIO_SUG).toFixed(2);
+                        var _ves = parseFloat(dataj.VOLUMEN_EST).toFixed(2);
+                        var _apE = parseFloat(dataj.APOYO_EST).toFixed(2);
+
+                        // Le agrego el punto si fuera millar //----
+                        dataj.MONTO = "$" + _xm.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",");
+                        dataj.PORC_APOYO = _xpa.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + "%";
+                        dataj.MONTO_APOYO = "$" + _map.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",");
+                        dataj.PRECIO_SUG = "$" + _psu.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",");
+                        dataj.VOLUMEN_EST = _ves.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",");
+                        dataj.APOYO_EST = "$" + _apE.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",");
+                    }
+                    else if (_decimales === ',') {
+                        //Remplazo el punto, lo cambio por una coma 
+                        var _xm = parseFloat(dataj.MONTO).toFixed(2).toString().replace('.', ',');
+                        var _xpa = parseFloat(dataj.PORC_APOYO).toFixed(2).toString().replace('.', ',');
+                        var _map = parseFloat(dataj.MONTO_APOYO).toFixed(2).toString().replace('.', ',');
+                        var _psu = parseFloat(dataj.PRECIO_SUG).toFixed(2).toString().replace('.', ',');
+                        var _ves = parseFloat(dataj.VOLUMEN_EST).toFixed(2).toString().replace('.', ',');
+                        var _apE = parseFloat(dataj.APOYO_EST).toFixed(2).toString().replace('.', ',');
+                        // Le agrego el punto si fuera millar //----
+                        dataj.MONTO = "$" + _xm.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                        dataj.PORC_APOYO = _xpa.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + "%";
+                        dataj.MONTO_APOYO = "$" + _map.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                        dataj.PRECIO_SUG = "$" + _psu.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                        dataj.VOLUMEN_EST = _ves.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                        dataj.APOYO_EST = _apE.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".");
+                    }
+                    //LEJ 09.07.2018---------------------------------Termina
+                    //var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, reversa, date_de, date_al, calculo, pm);//RSG 24.05.2018
+                    var addedRow = addRowMat(table, dataj.POS, dataj.MATNR, dataj.MATKL, dataj.DESC, dataj.MONTO, dataj.PORC_APOYO, dataj.MONTO_APOYO, dataj.MONTOC_APOYO, dataj.PRECIO_SUG, dataj.VOLUMEN_EST, dataj.APOYO_EST, relacionada, "", reversa, date_de, date_al, calculo, pm, "");//RSG 24.05.2018 //Add MGC B20180705 2018.07.05 ne parametro después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
 
 
@@ -3131,7 +3891,7 @@ function loadExcelSop(file) {
     var formData = new FormData();
 
     formData.append("FileUpload", file);
-
+    importe_fac = 0;//jemo 25-17-2018
     var table = $('#table_sop').DataTable();
     table.clear().draw();
     $.ajax({
@@ -3148,27 +3908,36 @@ function loadExcelSop(file) {
 
                 $.each(data, function (i, dataj) {
 
-                    var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
-                    var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
+                    //var fecha = new Date(parseInt(dataj.FECHA.substr(6)));
+                    //var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
                     var addedRow = table.row.add([
                         dataj.POS,
                         dataj.FACTURA,
-                        "" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
-                        dataj.PROVEEDOR,
-                        dataj.PROVEEDOR_TXT,
-                        dataj.CONTROL,
-                        dataj.AUTORIZACION,
-                        "" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
-                        dataj.FACTURAK,
+                        dataj.SOCIEDAD,
+                        //jemo 25-17-2018 inicio
+                        "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        "",//dataj.PROVEEDOR,
+                        "",//dataj.PROVEEDOR_TXT,
+                        "",//dataj.CONTROL,
+                        "",//dataj.AUTORIZACION,
+                        "",//"" + ven.getDate() + "/" + (ven.getMonth() + 1) + "/" + ven.getFullYear(),
+                        "",//dataj.FACTURAK,
+                        //jemo 25-17-2018 inicio
                         dataj.EJERCICIOK,
+                        //jemo 25-17-2018 inicio
+                        dataj.PAYER,
+                        dataj.DESCRIPCION,
                         dataj.BILL_DOC,
-                        dataj.BELNR
+                        "$" + dataj.IMPORTE_FACT.toString().replace(/\D/g, "")//jemo 31-17-2018 inicio
+                            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ","),//jemo 31-17-2018 fin
+                        ""//dataj.BELNR
+                        //jemo 25-17-2018 fin
                     ]).draw(false).node();
 
                     if (dataj.PROVEEDOR_ACTIVO == false) {
                         $(addedRow).find('td.PROVEEDOR').addClass("errorProveedor");
                     }
-
+                    importe_fac += parseFloat(toNum(dataj.IMPORTE_FACT));//jemo inicio 25-07-2018
                 });
                 //Aplicar configuración de columnas en las tablas
                 ocultarColumnasTablaSoporteDatos();
@@ -3255,11 +4024,13 @@ function isFactura2(tsol) {//RSG 18.06.2018
     return res;
 }
 
+//jemo 09-07-2018 inicio
 function addRowSop(t) {
     addRowSopl(
         t,
         "1", //POS
         "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"SOCIEDAD input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FECHA input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PROVEEDOR input_sop_f input_proveedor prv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "",
@@ -3268,18 +4039,21 @@ function addRowSop(t) {
         "<input class=\"VENCIMIENTO input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PEJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        ""//B20180625 MGC 2018.06.27
+        "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//B20180625 MGC 2018.06.27    
     );
 }
 
-function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, bill, belnr) {
+function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr) {
     //var t = $('#table_sop').DataTable();
 
     t.row.add([
         pos, //POS
         fac,
+        bukrs,
         fecha,
         prov,
         provt,
@@ -3288,17 +4062,21 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
         ven,
         fack,
         eje,
+        pay,
+        des,
         bill,
+        impf,
         belnr
     ]).draw(false).node(); //B20180625 MGC 2018.06.27
 
-    //B20180625 MGC 2018.06.27
-    if (proverror != "") {
-        $(r).find('td.PROVEEDOR').addClass(proverror);
-        $(r).find("td.PROVEEDOR_TXT").text("");
-    }
+    ////B20180625 MGC 2018.06.27
+    //if (proverror != "") {
+    //    $(r).find('td.PROVEEDOR').addClass(proverror);
+    //    $(r).find("td.PROVEEDOR_TXT").text("");
+    //}
 
 }
+//jemo 09-07-2018 fin
 
 function addRowCat(t, cat, ddate, adate, opt, total, relacionada, reversa, porcentaje, porcentaje_cat) {
     var r = addRowCatl(
@@ -3346,7 +4124,8 @@ function addRowCatl(t, cat, exp, sel, ddate, adate, opt, porcentaje, total) {
     return r;
 }
 
-function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo, porcentaje_mat) {
+//function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, reversa, date_de, date_al, calculo, porcentaje_mat) {
+function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, MONTOC_APOYO, PRECIO_SUG, VOLUMEN_EST, PORC_APOYOEST, relacionada, relacionadaed, reversa, date_de, date_al, calculo, porcentaje_mat, ne) { //Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
 
     var r = addRowl(
         t,
@@ -3355,18 +4134,24 @@ function addRowMat(t, POS, MATNR, MATKL, DESC, MONTO, PORC_APOYO, MONTO_APOYO, M
         "",
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_de + "\">",
         "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + date_al + "\">" + pickerFecha(".format_date"),// RSG 21.05.2018",
-        "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">",
+        //"<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">",
+        "<input class=\"" + relacionada + " " + relacionadaed + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MATNR + "\">", //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
         MATKL,
         DESC,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MONTO + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc " + porcentaje_mat + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYO + "\">",
+        "<input class=\"" + reversa + " input_oper numberd input_dcp " + porcentaje_mat + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYO + "\">",
         "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + MONTO_APOYO + "\">",
         MONTOC_APOYO,
         "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PRECIO_SUG + "\">",
-        "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
+        "<input class=\"" + reversa + " input_oper numberd input_dcv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + VOLUMEN_EST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">",
         "<input class=\"" + reversa + " input_oper numberd input_dc total " + porcentaje_mat + " " + calculo + "\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + PORC_APOYOEST + "\">"//RSG 24.05.2018
     );
+
+    //Add MGC B20180705 2018.07.05 ne no eliminar
+    if (ne != "") {
+        $(r).addClass(ne);
+    }
 
     return r;
 }
@@ -3402,14 +4187,17 @@ function ocultarColumnasTablaSoporteDatos() {
     var pais = $('#pais_id').val();
     //Obtener el tipo de solicitud
     var tsol_id = $('#tsol_id').val();
-    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id);
-
+    //jemo 25-07-2018 inicio
+    //obtener activacion de multiple
+    var clase_doc = $('#check_factura').is(':checked');
+    ocultarColumnasTablaSoporte(sociedad, pais, tsol_id, clase_doc);
+    //jemo 25-07-2018 fin
 }
-
-function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
+//jemo 25-07-2018 inicio
+function ocultarColumnasTablaSoporte(sociedad, pais, tsol, class_doc) {
     var table = $('#table_sop').DataTable();
 
-    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "");
+    var data = configColumnasTablaSoporte(sociedad, pais, tsol, "", class_doc);
 
     if (data !== null || data !== "") {
         //True son los visibles
@@ -3429,15 +4217,16 @@ function ocultarColumnasTablaSoporte(sociedad, pais, tsol) {
         //table.column('PROVEEDOR_TXT:name').visible(prov_txt);
     }
 }
-
-function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
+//jemo 25-07-2018 fin
+//jemo 25-07-2018 inicio
+function configColumnasTablaSoporte(sociedad, pais, tsol, nu, class_doc) {
 
     dataConfig = null;
     var localdataConfig = null;
     $.ajax({
         type: "POST",
         url: 'LoadConfigSoporte',
-        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu },
+        data: { "sociedad": sociedad, "pais": pais, "tsol": tsol, "nulos": nu, "class_doc": class_doc },
 
         success: function (data) {
 
@@ -3454,6 +4243,7 @@ function configColumnasTablaSoporte(sociedad, pais, tsol, nu) {
     localdataConfig = dataConfig;
     return localdataConfig;
 }
+//jemo 25-07-2018 fin
 
 function asignardataConfig(val) {
     dataConfig = null;
@@ -3568,7 +4358,12 @@ function evalInfoTab(ret, e) {
 
     //Facuras Add MGC B20180619 2018.06.20
     var fact = "";
-    fact = evaluarInfoFacturas();
+    //fact = evaluarInfoFacturas();
+    //Facuras Add MGC B20180705 2018.07.05 evaluar si es una relacionada
+    //if (!isReversa() & !isRelacionada()) {
+    if (!isReversa() /*& !isRelacionada()*/) {
+        fact = evaluarInfoFacturas();
+    }
     if (fact != "") {
         msg = "";
         msg = fact;
@@ -3658,6 +4453,17 @@ function evalDistribucionTab(ret, e) {
         msg = 'siguiente pestaña!';
     } else {
         msg = 'Verificar valores en los campos de Distribución!';
+        res = false;
+    }
+
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    var dist = "";
+    //Facuras Add MGC B20180705 2018.07.09 evaluar si es una relacionada
+    dist = evaluarDisTable();
+
+    if (dist != "") {
+        msg = "";
+        msg = dist;
         res = false;
     }
 
@@ -3832,7 +4638,7 @@ function evaluarInfoFacturas() {
 
     //Saber si son varias facturas o una
     var check = false;
-    if ($("#check_factura").is(':checked')) {
+    if ($("#check_factura").is(':checked') == false) {//jemo 11-07-2018
         //Tabla con inputs
         check = true;
     }
@@ -3856,6 +4662,16 @@ function evaluarInfoFacturas() {
                         return false;
                     }
                 }
+                //jemo inicio 2018-08-03
+                //Validar sociedad
+                if ($(this).find('td.SOCIEDAD').length) {
+                    var fecha = textval($(this), check, "SOCIEDAD");
+                    res = valcolumn(fecha, "SOCIEDAD");
+                    if (res != "") {
+                        return false;
+                    }
+                }
+                //jemo fin 2018-08-03
                 //Validar fecha
                 if ($(this).find('td.FECHA').length) {
                     var fecha = textval($(this), check, "FECHA");
@@ -3943,6 +4759,155 @@ function evaluarInfoFacturas() {
     }
 
     return res;
+}
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function evaluarDisTable() {
+    var res = "";
+
+    var dis = $("#select_dis").val();
+    var indext = getIndex();
+
+    //La tabla debe de contener como mínimo un registro
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
+    if (lengthT > 0) {
+
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+            //Distribución por material
+            if (dis == "M") {
+                var val = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+                //Validar material
+                if (val == "") {
+                    //Sin material elimina el renglón
+                    $(this).addClass('selected');
+                } else {
+                    //Validar que el material exista
+                    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+                    var valp = valMaterial(val, "X");
+                    if (valp.ID == null || valp.ID == "") {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                        return false;
+                    } else if (trimStart('0', valp.ID) == val) {//RSG 07.06.2018
+
+                        //selectMaterial(val.ID, val.MAKTX, $(this));
+                        //Validar registros duplicados
+                        if (evaluarDisTableCount(val, dis) > 1) {
+                            res = "Error con el material " + val;
+                            if (res != "") {
+                                return false;
+                            }
+                        }
+
+                    } else {
+                        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                        return false;
+                    }
+                }
+            }
+
+            ////Validar fecha
+            //if ($(this).find('td.FECHA').length) {
+            //    var fecha = textval($(this), check, "FECHA");
+            //    res = valcolumn(fecha, "FECHA");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar proveedor
+            //if ($(this).find('td.PROVEEDOR').length) {
+            //    var prov = textval($(this), check, "PROVEEDOR");
+            //    res = valcolumn(prov, "PROVEEDOR");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar control
+            //if ($(this).find('td.CONTROL').length) {
+            //    var control = textval($(this), check, "CONTROL");
+            //    res = valcolumn(control, "CONTROL");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar autorización
+            //if ($(this).find('td.AUTORIZACION').length) {
+            //    var aut = textval($(this), check, "AUTORIZACION");
+            //    res = valcolumn(aut, "AUTORIZACION");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar vencimiento
+            //if ($(this).find('td.VENCIMIENTO').length) {
+            //    var ven = textval($(this), check, "VENCIMIENTO");
+            //    res = valcolumn(ven, "VENCIMIENTO");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar facturak
+            //if ($(this).find('td.FACTURAK').length) {
+            //    var fk = textval($(this), check, "FACTURAK");
+            //    res = valcolumn(fk, "FACTURAK");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar ejerciciok
+            //if ($(this).find('td.EJERCICIOK').length) {
+            //    var ek = textval($(this), check, "EJERCICIOK");
+            //    res = valcolumn(ek, "EJERCICIOK");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar bill_doc
+            //if ($(this).find('td.BILL_DOC').length) {
+            //    var bd = textval($(this), check, "BILL_DOC");
+            //    res = valcolumn(bd, "BILL_DOC");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+            ////Validar belnr
+            //if ($(this).find('td.BELNR').length) {
+            //    var belnr = textval($(this), check, "BELNR");
+            //    res = valcolumn(belnr, "BELNR");
+            //    if (res != "") {
+            //        return false;
+            //    }
+            //}
+        });
+
+        var t = $('#table_dis').DataTable();
+        t.rows('.selected').remove().draw(false);
+    } else {
+        res = "Posiciones en tabla de distribución como mínimo un registro";
+    }
+
+    return res;
+}
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function evaluarDisTableCount(mat, dis) {
+    var count = 0;
+
+    var indext = getIndex();
+
+    $("#table_dis > tbody  > tr[role='row']").each(function () {
+
+        //Distribución por material
+        if (dis == "M") {
+            var val = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+            //Validar material
+            if (val == mat) {
+                count++;
+            }
+        }
+    });
+
+    return count;
 }
 
 //Add MGC B20180619 2018.06.20 Evaluar la columna en el renglón
@@ -4064,7 +5029,8 @@ function evaluarDisTab() {
             }
             //Validar el porcentaje apoyo monto
         } else if (select_neg == "P") {
-            if (select_dis == "C") {
+            //if (select_dis == "C") {//RSG 09.07.2018
+            if (select_dis == "C" & ligada() == false) {
                 var monedadis_id = $('#monedadis_id').val();
                 var monto_dis = $('#monto_dis').val();
                 var total_dis = $('#total_dis').text();
@@ -4082,13 +5048,62 @@ function evaluarDisTab() {
     return res;
 }
 
-function evaluarFinancieraTab() {
+//function evaluarFinancieraTab() {
+//    //LEJ 10.07.18-----------------------------------
+//    var _miles = $("#miles").val();
+//    var _decimales = $("#dec").val();
+//    //LEJ 10.07.18-----------------------------------
+//    var res = true;
 
+//    //Evaluar el monto
+//    var monto_doc_md = $('#monto_doc_md').val();
+
+//    if (!evaluarValInt(monto_doc_md)) {
+//        return false;
+//    }
+
+//    //Obtiene el id de la lista id clasificación, default envía vacío
+//    var moneda_id = $('#moneda_id').val();
+
+//    if (!evaluarVal(moneda_id)) {
+//        return false;
+//    }
+
+//    //Obtener el tipo de cambio
+//    var tipo_cambio = $('#tipo_cambio').val();
+
+//    if (!evaluarValInt(tipo_cambio)) {
+//        return false;
+//    }
+
+//    //Monto en dolares
+//    var tipo_cambio = $('#montos_doc_ml2').val();
+
+//    if (!evaluarValInt(tipo_cambio)) {
+//        return false;
+//    }
+
+//    return res;
+
+//}
+function evaluarFinancieraTab() {
+    //LEJ 10.07.18-----------------------------------
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+    //LEJ 10.07.18-----------------------------------
     var res = true;
 
     //Evaluar el monto
-    var monto_doc_md = $('#monto_doc_md').val();
-
+    var monto_doc_md = $('#monto_doc_md').val().replace('$', '');
+    if (_decimales === '.') {
+        var _mt = monto_doc_md.replace(',', '');
+        monto_doc_md = _mt;
+    }
+    else if (_decimales === ',') {
+        var _mt = monto_doc_md.replace('.', '');
+        _mt = _mt.replace(',', '.');
+        monto_doc_md = _mt;
+    }
     if (!evaluarValInt(monto_doc_md)) {
         return false;
     }
@@ -4101,22 +5116,39 @@ function evaluarFinancieraTab() {
     }
 
     //Obtener el tipo de cambio
-    var tipo_cambio = $('#tipo_cambio').val();
-
+    var tipo_cambio = $('#tipo_cambio').val().replace('$', '');
+    if (_decimales === '.') {
+        var _mt = tipo_cambio.replace(',', '');
+        tipo_cambio = _mt;
+    }
+    else if (_decimales === ',') {
+        var _mt = tipo_cambio.replace('.', '');
+        _mt = _mt.replace(',', '.');
+        tipo_cambio = _mt;
+    }
     if (!evaluarValInt(tipo_cambio)) {
         return false;
     }
 
     //Monto en dolares
-    var tipo_cambio = $('#montos_doc_ml2').val();
-
-    if (!evaluarValInt(tipo_cambio)) {
+    var tipo_cambiod = $('#montos_doc_ml2').val().replace('$', '');
+    if (_decimales === '.') {
+        var _mt = tipo_cambiod.replace(',', '');
+        tipo_cambiod = _mt;
+    }
+    else if (_decimales === ',') {
+        var _mt = tipo_cambiod.replace('.', '');
+        _mt = _mt.replace(',', '.');
+        tipo_cambiod = _mt;
+    }
+    if (!evaluarValInt(tipo_cambiod)) {
         return false;
     }
 
     return res;
 
 }
+
 
 function evaluarFile(id) {
     var filenum = $(id).get(0).files.length;
@@ -4232,10 +5264,17 @@ function evaluarVal(v) {
 
 function evaluarValInt(v) {
 
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+
     if (v != null && v != "") {
-        var is_num = $.isNumeric(v);
-        var iNum = parseFloat(v.replace(',', '.'))
-        if (iNum > 0 & is_num == true) {
+        var n = v.replace('$', '');//RSG 10.07.2018
+        n = n.replace(_miles, '');//RSG 10.07.2018
+        n = n.replace(_decimales, '.');//RSG 10.07.2018
+        var is_num = $.isNumeric(n);
+        var iNum = parseFloat(n.replace(',', '.'))
+        //if (iNum > 0 & is_num == true) {//RSG 09.07.2018
+        if ((iNum > 0 | ligada()) & is_num == true) {
             return true;
         } else {
             return false;
@@ -4290,8 +5329,15 @@ function selectDis(val) {
             negdistribucion = false;
         }
         message = "";
-        $('#div_montobase').css("display", "none");//none
-        $('#div_apoyobase').css("display", "inherit");
+        //RSG 09.07.2018------------------------------------
+        if ($("#chk_ligada").is(":checked")) {
+            $('#div_montobase').css("display", "none");//none
+            $('#div_apoyobase').css("display", "none");
+        } else {
+            $('#div_montobase').css("display", "none");//none
+            $('#div_apoyobase').css("display", "inherit");
+        }
+        //RSG 09.07.2018------------------------------------
     } else {
         $('#div_montobase').css("display", "none");
         $('#div_apoyobase').css("display", "none");
@@ -4340,8 +5386,17 @@ function selectMonto(val, message) {
                     disdistribucion = false;
                 }
             }
-            $('#div_montobase').css("display", "none");//none
-            $('#div_apoyobase').css("display", "inherit");
+            //$('#div_montobase').css("display", "none");//none
+            //$('#div_apoyobase').css("display", "inherit");
+            //RSG 09.07.2018------------------------------------
+            if ($("#chk_ligada").is(":checked")) {
+                $('#div_montobase').css("display", "inherit");//none
+                $('#div_apoyobase').css("display", "none");
+            } else {
+                $('#div_montobase').css("display", "none");//none
+                $('#div_apoyobase').css("display", "inherit");
+            }
+            //RSG 09.07.2018------------------------------------
         } else {
             $('#div_montobase').css("display", "none");
             $('#div_apoyobase').css("display", "none");
@@ -4349,9 +5404,14 @@ function selectMonto(val, message) {
     }
 
     //Cuando es negociación por porcentaje y distribución por categoría, mostrar el monto 
-    if (select_neg == "P" && val == "C") {
+    //if (select_neg == "P" && val == "C") {
+    if (select_neg == "P" && val == "C" /*& $("#chk_ligada").is(":checked") == false*/) {
         $('#div_montobase').css("display", "inherit");//Mostra el monto
         $('#div_apoyobase').css("display", "none");//Mostra el monto
+    }
+    if ($("#chk_ligada").is(":checked")) {//RSG 09.07.2018
+        $('#div_montobase').css("display", "none");//Mostra el monto
+        $('#div_apoyobase').css("display", "inherit");//Mostra el monto
     }
 
     if (select_neg != "") {
@@ -4366,7 +5426,6 @@ function selectMonto(val, message) {
 
         //Categoría
         if (val == "C") {
-
             $('#cargar_excel').css("display", "none");
             $('.div_categoria').css("display", "inline-block");
             //Mostrar el encabezado de la tabla               
@@ -4449,6 +5508,8 @@ function selectCliente(valu) {
                         $('#payer_email').val(data.PAYER_EMAIL);
                         $("label[for='payer_email']").addClass("active");
                     }
+                    $("#txt_vkorg").val(data.VKORG);//RSG 05.07.2018
+                    $("#txt_vtweg").val(data.VTWEG2);//RSG 05.07.2018
                     //RSG 28.05.2018------------------------------------------
                     //MGC B20180611
                     if (!isRelacionada()) {
@@ -4471,6 +5532,8 @@ function selectCliente(valu) {
                     $("label[for='payer_nombre']").removeClass("active");
                     $('#payer_email').val("");
                     $("label[for='payer_email']").removeClass("active");
+                    $("#txt_vkorg").val("");//RSG 05.07.2018
+                    $("#txt_vtweg").val("");//RSG 05.07.2018
                 }
 
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
@@ -4491,6 +5554,8 @@ function selectCliente(valu) {
                 $('#payer_email').val("");
                 $("label[for='payer_email']").removeClass("active");
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
+                $("#txt_vkorg").val("");//RSG 05.07.2018
+                $("#txt_vtweg").val("");//RSG 05.07.2018
             },
             async: true
         });
@@ -4544,9 +5609,10 @@ function selectMoneda(valu) {
 
     if (valu != "") {
         $('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
-        var monto_doc_md = $('#monto_doc_md').val()
+        var monto_doc_md = $('#monto_doc_md').val();
+        if (monto_doc_md == "") monto_doc_md = "0.0";
         var mt = parseFloat(monto_doc_md.replace(',', '.'))
-        if (mt > 0) {
+        if (mt >= 0) {
 
             //$('#monedas_id').val(valu); //B20180625 MGC 2018.07.03 Agregar la moneda para enviarla al controlador
 
@@ -4561,7 +5627,7 @@ function selectMoneda(valu) {
                         var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
                         if (iNum > 0) {
 
-                            $('#tipo_cambio').val(iNum);
+                            $('#tipo_cambio').val(toShow(iNum));
 
                             var monto_doc_md = $('#monto_doc_md').val()
 
@@ -4697,8 +5763,8 @@ function validar_fechas(ini_date, fin_date) {//RSG 22.05.2018
 
 function validar_montos(base, footer) {
 
-    var basei = convertI(base);
-    var footeri = convertI(footer);
+    var basei = toNum(base);
+    var footeri = toNum(footer);
 
     if (basei == footeri) {
         return true;
@@ -4855,10 +5921,18 @@ function valcategoria(cat) {
         var index = t.row(tr).index();
         //Categoría en el row
         var catid = t.row(index).data()[0];
-        //Comparar la categoría en la tabla y la agregada
-        if (catid === "000" | cat === "000") {//RSG 05.06.2018
-            res = true;
+        var _xxx = $.parseJSON($('#catmat').val());//LEJ 18.07.2018
+        for (var i = 0; i < _xxx.length; i++) {
+            if (catid === _xxx[i].ID | cat === _xxx[i].ID) {
+                if (_xxx[i].UNICA === true) {
+                    res = true;
+                }
+            }
         }
+        //Comparar la categoría en la tabla y la agregada
+        // if (catid === "000" | cat === "000") {//RSG 05.06.2018
+        //   res = true;
+        // }
         if (cat == catid) {
             res = true;
         }
@@ -4867,6 +5941,48 @@ function valcategoria(cat) {
 
     return res;
 }
+
+//Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+function valmaterial(mat) {
+
+    var res = false;
+
+    var lengthT = $("table#table_dis tbody tr[role='row']").length;
+
+    if (lengthT > 0) {
+
+        var indext = getIndex();
+
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+            var matnr = "";
+            matnr = $(this).find("td:eq(" + (5 + indext) + ") input").val();
+
+            if (mat == matnr) {
+                res = true;
+                return false;
+            }
+
+        });
+
+    }
+
+    return res;
+}
+
+//Add MGC B20180705 2018.07.05 ne no eliminar verificar si se pueden eliminar los renglones
+function isAddt() {
+    var res = false;
+    if ($("#txt_addrowt").length) {
+        var addrowv = $('#txt_addrowt').val();
+        if (addrowv == "X") {
+            res = true;
+        }
+    }
+
+    return res;
+
+}
+
 
 //MGC B20180611 Verificar si es relacionada
 function isRelacionada() {

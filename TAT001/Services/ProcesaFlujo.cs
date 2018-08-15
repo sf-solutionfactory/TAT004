@@ -148,9 +148,9 @@ namespace TAT001.Services
                             next_step_r = (int)paso_a.NS_REJECT;
 
                         WORKFP next = new WORKFP();
-                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R" | paso_a.ACCION.TIPO == "T" | paso_a.ACCION.TIPO == "E")//Si está en proceso de aprobación
+                        if (paso_a.ACCION.TIPO == "A" | paso_a.ACCION.TIPO == "N" | paso_a.ACCION.TIPO == "R" | paso_a.ACCION.TIPO == "T" | paso_a.ACCION.TIPO == "E" | paso_a.ACCION.TIPO == "B" | paso_a.ACCION.TIPO == "M")//Si está en proceso de aprobación
                         {
-                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N"))//APROBAR SOLICITUD
+                            if (f.ESTATUS.Equals("A") | f.ESTATUS.Equals("N") | f.ESTATUS.Equals("M"))//APROBAR SOLICITUD
                             {
                                 DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                                 next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
@@ -571,7 +571,7 @@ namespace TAT001.Services
             //-------------------------------------------------------------------------------------------------------------------------------//
             if (correcto.Equals(""))
             {
-                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x=>x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                 string corr = "";
                 if (conta.WORKFP.ACCION.TIPO == "P")
                 {
@@ -580,6 +580,16 @@ namespace TAT001.Services
                     corr = procesa(conta, recurrente);
                 }
             }
+            //else if (correcto.Equals("1"))
+            //{
+            //    FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+            //    string corr = "";
+            //    if (conta.WORKFP.ACCION.TIPO == "B")
+            //    {
+            //        Email em = new Email();
+            //        em.enviaMailC(f.NUM_DOC, false, null, )
+            //    }
+            //}
 
             return correcto;
         }

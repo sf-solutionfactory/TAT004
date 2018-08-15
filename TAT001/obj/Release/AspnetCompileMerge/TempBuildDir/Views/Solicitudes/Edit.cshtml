@@ -3,8 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 202;
     ViewBag.carpeta_r = 200;
+    TAT001.Models.DocumentoFlujo _df = ViewBag.df as TAT001.Models.DocumentoFlujo;
+    if (ViewBag.x_ligada == null) { ViewBag.x_ligada = false; }
+    bool _ligada = ViewBag.x_ligada;//LEJ 23.07.2018
 }
-
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/edit.js"></script>
@@ -32,7 +34,11 @@
 });
     </script>
 }
-
+@* ------------------------------------------------------------------------LEJ 09-07-18 *@
+<input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
+<input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
+<input id="mult" name="mult" type="hidden" value="@_df.D.DOCUMENTOF.Count">@*LEJ 03-08-18*@
+@* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
 
@@ -43,13 +49,13 @@
                     @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new { @id = "lbl_userid" })
                 </div>
                 @*<div class="input-field col s4">
-                    @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
-                    @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
-                </div>
-                <div class="input-field col s4">
-                    @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
-                    @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
-                </div>*@
+                        @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
+                        @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
+                    </div>
+                    <div class="input-field col s4">
+                        @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
+                        @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
+                    </div>*@
             </div>
         </div>
         <div class="col s12 m4 l4">
@@ -69,7 +75,6 @@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
             }
-
         </div>
     }
     <style>
@@ -135,12 +140,10 @@
             background-color: red;
         }
     </style>
-
     <div class="div_right">
-
         <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
         @*@if (ViewBag.reversan != "X")
-        {*@
+            {*@
         <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         @*}*@
     </div>
@@ -149,20 +152,19 @@
         <hr class="hr_color .pink.darken-1" />
     </div>
 </div>
-
 <div class="">
     <div class="row" style="background-color:#f4f4f4;">
         <div class="col s12">
             <ul class="tabs" id="tabs">
                 <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="active">Información</a></li>
-                <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>
+                @*<li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>*@
                 <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
                 <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
+                <li id="tabs_rec" class="tab col s3 tabs_menu disabled"><a id="tab_rec" href="#Recurrente_cont">Recurrencia</a></li><!--RSG 09.07.2018-->
                 <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
             </ul>
         </div>
     </div>
-
     @using (Html.BeginForm("Edit", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
@@ -180,7 +182,6 @@
                             <div class="card-panel">
                                 <!--RSG 13.06.2018-->
                                 <div class="row" style="margin-bottom:0;">
-
                                     <div class="input-field col s12">
                                         @Html.DropDownList("USUARIOC_ID", null, "")
                                         <label for="txt_rel" id="lbl_rel"></label>
@@ -201,7 +202,9 @@
                                         }
                                         else
                                         {
-                                            @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id" })
+                                            @*@Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id" })*@
+                                            @Html.HiddenFor(model => model.TSOL_ID, new { @id = "tsol_id", onchange = @"selectTsol(this.value)" })@*@lej 24-07-2018*@
+
                                             <input type="text" value="@ViewBag.TSOL_IDI" disabled="disabled" />
                                             <input type="text" id="tsolant_id" value="@ViewBag.TSOL_ANT" disabled="disabled" hidden />
                                         }
@@ -281,7 +284,6 @@
                                     <div class="input-field col s6">
                                         @Html.EditorFor(model => model.SOCIEDAD.REGION, new { htmlAttributes = new { @id = "region_id", @disabled = "disabled" } })
                                         @Html.LabelFor(model => model.SOCIEDAD.REGION, "Región", htmlAttributes: new { @for = "region_id" })
-
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
@@ -403,7 +405,6 @@
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
                                     <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
                                     <label for="ejercicio">Ejercicio</label>
-
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " } })
@@ -472,6 +473,9 @@
                                         });
                                     })
                                 </script>
+                                <input type="hidden" id="txt_vkorg" />
+                                <input type="hidden" id="txt_vtweg" />
+                                <input type="hidden" id="txt_spras" value="@Session["spras"].ToString()" />
                                 <div class="input-field col s12">
                                     <input type="text" id="cli_name" value="@ViewBag.NAME1" disabled="disabled" />
                                     <label for="cli_name">Nombre</label>
@@ -496,12 +500,10 @@
                                         @Html.EditorFor(model => model.VTWEG, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg", @class = "form-control" } })
                                     </div>
                                 </div>
-
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " } })
                                     @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
                                 </div>
-
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email" } })
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
@@ -509,115 +511,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="ref_soporte" style="display:none" class="col s12">
-                        <div class="card-panel">
-                            <h5>Referencia de Facturas</h5>
-                            <div class="row" style="margin-bottom:0;">
-                                <p>
-                                    <label>
-                                        <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
-                                        <input id="check_factura" type="checkbox" checked="checked" />
-                                        <span>Una Factura</span>
-                                    </label>
-                                </p>
-                                @*Cargar archivo excel soporte*@
-                                <div id="file_facturat" class="file-field input-field" style="display:none">
-                                    <div class="btn">
-                                        <span>File</span>
-                                        <input type="file" class="file_sop" id="file_sop">
-                                    </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
-                                    </div>
-                                </div>
-                                <div class="table_sop" id="" style="display:none">
-                                </div>
-                                <table class="table_sop" id="table_sop" class="display" cellspacing="0" style="width:100%;display:none">
-                                    <thead>
-                                        <tr>
-                                            <th>Pos</th>
-                                            <th>Factura</th>
-                                            <th>Fecha Factura</th>
-                                            <th>Proveedor</th>
-                                            <th>Proveedor Desc</th>
-                                            <th>Control</th>
-                                            <th>Autorización</th>
-                                            <th>Vencimiento</th>
-                                            <th>Factura k</th>
-                                            <th>Ejercicio k</th>
-                                            <th>Bill doc</th>
-                                            <th>Belnr</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                                @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
-                                <table id="table_soph" class="display" cellspacing="0" style="display:none">
-                                    <tbody>
-                                        @if (Model.DOCUMENTOF != null)
-                                        {
-
-                                            for (var i = 0; i < Model.DOCUMENTOF.Count; i++)
-                                            {
-                                                <tr>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].POS
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].FACTURA
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].FECHA
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].PROVEEDOR
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].CONTROL
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].AUTORIZACION
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].VENCIMIENTO
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].FACTURAK
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].EJERCICIOK
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].BILL_DOC
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOF[i].BELNR
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @*Temporalidad*@
-            <div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
-                <div class="row">
-                    <div class="col s12">
+                    <div class="col s12 m6 l6">
                         <div class="card-panel">
                             <h5>Vigencia</h5>
                             <div class="row" style="margin-bottom:0">
@@ -626,11 +520,11 @@
                                 {
                                     <div class="col s12">
                                         <label class="col s6">
-                                            <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+                                            <input name="group1" type="radio" id="btn-date" onclick="cambiaTemp(this.id)" />
                                             <span>Por fecha</span>
                                         </label>
                                         <label class="col s6">
-                                            <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                            <input name="group1" type="radio" checked id="btn-peri" onclick="cambiaTemp(this.id)" />
                                             <span>Por periodo</span>
                                         </label>
                                     </div>
@@ -666,14 +560,14 @@
                                             <i class="material-icons prefix">date_range</i>
                                             @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
                                             @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " })
-                                            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                            <input type="text" disabled class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
                                             @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
                                         </div>
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">date_range</i>
                                             @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
                                             @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " })
-                                            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                            <input type="text" disabled class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
                                             @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
                                         </div>
                                     </div>
@@ -696,19 +590,19 @@
                                     <div class="col s6">
                                         <div class="col s12">
                                             <div class="input-field col s6">
-                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @onchange = "setDates('')" })
                                                 <label>De</label>
                                             </div>
                                             <div class="input-field col s3">
-                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @onchange = "setDates('')" })
                                             </div>
                                         </div><div class="col s12">
                                             <div class="input-field col s6">
-                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @onchange = "setDates('')" })
                                                 <label>Hasta</label>
                                             </div>
                                             <div class="input-field col s3">
-                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
+                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @onchange = "setDates('')" })
                                             </div>
                                         </div>
                                     </div>
@@ -766,6 +660,8 @@
                                         function borrar(field) {
                                             field.value = "";
                                         }
+                                        //LEJ 30.07.2018
+                                        _ff();
                                     </script>
                                 }
                                 else
@@ -786,30 +682,273 @@
                             </div>
                         </div>
                         <div id="div_picker2"></div><!--RSG 27.05.2017-->
+                    </div>
+                    <div id="ref_soporte" style="display:none" class="col s12">
+                        @*LEJ 26.07.18----I*@
                         <div class="card-panel">
-                            <h5>Recurrente</h5>
+                            <h5>Referencia de Facturas</h5>
                             <div class="row" style="margin-bottom:0;">
                                 <p>
                                     <label>
-                                        @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                        <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                        <span>Documento recurrente</span>
+                                        <input id="check_facturas" name="unafact" type="hidden" value="@ViewBag.UNAFACTURA" />
+                                        <input id="check_factura" type="checkbox" checked="checked" disabled />
+                                        <span>Multiples Facturas</span>
                                     </label>
                                 </p>
-                                <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
-                                    <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>TSOL</th>
-                                            <th>FECHA</th>
-                                            <th>Monto</th>
-                                            <th>Porcentaje</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                                @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
-                                <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                                @*Cargar archivo excel soporte*@
+                                <div id="file_facturat" class="file-field input-field" style="display:none">
+                                    <div class="btn">
+                                        <span>File</span>
+                                        <input type="file" class="file_sop" id="file_sop">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate file_sop" type="text">
+                                    </div>
+                                </div>
+                                <div class="table_sop" id="" style="display:none">
+                                </div>
+                                @if (_df.D.DOCUMENTOF != null)//LEJ 24.07.18
+                                {
+                                    if (_df.D.DOCUMENTOF.Count > 0)//LEJ 24.07.18
+                                    {
+                                        <table class="table_sop display" id="table_sop" cellspacing="0" style="width:100%;display:none">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pos</th>
+                                                    <th>Factura</th>
+                                                    <th>Fecha Factura</th>
+                                                    <th>Proveedor</th>
+                                                    <th>Proveedor Desc</th>
+                                                    <th>Control</th>
+                                                    <th>Autorización</th>
+                                                    <th>Vencimiento</th>
+                                                    <th>Factura k</th>
+                                                    <th>Ejercicio k</th>
+                                                    <th>Payer</th>@*@18-07-2018 jemo *@
+                                                    <th>Descripcion</th>@*@18-07-2018 jemo *@
+                                                    <th>Bill Doc</th>
+                                                    <th>Importe Factura</th>@*@18-07-2018 jemo *@
+                                                    <th>Belnr</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                        @*<a class="waves-light btn-small" id="sendTable"><i class="material-icons left">add</i>Send table to html</a>*@
+                                        <table id="table_soph" class="display" cellspacing="0" style="display:none">
+                                            <tbody>
+                                                @for (var i = 0; i < _df.D.DOCUMENTOF.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].POS
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].FACTURA
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].FECHA
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].PROVEEDOR
+                                                        </td>
+                                                        <td> @_df.D.DOCUMENTOF[i].IMPORTE_FAC</td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].CONTROL
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].AUTORIZACION
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].VENCIMIENTO
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].FACTURAK
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].EJERCICIOK
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].PAYER
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].DESCRIPCION@*//B20180625 JEMO 2018.06.27*@
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].BILL_DOC@*
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                                        </td>
+                                                        <td>
+                                                            @_df.D.DOCUMENTOF[i].BELNR
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>@*LEJ 26.07.18----T*@
+                </div>
+            </div>
+            @*Recurrencia*@
+            <div id="Recurrente_cont" class="row" style="font-size:12px;">
+                <div class="col s12 l8 offset-l2">
+                    <div class="card horizontal green white-text">
+                        <div class="col s12" style="margin-bottom0;">
+                            <p>
+                                Esta pestaña se debe llenar solamente si necesitas que tu solicitud se genere automáticamente durante los periodos seleccionados
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div class="card-panel">
+                        <h5>Recurrente</h5>
+                        <input type="hidden" id="txt_trec" />
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <input type="hidden" value="@Model.DOCUMENTOREC.Count" id="valRec" />@*LEJ 31.07.2018---------------------*@
+                                <label>
+                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                    <span>Documento recurrente</span>
+                                </label>
+                            </p>
+                            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th width="150px">Monto</th>@*LEJ 06.08.2018*@
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            @*<a class="waves-light btn-small" id="sendTableR" onclick="enviaRec()"><i class="material-icons left">add</i>Enviar</a>*@
+                            <table id="table_rech" class="display" cellspacing="0" style="display:none">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>TSOL</th>
+                                        <th>FECHA</th>
+                                        <th>Monto</th>
+                                        <th>Porcentaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.DOCUMENTOREC != null)
+                                    {
+                                        for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].NUM_DOC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].POS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].FECHAF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_BASE
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PORC
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].DOC_REF
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].EJERCICIO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].ESTATUS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_FIJO
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_GRS
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].MONTO_NET
+                                                </td>
+                                                <td>
+                                                    @Model.DOCUMENTOREC[i].PERIODO
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12">
+                    @*LEJ 31.07.2018*@
+                    <div id="div_objq" class="card-panel hide">
+                        <input type="hidden" id="txt_trec" />
+                        <div class="row" style="margin-bottom:0;">
+                            <p>
+                                <label>
+                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
+                                    <input id="check_objetivoq" name="check_objetivoq" type="checkbox" onchange="objetivoQ(this.checked);" />
+                                    <span id="span_objq">Objetivo Q</span> @*B20180801 MGC Textos*@
+                                </label>
+                                <script>
+                                    function objetivoQ(ban) {
+                                        if (ban) {
+                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                            if (lengthT > 0) {
+                                                document.getElementById('table_objQ').classList.remove("hide");
+                                                var total = 0;
+                                                var porc = 0;
+                                                var fecha = "";
+                                                var tsol = "";
+                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
+                                                    fecha = ($(this).find("td.FECHA").text());
+                                                    tsol = $(this).find("td.TSOL").text();
+                                                });
+                                                document.getElementById("obqTSOL").innerText = tsol;
+                                                document.getElementById("obqFECHA").innerText = fecha;
+                                                document.getElementById("obqMONTO").innerText = toShow(total);
+                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
+                                            }
+                                        }
+                                        else {
+                                            document.getElementById('table_objQ').classList.add("hide");
+                                        }
+                                    }
+                                    function updateObjQ() {
+                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                        if (lengthT > 0) {
+                                            var total = 0;
+                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                            });
+                                            document.getElementById("obqMONTO").innerText = toShow(total);
+                                        }
+
+                                    }
+                                </script>
+                                @if (Model.OBJETIVOQ == true)
+                                {
+                                    <script>
+                                        document.getElementById("check_objetivoq").checked = true;
+
+                                    </script>
+                                }
+                            </p>
+                            <div style="overflow:auto;">
+                                <table id="table_objQ" class="display hide" cellspacing="0" style="font-size:12px;">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
@@ -820,62 +959,34 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (Model.DOCUMENTOREC != null)
-                                        {
-
-                                            for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
-                                            {
-                                                <tr>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].NUM_DOC
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].POS
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].FECHAF
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].MONTO_BASE
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].PORC
-                                                    </td>
-
-
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].DOC_REF
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].EJERCICIO
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].ESTATUS
-                                                    </td>
-
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].MONTO_FIJO
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].MONTO_GRS
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].MONTO_NET
-                                                    </td>
-                                                    <td>
-                                                        @Model.DOCUMENTOREC[i].PERIODO
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
+                                        <tr>
+                                            <td>Q</td>
+                                            <td id="obqTSOL"></td>
+                                            <td id="obqFECHA"></td>
+                                            <td id="obqMONTO"></td>
+                                            @*<td><input type="text" id="objPORC" style="width:150px;font-size:12px;height:2rem;" name="objPORC" onchange="this.value = toShowPorc(this.value);" class="input_dcp"/></td>*@
+                                            <td>
+                                                @Html.EditorFor(model => model.OBJQ_PORC, new { htmlAttributes = new { @id = "objPORC", @class = "input_dcp ", @style = "width:150px;font-size:12px;height:2rem;", @onchange = "this.value = toShowPorc(this.value);" } })
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
+                            <p>
+                                <div class="input-field col l4 m4 s12">
+                                    <select id="sel_nn" name="sel_nn">
+                                        <option id="opt_mmes" value="1">Mensual</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_tmes" value="3">Trimestral</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_smes" value="6">Semestral</option> @*B20180801 MGC Textos*@
+                                        <option id="opt_ames" value="12">Anual</option> @*B20180801 MGC Textos*@
+                                    </select>
+                                    <label id="lbl_selnn" for="sel_nn">Frecuencia de liquidación / Orden de pago</label> @*B20180801 MGC Textos*@
+                                </div>
+                            </p>
                         </div>
                     </div>
                 </div>
+                @*LEJ 31.07.2018*@
             </div>
             @*Soporte*@
             <div id="Soporte_cont">
@@ -891,7 +1002,6 @@
                                     <div class="col s12">
                                         <form action="#">
                                             <div class="row" id="div_soportes">
-
                                             </div>
                                             <!--RSG 23.05.2018-->
                                             <script>
@@ -907,7 +1017,7 @@
                         <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
                         @{
                             List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
-                            if (ViewBag.relacionadan != "" && archivo.Count > 0)
+                            if (ViewBag.relacionadan != "" && archivo.Count >= 0)
                             {
                                 string[] nombrefile;
                                 <div class="card-panel">
@@ -955,7 +1065,6 @@
                                                             <div class="file-field input-field">
                                                                 <div class="btn-small" style="float:left;">
                                                                     <span>Examinar</span>
-
                                                                     @if (item.OBLIGATORIO)
                                                                     {
                                                                         <input class="file_soporte ne" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
@@ -986,7 +1095,6 @@
                                                         <div class="file-field input-field">
                                                             <div class="btn-small" style="float:left;">
                                                                 <span>Examinar</span>
-
                                                                 @if (item.OBLIGATORIO)
                                                                 {
                                                                     <input class="file_soporte nec" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
@@ -995,7 +1103,6 @@
                                                                 {
                                                                     <input class="file_soporte" name="files_soporte" id="file_@item.TSOPORTE_ID" type="file" onchange="changeFile(this)">
                                                                 }
-
                                                             </div>
                                                             <div class="file-path-wrapper">
                                                                 <input class="file-path validate" type="text">
@@ -1048,7 +1155,6 @@
                                 <h5>Soporte de reverso</h5>
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
-
                                         <label name="labels_soporte2" hidden>Carta</label><label class="lbl_nec" hidden></label>
                                         <input type="text" value="Reversa" name="Sop" hidden />
                                         <div class="file-field input-field">
@@ -1060,7 +1166,6 @@
                                                 <input class="file-path validate" type="text">
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
@@ -1108,7 +1213,47 @@
                             <input type="text" id="catmat" name="catmat" value="@ViewBag.CATMAT" hidden />
                             <h5>Distribución</h5>
                             <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                    <label>
+                                        @if (_ligada == true)//LEJ 23.07.2018
+                                        {
+                                            <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                        }
+                                        <span>Solicitud ligada a facturación </span>
+                                    </label>
+                                    <script>
+                                        function cambiaLigada(campo) {
+                                            if (campo.checked) {
+                                                $("#select_neg").val("P");
+                                                $("#select_dis").val("C");
+                                                $("#select_negi").val("P");
+                                                $("#select_disi").val("C");
+                                                $("#select_neg").prop("disabled", "disabled");
+                                                $("#select_dis").prop("disabled", "disabled");
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").removeClass("hide");
+                                                $("#txt_ligada").val("X");
+                                            } else {
+                                                $("#select_neg").prop("disabled", false);
+                                                $("#select_dis").prop("disabled", false);
+                                                $("#select_neg").change();
+                                                $("#select_dis").change();
+                                                $("#div_objq").addClass("hide");
+                                                $("#txt_ligada").val("");
+                                            }
 
+                                            var elem = document.getElementById('select_neg');
+                                            var instance = M.Select.init(elem, []);
+                                            elem = document.getElementById('select_dis');
+                                            instance = M.Select.init(elem, []);
+                                        }
+                                    </script>
+                                </div>
                                 @*<input type="button" id="matcat" value="Get materiales cat" />*@
                                 <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
                                 <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
@@ -1127,7 +1272,6 @@
                                     <label>Distribución</label>
                                 </div>
                                 <div id="div_categoria" class="form-group col s6 div_categoria" style="display:none">
-
                                     @Html.LabelFor(model => model.TSOL_ID, "Categoría", htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
@@ -1154,6 +1298,7 @@
                                 <div class="input-field col s6">
                                     @*<div class="form-group">*@
                                     @*<div class="col-md-10">*@
+                                    <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
                                     @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                     @*</div>
@@ -1194,7 +1339,6 @@
                                         <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
                                     </div>
                                 }
-
                                 <div id="div_picker"></div>
                                 <table id="table_dis" class="display" cellspacing="0" width="100%" style="display:none">
                                     <thead>
@@ -1436,13 +1580,11 @@
                     <div>
                         <div class="col s12 m6 l6">
                             <!--RSG 22.05.2018-->
-
                             <div class="card-panel">
                                 <div class="row">
                                     <h5>Cuentas</h5>
                                     <div class="col s12">
                                         <div id="div_clearing">
-
                                         </div>
                                     </div>
                                 </div>
@@ -1585,7 +1727,6 @@
                                         </div>
                                     </div>
                                 </div>*@
-
                             <div class="card-panel">
                                 <h5>Análisis Solicitud</h5>
                                 <div class="row" style="margin-bottom:0">
@@ -1611,7 +1752,6 @@
                                                     </div>
                                                 </div>
                                             </li>
-
                                             <li class="collection-item">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
@@ -1622,7 +1762,6 @@
                                                     </div>
                                                 </div>
                                             </li>
-
                                             <li class="collection-item" id="a4">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
@@ -1633,7 +1772,6 @@
                                                     </div>
                                                 </div>
                                             </li>
-
                                             <li class="collection-item" id="a5">
                                                 <div class="row" style="margin-bottom:0;padding-bottom:0;">
                                                     <div class="col s6">
@@ -1644,7 +1782,6 @@
                                                     </div>
                                                 </div>
                                             </li>
-
                                         </ul>
                                     </div>
                                 </div>
@@ -1728,11 +1865,12 @@
                                         </table>
                                     </div>
                                 </div>*@
-
                         </div>
                     </div>
                 </div>
             </div>
+            @* SCRIPT ------------------------------------------------------------------------------------------ LEJ 09.07.18*@
+            <script src="~/Scripts/ValidarFormatoDecimalesC.js"></script>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input style="display:none" id="btn_guardar" type="submit" value="Guardar" class="btn btn-default" />
@@ -1781,21 +1919,13 @@
                             {
                                 <tr>
                                     <td width=""> @Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M) </td>
-
                                     <td width=""> @Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION) </td>
-
                                     <td width=""> @f.FECHAC.Value.ToShortDateString() </td>
-
                                     <td width=""> @f.FECHAC.Value.TimeOfDay.ToString().Split('.')[0] </td>
-
                                     <td width=""> @f.FECHAM.Value.ToShortDateString() </td>
-
                                     <td width=""> @f.FECHAM.Value.TimeOfDay.ToString().Split('.')[0] </td>
-
                                     <td width=""> @Html.DisplayFor(modelItem => f.ESTATUS) </td>
-
                                     <td width="30%"> @Html.DisplayFor(modelItem => f.COMENTARIO) </td>
-
                                 </tr>
                             }
                         </tbody>
@@ -1806,6 +1936,7 @@
     </div>
 
 }
+
 @*@if (ViewBag.original == null)
     {
         <script>
@@ -1840,7 +1971,6 @@
             }
         </script>
     }*@
-
 @{
     List<TAT001.Entities.DOCUMENTOA> archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
     if (ViewBag.relacionadan != "" && archivos.Count > 0)
@@ -1881,3 +2011,6 @@
         </div>
     }
 }
+@*<script>
+        selectTsol($('#tsol_id').val());//LEJ 24.07.18
+    </script>*@

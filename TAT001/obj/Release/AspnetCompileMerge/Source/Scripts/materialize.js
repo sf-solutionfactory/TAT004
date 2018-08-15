@@ -4883,6 +4883,7 @@ $jscomp.polyfill = function (e, r, p, m) {
                 var toast = document.createElement('div');
                 toast.classList.add('toast');
 
+
                 // Add custom classes onto toast
                 if (!!this.options.classes.length) {
                     $(toast).addClass(this.options.classes);

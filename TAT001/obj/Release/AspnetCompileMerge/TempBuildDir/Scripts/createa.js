@@ -1,13 +1,20 @@
 ﻿
 $('body').on('keydown.autocomplete', '.input_material', function () {
     var tr = $(this).closest('tr'); //Obtener el row
+    var vk = '0152';
+    vk = document.getElementById("txt_vkorg").value;
+    var vt = '50';
+    vt = document.getElementById("txt_vtweg").value;
+    var sp = 'ES';
+    sp = document.getElementById("txt_spras").value;
     auto(this).autocomplete({
         source: function (request, response) {
             auto.ajax({
                 type: "POST",
-                url: 'materiales',
+                url: 'materiales',//Anterior
+                //url: '../Listas/materiales',
                 dataType: "json",
-                data: { "Prefix": request.term },
+                data: { "Prefix": request.term, vkorg: vk, vtweg: vt, spras: sp },
                 success: function (data) {
                     response(auto.map(data, function (item) {
                         //return { label: item.ID + " - " + item.MAKTX, value: item.ID };
@@ -48,6 +55,10 @@ function trimStart(character, string) {//RSG 07.06.2018
 function selectMaterial(val, desc, tr) {
     var index = getIndex();
     desc = $.trim(desc);
+
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    var matExist = valmaterial(val);
+
     //Categoría
     var cat = getCategoria(val);
     tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
@@ -55,7 +66,13 @@ function selectMaterial(val, desc, tr) {
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
 
     //Remove background a celda de material
-    tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
+    if (matExist) {
+        M.toast({ html: 'Ya hay un material con ese mismo identificador' });
+        tr.find('td').eq((5 + index)).addClass("errorMaterial");
+    } else {
+        tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    }
 }
 
 $('body').on('keydown.autocomplete', '.input_proveedor', function () {
