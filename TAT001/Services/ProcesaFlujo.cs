@@ -90,7 +90,7 @@ namespace TAT001.Services
                             nuevo.USUARIOD_ID = nuevo.USUARIOA_ID;
 
                             DateTime fecha = DateTime.Now.Date;
-                            TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                            DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
                             if (del != null)
                                 nuevo.USUARIOA_ID = del.USUARIOD_ID;
                             else
@@ -121,9 +121,9 @@ namespace TAT001.Services
             }
             else if (f.ESTATUS.Equals("A"))   //---------------------EN PROCESO DE APROBACIÓN
             {
-                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC)).OrderByDescending(a => a.POS).FirstOrDefault();
+                actual = db.FLUJOes.Where(a => a.NUM_DOC.Equals(f.NUM_DOC) & a.POS == f.POS).OrderByDescending(a => a.POS).FirstOrDefault();
 
-                if (actual.ESTATUS.Equals("A"))
+                if (!actual.ESTATUS.Equals("P"))
                     return "1";//-----------------YA FUE PROCESADA
                 else
                 {
@@ -189,7 +189,7 @@ namespace TAT001.Services
                                 nuevo.USUARIOD_ID = detA.USUARIOA_ID;
 
                                 DateTime fecha = DateTime.Now.Date;
-                                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                                DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
                                 if (del != null)
                                     nuevo.USUARIOA_ID = del.USUARIOD_ID;
                                 else
@@ -410,7 +410,7 @@ namespace TAT001.Services
                                 nuevo.USUARIOD_ID = detA.USUARIOA_ID;
 
                                 DateTime fecha = DateTime.Now.Date;
-                                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                                DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
                                 if (del != null)
                                     nuevo.USUARIOA_ID = del.USUARIOD_ID;
                                 else
@@ -541,7 +541,7 @@ namespace TAT001.Services
                 DOCUMENTO d = db.DOCUMENTOes.Find(actual.NUM_DOC);
                 nuevo.USUARIOD_ID = d.USUARIOD_ID;
                 DateTime fecha = DateTime.Now.Date;
-                TAT001.Entities.DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
+                DELEGAR del = db.DELEGARs.Where(a => a.USUARIO_ID.Equals(nuevo.USUARIOD_ID) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).FirstOrDefault();
                 if (del != null)
                     nuevo.USUARIOA_ID = del.USUARIOD_ID;
                 else

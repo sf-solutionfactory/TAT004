@@ -1,11 +1,13 @@
 ﻿$('body').on('click', '#btn_guardar', function (e) {
 
+    document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
     guardarcarta("guardar_param");
 
 });
 
 $('body').on('click', '#btn_visualizar', function (e) {
 
+    document.getElementById("loader").style.display = "initial";//RSG 26.04.2018
     guardarcarta("");
 
 });

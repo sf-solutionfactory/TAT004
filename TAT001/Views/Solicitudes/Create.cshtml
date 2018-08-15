@@ -181,10 +181,17 @@
 <div class="row">
     <div class="col s12">
         <ul class="tabs" id="tabs">
-            <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="active">Información</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="">Información</a></li>
             @*
                 <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>*@@*RSG 09.07.2018*@
-                <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
+                @if (ViewBag.reversan != "X")
+                {
+                    <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables class="active">Soporte</a></li>
+                }
+                else
+                {
+                    <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
+                }
                 <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
                 <li id="tabs_rec" class="tab col s3 tabs_menu disabled"><a id="tab_rec" href="#Recurrente_cont">Recurrencia</a></li><!--RSG 09.07.2018-->
                 <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
@@ -1123,8 +1130,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                        archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                            ;
+                                                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                              ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;

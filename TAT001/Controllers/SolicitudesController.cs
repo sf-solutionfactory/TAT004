@@ -5693,7 +5693,7 @@ namespace TAT001.Controllers
                     doc.POS = pos;
                     try
                     {
-                        doc.FACTURA = (string)dt.Rows[i][0]; //Factura
+                        doc.FACTURA = (string)dt.Rows[i][1]; //Factura
                     }
                     catch (Exception e)
                     {
@@ -5702,7 +5702,7 @@ namespace TAT001.Controllers
                     //jemo 06-08-2018 inicio
                     try
                     {
-                        doc.SOCIEDAD = (string)dt.Rows[i][1]; //Factura
+                        doc.SOCIEDAD = (string)dt.Rows[i][0]; //Sociedad
                     }
                     catch (Exception e)
                     {
@@ -5763,10 +5763,9 @@ namespace TAT001.Controllers
                     //    doc.VENCIMIENTO = null;
                     //}
                     //jemo 10-17-2018 fin
-                    //jemo 25-17-2018 inicio
                     try
                     {
-                        doc.BILL_DOC = dt.Rows[i][2].ToString(); //Bill_doc
+                        doc.BILL_DOC = dt.Rows[i][2].ToString(); //Billing
                     }
                     catch (Exception e)
                     {
@@ -5783,7 +5782,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.PAYER = (string)dt.Rows[i][4]; //Cliente
+                        doc.PAYER = (string)dt.Rows[i][4]; //Payer
                     }
                     catch (Exception e)
                     {
@@ -5791,7 +5790,7 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.IMPORTE_FACT = dt.Rows[i][5].ToString(); //Importe factura
+                        doc.IMPORTE_FACT = dt.Rows[i][6].ToString(); //Importe factura
                     }
                     catch (Exception e)
                     {
@@ -5799,13 +5798,12 @@ namespace TAT001.Controllers
                     }
                     try
                     {
-                        doc.BELNR = (string)dt.Rows[i][6]; //Belnr
+                        doc.BELNR = (string)dt.Rows[i][7]; //Folio
                     }
                     catch (Exception e)
                     {
                         doc.BELNR = null;
                     }
-                    //jemo 25-17-2018 fin
 
                     ld.Add(doc);
                     pos++;
