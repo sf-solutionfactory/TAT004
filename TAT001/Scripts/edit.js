@@ -6,7 +6,7 @@ var interval; //B20180625 MGC 2018.07.04
 var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
 var proverror = "";//B20180625 MGC 2018.06.27
-
+var importe_fac = 0; // jemo 25-07-2018
 $(document).ready(function () {
     $.ajax({
         url: "../Listas/TipoRecurrencia",
@@ -80,6 +80,12 @@ $(document).ready(function () {
                 "name": 'POS',
                 "className": 'POS',
             },
+            //jemo 10-07-2018 inicio
+            {
+                "name": 'SOCIEDAD',
+                "className": 'SOCIEDAD'
+            },
+            //jemo 10-07-2018 fin
             {
                 "name": 'FACTURA',
                 "className": 'FACTURA'
@@ -88,6 +94,12 @@ $(document).ready(function () {
                 "name": 'FECHA',
                 "className": 'FECHA'
             },
+            //lej 25-07-2018 
+            {
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
+            },
+            //lej 25-07-2018
             {
                 "name": 'PROVEEDOR',
                 "className": 'PROVEEDOR'
@@ -125,13 +137,7 @@ $(document).ready(function () {
             {
                 "name": 'DESCRIPCION',
                 "className": 'DESCRIPCION'
-            },
-            //lej 25-07-2018 
-            {
-                "name": 'BILL_DOC',
-                "className": 'BILL_DOC'
-            },
-            //lej 25-07-2018 
+            }, 
             {
                 "name": 'IMPORTE_FAC',
                 "className": 'IMPORTE_FAC'
@@ -1156,7 +1162,17 @@ $(document).ready(function () {
             msg += ' ,Financiera';
             res = FinancieraTab;
         }
-
+        //jemo inicio 24-07-2018
+        //validacion de importe de facturas contra monto de distribucion
+        var checkf = $('#check_factura').is(':checked');
+        if (checkf) {
+            var monto = parseFloat(toNum($('#monto_dis').val()));
+            if (importe_fac !== monto) {
+                msg += ', Informacion: Importet total de las facturas sea igual al monto en Distribucion';
+                res = false;
+            }
+        }
+        //jemo fin 24-07-2018
         msg += '!';
         if (res) {
             //loadFilesf();
@@ -2233,34 +2249,37 @@ function copiarTableVistaSop() {
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(0)").text(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1) ").text(); //B20180625 MGC 2018.06.27
-            //var fecha = $(this).find("td.FECHA").text();
-            var fecha = $(this).find("td:eq(2) ").text(); //B20180625 MGC 2018.06.27
+            var factura = $(this).find("td:eq(2) ").text(); //B20180625 MGC 2018.06.27
 
+            var bukrs = $(this).find("td:eq(1)").text(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
+            //var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td:eq(3) ").text(); //B20180625 MGC 2018.06.27
+            var bill_doc = $(this).find("td:eq(4)").text(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(3) ").text(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(5) ").text(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(5) ").text(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(7) ").text(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(6) ").text(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(8) ").text(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(7) ").text(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(9) ").text(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
             //LEJ 25.07.18------------------I
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(8)").text();
+            var facturak = $(this).find("td:eq(9)").text();
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(9)").text();
+            var ejerciciok = $(this).find("td:eq(10)").text();
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var pay = $(this).find("td:eq(10)").text();
-            var des = $(this).find("td:eq(11)").text();
-            var bill_doc = $(this).find("td:eq(12)").text();
+            var pay = $(this).find("td:eq(11)").text();
+            var des = $(this).find("td:eq(12)").text();
+            //var bill_doc = $(this).find("td:eq(12)").text();
             //var belnr = $(this).find("td.BELNR").text();
-            var imp_fact = $(this).find("td:eq(4)").text();//lej 03.08.2018
+            importe_fac = importe_fac + parseFloat(($(this).find("td:eq(13)")).text());
+            var imp_fact = $(this).find("td:eq(13)").text();//lej 03.08.2018
             if (_xdec == '.') {
                 var ifc = parseFloat(imp_fact).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 imp_fact = "$" + ifc;
@@ -2269,7 +2288,7 @@ function copiarTableVistaSop() {
                 ifc = ifc.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 imp_fact = "$" + ifc;
             }
-            var desc = $(this).find("td:eq(13)").text();//lej 03.08.2018
+            //var desc = $(this).find("td:eq(13)").text();//lej 03.08.2018
             var belnr = $(this).find("td:eq(14)").text();
             //LEJ 03.08.18---------------------T
             ////var proverror = "";//B20180625 MGC 2018.06.27
@@ -2278,7 +2297,7 @@ function copiarTableVistaSop() {
                 //LEJ 03.08.2018
 
                 factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura.trim() + "\">";
-                //bukrs = "<input class=\"SOCIEDAD input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bukrs + "\">";
+                bukrs = "<input class=\"SOCIEDAD input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bukrs + "\">";
                 ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0].trim() + "\">";
                 prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov.trim() + "\">";
                 control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control.trim() + "\">";
@@ -2314,7 +2333,7 @@ function copiarTableVistaSop() {
 
             var t = $('#table_sop').DataTable();
             //addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
-            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr, "");//lej 25.07.18
+            addRowSopl(t, pos, factura, bukrs, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr, "");//lej 25.07.18
 
             //Quitar el row
             $(this).remove();
@@ -2480,7 +2499,7 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
         var tsol_id = $('#tsol_id').val();
         var clase_doc = $('#check_factura').is(':checked');
         var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X", clase_doc);
-
+        importe_fac = 0;
         $("#table_sop > tbody  > tr[role='row']").each(function () {
 
             //Tabla desde excel
@@ -2519,6 +2538,10 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
                                     } else {
                                         var valtd = $(this).find(rowcl).text();
                                     }
+                                    //jemo inicio 24-07-2018
+                                    if (i === 'IMPORTE_FAC') {
+                                        importe_fac = importe_fac + parseFloat(toNum(valtd)).toFixed(2);
+                                    }//jemo inicio 24-07-2018
                                     item[i] = valtd;
                                 }
 
@@ -3793,7 +3816,7 @@ function loadExcelSop(file) {
     var formData = new FormData();
 
     formData.append("FileUpload", file);
-    importe_fac = 0;
+    importe_fac = 0;//jemo 25-17-2018
     var table = $('#table_sop').DataTable();
     table.clear().draw();
     $.ajax({
@@ -3822,9 +3845,11 @@ function loadExcelSop(file) {
                     //lej 03.08.2018
                     var addedRow = table.row.add([
                         dataj.POS,
+                        dataj.SOCIEDAD,
                         dataj.FACTURA,
                         //jemo 10-17-2018 inicio
                         "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.BILL_DOC,
                         "",//dataj.PROVEEDOR,
                         "",//dataj.PROVEEDOR_TXT,
                         "",//dataj.CONTROL,
@@ -3836,9 +3861,8 @@ function loadExcelSop(file) {
                         //jemo 10-17-2018 inicio
                         dataj.PAYER,
                         dataj.DESCRIPCION,
-                        dataj.BILL_DOC,
                         _imp_fac,//lej 03.08.2018
-                        ""//dataj.BELNR
+                        dataj.BELNR
                         //jemo 10-17-2018 fin
                     ]).draw(false).node();
 
@@ -3939,6 +3963,7 @@ function addRowSop(t) {
         "1", //POS
         "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FECHA input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PROVEEDOR input_sop_f input_proveedor prv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "",
         "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -3948,21 +3973,22 @@ function addRowSop(t) {
         "<input class=\"EJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",//LEJ 25.07.18
         "X"
     );
 }
 
-function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr, _x) {
+function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr, _x) {
     //var t = $('#table_sop').DataTable();
     //LEJ 25.07.18
     if (_x == "X") {
         t.row.add([
             pos, //POS
+            bukrs,
             fac,
             fecha,
+            bill,
             prov,
             provt,
             control,
@@ -3972,7 +3998,6 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
             eje,
             pay,
             des,
-            bill,
             impf,
             belnr
         ]).draw(false).node(); //B20180625 MGC 2018.06.27
@@ -3981,9 +4006,11 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
     else if (_x == "") {
         t.row.add([
             pos, //POS
+            bukrs,
             fac,
             // "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURA" + "\" name=\"\" value=\"" + fac.trim() + "\">",
             fecha,
+            bill,
             prov,
             //"<input class=\"PROVEEDOR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PROVEEDOR" + "\" name=\"\" value=\"" + prov.trim() + "\">",
             provt,
@@ -4001,7 +4028,6 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
             //"<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PAYER" + "\" name=\"\" value=\"" + pay.trim() + "\">",
             des,
             //"<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "DESCRIPCION" + "\" name=\"\" value=\"" + des.trim() + "\">",
-            bill,
             //"<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BILL_DOC" + "\" name=\"\" value=\"" + bill.trim() + "\">",
             impf,
             //"<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "IMPORTE_FAC" + "\" name=\"\" value=\"" + impf.trim() + "\">",

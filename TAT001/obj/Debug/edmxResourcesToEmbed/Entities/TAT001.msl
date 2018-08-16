@@ -1202,6 +1202,7 @@
     <EntitySetMapping Name="PERIODO445">
       <EntityTypeMapping TypeName="TAT001Model1.PERIODO445">
         <MappingFragment StoreEntitySet="PERIODO445">
+          <ScalarProperty Name="SUMA" ColumnName="SUMA" />
           <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
           <ScalarProperty Name="MES_NATURAL" ColumnName="MES_NATURAL" />
           <ScalarProperty Name="DIA_NATURAL" ColumnName="DIA_NATURAL" />
@@ -1659,6 +1660,7 @@
     <EntitySetMapping Name="TSOLs">
       <EntityTypeMapping TypeName="TAT001Model1.TSOL">
         <MappingFragment StoreEntitySet="TSOL">
+          <ScalarProperty Name="REVERSO" ColumnName="REVERSO" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="TSOLR" ColumnName="TSOLR" />

@@ -1230,6 +1230,7 @@
     <Property Name="DIA_NATURAL" Type="int" Nullable="false" />
     <Property Name="PERIODO" Type="int" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+    <Property Name="SUMA" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODOT">
     <Key>
@@ -1692,6 +1693,7 @@
     <Property Name="TRECU" Type="nchar" MaxLength="1" />
     <Property Name="NEGO" Type="bit" Nullable="false" />
     <Property Name="CARTA" Type="bit" Nullable="false" />
+    <Property Name="REVERSO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>

@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
+<script src="~/Scripts/formatos.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
@@ -70,6 +71,7 @@
         }
     }
     <style>
+
 
 
 
@@ -793,51 +795,51 @@
                                             {
                                                 <tr>
                                                     <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].SOCIEDAD)@*//B20180625 JEMO 2018.08.03*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
-                                            </td>
-                                            <td>
-                                                @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
-                                            </td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].SOCIEDAD)@*//B20180625 JEMO 2018.08.03*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].CONTROL)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].AUTORIZACION)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].VENCIMIENTO)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURAK)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].EJERCICIOK)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].PAYER)@*//B20180625 JEMO 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BELNR)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
                                                 </tr>
                                             }
                                         }
@@ -1130,8 +1132,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                              ;
+                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;

@@ -13,7 +13,8 @@ namespace TAT001.Services
             TAT001Entities db = new TAT001Entities();
             int periodo = 0;
             List<PERIODO445> pp = db.PERIODO445.Where(a => a.EJERCICIO == fecha.Year).ToList();
-            PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month).FirstOrDefault();
+            //PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month).FirstOrDefault();
+            PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month && a.DIA_NATURAL >= fecha.Day).OrderBy(a => a.DIA_NATURAL).LastOrDefault();
             if (fecha.Day > p.DIA_NATURAL)
             {
                 periodo = p.PERIODO + 1;
@@ -25,10 +26,34 @@ namespace TAT001.Services
 
             return periodo;
         }
+
+        public int getEjercicio(DateTime fecha)
+        {
+            TAT001Entities db = new TAT001Entities();
+            int periodo = 0;
+            List<PERIODO445> pp = db.PERIODO445.Where(a => a.EJERCICIO == fecha.Year).ToList();
+            PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month && a.DIA_NATURAL >= fecha.Day).OrderBy(a => a.DIA_NATURAL).LastOrDefault();
+            //if (fecha.Day > p.DIA_NATURAL)
+            //{
+            //    periodo = p.PERIODO + 1;
+            //}
+            //else
+            //{
+            //    periodo = p.PERIODO;
+            //}
+
+            return p.EJERCICIO + p.SUMA;
+        }
+
         public DateTime getPrimerDia(int ejercicio, int periodo)
         {
             TAT001Entities db = new TAT001Entities();
             DateTime dia = new DateTime();
+            if (periodo == 1)
+            {
+                ejercicio--;
+                periodo = 13;
+            }
             List<PERIODO445> pp = db.PERIODO445.Where(a => a.EJERCICIO == ejercicio).ToList();
             PERIODO445 p = pp.Where(a => a.MES_NATURAL == periodo - 1).FirstOrDefault();
             if (p == null)

@@ -30,13 +30,19 @@ function toNum(string) {
         if (string !== "" && string != undefined) {
             var _miles = $("#miles").val();
             var _decimales = $("#dec").val();
+            var _i = 1;
             string = string.replace('$', '');
             string = string.replace('%', '');
+            if (string.indexOf("(") >= 0)
+                _i = -1;
+            string = string.replace('(', '');
+            string = string.replace(')', '');
             //string = string.replace(_miles, '');
             if (_miles === '.')
                 _miles = '\.';
             string = string.replace(new RegExp(_miles, 'g'), '');
             string = string.replace(_decimales, '.');
+            string = string * _i;
         } else {
             string = "0.00";
         }
@@ -49,6 +55,7 @@ function toShow(string) {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
+    var _i = 1; if (xx < 0) _i = -1;
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -66,8 +73,9 @@ function toShow(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        $(this).val("$0" + _decimales + "00");
     }
+    if (_i < 0) string = string.replace('$', '$(') + ')';
     return string;
 }
 
@@ -76,6 +84,7 @@ function toShowPorc(string) {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
+    var _i = 1; if (xx < 0) _i = -1;
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -93,8 +102,9 @@ function toShowPorc(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        $(this).val("0" + _decimales + "00%");
     }
+    if (_i < 0) string = '('+ string + ')';
     return string;
 }
 
@@ -103,6 +113,7 @@ function toShowPorc5(string) {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(5);
+    var _i = 1; if (xx < 0) _i = -1;
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -120,8 +131,9 @@ function toShowPorc5(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        $(this).val("0" + _decimales + "00%");
     }
+    if (_i < 0) string = '(' + string + ')';
     return string;
 }
 
@@ -130,6 +142,7 @@ function toShowNum(string) {
     var _miles = $("#miles").val();
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
+    var _i = 1; if (xx < 0) _i = -1;
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -147,7 +160,8 @@ function toShowNum(string) {
         }
     }
     else {
-        $(this).val("$ 0" + _decimales + "00");
+        $(this).val("0" + _decimales + "00");
     }
+    if (_i < 0) string = '(' + string + ')';
     return string;
 }

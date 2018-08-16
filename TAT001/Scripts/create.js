@@ -1237,7 +1237,7 @@ $(document).ready(function () {
             $('#tipo_cambio').val(tipo_cambio);
             ////var tipo_cambio = $('#tipo_cambio').val();
             //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum = parseFloat(tipo_cambio);
 
             if (iNum > 0) {
                 //var num = "" + iNum;

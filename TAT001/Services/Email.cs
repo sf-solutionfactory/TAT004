@@ -37,7 +37,7 @@ namespace TAT001.Services
                     string mtest = ConfigurationManager.AppSettings["mailtest"]; //B20180803 MGC Correos
                     string mailTo = "";
                     if (mtest == "X")
-                        mailTo = mailt; //B20180803 MGC Correos
+                        mailTo = "rogelio.sanchez@sf-solutionfactory.com"; //B20180803 MGC Correos
                     else
                         mailTo = workflow.USUARIO.EMAIL;
                     CONMAIL conmail = db.CONMAILs.Find(mailt);

@@ -36,6 +36,7 @@ namespace TAT001.Entities
         public string TRECU { get; set; }
         public bool NEGO { get; set; }
         public bool CARTA { get; set; }
+        public bool REVERSO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONSOPORTE> CONSOPORTEs { get; set; }

@@ -1246,9 +1246,11 @@ namespace TAT001.Controllers
 
 
             }//RSG 13.06.2018
-
-            d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
-            d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
+            Calendario445 cal = new Calendario445();
+            //d.PERIODO = Convert.ToInt32(DateTime.Now.ToString("MM"));
+            //d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
+            d.PERIODO = cal.getPeriodo(DateTime.Now);
+            d.EJERCICIO = cal.getEjercicio(DateTime.Now) + "";
 
             d.FECHAD = theTime;
             ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
@@ -1399,7 +1401,7 @@ namespace TAT001.Controllers
             //RSG 13.06.2018--------------------------------------------------------
             //}//RSG 13.06.2018--------------------------------------------------------
             //RECUPERO EL PAIS para hacer una busqueda de su formato monetario
-            
+
 
             //B20180801 MGC Textos....................................................................................................
             string txt_volumenr = "";//B20180801 MGC Textos
@@ -2489,7 +2491,7 @@ namespace TAT001.Controllers
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
                             string c = pf.procesa(f, "");
-                            while(c == "1")
+                            while (c == "1")
                             {
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
@@ -2519,7 +2521,7 @@ namespace TAT001.Controllers
                                     c = "";
                                 }
                             }
-                           
+
                         }
                     }
                     catch (Exception ee)
@@ -4136,6 +4138,7 @@ namespace TAT001.Controllers
             {
                 var _x = dOCUMENTO.DOCUMENTOF[i].PAYER;
                 dOCUMENTO.DOCUMENTOF[i].DESCRIPCION = db.CLIENTEs.Where(c => c.KUNNR == _x).Select(o => o.NAME1).FirstOrDefault();
+                dOCUMENTO.DOCUMENTOF[i].SOCIEDAD = dOCUMENTO.SOCIEDAD_ID;
             }
             //LEJ 03.08.2018----t
             DocumentoFlujo DF = new DocumentoFlujo();

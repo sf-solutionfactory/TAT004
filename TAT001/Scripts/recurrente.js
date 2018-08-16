@@ -495,7 +495,7 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
         url: '../Listas/getUltimoDia',
         //url: '../Listas/getPrimerLunes',
         dataType: "json",
-        data: { ejercicio: ejercicio, periodo: (periodo - 1  + num) },
+        data: { ejercicio: ejercicio, periodo: (periodo - 1 + num) },
         //data: { ejercicio: ejercicio, periodo: (periodo - 1 + 1 + num) },
         success: function (data) {
             document.getElementById("loader").style.display = "none";
@@ -532,8 +532,8 @@ function setDates(tipo) {
             success: function (data) {
                 document.getElementById("loader").style.display = "none";
                 var dd = data.split('/');
-                var dates = new Date(dd[2], dd[1], dd[0]);
-                datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+                var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+                datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
                 document.getElementById('fechai_vig').value = datee;
             },
@@ -551,8 +551,8 @@ function setDates(tipo) {
             success: function (data) {
                 document.getElementById("loader").style.display = "none";
                 var dd = data.split('/');
-                var dates = new Date(dd[2], dd[1], dd[0]);
-                datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+                var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+                datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
                 document.getElementById('fechaf_vig').value = datee;
             },
@@ -614,132 +614,6 @@ function changeFile(campo) {
             M.toast({ html: 'Ya existe un archivo con ese mismo nombre' });
         }
     }
-}
-
-function toNum(string) {
-    if (!$.isNumeric(string)) {
-        if (string !== "" && string != undefined) {
-            var _miles = $("#miles").val();
-            var _decimales = $("#dec").val();
-            string = string.replace('$', '');
-            string = string.replace('%', '');
-            //string = string.replace(_miles, '');
-            if (_miles === '.')
-                _miles = '\\.';
-            string = string.replace(new RegExp(_miles, 'g'), '');
-            string = string.replace(_decimales, '.');
-        } else {
-            string = "0.00";
-        }
-    }
-    return string;
-}
-function toShow(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = ("$" + _xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowPorc(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowPorc5(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(5);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(5).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(5);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowNum(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
 }
 
 function ligada() {

@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/edit.js"></script>
+<script src="~/Scripts/formatos.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
@@ -78,6 +79,7 @@
         </div>
     }
     <style>
+
         .div_left {
             float: left;
         }
@@ -715,8 +717,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>Pos</th>
+                                                    <th>Sociedad</th>
                                                     <th>Factura</th>
                                                     <th>Fecha Factura</th>
+                                                    <th>Bill Doc</th>
                                                     <th>Proveedor</th>
                                                     <th>Proveedor Desc</th>
                                                     <th>Control</th>
@@ -726,7 +730,6 @@
                                                     <th>Ejercicio k</th>
                                                     <th>Payer</th>@*@18-07-2018 jemo *@
                                                     <th>Descripcion</th>@*@18-07-2018 jemo *@
-                                                    <th>Bill Doc</th>
                                                     <th>Importe Factura</th>@*@18-07-2018 jemo *@
                                                     <th>Belnr</th>
                                                 </tr>
@@ -743,15 +746,20 @@
                                                             @_df.D.DOCUMENTOF[i].POS
                                                         </td>
                                                         <td>
+                                                            @_df.D.DOCUMENTOF[i].SOCIEDAD
+                                                        </td>
+                                                        <td>
                                                             @_df.D.DOCUMENTOF[i].FACTURA
                                                         </td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].FECHA
                                                         </td>
                                                         <td>
+                                                            @_df.D.DOCUMENTOF[i].BILL_DOC
+                                                        </td>
+                                                        <td>
                                                             @_df.D.DOCUMENTOF[i].PROVEEDOR
                                                         </td>
-                                                        <td> @_df.D.DOCUMENTOF[i].IMPORTE_FAC</td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].CONTROL
                                                         </td>
@@ -774,10 +782,7 @@
                                                             @_df.D.DOCUMENTOF[i].DESCRIPCION@*//B20180625 JEMO 2018.06.27*@
                                                         </td>
                                                         <td>
-                                                            @_df.D.DOCUMENTOF[i].BILL_DOC@*
-                                                                </td>
-                                                                <td>
-                                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                                            @_df.D.DOCUMENTOF[i].IMPORTE_FAC
                                                         </td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].BELNR
