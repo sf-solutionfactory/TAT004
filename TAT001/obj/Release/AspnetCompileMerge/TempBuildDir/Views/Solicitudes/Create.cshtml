@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/create.js"></script>
+<script src="~/Scripts/formatos.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
@@ -70,6 +71,7 @@
         }
     }
     <style>
+
 
 
 
@@ -181,10 +183,17 @@
 <div class="row">
     <div class="col s12">
         <ul class="tabs" id="tabs">
-            <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="active">Información</a></li>
+            <li class="tab col s2 tabs_menu"><a id="tab_info" href="#Informacion_cont" class="">Información</a></li>
             @*
                 <li class="tab col s2 tabs_menu"><a id="tab_temp" href="#Temporalidad_cont" disabled>Temporalidad</a></li>*@@*RSG 09.07.2018*@
-                <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
+                @if (ViewBag.reversan == "X")
+                {
+                    <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables class="active">Soporte</a></li>
+                }
+                else
+                {
+                    <li class="tab col s2 tabs_menu"><a id="tab_soporte" href="#Soporte_cont" disables>Soporte</a></li>
+                }
                 <li class="tab col s3 tabs_menu"><a id="tab_dis" href="#Distribucion_cont">Distribución</a></li>
                 <li id="tabs_rec" class="tab col s3 tabs_menu disabled"><a id="tab_rec" href="#Recurrente_cont">Recurrencia</a></li><!--RSG 09.07.2018-->
                 <li class="tab col s2 tabs_menu"><a id="tab_fin" href="#Financiera_cont"><!--RSG 23.05.2018-->Financiera</a></li>
@@ -603,7 +612,7 @@
                                             }
                                             setDates(tipo);
                                             var elem = document.querySelectorAll('select');
-                                            var instance = M.Select.init(elem, []);
+                                            var instance = M.FormSelect.init(elem, []);
                                             pickerFecha2(".format_date");
                                         }
                                     </script>
@@ -757,21 +766,21 @@
                                     <thead>
                                         <tr>
                                             <th id="thead_pos">Pos</th> @*B20180801 MGC Textos*@
-                                            <th id="thead_fact">Factura</th> @*B20180801 MGC Textos*@
-                                            <th>Sociedad</th>@*@03-08-2018 jemo *@
+                                            <th id="thead_sociedad">Sociedad</th>@*@03-08-2018 jemo *@
+                                            <th id="thead_fact">No. Factura Fiscal</th> @*B20180801 MGC Textos*@
                                             <th id="thead_fecha">Fecha Factura</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_bill">Billing</th> @*B20180801 MGC Textos*@
                                             <th id="thead_prov">Proveedor</th> @*B20180801 MGC Textos*@
                                             <th id="thead_provdesc">Proveedor Desc</th> @*B20180801 MGC Textos*@
                                             <th id="thead_control">Control</th> @*B20180801 MGC Textos*@
                                             <th id="thead_aut">Autorización</th> @*B20180801 MGC Textos*@
                                             <th id="thead_ven">Vencimiento</th> @*B20180801 MGC Textos*@
                                             <th id="thead_factk">Factura k</th> @*B20180801 MGC Textos*@
-                                            <th id="thead_ejercicio">Ejercicio k</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_ejercicio">Año</th> @*B20180801 MGC Textos*@
                                             <th id="thead_payer">Payer</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
-                                            <th id="thead_desc">Descripcion</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
-                                            <th id="thead_bill">Bill doc</th> @*B20180801 MGC Textos*@
-                                            <th id="thead_importe">Importe Factura</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
-                                            <th id="thead_belnr">Belnr</th> @*B20180801 MGC Textos*@
+                                            <th id="thead_desc">Customer</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
+                                            <th id="thead_importe">Importe por Factura</th> @*B20180801 MGC Textos*@@*@18-07-2018 jemo *@
+                                            <th id="thead_belnr">Folio</th> @*B20180801 MGC Textos*@
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
@@ -789,13 +798,16 @@
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].POS)@*//B20180625 MGC 2018.06.27*@
                                                     </td>
                                                     <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
-                                                    </td>
-                                                    <td>
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].SOCIEDAD)@*//B20180625 JEMO 2018.08.03*@
                                                     </td>
                                                     <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].FACTURA)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].FECHA)@*//B20180625 MGC 2018.06.27*@
+                                                    </td>
+                                                    <td>
+                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].PROVEEDOR)@*//B20180625 MGC 2018.06.27*@
@@ -821,9 +833,6 @@
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].DESCRIPCION)@*//B20180625 JEMO 2018.06.27*@
-                                                    </td>
-                                                    <td>
-                                                        @Html.EditorFor(m => m.DOCUMENTOF[i].BILL_DOC)@*//B20180625 MGC 2018.06.27*@
                                                     </td>
                                                     <td>
                                                         @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
@@ -883,7 +892,7 @@
                                                  }
                                                  setDates(tipo);
                                                  var elem = document.querySelectorAll('select');
-                                                 var instance = M.Select.init(elem, []);
+                                                 var instance = M.FormSelect.init(elem, []);
                                                  pickerFecha2(".format_date");
                                              }
                                          </script>
@@ -1123,8 +1132,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                        archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                            ;
+                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1483,9 +1492,9 @@
                                                 }
 
                                                 var elem = document.getElementById('select_neg');
-                                                var instance = M.Select.init(elem, []);
+                                                var instance = M.FormSelect.init(elem, []);
                                                 elem = document.getElementById('select_dis');
-                                                instance = M.Select.init(elem, []);
+                                                instance = M.FormSelect.init(elem, []);
                                             }
                                         </script>
                                     </div>
@@ -1529,9 +1538,9 @@
                             $("#select_dis").prop("disabled", "disabled");
 
                             var elem = document.getElementById('select_neg');
-                            var instance = M.Select.init(elem, []);
+                            var instance = M.FormSelect.init(elem, []);
                             elem = document.getElementById('select_dis');
-                            instance = M.Select.init(elem, []);
+                            instance = M.FormSelect.init(elem, []);
                         </script>
                     }
                     <div id="div_montobase" class="col s12 m6 l6" style="display:none">
@@ -1622,8 +1631,8 @@
                                 {
                                     <input type="text" id="txt_addrowt" name="txt_addrowt" value="@ViewBag.addrowt" disabled="disabled" hidden /> @*//Add MGC B20180705 2018.07.05*@
                                     <div id="div_btns_row" style="display:none">
-                                        <a class="btn" id="addRow"><i class="material-icons left">add</i>Registro</a>
-                                        <a class="btn" id="delRow"><i class="material-icons left">clear</i>Registro</a>
+                                        <a class="btn"><i class="material-icons left">add</i><span id="addRow">Registros</span></a>  @*B20180801 MGC Textos*@
+                                        <a class="btn"><i class="material-icons left">clear</i><span id="delRow">Registro</span></a>  @*B20180801 MGC Textos*@
                                     </div>
                                 } @*//Add MGC B20180705 2018.07.05 Agregar rows a la tabla*@
                                 <div id="div_picker"></div>
@@ -1720,7 +1729,7 @@
                                             </td>
                                             <td>
                                                 @*@Html.EditorFor(m => m.DOCUMENTOP[i].PORC_APOYO)*@
-                                                <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6");" />
+                                                <input type="text" name="DOCUMENTOP[@i].PORC_APOYO" value="@Model.DOCUMENTOP[i].PORC_APOYO.ToString("N6")" />
                                             </td>
                                             <td>
                                                 @Html.EditorFor(m => m.DOCUMENTOP[i].MONTO_APOYO)

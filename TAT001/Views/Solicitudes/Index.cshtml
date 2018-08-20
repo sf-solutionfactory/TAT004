@@ -316,7 +316,7 @@
 <script>
     var elem = document.querySelector('select');
     var options = [];
-    var instance = M.Select.init(elem, options);
+    var instance = M.FormSelect.init(elem, options);
 </script>
 <script src="//code.jquery.com/jquery-1.12.4.js"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -503,7 +503,7 @@
                         var val = $('<div/>').html(d).text();
                         select.append('<option value="' + val + '">' + val + '</option>');
                     });
-                    //var scr = div.append('<script>var elem = document.querySelectorAll("select");var instance = M.Select.init(elem, []);');
+                    //var scr = div.append('<script>var elem = document.querySelectorAll("select");var instance = M.FormSelect.init(elem, []);');
                 });
             }
         });

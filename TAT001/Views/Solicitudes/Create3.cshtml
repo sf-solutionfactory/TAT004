@@ -608,7 +608,7 @@
                                             }
                                             setDates(tipo);
                                             var elem = document.querySelectorAll('select');
-                                            var instance = M.Select.init(elem, []);
+                                            var instance = M.FormSelect.init(elem, []);
                                             pickerFecha2(".format_date");
                                         }
                                     </script>
@@ -884,7 +884,7 @@
                                                  }
                                                  setDates(tipo);
                                                  var elem = document.querySelectorAll('select');
-                                                 var instance = M.Select.init(elem, []);
+                                                 var instance = M.FormSelect.init(elem, []);
                                                  pickerFecha2(".format_date");
                                              }
                                          </script>
@@ -1478,9 +1478,9 @@
                                             }
 
                                             var elem = document.getElementById('select_neg');
-                                            var instance = M.Select.init(elem, []);
+                                            var instance = M.FormSelect.init(elem, []);
                                             elem = document.getElementById('select_dis');
-                                            instance = M.Select.init(elem, []);
+                                            instance = M.FormSelect.init(elem, []);
                                         }
                                     </script>
                                 </div>
@@ -1524,9 +1524,9 @@
                         $("#select_dis").prop("disabled", "disabled");
 
                         var elem = document.getElementById('select_neg');
-                        var instance = M.Select.init(elem, []);
+                        var instance = M.FormSelect.init(elem, []);
                         elem = document.getElementById('select_dis');
-                        instance = M.Select.init(elem, []);
+                        instance = M.FormSelect.init(elem, []);
                     </script>
                 }
                 <div id="div_montobase" class="col s12 m6 l6" style="display:none">

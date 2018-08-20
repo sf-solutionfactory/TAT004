@@ -229,7 +229,7 @@ function jsConsulta(idioma) {
             filterGlobal();
         });
         $('select').select();
-        M.Select.init($('select'), []);
+        M.FormSelect.init($('select'), []);
 
         //$('#chkfiltro').on('click', function () {
         //    if ($(this).is(':checked')) {
@@ -246,7 +246,7 @@ function jsConsulta(idioma) {
         //        selectNone();
         //    }
         //    var elem = document.getElementsByName("periodocpt")
-        //    //instance = M.Select.init(elem, []);
+        //    //instance = M.FormSelect.init(elem, []);
         //    //$('select').select();
         //});
         //function selectNone() {

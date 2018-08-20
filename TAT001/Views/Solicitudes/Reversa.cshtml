@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 201;
     ViewBag.carpeta_r = 200;
+    ViewBag.enter = true;
 }
 
 <div id="modal1" class="modal">
@@ -17,7 +18,7 @@
     <div class="modal-footer">
         <a class="btn-flat" id="btn_si">NO</a>
         @*<a href="@Url.Action("Index")" class="btn-flat">SI</a>*@
-        <a href="@Url.Action("Reversar",new { id = Model.NUM_DOC, tsol="CPR"})" class="btn-flat">SI</a>
+        <a href="@Url.Action("Reversar",new { id = Model.NUM_DOC, tsol=Model.TSOL.TSOLR})" class="btn-flat">SI</a>
     </div>
 </div>
 @*@using (Html.BeginForm("Carga", "Presupuesto", FormMethod.Post, new { enctype = "multipart/form-data", id = "formulario" }))*@
@@ -25,7 +26,9 @@
 <div id="modal2" class="modal" hidden>
     <div class="modal-content">
         <h4>Comentario</h4>
-        <textarea id="txt_comentario"></textarea>
+        <div class="input-field col s12">
+            <textarea class="materialize-textarea" id="txt_comentario"></textarea>
+        </div>
         <a id="btn_guardar" href="@Url.Action("Index")" @*href="@Url.Action("Reversar",new { id = Model.NUM_DOC, tsol="CPR"})"*@ class="btn-flat">Guardar</a>
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
     </div>

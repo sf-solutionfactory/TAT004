@@ -11,8 +11,8 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
         source: function (request, response) {
             auto.ajax({
                 type: "POST",
-                url: 'materiales',//Anterior
-                //url: '../Listas/materiales',
+                //url: 'materiales',//Anterior
+                url: '../Listas/materiales',
                 dataType: "json",
                 data: { "Prefix": request.term, vkorg: vk, vtweg: vt, spras: sp },
                 success: function (data) {

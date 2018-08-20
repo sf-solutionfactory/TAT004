@@ -63,10 +63,6 @@ $(document).ready(function () {
                 "name": 'POS',
                 "className": 'POS',
             },
-            {
-                "name": 'FACTURA',
-                "className": 'FACTURA'
-            },
             //jemo 10-07-2018 inicio
             {
                 "name": 'SOCIEDAD',
@@ -74,9 +70,19 @@ $(document).ready(function () {
             },
             //jemo 10-07-2018 fin
             {
+                "name": 'FACTURA',
+                "className": 'FACTURA'
+            },
+            {
                 "name": 'FECHA',
                 "className": 'FECHA'
             },
+            //jemo 10-07-2018 fin
+            {
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
+            },
+            //jemo 10-07-2018 inicio
             {
                 "name": 'PROVEEDOR',
                 "className": 'PROVEEDOR'
@@ -115,12 +121,6 @@ $(document).ready(function () {
                 "name": 'DESCRIPCION',
                 "className": 'DESCRIPCION'
             },
-            //jemo 10-07-2018 fin
-            {
-                "name": 'BILL_DOC',
-                "className": 'BILL_DOC'
-            },
-            //jemo 10-07-2018 inicio
             {
                 "name": 'IMPORTE_FAC',
                 "className": 'IMPORTE_FAC'
@@ -416,7 +416,8 @@ $(document).ready(function () {
                             M.toast({ html: 'Seleccione una categoría' });
                         }
                     } else {
-                        M.toast({ html: 'La categoría ya había sido agregada' });
+                        //M.toast({ html: 'La categoría ya había sido agregada' });
+                        M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
                     }
 
                 } else if (dis == "M") {
@@ -493,7 +494,9 @@ $(document).ready(function () {
 
                             }
                         } else {
-                            M.toast({ html: 'La categoría ya había sido agregada' });
+                            //M.toast({ html: 'La categoría ya había sido agregada' });
+                            M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
+                            
                         }
                     } else {
                         M.toast({ html: 'El monto base debe de ser mayor a cero' });
@@ -615,7 +618,7 @@ $(document).ready(function () {
     $('#tabs').tabs();
 
     var elem = document.querySelectorAll('select');
-    var instance = M.Select.init(elem, []);
+    var instance = M.FormSelect.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
         //$('#gall_id').change();
@@ -1237,7 +1240,7 @@ $(document).ready(function () {
             $('#tipo_cambio').val(tipo_cambio);
             ////var tipo_cambio = $('#tipo_cambio').val();
             //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum = parseFloat(tipo_cambio);
 
             if (iNum > 0) {
                 //var num = "" + iNum;
@@ -1534,7 +1537,7 @@ $(window).on('load', function () {
         $('#select_neg').val(sneg).change();
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         //$('#select_neg').formSelect();
     }
     if (sdis != "") {
@@ -1543,7 +1546,7 @@ $(window).on('load', function () {
         $('#select_dis').val(sdis).change();
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         //$('#select_dis').formSelect();
     }
 
@@ -1645,7 +1648,7 @@ $(window).on('load', function () {
         $('#monedadis_id').val(moneda_dis).change();
         var elemdpsn = document.querySelector('#monedadis_id');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
     }
 
     //B20180625 MGC 2018.06.28
@@ -1653,7 +1656,7 @@ $(window).on('load', function () {
         $('#moneda_id').change();
         var elemdpsn = document.querySelector('#moneda_id');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
     }
 
 
@@ -1680,15 +1683,15 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
 
     //MGC B20180611
@@ -1696,15 +1699,15 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
     var mt = parseFloat(toNum(tipocambio)) //B20180625 MGC 2018.07.02
     if (mt > 0) { //B20180625 MGC 2018.07.02
@@ -2074,6 +2077,10 @@ function copiarTableVista(update, borr, ne) { //Add MGC B20180705 2018.07.05 Cam
                 //if (vrelacionada != "") {
                 relacionada = "prelacionada";
                 //}
+                //ADD RSG 20.08.2018--------------------START
+                vol = toShowNum("0");
+                total = toShow("0");
+                //ADD RSG 20.08.2018--------------------END
             }
 
             var reversa = "";
@@ -2254,34 +2261,34 @@ function copiarTableVistaSop() {
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(0) input").val(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27
+            var factura = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27
             //var fecha = $(this).find("td.FECHA").text();
-            var bukrs = $(this).find("td:eq(2) input").val(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
+            var bukrs = $(this).find("td:eq(1) input").val(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
 
             var fecha = $(this).find("td:eq(3) input").val(); //B20180625 MGC 2018.06.27
+            var bill_doc = $(this).find("td:eq(4) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
 
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(4) input").val(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(5) input").val(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(6) input").val(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(7) input").val(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(8) input").val(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
 
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(9) input").val(); //B20180625 MGC 2018.06.27
+            var facturak = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(10) input").val(); //B20180625 MGC 2018.06.27
+            var ejerciciok = $(this).find("td:eq(11) input").val(); //B20180625 MGC 2018.06.27
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var pay = $(this).find("td:eq(11) input").val(); //jemo 18-07-2018
-            var des = $(this).find("td:eq(12) input").val(); //jemo 18-07-2018
-            var bill_doc = $(this).find("td:eq(13) input").val(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
+            var pay = $(this).find("td:eq(12) input").val(); //jemo 18-07-2018
+            var des = $(this).find("td:eq(13) input").val(); //jemo 18-07-2018
             //var belnr = $(this).find("td.BELNR").text();
             importe_fac = importe_fac + parseFloat(($(this).find("td:eq(14) input")).val());
             var imp_fact =  //jemo 18-07-2018
@@ -3912,10 +3919,11 @@ function loadExcelSop(file) {
                     //var ven = new Date(parseInt(dataj.VENCIMIENTO.substr(6)));
                     var addedRow = table.row.add([
                         dataj.POS,
-                        dataj.FACTURA,
                         dataj.SOCIEDAD,
+                        dataj.FACTURA,
                         //jemo 25-17-2018 inicio
                         "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.BILL_DOC,
                         "",//dataj.PROVEEDOR,
                         "",//dataj.PROVEEDOR_TXT,
                         "",//dataj.CONTROL,
@@ -3927,10 +3935,9 @@ function loadExcelSop(file) {
                         //jemo 25-17-2018 inicio
                         dataj.PAYER,
                         dataj.DESCRIPCION,
-                        dataj.BILL_DOC,
                         "$" + dataj.IMPORTE_FACT.toString().replace(/\D/g, "")//jemo 31-17-2018 inicio
                             .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ","),//jemo 31-17-2018 fin
-                        ""//dataj.BELNR
+                        dataj.BELNR
                         //jemo 25-17-2018 fin
                     ]).draw(false).node();
 
@@ -4052,9 +4059,10 @@ function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, f
 
     t.row.add([
         pos, //POS
-        fac,
         bukrs,
+        fac,
         fecha,
+        bill,
         prov,
         provt,
         control,
@@ -4064,7 +4072,6 @@ function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, f
         eje,
         pay,
         des,
-        bill,
         impf,
         belnr
     ]).draw(false).node(); //B20180625 MGC 2018.06.27
@@ -5305,7 +5312,7 @@ function selectTall(valu) {
                     });
 
                     var elem = document.getElementById('tall_id');
-                    var instance = M.Select.init(elem, []);
+                    var instance = M.FormSelect.init(elem, []);
                     $("#tall_id").val(data[0].ID);
                 }
             },

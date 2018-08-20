@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="TAT001Model1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="ACCION">
     <Key>
       <PropertyRef Name="ID" />
@@ -897,7 +897,6 @@
   <EntityType Name="DOCUMENTOR">
     <Key>
       <PropertyRef Name="NUM_DOC" />
-      <PropertyRef Name="TREVERSA_ID" />
     </Key>
     <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TREVERSA_ID" Type="int" Nullable="false" />
@@ -941,6 +940,7 @@
     <Property Name="LIFNR" Type="nchar" MaxLength="10" />
     <Property Name="KUNNR" Type="nchar" MaxLength="10" />
     <Property Name="IMPORTE" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="DESCR" Type="nvarchar" MaxLength="60" />
   </EntityType>
   <EntityType Name="DOCUMENTOTS">
     <Key>
@@ -1230,6 +1230,7 @@
     <Property Name="DIA_NATURAL" Type="int" Nullable="false" />
     <Property Name="PERIODO" Type="int" Nullable="false" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+    <Property Name="SUMA" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODOT">
     <Key>
@@ -1692,6 +1693,7 @@
     <Property Name="TRECU" Type="nchar" MaxLength="1" />
     <Property Name="NEGO" Type="bit" Nullable="false" />
     <Property Name="CARTA" Type="bit" Nullable="false" />
+    <Property Name="REVERSO" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="TSOLT">
     <Key>
@@ -2962,7 +2964,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
   </Association>
   <Association Name="FK_DOCUMENTOR_DOCUMENTO">
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
-    <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="*" />
+    <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
         <PropertyRef Name="NUM_DOC" />
@@ -4310,7 +4312,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
       </CollectionType>
     </ReturnType>
   </Function>
-  <EntityContainer Name="TAT001Model1StoreContainer">
+  <EntityContainer Name="TAT001ModelStoreContainer">
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="APPSETTING" EntityType="Self.APPSETTING" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />

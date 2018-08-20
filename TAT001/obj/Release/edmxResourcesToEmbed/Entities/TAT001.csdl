@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="TAT001Model1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <ComplexType Name="split_Result">
     <Property Name="id" Type="Int32" Nullable="false" />
     <Property Name="val" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -822,7 +822,7 @@
     <NavigationProperty Name="DOCUMENTOLs" Relationship="Self.FK_DOCUMENTOL_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOL" />
     <NavigationProperty Name="DOCUMENTONs" Relationship="Self.FK_DOCUMENTON_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTON" />
     <NavigationProperty Name="DOCUMENTOPs" Relationship="Self.FK_DOCUMENTOP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOP" />
-    <NavigationProperty Name="DOCUMENTORs" Relationship="Self.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
+    <NavigationProperty Name="DOCUMENTOR" Relationship="Self.FK_DOCUMENTOR_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOR" />
     <NavigationProperty Name="DOCUMENTORECs" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOREC" />
     <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
@@ -1010,7 +1010,6 @@
   <EntityType Name="DOCUMENTOR">
     <Key>
       <PropertyRef Name="NUM_DOC" />
-      <PropertyRef Name="TREVERSA_ID" />
     </Key>
     <Property Name="NUM_DOC" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
     <Property Name="TREVERSA_ID" Type="Int32" Nullable="false" />
@@ -1057,6 +1056,7 @@
     <Property Name="LIFNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="DESCR" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
   </EntityType>
   <EntityType Name="DOCUMENTOT">
@@ -1404,6 +1404,7 @@
     <Property Name="DIA_NATURAL" Type="Int32" Nullable="false" />
     <Property Name="PERIODO" Type="Int32" Nullable="false" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <Property Name="SUMA" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="PERIODOT">
     <Key>
@@ -1983,6 +1984,7 @@
     <Property Name="TRECU" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
     <Property Name="NEGO" Type="Boolean" Nullable="false" />
     <Property Name="CARTA" Type="Boolean" Nullable="false" />
+    <Property Name="REVERSO" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="CONSOPORTEs" Relationship="Self.FK_CONSOPORTE_TSOL" FromRole="TSOL" ToRole="CONSOPORTE" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_TSOL" FromRole="TSOL" ToRole="DOCUMENTO" />
     <NavigationProperty Name="RANGO" Relationship="Self.FK_TSOL_RANGO" FromRole="TSOL" ToRole="RANGO" />
@@ -3342,7 +3344,7 @@
   </Association>
   <Association Name="FK_DOCUMENTOR_DOCUMENTO">
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
-    <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="*" />
+    <End Role="DOCUMENTOR" Type="Self.DOCUMENTOR" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="DOCUMENTO">
         <PropertyRef Name="NUM_DOC" />
@@ -5351,20 +5353,20 @@
       <End Role="GAUTORIZACION" EntitySet="GAUTORIZACIONs" />
       <End Role="USUARIO" EntitySet="USUARIOs" />
     </AssociationSet>
-    <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model1.split_Result)">
+    <FunctionImport Name="split" IsComposable="true" ReturnType="Collection(TAT001Model.split_Result)">
       <Parameter Name="delimited" Mode="In" Type="String" />
       <Parameter Name="delimiter" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model1.CPS_LISTA_CLI_PRO_Result)" />
+    <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
     <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
-    <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model1.CSP_CAMBIO_Result)">
+    <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
       <Parameter Name="sociedad" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model1.CSP_CARPETA_Result)">
+    <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_CONSULTARPRESUPUESTO" ReturnType="Collection(TAT001Model1.CSP_CONSULTARPRESUPUESTO_Result)">
+    <FunctionImport Name="CSP_CONSULTARPRESUPUESTO" ReturnType="Collection(TAT001Model.CSP_CONSULTARPRESUPUESTO_Result)">
       <Parameter Name="SOCIEDAD" Mode="In" Type="String" />
       <Parameter Name="ANIOC" Mode="In" Type="String" />
       <Parameter Name="ANIOS" Mode="In" Type="String" />
@@ -5374,11 +5376,11 @@
       <Parameter Name="MONEDAA" Mode="In" Type="String" />
       <Parameter Name="CPT" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PERMISO" ReturnType="Collection(TAT001Model1.CSP_PERMISO_Result)">
+    <FunctionImport Name="CSP_PERMISO" ReturnType="Collection(TAT001Model.CSP_PERMISO_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PRESU_CLIENT" ReturnType="Collection(TAT001Model1.CSP_PRESU_CLIENT_Result)">
+    <FunctionImport Name="CSP_PRESU_CLIENT" ReturnType="Collection(TAT001Model.CSP_PRESU_CLIENT_Result)">
       <Parameter Name="CLIENTE" Mode="In" Type="String" />
       <Parameter Name="PERIODO" Mode="In" Type="String" />
     </FunctionImport>
@@ -5390,10 +5392,10 @@
       <Parameter Name="auto" Mode="In" Type="String" />
       <Parameter Name="caso" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model1.CSP_PRESUPUESTO_ADDP_Result)">
+    <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
       <Parameter Name="path" Mode="In" Type="String" />
     </FunctionImport>
-    <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model1.CSP_USUARIO_Result)">
+    <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="PASS" Mode="In" Type="String" />
       <Parameter Name="NOMBRE" Mode="In" Type="String" />
@@ -5420,11 +5422,11 @@
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model1.sp_helpdiagramdefinition_Result)">
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TAT001Model.sp_helpdiagramdefinition_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model1.sp_helpdiagrams_Result)">
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TAT001Model.sp_helpdiagrams_Result)">
       <Parameter Name="diagramname" Mode="In" Type="String" />
       <Parameter Name="owner_id" Mode="In" Type="Int32" />
     </FunctionImport>

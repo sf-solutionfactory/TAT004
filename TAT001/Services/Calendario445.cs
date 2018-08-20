@@ -15,6 +15,8 @@ namespace TAT001.Services
             List<PERIODO445> pp = db.PERIODO445.Where(a => a.EJERCICIO == fecha.Year).ToList();
             //PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month).FirstOrDefault();
             PERIODO445 p = pp.Where(a => a.MES_NATURAL == fecha.Month && a.DIA_NATURAL >= fecha.Day).OrderBy(a => a.DIA_NATURAL).LastOrDefault();
+            if(p==null)
+                p = pp.Where(a => a.MES_NATURAL == fecha.Month).OrderBy(a => a.DIA_NATURAL).LastOrDefault();
             if (fecha.Day > p.DIA_NATURAL)
             {
                 periodo = p.PERIODO + 1;

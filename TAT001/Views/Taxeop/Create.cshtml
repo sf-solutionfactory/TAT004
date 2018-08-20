@@ -67,7 +67,7 @@
         </div>
         <script>
             var elem = document.querySelectorAll('select');
-            var instance = M.Select.init(elem, []);
+            var instance = M.FormSelect.init(elem, []);
         </script>
         <div class="form-actions no-color">
             @Html.ActionLink("Back to List", "Index", new { kun = @ViewBag.kun, vk = @ViewBag.vk, vtw = @ViewBag.vtw, sp = @ViewBag.sp, sc = @ViewBag.sc, ld = @ViewBag.ld, con = @ViewBag.con }, new { id = "lblRegresar" })

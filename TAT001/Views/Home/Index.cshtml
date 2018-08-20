@@ -242,7 +242,7 @@
         <script>
             var elem = document.querySelectorAll('select');
             var options = [];
-            var instance = M.Select.init(elem, options);
+            var instance = M.FormSelect.init(elem, options);
         </script>
         <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -311,9 +311,9 @@
                     <th id="lblUM">
                         @Html.DisplayName("Modificado por")
                     </th>
-                    <th id="lblNC">
-                        @Html.DisplayName("Número Nota Crédito/Orden de Pago")
-                    </th>
+                    @*<th id="lblNC">
+                            @Html.DisplayName("Número Nota Crédito/Orden de Pago")
+                        </th>*@
                     <th id="lblRP">
                         @Html.DisplayName("Núm. Registro Provisión")
                     </th>
@@ -595,17 +595,51 @@
                         <td>
                             @item.USUARIOC_ID
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td></td><!--USUARIO QUE MODIFICA-->
+                        @if (item.DOCUMENTOSAP != null)
+                        {
+                            <!--NUM_SAP-->
+                            @*<td></td>*@
+                            if (item.TSOL.PADRE)
+                            {
+                                <td>@item.DOCUMENTO_SAP</td> <!--PROVISION-->
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.TSOL.REVERSO)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>@item.DOCUMENTO_SAP</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                                <td>@item.DOCUMENTO_SAP</td>
+                                <td></td>
+                            }
+                            <!--NUM_SAP-->
+                            <td>@item.DOCUMENTOSAP.BLART</td><!--BLART-->
+                            <td>@item.DOCUMENTOSAP.KUNNR</td><!--KUNNR-->
+                            <td>@item.DOCUMENTOSAP.DESCR</td><!--DESCR-->
+                            <td class="precio">@item.DOCUMENTOSAP.IMPORTE</td><!--IMPORTE-->
+                            <td>@item.DOCUMENTOSAP.CUENTA_C</td><!--CUENTA_CONTABLE-->
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
                     </tr>
                 }
             </tbody>
@@ -669,7 +703,7 @@
                         var val = $('<div/>').html(d).text();
                         select.append('<option value="' + val + '">' + val + '</option>');
                     });
-                    //var scr = div.append('<script>var elem = document.querySelectorAll("select");var instance = M.Select.init(elem, []);');
+                    //var scr = div.append('<script>var elem = document.querySelectorAll("select");var instance = M.FormSelect.init(elem, []);');
                 });
             }
         });

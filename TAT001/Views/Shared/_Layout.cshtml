@@ -13,7 +13,17 @@
     @Styles.Render("~/Content/materialize")
     @Scripts.Render("~/bundles/materialize")
 </head>
-<body onkeydown="javascript:EnterKeyFilter();" style="background-color:#f4f4f4;">
+@{ 
+    string filter = "javascript:EnterKeyFilter()";
+    if(ViewBag.enter != null)
+    {
+        if (ViewBag.enter == true)
+        {
+            filter = "";
+        }
+    }
+}
+<body onkeydown="@filter" style="background-color:#f4f4f4;">
     <div style="width:100%;height:100%;z-index:999;display:none;position:fixed;padding:0;
                 margin:0;top:0;left:0;;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
         <div style="padding-left:50%;padding-top:20%;">
@@ -42,7 +52,7 @@
                         if (ViewBag.pais != ".png" & ViewBag.pais != null & ViewBag.pais != "")
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
@@ -50,7 +60,7 @@
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="button" id="imgPais" class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>

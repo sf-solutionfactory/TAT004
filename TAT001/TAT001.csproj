@@ -916,6 +916,8 @@
     <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\layout.js" />
     <Content Include="Scripts\materialize.js" />
+    <Content Include="Scripts\materialize.min2.js" />
+    <Content Include="Scripts\materialize2.js" />
     <Content Include="Scripts\menu.js" />
     <Content Include="Scripts\formatos.js" />
     <Content Include="Scripts\recurrente.js" />

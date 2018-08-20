@@ -18,7 +18,7 @@
                     .text(cat));
             }
             var elem = document.getElementById("select_categoria");
-            var instance = M.Select.init(elem, []);
+            var instance = M.FormSelect.init(elem, []);
             document.getElementById("loader").style.display = "none";
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {

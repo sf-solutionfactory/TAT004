@@ -246,6 +246,27 @@ namespace TAT001.Controllers
             ////var paisMon = Session["pais"].ToString();//------------------------LEJGG090718
             ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
             ViewBag.dec = DF.D.PAI.DECIMAL;//LEJGG 090718
+
+
+            ///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
+            if (DF.D.TIPO_TECNICO == "M")
+            {
+                DF.D.TIPO_TECNICO = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_monto" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+            }
+            else if (DF.D.TIPO_TECNICO == "P")
+            {
+                DF.D.TIPO_TECNICO = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_porcentaje" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+            }
+
+            if (DF.D.DOCUMENTOPs.FirstOrDefault().MATNR != "")
+            {
+                ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_material" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+            }
+            else
+            {
+                ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_categoria" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+            }
+            ///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
             return View(DF);
         }
         [HttpPost]
@@ -1792,18 +1813,20 @@ namespace TAT001.Controllers
                     if (revn == "")
                     {
                         //Guardar las notas
-                        if (notas_soporte != null && notas_soporte != "")
-                        {
-                            DOCUMENTON doc_notas = new DOCUMENTON();
-                            doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            doc_notas.POS = 1;
-                            doc_notas.STEP = 1;
-                            doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
-                            doc_notas.TEXTO = notas_soporte.ToString();
+                        //DELETE RSG 20.08.2018 -------------------------START
+                        //if (notas_soporte != null && notas_soporte != "")
+                        //{
+                        //    DOCUMENTON doc_notas = new DOCUMENTON();
+                        //    doc_notas.NUM_DOC = dOCUMENTO.NUM_DOC;
+                        //    doc_notas.POS = 1;
+                        //    doc_notas.STEP = 1;
+                        //    doc_notas.USUARIO_ID = dOCUMENTO.USUARIOC_ID;
+                        //    doc_notas.TEXTO = notas_soporte.ToString();
 
-                            db.DOCUMENTONs.Add(doc_notas);
-                            db.SaveChanges();
-                        }
+                        //    db.DOCUMENTONs.Add(doc_notas);
+                        //    db.SaveChanges();
+                        //}
+                        //DELETE RSG 20.08.2018 -------------------------END
                     }
                     //B20180618 v1 MGC 2018.06.18
                     if (select_neg == "" || select_neg == null)
@@ -2490,6 +2513,7 @@ namespace TAT001.Controllers
                             f.ESTATUS = "I";
                             f.FECHAC = DateTime.Now;
                             f.FECHAM = DateTime.Now;
+                            f.COMENTARIO = notas_soporte;//ADD RSG 20.08.2018
                             string c = pf.procesa(f, "");
                             while (c == "1")
                             {
@@ -3446,7 +3470,7 @@ namespace TAT001.Controllers
 
             DOCUMENTO d = new DOCUMENTO();
             string errorString = "";
-            int pagina = 202; //ID EN BASE DE DATOS
+            int pagina = 204; //ID EN BASE DE DATOS
             String res = "";//B20180611
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -3497,6 +3521,10 @@ namespace TAT001.Controllers
                 {
 
                 }
+                if (rel > 0)
+                {
+                    d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).Include(a => a.USUARIO).Include(a => a.FLUJOes).FirstOrDefault();
+                }
                 //var tsols_valbdjs = JsonConvert.SerializeObject(tsols_valbd, Formatting.Indented);//RSG 13.06.2018
                 //ViewBag.TSOL_VALUES = tsols_valbdjs;
 
@@ -3507,11 +3535,11 @@ namespace TAT001.Controllers
                 var freversa = (dynamic)null;
                 try
                 {
-                    if (tsol == null || tsol.Equals(""))
-                    {
-                        throw new Exception();
-                    }
-                    TSOL ts = tsols_val.Where(tsb => tsb.TSOLR == tsol).FirstOrDefault();
+                    //if (tsol == null || tsol.Equals(""))
+                    //{
+                    //    throw new Exception();
+                    //}
+                    TSOL ts = tsols_val.Where(tsb => tsb.ID == d.TSOL_ID & tsb.REVERSO == true).FirstOrDefault();
                     if (ts != null)
                     {
                         isrn = "X";
@@ -3642,7 +3670,7 @@ namespace TAT001.Controllers
                 List<DOCUMENTOA> archivos = new List<DOCUMENTOA>();
                 if (rel > 0)
                 {
-                    d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).Include(a => a.USUARIO).Include(a => a.FLUJOes).FirstOrDefault();
+                    //d = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == rel).Include(a => a.USUARIO).Include(a => a.FLUJOes).FirstOrDefault();
                     if (d.ESTATUS_WF != "R")
                         return RedirectToAction("Index", "Home");
                     ViewBag.x_ligada = d.LIGADA;//LEJ 30.07.2018
@@ -4169,647 +4197,702 @@ namespace TAT001.Controllers
             if (ModelState.IsValid)
             {
                 DOCUMENTO d = db.DOCUMENTOes.Find(dOCUMENTO.NUM_DOC);
-                d.ESTADO = dOCUMENTO.ESTADO;
-                d.CIUDAD = dOCUMENTO.CIUDAD;
-                d.CONCEPTO = dOCUMENTO.CONCEPTO;
-                d.NOTAS = dOCUMENTO.NOTAS;
-
-                ////if (d.PAYER_ID != dOCUMENTO.PAYER_ID)
-                ////{
-                ////    d.PAYER_ID = dOCUMENTO.PAYER_ID;
-                ////    CLIENTE c = db.CLIENTEs.Where(a => a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).FirstOrDefault();
-                ////    if (c != null)
-                ////    {
-                ////        d.VKORG = c.VKORG;
-                ////        d.VTWEG = c.VTWEG;
-                ////        d.SPART = c.SPART;
-                ////    }
-                ////}
-                d.PAYER_EMAIL = dOCUMENTO.PAYER_EMAIL;
-                d.PAYER_NOMBRE = dOCUMENTO.PAYER_NOMBRE;
-
-                d.FECHAF_VIG = dOCUMENTO.FECHAF_VIG;
-                d.FECHAI_VIG = dOCUMENTO.FECHAI_VIG;
-
-                ///////////////////Montos
-                //MONTO_DOC_MD
-                var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
-                d.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
-                if (bmonto_apoyo == "") bmonto_apoyo = "0";//RSG 09.07.2018
-                d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
-
                 string errorString = "";
-                TCambio tcambio = new TCambio();
-                //Obtener el monto de la sociedad
-                d.MONTO_DOC_ML = tcambio.getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(d.MONTO_DOC_MD), out errorString);
-                if (!errorString.Equals(""))
+
+                //ADD RSG 20.08.2018-----------------------------START
+                if (d.TSOL.REVERSO)
                 {
-                    throw new Exception();
-                }
-
-                //MONTO_DOC_ML2 
-                var MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
-                d.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
-
-                //MONEDAL_ID moneda de la sociedad
-                d.MONEDAL_ID = d.SOCIEDAD.WAERS;
-
-                //MONEDAL2_ID moneda en USD
-                d.MONEDAL2_ID = "USD";
-
-                //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                d.TIPO_CAMBIOL = tcambio.getUkurs(d.SOCIEDAD.WAERS, d.MONEDA_ID, out errorString);
-
-                //Tipo cambio dolares TIPO_CAMBIOL2
-                d.TIPO_CAMBIOL2 = tcambio.getUkursUSD(d.MONEDA_ID, "USD", out errorString);
-
-                //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
-                //Si la distribución es categoría se obtienen las categorías
-                List<string> listcat = new List<string>();
-                decimal totalcats = 0;
-                List<CategoriaMaterial> listcatm = new List<CategoriaMaterial>();
-                if (select_dis == "C")
-                {
-                    for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
-                    {
-                        string cat = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID.ToString();
-                        listcat.Add(cat);
-                    }
-
-                    listcatm = grupoMaterialesController(listcat, d.VKORG, d.SPART, d.PAYER_ID, d.SOCIEDAD_ID, out totalcats);
-                }
-                //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
-                //Guardar los documentos p para el documento guardado
-                try
-                {
-                    //Agregar materiales existentes para evitar que en la vista se hayan agregado o quitado
-                    List<DOCUMENTOP> docpl = new List<DOCUMENTOP>();
-                    if (dOCUMENTO.DOCUMENTO_REF > 0)
-                    {
-                        docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
-
-                        for (int j = 0; j < docpl.Count; j++)
-                        {
-                            try
-                            {
-                                DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
-                                var cat = "";
-
-                                if (docpl[j].MATNR != null && docpl[j].MATNR != "")
-                                {
-                                    string mmatnr = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
-                                    docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == mmatnr).FirstOrDefault();
-                                }
-                                else
-                                {
-                                    docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATKL_ID == docpl[j].MATKL).FirstOrDefault();
-                                    cat = "C";
-                                }
-                                DOCUMENTOP docP = new DOCUMENTOP();
-                                //Si lo encuentra meter valores de la base de datos y vista
-                                if (docmod != null)
-                                {
-                                    docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    docP.POS = docmod.POS;
-                                    if (docmod.MATNR == null || docmod.MATNR == "")
-                                    {
-                                        docmod.MATNR = "";
-                                    }
-                                    docP.MATNR = docmod.MATNR;
-                                    docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
-                                    docP.MATKL = docmod.MATKL_ID;
-                                    docP.CANTIDAD = 1;
-                                    docP.MONTO = docmod.MONTO;
-                                    docP.PORC_APOYO = docmod.PORC_APOYO;
-                                    //docP.MONTO_APOYO = docmod.MONTO_APOYO;
-                                    docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
-                                    docP.MONTO_APOYO = Math.Round(docP.MONTO_APOYO, 2);//RSG 16.05.2018
-                                    docP.PRECIO_SUG = docmod.PRECIO_SUG;
-                                    docP.VOLUMEN_EST = docmod.VOLUMEN_EST;
-                                    docP.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
-                                    docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
-                                    docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                                    docP.APOYO_EST = docmod.APOYO_EST;
-                                    docP.APOYO_REAL = docmod.APOYO_REAL;
-
-
-                                }
-                                else
-                                {
-                                    docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    docP.POS = docpl[j].POS;
-                                    docP.MATNR = docpl[j].MATNR;
-                                    docP.MATKL = docpl[j].MATKL;
-                                    docP.CANTIDAD = 1;
-                                    docP.MONTO = docpl[j].MONTO;
-                                    //docP.PORC_APOYO = docpl[j].PORC_APOYO;
-                                    docP.MONTO_APOYO = docP.MONTO * (docpl[j].PORC_APOYO / 100);
-                                    docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
-                                    docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
-                                    docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
-                                    docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
-                                    docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
-                                    docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                                    docP.APOYO_EST = docpl[j].APOYO_EST;
-                                    docP.APOYO_REAL = docpl[j].APOYO_REAL;
-                                }
-
-                                //RSG 05.06.2018 //B20180618 v1 MGC 2018.06.18 se elimino
-                                //if (cat == "C")
-                                //{
-                                //    decimal pos = docpl[j].POS;
-                                //    List<DOCUMENTOM> mm = db.DOCUMENTOMs.Where(a => a.NUM_DOC == dOCUMENTO.DOCUMENTO_REF & a.POS_ID == pos).ToList();
-                                //    foreach (DOCUMENTOM mn in mm)
-                                //    {
-                                //        DOCUMENTOM ii = new DOCUMENTOM();
-                                //        ii.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                //        ii.POS_ID = mn.POS_ID;
-                                //        ii.POS = mn.POS;
-                                //        ii.MATNR = mn.MATNR;
-                                //        ii.APOYO_EST = (docP.APOYO_REAL + docP.APOYO_EST) / mm.Count;
-                                //        ii.APOYO_REAL = ii.APOYO_EST;
-                                //        ii.PORC_APOYO = mn.PORC_APOYO;
-                                //        ii.VIGENCIA_A = mn.VIGENCIA_A;
-                                //        ii.VIGENCIA_DE = mn.VIGENCIA_DE;
-                                //        docP.DOCUMENTOMs.Add(ii);
-                                //    }
-                                //}
-                                //Agregarlo a la bd
-                                //////db.DOCUMENTOPs.Add(docP);
-                                //////db.SaveChanges();//RSG
-
-                                //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
-                                //If matnr es "" agregar los materiales de la categoría
-                                List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
-                                if (docP.MATNR == "")
-                                {
-                                    string col = "";
-                                    if (Convert.ToDecimal(docP.APOYO_EST) > 0)
-                                    {
-                                        col = "E";
-                                    }
-                                    else if (Convert.ToDecimal(docP.APOYO_REAL) > 0)
-                                    {
-                                        col = "R";
-                                    }
-                                    docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
-                                }
-
-                                //Obtener apoyo estimado
-                                decimal apoyo_esti = 0;
-                                decimal apoyo_real = 0;
-                                //Categoría por monto
-                                if (select_neg == "M")
-                                {
-                                    //Obtener el apoyo real o estimado para cada material
-                                    var cantmat = docml.Count;
-                                    try
-                                    {
-                                        apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_esti = 0;
-                                    }
-
-                                    try
-                                    {
-                                        apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_real = 0;
-                                    }
-
-                                    for (int k = 0; k < docml.Count; k++)
-                                    {
-                                        try
-                                        {
-                                            DOCUMENTOM docM = new DOCUMENTOM();
-                                            docM = docml[k];
-                                            docM.POS = k + 1;
-                                            docM.APOYO_REAL = apoyo_real;
-                                            docM.APOYO_EST = apoyo_esti;
-
-                                            //////db.DOCUMENTOMs.Add(docM);
-                                            //////db.SaveChanges();//RSG
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-                                }
-                                else if (select_neg == "P")
-                                {
-                                    //Categoría por porcentaje
-                                    for (int k = 0; k < docml.Count; k++)
-                                    {
-                                        try
-                                        {
-                                            DOCUMENTOM docM = new DOCUMENTOM();
-                                            docM = docml[k];
-                                            docM.POS = k + 1;
-
-                                            //////db.DOCUMENTOMs.Add(docM);
-                                            //////db.SaveChanges();//RSG
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-
-                                }
-                                //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-
-                        }
-                    }
-                    else
-                    {
-
-                        for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
-                        {
-                            try
-                            {
-                                DOCUMENTOP docP = new DOCUMENTOP();
-
-                                docP.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
-                                if (dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR == null)
-                                {
-                                    dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR = "";
-                                }
-                                docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
-                                docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
-                                docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
-                                docP.CANTIDAD = 1;
-                                docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
-                                docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
-                                docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
-                                docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
-                                docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
-                                docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
-                                docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
-                                docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
-                                docP.APOYO_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_EST;
-                                docP.APOYO_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_REAL;
-
-                                //dOCUMENTO.DOCUMENTOPs.Add(docP);
-                                ////db.SaveChanges();//RSG
-
-                                //If matnr es "" agregar los materiales de la categoría
-                                List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
-                                if (docP.MATNR == "")
-                                {
-                                    string col = "";
-                                    if (Convert.ToDecimal(docP.APOYO_EST) > 0)
-                                    {
-                                        col = "E";
-                                    }
-                                    else if (Convert.ToDecimal(docP.APOYO_REAL) > 0)
-                                    {
-                                        col = "R";
-                                    }
-                                    docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
-                                        Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
-                                }
-
-                                //Obtener apoyo estimado
-                                decimal apoyo_esti = 0;
-                                decimal apoyo_real = 0;
-                                //Categoría por monto
-                                if (select_neg == "M")
-                                {
-                                    //Obtener el apoyo real o estimado para cada material
-                                    var cantmat = docml.Count;
-                                    try
-                                    {
-                                        apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_esti = 0;
-                                    }
-
-                                    try
-                                    {
-                                        apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
-
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        apoyo_real = 0;
-                                    }
-
-                                    for (int k = 0; k < docml.Count; k++)
-                                    {
-                                        try
-                                        {
-                                            DOCUMENTOM docM = new DOCUMENTOM();
-                                            docM = docml[k];
-                                            docM.POS = k + 1;
-                                            docM.APOYO_REAL = apoyo_real;
-                                            docM.APOYO_EST = apoyo_esti;
-
-                                            docP.DOCUMENTOMs.Add(docM);
-                                            ////db.SaveChanges();//RSG
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-                                }
-                                else if (select_neg == "P")
-                                {
-                                    //Categoría por porcentaje
-                                    for (int k = 0; k < docml.Count; k++)
-                                    {
-                                        try
-                                        {
-                                            DOCUMENTOM docM = new DOCUMENTOM();
-                                            docM = docml[k];
-                                            docM.POS = k + 1;
-
-                                            docP.DOCUMENTOMs.Add(docM);
-                                            ////db.SaveChanges();//RSG
-                                        }
-                                        catch (Exception e)
-                                        {
-
-                                        }
-                                    }
-
-                                }
-
-                                dOCUMENTO.DOCUMENTOPs.Add(docP);
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-
-                        }
-                    }
-
-                }
-                catch (Exception e)
-                {
-
-                }
-                foreach (DOCUMENTOP dop in dOCUMENTO.DOCUMENTOPs)
-                {
-                    DOCUMENTOP dp = d.DOCUMENTOPs.Where(a => a.POS == dop.POS).FirstOrDefault();
-                    if (dp != null)
-                    {
-                        dp.APOYO_EST = dop.APOYO_EST;
-                        dp.APOYO_REAL = dop.APOYO_REAL;
-                        dp.CANTIDAD = dop.CANTIDAD;
-                        dp.MATKL = dop.MATKL;
-                        dp.MATNR = dop.MATNR;
-                        dp.MONTO = dop.MONTO;
-                        dp.MONTO_APOYO = dop.MONTO_APOYO;
-                        dp.NUM_DOC = dop.NUM_DOC;
-                        dp.PORC_APOYO = dop.PORC_APOYO;
-                        dp.POS = dop.POS;
-                        dp.PRECIO_SUG = dop.PRECIO_SUG;
-                        dp.VIGENCIA_AL = dop.VIGENCIA_AL;
-                        dp.VIGENCIA_DE = dop.VIGENCIA_DE;
-                        dp.VOLUMEN_EST = dop.VOLUMEN_EST;
-                        dp.VOLUMEN_REAL = dop.VOLUMEN_REAL;
-                    }
-                    else
-                        d.DOCUMENTOPs.Add(dop);
-
-                    foreach (DOCUMENTOM dom in dop.DOCUMENTOMs)
-                    {
-                        DOCUMENTOM dm = d.DOCUMENTOPs.Where(a => a.POS == dom.POS_ID).FirstOrDefault().DOCUMENTOMs.Where(x => x.POS == dom.POS).FirstOrDefault();
-                        if (dm != null)
-                        {
-                            dm.APOYO_EST = dom.APOYO_EST;
-                            dm.APOYO_REAL = dom.APOYO_REAL;
-                            dm.NUM_DOC = dom.NUM_DOC;
-                            dm.PORC_APOYO = dom.PORC_APOYO;
-                            dm.POS = dom.POS;
-                            dm.POS_ID = dom.POS_ID;
-                            dm.VIGENCIA_A = dom.VIGENCIA_A;
-                            dm.VIGENCIA_DE = dom.VIGENCIA_DE;
-                        }
-                        else
-                            dop.DOCUMENTOMs.Add(dom);
-                    }
-                }
-                if (dOCUMENTO.DOCUMENTOPs.Count < d.DOCUMENTOPs.Count)
-                {
-                    for (int i = dOCUMENTO.DOCUMENTOPs.Count; i < d.DOCUMENTOPs.Count; i++)
-                    {
-                        if (d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count > 0)
-                            for (int j = 0; j < d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count; j++)
-                            {
-                                d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Remove(d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.ElementAt(j));
-                            }
-
-                        d.DOCUMENTOPs.Remove(d.DOCUMENTOPs.ElementAt(i));
-                    }
-                }
-                List<DOCUMENTOREC> ddd = new List<DOCUMENTOREC>();
-                ddd.AddRange(d.DOCUMENTORECs);
-                foreach (DOCUMENTOREC dree in ddd)//RSG 01.08.2018
-                {
-                    d.DOCUMENTORECs.Remove(dree);
-                }
-
-                db.Entry(d).State = EntityState.Modified;
-                db.SaveChanges();
-
-
-                //Guardar registros de recurrencias  RSG 01.08.2018------------------
-
-                if (dOCUMENTO.DOCUMENTOREC != null)
-                    if (dOCUMENTO.DOCUMENTOREC.Count > 0)
-                    {
-                        foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
-                        {
-                            drec.NUM_DOC = dOCUMENTO.NUM_DOC;
-                            if (drec.POS == 1)
-                            {
-                                if (dOCUMENTO.TIPO_TECNICO != "P")
-                                {
-                                }
-                                else
-                                {//RSG 29.07.2018 - delete
-                                    dOCUMENTO.TIPO_RECURRENTE = "P";
-                                }
-                            }
-                            if (drec.MONTO_BASE == null)
-                                drec.MONTO_BASE = 0;
-                            if (drec.PORC == null)
-                                drec.PORC = 0;
-                            dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
-
-                            drec.FECHAV = drec.FECHAF;
-                            Calendario445 cal = new Calendario445();
-                            if (dOCUMENTO.TIPO_RECURRENTE == "1")
-                                drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
-                            else
-                                drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
-                            drec.EJERCICIO = drec.FECHAV.Value.Year;
-                            drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
-
-                            d.DOCUMENTORECs.Add(drec);
-                        }
-                        db.Entry(d).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }//Guardar registros de recurrencias  RSG 01.08.2018-------------------
-
-
-                try //Guardar los documentosf cargados en la sección de soporte
-                {
-                    //lej 26-07-2018 inicio--------------
                     try
                     {
-                        if (dOCUMENTO.DOCUMENTOF.Count == 1)
+                        if (TREVERSA != null)
                         {
-                            //Si hay solo un registro se modifica
-                            var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
-                            if (_df.Count == 1)
+                            DOCUMENTOR docr = db.DOCUMENTORs.Find(dOCUMENTO.NUM_DOC);
+                            docr.NUM_DOC = dOCUMENTO.NUM_DOC;
+                            docr.TREVERSA_ID = Convert.ToInt32(TREVERSA);
+                            docr.USUARIOC_ID = User.Identity.Name;
+                            docr.FECHAC = DateTime.Now;
+                            docr.COMENTARIO = notas_soporte.ToString();
+
+                            db.Entry(docr).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            //return RedirectToAction("Index", "Home");
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+                else
+                {
+
+                    //ADD RSG 20.08.2018-----------------------------START
+
+                    d.ESTADO = dOCUMENTO.ESTADO;
+                    d.CIUDAD = dOCUMENTO.CIUDAD;
+                    d.CONCEPTO = dOCUMENTO.CONCEPTO;
+                    d.NOTAS = dOCUMENTO.NOTAS;
+
+                    ////if (d.PAYER_ID != dOCUMENTO.PAYER_ID)
+                    ////{
+                    ////    d.PAYER_ID = dOCUMENTO.PAYER_ID;
+                    ////    CLIENTE c = db.CLIENTEs.Where(a => a.KUNNR.Equals(dOCUMENTO.PAYER_ID)).FirstOrDefault();
+                    ////    if (c != null)
+                    ////    {
+                    ////        d.VKORG = c.VKORG;
+                    ////        d.VTWEG = c.VTWEG;
+                    ////        d.SPART = c.SPART;
+                    ////    }
+                    ////}
+                    d.PAYER_EMAIL = dOCUMENTO.PAYER_EMAIL;
+                    d.PAYER_NOMBRE = dOCUMENTO.PAYER_NOMBRE;
+
+                    d.FECHAF_VIG = dOCUMENTO.FECHAF_VIG;
+                    d.FECHAI_VIG = dOCUMENTO.FECHAI_VIG;
+
+                    ///////////////////Montos
+                    //MONTO_DOC_MD
+                    var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;
+                    d.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
+                    if (bmonto_apoyo == "") bmonto_apoyo = "0";//RSG 09.07.2018
+                    d.PORC_APOYO = decimal.Parse(bmonto_apoyo);//RSG 29.06.2018
+
+                    //string errorString = "";
+                    TCambio tcambio = new TCambio();
+                    //Obtener el monto de la sociedad
+                    d.MONTO_DOC_ML = tcambio.getValSoc(d.SOCIEDAD.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(d.MONTO_DOC_MD), out errorString);
+                    if (!errorString.Equals(""))
+                    {
+                        throw new Exception();
+                    }
+
+                    //MONTO_DOC_ML2 
+                    var MONTO_DOC_ML2 = dOCUMENTO.MONTO_DOC_ML2;
+                    d.MONTO_DOC_ML2 = Convert.ToDecimal(MONTO_DOC_ML2);
+
+                    //MONEDAL_ID moneda de la sociedad
+                    d.MONEDAL_ID = d.SOCIEDAD.WAERS;
+
+                    //MONEDAL2_ID moneda en USD
+                    d.MONEDAL2_ID = "USD";
+
+                    //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
+                    d.TIPO_CAMBIOL = tcambio.getUkurs(d.SOCIEDAD.WAERS, d.MONEDA_ID, out errorString);
+
+                    //Tipo cambio dolares TIPO_CAMBIOL2
+                    d.TIPO_CAMBIOL2 = tcambio.getUkursUSD(d.MONEDA_ID, "USD", out errorString);
+
+                    //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
+                    //Si la distribución es categoría se obtienen las categorías
+                    List<string> listcat = new List<string>();
+                    decimal totalcats = 0;
+                    List<CategoriaMaterial> listcatm = new List<CategoriaMaterial>();
+                    if (select_dis == "C")
+                    {
+                        for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                        {
+                            string cat = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID.ToString();
+                            listcat.Add(cat);
+                        }
+
+                        listcatm = grupoMaterialesController(listcat, d.VKORG, d.SPART, d.PAYER_ID, d.SOCIEDAD_ID, out totalcats);
+                    }
+                    //Se cambio de pocisión //B20180618 v1 MGC 2018.06.18--------------------------------------
+                    //Guardar los documentos p para el documento guardado
+                    try
+                    {
+                        //Agregar materiales existentes para evitar que en la vista se hayan agregado o quitado
+                        List<DOCUMENTOP> docpl = new List<DOCUMENTOP>();
+                        if (dOCUMENTO.DOCUMENTO_REF > 0)
+                        {
+                            docpl = db.DOCUMENTOPs.Where(docp => docp.NUM_DOC == dOCUMENTO.DOCUMENTO_REF).ToList();
+
+                            for (int j = 0; j < docpl.Count; j++)
                             {
-                                string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
-                                for (int k = 0; k < _f.Length; k++)
+                                try
                                 {
-                                    DOCUMENTOF docF = new DOCUMENTOF();
-                                    docF = dOCUMENTO.DOCUMENTOF[0];
-                                    _df[k].NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    _df[k].FACTURA = docF.FACTURA;
-                                    _df[k].PROVEEDOR = docF.PROVEEDOR;
-                                    _df[k].CONTROL = docF.CONTROL;
-                                    _df[k].AUTORIZACION = docF.AUTORIZACION;
-                                    _df[k].FACTURAK = docF.FACTURAK;
-                                    _df[k].EJERCICIOK = docF.EJERCICIOK;
-                                    _df[k].BILL_DOC = docF.BILL_DOC;
-                                    _df[k].BELNR = docF.BELNR;
-                                    _df[k].IMPORTE_FAC = docF.IMPORTE_FAC;
-                                    _df[k].PAYER = docF.PAYER;
-                                    //paso a una nueva variable
-                                    var _dataFac = _df[k];
-                                    db.Entry(_dataFac).State = EntityState.Modified;
-                                    db.SaveChanges();
+                                    DOCUMENTOP_MOD docmod = new DOCUMENTOP_MOD();
+                                    var cat = "";
+
+                                    if (docpl[j].MATNR != null && docpl[j].MATNR != "")
+                                    {
+                                        string mmatnr = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
+                                        docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATNR == mmatnr).FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        docmod = dOCUMENTO.DOCUMENTOP.Where(docp => docp.MATKL_ID == docpl[j].MATKL).FirstOrDefault();
+                                        cat = "C";
+                                    }
+                                    DOCUMENTOP docP = new DOCUMENTOP();
+                                    //Si lo encuentra meter valores de la base de datos y vista
+                                    if (docmod != null)
+                                    {
+                                        docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.POS = docmod.POS;
+                                        if (docmod.MATNR == null || docmod.MATNR == "")
+                                        {
+                                            docmod.MATNR = "";
+                                        }
+                                        docP.MATNR = docmod.MATNR;
+                                        docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                        docP.MATKL = docmod.MATKL_ID;
+                                        docP.CANTIDAD = 1;
+                                        docP.MONTO = docmod.MONTO;
+                                        docP.PORC_APOYO = docmod.PORC_APOYO;
+                                        //docP.MONTO_APOYO = docmod.MONTO_APOYO;
+                                        docP.MONTO_APOYO = docP.MONTO * (docP.PORC_APOYO / 100);
+                                        docP.MONTO_APOYO = Math.Round(docP.MONTO_APOYO, 2);//RSG 16.05.2018
+                                        docP.PRECIO_SUG = docmod.PRECIO_SUG;
+                                        docP.VOLUMEN_EST = docmod.VOLUMEN_EST;
+                                        docP.VOLUMEN_REAL = docmod.VOLUMEN_REAL;
+                                        docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                        docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                        docP.APOYO_EST = docmod.APOYO_EST;
+                                        docP.APOYO_REAL = docmod.APOYO_REAL;
+
+
+                                    }
+                                    else
+                                    {
+                                        docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        docP.POS = docpl[j].POS;
+                                        docP.MATNR = docpl[j].MATNR;
+                                        docP.MATKL = docpl[j].MATKL;
+                                        docP.CANTIDAD = 1;
+                                        docP.MONTO = docpl[j].MONTO;
+                                        //docP.PORC_APOYO = docpl[j].PORC_APOYO;
+                                        docP.MONTO_APOYO = docP.MONTO * (docpl[j].PORC_APOYO / 100);
+                                        docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
+                                        docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
+                                        docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                                        docP.VOLUMEN_REAL = docpl[j].VOLUMEN_REAL;
+                                        docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
+                                        docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
+                                        docP.APOYO_EST = docpl[j].APOYO_EST;
+                                        docP.APOYO_REAL = docpl[j].APOYO_REAL;
+                                    }
+
+                                    //RSG 05.06.2018 //B20180618 v1 MGC 2018.06.18 se elimino
+                                    //if (cat == "C")
+                                    //{
+                                    //    decimal pos = docpl[j].POS;
+                                    //    List<DOCUMENTOM> mm = db.DOCUMENTOMs.Where(a => a.NUM_DOC == dOCUMENTO.DOCUMENTO_REF & a.POS_ID == pos).ToList();
+                                    //    foreach (DOCUMENTOM mn in mm)
+                                    //    {
+                                    //        DOCUMENTOM ii = new DOCUMENTOM();
+                                    //        ii.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    //        ii.POS_ID = mn.POS_ID;
+                                    //        ii.POS = mn.POS;
+                                    //        ii.MATNR = mn.MATNR;
+                                    //        ii.APOYO_EST = (docP.APOYO_REAL + docP.APOYO_EST) / mm.Count;
+                                    //        ii.APOYO_REAL = ii.APOYO_EST;
+                                    //        ii.PORC_APOYO = mn.PORC_APOYO;
+                                    //        ii.VIGENCIA_A = mn.VIGENCIA_A;
+                                    //        ii.VIGENCIA_DE = mn.VIGENCIA_DE;
+                                    //        docP.DOCUMENTOMs.Add(ii);
+                                    //    }
+                                    //}
+                                    //Agregarlo a la bd
+                                    //////db.DOCUMENTOPs.Add(docP);
+                                    //////db.SaveChanges();//RSG
+
+                                    //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
+                                    //If matnr es "" agregar los materiales de la categoría
+                                    List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
+                                    if (docP.MATNR == "")
+                                    {
+                                        string col = "";
+                                        if (Convert.ToDecimal(docP.APOYO_EST) > 0)
+                                        {
+                                            col = "E";
+                                        }
+                                        else if (Convert.ToDecimal(docP.APOYO_REAL) > 0)
+                                        {
+                                            col = "R";
+                                        }
+                                        docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
+                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                    }
+
+                                    //Obtener apoyo estimado
+                                    decimal apoyo_esti = 0;
+                                    decimal apoyo_real = 0;
+                                    //Categoría por monto
+                                    if (select_neg == "M")
+                                    {
+                                        //Obtener el apoyo real o estimado para cada material
+                                        var cantmat = docml.Count;
+                                        try
+                                        {
+                                            apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            apoyo_esti = 0;
+                                        }
+
+                                        try
+                                        {
+                                            apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            apoyo_real = 0;
+                                        }
+
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+                                                docM.APOYO_REAL = apoyo_real;
+                                                docM.APOYO_EST = apoyo_esti;
+
+                                                //////db.DOCUMENTOMs.Add(docM);
+                                                //////db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    else if (select_neg == "P")
+                                    {
+                                        //Categoría por porcentaje
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+
+                                                //////db.DOCUMENTOMs.Add(docM);
+                                                //////db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+
+                                    }
+                                    //Se agrego para las relacionadas //B20180618 v1 MGC 2018.06.18--------------------------------------
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
+
+                            for (int j = 0; j < dOCUMENTO.DOCUMENTOP.Count; j++)
+                            {
+                                try
+                                {
+                                    DOCUMENTOP docP = new DOCUMENTOP();
+
+                                    docP.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    docP.POS = dOCUMENTO.DOCUMENTOP.ElementAt(j).POS;
+                                    if (dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR == null)
+                                    {
+                                        dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR = "";
+                                    }
+                                    docP.MATNR = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATNR;
+                                    docP.MATNR = new Cadena().completaMaterial(docP.MATNR);//RSG 07.06.2018
+                                    docP.MATKL = dOCUMENTO.DOCUMENTOP.ElementAt(j).MATKL_ID;
+                                    docP.CANTIDAD = 1;
+                                    docP.MONTO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO;
+                                    docP.PORC_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).PORC_APOYO;
+                                    docP.MONTO_APOYO = dOCUMENTO.DOCUMENTOP.ElementAt(j).MONTO_APOYO;
+                                    docP.PRECIO_SUG = dOCUMENTO.DOCUMENTOP.ElementAt(j).PRECIO_SUG;
+                                    docP.VOLUMEN_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_EST;
+                                    docP.VOLUMEN_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VOLUMEN_REAL;
+                                    docP.VIGENCIA_DE = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_DE;
+                                    docP.VIGENCIA_AL = dOCUMENTO.DOCUMENTOP.ElementAt(j).VIGENCIA_AL;
+                                    docP.APOYO_EST = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_EST;
+                                    docP.APOYO_REAL = dOCUMENTO.DOCUMENTOP.ElementAt(j).APOYO_REAL;
+
+                                    //dOCUMENTO.DOCUMENTOPs.Add(docP);
+                                    ////db.SaveChanges();//RSG
+
+                                    //If matnr es "" agregar los materiales de la categoría
+                                    List<DOCUMENTOM> docml = new List<DOCUMENTOM>();
+                                    if (docP.MATNR == "")
+                                    {
+                                        string col = "";
+                                        if (Convert.ToDecimal(docP.APOYO_EST) > 0)
+                                        {
+                                            col = "E";
+                                        }
+                                        else if (Convert.ToDecimal(docP.APOYO_REAL) > 0)
+                                        {
+                                            col = "R";
+                                        }
+                                        docml = addCatItems(listcatm, dOCUMENTO.PAYER_ID, docP.MATKL, dOCUMENTO.SOCIEDAD_ID, dOCUMENTO.NUM_DOC,
+                                            Convert.ToInt16(docP.POS), docP.VIGENCIA_DE, docP.VIGENCIA_AL, select_neg, select_dis, totalcats, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), col);
+                                    }
+
+                                    //Obtener apoyo estimado
+                                    decimal apoyo_esti = 0;
+                                    decimal apoyo_real = 0;
+                                    //Categoría por monto
+                                    if (select_neg == "M")
+                                    {
+                                        //Obtener el apoyo real o estimado para cada material
+                                        var cantmat = docml.Count;
+                                        try
+                                        {
+                                            apoyo_esti = Convert.ToDecimal(docP.APOYO_EST) / cantmat;
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            apoyo_esti = 0;
+                                        }
+
+                                        try
+                                        {
+                                            apoyo_real = Convert.ToDecimal(docP.APOYO_REAL) / cantmat;
+
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            apoyo_real = 0;
+                                        }
+
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+                                                docM.APOYO_REAL = apoyo_real;
+                                                docM.APOYO_EST = apoyo_esti;
+
+                                                docP.DOCUMENTOMs.Add(docM);
+                                                ////db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                    else if (select_neg == "P")
+                                    {
+                                        //Categoría por porcentaje
+                                        for (int k = 0; k < docml.Count; k++)
+                                        {
+                                            try
+                                            {
+                                                DOCUMENTOM docM = new DOCUMENTOM();
+                                                docM = docml[k];
+                                                docM.POS = k + 1;
+
+                                                docP.DOCUMENTOMs.Add(docM);
+                                                ////db.SaveChanges();//RSG
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
+                                        }
+
+                                    }
+
+                                    dOCUMENTO.DOCUMENTOPs.Add(docP);
+                                }
+                                catch (Exception e)
+                                {
+
+                                }
+
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    foreach (DOCUMENTOP dop in dOCUMENTO.DOCUMENTOPs)
+                    {
+                        DOCUMENTOP dp = d.DOCUMENTOPs.Where(a => a.POS == dop.POS).FirstOrDefault();
+                        if (dp != null)
+                        {
+                            dp.APOYO_EST = dop.APOYO_EST;
+                            dp.APOYO_REAL = dop.APOYO_REAL;
+                            dp.CANTIDAD = dop.CANTIDAD;
+                            dp.MATKL = dop.MATKL;
+                            dp.MATNR = dop.MATNR;
+                            dp.MONTO = dop.MONTO;
+                            dp.MONTO_APOYO = dop.MONTO_APOYO;
+                            dp.NUM_DOC = dop.NUM_DOC;
+                            dp.PORC_APOYO = dop.PORC_APOYO;
+                            dp.POS = dop.POS;
+                            dp.PRECIO_SUG = dop.PRECIO_SUG;
+                            dp.VIGENCIA_AL = dop.VIGENCIA_AL;
+                            dp.VIGENCIA_DE = dop.VIGENCIA_DE;
+                            dp.VOLUMEN_EST = dop.VOLUMEN_EST;
+                            dp.VOLUMEN_REAL = dop.VOLUMEN_REAL;
+                        }
+                        else
+                            d.DOCUMENTOPs.Add(dop);
+
+                        foreach (DOCUMENTOM dom in dop.DOCUMENTOMs)
+                        {
+                            DOCUMENTOM dm = d.DOCUMENTOPs.Where(a => a.POS == dom.POS_ID).FirstOrDefault().DOCUMENTOMs.Where(x => x.POS == dom.POS).FirstOrDefault();
+                            if (dm != null)
+                            {
+                                dm.APOYO_EST = dom.APOYO_EST;
+                                dm.APOYO_REAL = dom.APOYO_REAL;
+                                dm.NUM_DOC = dom.NUM_DOC;
+                                dm.PORC_APOYO = dom.PORC_APOYO;
+                                dm.POS = dom.POS;
+                                dm.POS_ID = dom.POS_ID;
+                                dm.VIGENCIA_A = dom.VIGENCIA_A;
+                                dm.VIGENCIA_DE = dom.VIGENCIA_DE;
+                            }
+                            else
+                                dop.DOCUMENTOMs.Add(dom);
+                        }
+                    }
+                    if (dOCUMENTO.DOCUMENTOPs.Count < d.DOCUMENTOPs.Count)
+                    {
+                        for (int i = dOCUMENTO.DOCUMENTOPs.Count; i < d.DOCUMENTOPs.Count; i++)
+                        {
+                            if (d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count > 0)
+                                for (int j = 0; j < d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Count; j++)
+                                {
+                                    d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.Remove(d.DOCUMENTOPs.ElementAt(i).DOCUMENTOMs.ElementAt(j));
+                                }
+
+                            d.DOCUMENTOPs.Remove(d.DOCUMENTOPs.ElementAt(i));
+                        }
+                    }
+                    List<DOCUMENTOREC> ddd = new List<DOCUMENTOREC>();
+                    ddd.AddRange(d.DOCUMENTORECs);
+                    foreach (DOCUMENTOREC dree in ddd)//RSG 01.08.2018
+                    {
+                        d.DOCUMENTORECs.Remove(dree);
+                    }
+
+                    db.Entry(d).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    //Guardar registros de recurrencias  RSG 01.08.2018------------------
+
+                    if (dOCUMENTO.DOCUMENTOREC != null)
+                        if (dOCUMENTO.DOCUMENTOREC.Count > 0)
+                        {
+                            foreach (DOCUMENTOREC drec in dOCUMENTO.DOCUMENTOREC)
+                            {
+                                drec.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                if (drec.POS == 1)
+                                {
+                                    if (dOCUMENTO.TIPO_TECNICO != "P")
+                                    {
+                                    }
+                                    else
+                                    {//RSG 29.07.2018 - delete
+                                        dOCUMENTO.TIPO_RECURRENTE = "P";
+                                    }
+                                }
+                                if (drec.MONTO_BASE == null)
+                                    drec.MONTO_BASE = 0;
+                                if (drec.PORC == null)
+                                    drec.PORC = 0;
+                                dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+
+                                drec.FECHAV = drec.FECHAF;
+                                Calendario445 cal = new Calendario445();
+                                if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                                    drec.FECHAF = cal.getNextViernes((DateTime)drec.FECHAF);
+                                else
+                                    drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
+                                drec.EJERCICIO = drec.FECHAV.Value.Year;
+                                drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+
+                                d.DOCUMENTORECs.Add(drec);
+                            }
+                            db.Entry(d).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }//Guardar registros de recurrencias  RSG 01.08.2018-------------------
+
+
+                    try //Guardar los documentosf cargados en la sección de soporte
+                    {
+                        //lej 26-07-2018 inicio--------------
+                        try
+                        {
+                            if (dOCUMENTO.DOCUMENTOF.Count == 1)
+                            {
+                                //Si hay solo un registro se modifica
+                                var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+                                if (_df.Count == 1)
+                                {
+                                    string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
+                                    for (int k = 0; k < _f.Length; k++)
+                                    {
+                                        DOCUMENTOF docF = new DOCUMENTOF();
+                                        docF = dOCUMENTO.DOCUMENTOF[0];
+                                        _df[k].NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        _df[k].FACTURA = docF.FACTURA;
+                                        _df[k].PROVEEDOR = docF.PROVEEDOR;
+                                        _df[k].CONTROL = docF.CONTROL;
+                                        _df[k].AUTORIZACION = docF.AUTORIZACION;
+                                        _df[k].FACTURAK = docF.FACTURAK;
+                                        _df[k].EJERCICIOK = docF.EJERCICIOK;
+                                        _df[k].BILL_DOC = docF.BILL_DOC;
+                                        _df[k].BELNR = docF.BELNR;
+                                        _df[k].IMPORTE_FAC = docF.IMPORTE_FAC;
+                                        _df[k].PAYER = docF.PAYER;
+                                        //paso a una nueva variable
+                                        var _dataFac = _df[k];
+                                        db.Entry(_dataFac).State = EntityState.Modified;
+                                        db.SaveChanges();
+                                    }
+                                }
+                                if (_df.Count > 1)//si hay mas de 1 documentof
+                                {
+                                    for (var i = 0; i < _df.Count; i++)
+                                    {
+                                        //Si encuentra solo un registro, lo borro
+                                        db.Entry(_df[i]).State = EntityState.Deleted;
+                                        db.SaveChanges();
+                                    }
+                                    string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
+                                    for (int k = 0; k < _f.Length; k++)
+                                    {
+                                        DOCUMENTOF docF = new DOCUMENTOF();
+                                        var _df2 = new DOCUMENTOF();
+                                        docF = dOCUMENTO.DOCUMENTOF[0];
+                                        _df2.POS = docF.POS;
+                                        _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        _df2.FACTURA = docF.FACTURA;
+                                        _df2.PROVEEDOR = docF.PROVEEDOR;
+                                        _df2.CONTROL = docF.CONTROL;
+                                        _df2.AUTORIZACION = docF.AUTORIZACION;
+                                        _df2.FACTURAK = docF.FACTURAK;
+                                        _df2.EJERCICIOK = docF.EJERCICIOK;
+                                        _df2.BILL_DOC = docF.BILL_DOC;
+                                        _df2.BELNR = docF.BELNR;
+                                        _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                        _df2.PAYER = docF.PAYER;
+                                        db.DOCUMENTOFs.Add(_df2);
+                                        db.SaveChanges();
+                                    }
                                 }
                             }
-                            if (_df.Count > 1)//si hay mas de 1 documentof
+                            else if (dOCUMENTO.DOCUMENTOF.Count > 1)
                             {
-                                for (var i = 0; i < _df.Count; i++)
+                                var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
+                                var _df2 = new DOCUMENTOF();
+                                if (_df.Count == 1)
                                 {
                                     //Si encuentra solo un registro, lo borro
-                                    db.Entry(_df[i]).State = EntityState.Deleted;
+                                    db.Entry(_df[0]).State = EntityState.Deleted;
                                     db.SaveChanges();
+                                    for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+                                    {
+                                        _df2 = new DOCUMENTOF();
+                                        DOCUMENTOF docF = new DOCUMENTOF();
+                                        docF = dOCUMENTO.DOCUMENTOF[i];
+                                        _df2.POS = docF.POS;
+                                        _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        _df2.FACTURA = docF.FACTURA;
+                                        _df2.PROVEEDOR = docF.PROVEEDOR;
+                                        _df2.CONTROL = docF.CONTROL;
+                                        _df2.AUTORIZACION = docF.AUTORIZACION;
+                                        _df2.FACTURAK = docF.FACTURAK;
+                                        _df2.EJERCICIOK = docF.EJERCICIOK;
+                                        _df2.BILL_DOC = docF.BILL_DOC;
+                                        _df2.BELNR = docF.BELNR;
+                                        _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                        _df2.PAYER = docF.PAYER;
+                                        //paso a una nueva variable
+                                        db.DOCUMENTOFs.Add(_df2);
+                                        db.SaveChanges();
+                                    }
                                 }
-                                string[] _f = dOCUMENTO.DOCUMENTOF[0].FACTURAK.Split(';');
-                                for (int k = 0; k < _f.Length; k++)
+                                if (_df.Count > 1)//si hay mas de 1 documentof
                                 {
-                                    DOCUMENTOF docF = new DOCUMENTOF();
-                                    var _df2 = new DOCUMENTOF();
-                                    docF = dOCUMENTO.DOCUMENTOF[0];
-                                    _df2.POS = docF.POS;
-                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    _df2.FACTURA = docF.FACTURA;
-                                    _df2.PROVEEDOR = docF.PROVEEDOR;
-                                    _df2.CONTROL = docF.CONTROL;
-                                    _df2.AUTORIZACION = docF.AUTORIZACION;
-                                    _df2.FACTURAK = docF.FACTURAK;
-                                    _df2.EJERCICIOK = docF.EJERCICIOK;
-                                    _df2.BILL_DOC = docF.BILL_DOC;
-                                    _df2.BELNR = docF.BELNR;
-                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
-                                    _df2.PAYER = docF.PAYER;
-                                    db.DOCUMENTOFs.Add(_df2);
-                                    db.SaveChanges();
+                                    for (var i = 0; i < _df.Count; i++)
+                                    {
+                                        //Si encuentra solo un registro, lo borro
+                                        db.Entry(_df[i]).State = EntityState.Deleted;
+                                        db.SaveChanges();
+                                    }
+                                    for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+                                    {
+                                        _df2 = new DOCUMENTOF();
+                                        DOCUMENTOF docF = new DOCUMENTOF();
+                                        docF = dOCUMENTO.DOCUMENTOF[i];
+                                        _df2.POS = docF.POS;
+                                        _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        _df2.FACTURA = docF.FACTURA;
+                                        _df2.PROVEEDOR = docF.PROVEEDOR;
+                                        _df2.CONTROL = docF.CONTROL;
+                                        _df2.AUTORIZACION = docF.AUTORIZACION;
+                                        _df2.FACTURAK = docF.FACTURAK;
+                                        _df2.EJERCICIOK = docF.EJERCICIOK;
+                                        _df2.BILL_DOC = docF.BILL_DOC;
+                                        _df2.BELNR = docF.BELNR;
+                                        _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
+                                        _df2.PAYER = docF.PAYER;
+                                        db.DOCUMENTOFs.Add(_df2);
+                                        db.SaveChanges();
+                                    }
                                 }
                             }
                         }
-                        else if (dOCUMENTO.DOCUMENTOF.Count > 1)
+                        catch (Exception e)
+                        { }
+                        //lej 26-07-2018 fin-----------------
+                    }
+                    catch (Exception e) { }
+
+
+
+                    string[] borrarSop = txt_sop_borr.Split(',');
+                    foreach (string borra in borrarSop)
+                    {
+                        if (borra != "")
                         {
-                            var _df = db.DOCUMENTOFs.Where(_d => _d.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
-                            var _df2 = new DOCUMENTOF();
-                            if (_df.Count == 1)
+                            List<DOCUMENTOA> ddab = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.CLASE.Equals(borra) & a.ACTIVO == true).ToList();
+                            if (ddab.Count > 0)
                             {
-                                //Si encuentra solo un registro, lo borro
-                                db.Entry(_df[0]).State = EntityState.Deleted;
-                                db.SaveChanges();
-                                for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
+                                foreach (DOCUMENTOA daa in ddab)
                                 {
-                                    _df2 = new DOCUMENTOF();
-                                    DOCUMENTOF docF = new DOCUMENTOF();
-                                    docF = dOCUMENTO.DOCUMENTOF[i];
-                                    _df2.POS = docF.POS;
-                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    _df2.FACTURA = docF.FACTURA;
-                                    _df2.PROVEEDOR = docF.PROVEEDOR;
-                                    _df2.CONTROL = docF.CONTROL;
-                                    _df2.AUTORIZACION = docF.AUTORIZACION;
-                                    _df2.FACTURAK = docF.FACTURAK;
-                                    _df2.EJERCICIOK = docF.EJERCICIOK;
-                                    _df2.BILL_DOC = docF.BILL_DOC;
-                                    _df2.BELNR = docF.BELNR;
-                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
-                                    _df2.PAYER = docF.PAYER;
-                                    //paso a una nueva variable
-                                    db.DOCUMENTOFs.Add(_df2);
-                                    db.SaveChanges();
-                                }
-                            }
-                            if (_df.Count > 1)//si hay mas de 1 documentof
-                            {
-                                for (var i = 0; i < _df.Count; i++)
-                                {
-                                    //Si encuentra solo un registro, lo borro
-                                    db.Entry(_df[i]).State = EntityState.Deleted;
-                                    db.SaveChanges();
-                                }
-                                for (var i = 0; i < dOCUMENTO.DOCUMENTOF.Count; i++)
-                                {
-                                    _df2 = new DOCUMENTOF();
-                                    DOCUMENTOF docF = new DOCUMENTOF();
-                                    docF = dOCUMENTO.DOCUMENTOF[i];
-                                    _df2.POS = docF.POS;
-                                    _df2.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    _df2.FACTURA = docF.FACTURA;
-                                    _df2.PROVEEDOR = docF.PROVEEDOR;
-                                    _df2.CONTROL = docF.CONTROL;
-                                    _df2.AUTORIZACION = docF.AUTORIZACION;
-                                    _df2.FACTURAK = docF.FACTURAK;
-                                    _df2.EJERCICIOK = docF.EJERCICIOK;
-                                    _df2.BILL_DOC = docF.BILL_DOC;
-                                    _df2.BELNR = docF.BELNR;
-                                    _df2.IMPORTE_FAC = docF.IMPORTE_FAC;
-                                    _df2.PAYER = docF.PAYER;
-                                    db.DOCUMENTOFs.Add(_df2);
+                                    daa.ACTIVO = false;
+                                    db.Entry(daa).State = EntityState.Modified;
                                     db.SaveChanges();
                                 }
                             }
                         }
                     }
-                    catch (Exception e)
-                    { }
-                    //lej 26-07-2018 fin-----------------
-                }
-                catch (Exception e) { }
 
-                //Guardar los documentos cargados en la sección de soporte
+
+                }//ADD RSG 20.08.2018
+
+                //Checar si hay archivos para subir
+                int numFiles = 0;
                 var res = "";
                 string errorMessage = "";
-                int numFiles = 0;
-                //Checar si hay archivos para subir
                 try
                 {
                     foreach (HttpPostedFileBase file in files_soporte)
@@ -4828,25 +4911,7 @@ namespace TAT001.Controllers
 
                 }
 
-
-                string[] borrarSop = txt_sop_borr.Split(',');
-                foreach (string borra in borrarSop)
-                {
-                    if (borra != "")
-                    {
-                        List<DOCUMENTOA> ddab = db.DOCUMENTOAs.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.CLASE.Equals(borra) & a.ACTIVO == true).ToList();
-                        if (ddab.Count > 0)
-                        {
-                            foreach (DOCUMENTOA daa in ddab)
-                            {
-                                daa.ACTIVO = false;
-                                db.Entry(daa).State = EntityState.Modified;
-                                db.SaveChanges();
-                            }
-                        }
-                    }
-                }
-
+                //Guardar los documentos cargados en la sección de soporte
                 if (numFiles > 0)
                 {
                     //Obtener las variables con los datos de sesión y ruta
@@ -5027,6 +5092,7 @@ namespace TAT001.Controllers
                     //Guardar número de documento creado
                     Session["ERROR_FILES"] = errorMessage;
                 }
+
 
                 ProcesaFlujo pf = new ProcesaFlujo();
                 try

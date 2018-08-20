@@ -561,7 +561,7 @@
     $('#tabs').tabs();
 
     var elem = document.querySelectorAll('select');
-    var instance = M.Select.init(elem, []);
+    var instance = M.FormSelect.init(elem, []);
 
     $('#tab_temp').on("click", function (e) {
         //$('#gall_id').change();
@@ -1046,7 +1046,7 @@ $(window).on('load', function () {
         $('#select_neg').val(sneg).change();
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         //$('#select_neg').formSelect();
     }
     if (sdis != "") {
@@ -1055,7 +1055,7 @@ $(window).on('load', function () {
         $('#select_dis').val(sdis).change();
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         //$('#select_dis').formSelect();
     }
 
@@ -1127,15 +1127,15 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
 
     //MGC B20180611
@@ -1143,15 +1143,15 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
 
 });
@@ -3800,7 +3800,7 @@ function selectTall(valu) {
                     });
 
                     var elem = document.getElementById('tall_id');
-                    var instance = M.Select.init(elem, []);
+                    var instance = M.FormSelect.init(elem, []);
                     $("#tall_id").val(data[0].ID);
                 }
             },
