@@ -120,6 +120,7 @@ namespace TAT001.Controllers
         // GET: Solicitudes/Details/5
         public ActionResult Details(decimal id, string ejercicio, string pais)
         {
+            string uu = "";
             ////var _dp1 = db.DOCUMENTOes.Find(new object[] { id, ejercicio });
             int pagina = 203; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
@@ -154,6 +155,7 @@ namespace TAT001.Controllers
                         ////return RedirectToAction("Pais", "Home");
                     }
                 }
+                uu = user.SPRAS_ID;
                 Session["spras"] = user.SPRAS_ID;
             }
             if (id == 0)

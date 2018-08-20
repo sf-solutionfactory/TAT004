@@ -143,7 +143,7 @@ namespace TAT001.Controllers
             return View(carga.consultSociedad());
         }
         [HttpPost]
-        public ActionResult Carga(string enviar, string guardar, HttpPostedFileBase fileCPT, HttpPostedFileBase fileSAP, string[] sociedadsap, string[] periodocpt, string[] sociedadcpt, string[] periodosap, string[] aniocpt, string[] aniosap)
+        public ActionResult Carga(string enviar, string guardar, HttpPostedFileBase fileCPT, HttpPostedFileBase[] fileSAP, string[] sociedadsap, string[] periodocpt, string[] sociedadcpt, string[] periodosap, string[] aniocpt, string[] aniosap, string opciong)
         {
             int pagina = 302; //ID EN BASE DE DATOS
             DatosPresupuesto pRESUPUESTOP = new DatosPresupuesto();
@@ -218,7 +218,7 @@ namespace TAT001.Controllers
                             pRESUPUESTOP = Session["Presupuesto"] as DatosPresupuesto;
                             if (pRESUPUESTOP.presupuestoCPT.Count > 0 || pRESUPUESTOP.presupuestoSAP.Count > 0)
                             {
-                                ViewBag.MensajeC = carga.guardarPresupuesto(ref pRESUPUESTOP, Session["Sociedadcpt"] as string[], Session["Periodocpt"] as string[], Session["Sociedadsap"] as string[], Session["Periodosap"] as string[], User.Identity.Name);
+                                ViewBag.MensajeC = carga.guardarPresupuesto(ref pRESUPUESTOP, Session["Sociedadcpt"] as string[], Session["Periodocpt"] as string[], Session["Sociedadsap"] as string[], Session["Periodosap"] as string[], User.Identity.Name, opciong);
                                 if (pRESUPUESTOP.bannerscanal.Count > 0)
                                 {
                                     ViewBag.MensajeGI = carga.mensajes(3);//"Se encontraron banners sin canal asignados";
