@@ -819,6 +819,7 @@
                                         {
                                             nombrefile = archivos[i].PATH.Split('\\');
                                             <div class="file-field input-field">
+                                                @archivos[i].CLASE
                                                 <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
                                                 <div class="file-path-wrapper">
                                                     <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
@@ -2042,7 +2043,7 @@ idn++;//LEJ 12.07.18
                                                         {
                                                             if (ii.SPRAS_ID == Session["spras"].ToString())
                                                             {
-                                                                <input type="checkbox" id="chk-@item.TS_CAMPO.ID" name="chk-@item.TS_CAMPO.ID" />
+                                                                <input type="checkbox" id="chk-@item.TS_CAMPO.ID" name="chk-@item.TS_CAMPO.ID" class="trade"/>
                                                                 <span>@ii.TXT100</span>
                                                             }
                                                         }

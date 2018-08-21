@@ -29,24 +29,32 @@ namespace TAT001.Services
         {
             string regresa = num.ToString("N2");
             string[] separa = regresa.Split('.');
+            int posi = 1;
+            if (num < 0)
+                posi = -1;
+            num = num * posi;
 
             if (regresa != null | regresa != "")
             {
                 if (decimales == ".")
                 {
                     regresa = separa[0].Replace(".", ",");
-                    regresa = "$ " + regresa + decimales + separa[1];
+                    regresa = regresa + decimales + separa[1];
                 }
                 else if (decimales == ",")
                 {
                     regresa = separa[0].Replace(",", ".");
-                    regresa = "$ " + regresa + decimales + separa[1];
+                    regresa = regresa + decimales + separa[1];
                 }
             }
             else
             {
-                regresa = "$ 0" + decimales + "00";
+                regresa = "0" + decimales + "00";
             }
+            if (posi == -1)
+                regresa = "$(" + regresa + ")";
+            else
+                regresa = "$" + regresa + "";
 
             return regresa;
         }
@@ -55,24 +63,33 @@ namespace TAT001.Services
         {
             string regresa = num.ToString("N2");
             string[] separa = regresa.Split('.');
+            int posi = 1;
+            if (num < 0)
+                posi = -1;
+            num = num * posi;
 
             if (regresa != null | regresa != "")
             {
                 if (decimales == ".")
                 {
                     regresa = separa[0].Replace(".", ",");
-                    regresa = regresa + decimales + separa[1] + "%";
+                    regresa = regresa + decimales + separa[1];
                 }
                 else if (decimales == ",")
                 {
                     regresa = separa[0].Replace(",", ".");
-                    regresa = regresa + decimales + separa[1] + "%";
+                    regresa = regresa + decimales + separa[1] ;
                 }
             }
             else
             {
-                regresa = "$ 0" + decimales + "00";
+                regresa = "0" + decimales + "00";
             }
+            if (posi == -1)
+                regresa = "(" + regresa + ")" + "%";
+            else
+                regresa = "" + regresa + "%";
+
 
             return regresa;
         }
@@ -81,6 +98,10 @@ namespace TAT001.Services
         {
             string regresa = num.ToString("N2");
             string[] separa = regresa.Split('.');
+            int posi = 1;
+            if (num < 0)
+                posi = -1;
+            num = num * posi;
 
             if (regresa != null | regresa != "")
             {
@@ -97,8 +118,12 @@ namespace TAT001.Services
             }
             else
             {
-                regresa = "$ 0" + decimales + "00";
+                regresa = "0" + decimales + "00";
             }
+            if (posi == -1)
+                regresa = "(" + regresa + ")" + "";
+            else
+                regresa = "" + regresa + "";
 
             return regresa;
         }

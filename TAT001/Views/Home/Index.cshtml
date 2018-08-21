@@ -129,7 +129,8 @@
             <script>
         $(document).ready(function () {
             function docMessage(msg) {
-                M.toast({html: '<span style="padding-right:15px;"><i class="material-icons">error</i></span>  ' + msg });
+                //M.toast({ html: '<span style="padding-right:15px;"><i class="material-icons">error</i></span>  ' + msg });
+                M.toast({ html: '<span style="padding-right:15px;"><i class="material-icons">error</i></span>  ' + msg + '<button class="btn-flat toast-action">Aceptar</button>' });
             }
 
             var message = '@ViewBag.BORRADOR';

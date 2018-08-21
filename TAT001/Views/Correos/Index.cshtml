@@ -322,21 +322,27 @@
                                     })
                                 </div>
 
-                                @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", new
-                                {
-                                    @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
-                                    @id = "lbl_userid"
-                                })
-                                @*@Html.EditorFor(model => model.MONTO_DOC_MD, new
+                                <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
+                                    @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", new
                                     {
-                                        htmlAttributes = new
+                                        @style = "    color: rgba(0, 0, 0, 1.0);font-size:10px;",
+                                        @id = "lbl_userid"
+                                    })
+                                    @*@Html.EditorFor(model => model.MONTO_DOC_MD, new
                                         {
-                                            @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
-                                            @class = "precio"
-                                        }
-                                    })*@
-                                <input type="text" id="MONTO_DOC_MD" name="MONTO_DOC_MD" disabled="disabled" value="@ViewBag.monto" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " />
+                                            htmlAttributes = new
+                                            {
+                                                @disabled = "disabled",
+                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                                @class = "precio"
+                                            }
+                                        })*@
+                                    @*<input type="text" id="MONTO_DOC_MD" name="MONTO_DOC_MD" disabled="disabled" value="@ViewBag.monto" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " />*@
+                                    <input type="text"
+                                           disabled="disabled" ,
+                                           style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
+                                           value="@ViewBag.monto" />
+                                </div>
                             </div>
 
                         </div>

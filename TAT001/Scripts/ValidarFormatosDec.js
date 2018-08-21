@@ -633,9 +633,10 @@
     $("input[type=checkbox]").on("click", function (e) {
         //recupero los datos de lo que clickeo
         var x = e.target;
-        if (x.checked === true) {
-            revisarChecked(x.id);
-        }
+        if (!x.classList.contains("trade"))
+            if (x.checked === true) {
+                revisarChecked(x.id);
+            }
     });
 
     function revisarChecked(id) {

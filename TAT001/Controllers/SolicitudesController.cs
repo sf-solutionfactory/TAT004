@@ -259,15 +259,15 @@ namespace TAT001.Controllers
             {
                 DF.D.TIPO_TECNICO = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_porcentaje" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
             }
-
-            if (DF.D.DOCUMENTOPs.FirstOrDefault().MATNR != "")
-            {
-                ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_material" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
-            }
-            else
-            {
-                ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_categoria" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
-            }
+            if (DF.D.DOCUMENTOPs.Count > 0)
+                if (DF.D.DOCUMENTOPs.FirstOrDefault().MATNR != "")
+                {
+                    ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_material" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+                }
+                else
+                {
+                    ViewBag.mat = db.TEXTOes.Where(x => x.PAGINA_ID == 201 & x.CAMPO_ID == "lbl_categoria" & x.SPRAS_ID == uu).FirstOrDefault().TEXTOS;
+                }
             ///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
             return View(DF);
         }
