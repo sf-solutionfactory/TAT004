@@ -2078,8 +2078,12 @@ function copiarTableVista(update, borr, ne) { //Add MGC B20180705 2018.07.05 Cam
                 relacionada = "prelacionada";
                 //}
                 //ADD RSG 20.08.2018--------------------START
-                vol = toShowNum("0");
-                total = toShow("0");
+                if (!isReversa()) {
+                    if ($("#select_dis").val() == "M") {
+                        vol = toShowNum("0");
+                        total = toShow("0");
+                    }
+                }
                 //ADD RSG 20.08.2018--------------------END
             }
 

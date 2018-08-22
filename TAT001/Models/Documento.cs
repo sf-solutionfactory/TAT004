@@ -7,14 +7,16 @@ namespace TAT001.Models
 {
     public class Documento
     {
+        public string BUTTON { get; set; }
         public decimal NUM_DOC { get; set; }
+        public string NUM_DOC_TEXT { get; set; }
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
-        public DateTime FECHAD { get; set; }
-        public TimeSpan HORAC { get; set; }
-        public int MyProperty { get; set; }
+        public string FECHAD { get; set; }
+        public string HORAC { get; set; }
         public string PERIODO { get; set; }
         public string ESTATUS { get; set; }
+        public string ESTATUS_CLASS { get; set; }
         public string PAYER_ID { get; set; }
         public string CLIENTE { get; set; }
         public string CANAL { get; set; }
@@ -27,15 +29,15 @@ namespace TAT001.Models
         public string FACTURAK { get; set; }
         public string USUARIOC_ID { get; set; }
         public string USUARIOM_ID { get; set; }
-        public string NC { get; set; }
+        //public string NC { get; set; }
         public string NUM_PRO { get; set; }
         public string NUM_NC { get; set; }
         public string NUM_AP { get; set; }
         public string NUM_REV { get; set; }
-        public string NUM_TIPO { get; set; }
+        public string BLART { get; set; }
         public string NUM_PAYER { get; set; }
         public string NUM_CLIENTE { get; set; }
         public string NUM_IMPORTE { get; set; }
-        public string NUM_GASTO { get; set; }
+        public string NUM_CUENTA { get; set; }
     }
 }

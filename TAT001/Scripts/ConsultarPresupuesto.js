@@ -97,7 +97,7 @@ function jsConsulta(idioma) {
                 }
                 $("select").select();
 
-                if (ban) {
+                //if (ban) {
                     $(".f > .select-wrapper > .select-dropdown").prepend(
                         '<li class="toggle selectnone"><span><label></label>Select none</span></li>'
                     );
@@ -106,7 +106,7 @@ function jsConsulta(idioma) {
                     );
 
                     ban = !ban;
-                }
+                //}
                 $(".f > .select-wrapper > .select-dropdown .selectall").on(
                     "click",
                     function () {
@@ -235,7 +235,7 @@ function jsConsulta(idioma) {
             filterGlobal();
         });
         $('select').select();
-        M.FormSelect.init($('select'), []);
+        M.Select.init($('select'), []);
 
         //$('#chkfiltro').on('click', function () {
         //    if ($(this).is(':checked')) {
@@ -252,7 +252,7 @@ function jsConsulta(idioma) {
         //        selectNone();
         //    }
         //    var elem = document.getElementsByName("periodocpt")
-        //    //instance = M.FormSelect.init(elem, []);
+        //    //instance = M.Select.init(elem, []);
         //    //$('select').select();
         //});
         //function selectNone() {

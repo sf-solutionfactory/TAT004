@@ -152,7 +152,7 @@
         {
             ViewBag.reversan = "";
         }
-        @if (ViewBag.reversan != "X")
+        @if (ViewBag.reversan != "X" | ViewBag.reversan == "X")
         {
             <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
         }
@@ -1383,7 +1383,7 @@
                             <h5>Mecánica de Negociación</h5>
                             <div class="row" style="margin-bottom:0;">
                                 @*@if (ViewBag.relacionadan == "")*@
-                                @if (ViewBag.relacionadan != "")
+                                @if (ViewBag.relacionadan != "" & ViewBag.reversan != "X" & (Model.DOCUMENTO_REF == null | Model.TSOL.ADICIONA))
                                 {
                                     <div class="file-field input-field" id="cargar_excel" style="display:none">
                                         <div class="btn">

@@ -87,7 +87,7 @@
                             <a class="btn-small modal-trigger" href="#modal1" onclick="aprobar()">Aprobar</a>
                             <a class="btn-small modal-trigger" href="#modal1" onclick="rechazar()">Rechazar</a>
                         }
-                        else if (ViewBag.accion == "N")
+                        else if (ViewBag.accion == "N" | ViewBag.accion == "M")
                         {
                             <div class="fixed-action-btn" id="lbl_wf">
                                 <a class="btn-floating btn-large blue">
@@ -184,7 +184,7 @@
                                         }
                                     }
                                 </ul>
-                                
+
                             </div>
                             <script>
                                 //var elem = document.getElementById('btn_rela');
@@ -287,6 +287,8 @@
                     }
                 </ul>
             </div>
+
+            @*///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
             <div id="info" class="col s12" style="font-size:12px;">
                 <div class="row">
                     <div class="col s12 m6 l6">
@@ -299,7 +301,7 @@
                                         @Html.LabelFor(model => model.D.DOCUMENTO_REF, "Provisión")
                                     </div>
                                     <div class="col s4 right-align">
-                                        <a href="@Url.Action("Details", new { id=Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
+                                        <a href="@Url.Action("Details", new { id = Model.D.DOCUMENTO_REF })" class="btn-small  ">Ver</a>
                                     </div>
                                 </div>
                             </div>
@@ -327,9 +329,17 @@
                                     @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_bukrs" })
                                 </div>
                                 <div class="input-field col s6">
-                                    @Html.EditorFor(model => model.D.PAIS_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.PAIS_ID, "País", new { @id = "lbl_land" })
+                                    @Html.EditorFor(model => model.D.PAI.LANDX, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.PAI.LANDX, "País", new { @id = "lbl_land" })
                                 </div>
+                            </div>
+                            <div class="row" style="margin-bottom:0">
+                                <div class="input-field col s6">
+                                    @Html.EditorFor(model => model.D.PAI.LANDX, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.PAI.LANDX, "Subregión", new { @id = "lbl_land" })
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.ESTADO, new { htmlAttributes = new { @disabled = "disabled" } })
                                     @Html.LabelFor(model => model.D.ESTADO, "Estado", new { @id = "lbl_state" })
@@ -360,6 +370,10 @@
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.CONCEPTO, new { htmlAttributes = new { @disabled = "disabled" } })
                                     @Html.LabelFor(model => model.D.CONCEPTO, "Concepto", new { @id = "lbl_conce" })
+                                </div>
+                                <div class="input-field col s12">
+                                    @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @disabled = "disabled" })
+                                    @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
                                 </div>
                             </div>
                         </div>
@@ -436,7 +450,6 @@
                                                         }
                                                     </tr>
                                                 </thead>
-
                                                 @using (TAT001Entities db = new TAT001Entities())
                                                 {
                                                     foreach (var item in Model.D.DOCUMENTOF)
@@ -531,12 +544,28 @@
                                         @Html.LabelFor(model => model.D.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })
                                     </div>
                                     <div class="input-field col s12">
+                                        @Html.EditorFor(model => model.D.CLIENTE.TCLIENTE.TCLIENTETs.Where(x => x.SPRAS == Session["spras"].ToString()).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
+                                        @Html.LabelFor(model => model.D.CLIENTE.TCLIENTE.TCLIENTETs.Where(x => x.SPRAS == Session["spras"].ToString()).FirstOrDefault().TXT50, "Tipo de cliente", new { @id = "lbl_parvwcli" })
+                                    </div>
+                                    <div class="input-field col s12">
+                                        @Html.EditorFor(model => model.D.VKORG, new { htmlAttributes = new { @disabled = "disabled" } })
+                                        @Html.LabelFor(model => model.D.VKORG, "Razón social", new { @id = "lbl_vkorg" })
+                                    </div>
+                                    <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.STCD1, new { htmlAttributes = new { @disabled = "disabled" } })
                                         @Html.LabelFor(model => model.D.CLIENTE.STCD1, "Taxid", new { @id = "lbl_stcd1" })
                                     </div>
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.CANAL, new { htmlAttributes = new { @disabled = "disabled", @id = "vtweg" } })
                                         @Html.LabelFor(model => model.D.CLIENTE.CANAL, "Canal", new { @id = "lbl_stcd1" })
+                                    </div>
+                                    <div class="input-field col s12">
+                                        @Html.EditorFor(model => model.D.PAYER_NOMBRE, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_nombre" } })
+                                        @Html.LabelFor(model => model.D.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @id = "lbl_payernom" })
+                                    </div>
+                                    <div class="input-field col s12">
+                                        @Html.EditorFor(model => model.D.PAYER_EMAIL, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_email", @type = "email" } })
+                                        @Html.LabelFor(model => model.D.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @id = "lbl_payeremail" })
                                     </div>
                                 </div>
                             </div>
@@ -559,6 +588,7 @@
                     </div>
                 </div>
             </div>
+            @*///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
             @*<div id="temp" class="col s12">
             *@
             @if (Model.D.DOCUMENTORECs.Count > 0)
@@ -788,6 +818,8 @@
                                         for (int i = 0; i < archivos.Count; i++)
                                         {
                                             nombrefile = archivos[i].PATH.Split('\\');
+                                            
+                                            @archivos[i].CLASE
                                             <div class="file-field input-field">
                                                 <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
                                                 <div class="file-path-wrapper">
@@ -929,7 +961,7 @@
                             }
                         }
                     }
-                    @if (Model.D.DOCUMENTORs.Count() > 0)
+                    @if (Model.D.DOCUMENTOR != null)
                     {
                         <div class="col s12 m12 l6">
                             <div class="card-panel">
@@ -937,17 +969,17 @@
                                     <h5>Reversa</h5>
                                 </div>
                                 <div class="row">
-                                    @foreach (var iteem in Model.D.DOCUMENTORs)
-                                    {
-                                        <div class="input-field col s12">
-                                            <input id="txt_trev" type="text" disabled="disabled" value="@iteem.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
-                                            <label for="txt_trev">Tipo de reversa</label>
-                                        </div>
-                                        <div class="input-field col s12">
-                                            <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@iteem.COMENTARIO</textarea>
-                                            <label for="txt_comm">Comentario</label>
-                                        </div>
-                                    }
+                                    @*@foreach (var iteem in Model.D.DOCUMENTORs)
+                                        {*@
+                                    <div class="input-field col s12">
+                                        <input id="txt_trev" type="text" disabled="disabled" value="@Model.D.DOCUMENTOR.TREVERSA.TREVERSATs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT100" />
+                                        <label for="txt_trev">Tipo de reversa</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <textarea id="txt_comm" disabled="disabled" class="materialize-textarea">@Model.D.DOCUMENTOR.COMENTARIO</textarea>
+                                        <label for="txt_comm">Comentario</label>
+                                    </div>
+                                    @*}*@
                                 </div>
                             </div>
                         </div>
@@ -991,6 +1023,50 @@
                         }
                     }
                     <div class="col s12">
+                        <br />
+                        @*///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
+                        @using (TAT001Entities db = new TAT001Entities())
+                        {
+                            <div class="row">
+                                <div class="col s12 m6 l6">
+                                    <div class="card-panel">
+                                        <h5 id="head_montob">Distribución</h5>
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="input-field col s6">
+                                                @Html.EditorFor(model => model.D.TIPO_TECNICO, new { htmlAttributes = new { @disabled = "disabled" } })
+                                                @Html.LabelFor(model => model.D.TIPO_TECNICO, "Negociación")
+                                            </div>
+
+                                            <div class="input-field col s6">
+                                                @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled", @Value = ViewBag.mat } })
+                                                @Html.LabelFor(model => model.D.TSOL_ID, "Distribución")
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col s12 m6 l6">
+                                    <div class="card-panel">
+                                        <h5 id="head_montob">Monto Base</h5>
+                                        <div class="row" style="margin-bottom:0">
+
+                                            <div class="input-field col s6">
+                                                @Html.EditorFor(model => model.D.MONTO_DOC_MD, new { htmlAttributes = new { @disabled = "disabled", @id = "lbl_montodis", @class = "_vmonto" } })
+                                                @Html.LabelFor(model => model.D.MONTO_DOC_MD, "Monto", htmlAttributes: new { @id = "lbl_montodis" })
+                                            </div>
+
+                                            <div class="input-field col s6">
+                                                @Html.EditorFor(model => model.D.MONEDA_ID, new { htmlAttributes = new { @disabled = "disabled", @id = "lbl_monedadis" } })
+                                                @Html.LabelFor(model => model.D.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id", @id = "lbl_monedadis" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @*///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
+
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <h5>Distribución</h5>
@@ -1968,7 +2044,7 @@
                                                         {
                                                             if (ii.SPRAS_ID == Session["spras"].ToString())
                                                             {
-                                                                <input type="checkbox" id="chk-@item.TS_CAMPO.ID" name="chk-@item.TS_CAMPO.ID" />
+                                                                <input type="checkbox" id="chk-@item.TS_CAMPO.ID" name="chk-@item.TS_CAMPO.ID" class="trade" />
                                                                 <span>@ii.TXT100</span>
                                                             }
                                                         }
