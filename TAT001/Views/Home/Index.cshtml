@@ -552,10 +552,10 @@
                             }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT020)
+                            @Html.DisplayFor(modelItem => item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT020)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals("ES")).FirstOrDefault().TXT50)
+                            @Html.DisplayFor(modelItem => item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(Session["spras"].ToString())).FirstOrDefault().TXT50)
                         </td>
                         <td>
                             @for (int i = 0; i < lstC.Count; i++)
@@ -757,11 +757,11 @@
                 var ret = "<table class='table mdl-data-table striped'>";
                 for (var i = 0; i < uu.length; i++) {
                     var sum = 0;
-                    ret += "<tr onclick='link(" + uu[i].value.NUM_DOC+")' style='cursor:pointer'><td>" + uu[i].value.NUM_DOC + "</td><td>" + uu[i].value.TXT020 + "</td>";
-                    ret += "<td>" + uu[i].value.TXT500 + "</td>";
-                    ret += "<td>" + uu[i].value.FECHAD + "</td>";
-                    ret += "<td>" + uu[i].value.HORAC.split('.')[0] + "</td>";
-                    if (uu[i].value.ESTATUS_WF == "R") {
+                    ret += "<tr onclick='link(" + uu[i].value.NUM_DOC+")' style='cursor:pointer'><td>" + uu[i].value.NUM_DOC + "</td><td>" + uu[i].value.TSOL_ID + "</td>";
+                    ret += "<td>" + uu[i].value.GALL_ID + "</td>";
+                    ret += "<td>" + uu[i].value.ESTADO + "</td>";
+                    ret += "<td>" + uu[i].value.CIUDAD.split('.')[0] + "</td>";
+                    @*if (uu[i].value.ESTATUS_WF == "R") {
                         uu[i].value.ESTATUS = "red"
                         uu[i].value.ESTATUS_WF = "@foreach (TAT001.Entities.TEXTO t in ViewBag.textos){if(t.CAMPO_ID == "lbl_rejected"){<span>@t.TEXTOS</span>}}";
                     } else if (uu[i].value.ESTATUS_WF == "P") {
@@ -771,52 +771,16 @@
                         uu[i].value.ESTATUS = "green"
                     uu[i].value.ESTATUS_WF = "@foreach (TAT001.Entities.TEXTO t in ViewBag.textos){if(t.CAMPO_ID == "lbl_approved"){<span>@t.TEXTOS</span>}}";
                     }
-                    ret += "<td class='" + uu[i].value.ESTATUS + " white-text'>" + uu[i].value.ESTATUS_WF+"</td>";
+                    ret += "<td class='" + uu[i].value.ESTATUS + " white-text'>" + uu[i].value.ESTATUS_WF+"</td>";*@
+                    ret += "<td>" + uu[i].value.ESTATUS + "</td>";
                     ret += "<td>" + uu[i].value.CONCEPTO + "</td>";
                     ret += "<td>" + uu[i].value.MONTO_DOC_ML + "</td>";
                     for (var aa = 0; aa < uu.length; aa++) {
                         sum = sum + uu[aa].value.MONTO_DOC_ML;
                     }
-                    ret += "<td>" + sum.toFixed(2) + "</td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
-                    ret += "<td></td>";
+                    ret += "<td>" + toShow(sum.toFixed(2)) + "</td>";
+                    ret += "<td style='width:70%;'></td>";
+                    
                     ret += "</tr>";
                 }
                 ret += "</table>"

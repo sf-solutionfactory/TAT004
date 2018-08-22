@@ -150,7 +150,7 @@ namespace TAT001.Controllers
                          on N.PUESTOA_ID equals St.PUESTO_ID
                          where N.SOCIEDAD_ID.Equals(bukrs) & N.PUESTOC_ID.Equals(p) & St.SPRAS_ID.Equals(spras) & N.VERSION.Equals(dh.VERSION)
                          //where N.BUKRS.Equals(bukrs) 
-                         select new { N.POS,  N.PUESTOA_ID.Value, St.TXT50, N.MONTO, PRESUPUESTO = (bool)N.PRESUPUESTO.Value }).ToList();
+                         select new { N.POS, N.PUESTOA_ID.Value, St.TXT50, N.MONTO, PRESUPUESTO = (bool)N.PRESUPUESTO.Value }).ToList();
 
                 TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(bukrs) & a.ACTIVO == true).FirstOrDefault();
                 if (tl != null)
@@ -159,7 +159,7 @@ namespace TAT001.Controllers
                                where St.PUESTO_ID == 9 & St.SPRAS_ID.Equals(spras)
                                //where N.BUKRS.Equals(bukrs) 
                                select new { POS = 98, Value = St.PUESTO_ID, St.TXT50, PRESUPUESTO = false });
-                    foreach(var coll in col)
+                    foreach (var coll in col)
                     {
                         var colll = new { POS = 98, Value = coll.Value, coll.TXT50, MONTO = (decimal?)decimal.Parse("-1"), PRESUPUESTO = false };
                         c.Add(colll);
@@ -279,9 +279,10 @@ namespace TAT001.Controllers
             DOCUMENTO d = db.DOCUMENTOes.Find(num);
             if (d.DOCUMENTORECs.Count > 0)
             {
-                var c = (from DR in db.DOCUMENTORECs
+                Estatus e = new Estatus();
+                List<DOCUMENTO_MOD> c = (from DR in db.DOCUMENTORECs
                          join D in db.DOCUMENTOes
-                         on DR.DOC_REF  equals D.NUM_DOC
+                         on DR.DOC_REF equals D.NUM_DOC
                          join T in db.TSOLTs
                          on D.TSOL_ID equals T.TSOL_ID
                          join TA in db.TALLs
@@ -292,23 +293,53 @@ namespace TAT001.Controllers
                          & T.SPRAS_ID == spras
                          & G.SPRAS_ID == spras
                          & D.NUM_DOC != 0
-                         select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
+                         select new DOCUMENTO_MOD
+                         {
+                             NUM_DOC = D.NUM_DOC,
+                             TSOL_ID = T.TXT020,
+                             GALL_ID = G.TXT50,
+                             ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
+                             CIUDAD = D.HORAC.Value.ToString(),
+                             ESTATUS = D.ESTATUS,
+                             CONCEPTO = D.CONCEPTO,
+                             MONTO_DOC_ML = D.MONTO_DOC_ML
+                         }).ToList();
+                foreach (DOCUMENTO_MOD ddd in c)
+                {
+                    ddd.ESTATUS = e.getHtml(ddd.NUM_DOC);
+                }
                 JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
                 return cc;
             }
             else
             {
-                var c = (from D in db.DOCUMENTOes
-                         join T in db.TSOLTs
-                         on D.TSOL_ID equals T.TSOL_ID
-                         join TA in db.TALLs
-                         on D.TALL_ID equals TA.ID
-                         join G in db.GALLTs
-                         on TA.GALL_ID equals G.GALL_ID
-                         where D.DOCUMENTO_REF == num
-                         & T.SPRAS_ID == spras
-                         & G.SPRAS_ID == spras
-                         select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML });
+                Estatus e = new Estatus();
+                List<DOCUMENTO_MOD> c = (from D in db.DOCUMENTOes
+                                     join T in db.TSOLTs
+                                     on D.TSOL_ID equals T.TSOL_ID
+                                     join TA in db.TALLs
+                                     on D.TALL_ID equals TA.ID
+                                     join G in db.GALLTs
+                                     on TA.GALL_ID equals G.GALL_ID
+                                     where D.DOCUMENTO_REF == num
+                                     & T.SPRAS_ID == spras
+                                     & G.SPRAS_ID == spras
+                                     //select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML }).ToList();
+                                     select new DOCUMENTO_MOD
+                                     {
+                                         NUM_DOC = D.NUM_DOC,
+                                         TSOL_ID = T.TXT020,
+                                         GALL_ID = G.TXT50,
+                                         ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
+                                         CIUDAD = D.HORAC.Value.ToString(),
+                                         ESTATUS = D.ESTATUS,
+                                         CONCEPTO = D.CONCEPTO,
+                                         MONTO_DOC_ML = D.MONTO_DOC_ML
+                                     }).ToList();
+                foreach (DOCUMENTO_MOD ddd in c)
+                {
+                    ddd.ESTATUS = e.getHtml(ddd.NUM_DOC);
+                }
                 JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
                 return cc;
             }
