@@ -22,7 +22,7 @@ function soportes(tsol, spras) {
                     '<input type="text" value="' + pp[i].txt50 + '" name="labels_soporte" hidden />' +
                     '<div class="file-field input-field col s12">' +
                     '<div class="btn-small" style="float:left;"> ' +
-                    '<span>Examinar</span > ' +
+                    '<span class="span_fileload">Examinar</span > ' +
                     '<input class="file_soporte';
                 if (pp[i].oblig) {
                     input += ' nec';

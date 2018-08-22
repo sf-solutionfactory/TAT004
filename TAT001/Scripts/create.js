@@ -3066,7 +3066,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         //Estimado apoyo
         var col13 = "";
         if (_decimales === '.') {
-            col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
             col13 = toNum(col13);
         } else if (_decimales === ',') {
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
