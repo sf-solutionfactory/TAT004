@@ -2275,6 +2275,8 @@ namespace TAT001.Controllers
                                 docF = dOCUMENTO.DOCUMENTOF[0];
                                 docF.NUM_DOC = dOCUMENTO.NUM_DOC;
                                 docF.POS = k + 1;
+                                if (fact[k].Length > 4000)
+                                    fact[k] = fact[k].Substring(0, 4000);
                                 docF.FACTURAK = fact[k];
                                 facts.Add(new DOCUMENTOF
                                 {

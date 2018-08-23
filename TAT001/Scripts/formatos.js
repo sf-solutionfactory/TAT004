@@ -39,8 +39,9 @@ function toNum(string) {
             string = string.replace(')', '');
             //string = string.replace(_miles, '');
             if (_miles === '.')
-                _miles = '\.';
-            string = string.replace(new RegExp(_miles, 'g'), '');
+                string = string.replace(/\./g, '')
+            else
+                string = string.replace(new RegExp(_miles, 'g'), '');
             string = string.replace(_decimales, '.');
             string = string * _i;
         } else {
@@ -104,7 +105,7 @@ function toShowPorc(string) {
     else {
         $(this).val("0" + _decimales + "00%");
     }
-    if (_i < 0) string = '('+ string + ')';
+    if (_i < 0) string = '(' + string + ')';
     return string;
 }
 

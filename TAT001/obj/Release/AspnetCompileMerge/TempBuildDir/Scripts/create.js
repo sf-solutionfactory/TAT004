@@ -620,18 +620,18 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.FormSelect.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -697,7 +697,7 @@ $(document).ready(function () {
         updateFooter();
     });
 
-    $('#tab_fin').on("click", function (e) {
+    $('#tab_finn').on("click", function (e) {
         //LEJ 09.07.18----------------------------
         var _miles = $("#miles").val();
         var _decimales = $("#dec").val();
@@ -3066,7 +3066,7 @@ function updateTotalRow(t, tr, tdp_apoyo, totals, total_val) {
         //Estimado apoyo
         var col13 = "";
         if (_decimales === '.') {
-            col13 = tr.find("td:eq(" + (13 + index) + ") input").val().replace(',', '');
+            col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
             col13 = toNum(col13);
         } else if (_decimales === ',') {
             col13 = tr.find("td:eq(" + (13 + index) + ") input").val();
@@ -5516,8 +5516,10 @@ function selectCliente(valu) {
                     if (!$('#payer_id').hasClass("prelacionada")) {
                         $('#payer_nombre').val(data.PAYER_NOMBRE);
                         $("label[for='payer_nombre']").addClass("active");
+                        $("#payer_nombre").trigger('change');
                         $('#payer_email').val(data.PAYER_EMAIL);
                         $("label[for='payer_email']").addClass("active");
+                        $("#payer_email").trigger('change');
                     }
                     $("#txt_vkorg").val(data.VKORG);//RSG 05.07.2018
                     $("#txt_vtweg").val(data.VTWEG2);//RSG 05.07.2018
@@ -5545,6 +5547,8 @@ function selectCliente(valu) {
                     $("label[for='payer_email']").removeClass("active");
                     $("#txt_vkorg").val("");//RSG 05.07.2018
                     $("#txt_vtweg").val("");//RSG 05.07.2018
+                    $("#payer_nombre").trigger('change');
+                    $("#payer_email").trigger('change');
                 }
 
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
@@ -5567,6 +5571,8 @@ function selectCliente(valu) {
                 document.getElementById("loader").style.display = "none";//RSG 03.07.2018
                 $("#txt_vkorg").val("");//RSG 05.07.2018
                 $("#txt_vtweg").val("");//RSG 05.07.2018
+                $("#payer_nombre").trigger('change');
+                $("#payer_email").trigger('change');
             },
             async: true
         });
@@ -5585,6 +5591,8 @@ function selectCliente(valu) {
         $("label[for='payer_nombre']").removeClass("active");
         $('#payer_email').val("");
         $("label[for='payer_email']").removeClass("active");
+        $("#payer_nombre").trigger('change');
+        $("#payer_email").trigger('change');
     }
 
 }

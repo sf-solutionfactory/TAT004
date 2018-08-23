@@ -164,7 +164,7 @@
             <a id="btn_borradore" class="btn btn-small" style="display :@display">Descartar Borrador</a>@*//B20180625 MGC2 2018.07.04*@
             <input type="text" id="borradore" name="borradore" value="@ViewBag.borradore" hidden /> @*//B20180625 MGC2 2018.07.04*@
         }
-        <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
+        <a href="@Url.Action("Index", "Home" )" class="btn btn-small" id="btn_cancel">Cancelar</a>
         <a id="btn_guardarh" class="btn btn-small disabled" onclick="guardah()">Enviar</a>
         <script>
             function guardah() {
@@ -485,7 +485,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
                                     @*@Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })*@
-                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada } })
+                                    @Html.EditorFor(model => model.PAYER_ID, new { htmlAttributes = new { @id = "payer_id", @class = "form-control " + @ViewBag.relacionada, @onchange = @"selectCliente(this.value)" } })
                                     @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id", @id = "lbl_payer" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -614,19 +614,22 @@
                                             var elem = document.querySelectorAll('select');
                                             var instance = M.FormSelect.init(elem, []);
                                             pickerFecha2(".format_date");
+
+                                            $("#fechai_vig").trigger('change');
+                                            $("#fechaf_vig").trigger('change');
                                         }
                                     </script>
                                     <div class="col s6">
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                                            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value; $('#fechai_vig').trigger('change');" />
                                             @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechade" }) @*B20180801 MGC Textos*@
                                         </div>
                                         <div class="input-field col s12">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                                            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value; $('#fechaf_vig').trigger('change');" />
                                             @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechahasta" }) @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
@@ -1132,8 +1135,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                ;
+                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1150,7 +1153,7 @@
 
                                                     @archivos[i].CLASE
                                                     <div class="file-field input-field">
-                                                        <button  name="archivo" class="btn lbl_cargar" type="submit" value="@archivos[i].PATH">DESCARGAR</button> @*B20180801 MGC Textos*@
+                                                        <button name="archivo" class="btn lbl_cargar" type="submit" value="@archivos[i].PATH">DESCARGAR</button> @*B20180801 MGC Textos*@
                                                         <div class="file-path-wrapper">
                                                             <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
                                                         </div>
@@ -1219,10 +1222,10 @@
                                         <label id="lbl_fechadrev" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                     </div>
                                     @*<div class="row">*@
-                                        <div class="input-field col s12">
-                                            <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
-                                            <label id="lbl_notasrev" for="notas_soporte">Razón del reverso</label> @*B20180801 MGC Textos*@
-                                        </div>
+                                    <div class="input-field col s12">
+                                        <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+                                        <label id="lbl_notasrev" for="notas_soporte">Razón del reverso</label> @*B20180801 MGC Textos*@
+                                    </div>
                                     @*</div>*@
                                     <script>
                                         function maxchar_notas() {
@@ -1238,8 +1241,8 @@
                                     </script>
                                     <div class="input-field col s12">
                                         @*<div class="col-md-10">*@
-                                            @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
-                                            @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tiporev", @for = "treversa_id" }) @*B20180801 MGC Textos*@
+                                        @Html.DropDownList("TREVERSA", null, "", htmlAttributes: new { @id = "treversa_id", @class = "form-control", onchange = @"selectTsolr(this.value)" })
+                                        @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_tiporev", @for = "treversa_id" }) @*B20180801 MGC Textos*@
                                         @*</div>*@
                                     </div>
                                     @*<a id="btn_guardarr" class="btn waves-effect waves-light btn-small disabled">Enviar</a>*@
@@ -1616,7 +1619,7 @@
                                 {
                                     <div class="file-field input-field" id="cargar_excel" style="display:none">
                                         <div class="btn">
-                                            <span id="span_fileload">Examinar</span>  @*B20180801 MGC Textos*@
+                                            <span class="span_fileload">Examinar</span>  @*B20180801 MGC Textos*@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
@@ -2208,3 +2211,277 @@
             </div>
         </div>
     }
+
+    <div id="validaciones">
+
+        <script>
+            var lista2 = [
+                ['state_id', 'c-!=null', 'Estado: No puede ser vacío', 'error', 'focusout', 'tab_info'],
+                ['city_id', 'c-!=null', 'Ciudad: No puede ser vacío', 'error', 'focusout', 'tab_info'],
+                ['tsol_id', 'c-!=null', 'Tipo de solicitud: No puede ser vacío', 'error', 'change', 'tab_info'],
+                ['tall_id', 'c-!=null', 'Clasificación: No puede ser vacío', 'error', 'change', 'tab_info'],
+                ['payer_id', 'c-!=null', 'Cliente: No puede ser vacío', 'error', 'focusout', 'tab_info'],
+                ['payer_id', 'n-', 'Cliente: Debe ser numérico', 'info', 'focusout', 'tab_info'],
+                ['payer_id', 'l-10', 'Cliente: Debe tener longitude de 10', 'error', 'focusout', 'tab_info'],
+                ['payer_nombre', 'c-!=null', 'Contacto: No puede ser vacío', 'error', 'change', 'tab_info'],
+                ['payer_email', 'c-!=null', 'Correo electrónico: No puede ser vacío', 'error', 'change', 'tab_info'],
+                ['concepto', 'c-!=null', 'Concepto: No puede ser vacío', 'error', 'focusout', 'tab_info'],
+                ['fechai_vig', 'c-!=null', 'Fecha inicio: No puede ser vacío', 'error', 'change', 'tab_info'],
+                ['fechaf_vig', 'c-!=null', 'Fecha fin: No puede ser vacío', 'error', 'change', 'tab_info'],
+            ]
+            var lista = [
+                {
+                    ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'tall_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tall_id', MSG: 'Clasificación: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'state_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'state_id', MSG: 'Estado: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'city_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'city_id', MSG: 'Ciudad: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'concepto', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Concepto: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'notas_txt', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'notas_txt', MSG: 'Mecánica: no puede ser vacío',
+                    TIPO: 'info', COLOR: 'yellow', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'payer_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_id', MSG: 'Cliente: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'payer_name', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_name', MSG: 'Contacto: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'payer_email', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_email', MSG: 'Correo electrónico: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig2', MSG: 'Fecha inicio: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'fechaf_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechaf_vig2', MSG: 'Fecha inicio: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
+                }, {
+                    ID: 'FACTURAK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'FACTURAK', MSG: 'Factura kelloggs: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'FACTURAK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'FACTURAK', MSG: 'Factura kelloggs: La longitud máxima es de 10, se truncará el contenido',
+                    TIPO: 'info', COLOR: 'yellow', COND: 'lm-10', ACTION: 'focusout'
+                }, {
+                    ID: 'EJERCICIOK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'EJERCICIOK', MSG: 'Ejercicio: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
+                }, {
+                    ID: 'file_soporte', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_soporte', ELEM: 'file_soporte', MSG: 'Soportes: verificar soportes obligatorios',
+                    TIPO: 'error', COLOR: 'red', COND: 'f-', ACTION: 'focusout'
+                }
+            ];
+            var div = $("#validaciones");
+            var app = "<script>"
+            for (var i = 0; i < lista.length; i++) {
+                var campo = document.getElementById(lista[i].ID);
+                if (campo != undefined)
+                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "')}); ";
+                else
+                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "');e.preventDefault(); e.stopPropagation();});";
+            }
+
+            app += "$('#tab_soporte').on('click', function (e) { var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
+            app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont'); if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
+            //app += "function validarInfo(){";
+            //for (var i = 0; i < lista.length; i++) {
+            //    app += "if(!valido('" + lista[i][0] + "', '" + lista[i][1] + "')){if('" + lista[i][3] + "' == 'error'){selectTab('Informacion_cont')}}";
+            //}
+            //app += "}";
+            //app += " if(!valid('payer_id')){if('error' == 'error'){selectTab('Informacion_cont')}}";
+
+            div.append(app);
+
+            function validar(id, condicion, mensaje, icon, color, elem) {
+                var campoVal = document.getElementById(id);
+                var campo = document.getElementById(elem);
+
+                if (campo != undefined & campoVal != undefined) {
+                    var value = campoVal.value;
+                    var valid = valido(value, condicion);
+                    var tipo_condicion = condicion.split("-")[0];
+                    var valor_condicion = condicion.split("-")[1];
+
+                    if (!valid) {
+                        //dismiss(id + "-" + tipo_condicion);
+                        //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                        toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                        esInvalido(campo);
+                    } else {
+                        esValido(campo);
+                        dismiss(id + "-" + tipo_condicion);
+                    }
+                }
+            }
+
+            function validarC(id, condicion, mensaje, icon, color, elem) {
+                var campoVal = document.querySelectorAll("." + id);
+                var campo = document.querySelectorAll("." + elem);
+                if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
+                    for (var i = 0; i < campoVal.length; i++) {
+                        var value = $(campoVal[i]).find('input').val();
+                        if (value != undefined) {
+                            var valid = valido(value, condicion);
+                            var tipo_condicion = condicion.split("-")[0];
+                            var valor_condicion = condicion.split("-")[1];
+
+                            if (!valid) {
+                                //dismiss(id + "-" + tipo_condicion);
+                                //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                                toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                esInvalidoC(campo[i]);
+                            } else {
+                                esValidoC(campo[i]);
+                                dismiss(id + "-" + tipo_condicion);
+                            }
+                            i = campoVal.length;
+                        }
+                    }
+                }
+            }
+
+            function valido(value, condicion) {
+                //var campo = document.getElementById(id);
+                //var value = campo.value;
+                var valid = true;
+                var tipo_condicion = condicion.split("-")[0];
+                var valor_condicion = condicion.split("-")[1];
+
+                if (tipo_condicion != "") {
+                    if (tipo_condicion == "c") {
+                        if (valor_condicion == "!=null") {
+                            if (value == "")
+                                valid = false;
+                        }
+                    } else if (tipo_condicion == "n") {
+                        if (tipo_condicion == 'n') {
+                            if (!$.isNumeric(value))
+                                valid = false;
+                        }
+                    } else if (tipo_condicion == "l") {
+                        var longitud = parseInt(valor_condicion);
+                        if (longitud > 0) {
+                            if (value.length < longitud)
+                                valid = false;
+                        }
+                    } else if (tipo_condicion == "lm") {
+                        var longitud = parseInt(valor_condicion);
+                        if (longitud > 0) {
+                            if (value.length > longitud)
+                                valid = false;
+                        }
+                    } else if (tipo_condicion == "f") {
+                        valid = evaluarFiles();
+                    }
+                }
+                return valid;
+            }
+
+            function toast(clases, dura, icon, mensaje, color) {
+                dismiss(clases);
+                M.toast({ classes: clases, displayLength: dura, html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+            }
+
+            function dismiss(clase) {
+                var toastElement = document.querySelectorAll('.' + clase);
+                for (var i = 0; i < toastElement.length; i++) {
+                    var toastInstance = M.Toast.getInstance(toastElement[i]);
+                    toastInstance.dismiss();
+                }
+            }
+
+            function selectTab(tab, e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var ell = document.getElementById("tabs");
+                var instances = M.Tabs.getInstance(ell);
+                instances.select(tab);
+            }
+
+            function esValido(campo) {
+                campo.classList.add("valid");
+                campo.classList.remove("invalid");
+            }
+            function esInvalido(campo) {
+                campo.classList.add("invalid");
+                campo.classList.remove("valid");
+            }
+            function esValidoC(campo) {
+                $(campo).find('input').addClass("valid");
+                $(campo).find('input').removeClass("invalid");
+            }
+            function esInvalidoC(campo) {
+                $(campo).find('input').addClass("invalid");
+                $(campo).find('input').removeClass("valid");
+            }
+
+            function validarTab(e, tabId, tab) {
+                //M.Toast.dismissAll();
+                var ban = true;
+                for (var i = 0; i < lista.length; i++) {
+                    if (lista[i].TAB == tabId) {
+                        var condicion = lista[i].COND;
+                        var id = lista[i].ID;
+                        var campoVal = document.getElementById(lista[i].ID);
+                        var campo = document.getElementById(lista[i].ELEM);
+
+                        var clase = false;
+                        if (campoVal == undefined & campo == undefined) {
+                            campoVal = document.querySelectorAll("." + lista[i].ID);
+                            campo = document.querySelectorAll("." + lista[i].ELEM);
+                            clase = true;
+                        }
+
+                        if (campo != undefined & campoVal != undefined) {
+                            var icon = lista[i].TIPO;
+                            var color = lista[i].COLOR;
+                            var mensaje = lista[i].MSG;
+                            var tipo_condicion = condicion.split("-")[0];
+                            var valor_condicion = condicion.split("-")[1];
+
+                            if (!clase) {
+                                var b = valido(campoVal.value, lista[i].COND);
+                                if (!b) {
+                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                    if (lista[i].TIPO == 'error') {
+                                        esInvalido(campo);
+                                        selectTab(tab, e);
+                                        ban = false;
+                                    }
+                                }
+                            } else {
+                                for (var j = 0; j < campoVal.length; j++) {
+                                    var value = $(campoVal[j]).find('input').val();
+                                    if (value != undefined | tipo_condicion == 'f') {
+                                        if (tipo_condicion == 'f')
+                                            value = '';
+                                        var valid = valido(value, condicion);
+                                        if (!valid) {
+                                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                            if (lista[i].TIPO == 'error') {
+                                                esInvalidoC(campo[i]);
+                                                selectTab(tab, e);
+                                                ban = false;
+                                            }
+                                        } else {
+                                            dismiss(id + "-" + tipo_condicion);
+                                        }
+                                        j = campoVal.length;
+                                    } else {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return ban;
+            }
+        </script>
+    </div>

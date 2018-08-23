@@ -193,8 +193,14 @@ namespace TAT001.Controllers
                     ld.ESTATUS_CLASS = e.getClass(item);
 
                     ld.PAYER_ID = item.PAYER_ID;
-                    ld.CLIENTE = item.CLIENTE.NAME1;
-                    ld.CANAL = item.CLIENTE.CANAL;
+                    if (item.CLIENTE == null)
+                        item.CLIENTE = db.CLIENTEs.Where(x => x.KUNNR == item.PAYER_ID).FirstOrDefault();
+
+                    if (item.CLIENTE != null)
+                    {
+                        ld.CLIENTE = item.CLIENTE.NAME1;
+                        ld.CANAL = item.CLIENTE.CANAL;
+                    }
                     ld.TSOL = item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT020;
                     ld.TALL = item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                     foreach (CUENTA cuenta in db.CUENTAs.Where(x => x.SOCIEDAD_ID.Equals(item.SOCIEDAD_ID)).ToList())
