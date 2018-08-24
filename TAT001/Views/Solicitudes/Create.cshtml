@@ -237,11 +237,11 @@
                                     <div class="col-md-10">
                                         @if (ViewBag.relacionada == "")
                                         {
-                                            @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "');" })
+                                            @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "'); M.Toast.dismissAll();" })
                                         }
                                         else if (ViewBag.ligada)
                                         {
-                                            @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "');" })
+                                            @Html.DropDownList("TSOL_ID", null, "", htmlAttributes: new { @id = "tsol_id", @class = "form-control", onchange = @"selectTsol(this.value);soportes(this.value, '" + Session["spras"].ToString() + "'); M.Toast.dismissAll();" })
                                         }
                                         else
                                         {
@@ -570,6 +570,48 @@
                                     @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email", @id = "lbl_payeremail" }) @*B20180801 MGC Textos*@
                                 </div>
+                                <script>
+                                    auto(document).ready(function () {
+                                        auto("#payer_nombre").autocomplete({
+                                            source: function (request, response) {
+                                                var kunnr = document.getElementById("payer_id").value;
+                                                var vk = document.getElementById("txt_vkorg").value;
+                                                var vt = document.getElementById("txt_vtweg").value;
+
+
+                                                auto.ajax({
+                                                    url: "../Listas/contactos",
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    data: { Prefix: request.term, vkorg: vk, vtweg: vt, kunnr: kunnr },
+                                                    success: function (data) {
+                                                        response(auto.map(data, function (item) {
+                                                            return { label: item.NOMBRE + " - " + item.EMAIL, value: item.NOMBRE, mail: item.EMAIL };
+                                                        }))
+                                                    }
+                                                })
+                                            },
+                                            messages: {
+                                                noResults: '',
+                                                results: function (resultsCount) { }
+                                            },
+                                            change: function (e, ui) {
+                                                if (!(ui.item)) {
+                                                    e.target.value = "";
+                                                }
+                                            },
+
+                                            select: function (event, ui) {
+
+                                                var label = ui.item.label;
+                                                var value = ui.item.value;
+                                                var email = ui.item.mail;
+                                                document.getElementById('payer_email').value = email;
+                                                //selectCliente(value);
+                                            }
+                                        });
+                                    })
+                                </script>
                             </div>
                         </div>
                     </div>
@@ -579,6 +621,14 @@
                             <div class="row" style="margin-bottom:0">
                                 @if (ViewBag.relacionada == "")
                                 {
+                                    <div class="col s12">
+                                        <p>
+                                            <label>
+                                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                                <span id="span_docrec">Documento recurrente</span>
+                                            </label>
+                                        </p>
+                                    </div>
                                     <div class="col s12">
                                         <label class="col s6">
                                             <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
@@ -617,6 +667,8 @@
 
                                             $("#fechai_vig").trigger('change');
                                             $("#fechaf_vig").trigger('change');
+
+                                            cambiaRec();
                                         }
                                     </script>
                                     <div class="col s6">
@@ -1135,8 +1187,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                ;
+                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                    ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1269,13 +1321,12 @@
                         @*<h5>Recurrente</h5>*@
                         <input type="hidden" id="txt_trec" />
                         <div class="row" style="margin-bottom:0;">
-                            <p>
-                                <label>
-                                    @*<input id="check_reccurrentes" name="unarect" type="hidden" value="@ViewBag.RECURR" />*@
-                                    <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                    <span id="span_docrec">Documento recurrente</span>@*B20180801 MGC Textos*@
-                                </label>
-                            </p>
+                            @*<p>
+                                    <label>
+                                        <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                        <span id="span_docrec">Documento recurrente</span>
+                                    </label>
+                                </p>*@
                             <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;">
                                 <!--RSG 01.08.2018-->
                                 <thead>
@@ -2275,6 +2326,21 @@
                 }, {
                     ID: 'file_soporte', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_soporte', ELEM: 'file_soporte', MSG: 'Soportes: verificar soportes obligatorios',
                     TIPO: 'error', COLOR: 'red', COND: 'f-', ACTION: 'focusout'
+                }, {
+                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto debe ser mayor a cero',
+                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
+                },{
+                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto no corresponde',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=-total_dis', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
+                }, {
+                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto debe ser mayor a cero',
+                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'C' }]
+                }, {
+                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto no corresponde',
+                    TIPO: 'error', COLOR: 'red', COND: 'c-!=-total_dis', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'C' }]
+                }, {
+                    ID: 'bmonto_apoyo', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'bmonto_apoyo', MSG: 'Porcentaje debe ser mayor a cero',
+                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'P' }, { id: 'select_dis', val: 'M' }]
                 }
             ];
             var div = $("#validaciones");
@@ -2282,13 +2348,17 @@
             for (var i = 0; i < lista.length; i++) {
                 var campo = document.getElementById(lista[i].ID);
                 if (campo != undefined)
-                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "')}); ";
+                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ")}); ";
                 else
-                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "');e.preventDefault(); e.stopPropagation();});";
+                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
             }
 
             app += "$('#tab_soporte').on('click', function (e) { var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
-            app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont'); if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
+            app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
+                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
+            app += "$('#tab_fin').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
+                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} " +
+                " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
             //app += "function validarInfo(){";
             //for (var i = 0; i < lista.length; i++) {
             //    app += "if(!valido('" + lista[i][0] + "', '" + lista[i][1] + "')){if('" + lista[i][3] + "' == 'error'){selectTab('Informacion_cont')}}";
@@ -2298,86 +2368,116 @@
 
             div.append(app);
 
-            function validar(id, condicion, mensaje, icon, color, elem) {
+            function validar(id, condicion, mensaje, icon, color, elem, ii) {
                 var campoVal = document.getElementById(id);
                 var campo = document.getElementById(elem);
 
                 if (campo != undefined & campoVal != undefined) {
                     var value = campoVal.value;
-                    var valid = valido(value, condicion);
-                    var tipo_condicion = condicion.split("-")[0];
-                    var valor_condicion = condicion.split("-")[1];
+                    if (condiciones(ii)) {
+                        var valid = valido(value, condicion, ii);
+                        var tipo_condicion = condicion.split("-")[0];
+                        var valor_condicion = condicion.split("-")[1];
 
-                    if (!valid) {
-                        //dismiss(id + "-" + tipo_condicion);
-                        //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                        toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                        esInvalido(campo);
-                    } else {
-                        esValido(campo);
-                        dismiss(id + "-" + tipo_condicion);
+                        if (!valid) {
+                            //dismiss(id + "-" + tipo_condicion);
+                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                            esInvalido(campo);
+                        } else {
+                            esValido(campo);
+                            dismiss(id + "-" + tipo_condicion);
+                        }
                     }
                 }
             }
 
-            function validarC(id, condicion, mensaje, icon, color, elem) {
+            function validarC(id, condicion, mensaje, icon, color, elem, ii) {
                 var campoVal = document.querySelectorAll("." + id);
                 var campo = document.querySelectorAll("." + elem);
                 if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
                     for (var i = 0; i < campoVal.length; i++) {
                         var value = $(campoVal[i]).find('input').val();
                         if (value != undefined) {
-                            var valid = valido(value, condicion);
-                            var tipo_condicion = condicion.split("-")[0];
-                            var valor_condicion = condicion.split("-")[1];
+                            if (condiciones(ii)) {
+                                var valid = valido(value, condicion, ii);
+                                var tipo_condicion = condicion.split("-")[0];
+                                var valor_condicion = condicion.split("-")[1];
 
-                            if (!valid) {
-                                //dismiss(id + "-" + tipo_condicion);
-                                //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                                toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                esInvalidoC(campo[i]);
-                            } else {
-                                esValidoC(campo[i]);
-                                dismiss(id + "-" + tipo_condicion);
+                                if (!valid) {
+                                    //dismiss(id + "-" + tipo_condicion);
+                                    //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                    esInvalidoC(campo[i]);
+                                } else {
+                                    esValidoC(campo[i]);
+                                    dismiss(id + "-" + tipo_condicion);
+                                }
+                                i = campoVal.length;
                             }
-                            i = campoVal.length;
                         }
                     }
                 }
             }
 
-            function valido(value, condicion) {
-                //var campo = document.getElementById(id);
-                //var value = campo.value;
-                var valid = true;
-                var tipo_condicion = condicion.split("-")[0];
-                var valor_condicion = condicion.split("-")[1];
+            function condiciones(ii) {
+                var ban = true;
+                var cont = 0;
+                if (lista[ii].CONDICION != undefined)
+                    if (lista[ii].CONDICION != "undefined")
+                        if (lista[ii].CONDICION.length > 0) {
+                            for (var i = 0; i < lista[ii].CONDICION.length; i++) {
+                                var ccc = lista[ii].CONDICION;
+                                if (document.getElementById(ccc[i].id).value == ccc[i].val)
+                                    cont++;
+                            }
+                            if (cont != lista[ii].CONDICION.length)
+                                ban = false;
+                        }
+                return ban;
+            }
 
-                if (tipo_condicion != "") {
-                    if (tipo_condicion == "c") {
-                        if (valor_condicion == "!=null") {
-                            if (value == "")
-                                valid = false;
+            function valido(value, condicion, ii) {
+                var ban = true;
+                var valid = true;
+                if (ban) {
+                    var tipo_condicion = condicion.split("-")[0];
+                    var valor_condicion = condicion.split("-")[1];
+
+                    if (tipo_condicion != "") {
+                        if (tipo_condicion == "c") {
+                            if (valor_condicion == "!=null") {
+                                if (value == "")
+                                    valid = false;
+                            } else if (valor_condicion == "!=") {
+                                var compara = $("#" + condicion.split("-")[2]).text();
+                                if (parseFloat(toNum(value)) != parseFloat(toNum(compara)))
+                                        valid = false
+                            } else if (valor_condicion == ">") {
+                                var compara = condicion.split("-")[2];
+                                if (parseFloat(toNum(value)) <= parseFloat(toNum(compara)))
+                                        valid = false
+                            }
+                        } else if (tipo_condicion == "n") {
+                            if (tipo_condicion == 'n') {
+                                if (!$.isNumeric(value))
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "l") {
+                            var longitud = parseInt(valor_condicion);
+                            if (longitud > 0) {
+                                if (value.length < longitud)
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "lm") {
+                            var longitud = parseInt(valor_condicion);
+                            if (longitud > 0) {
+                                if (value.length > longitud)
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "f") {
+                            valid = evaluarFiles();
                         }
-                    } else if (tipo_condicion == "n") {
-                        if (tipo_condicion == 'n') {
-                            if (!$.isNumeric(value))
-                                valid = false;
-                        }
-                    } else if (tipo_condicion == "l") {
-                        var longitud = parseInt(valor_condicion);
-                        if (longitud > 0) {
-                            if (value.length < longitud)
-                                valid = false;
-                        }
-                    } else if (tipo_condicion == "lm") {
-                        var longitud = parseInt(valor_condicion);
-                        if (longitud > 0) {
-                            if (value.length > longitud)
-                                valid = false;
-                        }
-                    } else if (tipo_condicion == "f") {
-                        valid = evaluarFiles();
                     }
                 }
                 return valid;
@@ -2385,7 +2485,12 @@
 
             function toast(clases, dura, icon, mensaje, color) {
                 dismiss(clases);
-                M.toast({ classes: clases, displayLength: dura, html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                M.toast({
+                    classes: clases,
+                    displayLength: dura,
+                    html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje
+                    + '<button class="btn-small btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>'
+                });
             }
 
             function dismiss(clase) {
@@ -2446,13 +2551,19 @@
                             var valor_condicion = condicion.split("-")[1];
 
                             if (!clase) {
-                                var b = valido(campoVal.value, lista[i].COND);
-                                if (!b) {
-                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                    if (lista[i].TIPO == 'error') {
-                                        esInvalido(campo);
-                                        selectTab(tab, e);
-                                        ban = false;
+                                if (condiciones(i)) {
+                                    var b = valido(campoVal.value, lista[i].COND, i);
+                                    if (!b) {
+                                        toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                        if (lista[i].TIPO == 'error') {
+                                            esInvalido(campo);
+                                            selectTab(tab, e);
+                                            campo.focus();
+                                            ban = false;
+                                        }
+                                    } else {
+                                        if (lista[i].TIPO == 'error')
+                                            dismiss(id + "-" + tipo_condicion);
                                     }
                                 }
                             } else {
@@ -2461,18 +2572,21 @@
                                     if (value != undefined | tipo_condicion == 'f') {
                                         if (tipo_condicion == 'f')
                                             value = '';
-                                        var valid = valido(value, condicion);
-                                        if (!valid) {
-                                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                            if (lista[i].TIPO == 'error') {
-                                                esInvalidoC(campo[i]);
-                                                selectTab(tab, e);
-                                                ban = false;
+                                        if (condiciones(i)) {
+                                            var valid = valido(value, condicion, i);
+                                            if (!valid) {
+                                                toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                                if (lista[i].TIPO == 'error') {
+                                                    esInvalidoC(campo[i]);
+                                                    selectTab(tab, e);
+                                                    $(campo).find('input').focus();
+                                                    ban = false;
+                                                }
+                                            } else {
+                                                dismiss(id + "-" + tipo_condicion);
                                             }
-                                        } else {
-                                            dismiss(id + "-" + tipo_condicion);
+                                            j = campoVal.length;
                                         }
-                                        j = campoVal.length;
                                     } else {
 
                                     }

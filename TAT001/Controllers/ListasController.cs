@@ -861,6 +861,32 @@ namespace TAT001.Controllers
             doc.DOCUMENTOP = docs;
             return PartialView("~/Views/CartaV/_PartialMatTr.cshtml", doc);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult contactos(string Prefix, string vkorg, string vtweg, string kunnr)
+        {
+            if (Prefix == null)
+                Prefix = "";
+
+            TAT001Entities db = new TAT001Entities();
+
+            var c = (from m in db.CONTACTOCs
+                     where m.NOMBRE.Contains(Prefix) && m.ACTIVO == true
+                         && m.VKORG == vkorg && m.VTWEG == vtweg
+                         /*&& m.SPART == spart*/ && m.KUNNR == kunnr
+                     select new { m.NOMBRE, m.EMAIL }).ToList();
+            if (c.Count == 0)
+            {
+                var c2 = (from m in db.CONTACTOCs
+                          where m.EMAIL.Contains(Prefix) && m.ACTIVO == true
+                              && m.VKORG == vkorg && m.VTWEG == vtweg
+                              /*&& m.SPART == spart*/ && m.KUNNR == kunnr
+                          select new { m.NOMBRE, m.EMAIL }).ToList();
+                c.AddRange(c2);
+            }
+            JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
+            return cc;
+        }
 
     }
 }

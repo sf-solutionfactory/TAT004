@@ -697,7 +697,7 @@ $(document).ready(function () {
         updateFooter();
     });
 
-    $('#tab_finn').on("click", function (e) {
+    $('#tab_fin').on("click", function (e) {
         //LEJ 09.07.18----------------------------
         var _miles = $("#miles").val();
         var _decimales = $("#dec").val();
@@ -5215,6 +5215,9 @@ function evaluarFiles() {
                 //var labeltext = $(sitd).children().eq(0).html();
                 //M.toast({ html: 'Error! Archivo Obligatorio: ' + lbltext });
                 message = 'Error! Archivo Obligatorio: ' + lbltext;
+                var inputid = $(files[i]).attr('id');
+                var ii = inputid.split('file_')[1];
+                document.getElementById("fileinput_" + ii).classList.add("invalid");
                 break;
             }
         }
@@ -5348,6 +5351,7 @@ function selectDis(val) {
             $('#div_montobase').css("display", "none");//none
             $('#div_apoyobase').css("display", "inherit");
         }
+        $('#monto_dis').val("");
         //RSG 09.07.2018------------------------------------
     } else {
         $('#div_montobase').css("display", "none");

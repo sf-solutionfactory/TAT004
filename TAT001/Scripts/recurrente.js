@@ -66,9 +66,11 @@ $(document).ready(function () {
     });
     //LEJ 31.07.2018---------------------
     var _rec = $('#valRec').val();
-    if (_rec > 0 || _rec != '') {
-        $('#check_recurrente').prop('checked', true);
-        showPrTable();
+    if (_rec != undefined) {
+        if (_rec > 0 || _rec != '') {
+            $('#check_recurrente').prop('checked', true);
+            showPrTable();
+        }
     }
     if ($('#chk_ligada').is(":checked")) {
         $("#div_objq").removeClass("hide");
@@ -118,6 +120,7 @@ function fillTable(t, no, fecha, mt, porc) {
 }
 
 function cambiaRec() {
+    $("#tabs_rec").addClass("disabled");
     var campo = document.getElementById("check_recurrente");
     var radio = document.getElementById("btn-peri");
     var table = $('#table_rec').DataTable();
@@ -144,6 +147,7 @@ function cambiaRec() {
         //var ej2 = document.getElementById("aniof_id").value;
     }
     if (campo.checked) {
+        $("#tabs_rec").removeClass("disabled");
         if (montoo === "") {
             var dist = $('#table_dis').DataTable();
             var montooo = 0.00;
@@ -155,7 +159,7 @@ function cambiaRec() {
             });
             montoo = montooo;
         }
-        if ((montoo > 0 & tipo == "PC") | ligada()) {
+        if ((montoo > 0 /*& tipo == "PC"*/) | ligada()) {
             //if (montoo > 0) { 
             $(".table_rec").css("display", "table");
             //Add row 
@@ -175,7 +179,7 @@ function cambiaRec() {
                     if (i === 1) {
                         ////if (tipo !== "P") {
                         if (tipoR !== "2") {
-                            if (tipo == "PC") {
+                            if (true | tipo == "PC") {
                                 ////date = document.getElementById("fechai_vig").value;
                                 monto = montoo;
                                 //////addRowRec(table, i, date, monto, tipo);
@@ -196,7 +200,7 @@ function cambiaRec() {
                     else {
                         ////if (tipo !== "P") {
                         if (tipoR !== "2") {
-                            if (tipo == "PC") {
+                            if (true | tipo == "PC") {
                                 //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
                                 //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
                                 monto = montoo;

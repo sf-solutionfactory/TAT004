@@ -47,6 +47,8 @@ function toNum(string) {
         } else {
             string = "0.00";
         }
+    } else {
+        string = parseFloat(string)+"";
     }
     return string;
 }

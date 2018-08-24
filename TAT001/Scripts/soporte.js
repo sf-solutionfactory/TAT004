@@ -30,7 +30,7 @@ function soportes(tsol, spras) {
                 input += '" name="files_soporte" id="file_' + pp[i].tsoporte + '" type= "file" onchange="changeFile(this)"> ' +
                     '</div>' +
                     '<div class="file-path-wrapper"> ' +
-                    '<input class="file-path validate" type="text"> ' +
+                    '<input class="file-path validate" type="text" id="fileinput_' + pp[i].tsoporte + '" > ' +
                     '</div>' +
                     '</div>';
 
@@ -49,10 +49,12 @@ function soportes(tsol, spras) {
         success: function (data) {
             $("#txt_trec").val(data);
             if (data === "") {
-                $("#tabs_rec").addClass("disabled");
+                //$("#tabs_rec").addClass("disabled");
+                $("#check_recurrente").addClass("disabled");
             } else {
                 if (!isRelacionada()) {
-                    $("#tabs_rec").removeClass("disabled");
+                    //$("#tabs_rec").removeClass("disabled");
+                    $("#check_recurrente").removeClass("disabled");
                 }
             }
         }
