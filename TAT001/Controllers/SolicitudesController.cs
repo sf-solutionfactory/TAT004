@@ -1480,6 +1480,46 @@ namespace TAT001.Controllers
             //-----------------------------------------------------------------LEJ 09.07.18
             ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
 
+            List<WARNINGP> lwp = db.WARNINGPs.Where(x => x.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) | x.SOCIEDAD_ID == null).ToList();
+            List<WARNINGPT> lwpt = db.WARNINGPTs.Where(x => x.SPRAS_ID.Equals(usuariotextos)).ToList();
+            List<WARNING_COND> lwc = db.WARNING_COND.Where(x => x.ACTIVO.Equals(true)).ToList();
+            string val = "[";
+            int cont = 1;
+            foreach (WARNINGP wp in lwp)
+            {
+                if (cont != 1)
+                    val += ", ";
+                val += "{ ID: '" + wp.CAMPOVAL_ID + "'";
+                val += ", BUKRS: '" + wp.SOCIEDAD_ID + "'";
+                val += ", TSOL: '" + wp.TSOL_ID + "'";
+                val += ", TAB: '" + wp.TAB_ID + "'";
+                val += ", ELEM: '" + wp.CAMPO_ID + "'";
+                val += ", MSG: '" + lwpt.Where(x=>x.TAB_ID==wp.TAB_ID & x.WARNING_ID==wp.ID).FirstOrDefault().TXT100 + "'";
+                if (wp.TIPO == "E")
+                    val += ", TIPO: 'error', COLOR: 'red'";
+                else
+                    val += ", TIPO: 'info', COLOR: 'yellow'";
+                val += ", COND: [";
+                int cont2 = 0;
+                foreach(WARNING_COND wc in lwc.Where(x=>x.TAB_ID==wp.TAB_ID & x.WARNING_ID==wp.ID).ToList())
+                {
+                    if (cont2 != 0)
+                        val += ", ";
+                    val += "{ andor: '" + wc.ANDOR + "'";
+                    val += ", comp: '" + wc.CONDICION.COND + "'";
+                    val += ", val2: '" + wc.VALOR_COMP + "'";
+                    val += ", orand: '" + wc.ORAND + "'";
+                    val += "}";
+                    cont2++;
+                }
+                val += "]";
+                val += ", ACTION: '" + wp.ACCION + "'";
+                val += ", NUM: " + cont + "}";
+                cont++;
+            }
+            val += "]";
+            ViewBag.listaValid = val;
+
             return View(d);
         }
 

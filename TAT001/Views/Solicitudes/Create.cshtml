@@ -2343,7 +2343,7 @@
                     TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'P' }, { id: 'select_dis', val: 'M' }]
                 }
             ];
-            var lista = [
+            var lista222 = [
                 {
                     ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
                     TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 1
@@ -2379,6 +2379,7 @@
                     TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
                 }
             ];
+            var lista = @Html.Raw(ViewBag.listaValid);
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
@@ -2673,7 +2674,7 @@
 
 
             function warning(val1, comp, val2) {
-                if (comp == '==') {
+                if (comp == '=') {
                     if (val1 == val2)
                         return true;
                 } if (comp == '!=') {

@@ -246,6 +246,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="CONDICIONs">
+      <EntityTypeMapping TypeName="TAT001Model.CONDICION">
+        <MappingFragment StoreEntitySet="CONDICION">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCR" ColumnName="DESCR" />
+          <ScalarProperty Name="COND" ColumnName="COND" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="CONFDIST_CAT">
       <EntityTypeMapping TypeName="TAT001Model.CONFDIST_CAT">
         <MappingFragment StoreEntitySet="CONFDIST_CAT">
@@ -1462,14 +1472,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="TAT001Model.sysdiagram">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
+    <EntitySetMapping Name="TABs">
+      <EntityTypeMapping TypeName="TAT001Model.TAB">
+        <MappingFragment StoreEntitySet="TAB">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CONTAINER" ColumnName="CONTAINER" />
+          <ScalarProperty Name="DESCR" ColumnName="DESCR" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1797,6 +1806,46 @@
           <ScalarProperty Name="WARNING1" ColumnName="WARNING" />
           <ScalarProperty Name="POSICION" ColumnName="POSICION" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WARNING_COND">
+      <EntityTypeMapping TypeName="TAT001Model.WARNING_COND">
+        <MappingFragment StoreEntitySet="WARNING_COND">
+          <ScalarProperty Name="TAB_ID" ColumnName="TAB_ID" />
+          <ScalarProperty Name="WARNING_ID" ColumnName="WARNING_ID" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="ANDOR" ColumnName="ANDOR" />
+          <ScalarProperty Name="CONDICION_ID" ColumnName="CONDICION_ID" />
+          <ScalarProperty Name="VALOR_COMP" ColumnName="VALOR_COMP" />
+          <ScalarProperty Name="ORAND" ColumnName="ORAND" />
+          <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WARNINGPs">
+      <EntityTypeMapping TypeName="TAT001Model.WARNINGP">
+        <MappingFragment StoreEntitySet="WARNINGP">
+          <ScalarProperty Name="TAB_ID" ColumnName="TAB_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="DESCR" ColumnName="DESCR" />
+          <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
+          <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="CAMPOVAL_ID" ColumnName="CAMPOVAL_ID" />
+          <ScalarProperty Name="PAGINA_ID" ColumnName="PAGINA_ID" />
+          <ScalarProperty Name="CAMPO_ID" ColumnName="CAMPO_ID" />
+          <ScalarProperty Name="ACCION" ColumnName="ACCION" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WARNINGPTs">
+      <EntityTypeMapping TypeName="TAT001Model.WARNINGPT">
+        <MappingFragment StoreEntitySet="WARNINGPT">
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+          <ScalarProperty Name="TAB_ID" ColumnName="TAB_ID" />
+          <ScalarProperty Name="WARNING_ID" ColumnName="WARNING_ID" />
+          <ScalarProperty Name="TXT100" ColumnName="TXT100" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -2184,29 +2233,5 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="TAT001Model.Store.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="TAT001Model.Store.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="TAT001Model.Store.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="TAT001Model.Store.sp_helpdiagramdefinition">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="TAT001Model.sp_helpdiagramdefinition_Result">
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="TAT001Model.Store.sp_helpdiagrams">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="TAT001Model.sp_helpdiagrams_Result">
-          <ScalarProperty Name="Database" ColumnName="Database" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Owner" ColumnName="Owner" />
-          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="TAT001Model.Store.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="TAT001Model.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

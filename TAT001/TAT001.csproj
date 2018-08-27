@@ -298,6 +298,9 @@
     <Compile Include="Entities\CLIENTEI.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CONDICION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CONFDIST_CAT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -574,16 +577,10 @@
     <Compile Include="Entities\SPRA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\sp_helpdiagrams_Result.cs">
-      <DependentUpon>TAT001.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\STATE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\sysdiagram.cs">
+    <Compile Include="Entities\TAB.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TALL.cs">
@@ -691,7 +688,16 @@
     <Compile Include="Entities\WARNING.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\WARNINGP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WARNINGPT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\WARNINGV.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\WARNING_COND.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WORKFH.cs">

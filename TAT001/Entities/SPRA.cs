@@ -42,6 +42,7 @@ namespace TAT001.Entities
             this.UMEDIDATs = new HashSet<UMEDIDAT>();
             this.USUARIOs = new HashSet<USUARIO>();
             this.WARNINGs = new HashSet<WARNING>();
+            this.WARNINGPTs = new HashSet<WARNINGPT>();
             this.WORKFTs = new HashSet<WORKFT>();
         }
     
@@ -98,6 +99,8 @@ namespace TAT001.Entities
         public virtual ICollection<USUARIO> USUARIOs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WARNING> WARNINGs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WARNINGPT> WARNINGPTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
     }
