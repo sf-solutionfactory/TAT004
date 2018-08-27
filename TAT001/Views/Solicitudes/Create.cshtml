@@ -1187,8 +1187,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                    ;
+                                                                                                                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                              ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -2280,7 +2280,7 @@
                 ['fechai_vig', 'c-!=null', 'Fecha inicio: No puede ser vacío', 'error', 'change', 'tab_info'],
                 ['fechaf_vig', 'c-!=null', 'Fecha fin: No puede ser vacío', 'error', 'change', 'tab_info'],
             ]
-            var lista = [
+            var lista22 = [
                 {
                     ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
                     TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
@@ -2329,7 +2329,7 @@
                 }, {
                     ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto debe ser mayor a cero',
                     TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
-                },{
+                }, {
                     ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto no corresponde',
                     TIPO: 'error', COLOR: 'red', COND: 'c-!=-total_dis', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
                 }, {
@@ -2343,12 +2343,58 @@
                     TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'P' }, { id: 'select_dis', val: 'M' }]
                 }
             ];
+            var lista = [
+                {
+                    ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 1
+                }, {
+                    ID: 'tall_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tall_id', MSG: 'Clasificación: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 2
+                }, {
+                    ID: 'state_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'state_id', MSG: 'Estado: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 3
+                }, {
+                    ID: 'city_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'city_id', MSG: 'Ciudad: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 4
+                }, {
+                    ID: 'concepto', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Concepto: no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 5
+                }, {
+                    ID: 'notas_txt', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Ingrese la mecánica de negociación',
+                    TIPO: 'info', COLOR: 'yellow', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 6
+                }, {
+                    ID: 'payer_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_id', MSG: 'Formato de cliente incorrecto',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: 'n', val2: '', orand: '' }, { andor: '&', comp: 'l', val2: '10', orand: '' }], ACTION: 'focusout', NUM: 7
+                }, {
+                    ID: 'payer_name', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_name', MSG: 'Contacto no puede ser vacío',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 8
+                }, {
+                    ID: 'payer_email', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_email', MSG: 'Inserte un correo válido',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 9
+                }, {
+                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig', MSG: 'Seleccione una fecha de inicio',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 10
+                }, {
+                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig', MSG: 'Seleccione una fecha de fin',
+                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
+                }
+            ];
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
                 var campo = document.getElementById(lista[i].ID);
-                if (campo != undefined)
-                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ")}); ";
+                if (campo != undefined) {
+                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ")}); ";
+                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
+                    app += "var ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning($(this).val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
+
+                }
                 else
                     app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
             }
@@ -2452,11 +2498,11 @@
                             } else if (valor_condicion == "!=") {
                                 var compara = $("#" + condicion.split("-")[2]).text();
                                 if (parseFloat(toNum(value)) != parseFloat(toNum(compara)))
-                                        valid = false
+                                    valid = false
                             } else if (valor_condicion == ">") {
                                 var compara = condicion.split("-")[2];
                                 if (parseFloat(toNum(value)) <= parseFloat(toNum(compara)))
-                                        valid = false
+                                    valid = false
                             }
                         } else if (tipo_condicion == "n") {
                             if (tipo_condicion == 'n') {
@@ -2597,5 +2643,85 @@
                 }
                 return ban;
             }
+
+            function validarN(id, num, mensaje, icon, color, elem, ii, ban) {
+                var campoVal = document.getElementById(id);
+                var campo = document.getElementById(elem);
+
+                if (campo != undefined & campoVal != undefined) {
+                    var value = campoVal.value;
+                    if (condiciones(ii)) {
+
+                        //var valid = valido(value, condicion, ii);
+                        var valid = ban;
+                        //var tipo_condicion = condicion.split("-")[0];
+                        var tipo_condicion = num;
+                        //var valor_condicion = condicion.split("-")[1];
+
+                        if (!valid) {
+                            //dismiss(id + "-" + tipo_condicion);
+                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                            esInvalido(campo);
+                        } else {
+                            esValido(campo);
+                            dismiss(id + "-" + tipo_condicion);
+                        }
+                    }
+                }
+            }
+
+
+            function warning(val1, comp, val2) {
+                if (comp == '==') {
+                    if (val1 == val2)
+                        return true;
+                } if (comp == '!=') {
+                    if (val1 != val2)
+                        return true;
+                } if (comp == '&') {
+                    if (val1 & val2)
+                        return true;
+                    else
+                        return false;
+                } if (comp == '|') {
+                    if (val1 | val2)
+                        return true;
+                    else
+                        return false;
+                } if (comp == 'n') {
+                    if ($.isNumeric(toNum(val1)))
+                        return true;
+                }
+
+                if ($.isNumeric(toNum(val1))) {
+                    if (comp == '>') {
+                        if (val1 > val2)
+                            return true;
+                    } if (comp == '<') {
+                        if (val1 < val2)
+                            return true;
+                    } if (comp == '>=') {
+                        if (val1 >= val2)
+                            return true;
+                    } if (comp == '<=') {
+                        if (val1 <= val2)
+                            return true;
+                    }
+                }
+                if (comp == "l") {
+                    var longitud = parseInt(val2);
+                    if (longitud > 0) {
+                        if (val1.length == longitud)
+                            return true;
+                    }
+                }
+                return false;
+            }
+
+                            //var val = 'asdasdasd';
+                            ////var qq = warning(warning(val, "n", 0), '|', warning(warning(val, ">", 0), "&", warning(val, "<=", 100)));
+                            //var qq = warning(warning(val, "n", 0), '|', warning(warning(val, "==", "200c"), "|", warning(val, "==", "201c")));
+                            //alert(qq);
         </script>
     </div>

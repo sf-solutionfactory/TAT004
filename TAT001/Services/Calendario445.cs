@@ -43,6 +43,10 @@ namespace TAT001.Services
             //{
             //    periodo = p.PERIODO;
             //}
+            if (p == null)
+            {
+                return fecha.Year;
+            }
 
             return p.EJERCICIO + p.SUMA;
         }
