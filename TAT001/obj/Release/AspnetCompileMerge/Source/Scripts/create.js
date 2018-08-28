@@ -360,7 +360,7 @@ $(document).ready(function () {
                     var catExist = valcategoria(cat);
 
                     if (catExist != true) {
-                        if (cat != "") {
+                        if (cat != "" & cat != null) {
                             ////Obtener el monto
                             //var montoDistribucion = $('#monto_dis').val();
                             //var mto = parseFloat(montoDistribucion);
@@ -481,7 +481,7 @@ $(document).ready(function () {
                         //Validar si la categoría ya había sido agregada
                         var catExist = valcategoria(cat);
                         if (catExist != true) {
-                            if (cat != "") {
+                            if (cat != "" & cat != null) {
                                 var opt = $("#select_categoria option:selected").text();
                                 porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
                                 var addedRow = addRowCat(t, cat, ddate, adate, opt, "", relacionada, reversa, porcentaje_cat, "pc");
@@ -620,18 +620,18 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.FormSelect.init(elem, []);
 
-    $('#tab_tempp').on("click", function (e) {
+    $('#tab_temp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soportee').on("click", function (e) {
+    $('#tab_soporte').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_diss').on("click", function (e) {
+    $('#tab_dis').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -697,7 +697,7 @@ $(document).ready(function () {
         updateFooter();
     });
 
-    $('#tab_finn').on("click", function (e) {
+    $('#tab_fin').on("click", function (e) {
         //LEJ 09.07.18----------------------------
         var _miles = $("#miles").val();
         var _decimales = $("#dec").val();
@@ -1742,7 +1742,7 @@ function guardarBorrador(asyncv) {
     //Provisional
     var tipo_cambio = $('#tipo_cambio').val();
     //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-    var iNum = parseFloat(tipo_cambio.replace(',', ''));
+    var iNum = parseFloat(toNum(tipo_cambio));
 
     if (iNum > 0) {
         //var num = "" + iNum;
@@ -1750,11 +1750,11 @@ function guardarBorrador(asyncv) {
         //var numexp = num;//* 60000000000;
         //$('#tipo_cambio').val(numexp);
     } else {
-        $('#tipo_cambio').val(toShow(0));
+        $('#tipo_cambio').val(toNum(0));
     }
     var tipo_cambio = $('#monto_doc_ml2').val();
     //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-    var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+    var iNum2 = parseFloat(toNum(tipo_cambio));
     //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
     if (iNum2 > 0) {
         //var nums = "" + iNum2;
@@ -5215,6 +5215,9 @@ function evaluarFiles() {
                 //var labeltext = $(sitd).children().eq(0).html();
                 //M.toast({ html: 'Error! Archivo Obligatorio: ' + lbltext });
                 message = 'Error! Archivo Obligatorio: ' + lbltext;
+                var inputid = $(files[i]).attr('id');
+                var ii = inputid.split('file_')[1];
+                document.getElementById("fileinput_" + ii).classList.add("invalid");
                 break;
             }
         }
@@ -5341,18 +5344,28 @@ function selectDis(val) {
         }
         message = "";
         //RSG 09.07.2018------------------------------------
-        if ($("#chk_ligada").is(":checked")) {
-            $('#div_montobase').css("display", "none");//none
-            $('#div_apoyobase').css("display", "none");
-        } else {
-            $('#div_montobase').css("display", "none");//none
-            $('#div_apoyobase').css("display", "inherit");
-        }
+        //if ($("#chk_ligada").is(":checked")) {
+        //    $('#div_montobase').css("display", "none");//none
+        //    $('#div_apoyobase').css("display", "none");
+        //} else {
+        //    $('#div_montobase').css("display", "none");//none
+        //    $('#div_apoyobase').css("display", "inherit");
+        //}
+        //$('#monto_dis').val("");
         //RSG 09.07.2018------------------------------------
     } else {
         $('#div_montobase').css("display", "none");
         $('#div_apoyobase').css("display", "none");
     }
+    //RSG 28.08.2018------------------------------------
+    if ($("#chk_ligada").is(":checked")) {
+        $('#div_montobase').css("display", "inherit");//none
+        $('#div_apoyobase').css("display", "none");
+    } else {
+        $('#div_montobase').css("display", "none");//none
+        $('#div_apoyobase').css("display", "inherit");
+    }
+        //RSG 28.08.2018------------------------------------
     var select_dis = $('#select_dis').val();
     //$('#select_dis').val(select_dis).change();
     selectMonto(select_dis, message);
@@ -5399,19 +5412,28 @@ function selectMonto(val, message) {
             }
             //$('#div_montobase').css("display", "none");//none
             //$('#div_apoyobase').css("display", "inherit");
-            //RSG 09.07.2018------------------------------------
-            if ($("#chk_ligada").is(":checked")) {
-                $('#div_montobase').css("display", "inherit");//none
-                $('#div_apoyobase').css("display", "none");
-            } else {
-                $('#div_montobase').css("display", "none");//none
-                $('#div_apoyobase').css("display", "inherit");
-            }
-            //RSG 09.07.2018------------------------------------
+            ////RSG 09.07.2018------------------------------------
+            //if ($("#chk_ligada").is(":checked")) {
+            //    $('#div_montobase').css("display", "inherit");//none
+            //    $('#div_apoyobase').css("display", "none");
+            //} else {
+            //    $('#div_montobase').css("display", "none");//none
+            //    $('#div_apoyobase').css("display", "inherit");
+            //}
+            ////RSG 09.07.2018------------------------------------
         } else {
             $('#div_montobase').css("display", "none");
             $('#div_apoyobase').css("display", "none");
         }
+        //RSG 28.08.2018------------------------------------
+        if ($("#chk_ligada").is(":checked")) {
+            $('#div_montobase').css("display", "inherit");//none
+            $('#div_apoyobase').css("display", "none");
+        } else {
+            $('#div_montobase').css("display", "none");//none
+            $('#div_apoyobase').css("display", "inherit");
+        }
+        //RSG 28.08.2018------------------------------------
     }
 
     //Cuando es negociación por porcentaje y distribución por categoría, mostrar el monto 

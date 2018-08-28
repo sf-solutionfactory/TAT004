@@ -5142,13 +5142,14 @@ small {
     border-radius: 2px;
     top: 35px;
     width: auto;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
+    margin-top: 3px;
     position: relative;
     max-width: 100%;
     height: auto;
     min-height: 48px;
     line-height: 1.5em;
-    word-break: break-all;
+    /*word-break: break-all;*/
     background-color: #323232;
     padding: 10px 25px;
     font-size: 1.1rem;

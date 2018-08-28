@@ -597,7 +597,7 @@
                                             },
                                             change: function (e, ui) {
                                                 if (!(ui.item)) {
-                                                    e.target.value = "";
+                                                    //e.target.value = "";
                                                 }
                                             },
 
@@ -1529,28 +1529,28 @@
                                             function cambiaLigada(campo) {
                                                 if (campo.checked) {
                                                     $("#select_neg").val("P");
-                                                    $("#select_dis").val("C");
+                                                //    $("#select_dis").val("C");
                                                     $("#select_negi").val("P");
-                                                    $("#select_disi").val("C");
+                                                //    $("#select_disi").val("C");
                                                     $("#select_neg").prop("disabled", "disabled");
-                                                    $("#select_dis").prop("disabled", "disabled");
+                                                //    $("#select_dis").prop("disabled", "disabled");
                                                     $("#select_neg").change();
-                                                    $("#select_dis").change();
+                                                //    $("#select_dis").change();
                                                     $("#div_objq").removeClass("hide");
                                                     $("#txt_ligada").val("X");
                                                 } else {
                                                     $("#select_neg").prop("disabled", false);
-                                                    $("#select_dis").prop("disabled", false);
+                                                //    $("#select_dis").prop("disabled", false);
                                                     $("#select_neg").change();
-                                                    $("#select_dis").change();
+                                                //    $("#select_dis").change();
                                                     $("#div_objq").addClass("hide");
                                                     $("#txt_ligada").val("");
                                                 }
 
                                                 var elem = document.getElementById('select_neg');
                                                 var instance = M.FormSelect.init(elem, []);
-                                                elem = document.getElementById('select_dis');
-                                                instance = M.FormSelect.init(elem, []);
+                                                //elem = document.getElementById('select_dis');
+                                                //instance = M.FormSelect.init(elem, []);
                                             }
                                         </script>
                                     </div>
@@ -2379,7 +2379,7 @@
                     TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
                 }
             ];
-            var lista = @Html.Raw(ViewBag.listaValid);
+            var lista2222 = @Html.Raw(ViewBag.listaValid);
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
