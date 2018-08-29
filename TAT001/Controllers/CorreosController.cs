@@ -29,7 +29,7 @@ namespace TAT001.Controllers
             //ViewBag.miles = dOCUMENTOes.PAI.MILES;//LEJGG 090718
             //ViewBag.dec = dOCUMENTOes.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
-            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL) + " " + dOCUMENTO.MONEDA_ID;
             if (mail == null)
                 mail = true;
             //B20180803 MGC Correos............
@@ -60,7 +60,7 @@ namespace TAT001.Controllers
 
             cli = SelectCliente(dOCUMENTO.PAYER_ID);
 
-            ViewBag.kunnr = cli.KUNNR;
+            ViewBag.kunnr = cli.KUNNR + "-" + cli.NAME1;
             ViewBag.vtweg = cli.VTWEG;
 
             Services.FormatosC format = new FormatosC();
@@ -164,7 +164,8 @@ namespace TAT001.Controllers
             //ViewBag.miles = dOCUMENTO.PAI.MILES;//LEJGG 090718
             //ViewBag.dec = dOCUMENTO.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
-            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            //ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL) + " " + dOCUMENTO.MONEDA_ID;
             if (mail == null)
                 mail = true;
             //B20180803 MGC Correos............

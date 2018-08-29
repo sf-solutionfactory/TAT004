@@ -356,7 +356,8 @@
                             <div class="row" style="margin-bottom:0">
                                 <h5>Información general</h5>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
+                                    @*@Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })*@
+                                    <input type="text" disabled="disabled" value="@Model.D.FECHAC.Value.ToShortDateString()" />
                                     @Html.LabelFor(model => model.D.FECHAC, "Fecha", new { @id = "lbl_fechac" })
                                 </div>
                                 <div class="input-field col s6 l6">

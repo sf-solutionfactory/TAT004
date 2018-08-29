@@ -359,7 +359,8 @@ $(document).ready(function () {
                     //Validar si la categoría ya había sido agregada
                     var catExist = valcategoria(cat);
 
-                    if (catExist != true) {
+                    //if (catExist != true) {
+                    if (catExist == 0) {
                         if (cat != "" & cat != null) {
                             ////Obtener el monto
                             //var montoDistribucion = $('#monto_dis').val();
@@ -416,8 +417,13 @@ $(document).ready(function () {
                             M.toast({ html: 'Seleccione una categoría' });
                         }
                     } else {
-                        //M.toast({ html: 'La categoría ya había sido agregada' });
-                        M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
+                        if (catExist == 1) {
+                            //M.toast({ html: 'La categoría ya había sido agregada' });
+                            M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
+                        } else {
+                            var catt = categoriaUnica(cat);
+                            M.toast({ html: catt + ' no pueden mezclarse con otras categorías y/ o materiales' });
+                        }
                     }
 
                 } else if (dis == "M") {
@@ -480,7 +486,8 @@ $(document).ready(function () {
 
                         //Validar si la categoría ya había sido agregada
                         var catExist = valcategoria(cat);
-                        if (catExist != true) {
+                        //if (catExist != true) {
+                        if (catExist == 0) {
                             if (cat != "" & cat != null) {
                                 var opt = $("#select_categoria option:selected").text();
                                 porcentaje_cat = "<input class=\"" + reversa + " input_oper numberd porc_cat pc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">";
@@ -494,9 +501,13 @@ $(document).ready(function () {
 
                             }
                         } else {
-                            //M.toast({ html: 'La categoría ya había sido agregada' });
-                            M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
-                            
+                            if (catExist == 1) {
+                                //M.toast({ html: 'La categoría ya había sido agregada' });
+                                M.toast({ html: 'La categoría no puede ser agregada en la misma solicitud' });
+                            } else {
+                                var catt = categoriaUnica(cat);
+                                M.toast({ html: catt + ' no pueden mezclarse con otras categorías y/ o materiales' });
+                            }
                         }
                     } else {
                         M.toast({ html: 'El monto base debe de ser mayor a cero' });
@@ -1748,7 +1759,7 @@ function guardarBorrador(asyncv) {
         //var num = "" + iNum;
         //num = num.replace('.', ',');
         //var numexp = num;//* 60000000000;
-        //$('#tipo_cambio').val(numexp);
+        $('#tipo_cambio').val(iNum);
     } else {
         $('#tipo_cambio').val(toNum(0));
     }
@@ -5357,7 +5368,7 @@ function selectDis(val) {
         $('#div_montobase').css("display", "none");
         $('#div_apoyobase').css("display", "none");
     }
-   
+
     var select_dis = $('#select_dis').val();
     //$('#select_dis').val(select_dis).change();
     selectMonto(select_dis, message);
@@ -5934,7 +5945,7 @@ function asignarValProv(val) {
 
 function valcategoria(cat) {
 
-    var res = false;
+    var res = 0;
     var t = $('#table_dis').DataTable();
     t.rows().every(function (rowIdx, tableLoop, rowLoop) {
 
@@ -5949,7 +5960,7 @@ function valcategoria(cat) {
         for (var i = 0; i < _xxx.length; i++) {
             if (catid === _xxx[i].ID | cat === _xxx[i].ID) {
                 if (_xxx[i].UNICA === true) {
-                    res = true;
+                    res = 2;
                 }
             }
         }
@@ -5958,13 +5969,14 @@ function valcategoria(cat) {
         //   res = true;
         // }
         if (cat == catid) {
-            res = true;
+            res = 1;
         }
 
     });
 
     return res;
 }
+
 
 //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
 function valmaterial(mat) {
@@ -6030,5 +6042,42 @@ function isReversa() {
             res = true;
         }
     }
+    return res;
+}
+
+function categoriaUnica(cat) {
+
+    var res = 0;
+    var t = $('#table_dis').DataTable();
+    t.rows().every(function (rowIdx, tableLoop, rowLoop) {
+
+        var tr = this.node();
+        var row = t.row(tr);
+
+        //Obtener el id de la categoría
+        var index = t.row(tr).index();
+        //Categoría en el row
+        var catid = t.row(index).data()[0];
+        var _xxx = $.parseJSON($('#catmat').val());//LEJ 18.07.2018
+        for (var i = 0; i < _xxx.length; i++) {
+            if (cat === _xxx[i].ID) {
+                if (_xxx[i].UNICA === true) {
+                    res = _xxx[i].DESCRIPCION;
+                    return res;
+                }
+            }
+        }
+
+        for (var i = 0; i < _xxx.length; i++) {
+            if (catid === _xxx[i].ID) {
+                if (_xxx[i].UNICA === true) {
+                    res = _xxx[i].DESCRIPCION;
+                    return res;
+                }
+            }
+        }
+
+    });
+
     return res;
 }

@@ -12,6 +12,7 @@ namespace TAT001.Models
         public string NUM_DOC_TEXT { get; set; }
         public string SOCIEDAD_ID { get; set; }
         public string PAIS_ID { get; set; }
+        public string FECHADD { get; set; }
         public string FECHAD { get; set; }
         public string HORAC { get; set; }
         public string PERIODO { get; set; }

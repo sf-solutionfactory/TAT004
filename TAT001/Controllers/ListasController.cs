@@ -234,7 +234,8 @@ namespace TAT001.Controllers
                     kunnr = "";
 
                 //Obtener presupuesto
-                string mes = DateTime.Now.Month.ToString();
+                Calendario445 c445 = new Calendario445();
+                string mes = c445.getPeriodo(DateTime.Now.Date) + "";
                 var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
                 string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
                 if (presupuesto != null)
@@ -281,29 +282,29 @@ namespace TAT001.Controllers
             {
                 Estatus e = new Estatus();
                 List<DOCUMENTO_MOD> c = (from DR in db.DOCUMENTORECs
-                         join D in db.DOCUMENTOes
-                         on DR.DOC_REF equals D.NUM_DOC
-                         join T in db.TSOLTs
-                         on D.TSOL_ID equals T.TSOL_ID
-                         join TA in db.TALLs
-                         on D.TALL_ID equals TA.ID
-                         join G in db.GALLTs
-                         on TA.GALL_ID equals G.GALL_ID
-                         where DR.NUM_DOC == num
-                         & T.SPRAS_ID == spras
-                         & G.SPRAS_ID == spras
-                         & D.NUM_DOC != 0
-                         select new DOCUMENTO_MOD
-                         {
-                             NUM_DOC = D.NUM_DOC,
-                             TSOL_ID = T.TXT020,
-                             GALL_ID = G.TXT50,
-                             ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
-                             CIUDAD = D.HORAC.Value.ToString(),
-                             ESTATUS = D.ESTATUS,
-                             CONCEPTO = D.CONCEPTO,
-                             MONTO_DOC_ML = D.MONTO_DOC_ML
-                         }).ToList();
+                                         join D in db.DOCUMENTOes
+                                         on DR.DOC_REF equals D.NUM_DOC
+                                         join T in db.TSOLTs
+                                         on D.TSOL_ID equals T.TSOL_ID
+                                         join TA in db.TALLs
+                                         on D.TALL_ID equals TA.ID
+                                         join G in db.GALLTs
+                                         on TA.GALL_ID equals G.GALL_ID
+                                         where DR.NUM_DOC == num
+                                         & T.SPRAS_ID == spras
+                                         & G.SPRAS_ID == spras
+                                         & D.NUM_DOC != 0
+                                         select new DOCUMENTO_MOD
+                                         {
+                                             NUM_DOC = D.NUM_DOC,
+                                             TSOL_ID = T.TXT020,
+                                             GALL_ID = G.TXT50,
+                                             ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
+                                             CIUDAD = D.HORAC.Value.ToString(),
+                                             ESTATUS = D.ESTATUS,
+                                             CONCEPTO = D.CONCEPTO,
+                                             MONTO_DOC_ML = D.MONTO_DOC_ML
+                                         }).ToList();
                 foreach (DOCUMENTO_MOD ddd in c)
                 {
                     ddd.ESTATUS = e.getHtml(ddd.NUM_DOC);
@@ -315,27 +316,27 @@ namespace TAT001.Controllers
             {
                 Estatus e = new Estatus();
                 List<DOCUMENTO_MOD> c = (from D in db.DOCUMENTOes
-                                     join T in db.TSOLTs
-                                     on D.TSOL_ID equals T.TSOL_ID
-                                     join TA in db.TALLs
-                                     on D.TALL_ID equals TA.ID
-                                     join G in db.GALLTs
-                                     on TA.GALL_ID equals G.GALL_ID
-                                     where D.DOCUMENTO_REF == num
-                                     & T.SPRAS_ID == spras
-                                     & G.SPRAS_ID == spras
-                                     //select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML }).ToList();
-                                     select new DOCUMENTO_MOD
-                                     {
-                                         NUM_DOC = D.NUM_DOC,
-                                         TSOL_ID = T.TXT020,
-                                         GALL_ID = G.TXT50,
-                                         ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
-                                         CIUDAD = D.HORAC.Value.ToString(),
-                                         ESTATUS = D.ESTATUS,
-                                         CONCEPTO = D.CONCEPTO,
-                                         MONTO_DOC_ML = D.MONTO_DOC_ML
-                                     }).ToList();
+                                         join T in db.TSOLTs
+                                         on D.TSOL_ID equals T.TSOL_ID
+                                         join TA in db.TALLs
+                                         on D.TALL_ID equals TA.ID
+                                         join G in db.GALLTs
+                                         on TA.GALL_ID equals G.GALL_ID
+                                         where D.DOCUMENTO_REF == num
+                                         & T.SPRAS_ID == spras
+                                         & G.SPRAS_ID == spras
+                                         //select new { D.NUM_DOC, T.TXT020, TXT500 = G.TXT50, FECHAD = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day, HORAC = D.HORAC.Value.ToString(), D.ESTATUS_WF, D.ESTATUS, D.CONCEPTO, D.MONTO_DOC_ML }).ToList();
+                                         select new DOCUMENTO_MOD
+                                         {
+                                             NUM_DOC = D.NUM_DOC,
+                                             TSOL_ID = T.TXT020,
+                                             GALL_ID = G.TXT50,
+                                             ESTADO = D.FECHAD.Value.Year + "/" + D.FECHAD.Value.Month + "/" + D.FECHAD.Value.Day,
+                                             CIUDAD = D.HORAC.Value.ToString(),
+                                             ESTATUS = D.ESTATUS,
+                                             CONCEPTO = D.CONCEPTO,
+                                             MONTO_DOC_ML = D.MONTO_DOC_ML
+                                         }).ToList();
                 foreach (DOCUMENTO_MOD ddd in c)
                 {
                     ddd.ESTATUS = e.getHtml(ddd.NUM_DOC);

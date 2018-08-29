@@ -709,7 +709,8 @@ namespace TAT001.Controllers
                     {
                         isrn = "X";
                         isr = "preversa";
-                        freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        //freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        freversa = theTime.ToString("dd/MM/yyyy");
                         //Obtener los tipos de reversas
                         try
                         {
@@ -1276,7 +1277,8 @@ namespace TAT001.Controllers
             d.EJERCICIO = cal.getEjercicio(DateTime.Now) + "";
 
             d.FECHAD = theTime;
-            ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            //ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            ViewBag.FECHAD = theTime.ToString("dd/MM/yyyy");
             ViewBag.PERIODO = d.PERIODO;
             ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
@@ -2788,7 +2790,8 @@ namespace TAT001.Controllers
                                             "dd/MM/yyyy",
                                             System.Globalization.CultureInfo.InvariantCulture,
                                             System.Globalization.DateTimeStyles.None);
-                    ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                    //ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+                    ViewBag.FECHAD = theTime.ToString("dd/MM/yyyy");
 
                 }
                 catch (Exception e)
@@ -3588,7 +3591,8 @@ namespace TAT001.Controllers
                     {
                         isrn = "X";
                         isr = "preversa";
-                        freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        //freversa = theTime.ToString("yyyy-MM-dd"); ;
+                        freversa = theTime.ToString("dd/MM/yyyy"); ;
                         //Obtener los tipos de reversas
                         try
                         {
@@ -4031,7 +4035,8 @@ namespace TAT001.Controllers
             d.EJERCICIO = Convert.ToString(DateTime.Now.Year);
 
             d.FECHAD = theTime;
-            ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            //ViewBag.FECHAD = theTime.ToString("yyyy-MM-dd");
+            ViewBag.FECHAD = theTime.ToString("dd/MM/yyyy");
             ViewBag.PERIODO = d.PERIODO;
             ViewBag.EJERCICIO = d.EJERCICIO;
             ViewBag.STCD1 = "";
@@ -6305,7 +6310,17 @@ namespace TAT001.Controllers
 
                 cm.MATERIALES = dm;
                 //LEJ 18.07.2018-----------------------------------------------------------
-                cm.UNICA = db.MATERIALGPs.Where(u => u.ID == cm.ID).FirstOrDefault().UNICA;
+                MATERIALGP vv = db.MATERIALGPs.Where(u => u.ID == cm.ID).FirstOrDefault();
+                cm.UNICA =vv.UNICA;
+                MATERIALGPT vt = vv.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).FirstOrDefault();
+                if (vt != null)
+                {
+                    cm.DESCRIPCION = vt.TXT50;
+                }
+                else
+                {
+                    cm.DESCRIPCION = vv.DESCRIPCION;
+                }
                 lcatmat.Add(cm);
             }
 
@@ -7691,7 +7706,8 @@ namespace TAT001.Controllers
                     kunnr = "";
 
                 //Obtener presupuesto
-                string mes = DateTime.Now.Month.ToString();
+                Calendario445 c445 = new Calendario445();
+                string mes = c445.getPeriodo(DateTime.Now.Date) + "";
                 var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
                 string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
                 if (presupuesto != null)

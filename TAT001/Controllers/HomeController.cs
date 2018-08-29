@@ -184,6 +184,7 @@ namespace TAT001.Controllers
                     }
                     ld.SOCIEDAD_ID = item.SOCIEDAD_ID;
                     ld.PAIS_ID = item.PAIS_ID;
+                    ld.FECHADD = item.FECHAD.Value.Day + "/" + item.FECHAD.Value.Month + "/" + item.FECHAD.Value.Year;
                     ld.FECHAD = item.FECHAD.Value.Year + "/" + item.FECHAD.Value.Month + "/" + item.FECHAD.Value.Day;
                     ld.HORAC = item.HORAC.Value.ToString().Split('.')[0];
                     ld.PERIODO = item.PERIODO + "";
