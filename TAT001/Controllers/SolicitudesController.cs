@@ -134,6 +134,7 @@ namespace TAT001.Controllers
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title += " ";
+                pagina = 202;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
                 ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
@@ -7696,52 +7697,52 @@ namespace TAT001.Controllers
             return cc;
         }
 
-        [HttpPost]
-        public JsonResult getPresupuesto(string kunnr)
-        {
-            PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
-            try
-            {
-                if (kunnr == null)
-                    kunnr = "";
+        //[HttpPost]
+        //public JsonResult getPresupuesto(string kunnr)
+        //{
+        //    PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+        //    try
+        //    {
+        //        if (kunnr == null)
+        //            kunnr = "";
 
-                //Obtener presupuesto
-                Calendario445 c445 = new Calendario445();
-                string mes = c445.getPeriodo(DateTime.Now.Date) + "";
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
-                if (presupuesto != null)
-                {
-                    if (String.IsNullOrEmpty(clien))
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[1].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                    else
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[0].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
+        //        //Obtener presupuesto
+        //        Calendario445 c445 = new Calendario445();
+        //        string mes = c445.getPeriodo(DateTime.Now.Date) + "";
+        //        var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+        //        string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
+        //        if (presupuesto != null)
+        //        {
+        //            if (String.IsNullOrEmpty(clien))
+        //            {
+        //                pm.P_CANAL = presupuesto[0].VAL;
+        //                pm.P_BANNER = presupuesto[1].VAL;
+        //                pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+        //                pm.PC_A = presupuesto[8].VAL;
+        //                pm.PC_P = presupuesto[9].VAL;
+        //                pm.PC_T = presupuesto[10].VAL;
+        //                pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+        //            }
+        //            else
+        //            {
+        //                pm.P_CANAL = presupuesto[0].VAL;
+        //                pm.P_BANNER = presupuesto[0].VAL;
+        //                pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+        //                pm.PC_A = presupuesto[8].VAL;
+        //                pm.PC_P = presupuesto[9].VAL;
+        //                pm.PC_T = presupuesto[10].VAL;
+        //                pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
 
-            }
+        //    }
 
-            JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
-            return cc;
-        }
+        //    JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
+        //    return cc;
+        //}
 
         [HttpPost]
         [AllowAnonymous]

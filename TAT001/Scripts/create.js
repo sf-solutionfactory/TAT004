@@ -2611,7 +2611,8 @@ function asignarPresupuesto(kunnr) {
 
     $.ajax({
         type: "POST",
-        url: 'getPresupuesto',
+        //url: 'getPresupuesto',
+        url: '../Listas/getPresupuesto',
         dataType: "json",
         data: { "kunnr": kunnr },
 

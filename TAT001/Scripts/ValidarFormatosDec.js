@@ -324,13 +324,13 @@
         $("._vmonto").val("$" + _vmonto);
         $("._tc").val("$" + _tc);
         $("._vmonto2").val("$" + _vmonto2);
-        $("#p_canal").text("$" + p_canal);
-        $("#p_banner").text("$" + p_banner);
-        $("#pc_c").text("$" + pc_c);
-        $("#pc_a").text("$" + pc_a);
-        $("#pc_p").text("$" + pc_p);
-        $("#pc_t").text("$" + pc_t);
-        $("#consu").text("$" + consu);
+        ////$("#p_canal").text("$" + p_canal);
+        ////$("#p_banner").text("$" + p_banner);
+        ////$("#pc_c").text("$" + pc_c);
+        ////$("#pc_a").text("$" + pc_a);
+        ////$("#pc_p").text("$" + pc_p);
+        ////$("#pc_t").text("$" + pc_t);
+        ////$("#consu").text("$" + consu);
 
     }
     else if (_decimales === ',') {
@@ -528,13 +528,13 @@
         $("._vmonto").val("$" + _vmonto);
         $("._tc").val("$" + _tc);
         $("._vmonto2").val("$" + _vmonto2);
-        $("#p_canal").text("$" + p_canal);
-        $("#p_banner").text("$" + p_banner);
-        $("#pc_c").text("$" + pc_c);
-        $("#pc_a").text("$" + pc_a);
-        $("#pc_p").text("$" + pc_p);
-        $("#pc_t").text("$" + pc_t);
-        $("#consu").text("$" + consu);
+        ////$("#p_canal").text("$" + p_canal);
+        ////$("#p_banner").text("$" + p_banner);
+        ////$("#pc_c").text("$" + pc_c);
+        ////$("#pc_a").text("$" + pc_a);
+        ////$("#pc_p").text("$" + pc_p);
+        ////$("#pc_t").text("$" + pc_t);
+        ////$("#consu").text("$" + consu);
         $("#dsMn").text("$" + dsMn);
         $("#dsApo").text("$" + dsApo);
         $("#dsPS").text("$" + dsPS);

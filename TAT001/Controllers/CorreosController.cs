@@ -368,43 +368,45 @@ namespace TAT001.Controllers
         public PRESUPUESTO_MOD getPresupuesto(string kunnr)
         {
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
-            try
-            {
-                if (kunnr == null)
-                    kunnr = "";
+            Presupuesto pr = new Presupuesto();
+            pm = pr.getPresupuesto(kunnr);
+            //try
+            //{
+            //    if (kunnr == null)
+            //        kunnr = "";
 
-                //Obtener presupuesto
-                string mes = DateTime.Now.Month.ToString();
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
-                if (presupuesto != null)
-                {
-                    if (String.IsNullOrEmpty(clien))
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[1].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                    else
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[0].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
+            //    //Obtener presupuesto
+            //    string mes = DateTime.Now.Month.ToString();
+            //    var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+            //    string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
+            //    if (presupuesto != null)
+            //    {
+            //        if (String.IsNullOrEmpty(clien))
+            //        {
+            //            pm.P_CANAL = presupuesto[0].VAL;
+            //            pm.P_BANNER = presupuesto[1].VAL;
+            //            pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+            //            pm.PC_A = presupuesto[8].VAL;
+            //            pm.PC_P = presupuesto[9].VAL;
+            //            pm.PC_T = presupuesto[10].VAL;
+            //            pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+            //        }
+            //        else
+            //        {
+            //            pm.P_CANAL = presupuesto[0].VAL;
+            //            pm.P_BANNER = presupuesto[0].VAL;
+            //            pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+            //            pm.PC_A = presupuesto[8].VAL;
+            //            pm.PC_P = presupuesto[9].VAL;
+            //            pm.PC_T = presupuesto[10].VAL;
+            //            pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
 
-            }
+            //}
 
             return pm;
         }

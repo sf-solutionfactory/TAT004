@@ -82,6 +82,40 @@ function toShow(string) {
     return string;
 }
 
+function toShowG(string) {//LGPP 21.08.2018----------------
+    string = toNum(string);
+    var _miles = $("#miles").val();
+    var _decimales = $("#dec").val();
+    var xx = parseFloat(string);
+    var i = 1;
+    if (xx < 0) {
+        i = -1;
+        xx = xx * i;
+    }
+
+    xx = xx.toFixed(2);
+    xx = xx.replace('.', _decimales);
+    if (string != '0') {
+        if (_decimales === '.') {
+            //Hace la conversion a 2 decimales
+            var _xv = xx.replace(',', '');
+            xx = _xv;
+            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
+        } else if (_decimales === ',') {
+            var _xv = xx.replace('.', '');
+            xx = _xv.replace(',', '.');
+            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
+            xpf = xpf.replace('.', ',');
+            string = ("$" + _xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
+        }
+    }
+    else {
+        string = ("$ -" + " ");
+    }
+    if (i < 0) string = string.replace('$', '$(') + ')';
+    return string;
+}
+
 function toShowPorc(string) {
     string = toNum(string);
     var _miles = $("#miles").val();

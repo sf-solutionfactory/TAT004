@@ -44,7 +44,7 @@
                 @*<input type="text" id="txt_user" value="PRGA" disabled="disabled" />
                     <label for="txt_user">BU</label>*@
                 @Html.EditorFor(model => model.D.USUARIO.BUNIT, new { htmlAttributes = new { @disabled = "disabled" } })
-                @Html.LabelFor(model => model.D.USUARIO.BUNIT, "Sociedad", new { @id = "lbl_bu" })
+                @Html.LabelFor(model => model.D.USUARIO.BUNIT, "Sociedad", new { @class = "lbl_bu" })
             </div>
             <div class="input-field col s6">
                 @if (Model.D.ESTATUS == "N")
@@ -310,7 +310,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @id = "lbl_tsol" })
+                                    @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @class = "lbl_tsol" })
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.GALL.GALLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
@@ -362,11 +362,11 @@
                                 </div>
                                 <div class="input-field col s6 l6">
                                     @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_periodo" })
+                                    @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @class = "lbl_periodo" })
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_ejer" })
+                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @class = "lbl_ejer" })
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.CONCEPTO, new { htmlAttributes = new { @disabled = "disabled" } })
@@ -1458,29 +1458,29 @@
                                 {
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.TSOL_ID, "Company code", new { @id = "lbl_montoml2" })
+                                        @Html.LabelFor(model => model.D.TSOL_ID, "Tipo de solicitud", new { @class = "lbl_tsol" })
                                     </div>
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.DOCUMENTO_SAP, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Docuemento SAP", new { @id = "lbl_montoml2" })
+                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Docuemento SAP", new { @id = "lbl_sap" })
                                     </div>
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Company code", new { @id = "lbl_montoml2" })
+                                        @Html.LabelFor(model => model.D.SOCIEDAD_ID, "Company code", new { @class = "lbl_bu" })
                                     </div>
                                     <div class="input-field col s6">
                                         @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.PERIODO, "Periodo", new { @id = "lbl_montoml2" })
+                                        @Html.LabelFor(model => model.D.PERIODO, "Periodssso", new { @class = "lbl_periodo" })
                                     </div>
                                     <div class="input-field col s6">
                                         @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @id = "lbl_montoml2" })
+                                        @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @class = "lbl_ejer" })
                                     </div>
                                 }
-                                <div class="input-field col s12">
+                                @*<div class="input-field col s12">
                                     @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
                                     @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -1699,34 +1699,34 @@
                                 <ul class="collection">
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s4">
                                                 Presupuesto canal
                                             </div>
-                                            <div class="col s3">
-                                                <label id="p_vtweg">
+                                            <div class="col s5">
+                                                <b id="p_vtweg">
                                                     aaaa
-                                                </label>
+                                                </b>
                                             </div>
                                             <div class="col s3 right-align">
-                                                <label id="p_canal">
+                                                <b id="p_canal">
                                                     1111
-                                                </label>
+                                                </b>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="collection-item">
                                         <div class="row" style="margin-bottom:0;">
-                                            <div class="col s6">
+                                            <div class="col s4">
                                                 Presupuesto cliente
                                             </div>
-                                            <div class="col s3">
-                                                <label id="p_kunnr">
+                                            <div class="col s5">
+                                                <b id="p_kunnr">
 
-                                                </label>
+                                                </b>
                                             </div>
                                             <div class="col s3 right-align">
-                                                <label id="p_banner">
-                                                </label>
+                                                <b id="p_banner">
+                                                </b>
                                             </div>
                                         </div>
                                     </li>
@@ -1739,9 +1739,9 @@
                                             <div class="col s6">
                                                 Registrado en SAP
                                             </div>
-                                            <div class="col s6 right-align">
-                                                <label id="pc_c">
-                                                </label>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_c">
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -1750,9 +1750,9 @@
                                             <div class="col s6">
                                                 Por registrar en SAP
                                             </div>
-                                            <div class="col s6 right-align">
-                                                <label id="pc_a">
-                                                </label>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_a">
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -1761,10 +1761,9 @@
                                             <div class="col s6">
                                                 En proceso TAT
                                             </div>
-                                            <div class="col s3 offset-s3 right-align">
-                                                <label id="pc_p">
-                                                </label>
-                                                <hr align="right" />
+                                            <div class="col s3 right-align">
+                                                <u id="pc_p">
+                                                </u>
                                             </div>
                                         </div>
                                     </li>
@@ -1773,12 +1772,11 @@
                                             <div class="col s6">
                                                 Consumido
                                             </div>
-                                            <div class="col s3 right-align">
-                                                <b>
-                                                    <label id="pc_t">
-                                                    </label>
-                                                </b>
-                                                <hr />
+                                            <div class="col s6 right-align">
+                                                <u>
+                                                    <b id="pc_t">
+                                                    </b>
+                                                </u>
                                             </div>
                                         </div>
                                     </li>
@@ -1787,9 +1785,9 @@
                                             <div class="col s6">
                                                 Presupuesto disponible
                                             </div>
-                                            <div class="col s3 right-align">
-                                                <label id="consu">
-                                                </label>
+                                            <div class="col s6 right-align">
+                                                <b id="consu">
+                                                </b>
                                             </div>
                                         </div>
                                     </li>
@@ -2253,14 +2251,26 @@ catch (Exception ee)
                     //$('#pc_p').text(data.PC_P);
                     //$('#pc_t').text(data.PC_T);
                     //RSG 26.04.2018----------------
-                    $('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
-                    $('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
-                    $('#pc_c').text('$' + ((data.PC_C / 1).toFixed(2)));
-                    $('#pc_a').text('$' + ((data.PC_A / 1).toFixed(2)));
-                    $('#pc_p').text('$' + ((data.PC_P / 1).toFixed(2)));
-                    $('#pc_t').text('($' + ((data.PC_T / 1).toFixed(2)) + ')');
-                    $('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
+
+                    //$('#p_canal').text('$' + ((data.P_CANAL / 1).toFixed(2)));
+                    //$('#p_banner').text('$' + ((data.P_BANNER / 1).toFixed(2)));
+                    //$('#pc_c').text('($' + ((data.PC_C / 1).toFixed(2)) + ')');
+                    //$('#pc_a').text('($' + ((data.PC_A / 1).toFixed(2)) + ')');
+                    //$('#pc_p').text('($' + ((data.PC_P / 1).toFixed(2)) + ')');
+                    //$('#pc_t').text('($' + ((data.PC_T / 1).toFixed(2)) + ')');
+                    //$('#consu').text('$' + ((data.CONSU / 1).toFixed(2)));
                     //RSG 26.04.2018----------------
+
+                    $('#p_vtweg').text(canal[0] + ' ' + data.CANAL);
+                    $('#p_kunnr').text(kunnr.replace(/^0+/, '') + ' ' + data.CLIENTE);
+                    $('#p_canal').text(toShowG(data.P_CANAL));
+                    $('#p_banner').text(toShowG(data.P_BANNER));
+                    $('#pc_c').text(toShowG(data.PC_C).replace('$', '$(') + ')');
+                    $('#pc_a').text(toShowG(data.PC_A).replace('$', '$(') + ')');
+                    $('#pc_p').text(toShowG(data.PC_P).replace('$', '$(') + ')');
+                    $('#pc_t').text(toShowG(data.PC_T));
+                    $('#consu').text(toShowG(data.CONSU));
+                    //LGPP 21.08.2018----------------
                 }
 
             },

@@ -647,7 +647,7 @@
         }
     </tr>*@
 <tr>
-    <td><i class='material-icons'>@item.BUTTON</i></td>
+    <td class="details-control" style="cursor:pointer"><i class='material-icons'>@item.BUTTON</i></td>
     @if (item.NUM_DOC_TEXT == "Edit")
     {
         <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">

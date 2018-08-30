@@ -777,7 +777,9 @@
                                     </script>
                                 }
                                 else
-                                { <div class="col s12">
+                                {
+                                    <input id="check_recurrente" type="hidden" value="" />
+                                    <div class="col s12">
                                         <div class="input-field col s6">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
@@ -1187,8 +1189,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                              ;
+                                                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1529,20 +1531,20 @@
                                             function cambiaLigada(campo) {
                                                 if (campo.checked) {
                                                     $("#select_neg").val("P");
-                                                //    $("#select_dis").val("C");
+                                                    //    $("#select_dis").val("C");
                                                     $("#select_negi").val("P");
-                                                //    $("#select_disi").val("C");
+                                                    //    $("#select_disi").val("C");
                                                     $("#select_neg").prop("disabled", "disabled");
-                                                //    $("#select_dis").prop("disabled", "disabled");
+                                                    //    $("#select_dis").prop("disabled", "disabled");
                                                     $("#select_neg").change();
-                                                //    $("#select_dis").change();
+                                                    //    $("#select_dis").change();
                                                     $("#div_objq").removeClass("hide");
                                                     $("#txt_ligada").val("X");
                                                 } else {
                                                     $("#select_neg").prop("disabled", false);
-                                                //    $("#select_dis").prop("disabled", false);
+                                                    //    $("#select_dis").prop("disabled", false);
                                                     $("#select_neg").change();
-                                                //    $("#select_dis").change();
+                                                    //    $("#select_dis").change();
                                                     $("#div_objq").addClass("hide");
                                                     $("#txt_ligada").val("");
                                                 }
@@ -1871,77 +1873,89 @@
                             <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
                             <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
                             <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label id="lbl_presupuestocanal">Presupuesto canal</label>@*B20180801 MGC Textos*@
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label id="lbl_presupuestocliente">Presupuesto cliente</label>@*B20180801 MGC Textos*@
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s6">
+                                                <div id="lbl_presupuestocanal">Presupuesto canal</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <dic class="col s3">
+                                                <b id="p_vtweg"></b>
+                                            </dic>
+                                            <div class="col s3 right-align">
+                                                <b id="p_canal"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s6">
+                                                <div id="lbl_presupuestocliente">Presupuesto cliente</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3">
+                                                <b id="p_kunnr"></b>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <b id="p_banner"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-panel">
                                 <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_regsap">Registrado en SAP</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_regsapp">Por registrar en SAP</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_procesotat">En proceso TAT</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_consumido">Consumido</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_presudisponible">Presupuesto disponible</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="consu"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <ul class="collection">
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;">
+                                                <div class="col s6">
+                                                    <div id="lbl_regsap">Registrado en SAP</div>
+                                                </div>
+                                                <div class="col s3 right-align">
+                                                    <div id="pc_c"></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;">
+                                                <div class="col s6">
+                                                    <div id="lbl_regsapp">Por registrar en SAP</div>@*B20180801 MGC Textos*@
+                                                </div>
+                                                <div class="col s3 right-align">
+                                                    <div id="pc_a"></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;">
+                                                <div class="col s6">
+                                                    <div id="lbl_procesotat">En proceso TAT</div>@*B20180801 MGC Textos*@
+                                                </div>
+                                                <div class="col s3 right-align">
+                                                    <u id="pc_p" ></u>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;">
+                                                <div class="col s6">
+                                                    <div id="lbl_consumido">Consumido</div>@*B20180801 MGC Textos*@
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <u><b id="pc_t"></b></u>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="collection-item">
+                                            <div class="row" style="margin-bottom:0;">
+                                                <div class="col s6">
+                                                    <div id="lbl_presudisponible">Presupuesto disponible</div>@*B20180801 MGC Textos*@
+                                                </div>
+                                                <div class="col s6 right-align">
+                                                    <b id="consu"></b>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div>
