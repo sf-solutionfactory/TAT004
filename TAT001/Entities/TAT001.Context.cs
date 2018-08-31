@@ -253,6 +253,19 @@ namespace TAT001.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_CONSULTARPRESUPUESTO_Result>("CSP_CONSULTARPRESUPUESTO", sOCIEDADParameter, aNIOCParameter, aNIOSParameter, pERIODOCParameter, pERIODOSParameter, mONEDADParameter, mONEDAAParameter, cPTParameter);
         }
     
+        public virtual ObjectResult<CSP_DOCUMENTOSXUSER_Result> CSP_DOCUMENTOSXUSER(string uSUARIO, string sPRAS)
+        {
+            var uSUARIOParameter = uSUARIO != null ?
+                new ObjectParameter("USUARIO", uSUARIO) :
+                new ObjectParameter("USUARIO", typeof(string));
+    
+            var sPRASParameter = sPRAS != null ?
+                new ObjectParameter("SPRAS", sPRAS) :
+                new ObjectParameter("SPRAS", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<CSP_DOCUMENTOSXUSER_Result>("CSP_DOCUMENTOSXUSER", uSUARIOParameter, sPRASParameter);
+        }
+    
         public virtual ObjectResult<CSP_PERMISO_Result> CSP_PERMISO(string iD, Nullable<int> aCCION)
         {
             var iDParameter = iD != null ?

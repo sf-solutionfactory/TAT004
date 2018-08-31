@@ -27,12 +27,13 @@ namespace TAT001.Services
 
         public string toShow(decimal num, string decimales)
         {
-            string regresa = num.ToString("N2");
-            string[] separa = regresa.Split('.');
             int posi = 1;
             if (num < 0)
                 posi = -1;
             num = num * posi;
+            string regresa = num.ToString("N2");
+            string[] separa = regresa.Split('.');
+
 
             if (regresa != null | regresa != "")
             {
@@ -61,12 +62,12 @@ namespace TAT001.Services
 
         public string toShowPorc(decimal num, string decimales)
         {
-            string regresa = num.ToString("N2");
-            string[] separa = regresa.Split('.');
             int posi = 1;
             if (num < 0)
                 posi = -1;
             num = num * posi;
+            string regresa = num.ToString("N2");
+            string[] separa = regresa.Split('.');
 
             if (regresa != null | regresa != "")
             {
@@ -96,12 +97,12 @@ namespace TAT001.Services
 
         public string toShowNum(decimal num, string decimales)
         {
-            string regresa = num.ToString("N2");
-            string[] separa = regresa.Split('.');
             int posi = 1;
             if (num < 0)
                 posi = -1;
             num = num * posi;
+            string regresa = num.ToString("N2");
+            string[] separa = regresa.Split('.');
 
             if (regresa != null | regresa != "")
             {

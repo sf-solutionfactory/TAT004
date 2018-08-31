@@ -8,12 +8,13 @@
     ViewBag.carpeta_r = 200;
     ViewBag.enter = true;
 }
-
+<input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
+<input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <div id="modal1" class="modal">
     <div class="modal-content">
         <h4>Cerrar provisión</h4>
         <p>¿Se desea cerrar la provisión?</p>
-        <div class="row right-align">Monto a reversar: <span class="text-accent-1">$ @ViewBag.resto</span></div>
+        <div class="row right-align">Monto a reversar: <span class="text-accent-1 precio">@ViewBag.resto</span></div>
     </div>
     <div class="modal-footer">
         <a class="btn-flat" id="btn_si">NO</a>
@@ -75,3 +76,4 @@
         });
     });
 </script>
+<script src="~/Scripts/formatos.js"></script>

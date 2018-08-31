@@ -295,7 +295,12 @@
         @*//B20180803 MGC Correos......................................*@
 
         <div style="display:inline-block;width:200px;"></div>
-        <h5 style="display:inline; text-align:center;color:white;font-size:30px;">Correción usuario - (Aprobador o TS)</h5>
+        <h5 style="display:inline; text-align:center;color:white;font-size:30px;">Solicitud rechazada por 
+        @if (Model.FLUJOes.Where(x => x.ESTATUS == "R").ToList().Count() > 0)
+        {
+            <span>@Model.FLUJOes.Where(x=>x.ESTATUS =="R").OrderByDescending(x=>x.POS).FirstOrDefault().USUARIO.PUESTO.PUESTOTs.Where(x=>x.SPRAS_ID.Equals(Model.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50</span>
+        }
+        </h5>
 
     </div>
     <div class="container" style="width:1300px;display:table;">
@@ -321,7 +326,7 @@
         <table>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Sociedad - País", new
+                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Co. Code", new
             {
                 @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;",
                 @id = "lbl_sociedadid"

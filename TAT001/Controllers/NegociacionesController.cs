@@ -175,6 +175,7 @@ namespace TAT001.Controllers
                     ViewBag.vk = vkorg;
                     ViewBag.vtw = vtweg;
                     ViewBag.clCorreo2 = correo.Replace('@', '/').Replace('.', '*').Replace('-', '#');
+                    ViewBag.spras = cl.SPRAS;
                 }
             }
             catch (Exception e)

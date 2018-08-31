@@ -5502,6 +5502,10 @@
       <Parameter Name="MONEDAA" Mode="In" Type="String" />
       <Parameter Name="CPT" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="CSP_DOCUMENTOSXUSER" ReturnType="Collection(TAT001Model.CSP_DOCUMENTOSXUSER_Result)">
+      <Parameter Name="USUARIO" Mode="In" Type="String" />
+      <Parameter Name="SPRAS" Mode="In" Type="String" />
+    </FunctionImport>
     <FunctionImport Name="CSP_PERMISO" ReturnType="Collection(TAT001Model.CSP_PERMISO_Result)">
       <Parameter Name="ID" Mode="In" Type="String" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
@@ -5580,6 +5584,38 @@
     <Property Type="Double" Name="PROCESO" Nullable="false" />
     <Property Type="Double" Name="CONSU" Nullable="false" />
     <Property Type="Double" Name="TOTAL" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="CSP_DOCUMENTOSXUSER_Result">
+    <Property Type="Decimal" Name="NUM_DOC" Nullable="false" Precision="10" Scale="0" />
+    <Property Type="Boolean" Name="PADRE" Nullable="false" />
+    <Property Type="Boolean" Name="REVERSO" Nullable="false" />
+    <Property Type="String" Name="BUTTON" Nullable="false" MaxLength="6" />
+    <Property Type="String" Name="ESTATUS" Nullable="true" MaxLength="1" />
+    <Property Type="String" Name="USUARIOA_ID" Nullable="true" MaxLength="16" />
+    <Property Type="String" Name="NUM_DOC_TEXT" Nullable="false" MaxLength="7" />
+    <Property Type="String" Name="SOCIEDAD_ID" Nullable="true" MaxLength="4" />
+    <Property Type="String" Name="PAIS_ID" Nullable="true" MaxLength="2" />
+    <Property Type="DateTime" Name="FECHAD" Nullable="true" Precision="23" />
+    <Property Type="Time" Name="HORAC" Nullable="true" />
+    <Property Type="Int32" Name="PERIODO" Nullable="true" />
+    <Property Type="String" Name="ESTATUSS" Nullable="false" MaxLength="6" />
+    <Property Type="String" Name="PAYER_ID" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="NAME1" Nullable="true" MaxLength="100" />
+    <Property Type="String" Name="CANAL" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="TXT020" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="TXT50" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="CONCEPTO" Nullable="true" MaxLength="100" />
+    <Property Type="Decimal" Name="MONTO_DOC_MD" Nullable="true" Precision="13" Scale="2" />
+    <Property Type="String" Name="FACTURA" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="FACTURAK" Nullable="true" MaxLength="4000" />
+    <Property Type="String" Name="USUARIOD_ID" Nullable="true" MaxLength="16" />
+    <Property Type="String" Name="DOCUMENTO_SAP" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="BLART" Nullable="true" MaxLength="2" />
+    <Property Type="String" Name="KUNNR" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="DESCR" Nullable="true" MaxLength="60" />
+    <Property Type="Decimal" Name="IMPORTE" Nullable="true" Precision="13" Scale="5" />
+    <Property Type="String" Name="CUENTA_C" Nullable="true" MaxLength="10" />
+    <Property Type="Decimal" Name="CARGO" Nullable="true" Precision="10" Scale="0" />
   </ComplexType>
   <ComplexType Name="CSP_PERMISO_Result">
     <Property Type="String" Name="ID" Nullable="false" MaxLength="16" />

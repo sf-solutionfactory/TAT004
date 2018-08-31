@@ -48,7 +48,7 @@ function toNum(string) {
             string = "0.00";
         }
     } else {
-        string = parseFloat(string)+"";
+        string = parseFloat(string) + "";
     }
     return string;
 }
@@ -59,6 +59,7 @@ function toShow(string) {
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
     var _i = 1; if (xx < 0) _i = -1;
+    xx = (xx * _i) + "";
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -88,10 +89,10 @@ function toShowG(string) {//LGPP 21.08.2018----------------
     var _decimales = $("#dec").val();
     var xx = parseFloat(string);
     var i = 1;
-    if (xx < 0) {
+    if (xx <= 0) {
         i = -1;
-        xx = xx * i;
     }
+    xx = xx * i;
 
     xx = xx.toFixed(2);
     xx = xx.replace('.', _decimales);
@@ -105,7 +106,7 @@ function toShowG(string) {//LGPP 21.08.2018----------------
             var _xv = xx.replace('.', '');
             xx = _xv.replace(',', '.');
             var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            xpf = xpf.replace('.', ',');
+            xpf = _xpf.replace('.', ',');
             string = ("$" + _xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
         }
     }
@@ -122,6 +123,7 @@ function toShowPorc(string) {
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
     var _i = 1; if (xx < 0) _i = -1;
+    xx = (xx * _i) + "";
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -151,6 +153,7 @@ function toShowPorc5(string) {
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(5);
     var _i = 1; if (xx < 0) _i = -1;
+    xx = (xx * _i) + "";
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {
@@ -180,6 +183,7 @@ function toShowNum(string) {
     var _decimales = $("#dec").val();
     var xx = parseFloat(string).toFixed(2);
     var _i = 1; if (xx < 0) _i = -1;
+    xx = (xx * _i) + "";
     xx = xx.replace('.', _decimales);
     //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
     if (string != '') {

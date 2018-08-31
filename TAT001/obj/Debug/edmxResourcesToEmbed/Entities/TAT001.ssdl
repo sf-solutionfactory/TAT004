@@ -4337,6 +4337,10 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="MONEDAA" Type="nvarchar" Mode="In" />
     <Parameter Name="CPT" Type="nchar" Mode="In" />
   </Function>
+  <Function Name="CSP_DOCUMENTOSXUSER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="USUARIO" Type="nvarchar" Mode="In" />
+    <Parameter Name="SPRAS" Type="nvarchar" Mode="In" />
+  </Function>
   <Function Name="CSP_PERMISO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="ID" Type="nvarchar" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />

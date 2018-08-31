@@ -380,7 +380,7 @@
                         </div>
                         @*
                             </div>*@
-                        @if (Model.D.DOCUMENTOF != null)
+                        @if (Model.D.DOCUMENTOF != null & !Model.D.TSOL.PADRE)
                         {
                             if (Model.D.DOCUMENTOF.Count > 0)
                             {
@@ -1279,7 +1279,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Concepto</th>
-                                                                        <th>Porcenaje</th>
+                                                                        <th>Porcentaje</th>
                                                                         <th>Código</th>
                                                                         <th>Totales</th>
                                                                     </tr>
@@ -1414,7 +1414,7 @@
                                                 /**/
                                                 var sub = tot * por / 100;
 
-                                                $("#tab_conc tbody").append("<tr><td>" + pp[i].TEXT + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                $("#tab_conc tbody").append("<tr><td>" + pp[i].TEXT + "</td><td>" + toShow(por / 100) + "%</td><td>" + cod + "</td><td>" + toShow(sub) + "</td><tr>");
                                             }
                                         }
                                     });
@@ -1454,15 +1454,16 @@
                                     @Html.EditorFor(model => model.D.MONTO_DOC_ML2, new { htmlAttributes = new { @disabled = "disabled", @class = "_vmonto2" } })
                                     @Html.LabelFor(model => model.D.MONTO_DOC_ML2, "Monto USD", new { @id = "lbl_montoml2" })
                                 </div>
-                                @if (Model.D.TSOL_ID == "PR")
+                                @if (Model.D.TSOL.PADRE)
                                 {
-                                    <div class="input-field col s4">
-                                        @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.TSOL_ID, "Tipo de solicitud", new { @class = "lbl_tsol" })
-                                    </div>
+                                <div class="input-field col s4">
+                                    @*@Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })*@
+                                    @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
+                                    @Html.LabelFor(model => model.D.TSOL_ID, "Tipo de solicitud", new { @class = "lbl_tsol" })
+                                </div>
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.DOCUMENTO_SAP, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Docuemento SAP", new { @id = "lbl_sap" })
+                                        @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Documento SAP", new { @id = "lbl_sap" })
                                     </div>
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
@@ -1818,7 +1819,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Concepto</th>
-                                                                <th>Porcenaje</th>
+                                                                <th>Porcentaje</th>
                                                                 <th>Código</th>
                                                                 <th>Totales</th>
                                                             </tr>
@@ -1904,10 +1905,10 @@
                                                 var sub = tot * por / 100;
                                                 foot = foot + sub;
 
-                                                $("#tab_conc tbody").append("<tr><td>" + pp[i].label + "</td><td>" + (por / 100) + "%</td><td>" + cod + "</td><td>" + sub + "</td><tr>");
+                                                $("#tab_conc tbody").append("<tr><td>" + pp[i].label + "</td><td>" + toShowPorc(por / 100) + "</td><td>" + cod + "</td><td>" + toShow(sub) + "</td><tr>");
                                             }
 
-                                            $("#tab_conc tfoot").append("<tr><td></td><td></td><td></td><th>" + foot + "</th><tr>");
+                                            $("#tab_conc tfoot").append("<tr><td></td><td></td><td></td><th>" + toShow(foot) + "</th><tr>");
                                         }
                                     });
                                 }
@@ -2265,10 +2266,10 @@ catch (Exception ee)
                     $('#p_kunnr').text(kunnr.replace(/^0+/, '') + ' ' + data.CLIENTE);
                     $('#p_canal').text(toShowG(data.P_CANAL));
                     $('#p_banner').text(toShowG(data.P_BANNER));
-                    $('#pc_c').text(toShowG(data.PC_C).replace('$', '$(') + ')');
-                    $('#pc_a').text(toShowG(data.PC_A).replace('$', '$(') + ')');
-                    $('#pc_p').text(toShowG(data.PC_P).replace('$', '$(') + ')');
-                    $('#pc_t').text(toShowG(data.PC_T));
+                    $('#pc_c').text(toShowG(data.PC_C*-1));
+                    $('#pc_a').text(toShowG(data.PC_A*-1));
+                    $('#pc_p').text(toShowG(data.PC_P*-1));
+                    $('#pc_t').text(toShowG(data.PC_T*-1));
                     $('#consu').text(toShowG(data.CONSU));
                     //LGPP 21.08.2018----------------
                 }

@@ -89,7 +89,7 @@ namespace TAT001.Controllers
             decimal pcc = 0;
             try
             {
-                pcc = Convert.ToDecimal(presu.PC_C) / 1;
+                pcc = Convert.ToDecimal(presu.PC_C) / 1 * -1;
             }
             catch (Exception)
             {
@@ -98,7 +98,7 @@ namespace TAT001.Controllers
             decimal pca = 0;
             try
             {
-                pca = Convert.ToDecimal(presu.PC_A) / 1;
+                pca = Convert.ToDecimal(presu.PC_A) / 1 * -1;
             }
             catch (Exception)
             {
@@ -107,7 +107,7 @@ namespace TAT001.Controllers
             decimal pcp = 0;
             try
             {
-                pcp = Convert.ToDecimal(presu.PC_P) / 1;
+                pcp = Convert.ToDecimal(presu.PC_P) / 1 * -1;
             }
             catch (Exception)
             {
@@ -116,7 +116,7 @@ namespace TAT001.Controllers
             decimal pct = 0;
             try
             {
-                pct = Convert.ToDecimal(presu.PC_T) / 1;
+                pct = Convert.ToDecimal(presu.PC_T) / 1 * -1;
             }
             catch (Exception)
             {
