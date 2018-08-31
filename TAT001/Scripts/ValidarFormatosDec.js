@@ -283,42 +283,42 @@
             _pcanx += ")";
             p_canal = _pcanx;
         }
-        if (p_banner.indexOf("-") >= 0) {
-            var _pbannerx = p_banner;
-            _pbannerx = _pbannerx.replace('-', '(');
-            _pbannerx += ")";
-            p_banner = _pbannerx;
-        }
-        if (pc_c.indexOf("-") >= 0) {
-            var _pccx = pc_c;
-            _pccx = _pccx.replace('-', '(');
-            _pccx += ")";
-            pc_c = _pccx;
-        }
-        if (pc_a.indexOf("-") >= 0) {
-            var _pcax = pc_a;
-            _pcax = _pcax.replace('-', '(');
-            _pcax += ")";
-            pc_a = _pcax;
-        }
-        if (pc_p.indexOf("-") >= 0) {
-            var _pcax = pc_p;
-            _pcpx = _pcpx.replace('-', '(');
-            _pcpx += ")";
-            pc_p = _pcpx;
-        }
-        if (pc_t.indexOf("-") >= 0) {
-            var _pctx = pc_t;
-            _pctx = _pctx.replace('-', '(');
-            _pctx += ")";
-            pc_t = _pcpx;
-        }
-        if (consu.indexOf("-") >= 0) {
-            var _cx = consu;
-            _cx = _cx.replace('-', '(');
-            _cx += ")";
-            consu = _cx;
-        }
+        //if (p_banner.indexOf("-") >= 0) {
+        //    var _pbannerx = p_banner;
+        //    _pbannerx = _pbannerx.replace('-', '(');
+        //    _pbannerx += ")";
+        //    p_banner = _pbannerx;
+        //}
+        //if (pc_c.indexOf("-") >= 0) {
+        //    var _pccx = pc_c;
+        //    _pccx = _pccx.replace('-', '(');
+        //    _pccx += ")";
+        //    pc_c = _pccx;
+        //}
+        //if (pc_a.indexOf("-") >= 0) {
+        //    var _pcax = pc_a;
+        //    _pcax = _pcax.replace('-', '(');
+        //    _pcax += ")";
+        //    pc_a = _pcax;
+        //}
+        //if (pc_p.indexOf("-") >= 0) {
+        //    var _pcax = pc_p;
+        //    _pcpx = _pcpx.replace('-', '(');
+        //    _pcpx += ")";
+        //    pc_p = _pcpx;
+        //}
+        //if (pc_t.indexOf("-") >= 0) {
+        //    var _pctx = pc_t;
+        //    _pctx = _pctx.replace('-', '(');
+        //    _pctx += ")";
+        //    pc_t = _pcpx;
+        //}
+        //if (consu.indexOf("-") >= 0) {
+        //    var _cx = consu;
+        //    _cx = _cx.replace('-', '(');
+        //    _cx += ")";
+        //    consu = _cx;
+        //}
 
         //Reasignamos los valores
         $("._vmonto").val("$" + _vmonto);
@@ -433,48 +433,48 @@
             _v2x += ")";
             _vmonto2 = _v2x;
         }
-        if (p_canal.indexOf("-") >= 0) {
-            var _pcanx = p_canal;
-            _pcanx = _pcanx.replace('-', '(');
-            _pcanx += ")";
-            p_canal = _pcanx;
-        }
-        if (p_banner.indexOf("-") >= 0) {
-            var _pbannerx = p_banner;
-            _pbannerx = _pbannerx.replace('-', '(');
-            _pbannerx += ")";
-            p_banner = _pbannerx;
-        }
-        if (pc_c.indexOf("-") >= 0) {
-            var _pccx = pc_c;
-            _pccx = _pccx.replace('-', '(');
-            _pccx += ")";
-            pc_c = _pccx;
-        }
-        if (pc_a.indexOf("-") >= 0) {
-            var _pcax = pc_a;
-            _pcax = _pcax.replace('-', '(');
-            _pcax += ")";
-            pc_a = _pcax;
-        }
-        if (pc_p.indexOf("-") >= 0) {
-            var _pcax = pc_p;
-            _pcpx = _pcpx.replace('-', '(');
-            _pcpx += ")";
-            pc_p = _pcpx;
-        }
-        if (pc_t.indexOf("-") >= 0) {
-            var _pctx = pc_t;
-            _pctx = _pctx.replace('-', '(');
-            _pctx += ")";
-            pc_t = _pcpx;
-        }
-        if (consu.indexOf("-") >= 0) {
-            var _cx = consu;
-            _cx = _cx.replace('-', '(');
-            _cx += ")";
-            consu = _cx;
-        }//--
+        //if (p_canal.indexOf("-") >= 0) {
+        //    var _pcanx = p_canal;
+        //    _pcanx = _pcanx.replace('-', '(');
+        //    _pcanx += ")";
+        //    p_canal = _pcanx;
+        //}
+        //if (p_banner.indexOf("-") >= 0) {
+        //    var _pbannerx = p_banner;
+        //    _pbannerx = _pbannerx.replace('-', '(');
+        //    _pbannerx += ")";
+        //    p_banner = _pbannerx;
+        //}
+        //if (pc_c.indexOf("-") >= 0) {
+        //    var _pccx = pc_c;
+        //    _pccx = _pccx.replace('-', '(');
+        //    _pccx += ")";
+        //    pc_c = _pccx;
+        //}
+        //if (pc_a.indexOf("-") >= 0) {
+        //    var _pcax = pc_a;
+        //    _pcax = _pcax.replace('-', '(');
+        //    _pcax += ")";
+        //    pc_a = _pcax;
+        //}
+        //if (pc_p.indexOf("-") >= 0) {
+        //    var _pcax = pc_p;
+        //    _pcpx = _pcpx.replace('-', '(');
+        //    _pcpx += ")";
+        //    pc_p = _pcpx;
+        //}
+        //if (pc_t.indexOf("-") >= 0) {
+        //    var _pctx = pc_t;
+        //    _pctx = _pctx.replace('-', '(');
+        //    _pctx += ")";
+        //    pc_t = _pcpx;
+        //}
+        //if (consu.indexOf("-") >= 0) {
+        //    var _cx = consu;
+        //    _cx = _cx.replace('-', '(');
+        //    _cx += ")";
+        //    consu = _cx;
+        //}//--
         if (dsMn.indexOf("-") >= 0) {
             var _dsMnx = dsMn;
             _dsMnx = _dsMnx.replace('-', '(');
