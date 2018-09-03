@@ -13,9 +13,9 @@
     @Styles.Render("~/Content/materialize")
     @Scripts.Render("~/bundles/materialize")
 </head>
-@{ 
+@{
     string filter = "javascript:EnterKeyFilter()";
-    if(ViewBag.enter != null)
+    if (ViewBag.enter != null)
     {
         if (ViewBag.enter == true)
         {
@@ -166,13 +166,24 @@
                             <li class='bold'>
                                 <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
                                 <div class='collapsible-body'>
-                                    <ul>
+                                    <ul class="collapsible" data-collapsible="accordion">
                                         @foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
                                         {
                                             if (c.ID.Equals(p.CARPETA_ID))
                                             {
                                                 <li><a href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a></li>
-
+                                                @*<li class="bold">
+                                                    <a class="collapsible-header">
+                                                        <span class="nav-text">Second level child</span>
+                                                        <i class="material-icons">keyboard_arrow_right</i>
+                                                    </a>
+                                                    <div class="collapsible-body" style="display: block;">
+                                                        <ul>
+                                                            <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                                            <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>*@
                                             }
                                         }
                                     </ul>
@@ -181,13 +192,76 @@
                         }
                     }
                 }
+
+
             </ul>
         </li>
+        @*<li class="no-padding">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li class="bold">
+                    <a class="collapsible-header waves-effect waves-cyan">
+                        <i class="material-icons">photo_filter</i>
+                        <span class="nav-text">Menu Levels</span>
+                    </a>
+                    <div class="collapsible-body" style="display: block;">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <a href="ui-basic-buttons.html">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span>Second level</span>
+                                </a>
+                            </li>
+                            <li class="bold">
+                                <a class="collapsible-header waves-effect waves-cyan">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span class="nav-text">Second level child</span>
+                                </a>
+                                <div class="collapsible-body" style="display: block;">
+                                    <ul class="collapsible" data-collapsible="accordion">
+                                        <li>
+                                            <a href="ui-basic-buttons.html">
+                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                <span>Third level</span>
+                                            </a>
+                                        </li>
+                                        <li class="bold">
+                                            <a class="collapsible-header waves-effect waves-cyan">
+                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                <span class="nav-text">Third level child</span>
+                                            </a>
+                                            <div class="collapsible-body" style="display: block;">
+                                                <ul class="collapsible" data-collapsible="accordion">
+                                                    <li>
+                                                        <a href="ui-basic-buttons.html">
+                                                            <i class="material-icons">keyboard_arrow_right</i>
+                                                            <span>Forth level</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="ui-extended-buttons.html">
+                                                            <i class="material-icons">keyboard_arrow_right</i>
+                                                            <span>Forth level</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>*@
     </ul>
+    <script>
+var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, []);</script>
     @*@RenderSection("noticia")
 
-    <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
-    </div>*@
+        <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
+        </div>*@
     @*<div id="container" class="container body-content">
         </div>*@
     <div class="row" style="margin-bottom:0;">
