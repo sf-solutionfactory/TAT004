@@ -10,11 +10,10 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="row">
-        <div class="form-group">
+    <div class="row right-align">
             <div class="col l12 m12 s12" style="margin-top:24px;">
-                <button id="btnAg" type="submit" value="Submit" class="btn-small" style="float:right;">Submit</button>
-            </div>
+               <a href="@Url.Action("Index", "Taxeoh", new { kun = @ViewBag.kun, vko = @ViewBag.vko, vtw = @ViewBag.vtw, spa = @ViewBag.spa })"id = "lblRegresar" class = "btn-small"></a>
+                <button id="btnAg" type="submit" value="Submit" class="btn-small" >Submit</button>
         </div>
     </div>
     <div class="row">
@@ -61,5 +60,4 @@
     var instance = M.FormSelect.init(elem, []);
 </script>
 <div>
-    @Html.ActionLink("Back to List", "Index", new { kun = @ViewBag.kun, vko = @ViewBag.vko, vtw = @ViewBag.vtw, spa = @ViewBag.spa }, new { id = "lblRegresar" })
-</div>
+   </div>

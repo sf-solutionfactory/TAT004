@@ -152,14 +152,20 @@ namespace TAT001.Controllers.Catalogos
             }
         }
 
-        // GET: Contacto/Create
-        public ActionResult Create(Contactoc conC)
-        {
-            return View();
-        }
+        //// GET: Contacto/Create
+        //public ActionResult Create(string vko, string vtw, string kun, string spa)
+        //{
+        //    Contactoc conCli = new Contactoc();
+        //    conCli.kunnr = kun;
+        //    conCli.vkorg = vko;
+        //    conCli.vtweg = vtw;
+        //    conCli.spart = spa;
+
+        //    return View(conCli);
+        //}
 
         // POST: Contacto/Create
-        [HttpPost]
+        [HttpGet]
         public ActionResult Create(string vko, string vtw, string kun, string spa)
         {
             int pagina = 642; //ID EN BASE DE DATOS
