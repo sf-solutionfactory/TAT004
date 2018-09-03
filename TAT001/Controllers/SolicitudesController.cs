@@ -1,4 +1,4 @@
-﻿using EntityFramework.BulkInsert.Extensions;
+using EntityFramework.BulkInsert.Extensions;
 using ExcelDataReader;
 using Newtonsoft.Json;
 using SimpleImpersonation;
@@ -2749,10 +2749,14 @@ namespace TAT001.Controllers
                                     return RedirectToAction("Reversa", new { id = dOCUMENTO.DOCUMENTO_REF, resto = resto });
                             }
                         }
-                        DOCUMENTO referencia = db.DOCUMENTOes.Find(dOCUMENTO.DOCUMENTO_REF);
-                        referencia.ESTATUS = "C";
-                        db.Entry(referencia).State = EntityState.Modified;
-                        db.SaveChanges();
+                        using (TAT001Entities db1 = new TAT001Entities())
+                        {
+                            decimal num_ref = (decimal)dOCUMENTO.DOCUMENTO_REF;
+                            DOCUMENTO referencia = db1.DOCUMENTOes.Find(num_ref);
+                            referencia.ESTATUS = "C";
+                            db1.Entry(referencia).State = EntityState.Modified;
+                            db1.SaveChanges();
+                        }
                     }
 
                     return RedirectToAction("Index", "Home");
