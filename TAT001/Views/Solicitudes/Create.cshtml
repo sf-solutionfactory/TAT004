@@ -1,4 +1,4 @@
-﻿@model TAT001.Entities.DOCUMENTO
+@model TAT001.Entities.DOCUMENTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 202;
@@ -1262,10 +1262,10 @@
                                         <div class="file-field input-field">
                                             <div class="btn-small" style="float:left;">
                                                 <span id="span_filereversa">Examinar</span> @*B20180801 MGC Textos*@
-                                                <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
+                                                <input class="file_soporte nec" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
+                                                <input class="file-path validate" type="text" id="fileinput_rev">
                                             </div>
                                         </div>
                                     </div>
