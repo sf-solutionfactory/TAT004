@@ -1,4 +1,4 @@
-﻿@model TAT001.Models.DocumentoFlujo
+@model TAT001.Models.DocumentoFlujo
 @using TAT001.Entities
 @{
     /**/
@@ -16,6 +16,7 @@
 @try
 {
     <script src="~/Scripts/formatos.js"></script>
+    <script src="~/Scripts/materialize2.js"></script>
     <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">//LEJ 09.07.18
     <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">//LEJ 09.07.18
     <div class="row" style="margin-bottom:0">
@@ -184,7 +185,6 @@
                                         }
                                     }
                                 </ul>
-
                             </div>
                             <script>
                                 //var elem = document.getElementById('btn_rela');
@@ -287,7 +287,6 @@
                     }
                 </ul>
             </div>
-
             @*///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
             <div id="info" class="col s12" style="font-size:12px;">
                 <div class="row">
@@ -380,7 +379,7 @@
                         </div>
                         @*
                             </div>*@
-                        @if (Model.D.DOCUMENTOF != null & !Model.D.TSOL.PADRE)
+                        @if (Model.D.DOCUMENTOF != null & !Model.D.TSOL.PADRE & !Model.D.TSOL.REVERSO)
                         {
                             if (Model.D.DOCUMENTOF.Count > 0)
                             {
@@ -445,7 +444,7 @@
                                                                 <th>Nombre</th>
                                                             }
                                                         }
-                                                        @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null | Model.D.DOCUMENTOF[0].IMPORTE_FAC.ToString() != "0.00000")
+                                                        @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null & Model.D.DOCUMENTOF[0].IMPORTE_FAC > 0)
                                                         {
                                                             <th>Importe Fac</th>
                                                         }
@@ -514,7 +513,7 @@
                                                                     <td>@db.CLIENTEs.Where(x => x.KUNNR == item.PAYER.Trim()).Select(x => x.NAME1).FirstOrDefault()</td>
                                                                 }
                                                             }
-                                                            @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null | Model.D.DOCUMENTOF[0].IMPORTE_FAC.ToString() != "0.00000")
+                                                            @if (Model.D.DOCUMENTOF[0].IMPORTE_FAC != null & Model.D.DOCUMENTOF[0].IMPORTE_FAC > 0)
                                                             {
                                                                 decimal asd = Convert.ToDecimal(item.IMPORTE_FAC);
                                                                 string impFac = asd.ToString("N2");
@@ -611,7 +610,6 @@
                                     </div>
                                 </div>
                             </div>*@
-
                         @*///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
                         @if (Model.D.DOCUMENTORECs.Count() > 0)
                         {
@@ -620,7 +618,6 @@
                                     <div class="row">
                                         <h5>Recurrencia</h5>
                                     </div>
-
                                     @{ var caso = Model.D.TIPO_RECURRENTE; }
                                     @*@if (Convert.ToInt32(caso) != 3)*@
                                     @*{*@
@@ -724,11 +721,9 @@
                                                             {
                                                                 <td></td>
                                                             }
-
                                                             <td>@iteem.FECHAV.Value.ToShortDateString()</td>
                                                             <td class="porcentaje">@Math.Round(iteem.PORC.Value, 2)</td>
                                                             <td class="precio">@iteem.MONTO_BASE</td>
-
                                                             @if (iteem.ESTATUS == "P")
                                                             {
                                                                 <td>Contabilizado</td>
@@ -819,7 +814,7 @@
                                         for (int i = 0; i < archivos.Count; i++)
                                         {
                                             nombrefile = archivos[i].PATH.Split('\\');
-                                            
+
                                             @archivos[i].CLASE
                                             <div class="file-field input-field">
                                                 <button id="lbl_cargar" name="archivo" class="btn" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
@@ -846,7 +841,6 @@
                                         <h5>Carta</h5>
                                     </div>
                                     <div class="row">
-
                                         @using (Html.BeginForm("Details", "Solicitudes", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                         {
                                             @Html.AntiForgeryToken()
@@ -885,7 +879,6 @@
                                     <div class="row" style="margin-bottom:0">
                                         <div class="card-panel cpC">
                                             <div class="row">
-
                                                 <h5>Seleccionar distribución</h5>
                                                 <ul class="collapsible">
                                                     @for (int i = 0; i < pos.Count; i++)
@@ -1037,26 +1030,21 @@
                                                 @Html.EditorFor(model => model.D.TIPO_TECNICO, new { htmlAttributes = new { @disabled = "disabled" } })
                                                 @Html.LabelFor(model => model.D.TIPO_TECNICO, "Negociación")
                                             </div>
-
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled", @Value = ViewBag.mat } })
                                                 @Html.LabelFor(model => model.D.TSOL_ID, "Distribución")
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col s12 m6 l6">
                                     <div class="card-panel">
                                         <h5 id="head_montob">Monto Base</h5>
                                         <div class="row" style="margin-bottom:0">
-
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.MONTO_DOC_MD, new { htmlAttributes = new { @disabled = "disabled", @id = "lbl_montodis", @class = "_vmonto" } })
                                                 @Html.LabelFor(model => model.D.MONTO_DOC_MD, "Monto", htmlAttributes: new { @id = "lbl_montodis" })
                                             </div>
-
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.MONEDA_ID, new { htmlAttributes = new { @disabled = "disabled", @id = "lbl_monedadis" } })
                                                 @Html.LabelFor(model => model.D.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id", @id = "lbl_monedadis" })
@@ -1067,7 +1055,6 @@
                             </div>
                         }
                         @*///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
-
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
                                 <h5>Distribución</h5>
@@ -1154,7 +1141,6 @@
 
                                                             }
                                                         }
-
                                                         @*LEJ 12.07.18 Añadi un identificador para modificarse dinamicamente*@
                                                         <td id="dsMn-@idn">@Math.Round(item.MONTO, 2)</td>
                                                         <td id="dsPAp-@idn">@Math.Round(item.PORC_APOYO, 2)</td>
@@ -1456,11 +1442,11 @@
                                 </div>
                                 @if (Model.D.TSOL.PADRE)
                                 {
-                                <div class="input-field col s4">
-                                    @*@Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })*@
-                                    @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.TSOL_ID, "Tipo de solicitud", new { @class = "lbl_tsol" })
-                                </div>
+                                    <div class="input-field col s4">
+                                        @*@Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled" } })*@
+                                        @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
+                                        @Html.LabelFor(model => model.D.TSOL_ID, "Tipo de solicitud", new { @class = "lbl_tsol" })
+                                    </div>
                                     <div class="input-field col s4">
                                         @Html.EditorFor(model => model.D.DOCUMENTO_SAP, new { htmlAttributes = new { @disabled = "disabled" } })
                                         @Html.LabelFor(model => model.D.DOCUMENTO_SAP, "No. Documento SAP", new { @id = "lbl_sap" })
@@ -1479,9 +1465,9 @@
                                     </div>
                                 }
                                 @*<div class="input-field col s12">
-                                    @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
-                                    @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
-                                </div>*@
+                                        @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @style = "height:500px;", @disabled = "disabled" })
+                                        @Html.LabelFor(model => model.D.NOTAS, "Mecánica de negociación", new { @id = "lbl_notas" })
+                                    </div>*@
                             </div>
                         </div>
                     </div>
@@ -1692,7 +1678,6 @@
                                 </div>
                             </div>
                         }
-
                         @*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
                         <div class="card-panel">
                             <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
@@ -1722,7 +1707,6 @@
                                             </div>
                                             <div class="col s5">
                                                 <b id="p_kunnr">
-
                                                 </b>
                                             </div>
                                             <div class="col s3 right-align">
@@ -2220,7 +2204,6 @@ catch (Exception ee)
     @Html.ActionLink("Back to List", "Index")
 </p>
 
-
 @*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
 <script>
     var canal = $('#vtweg').val();
@@ -2266,10 +2249,10 @@ catch (Exception ee)
                     $('#p_kunnr').text(kunnr.replace(/^0+/, '') + ' ' + data.CLIENTE);
                     $('#p_canal').text(toShowG(data.P_CANAL));
                     $('#p_banner').text(toShowG(data.P_BANNER));
-                    $('#pc_c').text(toShowG(data.PC_C*-1));
-                    $('#pc_a').text(toShowG(data.PC_A*-1));
-                    $('#pc_p').text(toShowG(data.PC_P*-1));
-                    $('#pc_t').text(toShowG(data.PC_T*-1));
+                    $('#pc_c').text(toShowG(data.PC_C * -1));
+                    $('#pc_a').text(toShowG(data.PC_A * -1));
+                    $('#pc_p').text(toShowG(data.PC_P * -1));
+                    $('#pc_t').text(toShowG(data.PC_T * -1));
                     $('#consu').text(toShowG(data.CONSU));
                     //LGPP 21.08.2018----------------
                 }
