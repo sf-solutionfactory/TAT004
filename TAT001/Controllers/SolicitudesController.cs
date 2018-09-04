@@ -3045,7 +3045,7 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
             string notas_soporte, string unafact, string select_neg, string select_dis, string select_negi, string select_disi,
             string bmonto_apoyo, string monedadis, string chk_ligada)
-        {
+       {
 
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -7788,8 +7788,8 @@ namespace TAT001.Controllers
             //RSG 07.06.2018---------------------------------------------
             mat = new Cadena().completaMaterial(mat);
             //RSG 07.06.2018---------------------------------------------
-
-            MaterialVal matt = db.MATERIALs.Where(m => m.ID == mat && m.ACTIVO == true).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATKL_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
+            string spras = Session["spras"].ToString();
+            MaterialVal matt = db.MATERIALTs.Where(m => m.MATERIAL_ID == mat && m.SPRAS == spras).Select(m => new MaterialVal { ID = m.MATERIAL_ID.ToString(), MATKL_ID = m.MATERIAL.MATERIALGP_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
 
             JsonResult cc = Json(matt, JsonRequestBehavior.AllowGet);
             return cc;

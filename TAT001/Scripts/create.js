@@ -631,18 +631,18 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.FormSelect.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -5889,6 +5889,7 @@ function asignarCategoriaDesc(cat) {
 function valMaterial(mat, message) {
     materialVal = "";
     var localval = "";
+    var spras = "ES"; //
     if (mat != "") {
         $.ajax({
             type: "POST",
