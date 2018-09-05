@@ -45,199 +45,225 @@
                 <div class="col l2 yellow" style="height:10px;padding:0;"></div>
             </div>*@
 
-        <table class="table mdl-data-table striped" id="table" style="width:100%;">
-            <thead>
-                <tr class="header" @*style="background-color:#CCCCCC"*@>
-                    <th>
-                        @Html.DisplayNameFor(model => model.KUNNR)
+    <table class="table mdl-data-table striped" id="table" style="width:100%;">
+        <thead>
+            <tr class="header" @*style="background-color:#CCCCCC"*@>
+                <th>
+                    @Html.DisplayNameFor(model => model.KUNNR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NAME1)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.STCD1)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.NAME1)
+                        @Html.DisplayNameFor(model => model.STCD2)
                     </th>
-                    @*<th>
-                                @Html.DisplayNameFor(model => model.STCD1)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.STCD2)
-                            </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.REGION)
-                        </th>*@
-                    <th>
-                        @Html.DisplayNameFor(model => model.SUBREGION)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LAND)
-                    </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.ORT01)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.STRAS_GP)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PSTLZ)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CONTAC)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CONT_EMAIL)
-                        </th>*@
-                    <th>
-                        @Html.DisplayNameFor(model => model.PARVW)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PAYER)
-                    </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.GRUPO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.SPRAS)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.ACTIVO)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.BDESCRIPCION)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.BANNER)
-                        </th>*@
-                    <th>
-                        @Html.DisplayNameFor(model => model.CANAL)
-                    </th>
-                    @*<th>
-                            @Html.DisplayNameFor(model => model.BZIRK)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.KONDA)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.VKGRP)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.VKBUR)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.BANNERG)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PAI.SPRAS)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.TCLIENTE.ID)
-                        </th>*@
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.KUNNR)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NAME1)
-                        </td>
-                        @*<td>
-                                    @Html.DisplayFor(modelItem => item.STCD1)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.STCD2)
-                                </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.REGION)
-                            </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SUBREGION)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PAI.LANDX)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.REGIO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ORT01)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.STRAS_GP)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PSTLZ)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CONTAC)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CONT_EMAIL)
-                            </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PARVW)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PAYER)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.GRUPO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SPRAS)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ACTIVO)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BDESCRIPCION)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BANNER)
-                            </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CANAL)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.BZIRK)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.KONDA)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.VKGRP)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.VKBUR)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.BANNERG)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PAI.SPRAS)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.TCLIENTE.ID)
-                            </td>*@
-                        <td>
-                            <a href="@Url.Action("Edit", "Clientes", new { vko = item.VKORG, vtw = item.VTWEG, spa = item.SPART, kun = item.KUNNR })">
-                                <i class='material-icons green-text'>edit</i>
-                            </a>
-                            <a href="@Url.Action("Details", "Clientes", new { vko = item.VKORG, vtw = item.VTWEG, spa = item.SPART, kun = item.KUNNR })">
-                                <i class='material-icons blue-text'>search</i>
-                            </a>
-                            <a data-form-method="post" href="@Url.Action("Index", "Contacto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART })">
-                                <i class='material-icons orange-text'>contacts</i>
-                            </a>
-                            <a data-form-method="post" href="@Url.Action("Index", "Impuesto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART })">
-                                <i class='material-icons yellow-text'>monetization_on</i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                <th>
+                    @Html.DisplayNameFor(model => model.REGION)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.SUBREGION)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LAND)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.ORT01)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.STRAS_GP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PSTLZ)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CONTAC)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CONT_EMAIL)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.PARVW)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PAYER)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.GRUPO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SPRAS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ACTIVO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BDESCRIPCION)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BANNER)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.CANAL)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.BZIRK)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KONDA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VKGRP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VKBUR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BANNERG)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PAI.SPRAS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TCLIENTE.ID)
+                </th>*@
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KUNNR)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NAME1)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.STCD1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.STCD2)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.REGION)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.SUBREGION)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PAI.LANDX)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.REGIO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ORT01)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.STRAS_GP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PSTLZ)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CONTAC)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CONT_EMAIL)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.PARVW)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PAYER)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.GRUPO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SPRAS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ACTIVO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BDESCRIPCION)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BANNER)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CANAL)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.BZIRK)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KONDA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VKGRP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VKBUR)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BANNERG)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PAI.SPRAS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TCLIENTE.ID)
+                </td>*@
+                <td>
+                    <a href="@Url.Action("Edit", "Clientes", new { vko = item.VKORG, vtw = item.VTWEG, spa = item.SPART, kun = item.KUNNR })">
+                        <i class='material-icons green-text'>edit</i>
+                    </a>
+                    <a href="@Url.Action("Details", "Clientes", new { vko = item.VKORG, vtw = item.VTWEG, spa = item.SPART, kun = item.KUNNR })">
+                        <i class='material-icons blue-text'>search</i>
+                    </a>
+                    <a data-form-method="post" href="@Url.Action("Index", "Contacto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART })">
+                        <i class='material-icons orange-text'>contacts</i>
+                    </a>
+                    <a data-form-method="post" href="@Url.Action("Index", "Impuesto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART })">
+                        <i class='material-icons yellow-text'>monetization_on</i>
+                    </a>
+                </td>
+            </tr>
+    }
+        </tbody>
+        <tfoot>
+            <tr class="header" @*style="background-color:#CCCCCC"*@>
+                <th>
+                    @Html.DisplayNameFor(model => model.KUNNR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NAME1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SUBREGION)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LAND)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PARVW)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PAYER)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CANAL)
+                </th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
     }
 </div>
 <script type="text/javascript">
@@ -305,22 +331,32 @@
             initComplete: function () {
                 this.api().columns().every(function () {
                     var column = this;
-                    var select = $('<select style="display:initial;" class="browser-default"><option value=""></option></select>')
+                    //var select = $('<select style="display:initial;" class="browser-default"><option value=""></option></select>')
+                    //var div = $('<div class="input-field col s12"></div><script>var elem = document.querySelectorAll("select");var options = [];var instance = M.FormSelect.init(elem, options);')
+                    var select = $('<select style="display:initial;" multiple><option value=""></option></select>')
                         .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
+                        .on('focusout', function () {
+                            var val = $(this).val();
+                            for (var i = 0; i < val.length; i++) {
+                                column
+                                    .search(val[i] ? '^' + val[i] + '$' : '', true, false)
+                                    .draw();
+                            }
+                            //var val = $.fn.dataTable.util.escapeRegex(
+                            //    $(this).val()
+                            //);
+                            //column
+                            //    .search(val ? '^' + val + '$' : '', true, false)
+                            //    .draw();
+                            
                         });
                     column.cells('', column[0]).render('display').sort().unique().each(function (d, j) {
                         var val = $('<div/>').html(d).text();
                         select.append('<option value="' + val + '">' + val + '</option>');
                     });
                 });
-            }
+            },
+            pagingType: "simple"
         });
 
         var a = $('#selecc').val();

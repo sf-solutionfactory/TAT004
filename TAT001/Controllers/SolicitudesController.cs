@@ -106,7 +106,7 @@ namespace TAT001.Controllers
                     us = User.Identity.Name;
 
                 List<CSP_DOCUMENTOSXUSER_Result> dOCUMENTOes = db.CSP_DOCUMENTOSXUSER(us, user.SPRAS_ID).ToList();
-                
+
                 //dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
                 //dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
                 //ViewBag.Clientes = db.CLIENTEs.ToList();
@@ -114,7 +114,7 @@ namespace TAT001.Controllers
                 //ViewBag.DOCF = db.DOCUMENTOFs.ToList();
                 //jemo inicio 4/07/2018
                 ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
-            
+
 
                 List<Documento> listaDocs = new List<Documento>();
                 foreach (CSP_DOCUMENTOSXUSER_Result item in dOCUMENTOes)
@@ -141,8 +141,8 @@ namespace TAT001.Controllers
 
                     ld.PAYER_ID = item.PAYER_ID;
 
-                        ld.CLIENTE = item.NAME1;
-                        ld.CANAL = item.CANAL;
+                    ld.CLIENTE = item.NAME1;
+                    ld.CANAL = item.CANAL;
                     ld.TSOL = item.TXT020;
                     ld.TALL = item.TXT50;
                     //foreach (CUENTA cuenta in db.CUENTAs.Where(x => x.SOCIEDAD_ID.Equals(item.SOCIEDAD_ID)).ToList())
@@ -163,9 +163,9 @@ namespace TAT001.Controllers
                     catch { }
                     ld.CONCEPTO = item.CONCEPTO;
                     ld.MONTO_DOC_ML = item.MONTO_DOC_MD + "";
-                   
-                        ld.FACTURA = item.FACTURA;
-                        ld.FACTURAK = item.FACTURAK;
+
+                    ld.FACTURA = item.FACTURA;
+                    ld.FACTURAK = item.FACTURAK;
 
                     ld.USUARIOC_ID = item.USUARIOD_ID;
 
@@ -1603,14 +1603,18 @@ namespace TAT001.Controllers
                 val += ", TSOL: '" + wp.TSOL_ID + "'";
                 val += ", TAB: '" + wp.TAB_ID + "'";
                 val += ", ELEM: '" + wp.CAMPO_ID + "'";
-                val += ", MSG: '" + lwpt.Where(x=>x.TAB_ID==wp.TAB_ID & x.WARNING_ID==wp.ID).FirstOrDefault().TXT100 + "'";
+                WARNINGPT pt = lwpt.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).FirstOrDefault();
+                if (pt == null)
+                    val += ", MSG: '" + wp.DESCR + "'";
+                else
+                    val += ", MSG: '" + lwpt.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).FirstOrDefault().TXT100 + "'";
                 if (wp.TIPO == "E")
                     val += ", TIPO: 'error', COLOR: 'red'";
                 else
                     val += ", TIPO: 'info', COLOR: 'yellow'";
                 val += ", COND: [";
                 int cont2 = 0;
-                foreach(WARNING_COND wc in lwc.Where(x=>x.TAB_ID==wp.TAB_ID & x.WARNING_ID==wp.ID).ToList())
+                foreach (WARNING_COND wc in lwc.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).ToList())
                 {
                     if (cont2 != 0)
                         val += ", ";
@@ -3045,7 +3049,7 @@ namespace TAT001.Controllers
             "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, USUARIOC_ID")] DOCUMENTO dOCUMENTO,
             string notas_soporte, string unafact, string select_neg, string select_dis, string select_negi, string select_disi,
             string bmonto_apoyo, string monedadis, string chk_ligada)
-       {
+        {
 
             string errorString = "";
             SOCIEDAD id_bukrs = new SOCIEDAD();
@@ -6422,7 +6426,7 @@ namespace TAT001.Controllers
                 cm.MATERIALES = dm;
                 //LEJ 18.07.2018-----------------------------------------------------------
                 MATERIALGP vv = db.MATERIALGPs.Where(u => u.ID == cm.ID).FirstOrDefault();
-                cm.UNICA =vv.UNICA;
+                cm.UNICA = vv.UNICA;
                 MATERIALGPT vt = vv.MATERIALGPTs.Where(a => a.SPRAS_ID.Equals(spras)).FirstOrDefault();
                 if (vt != null)
                 {
