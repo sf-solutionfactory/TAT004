@@ -281,6 +281,11 @@ namespace TAT001.Controllers
             return Redirect(returnUrl);
             //return View();
         }
+        [HttpGet]
+        public ActionResult About()
+        {
+            return View();
+        }
 
         [Authorize]
         public ActionResult Pais(string returnUrl)

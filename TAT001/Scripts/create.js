@@ -4919,7 +4919,7 @@ function evaluarDisTable() {
     } else {
         res = "Posiciones en tabla de distribución como mínimo un registro";
     }
-
+    updateFooter();//RSG 05.09.2018
     return res;
 }
 
@@ -5374,7 +5374,7 @@ function selectDis(val) {
             $('#div_montobase').css("display", "none");//none
             $('#div_apoyobase').css("display", "inherit");
         }
-        $('#monto_dis').val("");
+        $('#monto_dis').val("0");
         //RSG 09.07.2018------------------------------------
     } else {
         $('#div_montobase').css("display", "none");
@@ -5393,8 +5393,8 @@ function selectMonto(val, message) {
     ta.clear().draw();
 
     //Reset los valores
-    $('#monto_dis').val("");
-    $('#bmonto_apoyo').val("");
+    $('#monto_dis').val("0");
+    $('#bmonto_apoyo').val("0");
 
     //Obtener la negociación
     var select_neg = $('#select_neg').val();

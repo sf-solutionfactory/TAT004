@@ -320,7 +320,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
-                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="" disabled="disabled" />
                                             <label id="lbl_paiss" for="pais_txt">Subregión</label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
@@ -416,12 +416,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="" disabled="disabled" />
                                     <label id="lbl_fechad" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="" disabled="disabled" />
                                     <label id="lbl_periodo" for="periodo">Periodo</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -452,7 +452,7 @@
                                 </script>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="" disabled="disabled" />
                                     <label id="lbl_ejercicio" for="ejercicio">Ejercicio</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -543,7 +543,7 @@
                                     <label id="lbl_nombrecli" for="cli_name">Nombre</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="" disabled="disabled" />
                                     <label id="lbl_parvwcli" for="parvw">Tipo de cliente</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -553,7 +553,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="" disabled="disabled" />
                                     <label id="lbl_stcdcli" for="stcd1">Tax ID</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -567,7 +567,7 @@
                                     @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre", @id = "lbl_payernom" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
+                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " " + @ViewBag.relacionada, @type = "email" } })
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email", @id = "lbl_payeremail" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -814,7 +814,7 @@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
+                                        <input class="file-path  file_sop" type="text">
                                     </div>
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
@@ -1189,8 +1189,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                  archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                      ;
+                                                                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1209,7 +1209,7 @@
                                                     <div class="file-field input-field">
                                                         <button name="archivo" class="btn lbl_cargar" type="submit" value="@archivos[i].PATH">DESCARGAR</button> @*B20180801 MGC Textos*@
                                                         <div class="file-path-wrapper">
-                                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                                         </div>
                                                     </div>
                                                 }
@@ -1265,14 +1265,14 @@
                                                 <input class="file_soporte nec" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text" id="fileinput_rev">
+                                                <input class="file-path " type="text" id="fileinput_rev">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
-                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="" disabled="disabled" />
                                         <label id="lbl_fechadrev" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                     </div>
                                     @*<div class="row">*@
@@ -1610,12 +1610,12 @@
                                     @*if (Model.PAI.BACKORDER)
                                         {
                                             <div class="input-field col s6">
-                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                                 <label for="bmonto_apoyo">% Apoyo</label>
                                             </div>
                                         }*@
                                     <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" disabled="disabled" />
+                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="@ViewBag.reversa" disabled="disabled" />
                                         <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
                                     </div>
 
@@ -1641,7 +1641,7 @@
                                 else
                                 {
                                     <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="@ViewBag.reversa" />
                                         <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
                                     </div>
                                     <div class="input-field col s6">
@@ -1658,7 +1658,7 @@
                             <h5 id="head_baseaplicar">Base para aplicar %</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                     <label id="lbl_porcapoyo" for="bmonto_apoyo">% Apoyo</label>@*B20180801 MGC Textos*@
                                 </div>
                             </div>
@@ -1676,7 +1676,7 @@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input class="file-path " type="text">
                                         </div>
                                     </div>
                                     <div id="div_btns_row" style="display:none">
@@ -1824,7 +1824,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                     </div>
@@ -1851,7 +1851,7 @@
                                         </div>
                                     </div>
                                     <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="montos_doc_ml2" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc2" for="montos_doc_ml2" class="active">Monto en USD</label>@*B20180801 MGC Textos*@
                                     </div>
                                     <div class="form-group">
@@ -2423,7 +2423,6 @@
                     app += ";e.preventDefault(); e.stopPropagation();});";
                 }
             }
-
             app += "$('#tab_soporte').on('click', function (e) {var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
             app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
                 " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
@@ -2432,8 +2431,8 @@
                 " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
 
             app += "function validarTab(e, tabid, div) {";
-            app += "var ban = true;";
             for (var i = 0; i < lista.length; i++) {
+                app += "var ban = true;";
                 //if (lista[i].TAB == 'tab_info' | true) {
                 app += "if ('" + lista[i].TAB + "' == tabid) {";
                 var campo = document.getElementById(lista[i].ID);
@@ -2453,20 +2452,33 @@
                     //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
                     //app += "var val = $('." + lista[i].ID + "').find('input').val(); if(val==undefined){ val = $('." + lista[i].ID + "').val();} ban = ";
                     app += "var val = $('." + lista[i].ID + "').find('input').val();";
-                    if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f')
-                        app += "if(val==undefined){ var li = document.querySelectorAll('." + lista[i].ID + "'); val = $('." + lista[i].ID + "').text();}";
-                    app += "ban = ";
-                }
-            } { }//RSG 04.09.2018
+                    if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                        app += "if(val==undefined){ var li = document.querySelectorAll('." + lista[i].ID + "');";
+                        app += "for(var j= 0; j<li.length;j++){ var par = $(li[j]).prop('tagName');if( par!= 'TH'){";
+                        app += " val = $(li[j]).text(); ban = ";
                         for (var j = 0; j < lista[i].COND.length; j++) {
                             app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
                         }
+                        app += ";if(!ban){j=li.length;}";
+                        app += "}}}";
+                        app += "else{";
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                        app += "}";
+                    } else {
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                    }
                         app += ";";
                         app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
                         app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);";
                     }
                 //}
-                    app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";}
+                    app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";
                     var tabb = "";
                     if (lista[i].TAB == "tab_info") {
                         tabb = "Informacion_cont";
@@ -2773,8 +2785,10 @@
                 for (var i = 0; i < campoVal.length; i++) {
                     if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
                         var value = $(campoVal[i]).find('input').val();
-                        //if (value == undefined)
-                        //    value = $(campoVal[i]).val();
+                        if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                            if (value == undefined)
+                                value = $(campoVal[i]).text();
+                        }
                         var valid = ban;
                         var tipo_condicion = num;
                         //if (value == undefined) {
@@ -2842,16 +2856,16 @@
 
                 if ($.isNumeric(toNum(val1))) {
                     if (comp == '>') {
-                        if (val1 > val2)
+                        if (parseFloat(toNum(val1)) > parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '<') {
-                        if (val1 < val2)
+                        if (parseFloat(toNum(val1)) < parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '>=') {
-                        if (val1 >= val2)
+                        if (parseFloat(toNum(val1)) >= parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '<=') {
-                        if (val1 <= val2)
+                        if (parseFloat(toNum(val1)) <= parseFloat(toNum(val2)))
                             return true;
                     }
                 }
@@ -2867,6 +2881,41 @@
                 }
                 else if (comp == "d") {
                     return isDate(val1)
+                }
+                else if (comp == "M") {
+                    return ($("#select_neg").val() == "M")
+                }
+                else if (comp == "P") {
+                    return ($("#select_neg").val() == "P")
+                }
+                else if (comp == "MA") {
+                    return ($("#select_dis").val() == "M")
+                }
+                else if (comp == "CA") {
+                    return ($("#select_dis").val() == "C")
+                }
+                else if (comp == "TOT") {
+                    return (toNum(val1) == toNum($("#total_dis").text()))
+                }
+                else if (comp == "T") {
+                    return (parseFloat(toNum($("#total_dis").text()))>0)
+                }
+                else if (comp == "DIS") {
+                    evaluarDisTable();
+                    var len = $("#table_dis > tbody  > tr[role='row']").length;
+                    if (len > 0) {
+                        var cont = 0;
+                        $('#table_dis > tbody  > tr').each(function () {
+                            var mat = $(this).find("td:eq(" + (4) + ") input").val();
+                            var cat = $(this).find("td:eq(" + (5) + ")").text();
+                            if (mat != undefined & mat != "")
+                                cont++;
+                            else if(cat != undefined & cat != "")
+                                cont++;
+
+                        });
+                    }
+                    return cont > 0;
                 }
                 return false;
             }
