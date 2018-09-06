@@ -1,4 +1,4 @@
-﻿@model TAT001.Entities.DOCUMENTO
+@model TAT001.Entities.DOCUMENTO
 
 @{
     Layout = null;
@@ -519,7 +519,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col s6">
                                     <div class="row">
                                         <div class="input-field col s12" @*style="width:48%;  float:left;  margin-right: 8px;"*@>
@@ -552,24 +551,22 @@
                                                 }
                                             })
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <h5 style="font-size:20px;margin:5px;">Vigencia</h5>
                                 <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
                                     @Html.LabelFor(model => model.FECHAI_VIG, "Vigencia de", new { @style = "color: rgba(0, 0, 0, 1.0);font-size:10px;", @id = "lbl_userid" })
                                     @*@Html.EditorFor(model => model.FECHAI_VIG, new
-                                        {
-                                            htmlAttributes = new
-                                            {
-                                                @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
-                                                @value = Model.FECHAI_VIG.Value.ToShortDateString()
-                                            }
-                                        })*@
+                            {
+                                htmlAttributes = new
+                                {
+                                    @disabled = "disabled",
+                                    @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                    @value = Model.FECHAI_VIG.Value.ToShortDateString()
+                                }
+                            })*@
                                     <input type="text"
                                            disabled="disabled" ,
                                            style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
@@ -582,14 +579,14 @@
                                         @id = "lbl_userid"
                                     })
                                     @*@Html.EditorFor(model => model.FECHAF_VIG, new
-                                        {
-                                            htmlAttributes = new
-                                            {
-                                                @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
-                                                @value = Model.FECHAF_VIG.Value.ToShortDateString()
-                                            }
-                                        })*@
+                            {
+                                htmlAttributes = new
+                                {
+                                    @disabled = "disabled",
+                                    @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                    @value = Model.FECHAF_VIG.Value.ToShortDateString()
+                                }
+                            })*@
                                     <input type="text"
                                            disabled="disabled" ,
                                            style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 100%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " ,
@@ -608,7 +605,6 @@
                                         }
                                     })
                                 </div>
-
                                 <div class="input-field col s4" style="width:48%; float:left;  margin-right: 8px;">
                                     @Html.LabelFor(model => model.MONTO_DOC_MD, "Monto", new
                                     {
@@ -616,14 +612,14 @@
                                         @id = "lbl_userid"
                                     })
                                     @*@Html.EditorFor(model => model.MONTO_DOC_MD, new
-                                        {
-                                            htmlAttributes = new
-                                            {
-                                                @disabled = "disabled",
-                                                @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
-                                                @class = "precio"
-                                            }
-                                        })*@
+                            {
+                                htmlAttributes = new
+                                {
+                                    @disabled = "disabled",
+                                    @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; ",
+                                    @class = "precio"
+                                }
+                            })*@
                                     @*<input type="text" id="MONTO_DOC_MD" name="MONTO_DOC_MD" disabled="disabled" value="@ViewBag.monto" style="color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 30px;width: 48%;font-size: 12px;margin: 0 0 8px 0;padding: 0; " />*@
                                     <input type="text"
                                            disabled="disabled" ,
@@ -631,14 +627,12 @@
                                            value="@ViewBag.monto" />
                                 </div>
                             </div>
-
                         </div>
                     </td>
                 </tr>
+                @*</table>
 
-            </table>
-
-            <table style="width:80%">
+        <table style="width:80%">*@
                 <tr>
                     <td style="width:50%;padding:5px;vertical-align:baseline;">
                         <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
@@ -646,9 +640,7 @@
                                 background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
                             <h5 style="font-size:20px;margin:5px;">Análisis Presupuesto</h5>
                             <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
-
                             <input type="text" id="payer_id" hidden value="@Model.PAYER_ID" style="display:none" />
-
                             <div class="row" style="margin-bottom:0">
                                 <table class="tg" style="width: 100%;border-collapse: collapse;">
                                     <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
@@ -678,7 +670,6 @@
                             <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
                                 padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
                                 background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
-
                                 <div class="row" style="margin-bottom:0">
                                     <table class="tg" style="width: 100%; border-collapse: collapse;">
                                         <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
@@ -728,6 +719,62 @@
                                         </tr>
                                     </table>
                                 </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td style="width:50%;padding:5px;vertical-align:baseline;">
+                        <div class="card-panel" style="transition: box-shadow .25s, -webkit-box-shadow .25s;
+                                padding: 24px;margin: 0.5rem 0 1rem 0;border-radius: 2px;
+                                background-color:#fff;box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);">
+                            <h5 style="font-size:20px;margin:5px;">Análisis solicitud</h5>
+                            <input type="text" id="payer_id" hidden value="@Model.PAYER_ID" style="display:none" />
+                            <div class="row" style="margin-bottom:0">
+                                <table class="tg" style="width: 100%;border-collapse: collapse;">
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <span>Monto solicitud</span>
+                                        </td>
+                                        <td class="tg-yw4l" style="text-align:right">
+                                            <label id="p_vtweg" style="color: #9e9e9e;">@ViewBag.S_MONTOB</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <span>Monto provisión original</span>
+                                        </td>
+                                        <td class="tg-yw4l" style="text-align:right">
+                                            <label id="p_kunnr" style="color: #9e9e9e;">@ViewBag.S_MONTOP</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <span>Monto aplicado</span>
+                                        </td>
+                                        <td class="tg-yw4l" style="text-align:right">
+                                            <label id="p_kunnr" style="color: #9e9e9e;">@ViewBag.S_MONTOA</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <span>Remanente</span>
+                                        </td>
+                                        <td style="background-color:@ViewBag.rema_color;text-align:right;">
+                                            <label id="p_kunnr" style="color: #9e9e9e;">@ViewBag.S_REMA</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #e0e0e0;height: 35px;">
+                                        <td class="tg-yw4l">
+                                            <span>Total</span>
+                                        </td>
+                                        <td  style="text-align:right">
+                                            <label id="p_kunnr" style="color: #9e9e9e;">@ViewBag.S_TOTAL</label>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </td>
