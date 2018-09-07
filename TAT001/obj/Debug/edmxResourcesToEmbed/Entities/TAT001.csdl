@@ -12,6 +12,7 @@
     <Property Name="DESCCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="TIPO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
     <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_ACCION" FromRole="ACCION" ToRole="WORKFP" />
+    <NavigationProperty Name="ACCIONTs" Relationship="TAT001Model.FK_ACCIONT_ACCION" FromRole="ACCION" ToRole="ACCIONT" />
   </EntityType>
   <EntityType Name="APPSETTING">
     <Key>
@@ -1724,6 +1725,7 @@
     <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
     <NavigationProperty Name="WARNINGPTs" Relationship="Self.FK_WARNINGPT_SPRAS" FromRole="SPRAS" ToRole="WARNINGPT" />
     <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+    <NavigationProperty Name="ACCIONTs" Relationship="TAT001Model.FK_ACCIONT_SPRAS" FromRole="SPRA" ToRole="ACCIONT" />
   </EntityType>
   <EntityType Name="STATE">
     <Key>
@@ -5536,6 +5538,15 @@
       <Parameter Name="ACTIVO" Mode="In" Type="Boolean" />
       <Parameter Name="ACCION" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="ACCIONTs" EntityType="TAT001Model.ACCIONT" />
+    <AssociationSet Name="FK_ACCIONT_ACCION" Association="TAT001Model.FK_ACCIONT_ACCION">
+      <End Role="ACCION" EntitySet="ACCIONs" />
+      <End Role="ACCIONT" EntitySet="ACCIONTs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ACCIONT_SPRAS" Association="TAT001Model.FK_ACCIONT_SPRAS">
+      <End Role="SPRA" EntitySet="SPRAS" />
+      <End Role="ACCIONT" EntitySet="ACCIONTs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5676,4 +5687,39 @@
     <Property Type="Int32" Name="ID_GR" Nullable="false" />
     <Property Type="String" Name="NOMBRE_GR" Nullable="true" MaxLength="50" />
   </ComplexType>
+  <EntityType Name="ACCIONT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="ACCION_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="ACCION_ID" Type="Int32" Nullable="false" />
+    <Property Name="TXT050" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ACCION" Relationship="TAT001Model.FK_ACCIONT_ACCION" FromRole="ACCIONT" ToRole="ACCION" />
+    <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_ACCIONT_SPRAS" FromRole="ACCIONT" ToRole="SPRA" />
+  </EntityType>
+  <Association Name="FK_ACCIONT_ACCION">
+    <End Type="TAT001Model.ACCION" Role="ACCION" Multiplicity="1" />
+    <End Type="TAT001Model.ACCIONT" Role="ACCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ACCION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ACCIONT">
+        <PropertyRef Name="ACCION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ACCIONT_SPRAS">
+    <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+    <End Type="TAT001Model.ACCIONT" Role="ACCIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRA">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ACCIONT">
+        <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

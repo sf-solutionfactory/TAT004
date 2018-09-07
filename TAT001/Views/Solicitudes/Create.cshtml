@@ -32,6 +32,10 @@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="horaServer" type="hidden" value="@ViewBag.horaServer">
+<span class="span_fileload" style="display:none;"></span>
+<span class="lbl_cabono" style="display:none;"></span>
+<span class="lbl_ccargo" style="display:none;"></span>
+<span class="lbl_cclear" style="display:none;"></span>
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -54,7 +58,7 @@
         </div>
         <div class="col s12 m4 l2">
             <div class="input-field col s6">
-                @*@Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })*@
+                @Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })
                 @Html.LabelFor(model => model.USUARIO.BUNIT, "BU", new { @id = "lbl_bu" })
             </div>
             <div class="input-field col s6">
@@ -1189,8 +1193,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                                ;
+                                                                                                                                                                                        archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                                            ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1871,7 +1875,7 @@
                         </div>
                         <div class="card-panel">
                             <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
-                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
+                            <p style="font-size:15px"><span id="load_carga">Última fecha de carga</span> @ViewBag.ultMod</p>
                             <div class="row" style="margin-bottom:0">
                                 <ul class="collection">
                                     <li class="collection-item">
@@ -2025,28 +2029,31 @@
                             });
 
                         }
-                        function formaClearing() {
+                                    function formaClearing() {
+                                        var tex_abono = document.querySelector(".lbl_cabono").innerHTML;
+                                        var tex_cargo = document.querySelector(".lbl_ccargo").innerHTML;
+                                        var tex_clearing = document.querySelector(".lbl_cclear").innerHTML;
                             getClearing(document.getElementById("tall_id").value);
                             $("#div_clearing").empty();
                             //var monto = document.getElementById("monto_dis").value;
                             var monto = $('#monto_doc_md').val();
-                            var div = "<ul class='collection'><li class='collection-item'>";
-                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                    var div = "<ul class='collection'><li class='collection-item'>";
+                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_abono + "</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
                             div += "</li><li class='collection-item'>";
 
                             if (clearing[3] == null) {
-                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
                             } else {
                                 if (clearing[2] != null) {
                                     if (monto <= clearing[3]) {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
                                         div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
                                         div += "</li>";
                                     } else {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
                                         div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
                                         div += "</li>";
                                     }
                                 }
@@ -2393,7 +2400,8 @@
                     TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
                 }
             ];
-            var lista = @Html.Raw(ViewBag.listaValid);
+            var lista = [];
+            var listas = @Html.Raw(ViewBag.listaValid);
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
@@ -2406,8 +2414,9 @@
                         app += lista[i].COND[j].andor + "warning($(this).val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
                     }
                     app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL+ "' |'"+lista[i].TSOL+"'== ''){";
                     app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}}); ";
 
                 }
                 else {
@@ -2431,8 +2440,9 @@
                 " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
 
             app += "function validarTab(e, tabid, div) {";
+            app += "var ban = true;";
             for (var i = 0; i < lista.length; i++) {
-                app += "var ban = true;";
+                app += "ban = true;";
                 //if (lista[i].TAB == 'tab_info' | true) {
                 app += "if ('" + lista[i].TAB + "' == tabid) {";
                 var campo = document.getElementById(lista[i].ID);
@@ -2443,9 +2453,10 @@
                         app += lista[i].COND[j].andor + "warning($('#" + lista[i].ID + "').val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
                     }
                     app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
                     app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
                     //app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban); ";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;} ";
 
                 }
                 else {
@@ -2473,9 +2484,10 @@
                             app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
                         }
                     }
-                        app += ";";
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
                         app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                        app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);";
+                        app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;}";
                     }
                 //}
                     app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";
@@ -2852,6 +2864,12 @@
                 } if (comp == 'n') {
                     if ($.isNumeric(toNum(val1)))
                         return true;
+                } if (comp == 'e') {
+                    if ($.isNumeric(parseFloat(toNum(val1))) & Number.isInteger(parseFloat(toNum(val1))))
+                        return true;
+                } if (comp == 'dec') {
+                    if (!Number.isInteger(parseFloat(toNum(val1))) & $.isNumeric(parseFloat(toNum(val1))))
+                        return true;
                 }
 
                 if ($.isNumeric(toNum(val1))) {
@@ -2916,6 +2934,9 @@
                         });
                     }
                     return cont > 0;
+                }
+                else if (comp == "INI") {
+                    return (val1.startsWith(val2))
                 }
                 return false;
             }

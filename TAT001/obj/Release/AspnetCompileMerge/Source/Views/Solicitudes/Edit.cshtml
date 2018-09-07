@@ -1529,7 +1529,7 @@
                                         @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
                                         @*</div>
-                                            </div>*@
+                        </div>*@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-10">
@@ -1562,78 +1562,91 @@
                             </div>
                         </div>
                         <div class="card-panel">
-                            <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
+                            <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
+                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
                             <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocanal">Presupuesto canal</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <dic class="col s6">
+                                                <b id="p_vtweg"></b>
+                                            </dic>
+                                            <div class="col s3 right-align">
+                                                <b id="p_canal"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocliente">Presupuesto cliente</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6">
+                                                <b id="p_kunnr"></b>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <b id="p_banner"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Registrado en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Por registrar en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>En proceso TAT</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Consumido</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Presupuesto disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="consu"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                            <div class="row" style="margin-bottom:0">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsap">Registrado en SAP</div>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_c"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsapp">Por registrar en SAP</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_a"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_procesotat">En proceso TAT</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <u id="pc_p"></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_consumido">Consumido</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <u><b id="pc_t"></b></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_presudisponible">Presupuesto disponible</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <b id="consu"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

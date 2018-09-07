@@ -261,29 +261,29 @@
         <div class="row">
             <div class="col s12">
                 <ul class="tabs" id="tab">
-                    <li class="tab col s2"><a href="#info" id="lbl_info">Información</a></li>
+                    <li class="tab col s2"><a href="#info" id="tab_info">Información</a></li>
                     @*
                         <li class="tab col s2"><a href="#temp" id="lbl_temp">Temporalidad</a></li>*@<!--RSG 09.07.2018 DEL-->
                     @if (ViewBag.acciones != null & ViewBag.accion == "S")
                     {
-                        <li class="tab col s2"><a href="#supp" id="lbl_supp" class="active">Soporte</a></li>
+                        <li class="tab col s2"><a href="#supp" id="tab_soporte" class="active">Soporte</a></li>
                     }
                     else
                     {
-                        <li class="tab col s2"><a href="#supp" id="lbl_supp">Soporte</a></li>
+                        <li class="tab col s2"><a href="#supp" id="tab_soporte">Soporte</a></li>
                     }
-                    <li class="tab col s2"><a href="#dist" id="lbl_dist">Distribución</a></li>
+                    <li class="tab col s2"><a href="#dist" id="tab_dis">Distribución</a></li>
                     @if (Model.D.DOCUMENTORECs.Count > 0)
                     {
-                        <li class="tab col s2"><a href="#recu" id="lbl_dist">Recurrencia</a></li><!--RSG 09.07.2018 ADD-->
+                        <li class="tab col s2"><a href="#recu" id="tab_dis">Recurrencia</a></li><!--RSG 09.07.2018 ADD-->
                     }
                     @if (ViewBag.acciones != null & ViewBag.accion == "T")
                     {
-                        <li class="tab col s2"><a href="#fina" id="lbl_fina" class="active">Financiera</a></li>
+                        <li class="tab col s2"><a href="#fina" id="lbl_fin" class="active">Financiera</a></li>
                     }
                     else
                     {
-                        <li class="tab col s2"><a href="#fina" id="lbl_fina">Financiera</a></li>
+                        <li class="tab col s2"><a href="#fina" id="lbl_fin">Financiera</a></li>
                     }
                 </ul>
             </div>
@@ -309,11 +309,11 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @class = "lbl_tsol" })
+                                    @Html.LabelFor(model => model.D.TSOL, "Tipo de solicitud", new { @class = "lbl_tiposol" })
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.GALL.GALLTs.Where(a => a.SPRAS_ID.Equals(model.D.USUARIO.SPRAS_ID)).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.GALL_ID, "Clasificación", new { @id = "lbl_gall" })
+                                    @Html.LabelFor(model => model.D.GALL_ID, "Clasificación", new { @id = "lbl_tall" })
                                 </div>
                                 @Html.HiddenFor(model => model.D.GALL_ID, new { @id = "gall_id" })
                                 @Html.HiddenFor(model => model.D.TALL_ID, new { @id = "tall_id" })
@@ -321,31 +321,31 @@
                             </div>
                         </div>
                         <div class="card-panel">
-                            <h5>Datos país</h5>
+                            <h5 id="head_datospais">Datos país</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.SOCIEDAD_ID, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_bukrs" })
+                                    @Html.LabelFor(model => model.D.SOCIEDAD, "Sociedad", new { @id = "lbl_sociedad" })
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.PAI.LANDX, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.PAI.LANDX, "País", new { @id = "lbl_land" })
+                                    @Html.LabelFor(model => model.D.PAI.LANDX, "País", new { @id = "lbl_paiss" })
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.PAI.LANDX, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.PAI.LANDX, "Subregión", new { @id = "lbl_land" })
+                                    @Html.LabelFor(model => model.D.PAI.LANDX, "Subregión", new { @id = "lbl_region" })
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.ESTADO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.ESTADO, "Estado", new { @id = "lbl_state" })
+                                    @Html.LabelFor(model => model.D.ESTADO, "Estado", new { @id = "lbl_estado" })
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.CIUDAD, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.CIUDAD, "Ciudad", new { @id = "lbl_city" })
+                                    @Html.LabelFor(model => model.D.CIUDAD, "Ciudad", new { @id = "lbl_ciudad" })
                                 </div>
                             </div>
                         </div>
@@ -353,7 +353,7 @@
                         *@
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
-                                <h5>Información general</h5>
+                                <h5 id="head_geninfo">Información general</h5>
                                 <div class="input-field col s12">
                                     @*@Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })*@
                                     <input type="text" disabled="disabled" value="@Model.D.FECHAC.Value.ToShortDateString()" />
@@ -1028,11 +1028,11 @@
                                         <div class="row" style="margin-bottom:0">
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.TIPO_TECNICO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                                @Html.LabelFor(model => model.D.TIPO_TECNICO, "Negociación")
+                                                @Html.LabelFor(model => model.D.TIPO_TECNICO, "Negociación", htmlAttributes: new { @id = "lbl_tiponeg"})
                                             </div>
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.TSOL_ID, new { htmlAttributes = new { @disabled = "disabled", @Value = ViewBag.mat } })
-                                                @Html.LabelFor(model => model.D.TSOL_ID, "Distribución")
+                                                @Html.LabelFor(model => model.D.TSOL_ID, "Distribución", htmlAttributes: new { @id = "lbl_tipodis" })
                                             </div>
                                         </div>
                                     </div>
@@ -1057,37 +1057,37 @@
                         @*///////////////////////////////CAMBIOS LGPP FIN//////////////////////////*@
                         <div class="card-panel">
                             <div class="row" style="margin-bottom:0">
-                                <h5>Distribución</h5>
+                                <h5 id="head_mecnegociacion">Distribución</h5>
                                 <div class="input-field col s12" style="overflow:auto;">
                                     @if (Model.D.DOCUMENTOPs.Count > 0)
                                     {
                                         <table style="font-size: 12px;" id="ctlDis" class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Vigencia de</th>
-                                                    <th>Vigencia a</th>
+                                                    <th id="thead_disvde">Vigencia de</th>
+                                                    <th id="thead_disval">Vigencia a</th>
                                                     @if (Model.D.DOCUMENTOPs.First().MATNR != "")
                                                     {
-                                                        <th>Material</th>
+                                                        <th id="thead_dismat">Material</th>
                                                     }
                                                     else
                                                     {
-                                                        <th>Categoría</th>
+                                                        <th id="thead_discat">Categoría</th>
                                                     }
-                                                    <th>Descripción</th>
-                                                    <th>Precio unitario</th>
-                                                    <th>% apoyo</th>
-                                                    <th>Apoyo por pieza</th>
-                                                    <th>Precio sugerido</th>
+                                                    <th id="thead_disdesc">Descripción</th>
+                                                    <th id="thead_discoustou">Precio unitario</th>
+                                                    <th id="thead_disporc">% apoyo</th>
+                                                    <th id="thead_disapoyop">Apoyo por pieza</th>
+                                                    <th id="thead_dispsug">Precio sugerido</th>
                                                     @if (Model.D.TSOL.FACTURA == false)
                                                     {
-                                                        <th>Volumen estimado</th>
-                                                        <th>Apoyo estimado</th>
+                                                        <th id="thead_disvolumen">Volumen estimado</th>
+                                                        <th id="thead_disvapoyo">Apoyo estimado</th>
                                                     }
                                                     else
                                                     {
-                                                        <th>Volumen real</th>
-                                                        <th>Apoyo real</th>
+                                                        <th id="thead_disvolumen">Volumen real</th>
+                                                        <th id="thead_disapoyo">Apoyo real</th>
                                                     }
                                                 </tr>
                                             </thead>
@@ -1680,7 +1680,7 @@
                         }
                         @*///////////////////////////////L.G.P.P MODIFICACIONES INICIO*@
                         <div class="card-panel">
-                            <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
+                            <h5><span id="head_analisispre">Análisis Presupuesto</span><p style="font-size:15px"><span id="load_carga">Última fecha de carga</span> @ViewBag.ultMod</p></h5>
                             <div class="row" style="margin-bottom:0">
                                 <ul class="collection">
                                     <li class="collection-item">

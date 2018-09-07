@@ -10,6 +10,7 @@ using TAT001.Entities;
 
 namespace TAT001.Controllers.Catalogos
 {
+    [Authorize]
     public class ClientesController : Controller
     {
         private TAT001Entities db = new TAT001Entities();

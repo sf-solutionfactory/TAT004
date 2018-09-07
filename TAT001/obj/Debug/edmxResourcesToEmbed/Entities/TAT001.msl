@@ -2269,5 +2269,14 @@
         </ComplexTypeMapping>
       </ResultMapping>
     </FunctionImportMapping>
+    <EntitySetMapping Name="ACCIONTs">
+      <EntityTypeMapping TypeName="TAT001Model.ACCIONT">
+        <MappingFragment StoreEntitySet="ACCIONT">
+          <ScalarProperty Name="TXT050" ColumnName="TXT050" />
+          <ScalarProperty Name="ACCION_ID" ColumnName="ACCION_ID" />
+          <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

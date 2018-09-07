@@ -331,23 +331,17 @@
             initComplete: function () {
                 this.api().columns().every(function () {
                     var column = this;
-                    //var select = $('<select style="display:initial;" class="browser-default"><option value=""></option></select>')
+                    var select = $('<select style="display:initial;" class="browser-default"><option value=""></option></select>')
                     //var div = $('<div class="input-field col s12"></div><script>var elem = document.querySelectorAll("select");var options = [];var instance = M.FormSelect.init(elem, options);')
-                    var select = $('<select style="display:initial;" multiple><option value=""></option></select>')
+                    //var select = $('<select style="display:initial;" multiple><option value=""></option></select>')
                         .appendTo($(column.footer()).empty())
-                        .on('focusout', function () {
-                            var val = $(this).val();
-                            for (var i = 0; i < val.length; i++) {
-                                column
-                                    .search(val[i] ? '^' + val[i] + '$' : '', true, false)
-                                    .draw();
-                            }
-                            //var val = $.fn.dataTable.util.escapeRegex(
-                            //    $(this).val()
-                            //);
-                            //column
-                            //    .search(val ? '^' + val + '$' : '', true, false)
-                            //    .draw();
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
                             
                         });
                     column.cells('', column[0]).render('display').sort().unique().each(function (d, j) {

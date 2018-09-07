@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e1a9e9d68eff48e9976c02fe0088ef1d" Name="Diagram1" ZoomLevel="39">
+      <Diagram DiagramId="b36836a1b5314561a0bdb32a87e77212" Name="Diagram1" ZoomLevel="39">
         <EntityTypeShape EntityType="TAT001Model.ACCION" Width="1.5" PointX="27" PointY="65" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.APPSETTING" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="TAT001Model.CAMPOS" Width="1.5" PointX="6.75" PointY="78.625" IsExpanded="true" />
@@ -323,6 +323,9 @@
         <AssociationConnector Association="TAT001Model.FK_WORKFP_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.FK_WORKFT_WORKFV" ManuallyRouted="false" />
         <AssociationConnector Association="TAT001Model.USUARIOGA" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TAT001Model.ACCIONT" Width="1.5" PointX="34.25" PointY="79.625" />
+        <AssociationConnector Association="TAT001Model.FK_ACCIONT_ACCION" />
+        <AssociationConnector Association="TAT001Model.FK_ACCIONT_SPRAS" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

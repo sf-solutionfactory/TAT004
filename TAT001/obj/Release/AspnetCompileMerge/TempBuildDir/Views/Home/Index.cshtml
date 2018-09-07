@@ -1,4 +1,4 @@
-﻿@*@model IEnumerable<TAT001.Entities.DOCUMENTO>*@
+@*@model IEnumerable<TAT001.Entities.DOCUMENTO>*@
 @model IEnumerable<TAT001.Models.Documento>
 @using System.Web.Hosting;
 @{
@@ -264,6 +264,9 @@
                     </th>
                     <th class="lblPais">
                         @Html.DisplayNameFor(model => model.PAIS_ID)
+                    </th>
+                    <th id="lbl_fechadd">
+                        @Html.DisplayNameFor(model => model.FECHAD)
                     </th>
                     <th id="lbl_fechad">
                         @Html.DisplayNameFor(model => model.FECHAD)
@@ -644,7 +647,7 @@
         }
     </tr>*@
 <tr>
-    <td><i class='material-icons'>@item.BUTTON</i></td>
+    <td class="details-control" style="cursor:pointer"><i class='material-icons'>@item.BUTTON</i></td>
     @if (item.NUM_DOC_TEXT == "Edit")
     {
         <td onclick="document.location='@Url.Action("Edit", "Solicitudes", new { id_d = item.NUM_DOC })'" style="cursor:pointer">
@@ -660,6 +663,7 @@
     <td>@item.SOCIEDAD_ID</td>
     <td>@item.PAIS_ID</td>
     <td>@item.FECHAD</td>
+    <td>@item.FECHADD</td>
     <td>@item.HORAC</td>
     <td>@item.PERIODO</td>
     <td><span class="@item.ESTATUS_CLASS" data-badge-caption=" ">@item.ESTATUS</span></td>
@@ -711,15 +715,20 @@
             //    infoFiltered: "(Filtrado de _MAX_ líneas totales)",
             //    search: "Buscar"
             //},
-            order: [[4, "desc"], [5, "desc"], [1, "desc"]],
+            order: [[4, "desc"], [6, "desc"], [1, "desc"]],
             language: {
                 //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
                 "url": "../Scripts/lang/@Session["spras"].ToString()"+".json"
             },
             columnDefs: [
+                //{
+                //    targets: [2, 3, 4, 5, 7, 9],
+                //    className: 'mdl-data-table__cell--non-numeric'
+                //},
                 {
-                    targets: [2, 3, 4, 5, 7, 9],
-                    className: 'mdl-data-table__cell--non-numeric'
+                    "targets": [4],
+                    "visible": false,
+                    "searchable": false
                 }
             ],
             initComplete: function () {
@@ -787,6 +796,7 @@
     }
     function format(d, row, tr) {
         $.ajax({
+            //url: "../../WF002/Listas/Relacionados",
             url: "../../Listas/Relacionados",
             type: "GET",
             async: false,

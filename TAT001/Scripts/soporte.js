@@ -1,6 +1,7 @@
 ﻿
 function soportes(tsol, spras) {
     //alert(tsol + soci + pais);
+    var texto = document.querySelector(".span_fileload").innerHTML;
     $.ajax({
         url: "../Listas/Soportes",
         type: "POST",
@@ -22,7 +23,7 @@ function soportes(tsol, spras) {
                     '<input type="text" value="' + pp[i].txt50 + '" name="labels_soporte" hidden />' +
                     '<div class="file-field input-field col s12">' +
                     '<div class="btn-small" style="float:left;"> ' +
-                    '<span class="span_fileload">Examinar</span > ' +
+                    '<span class="span_fileload">'+texto+'</span > ' +
                     '<input class="file_soporte';
                 if (pp[i].oblig) {
                     input += ' nec';

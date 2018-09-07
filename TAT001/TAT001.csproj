@@ -253,6 +253,9 @@
     <Compile Include="Entities\ACCION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ACCIONT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\APPSETTING.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>

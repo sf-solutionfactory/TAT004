@@ -1,4 +1,4 @@
-﻿@model TAT001.Entities.DOCUMENTO
+@model TAT001.Entities.DOCUMENTO
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 202;
@@ -32,6 +32,10 @@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="horaServer" type="hidden" value="@ViewBag.horaServer">
+<span class="span_fileload" style="display:none;"></span>
+<span class="lbl_cabono" style="display:none;"></span>
+<span class="lbl_ccargo" style="display:none;"></span>
+<span class="lbl_cclear" style="display:none;"></span>
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -54,7 +58,7 @@
         </div>
         <div class="col s12 m4 l2">
             <div class="input-field col s6">
-                @*@Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })*@
+                @Html.EditorFor(model => model.USUARIO.BUNIT, "BU", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BUNIT } })
                 @Html.LabelFor(model => model.USUARIO.BUNIT, "BU", new { @id = "lbl_bu" })
             </div>
             <div class="input-field col s6">
@@ -320,7 +324,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
-                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="" disabled="disabled" />
                                             <label id="lbl_paiss" for="pais_txt">Subregión</label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
@@ -416,12 +420,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="" disabled="disabled" />
                                     <label id="lbl_fechad" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="" disabled="disabled" />
                                     <label id="lbl_periodo" for="periodo">Periodo</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -452,7 +456,7 @@
                                 </script>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="" disabled="disabled" />
                                     <label id="lbl_ejercicio" for="ejercicio">Ejercicio</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -543,7 +547,7 @@
                                     <label id="lbl_nombrecli" for="cli_name">Nombre</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="" disabled="disabled" />
                                     <label id="lbl_parvwcli" for="parvw">Tipo de cliente</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -553,7 +557,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="" disabled="disabled" />
                                     <label id="lbl_stcdcli" for="stcd1">Tax ID</label> @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
@@ -567,7 +571,7 @@
                                     @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre", @id = "lbl_payernom" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate " + @ViewBag.relacionada, @type = "email" } })
+                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " " + @ViewBag.relacionada, @type = "email" } })
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email", @id = "lbl_payeremail" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <script>
@@ -597,7 +601,7 @@
                                             },
                                             change: function (e, ui) {
                                                 if (!(ui.item)) {
-                                                    e.target.value = "";
+                                                    //e.target.value = "";
                                                 }
                                             },
 
@@ -777,7 +781,9 @@
                                     </script>
                                 }
                                 else
-                                { <div class="col s12">
+                                {
+                                    <input id="check_recurrente" type="hidden" value="" />
+                                    <div class="col s12">
                                         <div class="input-field col s6">
                                             <i class="material-icons prefix">date_range</i>
                                             @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
@@ -812,7 +818,7 @@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
+                                        <input class="file-path  file_sop" type="text">
                                     </div>
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
@@ -1187,8 +1193,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                          archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                              ;
+                                                                                                                                                                                        archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                                            ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1207,7 +1213,7 @@
                                                     <div class="file-field input-field">
                                                         <button name="archivo" class="btn lbl_cargar" type="submit" value="@archivos[i].PATH">DESCARGAR</button> @*B20180801 MGC Textos*@
                                                         <div class="file-path-wrapper">
-                                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                            <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                                         </div>
                                                     </div>
                                                 }
@@ -1260,17 +1266,17 @@
                                         <div class="file-field input-field">
                                             <div class="btn-small" style="float:left;">
                                                 <span id="span_filereversa">Examinar</span> @*B20180801 MGC Textos*@
-                                                <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
+                                                <input class="file_soporte nec" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
+                                                <input class="file-path " type="text" id="fileinput_rev">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
-                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="" disabled="disabled" />
                                         <label id="lbl_fechadrev" for="fechad">Fecha</label> @*B20180801 MGC Textos*@
                                     </div>
                                     @*<div class="row">*@
@@ -1528,27 +1534,27 @@
 
                                             function cambiaLigada(campo) {
                                                 if (campo.checked) {
-                                                //    $("#select_neg").val("P");
-                                                //    $("#select_dis").val("C");
-                                                //    $("#select_negi").val("P");
-                                                //    $("#select_disi").val("C");
-                                                //    $("#select_neg").prop("disabled", "disabled");
-                                                //    $("#select_dis").prop("disabled", "disabled");
-                                                //    $("#select_neg").change();
-                                                //    $("#select_dis").change();
+                                                    $("#select_neg").val("P");
+                                                    //    $("#select_dis").val("C");
+                                                    $("#select_negi").val("P");
+                                                    //    $("#select_disi").val("C");
+                                                    $("#select_neg").prop("disabled", "disabled");
+                                                    //    $("#select_dis").prop("disabled", "disabled");
+                                                    $("#select_neg").change();
+                                                    //    $("#select_dis").change();
                                                     $("#div_objq").removeClass("hide");
                                                     $("#txt_ligada").val("X");
                                                 } else {
-                                                //    $("#select_neg").prop("disabled", false);
-                                                //    $("#select_dis").prop("disabled", false);
-                                                //    $("#select_neg").change();
-                                                //    $("#select_dis").change();
+                                                    $("#select_neg").prop("disabled", false);
+                                                    //    $("#select_dis").prop("disabled", false);
+                                                    $("#select_neg").change();
+                                                    //    $("#select_dis").change();
                                                     $("#div_objq").addClass("hide");
                                                     $("#txt_ligada").val("");
                                                 }
 
-                                                //var elem = document.getElementById('select_neg');
-                                                //var instance = M.FormSelect.init(elem, []);
+                                                var elem = document.getElementById('select_neg');
+                                                var instance = M.FormSelect.init(elem, []);
                                                 //elem = document.getElementById('select_dis');
                                                 //instance = M.FormSelect.init(elem, []);
                                             }
@@ -1608,12 +1614,12 @@
                                     @*if (Model.PAI.BACKORDER)
                                         {
                                             <div class="input-field col s6">
-                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                                 <label for="bmonto_apoyo">% Apoyo</label>
                                             </div>
                                         }*@
                                     <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" disabled="disabled" />
+                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="@ViewBag.reversa" disabled="disabled" />
                                         <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
                                     </div>
 
@@ -1639,7 +1645,7 @@
                                 else
                                 {
                                     <div class="input-field col s6">
-                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                        <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="@ViewBag.reversa" />
                                         <label id="lbl_montodis" for="monto_dis">Monto</label>@*B20180801 MGC Textos*@
                                     </div>
                                     <div class="input-field col s6">
@@ -1656,7 +1662,7 @@
                             <h5 id="head_baseaplicar">Base para aplicar %</h5> @*B20180801 MGC Textos*@
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                     <label id="lbl_porcapoyo" for="bmonto_apoyo">% Apoyo</label>@*B20180801 MGC Textos*@
                                 </div>
                             </div>
@@ -1674,7 +1680,7 @@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input class="file-path " type="text">
                                         </div>
                                     </div>
                                     <div id="div_btns_row" style="display:none">
@@ -1822,7 +1828,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                     </div>
@@ -1849,7 +1855,7 @@
                                         </div>
                                     </div>
                                     <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="montos_doc_ml2" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc2" for="montos_doc_ml2" class="active">Monto en USD</label>@*B20180801 MGC Textos*@
                                     </div>
                                     <div class="form-group">
@@ -1869,78 +1875,90 @@
                         </div>
                         <div class="card-panel">
                             <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
-                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
+                            <p style="font-size:15px"><span id="load_carga">Última fecha de carga</span> @ViewBag.ultMod</p>
                             <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label id="lbl_presupuestocanal">Presupuesto canal</label>@*B20180801 MGC Textos*@
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label id="lbl_presupuestocliente">Presupuesto cliente</label>@*B20180801 MGC Textos*@
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocanal">Presupuesto canal</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <dic class="col s6">
+                                                <b id="p_vtweg"></b>
+                                            </dic>
+                                            <div class="col s3 right-align">
+                                                <b id="p_canal"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocliente">Presupuesto cliente</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6">
+                                                <b id="p_kunnr"></b>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <b id="p_banner"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_regsap">Registrado en SAP</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_regsapp">Por registrar en SAP</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_procesotat">En proceso TAT</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_consumido">Consumido</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label id="lbl_presudisponible">Presupuesto disponible</label>@*B20180801 MGC Textos*@
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="consu"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                            <div class="row" style="margin-bottom:0">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsap">Registrado en SAP</div>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_c"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsapp">Por registrar en SAP</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_a"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_procesotat">En proceso TAT</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <u id="pc_p"></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_consumido">Consumido</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <u><b id="pc_t"></b></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_presudisponible">Presupuesto disponible</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <b id="consu"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -2011,28 +2029,31 @@
                             });
 
                         }
-                        function formaClearing() {
+                                    function formaClearing() {
+                                        var tex_abono = document.querySelector(".lbl_cabono").innerHTML;
+                                        var tex_cargo = document.querySelector(".lbl_ccargo").innerHTML;
+                                        var tex_clearing = document.querySelector(".lbl_cclear").innerHTML;
                             getClearing(document.getElementById("tall_id").value);
                             $("#div_clearing").empty();
                             //var monto = document.getElementById("monto_dis").value;
                             var monto = $('#monto_doc_md').val();
-                            var div = "<ul class='collection'><li class='collection-item'>";
-                            div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Abono</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                    var div = "<ul class='collection'><li class='collection-item'>";
+                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_abono + "</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
                             div += "</li><li class='collection-item'>";
 
                             if (clearing[3] == null) {
-                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
                             } else {
                                 if (clearing[2] != null) {
                                     if (monto <= clearing[3]) {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
                                         div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
                                         div += "</li>";
                                     } else {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Cargo</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
                                         div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>Clearing</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
                                         div += "</li>";
                                     }
                                 }
@@ -2379,7 +2400,8 @@
                     TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
                 }
             ];
-            var lista2222 = @Html.Raw(ViewBag.listaValid);
+            var lista = [];
+            var listas = @Html.Raw(ViewBag.listaValid);
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
@@ -2392,20 +2414,98 @@
                         app += lista[i].COND[j].andor + "warning($(this).val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
                     }
                     app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL+ "' |'"+lista[i].TSOL+"'== ''){";
                     app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}}); ";
 
                 }
-                else
-                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
+                else {
+                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
+                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
+                    app += "var val = $(this).find('input').val(); if(val==undefined){ val = $(this).val();} var ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)";
+                    app += ";e.preventDefault(); e.stopPropagation();});";
+                }
             }
-
-            app += "$('#tab_soporte').on('click', function (e) { var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
+            app += "$('#tab_soporte').on('click', function (e) {var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
             app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
                 " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
             app += "$('#tab_fin').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
                 " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} " +
                 " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
+
+            app += "function validarTab(e, tabid, div) {";
+            app += "var ban = true;";
+            for (var i = 0; i < lista.length; i++) {
+                app += "ban = true;";
+                //if (lista[i].TAB == 'tab_info' | true) {
+                app += "if ('" + lista[i].TAB + "' == tabid) {";
+                var campo = document.getElementById(lista[i].ID);
+                if (campo != undefined) {
+                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
+                    app += "ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning($('#" + lista[i].ID + "').val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
+                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    //app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;} ";
+
+                }
+                else {
+                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
+                    //app += "var val = $('." + lista[i].ID + "').find('input').val(); if(val==undefined){ val = $('." + lista[i].ID + "').val();} ban = ";
+                    app += "var val = $('." + lista[i].ID + "').find('input').val();";
+                    if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                        app += "if(val==undefined){ var li = document.querySelectorAll('." + lista[i].ID + "');";
+                        app += "for(var j= 0; j<li.length;j++){ var par = $(li[j]).prop('tagName');if( par!= 'TH'){";
+                        app += " val = $(li[j]).text(); ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                        app += ";if(!ban){j=li.length;}";
+                        app += "}}}";
+                        app += "else{";
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                        app += "}";
+                    } else {
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                    }
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
+                        app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                        app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;}";
+                    }
+                //}
+                    app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";
+                    var tabb = "";
+                    if (lista[i].TAB == "tab_info") {
+                        tabb = "Informacion_cont";
+                    }
+                    if (lista[i].TAB == "tab_soporte") {
+                        tabb = "Soporte_cont";
+                    }
+                    if (lista[i].TAB == "tab_dist") {
+                        tabb = "Distribucion_cont";
+                    }
+                app += "if(!ban){selectTab('" + tabb + "', e)}}";
+            }
+            app += " return ban;}";
+
+
             //app += "function validarInfo(){";
             //for (var i = 0; i < lista.length; i++) {
             //    app += "if(!valido('" + lista[i][0] + "', '" + lista[i][1] + "')){if('" + lista[i][3] + "' == 'error'){selectTab('Informacion_cont')}}";
@@ -2559,91 +2659,106 @@
             function esValido(campo) {
                 campo.classList.add("valid");
                 campo.classList.remove("invalid");
+                campo.classList.remove("warn");
             }
             function esInvalido(campo) {
                 campo.classList.add("invalid");
                 campo.classList.remove("valid");
+                campo.classList.remove("warn");
+            }
+            function esWarning(campo) {
+                campo.classList.add("warn");
+                campo.classList.remove("valid");
+                campo.classList.remove("invalid");
             }
             function esValidoC(campo) {
                 $(campo).find('input').addClass("valid");
                 $(campo).find('input').removeClass("invalid");
+                $(campo).find('input').removeClass("warn");
             }
             function esInvalidoC(campo) {
                 $(campo).find('input').addClass("invalid");
                 $(campo).find('input').removeClass("valid");
+                $(campo).find('input').removeClass("warn");
+            }
+            function esWarningC(campo) {
+                campo.classList.add("warn");
+                campo.classList.remove("valid");
+                campo.classList.remove("invalid");
             }
 
-            function validarTab(e, tabId, tab) {
-                //M.Toast.dismissAll();
-                var ban = true;
-                for (var i = 0; i < lista.length; i++) {
-                    if (lista[i].TAB == tabId) {
-                        var condicion = lista[i].COND;
-                        var id = lista[i].ID;
-                        var campoVal = document.getElementById(lista[i].ID);
-                        var campo = document.getElementById(lista[i].ELEM);
+            //function validarTab(e, tabId, tab) {
+            //    //M.Toast.dismissAll();
+            //    var ban = true;
+            //    for (var i = 0; i < lista.length; i++) {
+            //        if (lista[i].TAB == tabId) {
+            //            var condicion = lista[i].COND;
+            //            var id = lista[i].ID;
+            //            var campoVal = document.getElementById(lista[i].ID);
+            //            var campo = document.getElementById(lista[i].ELEM);
 
-                        var clase = false;
-                        if (campoVal == undefined & campo == undefined) {
-                            campoVal = document.querySelectorAll("." + lista[i].ID);
-                            campo = document.querySelectorAll("." + lista[i].ELEM);
-                            clase = true;
-                        }
+            //            var clase = false;
+            //            if (campoVal == undefined & campo == undefined) {
+            //                campoVal = document.querySelectorAll("." + lista[i].ID);
+            //                campo = document.querySelectorAll("." + lista[i].ELEM);
+            //                clase = true;
+            //            }
 
-                        if (campo != undefined & campoVal != undefined) {
-                            var icon = lista[i].TIPO;
-                            var color = lista[i].COLOR;
-                            var mensaje = lista[i].MSG;
-                            var tipo_condicion = condicion.split("-")[0];
-                            var valor_condicion = condicion.split("-")[1];
+            //            if (campo != undefined & campoVal != undefined) {
+            //                var icon = lista[i].TIPO;
+            //                var color = lista[i].COLOR;
+            //                var mensaje = lista[i].MSG;
+            //                //var tipo_condicion = condicion.split("-")[0];
+            //                //var valor_condicion = condicion.split("-")[1];
 
-                            if (!clase) {
-                                if (condiciones(i)) {
-                                    var b = valido(campoVal.value, lista[i].COND, i);
-                                    if (!b) {
-                                        toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                        if (lista[i].TIPO == 'error') {
-                                            esInvalido(campo);
-                                            selectTab(tab, e);
-                                            campo.focus();
-                                            ban = false;
-                                        }
-                                    } else {
-                                        if (lista[i].TIPO == 'error')
-                                            dismiss(id + "-" + tipo_condicion);
-                                    }
-                                }
-                            } else {
-                                for (var j = 0; j < campoVal.length; j++) {
-                                    var value = $(campoVal[j]).find('input').val();
-                                    if (value != undefined | tipo_condicion == 'f') {
-                                        if (tipo_condicion == 'f')
-                                            value = '';
-                                        if (condiciones(i)) {
-                                            var valid = valido(value, condicion, i);
-                                            if (!valid) {
-                                                toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                                if (lista[i].TIPO == 'error') {
-                                                    esInvalidoC(campo[i]);
-                                                    selectTab(tab, e);
-                                                    $(campo).find('input').focus();
-                                                    ban = false;
-                                                }
-                                            } else {
-                                                dismiss(id + "-" + tipo_condicion);
-                                            }
-                                            j = campoVal.length;
-                                        }
-                                    } else {
+            //                if (!clase) {
+            //                    if (condiciones(i)) {
+            //                        //var b = valido(campoVal.value, lista[i].COND, i);
+            //                        var b = valido(campoVal.value, lista[i].COND, i);
+            //                        if (!b) {
+            //                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+            //                            if (lista[i].TIPO == 'error') {
+            //                                esInvalido(campo);
+            //                                selectTab(tab, e);
+            //                                campo.focus();
+            //                                ban = false;
+            //                            }
+            //                        } else {
+            //                            if (lista[i].TIPO == 'error')
+            //                                dismiss(id + "-" + tipo_condicion);
+            //                        }
+            //                    }
+            //                } else {
+            //                    for (var j = 0; j < campoVal.length; j++) {
+            //                        var value = $(campoVal[j]).find('input').val();
+            //                        if (value != undefined | tipo_condicion == 'f') {
+            //                            if (tipo_condicion == 'f')
+            //                                value = '';
+            //                            if (condiciones(i)) {
+            //                                var valid = valido(value, condicion, i);
+            //                                if (!valid) {
+            //                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+            //                                    if (lista[i].TIPO == 'error') {
+            //                                        esInvalidoC(campo[i]);
+            //                                        selectTab(tab, e);
+            //                                        $(campo).find('input').focus();
+            //                                        ban = false;
+            //                                    }
+            //                                } else {
+            //                                    dismiss(id + "-" + tipo_condicion);
+            //                                }
+            //                                j = campoVal.length;
+            //                            }
+            //                        } else {
 
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return ban;
-            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    return ban;
+            //}
 
             function validarN(id, num, mensaje, icon, color, elem, ii, ban) {
                 var campoVal = document.getElementById(id);
@@ -2663,10 +2778,66 @@
                             //dismiss(id + "-" + tipo_condicion);
                             //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
                             toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                            esInvalido(campo);
+                            if (color == "red")
+                                esInvalido(campo);
+                            else
+                                esWarning(campo);
                         } else {
                             esValido(campo);
                             dismiss(id + "-" + tipo_condicion);
+                        }
+                    }
+                }
+            }
+            function validarNC(id, num, mensaje, icon, color, elem, ii, ban) {
+                //var campoVal = document.getElementById(id);
+                //var campo = document.getElementById(elem);
+                var campoVal = document.querySelectorAll("." + id);
+                var campo = document.querySelectorAll("." + elem);
+                for (var i = 0; i < campoVal.length; i++) {
+                    if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
+                        var value = $(campoVal[i]).find('input').val();
+                        if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                            if (value == undefined)
+                                value = $(campoVal[i]).text();
+                        }
+                        var valid = ban;
+                        var tipo_condicion = num;
+                        //if (value == undefined) {
+                        //    var inputid = $(campoVal[i]).attr('id');
+                        //    if (!valid)
+                        //        toast(id + "-" + inputid, 1000000, icon, mensaje, color);
+                        //} else {
+                        if (!valid) {
+                        } else {
+                        }
+                        //}
+                        if (condiciones(ii) & value != undefined) {
+
+                            //var valid = valido(value, condicion, ii);
+                            //var tipo_condicion = condicion.split("-")[0];
+                            //var valor_condicion = condicion.split("-")[1];
+
+                            if (!valid) {
+                                //dismiss(id + "-" + tipo_condicion);
+                                //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                                //toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                toast(id + "-" + num, 1000000, icon, mensaje, color);
+                                if (color == "red")
+                                    esInvalidoC(campo[i]);
+                                else
+                                    esWarningC(campo[i]);
+                                //for (var j = 0; j < campo.length; j++) {
+                                //    esInvalido(campo[j]);
+                                //}
+                                i = campoVal.length;
+                            } else {
+                                esValidoC(campo[i]);
+                                //for (var j = 0; j < campo.length; j++) {
+                                //    esValido(campo[j]);
+                                //}
+                                dismiss(id + "-" + tipo_condicion);
+                            }
                         }
                     }
                 }
@@ -2693,20 +2864,26 @@
                 } if (comp == 'n') {
                     if ($.isNumeric(toNum(val1)))
                         return true;
+                } if (comp == 'e') {
+                    if ($.isNumeric(parseFloat(toNum(val1))) & Number.isInteger(parseFloat(toNum(val1))))
+                        return true;
+                } if (comp == 'dec') {
+                    if (!Number.isInteger(parseFloat(toNum(val1))) & $.isNumeric(parseFloat(toNum(val1))))
+                        return true;
                 }
 
                 if ($.isNumeric(toNum(val1))) {
                     if (comp == '>') {
-                        if (val1 > val2)
+                        if (parseFloat(toNum(val1)) > parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '<') {
-                        if (val1 < val2)
+                        if (parseFloat(toNum(val1)) < parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '>=') {
-                        if (val1 >= val2)
+                        if (parseFloat(toNum(val1)) >= parseFloat(toNum(val2)))
                             return true;
                     } if (comp == '<=') {
-                        if (val1 <= val2)
+                        if (parseFloat(toNum(val1)) <= parseFloat(toNum(val2)))
                             return true;
                     }
                 }
@@ -2716,6 +2893,50 @@
                         if (val1.length == longitud)
                             return true;
                     }
+                }
+                else if (comp == "f") {
+                    return evaluarFiles();
+                }
+                else if (comp == "d") {
+                    return isDate(val1)
+                }
+                else if (comp == "M") {
+                    return ($("#select_neg").val() == "M")
+                }
+                else if (comp == "P") {
+                    return ($("#select_neg").val() == "P")
+                }
+                else if (comp == "MA") {
+                    return ($("#select_dis").val() == "M")
+                }
+                else if (comp == "CA") {
+                    return ($("#select_dis").val() == "C")
+                }
+                else if (comp == "TOT") {
+                    return (toNum(val1) == toNum($("#total_dis").text()))
+                }
+                else if (comp == "T") {
+                    return (parseFloat(toNum($("#total_dis").text()))>0)
+                }
+                else if (comp == "DIS") {
+                    evaluarDisTable();
+                    var len = $("#table_dis > tbody  > tr[role='row']").length;
+                    if (len > 0) {
+                        var cont = 0;
+                        $('#table_dis > tbody  > tr').each(function () {
+                            var mat = $(this).find("td:eq(" + (4) + ") input").val();
+                            var cat = $(this).find("td:eq(" + (5) + ")").text();
+                            if (mat != undefined & mat != "")
+                                cont++;
+                            else if(cat != undefined & cat != "")
+                                cont++;
+
+                        });
+                    }
+                    return cont > 0;
+                }
+                else if (comp == "INI") {
+                    return (val1.startsWith(val2))
                 }
                 return false;
             }

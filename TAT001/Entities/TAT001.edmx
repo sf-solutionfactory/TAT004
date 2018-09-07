@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TAT001Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ACCION">
           <Key>
             <PropertyRef Name="ID" />
@@ -12,6 +12,15 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DESCCRIPCION" Type="nvarchar" MaxLength="50" />
           <Property Name="TIPO" Type="nchar" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ACCIONT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ACCION_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ACCION_ID" Type="int" Nullable="false" />
+          <Property Name="TXT050" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="APPSETTING">
           <Key>
@@ -1951,7 +1960,7 @@
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CARPETAV">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1964,7 +1973,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CARPETAV' no tiene definida ningu
           <Property Name="ICON" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CREADOR">
           <Key>
             <PropertyRef Name="ID" />
@@ -1981,7 +1990,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR' no tiene definida ningun
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CREADOR2">
           <Key>
             <PropertyRef Name="ID" />
@@ -1999,7 +2008,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.CREADOR2' no tiene definida ningu
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="DET_APROBV">
           <Key>
             <PropertyRef Name="BUKRS" />
@@ -2012,7 +2021,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DET_APROBV' no tiene definida nin
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="DOCUMENTOV">
           <Key>
             <PropertyRef Name="POS" />
@@ -2088,7 +2097,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.DOCUMENTOV' no tiene definida nin
           <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="PAGINAV">
           <Key>
             <PropertyRef Name="ID" />
@@ -2109,7 +2118,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.PAGINAV' no tiene definida ningun
           <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="WARNINGV">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -2125,6 +2134,30 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="POSICION" Type="nvarchar" MaxLength="10" />
           <Property Name="ACTIVO" Type="bit" />
         </EntityType>
+        <Association Name="FK_ACCIONT_ACCION">
+          <End Role="ACCION" Type="Self.ACCION" Multiplicity="1" />
+          <End Role="ACCIONT" Type="Self.ACCIONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACCIONT">
+              <PropertyRef Name="ACCION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACCIONT_SPRAS">
+          <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+          <End Role="ACCIONT" Type="Self.ACCIONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRAS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACCIONT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CAMPOS_PAGINA">
           <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
           <End Role="CAMPOS" Type="Self.CAMPOS" Multiplicity="*" />
@@ -4390,6 +4423,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
         </Function>
         <EntityContainer Name="TAT001ModelStoreContainer">
           <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ACCIONT" EntityType="Self.ACCIONT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="APPSETTING" EntityType="Self.APPSETTING" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
@@ -4662,6 +4696,14 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
     [WARNINGV].[ACTIVO] AS [ACTIVO]
     FROM [dbo].[WARNINGV] AS [WARNINGV]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_ACCIONT_ACCION" Association="Self.FK_ACCIONT_ACCION">
+            <End Role="ACCION" EntitySet="ACCION" />
+            <End Role="ACCIONT" EntitySet="ACCIONT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACCIONT_SPRAS" Association="Self.FK_ACCIONT_SPRAS">
+            <End Role="SPRAS" EntitySet="SPRAS" />
+            <End Role="ACCIONT" EntitySet="ACCIONT" />
+          </AssociationSet>
           <AssociationSet Name="FK_CAMPOS_PAGINA" Association="Self.FK_CAMPOS_PAGINA">
             <End Role="PAGINA" EntitySet="PAGINA" />
             <End Role="CAMPOS" EntitySet="CAMPOS" />
@@ -5371,8 +5413,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <End Role="WORKFV" EntitySet="WORKFV" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TAT001Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5388,6 +5429,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Name="DESCCRIPCION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TIPO" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
           <NavigationProperty Name="WORKFPs" Relationship="Self.FK_WORKFP_ACCION" FromRole="ACCION" ToRole="WORKFP" />
+          <NavigationProperty Name="ACCIONTs" Relationship="TAT001Model.FK_ACCIONT_ACCION" FromRole="ACCION" ToRole="ACCIONT" />
         </EntityType>
         <EntityType Name="APPSETTING">
           <Key>
@@ -7100,6 +7142,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="WARNINGs" Relationship="Self.FK_WARNING_SPRAS" FromRole="SPRAS" ToRole="WARNING" />
           <NavigationProperty Name="WARNINGPTs" Relationship="Self.FK_WARNINGPT_SPRAS" FromRole="SPRAS" ToRole="WARNINGPT" />
           <NavigationProperty Name="WORKFTs" Relationship="Self.FK_WORKFT_SPRAS" FromRole="SPRAS" ToRole="WORKFT" />
+          <NavigationProperty Name="ACCIONTs" Relationship="TAT001Model.FK_ACCIONT_SPRAS" FromRole="SPRA" ToRole="ACCIONT" />
         </EntityType>
         <EntityType Name="STATE">
           <Key>
@@ -10862,7 +10905,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <FunctionImport Name="CPS_LISTA_CLI_PRO" ReturnType="Collection(TAT001Model.CPS_LISTA_CLI_PRO_Result)" />
           <FunctionImport Name="CSP_BANNERSINCANAL" ReturnType="Collection(String)" />
           <FunctionImport Name="CSP_CAMBIO" ReturnType="Collection(TAT001Model.CSP_CAMBIO_Result)">
-            <Parameter Name="sociedad" Mode="In" Type="String" />
+          <Parameter Name="sociedad" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_CARPETA" ReturnType="Collection(TAT001Model.CSP_CARPETA_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -10899,7 +10942,7 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="caso" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="CSP_PRESUPUESTO_ADDP" ReturnType="Collection(TAT001Model.CSP_PRESUPUESTO_ADDP_Result)">
-            <Parameter Name="path" Mode="In" Type="String" />
+          <Parameter Name="path" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CSP_USUARIO" ReturnType="Collection(TAT001Model.CSP_USUARIO_Result)">
             <Parameter Name="ID" Mode="In" Type="String" />
@@ -10912,6 +10955,15 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
             <Parameter Name="ACTIVO" Mode="In" Type="Boolean" />
             <Parameter Name="ACCION" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="ACCIONTs" EntityType="TAT001Model.ACCIONT" />
+          <AssociationSet Name="FK_ACCIONT_ACCION" Association="TAT001Model.FK_ACCIONT_ACCION">
+            <End Role="ACCION" EntitySet="ACCIONs" />
+            <End Role="ACCIONT" EntitySet="ACCIONTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACCIONT_SPRAS" Association="TAT001Model.FK_ACCIONT_SPRAS">
+            <End Role="SPRA" EntitySet="SPRAS" />
+            <End Role="ACCIONT" EntitySet="ACCIONTs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
           <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -11052,6 +11104,41 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
           <Property Type="Int32" Name="ID_GR" Nullable="false" />
           <Property Type="String" Name="NOMBRE_GR" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="ACCIONT">
+          <Key>
+            <PropertyRef Name="SPRAS_ID" />
+            <PropertyRef Name="ACCION_ID" />
+          </Key>
+          <Property Name="SPRAS_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="ACCION_ID" Type="Int32" Nullable="false" />
+          <Property Name="TXT050" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ACCION" Relationship="TAT001Model.FK_ACCIONT_ACCION" FromRole="ACCIONT" ToRole="ACCION" />
+          <NavigationProperty Name="SPRA" Relationship="TAT001Model.FK_ACCIONT_SPRAS" FromRole="ACCIONT" ToRole="SPRA" />
+        </EntityType>
+        <Association Name="FK_ACCIONT_ACCION">
+          <End Type="TAT001Model.ACCION" Role="ACCION" Multiplicity="1" />
+          <End Type="TAT001Model.ACCIONT" Role="ACCIONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACCIONT">
+              <PropertyRef Name="ACCION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACCIONT_SPRAS">
+          <End Type="TAT001Model.SPRA" Role="SPRA" Multiplicity="1" />
+          <End Type="TAT001Model.ACCIONT" Role="ACCIONT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SPRA">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACCIONT">
+              <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -13326,6 +13413,15 @@ advertencia 6002: La tabla o vista 'TAT001.dbo.WARNINGV' no tiene definida ningu
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="ACCIONTs">
+            <EntityTypeMapping TypeName="TAT001Model.ACCIONT">
+              <MappingFragment StoreEntitySet="ACCIONT">
+                <ScalarProperty Name="TXT050" ColumnName="TXT050" />
+                <ScalarProperty Name="ACCION_ID" ColumnName="ACCION_ID" />
+                <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
