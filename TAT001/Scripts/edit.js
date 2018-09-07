@@ -149,6 +149,7 @@ $(document).ready(function () {
             }
         ]
     });
+    selectTsol($("#tsol_id").val());//RSG 07.09.2018
 
     $('#matcat').click(function (e) {
 
@@ -786,7 +787,7 @@ $(document).ready(function () {
             var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
 
             asignarPresupuesto(kunnr);
-            asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
+            //asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
 
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });
@@ -2737,12 +2738,16 @@ $('body').on('click', '.pc', function () {
     $(this).prop('disabled', true);
 });
 
-$('body').on('focusout', '.input_oper', function () {
+//B20180801 MGC Textos
+$('body').on('keydown', '.input_oper', function (e) {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
-
+    //alert("press");
     //Obtener el tipo de negociación
     var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
 
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
@@ -2751,8 +2756,46 @@ $('body').on('focusout', '.input_oper', function () {
             //Se dispara el evento desde el total
             if ($(this).hasClass("total")) {
                 var total_val = $(this).val().replace("$", "");
+                var key = e.which;
+                if (dis == "M" & key == 13) {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                    $(this).addClass("keyup");
+                }
+            }
+        }
+    }
+
+});
+
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+
+    //Obtener el tipo de negociación
+    var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
+
+    //Solo a cantidades
+    if ($(this).hasClass("numberd")) {
+        //Total aplica nadamás para el monto                
+        if (neg == "M") {
+            //Se dispara el evento desde el total
+            if ($(this).hasClass("total")) {
+                var total_val = $(this).val().replace("$", "");
+                if (dis == "C") {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                } else if (dis == "M") {
+                    if (!$(this).hasClass("keyup")) {
+                        updateTotalRow(t, tr, "", "", 0);//B20180801 MGC Textos
+                    } else {
+                        updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                        $(this).removeClass("keyup");
+                    }
+                }
                 //Agregar los valores a 0 y agregar el total
-                updateTotalRow(t, tr, "", "X", total_val);
+                //updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
             } else {
                 updateTotalRow(t, tr, "", "", 0);
             }
@@ -2842,6 +2885,7 @@ $('body').on('focusout', '.input_oper', function () {
     }
 
 });
+
 
 $('body').on('focusout', '.input_sop_f', function () {
     var t = $('#table_dis').DataTable();

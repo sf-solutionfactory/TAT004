@@ -1,5 +1,5 @@
 ﻿
-function asignarSolicitud(num, num2) {
+function asignarSolicitud(num, num2, edit) {
     num = toNum(num);
     num2 = toNum(num2);
     if (true) {

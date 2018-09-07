@@ -279,11 +279,11 @@
                     }
                     @if (ViewBag.acciones != null & ViewBag.accion == "T")
                     {
-                        <li class="tab col s2"><a href="#fina" id="lbl_fin" class="active">Financiera</a></li>
+                        <li class="tab col s2"><a href="#fina" id="tab_fin" class="active">Financiera</a></li>
                     }
                     else
                     {
-                        <li class="tab col s2"><a href="#fina" id="lbl_fin">Financiera</a></li>
+                        <li class="tab col s2"><a href="#fina" id="tab_fin">Financiera</a></li>
                     }
                 </ul>
             </div>
@@ -357,7 +357,7 @@
                                 <div class="input-field col s12">
                                     @*@Html.EditorFor(model => model.D.FECHAC, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })*@
                                     <input type="text" disabled="disabled" value="@Model.D.FECHAC.Value.ToShortDateString()" />
-                                    @Html.LabelFor(model => model.D.FECHAC, "Fecha", new { @id = "lbl_fechac" })
+                                    @Html.LabelFor(model => model.D.FECHAC, "Fecha", new { @id = "lbl_fechad" })
                                 </div>
                                 <div class="input-field col s6 l6">
                                     @Html.EditorFor(model => model.D.PERIODO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
@@ -365,11 +365,11 @@
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.EditorFor(model => model.D.EJERCICIO, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })
-                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @class = "lbl_ejer" })
+                                    @Html.LabelFor(model => model.D.EJERCICIO, "Ejercicio", new { @class = "lbl_ejercicio" })
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.EditorFor(model => model.D.CONCEPTO, new { htmlAttributes = new { @disabled = "disabled" } })
-                                    @Html.LabelFor(model => model.D.CONCEPTO, "Concepto", new { @id = "lbl_conce" })
+                                    @Html.LabelFor(model => model.D.CONCEPTO, "Concepto", new { @id = "lbl_concepto" })
                                 </div>
                                 <div class="input-field col s12">
                                     @Html.TextAreaFor(model => model.D.NOTAS, new { @id = "txt_notas", @class = "materialize-textarea", @disabled = "disabled" })
@@ -537,11 +537,11 @@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.KUNNR, new { htmlAttributes = new { @disabled = "disabled", @id = "payer_id" } })
-                                        @Html.LabelFor(model => model.D.CLIENTE.KUNNR, "Cliente")
+                                        @Html.LabelFor(model => model.D.CLIENTE.KUNNR, "Cliente", new { @id = "lbl_payer" } )
                                     </div>
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.NAME1, new { htmlAttributes = new { @disabled = "disabled" } })
-                                        @Html.LabelFor(model => model.D.CLIENTE.NAME1, "Nombre", new { @id = "lbl_name" })
+                                        @Html.LabelFor(model => model.D.CLIENTE.NAME1, "Nombre", new { @id = "lbl_nombrecli" })
                                     </div>
                                     <div class="input-field col s12">
                                         @Html.EditorFor(model => model.D.CLIENTE.TCLIENTE.TCLIENTETs.Where(x => x.SPRAS == Session["spras"].ToString()).FirstOrDefault().TXT50, new { htmlAttributes = new { @disabled = "disabled" } })
@@ -571,16 +571,16 @@
                             </div>
                             <div class="card-panel">
                                 <div class="row" style="margin-bottom:0">
-                                    <h5>Vigencia</h5>
+                                    <h5 id="head_vigencia">Vigencia</h5>
                                     <div class="input-field col s12">
                                         @*@Html.EditorFor(model => model.D.FECHAI_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text", @value=Model.D.FECHAI_VIG.Value.ToShortDateString() } })*@
                                         <input type="text" value="@Model.D.FECHAI_VIG.Value.ToShortDateString()" disabled="disabled" />
-                                        @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechai" })
+                                        @Html.LabelFor(model => model.D.FECHAI_VIG, "De", new { @id = "lbl_fechade" })
                                     </div>
                                     <div class="input-field col s12">
                                         @*@Html.EditorFor(model => model.D.FECHAF_VIG, new { htmlAttributes = new { @disabled = "disabled", @type = "text" } })*@
                                         <input type="text" value="@Model.D.FECHAF_VIG.Value.ToShortDateString()" disabled="disabled" />
-                                        @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechaf" })
+                                        @Html.LabelFor(model => model.D.FECHAF_VIG, "A", new { @id = "lbl_fechahasta" })
                                     </div>
                                 </div>
                             </div>
@@ -804,7 +804,7 @@
                     <div class="col s12 m12 l6">
                         <div class="card-panel">
                             <div class="row">
-                                <h5>Soportes</h5>
+                                <h5 id="head_docssoporter">Soportes</h5>
                             </div>
                             <div class="row">
                                 @using (Html.BeginForm("Descargar", "Solicitudes", FormMethod.Post))
@@ -1024,7 +1024,7 @@
                             <div class="row">
                                 <div class="col s12 m6 l6">
                                     <div class="card-panel">
-                                        <h5 id="head_montob">Distribución</h5>
+                                        <h5 id="head_dis">Distribución</h5>
                                         <div class="row" style="margin-bottom:0">
                                             <div class="input-field col s6">
                                                 @Html.EditorFor(model => model.D.TIPO_TECNICO, new { htmlAttributes = new { @disabled = "disabled" } })

@@ -39,6 +39,11 @@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="mult" name="mult" type="hidden" value="@_df.D.DOCUMENTOF.Count">@*LEJ 03-08-18*@
+<input id="horaServer" type="hidden" value="@ViewBag.horaServer">
+<span class="span_fileload" style="display:none;"></span>
+<span class="lbl_cabono" style="display:none;"></span>
+<span class="lbl_ccargo" style="display:none;"></span>
+<span class="lbl_cclear" style="display:none;"></span>
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -68,10 +73,10 @@
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
-            @if (ViewBag.relacionadan != "")
+            @if (ViewBag.relacionadan != "" & Model.DOCUMENTO_REF != null)
             {
                 <div class="input-field col s4">
-                    <input type="text" id="txt_rel" name="txt_rel" value="" disabled="disabled" />
+                    <input type="text" id="txt_rel" name="txt_rel" value="@Model.DOCUMENTO_REF" disabled="disabled" />
                     @*<input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />*@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
@@ -285,7 +290,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
-                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="" disabled="disabled" />
                                             <label for="pais_txt">Subregión</label>
                                         </div>
                                     </div>
@@ -297,7 +302,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
-                                    @if (!Model.TSOL.REVERSO)
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
                                     {
                                         @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control " } })
                                     }
@@ -341,7 +346,7 @@
                                 </script>
                                 <script src="~/Scripts/createa.js"></script>
                                 <div class="input-field col s12">
-                                    @if (!Model.TSOL.REVERSO)
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
                                     {
                                         @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control " } })
                                     }
@@ -389,12 +394,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="" disabled="disabled" />
                                     <label for="fechad">Fecha</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="" disabled="disabled" />
                                     <label for="periodo">Periodo</label>
                                 </div>
                                 <script>
@@ -425,11 +430,11 @@
                                 </script>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="" disabled="disabled" />
                                     <label for="ejercicio">Ejercicio</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    @if (!Model.TSOL.REVERSO)
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
                                     {
                                         @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " } })
                                     }
@@ -440,7 +445,7 @@
                                     <label for="concepto">Concepto*</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    @if (!Model.TSOL.REVERSO)
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
                                     {
                                         @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea ", @id = "notas_txt", onkeyup = "maxchar();" })
                                     }
@@ -517,7 +522,7 @@
                                     <label for="cli_name">Nombre</label>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="" disabled="disabled" />
                                     <label for="parvw">Tipo de cliente</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -527,7 +532,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="" disabled="disabled" />
                                     <label for="stcd1">Tax ID</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -550,10 +555,10 @@
                                 <div class="input-field col s12">
                                     @if (!Model.TSOL.REVERSO)
                                     {
-                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email" } })}
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email" } })}
                                     else
                                     {
-                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email", @disabled = "disabled" } })
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email", @disabled = "disabled" } })
                                     }
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                                 </div>
@@ -565,181 +570,174 @@
                             <h5>Vigencia</h5>
                             <div class="row" style="margin-bottom:0">
                                 <!--RSG 22.05.2018-->
-                                @if (@*ViewBag.relacionada == "" | ViewBag.relacionada != "" |*@ /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                !Model.TSOL.REVERSO)
-                                                {
-                                                    <div class="col s12">
-                                                        <label class="col s6">
-                                                            <input name="group1" type="radio" id="btn-date" onclick="cambiaTemp(this.id)" />
-                                                            <span>Por fecha</span>
-                                                        </label>
-                                                        <label class="col s6">
-                                                            <input name="group1" type="radio" checked id="btn-peri" onclick="cambiaTemp(this.id)" />
-                                                            <span>Por periodo</span>
-                                                        </label>
-                                                    </div>
-                                                    <script>
-                                                        function cambiaTemp(id) {
-                                                            var tipo = id.split('-')[1];
-                                                            if (tipo == "date") {
-                                                                document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
-                                                                document.getElementById("anioi_id").setAttribute("disabled", "disabled");
-                                                                document.getElementById("periodof_id").setAttribute("disabled", "disabled");
-                                                                document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+                                @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
+                                {
+                                    <div class="col s12">
+                                        <label class="col s6">
+                                            <input name="group1" type="radio" id="btn-date" onclick="cambiaTemp(this.id)" />
+                                            <span>Por fecha</span>
+                                        </label>
+                                        <label class="col s6">
+                                            <input name="group1" type="radio" checked id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                            <span>Por periodo</span>
+                                        </label>
+                                    </div>
+                                    <script>
+                                        function cambiaTemp(id) {
+                                            var tipo = id.split('-')[1];
+                                            if (tipo == "date") {
+                                                document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                                                                document.getElementById("fechai_vig2").removeAttribute("disabled");
-                                                                document.getElementById("fechaf_vig2").removeAttribute("disabled");
-                                                            } else {
-                                                                document.getElementById("periodoi_id").removeAttribute("disabled");
-                                                                document.getElementById("anioi_id").removeAttribute("disabled");
-                                                                document.getElementById("periodof_id").removeAttribute("disabled");
-                                                                document.getElementById("aniof_id").removeAttribute("disabled");
+                                                document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                                document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                            } else {
+                                                document.getElementById("periodoi_id").removeAttribute("disabled");
+                                                document.getElementById("anioi_id").removeAttribute("disabled");
+                                                document.getElementById("periodof_id").removeAttribute("disabled");
+                                                document.getElementById("aniof_id").removeAttribute("disabled");
 
-                                                                document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
-                                                                document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+                                                document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                                document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
 
-                                                            }
-                                                            setDates(tipo);
-                                                            var elem = document.querySelectorAll('select');
-                                                            var instance = M.FormSelect.init(elem, []);
-                                                            pickerFecha2(".format_date");
-                                                        }
-                                                    </script>
-                                                    <div class="col s6">
-                                                        <div class="input-field col s12">
-                                                            <i class="material-icons prefix">date_range</i>
-                                                            @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
-                                                            @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " })
-                                                            <input type="text" disabled class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
-                                                        </div>
-                                                        <div class="input-field col s12">
-                                                            <i class="material-icons prefix">date_range</i>
-                                                            @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
-                                                            @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " })
-                                                            <input type="text" disabled class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
-                                                        </div>
-                                                    </div>
-                                                    <script>
-                                                        asignaFechasInit();
-                                                        function asignaFechasInit() {
-                                                            var datei = document.getElementById("fechai_vig").value.split(" ")[0];
-                                                            var datef = document.getElementById("fechaf_vig").value.split(" ")[0];
-                                                            //var datei = document.getElementById("fechai_vig").value;
-                                                            //var datef = document.getElementById("fechaf_vig").value;
+                                            }
+                                            setDates(tipo);
+                                            var elem = document.querySelectorAll('select');
+                                            var instance = M.FormSelect.init(elem, []);
+                                            pickerFecha2(".format_date");
+                                        }
+                                    </script>
+                                    <div class="col s6">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">date_range</i>
+                                            @*@Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })*@
+                                            @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " })
+                                            <input type="text" disabled class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">date_range</i>
+                                            @*@Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })*@
+                                            @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " })
+                                            <input type="text" disabled class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                        </div>
+                                    </div>
+                                    <script>
+                                        asignaFechasInit();
+                                        function asignaFechasInit() {
+                                            var datei = document.getElementById("fechai_vig").value.split(" ")[0];
+                                            var datef = document.getElementById("fechaf_vig").value.split(" ")[0];
+                                            //var datei = document.getElementById("fechai_vig").value;
+                                            //var datef = document.getElementById("fechaf_vig").value;
 
-                                                            if (datei != "") {
-                                                                document.getElementById("fechai_vig2").value = datei;
-                                                            }
-                                                            if (datef != "") {
-                                                                document.getElementById("fechaf_vig2").value = datef;
-                                                            }
-                                                        }
-                                                    </script>
-                                                    <div class="col s6">
-                                                        <div class="col s12">
-                                                            <div class="input-field col s6">
-                                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @onchange = "setDates('')" })
-                                                                <label>De</label>
-                                                            </div>
-                                                            <div class="input-field col s3">
-                                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @onchange = "setDates('')" })
-                                                            </div>
-                                                        </div><div class="col s12">
-                                                            <div class="input-field col s6">
-                                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @onchange = "setDates('')" })
-                                                                <label>Hasta</label>
-                                                            </div>
-                                                            <div class="input-field col s3">
-                                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @onchange = "setDates('')" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <script>
-                                                        var datei = document.getElementById("fechai_vig").value;
-                                                        var datef = document.getElementById("fechaf_vig").value;
-                                                        var elemth = document.querySelector('#fechai_vig2');
-                                                        var optionsth = {
-                                                            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
-                                                            format: 'dd/mm/yyyy',
-                                                            i18n: {
-                                                                clear: 'Limpiar',
-                                                                today: 'Hoy',
-                                                                done: 'Seleccionar',
-                                                                previousMonth: '‹',
-                                                                nextMonth: '›',
-                                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                            }
-                                                        };
-                                                        var instanceth = M.Datepicker.init(elemth, optionsth);
+                                            if (datei != "") {
+                                                document.getElementById("fechai_vig2").value = datei;
+                                            }
+                                            if (datef != "") {
+                                                document.getElementById("fechaf_vig2").value = datef;
+                                            }
+                                        }
+                                    </script>
+                                    <div class="col s6">
+                                        <div class="col s12">
+                                            <div class="input-field col s6">
+                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @onchange = "setDates('')" })
+                                                <label>De</label>
+                                            </div>
+                                            <div class="input-field col s3">
+                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @onchange = "setDates('')" })
+                                            </div>
+                                        </div><div class="col s12">
+                                            <div class="input-field col s6">
+                                                @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @onchange = "setDates('')" })
+                                                <label>Hasta</label>
+                                            </div>
+                                            <div class="input-field col s3">
+                                                @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @onchange = "setDates('')" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        var datei = document.getElementById("fechai_vig").value;
+                                        var datef = document.getElementById("fechaf_vig").value;
+                                        var elemth = document.querySelector('#fechai_vig2');
+                                        var optionsth = {
+                                            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
+                                            format: 'dd/mm/yyyy',
+                                            i18n: {
+                                                clear: 'Limpiar',
+                                                today: 'Hoy',
+                                                done: 'Seleccionar',
+                                                previousMonth: '‹',
+                                                nextMonth: '›',
+                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                            }
+                                        };
+                                        var instanceth = M.Datepicker.init(elemth, optionsth);
 
-                                                        var elemtd = document.querySelector('#fechaf_vig2');
-                                                        var optionstd = {
-                                                            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
-                                                            format: 'dd/mm/yyyy',
-                                                            onClose: function (e) {
-                                                                var datei = $('#fechai_vig2').val();
-                                                                var datef = $('#fechaf_vig2').val();
-                                                                var res = validar_fechas(datei, datef);
+                                        var elemtd = document.querySelector('#fechaf_vig2');
+                                        var optionstd = {
+                                            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
+                                            format: 'dd/mm/yyyy',
+                                            onClose: function (e) {
+                                                var datei = $('#fechai_vig2').val();
+                                                var datef = $('#fechaf_vig2').val();
+                                                var res = validar_fechas(datei, datef);
 
-                                                                if (!res) {
-                                                                    $('#fechaf_vig2').val("");
-                                                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
-                                                                }
-                                                            },
-                                                            i18n: {
-                                                                clear: 'Limpiar',
-                                                                today: 'Hoy',
-                                                                done: 'Seleccionar',
-                                                                previousMonth: '‹',
-                                                                nextMonth: '›',
-                                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                            }
-                                                        };
-                                                        var instancetd = M.Datepicker.init(elemtd, optionstd);
-
-                                                        function borrar(field) {
-                                                            field.value = "";
-                                                        }
-                                                        //LEJ 30.07.2018
-                                                        _ff();
-                                                    </script>
+                                                if (!res) {
+                                                    $('#fechaf_vig2').val("");
+                                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
                                                 }
-                                                else
-                                                { <div class="col s12">
-                                                        <div class="input-field col s6">
-                                                            <i class="material-icons prefix">date_range</i>
-                                                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
-                                                        </div>
-                                                        <div class="input-field col s6">
-                                                            <i class="material-icons prefix">date_range</i>
-                                                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
-                                                        </div>
-                                                    </div>
-                                                    <input name="group1" type="hidden" id="btn-peri" />
-                                                }
+                                            },
+                                            i18n: {
+                                                clear: 'Limpiar',
+                                                today: 'Hoy',
+                                                done: 'Seleccionar',
+                                                previousMonth: '‹',
+                                                nextMonth: '›',
+                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                            }
+                                        };
+                                        var instancetd = M.Datepicker.init(elemtd, optionstd);
+
+                                        function borrar(field) {
+                                            field.value = "";
+                                        }
+                                        //LEJ 30.07.2018
+                                        _ff();
+                                    </script>
+                                }
+                                else
+                                { <div class="col s12">
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">date_range</i>
+                                            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
+                                            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2" })
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <i class="material-icons prefix">date_range</i>
+                                            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
+                                            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2" })
+                                        </div>
+                                    </div>
+                                    <input name="group1" type="hidden" id="btn-peri" />
+                                }
                             </div>
                         </div>
                         <div id="div_picker2"></div><!--RSG 27.05.2017-->
                     </div>
-                    <div id="ref_soporte" style="display:none" class="col s12">
+                    <div id="ref_soporte" style="display:table" class="col s12">
                         @*LEJ 26.07.18----I*@
                         <div class="card-panel">
                             <h5>Referencia de Facturas</h5>
@@ -758,7 +756,7 @@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
+                                        <input class="file-path  file_sop" type="text">
                                     </div>
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
@@ -1074,7 +1072,7 @@
                             </div>
                         }
                         <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
-                        @if(!Model.TSOL.REVERSO)
+                        @if (!Model.TSOL.REVERSO)
                         {
                             List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                             if (ViewBag.relacionadan != "" && archivo.Count >= 0)
@@ -1103,7 +1101,7 @@
                                                                     <input type="hidden" id="desc-@i" value="@archivo[i].PATH" />
                                                                     <a id="lbl_cargara-@i" name="archivo" class="btn-small" style="float:left;" @*type="submit"*@ value="@archivo[i].PATH" onclick="descargar(this.id)">DESCARGAR</a>
                                                                     <div class="file-path-wrapper">
-                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1135,7 +1133,7 @@
                                                                     }
                                                                 </div>
                                                                 <div class="file-path-wrapper">
-                                                                    <input class="file-path validate" type="text">
+                                                                    <input class="file-path " type="text">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1165,7 +1163,7 @@
                                                                 }
                                                             </div>
                                                             <div class="file-path-wrapper">
-                                                                <input class="file-path validate" type="text">
+                                                                <input class="file-path " type="text">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1223,14 +1221,14 @@
                                                 <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
+                                                <input class="file-path " type="text">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
-                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="" disabled="disabled" />
                                         <label for="fechad">Fecha</label>
                                     </div>
                                     <div class="row">
@@ -1275,50 +1273,87 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="col s12">
                                     <label>
-                                        @if (_ligada == true)//LEJ 23.07.2018
+                                        @if (Model.DOCUMENTO_REF == null)
                                         {
-                                            <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            if (_ligada == true)//LEJ 23.07.2018
+                                            {
+                                                <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            }
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            if (_ligada == true)//LEJ 23.07.2018
+                                            {
+                                                <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" disabled="disabled" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" disabled="disabled" />
+                                            }
                                         }
                                         <span>Solicitud ligada a facturación </span>
                                     </label>
-                                    <script>
-                                        function cambiaLigada(campo) {
-                                            if (campo.checked) {
-                                                $("#select_neg").val("P");
-                                                $("#select_dis").val("C");
-                                                $("#select_negi").val("P");
-                                                $("#select_disi").val("C");
-                                                $("#select_neg").prop("disabled", "disabled");
-                                                $("#select_dis").prop("disabled", "disabled");
-                                                $("#select_neg").change();
-                                                $("#select_dis").change();
-                                                $("#div_objq").removeClass("hide");
-                                                $("#txt_ligada").val("X");
-                                            } else {
-                                                $("#select_neg").prop("disabled", false);
-                                                $("#select_dis").prop("disabled", false);
-                                                $("#select_neg").change();
-                                                $("#select_dis").change();
-                                                $("#div_objq").addClass("hide");
-                                                $("#txt_ligada").val("");
-                                            }
 
+
+                                    @if (Model.DOCUMENTO_REF == null)
+                                    {
+                                        <script>
+                                            function cambiaLigada(campo) {
+                                                if (campo.checked) {
+                                                    $("#select_neg").val("P");
+                                                    $("#select_dis").val("C");
+                                                    $("#select_negi").val("P");
+                                                    $("#select_disi").val("C");
+                                                    $("#select_neg").prop("disabled", "disabled");
+                                                    $("#select_dis").prop("disabled", "disabled");
+                                                    $("#select_neg").change();
+                                                    $("#select_dis").change();
+                                                    $("#div_objq").removeClass("hide");
+                                                    $("#txt_ligada").val("X");
+                                                } else {
+                                                    $("#select_neg").prop("disabled", false);
+                                                    $("#select_dis").prop("disabled", false);
+                                                    $("#select_neg").change();
+                                                    $("#select_dis").change();
+                                                    $("#div_objq").addClass("hide");
+                                                    $("#txt_ligada").val("");
+                                                }
+                                            }
                                             var elem = document.getElementById('select_neg');
                                             var instance = M.FormSelect.init(elem, []);
                                             elem = document.getElementById('select_dis');
                                             instance = M.FormSelect.init(elem, []);
-                                        }
-                                    </script>
+                                        </script>
+                                    }
+                                    else
+                                    {
+                                        <script>
+                                            function cambiaLigada(campo) {
+                                                if (campo.checked) {
+                                                    $("#select_neg").val("P");
+                                                    $("#select_dis").val("C");
+                                                    $("#select_negi").val("P");
+                                                    $("#select_disi").val("C");
+                                                    $("#div_objq").removeClass("hide");
+                                                    $("#txt_ligada").val("X");
+                                                } else {
+                                                    $("#div_objq").addClass("hide");
+                                                    $("#txt_ligada").val("");
+                                                }
+                                            }
+                                        </script>
+                                    }
                                 </div>
                                 @*<input type="button" id="matcat" value="Get materiales cat" />*@
                                 <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
                                 <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
+
                                 <div class="input-field col s6">
-                                    <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
+                                    <select id="select_neg" name="select_neg" onchange="selectDis(this.value)" disabled>
                                         <option value="M">Monto</option>
                                         <option value="P">Porcentaje</option>
                                     </select>
@@ -1337,13 +1372,19 @@
                                         @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
                                     </div>
                                 </div>
-                                @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
-                                @*<div id="div_categoria2" class="form-group col s6" style="display:none">
-                                        @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
-                                        </div>
-                                    </div>*@
+                                @if (Model.DOCUMENTO_REF != null)
+                                {
+                                    <script>
+                                        $("#select_neg").prop("disabled", "disabled");
+                                        $("#select_dis").prop("disabled", "disabled");
+                                        //$("#select_dis").change();
+
+                                        var elem = document.getElementById('select_neg');
+                                        var instance = M.FormSelect.init(elem, []);
+                                        elem = document.getElementById('select_dis');
+                                        instance = M.FormSelect.init(elem, []);
+                                    </script>
+                                }
                             </div>
                         </div>
                     </div>
@@ -1352,14 +1393,21 @@
                             <h5>Monto Base</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class=" @ViewBag.reversa" />
                                     <label for="monto_dis">Monto</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @*<div class="form-group">*@
                                     @*<div class="col-md-10">*@
                                     <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
-                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    @if (Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control", @disabled = "disabled" })
+                                    }
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                     @*</div>
                                         </div>*@
@@ -1372,7 +1420,7 @@
                             <h5>Base para aplicar %</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                     <label for="bmonto_apoyo">% Apoyo</label>
                                 </div>
                             </div>
@@ -1381,7 +1429,7 @@
                     <div class="col s12">
                         <div class="card-panel">
                             <h5>Mecánica de Negociación</h5>
-                            <div class="row" style="margin-bottom:0;">
+                            <div class="row" style="margin-bottom:0;overflow-x:auto;">
                                 @*@if (ViewBag.relacionadan == "")*@
                                 @if (ViewBag.relacionadan != "" & ViewBag.reversan != "X" & (Model.DOCUMENTO_REF == null | Model.TSOL.ADICIONA))
                                 {
@@ -1391,7 +1439,7 @@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input class="file-path " type="text">
                                         </div>
                                     </div>
                                     <div id="div_btns_row" style="display:none">
@@ -1519,7 +1567,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label for="monto_doc_md">Monto</label>
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                     </div>
@@ -1529,7 +1577,7 @@
                                         @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
                                         @*</div>
-                        </div>*@
+                                            </div>*@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-10">
@@ -1543,7 +1591,7 @@
                                         </div>
                                     </div>
                                     <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="montos_doc_ml2" type="text" class="" disabled="disabled" />
                                         <label for="montos_doc_ml2">Monto en USD</label>
                                     </div>
                                     <div class="form-group">
@@ -1737,70 +1785,7 @@
                         }
                                 </script>
                             </div>
-                            @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <ul class="collection">
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Importe solicitud
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis1">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto provisión original
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis2">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto aplicado
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis3">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a4">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Remanente/Exceso
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis4">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a5">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto total
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis5">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>*@
-                            <div class="card-panel">
+                            <div class="card-panel" style="display:none;">
                                 <h5>Análisis Solicitud</h5>
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
@@ -2065,7 +2050,7 @@
                                     <input type="hidden" id="desc-@i" value="@archivos[i].PATH" />
                                     <button id="lbl_cargar-@i" name="archivo" class="btn-small" style="float:left;" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
                                     <div class="file-path-wrapper">
-                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                     </div>
                                 </div>
                             </div>
@@ -2084,6 +2069,554 @@
         </div>
     }
 }
-@*<script>
-        selectTsol($('#tsol_id').val());//LEJ 24.07.18
-    </script>*@
+
+<div id="validaciones">
+
+    <script>
+            var lista1 = [];
+            var lista = @Html.Raw(ViewBag.listaValid);
+            var div = $("#validaciones");
+            var app = "<script>"
+            for (var i = 0; i < lista.length; i++) {
+                var campo = document.getElementById(lista[i].ID);
+                if (campo != undefined) {
+                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ")}); ";
+                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
+                    app += "var ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning($(this).val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL+ "' |'"+lista[i].TSOL+"'== ''){";
+                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}}); ";
+
+                }
+                else {
+                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
+                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
+                    app += "var val = $(this).find('input').val(); if(val==undefined){ val = $(this).val();} var ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)";
+                    app += ";e.preventDefault(); e.stopPropagation();});";
+                }
+            }
+            app += "$('#tab_soporte').on('click', function (e) {var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
+            app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
+                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
+            app += "$('#tab_fin').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
+                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} " +
+                " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
+
+            app += "function validarTab(e, tabid, div) {";
+            app += "var ban = true;";
+            for (var i = 0; i < lista.length; i++) {
+                app += "ban = true;";
+                //if (lista[i].TAB == 'tab_info' | true) {
+                app += "if ('" + lista[i].TAB + "' == tabid) {";
+                var campo = document.getElementById(lista[i].ID);
+                if (campo != undefined) {
+                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
+                    app += "ban = ";
+                    for (var j = 0; j < lista[i].COND.length; j++) {
+                        app += lista[i].COND[j].andor + "warning($('#" + lista[i].ID + "').val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                    }
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
+                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                    //app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
+                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;} ";
+
+                }
+                else {
+                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
+                    //app += "var val = $('." + lista[i].ID + "').find('input').val(); if(val==undefined){ val = $('." + lista[i].ID + "').val();} ban = ";
+                    app += "var val = $('." + lista[i].ID + "').find('input').val();";
+                    if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                        app += "if(val==undefined){ var li = document.querySelectorAll('." + lista[i].ID + "');";
+                        app += "for(var j= 0; j<li.length;j++){ var par = $(li[j]).prop('tagName');if( par!= 'TH'){";
+                        app += " val = $(li[j]).text(); ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                        app += ";if(!ban){j=li.length;}";
+                        app += "}}}";
+                        app += "else{";
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                        app += "}";
+                    } else {
+                        app += "ban = ";
+                        for (var j = 0; j < lista[i].COND.length; j++) {
+                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
+                        }
+                    }
+                    app += ";";
+                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
+                        app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
+                        app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;}";
+                    }
+                //}
+                    app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";
+                    var tabb = "";
+                    if (lista[i].TAB == "tab_info") {
+                        tabb = "Informacion_cont";
+                    }
+                    if (lista[i].TAB == "tab_soporte") {
+                        tabb = "Soporte_cont";
+                    }
+                    if (lista[i].TAB == "tab_dist") {
+                        tabb = "Distribucion_cont";
+                    }
+                app += "if(!ban){selectTab('" + tabb + "', e)}}";
+            }
+            app += " return ban;}";
+
+
+            //app += "function validarInfo(){";
+            //for (var i = 0; i < lista.length; i++) {
+            //    app += "if(!valido('" + lista[i][0] + "', '" + lista[i][1] + "')){if('" + lista[i][3] + "' == 'error'){selectTab('Informacion_cont')}}";
+            //}
+            //app += "}";
+            //app += " if(!valid('payer_id')){if('error' == 'error'){selectTab('Informacion_cont')}}";
+
+            div.append(app);
+
+            function validar(id, condicion, mensaje, icon, color, elem, ii) {
+                var campoVal = document.getElementById(id);
+                var campo = document.getElementById(elem);
+
+                if (campo != undefined & campoVal != undefined) {
+                    var value = campoVal.value;
+                    if (condiciones(ii)) {
+                        var valid = valido(value, condicion, ii);
+                        var tipo_condicion = condicion.split("-")[0];
+                        var valor_condicion = condicion.split("-")[1];
+
+                        if (!valid) {
+                            //dismiss(id + "-" + tipo_condicion);
+                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                            esInvalido(campo);
+                        } else {
+                            esValido(campo);
+                            dismiss(id + "-" + tipo_condicion);
+                        }
+                    }
+                }
+            }
+
+            function validarC(id, condicion, mensaje, icon, color, elem, ii) {
+                var campoVal = document.querySelectorAll("." + id);
+                var campo = document.querySelectorAll("." + elem);
+                if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
+                    for (var i = 0; i < campoVal.length; i++) {
+                        var value = $(campoVal[i]).find('input').val();
+                        if (value != undefined) {
+                            if (condiciones(ii)) {
+                                var valid = valido(value, condicion, ii);
+                                var tipo_condicion = condicion.split("-")[0];
+                                var valor_condicion = condicion.split("-")[1];
+
+                                if (!valid) {
+                                    //dismiss(id + "-" + tipo_condicion);
+                                    //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                    esInvalidoC(campo[i]);
+                                } else {
+                                    esValidoC(campo[i]);
+                                    dismiss(id + "-" + tipo_condicion);
+                                }
+                                i = campoVal.length;
+                            }
+                        }
+                    }
+                }
+            }
+
+            function condiciones(ii) {
+                var ban = true;
+                var cont = 0;
+                if (lista[ii].CONDICION != undefined)
+                    if (lista[ii].CONDICION != "undefined")
+                        if (lista[ii].CONDICION.length > 0) {
+                            for (var i = 0; i < lista[ii].CONDICION.length; i++) {
+                                var ccc = lista[ii].CONDICION;
+                                if (document.getElementById(ccc[i].id).value == ccc[i].val)
+                                    cont++;
+                            }
+                            if (cont != lista[ii].CONDICION.length)
+                                ban = false;
+                        }
+                return ban;
+            }
+
+            function valido(value, condicion, ii) {
+                var ban = true;
+                var valid = true;
+                if (ban) {
+                    var tipo_condicion = condicion.split("-")[0];
+                    var valor_condicion = condicion.split("-")[1];
+
+                    if (tipo_condicion != "") {
+                        if (tipo_condicion == "c") {
+                            if (valor_condicion == "!=null") {
+                                if (value == "")
+                                    valid = false;
+                            } else if (valor_condicion == "!=") {
+                                var compara = $("#" + condicion.split("-")[2]).text();
+                                if (parseFloat(toNum(value)) != parseFloat(toNum(compara)))
+                                    valid = false
+                            } else if (valor_condicion == ">") {
+                                var compara = condicion.split("-")[2];
+                                if (parseFloat(toNum(value)) <= parseFloat(toNum(compara)))
+                                    valid = false
+                            }
+                        } else if (tipo_condicion == "n") {
+                            if (tipo_condicion == 'n') {
+                                if (!$.isNumeric(value))
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "l") {
+                            var longitud = parseInt(valor_condicion);
+                            if (longitud > 0) {
+                                if (value.length < longitud)
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "lm") {
+                            var longitud = parseInt(valor_condicion);
+                            if (longitud > 0) {
+                                if (value.length > longitud)
+                                    valid = false;
+                            }
+                        } else if (tipo_condicion == "f") {
+                            valid = evaluarFiles();
+                        }
+                    }
+                }
+                return valid;
+            }
+
+            function toast(clases, dura, icon, mensaje, color) {
+                dismiss(clases);
+                M.toast({
+                    classes: clases,
+                    displayLength: dura,
+                    html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje
+                    + '<button class="btn-small btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>'
+                });
+            }
+
+            function dismiss(clase) {
+                var toastElement = document.querySelectorAll('.' + clase);
+                for (var i = 0; i < toastElement.length; i++) {
+                    var toastInstance = M.Toast.getInstance(toastElement[i]);
+                    toastInstance.dismiss();
+                }
+            }
+
+            function selectTab(tab, e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var ell = document.getElementById("tabs");
+                var instances = M.Tabs.getInstance(ell);
+                instances.select(tab);
+            }
+
+            function esValido(campo) {
+                campo.classList.add("valid");
+                campo.classList.remove("invalid");
+                campo.classList.remove("warn");
+            }
+            function esInvalido(campo) {
+                campo.classList.add("invalid");
+                campo.classList.remove("valid");
+                campo.classList.remove("warn");
+            }
+            function esWarning(campo) {
+                campo.classList.add("warn");
+                campo.classList.remove("valid");
+                campo.classList.remove("invalid");
+            }
+            function esValidoC(campo) {
+                $(campo).find('input').addClass("valid");
+                $(campo).find('input').removeClass("invalid");
+                $(campo).find('input').removeClass("warn");
+            }
+            function esInvalidoC(campo) {
+                $(campo).find('input').addClass("invalid");
+                $(campo).find('input').removeClass("valid");
+                $(campo).find('input').removeClass("warn");
+            }
+            function esWarningC(campo) {
+                campo.classList.add("warn");
+                campo.classList.remove("valid");
+                campo.classList.remove("invalid");
+            }
+
+            //function validarTab(e, tabId, tab) {
+            //    //M.Toast.dismissAll();
+            //    var ban = true;
+            //    for (var i = 0; i < lista.length; i++) {
+            //        if (lista[i].TAB == tabId) {
+            //            var condicion = lista[i].COND;
+            //            var id = lista[i].ID;
+            //            var campoVal = document.getElementById(lista[i].ID);
+            //            var campo = document.getElementById(lista[i].ELEM);
+
+            //            var clase = false;
+            //            if (campoVal == undefined & campo == undefined) {
+            //                campoVal = document.querySelectorAll("." + lista[i].ID);
+            //                campo = document.querySelectorAll("." + lista[i].ELEM);
+            //                clase = true;
+            //            }
+
+            //            if (campo != undefined & campoVal != undefined) {
+            //                var icon = lista[i].TIPO;
+            //                var color = lista[i].COLOR;
+            //                var mensaje = lista[i].MSG;
+            //                //var tipo_condicion = condicion.split("-")[0];
+            //                //var valor_condicion = condicion.split("-")[1];
+
+            //                if (!clase) {
+            //                    if (condiciones(i)) {
+            //                        //var b = valido(campoVal.value, lista[i].COND, i);
+            //                        var b = valido(campoVal.value, lista[i].COND, i);
+            //                        if (!b) {
+            //                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+            //                            if (lista[i].TIPO == 'error') {
+            //                                esInvalido(campo);
+            //                                selectTab(tab, e);
+            //                                campo.focus();
+            //                                ban = false;
+            //                            }
+            //                        } else {
+            //                            if (lista[i].TIPO == 'error')
+            //                                dismiss(id + "-" + tipo_condicion);
+            //                        }
+            //                    }
+            //                } else {
+            //                    for (var j = 0; j < campoVal.length; j++) {
+            //                        var value = $(campoVal[j]).find('input').val();
+            //                        if (value != undefined | tipo_condicion == 'f') {
+            //                            if (tipo_condicion == 'f')
+            //                                value = '';
+            //                            if (condiciones(i)) {
+            //                                var valid = valido(value, condicion, i);
+            //                                if (!valid) {
+            //                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+            //                                    if (lista[i].TIPO == 'error') {
+            //                                        esInvalidoC(campo[i]);
+            //                                        selectTab(tab, e);
+            //                                        $(campo).find('input').focus();
+            //                                        ban = false;
+            //                                    }
+            //                                } else {
+            //                                    dismiss(id + "-" + tipo_condicion);
+            //                                }
+            //                                j = campoVal.length;
+            //                            }
+            //                        } else {
+
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    return ban;
+            //}
+
+            function validarN(id, num, mensaje, icon, color, elem, ii, ban) {
+                var campoVal = document.getElementById(id);
+                var campo = document.getElementById(elem);
+
+                if (campo != undefined & campoVal != undefined) {
+                    var value = campoVal.value;
+                    if (condiciones(ii)) {
+
+                        //var valid = valido(value, condicion, ii);
+                        var valid = ban;
+                        //var tipo_condicion = condicion.split("-")[0];
+                        var tipo_condicion = num;
+                        //var valor_condicion = condicion.split("-")[1];
+
+                        if (!valid) {
+                            //dismiss(id + "-" + tipo_condicion);
+                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                            if (color == "red")
+                                esInvalido(campo);
+                            else
+                                esWarning(campo);
+                        } else {
+                            esValido(campo);
+                            dismiss(id + "-" + tipo_condicion);
+                        }
+                    }
+                }
+            }
+            function validarNC(id, num, mensaje, icon, color, elem, ii, ban) {
+                //var campoVal = document.getElementById(id);
+                //var campo = document.getElementById(elem);
+                var campoVal = document.querySelectorAll("." + id);
+                var campo = document.querySelectorAll("." + elem);
+                for (var i = 0; i < campoVal.length; i++) {
+                    if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
+                        var value = $(campoVal[i]).find('input').val();
+                        if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
+                            if (value == undefined)
+                                value = $(campoVal[i]).text();
+                        }
+                        var valid = ban;
+                        var tipo_condicion = num;
+                        //if (value == undefined) {
+                        //    var inputid = $(campoVal[i]).attr('id');
+                        //    if (!valid)
+                        //        toast(id + "-" + inputid, 1000000, icon, mensaje, color);
+                        //} else {
+                        if (!valid) {
+                        } else {
+                        }
+                        //}
+                        if (condiciones(ii) & value != undefined) {
+
+                            //var valid = valido(value, condicion, ii);
+                            //var tipo_condicion = condicion.split("-")[0];
+                            //var valor_condicion = condicion.split("-")[1];
+
+                            if (!valid) {
+                                //dismiss(id + "-" + tipo_condicion);
+                                //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
+                                //toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
+                                toast(id + "-" + num, 1000000, icon, mensaje, color);
+                                if (color == "red")
+                                    esInvalidoC(campo[i]);
+                                else
+                                    esWarningC(campo[i]);
+                                //for (var j = 0; j < campo.length; j++) {
+                                //    esInvalido(campo[j]);
+                                //}
+                                i = campoVal.length;
+                            } else {
+                                esValidoC(campo[i]);
+                                //for (var j = 0; j < campo.length; j++) {
+                                //    esValido(campo[j]);
+                                //}
+                                dismiss(id + "-" + tipo_condicion);
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            function warning(val1, comp, val2) {
+                if (comp == '=') {
+                    if (val1 == val2)
+                        return true;
+                } if (comp == '!=') {
+                    if (val1 != val2)
+                        return true;
+                } if (comp == '&') {
+                    if (val1 & val2)
+                        return true;
+                    else
+                        return false;
+                } if (comp == '|') {
+                    if (val1 | val2)
+                        return true;
+                    else
+                        return false;
+                } if (comp == 'n') {
+                    if ($.isNumeric(toNum(val1)))
+                        return true;
+                } if (comp == 'e') {
+                    if ($.isNumeric(parseFloat(toNum(val1))) & Number.isInteger(parseFloat(toNum(val1))))
+                        return true;
+                } if (comp == 'dec') {
+                    if (!Number.isInteger(parseFloat(toNum(val1))) & $.isNumeric(parseFloat(toNum(val1))))
+                        return true;
+                }
+
+                if ($.isNumeric(toNum(val1))) {
+                    if (comp == '>') {
+                        if (parseFloat(toNum(val1)) > parseFloat(toNum(val2)))
+                            return true;
+                    } if (comp == '<') {
+                        if (parseFloat(toNum(val1)) < parseFloat(toNum(val2)))
+                            return true;
+                    } if (comp == '>=') {
+                        if (parseFloat(toNum(val1)) >= parseFloat(toNum(val2)))
+                            return true;
+                    } if (comp == '<=') {
+                        if (parseFloat(toNum(val1)) <= parseFloat(toNum(val2)))
+                            return true;
+                    }
+                }
+                if (comp == "l") {
+                    var longitud = parseInt(val2);
+                    if (longitud > 0) {
+                        if (val1.length == longitud)
+                            return true;
+                    }
+                }
+                else if (comp == "f") {
+                    return evaluarFiles();
+                }
+                else if (comp == "d") {
+                    return isDate(val1)
+                }
+                else if (comp == "M") {
+                    return ($("#select_neg").val() == "M")
+                }
+                else if (comp == "P") {
+                    return ($("#select_neg").val() == "P")
+                }
+                else if (comp == "MA") {
+                    return ($("#select_dis").val() == "M")
+                }
+                else if (comp == "CA") {
+                    return ($("#select_dis").val() == "C")
+                }
+                else if (comp == "TOT") {
+                    return (toNum(val1) == toNum($("#total_dis").text()))
+                }
+                else if (comp == "T") {
+                    return (parseFloat(toNum($("#total_dis").text()))>0)
+                }
+                else if (comp == "DIS") {
+                    evaluarDisTable();
+                    var len = $("#table_dis > tbody  > tr[role='row']").length;
+                    if (len > 0) {
+                        var cont = 0;
+                        $('#table_dis > tbody  > tr').each(function () {
+                            var mat = $(this).find("td:eq(" + (3) + ") input").val();
+                            var cat = $(this).find("td:eq(" + (4) + ")").text();
+                            if (mat != undefined & mat != "")
+                                cont++;
+                            else if(cat != undefined & cat != "")
+                                cont++;
+
+                        });
+                    }
+                    return cont > 0;
+                }
+                else if (comp == "INI") {
+                    return (val1.startsWith(val2))
+                }
+                return false;
+            }
+
+                            //var val = 'asdasdasd';
+                            ////var qq = warning(warning(val, "n", 0), '|', warning(warning(val, ">", 0), "&", warning(val, "<=", 100)));
+                            //var qq = warning(warning(val, "n", 0), '|', warning(warning(val, "==", "200c"), "|", warning(val, "==", "201c")));
+                            //alert(qq);
+    </script>
+</div>

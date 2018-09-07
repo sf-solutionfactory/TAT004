@@ -73,10 +73,10 @@
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
-            @if (ViewBag.relacionadan != "")
+            @if (ViewBag.relacionadan != "" & Model.DOCUMENTO_REF != null)
             {
                 <div class="input-field col s4">
-                    <input type="text" id="txt_rel" name="txt_rel" value="" disabled="disabled" />
+                    <input type="text" id="txt_rel" name="txt_rel" value="@Model.DOCUMENTO_REF" disabled="disabled" />
                     @*<input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />*@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
@@ -290,7 +290,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
-                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="" disabled="disabled" />
                                             <label for="pais_txt">Subregión</label>
                                         </div>
                                     </div>
@@ -394,12 +394,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="" disabled="disabled" />
                                     <label for="fechad">Fecha</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="" disabled="disabled" />
                                     <label for="periodo">Periodo</label>
                                 </div>
                                 <script>
@@ -430,7 +430,7 @@
                                 </script>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="" disabled="disabled" />
                                     <label for="ejercicio">Ejercicio</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -522,7 +522,7 @@
                                     <label for="cli_name">Nombre</label>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="" disabled="disabled" />
                                     <label for="parvw">Tipo de cliente</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -532,7 +532,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="" disabled="disabled" />
                                     <label for="stcd1">Tax ID</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -555,10 +555,10 @@
                                 <div class="input-field col s12">
                                     @if (!Model.TSOL.REVERSO)
                                     {
-                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email" } })}
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email" } })}
                                     else
                                     {
-                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email", @disabled = "disabled" } })
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email", @disabled = "disabled" } })
                                     }
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                                 </div>
@@ -737,7 +737,7 @@
                         </div>
                         <div id="div_picker2"></div><!--RSG 27.05.2017-->
                     </div>
-                    <div id="ref_soporte" style="display:none" class="col s12">
+                    <div id="ref_soporte" style="display:table" class="col s12">
                         @*LEJ 26.07.18----I*@
                         <div class="card-panel">
                             <h5>Referencia de Facturas</h5>
@@ -756,7 +756,7 @@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
+                                        <input class="file-path  file_sop" type="text">
                                     </div>
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
@@ -1101,7 +1101,7 @@
                                                                     <input type="hidden" id="desc-@i" value="@archivo[i].PATH" />
                                                                     <a id="lbl_cargara-@i" name="archivo" class="btn-small" style="float:left;" @*type="submit"*@ value="@archivo[i].PATH" onclick="descargar(this.id)">DESCARGAR</a>
                                                                     <div class="file-path-wrapper">
-                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1133,7 +1133,7 @@
                                                                     }
                                                                 </div>
                                                                 <div class="file-path-wrapper">
-                                                                    <input class="file-path validate" type="text">
+                                                                    <input class="file-path " type="text">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1163,7 +1163,7 @@
                                                                 }
                                                             </div>
                                                             <div class="file-path-wrapper">
-                                                                <input class="file-path validate" type="text">
+                                                                <input class="file-path " type="text">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1221,14 +1221,14 @@
                                                 <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
+                                                <input class="file-path " type="text">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
-                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="" disabled="disabled" />
                                         <label for="fechad">Fecha</label>
                                     </div>
                                     <div class="row">
@@ -1343,7 +1343,8 @@
                                                 } else {
                                                     $("#div_objq").addClass("hide");
                                                     $("#txt_ligada").val("");
-                                                }}
+                                                }
+                                            }
                                         </script>
                                     }
                                 </div>
@@ -1392,14 +1393,21 @@
                             <h5>Monto Base</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class=" @ViewBag.reversa" />
                                     <label for="monto_dis">Monto</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @*<div class="form-group">*@
                                     @*<div class="col-md-10">*@
                                     <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
-                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    @if (Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control", @disabled = "disabled" })
+                                    }
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                     @*</div>
                                         </div>*@
@@ -1412,7 +1420,7 @@
                             <h5>Base para aplicar %</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                     <label for="bmonto_apoyo">% Apoyo</label>
                                 </div>
                             </div>
@@ -1431,7 +1439,7 @@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input class="file-path " type="text">
                                         </div>
                                     </div>
                                     <div id="div_btns_row" style="display:none">
@@ -1559,7 +1567,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label for="monto_doc_md">Monto</label>
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                     </div>
@@ -1583,7 +1591,7 @@
                                         </div>
                                     </div>
                                     <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="montos_doc_ml2" type="text" class="" disabled="disabled" />
                                         <label for="montos_doc_ml2">Monto en USD</label>
                                     </div>
                                     <div class="form-group">
@@ -1777,70 +1785,7 @@
                         }
                                 </script>
                             </div>
-                            @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <ul class="collection">
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Importe solicitud
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis1">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto provisión original
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis2">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto aplicado
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis3">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a4">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Remanente/Exceso
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis4">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a5">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto total
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis5">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>*@
-                            <div class="card-panel">
+                            <div class="card-panel" style="display:none;">
                                 <h5>Análisis Solicitud</h5>
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
@@ -2105,7 +2050,7 @@
                                     <input type="hidden" id="desc-@i" value="@archivos[i].PATH" />
                                     <button id="lbl_cargar-@i" name="archivo" class="btn-small" style="float:left;" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
                                     <div class="file-path-wrapper">
-                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                     </div>
                                 </div>
                             </div>

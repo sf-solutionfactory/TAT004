@@ -4379,6 +4379,28 @@ namespace TAT001.Controllers
                     d.FECHAF_VIG = dOCUMENTO.FECHAF_VIG;
                     d.FECHAI_VIG = dOCUMENTO.FECHAI_VIG;
 
+                    if (d.DOCUMENTO_REF > 0)
+                    {
+                        DOCUMENTO dr = new DOCUMENTO();
+                        dr = db.DOCUMENTOes.Where(doc => doc.NUM_DOC == d.DOCUMENTO_REF).FirstOrDefault();
+                        //dOCUMENTO.TSOL_ID = d.TSOL_ID;
+                        d.ESTADO = dr.ESTADO;
+                        d.CIUDAD = dr.CIUDAD;
+                        d.PAYER_ID = dr.PAYER_ID;
+                        d.CONCEPTO = dr.CONCEPTO;
+                        d.NOTAS = dr.NOTAS;
+                        d.FECHAI_VIG = dr.FECHAI_VIG;
+                        d.FECHAF_VIG = dr.FECHAF_VIG;
+                        //d.PAYER_NOMBRE = dr.PAYER_NOMBRE;
+                        //d.PAYER_EMAIL = dr.PAYER_EMAIL;
+                        d.TIPO_CAMBIO = dr.TIPO_CAMBIO;
+                        d.GALL_ID = dr.GALL_ID;
+                        d.TALL_ID = dr.TALL_ID;//RSG 12.06.2018
+                        //Obtener el país
+                        d.PAIS_ID = dr.PAIS_ID;//RSG 15.05.2018
+                        d.TIPO_TECNICO = dr.TIPO_TECNICO; //B20180618 v1 MGC 2018.06.18
+                        
+                    }
                     ///////////////////Montos
                     //MONTO_DOC_MD
                     var MONTO_DOC_MD = dOCUMENTO.MONTO_DOC_MD;

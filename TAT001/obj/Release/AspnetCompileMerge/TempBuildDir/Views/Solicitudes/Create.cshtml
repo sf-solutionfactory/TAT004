@@ -2287,121 +2287,8 @@
     <div id="validaciones">
 
         <script>
-            var lista2 = [
-                ['state_id', 'c-!=null', 'Estado: No puede ser vacío', 'error', 'focusout', 'tab_info'],
-                ['city_id', 'c-!=null', 'Ciudad: No puede ser vacío', 'error', 'focusout', 'tab_info'],
-                ['tsol_id', 'c-!=null', 'Tipo de solicitud: No puede ser vacío', 'error', 'change', 'tab_info'],
-                ['tall_id', 'c-!=null', 'Clasificación: No puede ser vacío', 'error', 'change', 'tab_info'],
-                ['payer_id', 'c-!=null', 'Cliente: No puede ser vacío', 'error', 'focusout', 'tab_info'],
-                ['payer_id', 'n-', 'Cliente: Debe ser numérico', 'info', 'focusout', 'tab_info'],
-                ['payer_id', 'l-10', 'Cliente: Debe tener longitude de 10', 'error', 'focusout', 'tab_info'],
-                ['payer_nombre', 'c-!=null', 'Contacto: No puede ser vacío', 'error', 'change', 'tab_info'],
-                ['payer_email', 'c-!=null', 'Correo electrónico: No puede ser vacío', 'error', 'change', 'tab_info'],
-                ['concepto', 'c-!=null', 'Concepto: No puede ser vacío', 'error', 'focusout', 'tab_info'],
-                ['fechai_vig', 'c-!=null', 'Fecha inicio: No puede ser vacío', 'error', 'change', 'tab_info'],
-                ['fechaf_vig', 'c-!=null', 'Fecha fin: No puede ser vacío', 'error', 'change', 'tab_info'],
-            ]
-            var lista22 = [
-                {
-                    ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'tall_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tall_id', MSG: 'Clasificación: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'state_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'state_id', MSG: 'Estado: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'city_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'city_id', MSG: 'Ciudad: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'concepto', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Concepto: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'notas_txt', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'notas_txt', MSG: 'Mecánica: no puede ser vacío',
-                    TIPO: 'info', COLOR: 'yellow', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'payer_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_id', MSG: 'Cliente: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'payer_name', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_name', MSG: 'Contacto: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'payer_email', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_email', MSG: 'Correo electrónico: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig2', MSG: 'Fecha inicio: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'fechaf_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechaf_vig2', MSG: 'Fecha inicio: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'change'
-                }, {
-                    ID: 'FACTURAK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'FACTURAK', MSG: 'Factura kelloggs: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'FACTURAK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'FACTURAK', MSG: 'Factura kelloggs: La longitud máxima es de 10, se truncará el contenido',
-                    TIPO: 'info', COLOR: 'yellow', COND: 'lm-10', ACTION: 'focusout'
-                }, {
-                    ID: 'EJERCICIOK', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'EJERCICIOK', MSG: 'Ejercicio: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=null', ACTION: 'focusout'
-                }, {
-                    ID: 'file_soporte', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_soporte', ELEM: 'file_soporte', MSG: 'Soportes: verificar soportes obligatorios',
-                    TIPO: 'error', COLOR: 'red', COND: 'f-', ACTION: 'focusout'
-                }, {
-                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto debe ser mayor a cero',
-                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
-                }, {
-                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto no corresponde',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=-total_dis', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'M' }]
-                }, {
-                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto debe ser mayor a cero',
-                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'C' }]
-                }, {
-                    ID: 'monto_dis', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'monto_dis', MSG: 'El monto no corresponde',
-                    TIPO: 'error', COLOR: 'red', COND: 'c-!=-total_dis', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'M' }, { id: 'select_dis', val: 'C' }]
-                }, {
-                    ID: 'bmonto_apoyo', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_dis', ELEM: 'bmonto_apoyo', MSG: 'Porcentaje debe ser mayor a cero',
-                    TIPO: 'error', COLOR: 'red', COND: 'c->-0', ACTION: 'focusout', CONDICION: [{ id: 'select_neg', val: 'P' }, { id: 'select_dis', val: 'M' }]
-                }
-            ];
-            var lista222 = [
-                {
-                    ID: 'tsol_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tsol_id', MSG: 'Tipo de solicitud: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 1
-                }, {
-                    ID: 'tall_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'tall_id', MSG: 'Clasificación: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 2
-                }, {
-                    ID: 'state_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'state_id', MSG: 'Estado: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 3
-                }, {
-                    ID: 'city_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'city_id', MSG: 'Ciudad: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 4
-                }, {
-                    ID: 'concepto', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Concepto: no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 5
-                }, {
-                    ID: 'notas_txt', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'concepto', MSG: 'Ingrese la mecánica de negociación',
-                    TIPO: 'info', COLOR: 'yellow', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 6
-                }, {
-                    ID: 'payer_id', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_id', MSG: 'Formato de cliente incorrecto',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }, { andor: '&', comp: 'n', val2: '', orand: '' }, { andor: '&', comp: 'l', val2: '10', orand: '' }], ACTION: 'focusout', NUM: 7
-                }, {
-                    ID: 'payer_name', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_name', MSG: 'Contacto no puede ser vacío',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 8
-                }, {
-                    ID: 'payer_email', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'payer_email', MSG: 'Inserte un correo válido',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 9
-                }, {
-                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig', MSG: 'Seleccione una fecha de inicio',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 10
-                }, {
-                    ID: 'fechai_vig', BUKRS: 'KCMX', TSOL: 'PR', TAB: 'tab_info', ELEM: 'fechai_vig', MSG: 'Seleccione una fecha de fin',
-                    TIPO: 'error', COLOR: 'red', COND: [{ andor: '', comp: '!=', val2: '', orand: '' }], ACTION: 'change', NUM: 11
-                }
-            ];
-            var lista = [];
-            var listas = @Html.Raw(ViewBag.listaValid);
+            var lista1 = [];
+            var lista = @Html.Raw(ViewBag.listaValid);
             var div = $("#validaciones");
             var app = "<script>"
             for (var i = 0; i < lista.length; i++) {
@@ -2924,8 +2811,8 @@
                     if (len > 0) {
                         var cont = 0;
                         $('#table_dis > tbody  > tr').each(function () {
-                            var mat = $(this).find("td:eq(" + (4) + ") input").val();
-                            var cat = $(this).find("td:eq(" + (5) + ")").text();
+                            var mat = $(this).find("td:eq(" + (3) + ") input").val();
+                            var cat = $(this).find("td:eq(" + (4) + ")").text();
                             if (mat != undefined & mat != "")
                                 cont++;
                             else if(cat != undefined & cat != "")
