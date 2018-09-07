@@ -942,7 +942,7 @@ namespace TAT001.Controllers
                                 {
                                     SPRAS_ID = tallt.SPRAS_ID,
                                     TALL_ID = tallt.TALL_ID,
-                                    TXT50 = tallt.TXT50
+                                    TXT50 = tallt == null ? "" : tallt.TXT50
                                 })
                             .ToList();
                 //.ToList().Where(a => a.TXT50 == ).ToList();
@@ -989,9 +989,9 @@ namespace TAT001.Controllers
                         }
                         //ViewBag.TSOL_IDI = tsmod.text.ToString();//RSG 30.07.2018
                         ViewBag.TSOL_IDI = tsmod.TXT50.ToString();
-                        TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
-                        ViewBag.GALL_IDI = gall_mod.TEXT;
-                        ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
+                        //TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(id => id.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
+                        //ViewBag.GALL_IDI = gall_mod.TEXT;
+                        //ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
                         ViewBag.TALL_IDI = id_clas.Where(c => c.TALL_ID == d.TALL_ID).FirstOrDefault().TXT50; //B20180618 v1 MGC 2018.06.18
                         archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
 
@@ -1589,49 +1589,8 @@ namespace TAT001.Controllers
             //-----------------------------------------------------------------LEJ 09.07.18
             ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
 
-            List<WARNINGP> lwp = db.WARNINGPs.Where(x => x.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) | x.SOCIEDAD_ID == null).ToList();
-            List<WARNINGPT> lwpt = db.WARNINGPTs.Where(x => x.SPRAS_ID.Equals(usuariotextos)).ToList();
-            List<WARNING_COND> lwc = db.WARNING_COND.Where(x => x.ACTIVO.Equals(true)).ToList();
-            string val = "[";
-            int cont = 1;
-            foreach (WARNINGP wp in lwp)
-            {
-                if (cont != 1)
-                    val += ", ";
-                val += "{ ID: '" + wp.CAMPOVAL_ID + "'";
-                val += ", BUKRS: '" + wp.SOCIEDAD_ID + "'";
-                val += ", TSOL: '" + wp.TSOL_ID + "'";
-                val += ", TAB: '" + wp.TAB_ID + "'";
-                val += ", ELEM: '" + wp.CAMPO_ID + "'";
-                WARNINGPT pt = lwpt.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).FirstOrDefault();
-                if (pt == null)
-                    val += ", MSG: '" + wp.DESCR + "'";
-                else
-                    val += ", MSG: '" + lwpt.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).FirstOrDefault().TXT100 + "'";
-                if (wp.TIPO == "E")
-                    val += ", TIPO: 'error', COLOR: 'red'";
-                else
-                    val += ", TIPO: 'info', COLOR: 'yellow'";
-                val += ", COND: [";
-                int cont2 = 0;
-                foreach (WARNING_COND wc in lwc.Where(x => x.TAB_ID == wp.TAB_ID & x.WARNING_ID == wp.ID).ToList())
-                {
-                    if (cont2 != 0)
-                        val += ", ";
-                    val += "{ andor: '" + wc.ANDOR + "'";
-                    val += ", comp: '" + wc.CONDICION.COND + "'";
-                    val += ", val2: '" + wc.VALOR_COMP + "'";
-                    val += ", orand: '" + wc.ORAND + "'";
-                    val += "}";
-                    cont2++;
-                }
-                val += "]";
-                val += ", ACTION: '" + wp.ACCION + "'";
-                val += ", NUM: " + cont + "}";
-                cont++;
-            }
-            val += "]";
-            ViewBag.listaValid = val;
+            Warning w = new Warning();
+            ViewBag.listaValid = w.listaW(d.SOCIEDAD_ID, usuariotextos);
 
             return View(d);
         }
@@ -3812,7 +3771,7 @@ namespace TAT001.Controllers
                                 {
                                     SPRAS_ID = gt.SPRAS_ID,
                                     GALL_ID = gt.GALL_ID,
-                                    TEXT = g.ID + " " + gt.TXT50
+                                    TEXT = gt == null ? "" : g.ID + " " + gt.TXT50
                                 }).ToList();
                 //clasificación
                 //MGC B20180611
@@ -3826,7 +3785,7 @@ namespace TAT001.Controllers
                                 {
                                     SPRAS_ID = tallt.SPRAS_ID,
                                     TALL_ID = tallt.TALL_ID,
-                                    TXT50 = tallt.TXT50
+                                    TXT50 = tallt == null ? "" : tallt.TXT50
                                 })
                             .ToList();
 
@@ -3867,9 +3826,9 @@ namespace TAT001.Controllers
                         }
                         //ViewBag.TSOL_IDI = tsmod.TEXT.ToString();//RSG 01.08.2018
                         ViewBag.TSOL_IDI = tsmod.TXT50.ToString();//RSG 01.08.2018
-                        TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(ids => ids.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();
-                        ViewBag.GALL_IDI = gall_mod.TEXT;
-                        ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;
+                        ////TAT001.Models.GALL_MOD gall_mod = list_grupo.Where(ids => ids.GALL_ID.Equals(d.GALL_ID)).FirstOrDefault();//RSG 07.09.2018
+                        ////ViewBag.GALL_IDI = gall_mod.TEXT;//RSG 07.09.2018
+                        ////ViewBag.GALL_IDI_VAL = gall_mod.GALL_ID;//RSG 07.09.2018
                         ViewBag.TALL_IDI = id_clas.Where(c => c.TALL_ID == d.TALL_ID).FirstOrDefault().TXT50; //B20180618 v1 MGC 2018.06.18
                         archivos = db.DOCUMENTOAs.Where(x => x.NUM_DOC.Equals(d.NUM_DOC)).ToList();
 
@@ -4340,6 +4299,8 @@ namespace TAT001.Controllers
             d.DOCUMENTOREC = db.DOCUMENTORECs.Where(x => x.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
             //LEJ 24.07.2018------------------------------------------------------------
             ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
+            Warning w = new Warning();
+            ViewBag.listaValid = w.listaW(d.SOCIEDAD_ID, "ES");//RSG 07.09.2018
             return View(d);
         }
 
@@ -7796,6 +7757,8 @@ namespace TAT001.Controllers
             //RSG 07.06.2018---------------------------------------------
             string spras = Session["spras"].ToString();
             MaterialVal matt = db.MATERIALTs.Where(m => m.MATERIAL_ID == mat && m.SPRAS == spras).Select(m => new MaterialVal { ID = m.MATERIAL_ID.ToString(), MATKL_ID = m.MATERIAL.MATERIALGP_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
+            if (matt == null)
+                matt = db.MATERIALs.Where(m => m.ID == mat).Select(m => new MaterialVal { ID = m.ID.ToString(), MATKL_ID = m.MATERIALGP_ID.ToString(), MAKTX = m.MAKTX.ToString() }).FirstOrDefault();
 
             JsonResult cc = Json(matt, JsonRequestBehavior.AllowGet);
             return cc;

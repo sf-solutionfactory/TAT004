@@ -838,11 +838,21 @@ namespace TAT001.Controllers
                           on m.ID equals g.MATERIAL_ID
                           join t in db.MATERIALTs
                           on m.ID equals t.MATERIAL_ID
-                          where m.MAKTX.Contains(Prefix) && m.ACTIVO == true && m.MATERIALGP_ID != null
+                          where t.MAKTX.Contains(Prefix) && m.ACTIVO == true && m.MATERIALGP_ID != null
                          && g.VKORG == vkorg && g.VTWEG == vtweg
                          && t.SPRAS == spras
                           select new { m.ID, t.MAKTX }).ToList();
                 c.AddRange(c2);
+            }
+            if (c.Count == 0)
+            {
+                var c3 = (from m in db.MATERIALs
+                          join g in db.MATERIALVKEs
+                          on m.ID equals g.MATERIAL_ID
+                          where m.ID.Contains(Prefix) && m.ACTIVO == true && m.MATERIALGP_ID != null
+                         && g.VKORG == vkorg && g.VTWEG == vtweg
+                          select new { m.ID, MAKTX = m.MAKTX + "" }).ToList();
+                c.AddRange(c3);
             }
             JsonResult cc = Json(c, JsonRequestBehavior.AllowGet);
             return cc;

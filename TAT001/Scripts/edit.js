@@ -627,18 +627,18 @@ $(document).ready(function () {
     var elem = document.querySelectorAll('select');
     var instance = M.FormSelect.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -1246,8 +1246,8 @@ $(document).ready(function () {
             //objq
             $('#objPORC').val(toNum($('#objPORC').val()));//RSG 01.08.2018
 
-            $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
-            $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            //$('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            //$('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
@@ -1768,8 +1768,8 @@ function guardarBorrador(asyncv) {
         $('#monto_doc_md').val(0);
     }
 
-    $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
-    $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+    //$('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18 // 07.09.2018
+    //$('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
     //Guardar los valores de la tabla en el modelo para enviarlos al controlador
     copiarTableControl("X");//Distribución //B20180625 MGC 2018.07.03

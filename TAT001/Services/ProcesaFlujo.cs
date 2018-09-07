@@ -583,7 +583,7 @@ namespace TAT001.Services
                 {
                     if (f.DOCUMENTO.DOCUMENTO_REF != null)
                     {
-                        f.DOCUMENTO.TSOL = db.DOCUMENTOes.Where(x=>x.NUM_DOC == f.NUM_DOC).FirstOrDefault().TSOL;
+                        f.DOCUMENTO.TSOL = db.DOCUMENTOes.Where(x => x.NUM_DOC == f.NUM_DOC).FirstOrDefault().TSOL;
                         if (f.DOCUMENTO.TSOL.REVERSO == false)
                         {
                             DOCUMENTO rel = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == f.DOCUMENTO.DOCUMENTO_REF & x.TSOL.REVERSO == true).FirstOrDefault();
