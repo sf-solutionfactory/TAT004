@@ -4339,6 +4339,7 @@ namespace TAT001.Controllers
             DOCUMENTOREC dr = new DOCUMENTOREC();
             d.DOCUMENTOREC = db.DOCUMENTORECs.Where(x => x.NUM_DOC == dOCUMENTO.NUM_DOC).ToList();
             //LEJ 24.07.2018------------------------------------------------------------
+            ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
             return View(d);
         }
 
@@ -5332,6 +5333,7 @@ namespace TAT001.Controllers
             DF.D = dOCUMENTO_;
             ViewBag.df = DF;
             //LEJ 24.07.2018------------------------------------------------------------
+            ViewBag.horaServer = DateTime.Now.Date.ToString().Split(new[] { ' ' }, 2)[1];//RSG 01.08.2018
 
             return View(dOCUMENTO);
         }

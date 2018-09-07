@@ -2434,8 +2434,12 @@ function copiarTableControl(borrador) { //B20180625 MGC 2018.07.03
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            //item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            //item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            var horaServer = $("#horaServer").val();
+            item["VIGENCIA_DE"] = vigencia_de + " " + horaServer;
+            item["VIGENCIA_AL"] = vigencia_al + " " + horaServer;
+
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;

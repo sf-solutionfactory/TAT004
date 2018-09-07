@@ -342,7 +342,10 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
             item["NUM_DOC"] = 0;
             item["POS"] = pos;
             item["TSOL"] = tsol;
-            item["FECHAF"] = fecha + " 12:00:00 p.m.";
+            //item["FECHAF"] = fecha + " 12:00:00 p.m.";
+            var horaServer = $("#horaServer").val();
+            item["FECHAF"] = fecha + " " + horaServer;
+
             item["MONTO_BASE"] = monto;
             item["PORC"] = porcentaje;
 

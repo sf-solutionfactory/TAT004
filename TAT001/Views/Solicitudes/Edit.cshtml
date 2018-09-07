@@ -39,6 +39,11 @@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="mult" name="mult" type="hidden" value="@_df.D.DOCUMENTOF.Count">@*LEJ 03-08-18*@
+<input id="horaServer" type="hidden" value="@ViewBag.horaServer">
+<span class="span_fileload" style="display:none;"></span>
+<span class="lbl_cabono" style="display:none;"></span>
+<span class="lbl_ccargo" style="display:none;"></span>
+<span class="lbl_cclear" style="display:none;"></span>
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -566,13 +571,14 @@
                             <div class="row" style="margin-bottom:0">
                                 <!--RSG 22.05.2018-->
                                 @if (@*ViewBag.relacionada == "" | ViewBag.relacionada != "" |*@ /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                /**/
-                                                                                                                                                                                                                !Model.TSOL.REVERSO)
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                /**/
+                                                                                                                                                                                                                                !Model.TSOL.REVERSO)
                                                 {
                                                     <div class="col s12">
                                                         <label class="col s6">
@@ -1074,7 +1080,7 @@
                             </div>
                         }
                         <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
-                        @if(!Model.TSOL.REVERSO)
+                        @if (!Model.TSOL.REVERSO)
                         {
                             List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                             if (ViewBag.relacionadan != "" && archivo.Count >= 0)
@@ -1529,7 +1535,7 @@
                                         @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id" })
                                         @*</div>
-                        </div>*@
+                                            </div>*@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-10">
