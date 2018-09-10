@@ -243,6 +243,30 @@
           <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="EXPORTACION" Type="nchar" MaxLength="1" />
         </EntityType>
+        <EntityType Name="CLIENTEF">
+          <Key>
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="VERSION" Type="int" Nullable="false" />
+          <Property Name="USUARIO0_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO1_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO2_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO3_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO4_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO5_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="USUARIO6_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="ACTIVO" Type="bit" Nullable="false" />
+          <Property Name="FECHAC" Type="datetime" />
+          <Property Name="FECHAM" Type="datetime" />
+        </EntityType>
         <EntityType Name="CLIENTEI">
           <Key>
             <PropertyRef Name="VKORG" />
@@ -964,6 +988,7 @@
           <Property Name="KUNNR" Type="nchar" MaxLength="10" />
           <Property Name="IMPORTE" Type="decimal" Precision="13" Scale="5" />
           <Property Name="DESCR" Type="nvarchar" MaxLength="60" />
+          <Property Name="FECHAC" Type="date" />
         </EntityType>
         <EntityType Name="DOCUMENTOTS">
           <Key>
@@ -1814,6 +1839,25 @@
           <Property Name="BACKUP_ID" Type="nvarchar" MaxLength="16" />
           <Property Name="BUNIT" Type="nchar" MaxLength="4" Nullable="false" />
         </EntityType>
+        <EntityType Name="USUARIOF">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="VKORG" Type="nvarchar" MaxLength="4" Nullable="false" />
+          <Property Name="VTWEG" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ACTIVO" Type="bit" />
+          <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAC" Type="datetime" />
+          <Property Name="USUARIOM_ID" Type="nvarchar" MaxLength="16" />
+          <Property Name="FECHAM" Type="datetime" />
+        </EntityType>
         <EntityType Name="USUARIOGA">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1960,7 +2004,7 @@
           <Property Name="DESCRIPCION" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.CARPETAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CARPETAV">
           <Key>
             <PropertyRef Name="USUARIO_ID" />
@@ -1973,7 +2017,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.CARPETAV' no tiene definida ningu
           <Property Name="ICON" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.CREADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CREADOR">
           <Key>
             <PropertyRef Name="ID" />
@@ -1990,7 +2034,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR' no tiene definida ningun
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.CREADOR2' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="CREADOR2">
           <Key>
             <PropertyRef Name="ID" />
@@ -2008,7 +2052,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.CREADOR2' no tiene definida ningu
           <Property Name="LAND" Type="nchar" MaxLength="2" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.DET_APROBV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="DET_APROBV">
           <Key>
             <PropertyRef Name="BUKRS" />
@@ -2021,7 +2065,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.DET_APROBV' no tiene definida nin
           <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.DOCUMENTOV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="DOCUMENTOV">
           <Key>
             <PropertyRef Name="POS" />
@@ -2097,7 +2141,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.DOCUMENTOV' no tiene definida nin
           <Property Name="ESTADO" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.PAGINAV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="PAGINAV">
           <Key>
             <PropertyRef Name="ID" />
@@ -2118,7 +2162,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.PAGINAV' no tiene definida ningun
           <Property Name="USUARIO_SPRAS" Type="nchar" MaxLength="2" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="WARNINGV">
           <Key>
             <PropertyRef Name="PAGINA_ID" />
@@ -2325,6 +2369,24 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
             </Principal>
             <Dependent Role="CLIENTE">
               <PropertyRef Name="PARVW" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CLIENTEF_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="CLIENTEF" Type="Self.CLIENTEF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Principal>
+            <Dependent Role="CLIENTEF">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4194,6 +4256,36 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_USUARIOF_CLIENTE">
+          <End Role="CLIENTE" Type="Self.CLIENTE" Multiplicity="1" />
+          <End Role="USUARIOF" Type="Self.USUARIOF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Principal>
+            <Dependent Role="USUARIOF">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOF_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="USUARIOF" Type="Self.USUARIOF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USUARIOF">
+              <PropertyRef Name="USUARIO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_USUARIOGA_GAUTORIZACION">
           <End Role="GAUTORIZACION" Type="Self.GAUTORIZACION" Multiplicity="1" />
           <End Role="USUARIOGA" Type="Self.USUARIOGA" Multiplicity="*" />
@@ -4437,6 +4529,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="CATEGORIAT" EntityType="Self.CATEGORIAT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CITIES" EntityType="Self.CITIES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CLIENTE" EntityType="Self.CLIENTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CLIENTEF" EntityType="Self.CLIENTEF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONDICION" EntityType="Self.CONDICION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
@@ -4547,6 +4640,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <EntitySet Name="UMEDIDA" EntityType="Self.UMEDIDA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UMEDIDAT" EntityType="Self.UMEDIDAT" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIOF" EntityType="Self.USUARIOF" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIOGA" EntityType="Self.USUARIOGA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIOSAP" EntityType="Self.USUARIOSAP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WARNING" EntityType="Self.WARNING" Schema="dbo" store:Type="Tables" />
@@ -4759,6 +4853,10 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <AssociationSet Name="FK_CLIENTE_TCLIENTE" Association="Self.FK_CLIENTE_TCLIENTE">
             <End Role="TCLIENTE" EntitySet="TCLIENTE" />
             <End Role="CLIENTE" EntitySet="CLIENTE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CLIENTEF_CLIENTE" Association="Self.FK_CLIENTEF_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="CLIENTEF" EntitySet="CLIENTEF" />
           </AssociationSet>
           <AssociationSet Name="FK_CLIENTEI_CLIENTE" Association="Self.FK_CLIENTEI_CLIENTE">
             <End Role="CLIENTE" EntitySet="CLIENTE" />
@@ -5360,6 +5458,14 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
             <End Role="SPRAS" EntitySet="SPRAS" />
             <End Role="USUARIO" EntitySet="USUARIO" />
           </AssociationSet>
+          <AssociationSet Name="FK_USUARIOF_CLIENTE" Association="Self.FK_USUARIOF_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTE" />
+            <End Role="USUARIOF" EntitySet="USUARIOF" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOF_USUARIO" Association="Self.FK_USUARIOF_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="USUARIOF" EntitySet="USUARIOF" />
+          </AssociationSet>
           <AssociationSet Name="FK_USUARIOGA_GAUTORIZACION" Association="Self.FK_USUARIOGA_GAUTORIZACION">
             <End Role="GAUTORIZACION" EntitySet="GAUTORIZACION" />
             <End Role="USUARIOGA" EntitySet="USUARIOGA" />
@@ -5678,6 +5784,8 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DET_AGENTEC" Relationship="Self.FK_DET_AGENTEC_CLIENTE" FromRole="CLIENTE" ToRole="DET_AGENTEC" />
           <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="CLIENTE" ToRole="DOCUMENTO" />
           <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_CLIENTE" FromRole="CLIENTE" ToRole="TAXEOH" />
+          <NavigationProperty Name="CLIENTEFs" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTEF" />
+          <NavigationProperty Name="USUARIOFs" Relationship="TAT001Model.FK_USUARIOF_CLIENTE" FromRole="CLIENTE" ToRole="USUARIOF" />
         </EntityType>
         <EntityType Name="CLIENTEI">
           <Key>
@@ -6487,6 +6595,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
           <Property Name="DESCR" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+          <Property Name="FECHAC" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="DOCUMENTOT">
           <Key>
@@ -7557,6 +7666,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
           <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+          <NavigationProperty Name="USUARIOFs" Relationship="TAT001Model.FK_USUARIOF_USUARIO" FromRole="USUARIO" ToRole="USUARIOF" />
         </EntityType>
         <EntityType Name="USUARIOSAP">
           <Key>
@@ -10964,6 +11074,20 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
             <End Role="SPRA" EntitySet="SPRAS" />
             <End Role="ACCIONT" EntitySet="ACCIONTs" />
           </AssociationSet>
+          <EntitySet Name="CLIENTEFs" EntityType="TAT001Model.CLIENTEF" />
+          <EntitySet Name="USUARIOFs" EntityType="TAT001Model.USUARIOF" />
+          <AssociationSet Name="FK_CLIENTEF_CLIENTE" Association="TAT001Model.FK_CLIENTEF_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTEs" />
+            <End Role="CLIENTEF" EntitySet="CLIENTEFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOF_CLIENTE" Association="TAT001Model.FK_USUARIOF_CLIENTE">
+            <End Role="CLIENTE" EntitySet="CLIENTEs" />
+            <End Role="USUARIOF" EntitySet="USUARIOFs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USUARIOF_USUARIO" Association="TAT001Model.FK_USUARIOF_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIOs" />
+            <End Role="USUARIOF" EntitySet="USUARIOFs" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
           <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -11136,6 +11260,100 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
             </Principal>
             <Dependent Role="ACCIONT">
               <PropertyRef Name="SPRAS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CLIENTEF">
+          <Key>
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+            <PropertyRef Name="VERSION" />
+          </Key>
+          <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="VERSION" Type="Int32" Nullable="false" />
+          <Property Name="USUARIO0_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO1_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO2_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO3_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO4_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO5_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="USUARIO6_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <Property Name="FECHAM" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTEF" ToRole="CLIENTE" />
+        </EntityType>
+        <EntityType Name="USUARIOF">
+          <Key>
+            <PropertyRef Name="USUARIO_ID" />
+            <PropertyRef Name="VKORG" />
+            <PropertyRef Name="VTWEG" />
+            <PropertyRef Name="SPART" />
+            <PropertyRef Name="KUNNR" />
+          </Key>
+          <Property Name="USUARIO_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ACTIVO" Type="Boolean" />
+          <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAC" Type="DateTime" Precision="3" />
+          <Property Name="USUARIOM_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="FECHAM" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_USUARIOF_CLIENTE" FromRole="USUARIOF" ToRole="CLIENTE" />
+          <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_USUARIOF_USUARIO" FromRole="USUARIOF" ToRole="USUARIO" />
+        </EntityType>
+        <Association Name="FK_CLIENTEF_CLIENTE">
+          <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="TAT001Model.CLIENTEF" Role="CLIENTEF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Principal>
+            <Dependent Role="CLIENTEF">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOF_CLIENTE">
+          <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+          <End Type="TAT001Model.USUARIOF" Role="USUARIOF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CLIENTE">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Principal>
+            <Dependent Role="USUARIOF">
+              <PropertyRef Name="VKORG" />
+              <PropertyRef Name="VTWEG" />
+              <PropertyRef Name="SPART" />
+              <PropertyRef Name="KUNNR" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USUARIOF_USUARIO">
+          <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="TAT001Model.USUARIOF" Role="USUARIOF" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USUARIOF">
+              <PropertyRef Name="USUARIO_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -12054,6 +12272,7 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOSAPs">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOSAP">
               <MappingFragment StoreEntitySet="DOCUMENTOSAP">
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="BUKRS" ColumnName="BUKRS" />
                 <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
@@ -13419,6 +13638,43 @@ advertencia 6002: La tabla o vista 'TAT003.dbo.WARNINGV' no tiene definida ningu
                 <ScalarProperty Name="TXT050" ColumnName="TXT050" />
                 <ScalarProperty Name="ACCION_ID" ColumnName="ACCION_ID" />
                 <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CLIENTEFs">
+            <EntityTypeMapping TypeName="TAT001Model.CLIENTEF">
+              <MappingFragment StoreEntitySet="CLIENTEF">
+                <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="USUARIO6_ID" ColumnName="USUARIO6_ID" />
+                <ScalarProperty Name="USUARIO5_ID" ColumnName="USUARIO5_ID" />
+                <ScalarProperty Name="USUARIO4_ID" ColumnName="USUARIO4_ID" />
+                <ScalarProperty Name="USUARIO3_ID" ColumnName="USUARIO3_ID" />
+                <ScalarProperty Name="USUARIO2_ID" ColumnName="USUARIO2_ID" />
+                <ScalarProperty Name="USUARIO1_ID" ColumnName="USUARIO1_ID" />
+                <ScalarProperty Name="USUARIO0_ID" ColumnName="USUARIO0_ID" />
+                <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+                <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+                <ScalarProperty Name="SPART" ColumnName="SPART" />
+                <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+                <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIOFs">
+            <EntityTypeMapping TypeName="TAT001Model.USUARIOF">
+              <MappingFragment StoreEntitySet="USUARIOF">
+                <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
+                <ScalarProperty Name="USUARIOM_ID" ColumnName="USUARIOM_ID" />
+                <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
+                <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+                <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
+                <ScalarProperty Name="KUNNR" ColumnName="KUNNR" />
+                <ScalarProperty Name="SPART" ColumnName="SPART" />
+                <ScalarProperty Name="VTWEG" ColumnName="VTWEG" />
+                <ScalarProperty Name="VKORG" ColumnName="VKORG" />
+                <ScalarProperty Name="USUARIO_ID" ColumnName="USUARIO_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

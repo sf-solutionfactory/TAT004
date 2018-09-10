@@ -261,6 +261,8 @@
     <NavigationProperty Name="DET_AGENTEC" Relationship="Self.FK_DET_AGENTEC_CLIENTE" FromRole="CLIENTE" ToRole="DET_AGENTEC" />
     <NavigationProperty Name="DOCUMENTOes" Relationship="Self.FK_DOCUMENTO_CLIENTE" FromRole="CLIENTE" ToRole="DOCUMENTO" />
     <NavigationProperty Name="TAXEOHs" Relationship="Self.FK_TAXEOH_CLIENTE" FromRole="CLIENTE" ToRole="TAXEOH" />
+    <NavigationProperty Name="CLIENTEFs" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTE" ToRole="CLIENTEF" />
+    <NavigationProperty Name="USUARIOFs" Relationship="TAT001Model.FK_USUARIOF_CLIENTE" FromRole="CLIENTE" ToRole="USUARIOF" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -1070,6 +1072,7 @@
     <Property Name="IMPORTE" Type="Decimal" Precision="13" Scale="5" />
     <Property Name="DESCR" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTOSAP" ToRole="DOCUMENTO" />
+    <Property Name="FECHAC" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="DOCUMENTOT">
     <Key>
@@ -2140,6 +2143,7 @@
     <NavigationProperty Name="SOCIEDAD" Relationship="Self.FK_USUARIO_SOCIEDAD" FromRole="USUARIO" ToRole="SOCIEDAD" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_USUARIO_SPRAS" FromRole="USUARIO" ToRole="SPRAS" />
     <NavigationProperty Name="GAUTORIZACIONs" Relationship="Self.USUARIOGA" FromRole="USUARIO" ToRole="GAUTORIZACION" />
+    <NavigationProperty Name="USUARIOFs" Relationship="TAT001Model.FK_USUARIOF_USUARIO" FromRole="USUARIO" ToRole="USUARIOF" />
   </EntityType>
   <EntityType Name="USUARIOSAP">
     <Key>
@@ -5547,6 +5551,20 @@
       <End Role="SPRA" EntitySet="SPRAS" />
       <End Role="ACCIONT" EntitySet="ACCIONTs" />
     </AssociationSet>
+    <EntitySet Name="CLIENTEFs" EntityType="TAT001Model.CLIENTEF" />
+    <EntitySet Name="USUARIOFs" EntityType="TAT001Model.USUARIOF" />
+    <AssociationSet Name="FK_CLIENTEF_CLIENTE" Association="TAT001Model.FK_CLIENTEF_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTEs" />
+      <End Role="CLIENTEF" EntitySet="CLIENTEFs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIOF_CLIENTE" Association="TAT001Model.FK_USUARIOF_CLIENTE">
+      <End Role="CLIENTE" EntitySet="CLIENTEs" />
+      <End Role="USUARIOF" EntitySet="USUARIOFs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIOF_USUARIO" Association="TAT001Model.FK_USUARIOF_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIOs" />
+      <End Role="USUARIOF" EntitySet="USUARIOFs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5719,6 +5737,100 @@
       </Principal>
       <Dependent Role="ACCIONT">
         <PropertyRef Name="SPRAS_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CLIENTEF">
+    <Key>
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+      <PropertyRef Name="VERSION" />
+    </Key>
+    <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="USUARIO0_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO1_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO2_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO3_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO4_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO5_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="USUARIO6_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
+    <Property Name="FECHAC" Type="DateTime" Precision="3" />
+    <Property Name="FECHAM" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTEF" ToRole="CLIENTE" />
+  </EntityType>
+  <EntityType Name="USUARIOF">
+    <Key>
+      <PropertyRef Name="USUARIO_ID" />
+      <PropertyRef Name="VKORG" />
+      <PropertyRef Name="VTWEG" />
+      <PropertyRef Name="SPART" />
+      <PropertyRef Name="KUNNR" />
+    </Key>
+    <Property Name="USUARIO_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="VKORG" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Name="VTWEG" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="SPART" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+    <Property Name="KUNNR" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="ACTIVO" Type="Boolean" />
+    <Property Name="USUARIOC_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAC" Type="DateTime" Precision="3" />
+    <Property Name="USUARIOM_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="FECHAM" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_USUARIOF_CLIENTE" FromRole="USUARIOF" ToRole="CLIENTE" />
+    <NavigationProperty Name="USUARIO" Relationship="TAT001Model.FK_USUARIOF_USUARIO" FromRole="USUARIOF" ToRole="USUARIO" />
+  </EntityType>
+  <Association Name="FK_CLIENTEF_CLIENTE">
+    <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+    <End Type="TAT001Model.CLIENTEF" Role="CLIENTEF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="CLIENTEF">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIOF_CLIENTE">
+    <End Type="TAT001Model.CLIENTE" Role="CLIENTE" Multiplicity="1" />
+    <End Type="TAT001Model.USUARIOF" Role="USUARIOF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CLIENTE">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Principal>
+      <Dependent Role="USUARIOF">
+        <PropertyRef Name="VKORG" />
+        <PropertyRef Name="VTWEG" />
+        <PropertyRef Name="SPART" />
+        <PropertyRef Name="KUNNR" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIOF_USUARIO">
+    <End Type="TAT001Model.USUARIO" Role="USUARIO" Multiplicity="1" />
+    <End Type="TAT001Model.USUARIOF" Role="USUARIOF" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="USUARIOF">
+        <PropertyRef Name="USUARIO_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

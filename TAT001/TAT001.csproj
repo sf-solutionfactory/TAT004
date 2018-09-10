@@ -298,6 +298,9 @@
     <Compile Include="Entities\CLIENTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CLIENTEF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CLIENTEI.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -688,6 +691,9 @@
     <Compile Include="Entities\USUARIO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\USUARIOF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\USUARIOSAP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -922,6 +928,7 @@
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Properties\PublishProfiles\SERVER.pubxml" />
     <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
     <Content Include="Scripts\descargar.js" />
