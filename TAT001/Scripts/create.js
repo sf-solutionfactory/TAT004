@@ -5280,7 +5280,7 @@ function evaluarFiles() {
 function evaluarExtSoporte(filename) {
 
     //var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];//RSG 18.06.2018
-    var exts = ['exe', 'bak'];//RSG 18.06.2018
+    var exts = ['exe', 'bak', 'bat'];//RSG 18.06.2018
     // split file name at dot
     var get_ext = filename.split('.');
     // reverse name to check extension
@@ -5623,8 +5623,8 @@ function selectCliente(valu) {
         $("label[for='payer_nombre']").removeClass("active");
         $('#payer_email').val("");
         $("label[for='payer_email']").removeClass("active");
-        $("#payer_nombre").trigger('change');
-        $("#payer_email").trigger('change');
+        //$("#payer_nombre").trigger('change');
+        //$("#payer_email").trigger('change');
     }
 
 }

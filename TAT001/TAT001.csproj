@@ -906,6 +906,7 @@
     <Content Include="images\logo-kellogg2.png" />
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
+    <Content Include="Scripts\warning.js" />
     <Content Include="Scripts\analisis.js" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
