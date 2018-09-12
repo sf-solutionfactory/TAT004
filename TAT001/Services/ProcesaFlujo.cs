@@ -747,7 +747,7 @@ namespace TAT001.Services
             return f;
         }
 
-        public FLUJO determinaAgenteC(DOCUMENTO d, CLIENTEF cf, int pos, int sop, string tipo)
+        public FLUJO determinaAgenteC(DOCUMENTO d, CLIENTEF cf, int pos, int sop, string tipo, string next)
         {
             FLUJO f = new FLUJO();
             List<DET_APROBP> ddp = new List<DET_APROBP>();
@@ -783,7 +783,7 @@ namespace TAT001.Services
                 {
                     f.USUARIOA_ID = null;
                 }
-                else if (ppos == 0 & tipo != "B" & tipo != "M")
+                else if (ppos == 0 & sop == 98)
                 {
                     f.USUARIOA_ID = d.USUARIOD_ID;
                     f.DETPOS = sop;
