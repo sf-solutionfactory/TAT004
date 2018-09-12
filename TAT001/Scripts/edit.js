@@ -2716,6 +2716,7 @@ $('body').on('focusout', '#monto_dis', function () {
             return false;
         }
     }
+    $('#monto_dis').val(toShow(toNum($('#monto_dis').val())));
     cambiaRec();//RSG 06.06.2018
 });
 

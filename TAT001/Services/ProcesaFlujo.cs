@@ -756,12 +756,15 @@ namespace TAT001.Services
                 DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.ACTIVO).OrderByDescending(a => a.VERSION).FirstOrDefault();
                 if (dh != null)
                     ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(dh.SOCIEDAD_ID) & a.PUESTOC_ID == dh.PUESTOC_ID & a.VERSION == dh.VERSION & a.ACTIVO).ToList();
+                FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
+                if (tipo == "N")
+                    f = ffl;
             }
             int ppos = 0;
             DET_APROBP dp = ddp.Where(a => a.POS == pos).FirstOrDefault();
             if (dp != null)
             {
-                if (tipo != "B")
+                if (tipo != "B" & tipo != "M")
                 {
                     if (dp.MONTO != null)
                         if (d.MONTO_DOC_MD > dp.MONTO)
@@ -780,7 +783,7 @@ namespace TAT001.Services
                 {
                     f.USUARIOA_ID = null;
                 }
-                else if (ppos == 0 & tipo != "B")
+                else if (ppos == 0 & tipo != "B" & tipo != "M")
                 {
                     f.USUARIOA_ID = d.USUARIOD_ID;
                     f.DETPOS = sop;
@@ -834,6 +837,12 @@ namespace TAT001.Services
             else if (pos == 99)
             {
                 f.USUARIOA_ID = null;
+            }else if(pos == 0)
+            {
+                if (f.DETPOS == 99)
+                    ppos = 1;
+                f.DETPOS--;
+                f.POS = ppos;
             }
             f.POS = ppos;
 
