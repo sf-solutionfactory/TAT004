@@ -2483,11 +2483,13 @@ namespace TAT001.Controllers
                                     drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
                                 drec.EJERCICIO = drec.FECHAV.Value.Year;
                                 drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
-                                ////int num = int.Parse(sel_nn);
-                                ////int pos = drec.POS % num;
-                                //RSG 29.07.2018-add----------------------------------
+                                if (dOCUMENTO.TIPO_RECURRENTE == "1")
+                                    drec.PERIODO--;
+                                    ////int num = int.Parse(sel_nn);
+                                    ////int pos = drec.POS % num;
+                                    //RSG 29.07.2018-add----------------------------------
 
-                                dOCUMENTO.DOCUMENTORECs.Add(drec);
+                                    dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
                         }//Guardar registros de recurrencias  RSG 28.05.2018-------------------

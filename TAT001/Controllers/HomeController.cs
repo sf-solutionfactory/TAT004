@@ -24,6 +24,20 @@ namespace TAT001.Controllers
         {
             using (TAT001Entities db = new TAT001Entities())
             {
+
+                //var queryP = (from cg in db.CUENTAGLs //on cu.ABONO equals cg.ID
+                //              join doc in db.DOCUMENTOes on cg.ID equals doc.CUENTAP  //NUM_DOC + DOCUMENTO_SAP PAYER_ID + CLIENTE-NAME1 + TALLT-TXT050 + DOCUMENTO-CONCEPTO --DOCUMENTO-USUARIOD
+                //              join docsap in db.DOCUMENTOSAPs on doc.NUM_DOC equals docsap.NUM_DOC
+                //              join ta in db.TALLTs on doc.TALL_ID equals ta.TALL_ID
+                //              join cli in db.CLIENTEs on new { doc.VKORG, doc.VTWEG, doc.SPART, doc.PAYER_ID } equals new { cli.VKORG, cli.VTWEG, cli.SPART, PAYER_ID = cli.KUNNR }   // NAME1
+                //              join fl in db.FLUJOes on doc.NUM_DOC equals fl.NUM_DOC  //FLUJO-COMENTARIO -- FLUJO-USUARIOA
+                //              where doc.SOCIEDAD_ID == "KCMX" && doc.PERIODO == 7 && cg.ID == 1854226533 && doc.EJERCICIO == "2018"
+                //              && fl.POS == 1
+                //              select new { cg.ID, cg.NOMBRE, doc.NUM_DOC, doc.DOCUMENTO_SAP, doc.PAYER_ID, doc.CONCEPTO, doc.USUARIOD_ID, cli.NAME1, fl.COMENTARIO, fl.USUARIOA_ID, ta.TALL_ID, ta.TXT50,
+                //                   FECHAC =  docsap == null ? null: docsap.FECHAC
+                //                  , doc.MONTO_DOC_MD }).Distinct().ToList();
+
+
                 int pagina = 101; //ID EN BASE DE DATOS
                 string u = User.Identity.Name;
                 ////if (pais != null)
@@ -347,6 +361,8 @@ namespace TAT001.Controllers
                     ViewBag.delegados = delegados;
 
                 ViewBag.returnUrl = returnUrl;
+
+
                 return View(p.ToList());
             }
             //return View();

@@ -26,14 +26,14 @@ namespace TAT001.Services
                 actual.LOOP = f.LOOP;
                 actual.NUM_DOC = f.NUM_DOC;
                 actual.POS = f.POS;
-                //DET_AGENTEH dah = db.DET_AGENTEH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID &
-                //                    a.USUARIOC_ID.Equals(d.USUARIOC_ID)).OrderByDescending(a => a.VERSION).FirstOrDefault();
-                DET_AGENTEC dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID == d.PAIS_ID &
-                                    a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID))
-                                    .OrderByDescending(a => a.VERSION).FirstOrDefault();
+                //DET_AGENTEC dah = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID == d.PAIS_ID &
+                //                    a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID))
+                //                    .OrderByDescending(a => a.VERSION).FirstOrDefault();
+                CLIENTEF cf = db.CLIENTEFs.Where(a => a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID)
+                               ).OrderByDescending(a => a.VERSION).FirstOrDefault();
 
                 actual.DETPOS = 1;
-                actual.DETVER = dah.VERSION;
+                actual.DETVER = cf.VERSION;
                 actual.USUARIOA_ID = f.USUARIOA_ID;
                 actual.USUARIOD_ID = f.USUARIOD_ID;
                 actual.WF_POS = f.WF_POS;
@@ -85,7 +85,7 @@ namespace TAT001.Services
                     {
                         if (recurrente != "X")
                         {
-                            FLUJO detA = determinaAgenteI(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 0, dah);
+                            FLUJO detA = determinaAgenteI(cf);
                             nuevo.USUARIOA_ID = detA.USUARIOA_ID;
                             nuevo.USUARIOD_ID = nuevo.USUARIOA_ID;
 
@@ -97,7 +97,7 @@ namespace TAT001.Services
                                 nuevo.USUARIOA_ID = nuevo.USUARIOD_ID;
 
                             nuevo.DETPOS = detA.DETPOS;
-                            nuevo.DETVER = dah.VERSION;
+                            nuevo.DETVER = cf.VERSION;
                         }
                         else
                         {
@@ -161,24 +161,20 @@ namespace TAT001.Services
                                 nuevo.WF_POS = next.POS;
                                 nuevo.NUM_DOC = actual.NUM_DOC;
                                 nuevo.POS = actual.POS + 1;
-                                nuevo.LOOP = 1;//-----------------------------------cc
-                                               //int loop = db.FLUJOes.Where(a => a.WORKF_ID.Equals(next.ID) & a.WF_VERSION.Equals(next.VERSION) & a.WF_POS == next.POS & a.NUM_DOC.Equals(actual.NUM_DOC) & a.ESTATUS.Equals("A")).Count();
-                                               //if (loop >= next.LOOPS)
-                                               //{
-                                               //    paso_a = next;
-                                               //    continue;
-                                               //}
-                                               //if (loop != 0)
-                                               //    nuevo.LOOP = loop + 1;
-                                               //else
-                                               //    nuevo.LOOP = 1;
+                                nuevo.LOOP = 1;
+
                                 FLUJO detA = new FLUJO();
                                 if (paso_a.ACCION.TIPO == "N")
                                     actual.DETPOS = actual.DETPOS - 1;
                                 int sop = 99;
                                 if (next.ACCION.TIPO == "S")
                                     sop = 98;
-                                detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS, sop);
+                                //detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, actual.DETPOS, next.LOOPS, sop); 
+
+                                CLIENTEF cf = db.CLIENTEFs.Where(a => a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID)
+                                                ).OrderByDescending(a => a.VERSION).FirstOrDefault();
+
+                                detA = determinaAgenteC(d, cf, actual.DETPOS, sop, paso_a.ACCION.TIPO);
                                 //nuevo.USUARIOA_ID = detA.USUARIOA_ID;
 
 
@@ -400,8 +396,11 @@ namespace TAT001.Services
                                 //    nuevo.LOOP = 1;
                                 if (paso_a.ACCION.TIPO == "N")
                                     actual.DETPOS = actual.DETPOS - 1;
-                                FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 98, next.LOOPS, 98);
-                                //nuevo.USUARIOA_ID = detA.USUARIOA_ID;
+
+                                //FLUJO detA = determinaAgente(d, actual.USUARIOA_ID, actual.USUARIOD_ID, 98, next.LOOPS, 98);
+                                CLIENTEF cf = db.CLIENTEFs.Where(a => a.VKORG.Equals(d.VKORG) & a.VTWEG.Equals(d.VTWEG) & a.SPART.Equals(d.SPART) & a.KUNNR.Equals(d.PAYER_ID)
+                                                ).OrderByDescending(a => a.VERSION).FirstOrDefault();
+                                FLUJO detA = determinaAgenteC(d, cf, 98, 98, "S");
 
 
 
@@ -612,7 +611,7 @@ namespace TAT001.Services
             return correcto;
         }
 
-        public FLUJO determinaAgente(DOCUMENTO d, string user, string delega, int pos, int? loop, int sop)
+        public FLUJO determinaAgente1(DOCUMENTO d, string user, string delega, int pos, int? loop, int sop)
         {
             if (delega != null)
                 user = delega;
@@ -740,35 +739,104 @@ namespace TAT001.Services
             return f;
         }
 
-        public FLUJO determinaAgenteI(DOCUMENTO d, string user, string delega, int pos, DET_AGENTEC dah)
+        public FLUJO determinaAgenteI(CLIENTEF dah)
         {
-            if (delega != null)
-                user = delega;
-            bool fin = false;
-            TAT001Entities db = new TAT001Entities();
-            DET_AGENTEC dap = new DET_AGENTEC();
-            USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);
-
-            if (pos.Equals(0))
-            {
-                //dap = db.DET_AGENTEP.Where(a => a.SOCIEDAD_ID.Equals(dah.SOCIEDAD_ID) & a.PUESTOC_ID == dah.PUESTOC_ID &
-                //                    a.VERSION == dah.VERSION & a.AGROUP_ID == dah.AGROUP_ID & a.POS == 1).FirstOrDefault();
-                dap = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(delega) & a.PAIS_ID == dah.PAIS_ID &
-                                   a.VKORG.Equals(dah.VKORG) & a.VTWEG.Equals(dah.VTWEG) & a.SPART.Equals(dah.SPART) & a.KUNNR.Equals(dah.KUNNR) &
-                                   a.VERSION == dah.VERSION & a.POS == 1).FirstOrDefault();
-
-
-            }
-
-            string agente = "";
             FLUJO f = new FLUJO();
-            f.DETPOS = 0;
-            if (!fin)
+            f.DETPOS = 1;
+            f.USUARIOA_ID = dah.USUARIO1_ID;
+            return f;
+        }
+
+        public FLUJO determinaAgenteC(DOCUMENTO d, CLIENTEF cf, int pos, int sop, string tipo)
+        {
+            FLUJO f = new FLUJO();
+            List<DET_APROBP> ddp = new List<DET_APROBP>();
+            using (TAT001Entities db = new TAT001Entities())
             {
-                agente = dap.USUARIOA_ID;
-                f.DETPOS = dap.POS;
+                DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.ACTIVO).OrderByDescending(a => a.VERSION).FirstOrDefault();
+                if (dh != null)
+                    ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(dh.SOCIEDAD_ID) & a.PUESTOC_ID == dh.PUESTOC_ID & a.VERSION == dh.VERSION & a.ACTIVO).ToList();
             }
-            f.USUARIOA_ID = agente;
+            int ppos = 0;
+            DET_APROBP dp = ddp.Where(a => a.POS == pos).FirstOrDefault();
+            if (dp != null)
+            {
+                if (tipo != "B")
+                {
+                    if (dp.MONTO != null)
+                        if (d.MONTO_DOC_MD > dp.MONTO)
+                            ppos--;
+                    if (dp.PRESUPUESTO != null)
+                        if (d.MONTO_DOC_MD > dp.MONTO & false)
+                            ppos--;
+                }
+                else
+                {
+                    pos = 98;
+                }
+
+
+                if (pos == 99)
+                {
+                    f.USUARIOA_ID = null;
+                }
+                else if (ppos == 0 & tipo != "B")
+                {
+                    f.USUARIOA_ID = d.USUARIOD_ID;
+                    f.DETPOS = sop;
+                }
+                else
+                {
+                    if (pos == 1)
+                    {
+                        f.USUARIOA_ID = cf.USUARIO2_ID;
+                        if (cf.USUARIO2_ID != null)
+                            f.DETPOS = 2;
+                        else
+                            ppos++;
+                    }
+                    if (pos == 2)
+                    {
+                        f.USUARIOA_ID = cf.USUARIO3_ID;
+                        if (cf.USUARIO3_ID != null)
+                            f.DETPOS = 3;
+                        else
+                            ppos++;
+                    }
+                    if (pos == 3)
+                    {
+                        f.USUARIOA_ID = cf.USUARIO4_ID;
+                        if (cf.USUARIO4_ID != null)
+                            f.DETPOS = 4;
+                        else
+                            ppos++;
+                    }
+                    if (pos == 4)
+                    {
+                        f.USUARIOA_ID = cf.USUARIO5_ID;
+                        if (cf.USUARIO5_ID != null)
+                            f.DETPOS = 5;
+                        else
+                            ppos++;
+                    }
+                    if (pos == 98)
+                    {
+                        f.USUARIOA_ID = cf.USUARIO6_ID;
+                        f.DETPOS = 99;
+                    }
+                }
+            }
+            else if (pos == 98)
+            {
+                f.USUARIOA_ID = cf.USUARIO6_ID;
+                f.DETPOS = 99;
+            }
+            else if (pos == 99)
+            {
+                f.USUARIOA_ID = null;
+            }
+            f.POS = ppos;
+
             return f;
         }
     }
