@@ -747,24 +747,27 @@ namespace TAT001.Services
             return f;
         }
 
-        public FLUJO determinaAgenteC(DOCUMENTO d, CLIENTEF cf, int pos, int sop, string tipo, string next)
+        public FLUJO determinaAgenteC(DOCUMENTO d, CLIENTEF cf, int pos, int sop, string tipo)//, string next)
         {
             FLUJO f = new FLUJO();
             List<DET_APROBP> ddp = new List<DET_APROBP>();
             using (TAT001Entities db = new TAT001Entities())
             {
-                DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.ACTIVO).OrderByDescending(a => a.VERSION).FirstOrDefault();
+                DET_APROBH dh = db.DET_APROBH.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.ACTIVO).OrderByDescending(a => a.VERSION).FirstOrDefault();// OBTIENE ENCABEZADO FLUJO DE SOCIEDAD
                 if (dh != null)
-                    ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(dh.SOCIEDAD_ID) & a.PUESTOC_ID == dh.PUESTOC_ID & a.VERSION == dh.VERSION & a.ACTIVO).ToList();
-                FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
-                if (tipo == "N")
+                    ddp = db.DET_APROBP.Where(a => a.SOCIEDAD_ID.Equals(dh.SOCIEDAD_ID) & a.PUESTOC_ID == dh.PUESTOC_ID & a.VERSION == dh.VERSION & a.ACTIVO).ToList();//oBTIENE TABLA DE FLUJO
+
+                if (tipo == "N")//------Si es modificación por rechazo de manager
+                {
+                    FLUJO ffl = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC) & a.ESTATUS.Equals("R")).OrderByDescending(a => a.POS).FirstOrDefault();
                     f = ffl;
+                }
             }
             int ppos = 0;
-            DET_APROBP dp = ddp.Where(a => a.POS == pos).FirstOrDefault();
-            if (dp != null)
+            DET_APROBP dp = ddp.Where(a => a.POS == pos).FirstOrDefault();//Obtiene nivel de autorización
+            if (dp != null)//----Si existe posición
             {
-                if (tipo != "B" & tipo != "M")
+                if (tipo != "B" & tipo != "M")//---Si no es notificación ni modificación por rechazo de TS
                 {
                     if (dp.MONTO != null)
                         if (d.MONTO_DOC_MD > dp.MONTO)
@@ -783,9 +786,14 @@ namespace TAT001.Services
                 {
                     f.USUARIOA_ID = null;
                 }
-                else if (ppos == 0 & sop == 98)
+                else if (ppos == 0 & sop == 98)//Cuando va a soporte(Termina autorización)
                 {
                     f.USUARIOA_ID = d.USUARIOD_ID;
+                    f.DETPOS = sop;
+                }
+                else if (ppos == 0 & sop == 99)//Cuando va a TS(Termina autorización)
+                {
+                    f.USUARIOA_ID = cf.USUARIO6_ID;
                     f.DETPOS = sop;
                 }
                 else
@@ -822,7 +830,7 @@ namespace TAT001.Services
                         else
                             ppos++;
                     }
-                    if (pos == 98)
+                    if (pos == 98)//Despues de rechazo de TS para PRA - regresa a TS
                     {
                         f.USUARIOA_ID = cf.USUARIO6_ID;
                         f.DETPOS = 99;
@@ -834,10 +842,7 @@ namespace TAT001.Services
                 f.USUARIOA_ID = cf.USUARIO6_ID;
                 f.DETPOS = 99;
             }
-            else if (pos == 99)
-            {
-                f.USUARIOA_ID = null;
-            }else if(pos == 0)
+            else if(pos == 0)//Despues de rechazo de TS para PR - regresa a TS
             {
                 if (f.DETPOS == 99)
                     ppos = 1;
