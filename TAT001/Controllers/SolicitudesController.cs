@@ -132,9 +132,15 @@ namespace TAT001.Controllers
                     ld.PERIODO = item.PERIODO + "";
 
                     if (item.ESTATUS == "R")
-                        item.ESTATUSS += db.FLUJOes.Where(x => x.NUM_DOC == item.NUM_DOC & x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID;
+                    {
+                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) +
+                                        db.FLUJOes.Where(x => x.NUM_DOC == item.NUM_DOC & x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID +
+                                        item.ESTATUSS.Substring(6, 1);
+                    }
                     else
-                        item.ESTATUSS += " ";
+                    {
+                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) + " "+ item.ESTATUSS.Substring(6, 1); ;
+                    }
                     Estatus e = new Estatus();
                     ld.ESTATUS = e.getText(item.ESTATUSS);
                     ld.ESTATUS_CLASS = e.getClass(item.ESTATUSS);

@@ -2929,9 +2929,10 @@ $('body').on('focusout', '#bmonto_apoyo', function () {
     $(this).val(toShowPorc(val));//RSG 09.07.208
     val = $(this).val();
 
-    if (!ligada()) {//RSG 29.07.2018
-        updateTableValIndex(9, val);
+    if (ligada()) {//RSG 29.07.2018
+        val = 0;
     }
+    updateTableValIndex(9, val);
 });
 
 //$('body').on('focusout', '#monto_dis', function () {

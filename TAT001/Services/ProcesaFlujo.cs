@@ -211,7 +211,11 @@ namespace TAT001.Services
                                     next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
                                     if (recurrente == "X" & next.ACCION.TIPO.Equals("P"))
                                     {
-                                        next_step_a++;
+                                        next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
+                                        if (next.NEXT_STEP != null)
+                                            next_step_a = (int)next.NEXT_STEP;
+                                        if (next.NS_ACCEPT != null)
+                                            next_step_a = (int)next.NS_ACCEPT;
                                         next = db.WORKFPs.Where(a => a.ID.Equals(actual.WORKF_ID) & a.VERSION.Equals(actual.WF_VERSION) & a.POS == next_step_a).FirstOrDefault();
                                     }
                                     if (next.NEXT_STEP.Equals(99))//--------FIN DEL WORKFLOW

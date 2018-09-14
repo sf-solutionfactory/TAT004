@@ -37,6 +37,22 @@ namespace TAT001.Controllers
                 //                   FECHAC =  docsap == null ? null: docsap.FECHAC
                 //                  , doc.MONTO_DOC_MD }).Distinct().ToList();
 
+                //var ultimo2 = from player in db.FLUJOes
+                //             group player by player.NUM_DOC into playerGroup
+                //             select new
+                //             {
+                //                 Team = playerGroup.Key,
+                //                 BestScore = playerGroup.Max(x => x.POS),
+                //             };
+                //var ultimo = (from ff in db.FLUJOes
+                //              join j in 
+                //              (from d in db.DOCUMENTOes
+                //               join f in db.FLUJOes on d.NUM_DOC equals f.NUM_DOC
+                //               where f.COMENTARIO != null
+                //               group f by d.NUM_DOC into g
+                //               select new { NUM_DOC = g.Key, POS = g.Max(p => p.POS) })
+                //               on new { ff.NUM_DOC, ff.POS } equals new { j.NUM_DOC, j.POS }
+                //              select new { ff.NUM_DOC, ff.COMENTARIO }).ToList();
 
                 int pagina = 101; //ID EN BASE DE DATOS
                 string u = User.Identity.Name;
