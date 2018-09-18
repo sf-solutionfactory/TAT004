@@ -1404,7 +1404,7 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                         </div>
                         <div class="row" style="margin-bottom:0;">
                             <div class="col s12 m6 offset-m6 right-align">
-                                <a href="#" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()">Agragar rango</a>
+                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango"/>
                                 </div>
                                 <div class="col s12 m6 offset-m6">
                                     <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
@@ -1414,7 +1414,7 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                                 <th id="">Documento</th>
                                                 <th id="">Rango</th>
                                                 <th id="">Objetivo inicio</th>
-                                                <th id="">Objetivo limite</th>
+                                                @*<th id="">Objetivo limite</th>*@
                                                 <th id="">Porcentaje</th>
                                             </tr>
                                         </thead>
@@ -1844,6 +1844,7 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
+                                        <input value="" id="txtPres" type="hidden" class="" />
                                         <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)

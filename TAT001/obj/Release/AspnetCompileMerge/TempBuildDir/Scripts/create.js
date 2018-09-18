@@ -517,6 +517,8 @@ $(document).ready(function () {
                     var por_apoyo = 0;
                     por_apoyo = p_apoyo;
                     if (por_apoyo > 0) {
+                        if (ligada()) //RSG 17.09.2018
+                            por_apoyo = 0;
                         //var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "", "pm");
                         var addedRow = addRowMat(t, "", "", "", "", "", toShowPorc(por_apoyo), "", "", "", "", "", relacionada, "", reversa, ddate, adate, "", "pm", "");//Add MGC B20180705 2018.07.05 ne no eliminar después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                         //Si el porcentaje de apoyo es mayor a cero bloquear la columna de porcentaje de apoyo
@@ -1316,6 +1318,7 @@ $(document).ready(function () {
             copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
             copiarSopTableControl(""); //Soporte ahora en información //B20180625 MGC 2018.07.03
             enviaRec("");//RSG 28.05.2018 //B20180625 MGC 2018.07.03
+            excedePresup();
 
             //B20180625 MGC2 2018.07.04
             //enviar borrador
@@ -2929,9 +2932,10 @@ $('body').on('focusout', '#bmonto_apoyo', function () {
     $(this).val(toShowPorc(val));//RSG 09.07.208
     val = $(this).val();
 
-    if (!ligada()) {//RSG 29.07.2018
-        updateTableValIndex(9, val);
+    if (ligada()) {//RSG 29.07.2018
+        val = 0;
     }
+    updateTableValIndex(9, val);
 });
 
 //$('body').on('focusout', '#monto_dis', function () {
@@ -5280,7 +5284,7 @@ function evaluarFiles() {
 function evaluarExtSoporte(filename) {
 
     //var exts = ['xlsx', 'doc', 'pdf', 'png', 'msg', 'zip', 'jpg', 'docs'];//RSG 18.06.2018
-    var exts = ['exe', 'bak'];//RSG 18.06.2018
+    var exts = ['exe', 'bak', 'bat'];//RSG 18.06.2018
     // split file name at dot
     var get_ext = filename.split('.');
     // reverse name to check extension
@@ -5623,8 +5627,8 @@ function selectCliente(valu) {
         $("label[for='payer_nombre']").removeClass("active");
         $('#payer_email').val("");
         $("label[for='payer_email']").removeClass("active");
-        $("#payer_nombre").trigger('change');
-        $("#payer_email").trigger('change');
+        //$("#payer_nombre").trigger('change');
+        //$("#payer_email").trigger('change');
     }
 
 }

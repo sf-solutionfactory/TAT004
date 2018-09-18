@@ -139,7 +139,7 @@ namespace TAT001.Controllers
                     }
                     else
                     {
-                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) + " "+ item.ESTATUSS.Substring(6, 1); ;
+                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) + " " + item.ESTATUSS.Substring(6, 1); ;
                     }
                     Estatus e = new Estatus();
                     ld.ESTATUS = e.getText(item.ESTATUSS);
@@ -1617,7 +1617,7 @@ namespace TAT001.Controllers
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
                 string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn, string check_objetivoq,
-                string lbl_volr, string lbl_apr, string lbl_vole, string lbl_ape) //B20180801 MGC Textos
+                string lbl_volr, string lbl_apr, string lbl_vole, string lbl_ape, string txtPres) //B20180801 MGC Textos
         {
             bool prueba = true;
             string errorString = "";
@@ -1704,6 +1704,8 @@ namespace TAT001.Controllers
                         dOCUMENTO.OBJQ_PORC = dOCUMENTO.OBJQ_PORC;
                     if (sel_nn != null)
                         dOCUMENTO.FRECUENCIA_LIQ = int.Parse(sel_nn);//RSG 01.08.2018----------------add end
+
+                    dOCUMENTO.EXCEDE_PRES = txtPres;//RSG 18.09.2018
 
                     ////Obtener el número de documento
                     //decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
@@ -2491,11 +2493,11 @@ namespace TAT001.Controllers
                                 drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
                                 if (dOCUMENTO.TIPO_RECURRENTE == "1")
                                     drec.PERIODO--;
-                                    ////int num = int.Parse(sel_nn);
-                                    ////int pos = drec.POS % num;
-                                    //RSG 29.07.2018-add----------------------------------
+                                ////int num = int.Parse(sel_nn);
+                                ////int pos = drec.POS % num;
+                                //RSG 29.07.2018-add----------------------------------
 
-                                    dOCUMENTO.DOCUMENTORECs.Add(drec);
+                                dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
                         }//Guardar registros de recurrencias  RSG 28.05.2018-------------------
@@ -2639,6 +2641,7 @@ namespace TAT001.Controllers
                             f.FECHAM = DateTime.Now;
                             f.COMENTARIO = notas_soporte;//ADD RSG 20.08.2018
                             string c = pf.procesa(f, "");
+                            FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                             while (c == "1")
                             {
                                 Email em = new Email();
@@ -2646,7 +2649,6 @@ namespace TAT001.Controllers
                                 string image = Server.MapPath("~/images/logo_kellogg.png");
                                 em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
 
-                                FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                                 if (conta.WORKFP.ACCION.TIPO == "B")
                                 {
                                     WORKFP wpos = db.WORKFPs.Where(x => x.ID == conta.WORKF_ID & x.VERSION == conta.WF_VERSION & x.POS == conta.WF_POS).FirstOrDefault();
@@ -2663,13 +2665,19 @@ namespace TAT001.Controllers
                                     //f1.FECHAC = DateTime.Now;
                                     conta.FECHAM = DateTime.Now;
                                     c = pf.procesa(conta, "");
+                                    conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+
                                 }
                                 else
                                 {
                                     c = "";
                                 }
                             }
-
+                            Estatus es = new Estatus();//RSG 18.09.2018
+                            DOCUMENTO doc = db.DOCUMENTOes.Find(f.NUM_DOC);
+                            conta.STATUS = es.getEstatus(doc);
+                            db.Entry(conta).State = EntityState.Modified;
+                            db.SaveChanges();
                         }
                     }
                     catch (Exception ee)
@@ -4407,7 +4415,7 @@ namespace TAT001.Controllers
                         //Obtener el país
                         d.PAIS_ID = dr.PAIS_ID;//RSG 15.05.2018
                         d.TIPO_TECNICO = dr.TIPO_TECNICO; //B20180618 v1 MGC 2018.06.18
-                        
+
                     }
                     ///////////////////Montos
                     //MONTO_DOC_MD
@@ -5289,6 +5297,11 @@ namespace TAT001.Controllers
                         {
                             c = "";
                         }
+
+                        Estatus es = new Estatus();//RSG 18.09.2018
+                        conta.STATUS = es.getEstatus(d);
+                        db.Entry(conta).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
                 catch (Exception ee)

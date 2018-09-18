@@ -107,5 +107,36 @@ namespace TAT001.Services
             DateTime nextMonday = f.AddDays(daysUntilMonday);
             return nextMonday;
         }
+
+        //ROMG 13/09/18 BEGIN----------------------------------------------------
+        public int fechaAint(DateTime fecha) 
+        {
+            if (fecha != null)
+            {
+                return (int)(fecha.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+            }
+            else
+                fecha = new DateTime(0);
+            return (int)(fecha.Date - new DateTime(1900, 1, 1)).TotalDays + 2; ;
+        }
+
+        public int getUltimoDiaNum(int ejercicio, int periodo)
+        {
+            TAT001Entities db = new TAT001Entities();
+            DateTime dia = new DateTime();
+            List<PERIODO445> pp = db.PERIODO445.Where(a => a.EJERCICIO == ejercicio).ToList();
+            PERIODO445 p = pp.Where(a => a.MES_NATURAL == periodo).FirstOrDefault();
+            if (p == null)
+            {
+                dia = new DateTime(ejercicio, 1, 1);
+            }
+            else
+            {
+                dia = new DateTime(ejercicio, p.PERIODO, p.DIA_NATURAL);
+            }
+
+            return (int)(dia.Date - new DateTime(1900, 1, 1)).TotalDays + 2;
+        }
+        //ROMG 13/09/18 END----------------------------------------------------
     }
 }

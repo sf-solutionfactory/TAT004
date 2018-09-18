@@ -110,10 +110,11 @@ namespace TAT001.Services
                     nuevo.FECHAC = DateTime.Now;
                     nuevo.FECHAM = DateTime.Now;
 
-                    db.FLUJOes.Add(nuevo);
                     if (paso_a.EMAIL.Equals("X"))
                         correcto = "1";
                     d.ESTATUS_WF = "P";
+                  
+                    db.FLUJOes.Add(nuevo);
                     db.Entry(d).State = EntityState.Modified;
 
                     db.SaveChanges();
@@ -262,11 +263,10 @@ namespace TAT001.Services
                                         if (next.ACCION.TIPO.Equals("T"))
                                         {
                                             TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault();
-                                            if (tl != null)
+                                            if (tl != null & cf.USUARIO7_ID !=null)
                                             {
-                                                //nuevo.USUARIOA_ID = db.DET_TAX.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
-                                                //nuevo.USUARIOA_ID = db.DET_TAXEO.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.PUESTOC_ID == d.PUESTO_ID & a.USUARIOC_ID.Equals(d.USUARIOC_ID) & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
                                                 nuevo.USUARIOA_ID = db.DET_TAXEOC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.KUNNR == d.PAYER_ID & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
+                                                nuevo.USUARIOA_ID = cf.USUARIO7_ID;
                                                 d.ESTATUS_WF = "T";
                                             }
                                             else
@@ -776,8 +776,8 @@ namespace TAT001.Services
                     if (dp.MONTO != null)
                         if (d.MONTO_DOC_MD > dp.MONTO)
                             ppos--;
-                    if (dp.PRESUPUESTO != null)
-                        if (d.MONTO_DOC_MD > dp.MONTO & false)
+                    if (dp.PRESUPUESTO != null & d.EXCEDE_PRES != null)
+                        if (d.EXCEDE_PRES == "X")
                             ppos--;
                 }
                 else

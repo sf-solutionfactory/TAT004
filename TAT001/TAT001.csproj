@@ -243,6 +243,7 @@
     <Compile Include="Controllers\Catalogos\PuestosController.cs" />
     <Compile Include="Controllers\Catalogos\RolesController.cs" />
     <Compile Include="Controllers\RecurrenciasController.cs" />
+    <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
     <Compile Include="Controllers\SolicitudesController3.cs" />
     <Compile Include="Controllers\SolicitudesController2.cs" />
@@ -734,6 +735,7 @@
     <Compile Include="Models\CartaD.cs" />
     <Compile Include="Models\CartaDEsqueleto.cs" />
     <Compile Include="Models\CategoriaMaterial.cs" />
+    <Compile Include="Models\Comentarios.cs" />
     <Compile Include="Models\dby.cs" />
     <Compile Include="Models\Documento.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
@@ -907,6 +909,12 @@
     <Content Include="images\logo-kellogg2.png" />
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
+    <Content Include="Scripts\subfilters\jquery.tablesorter.js" />
+    <Content Include="Content\subfilters\jquery.tablesorter.pager.css" />
+    <Content Include="Scripts\subfilters\jquery.tablesorter.pager.js" />
+    <Content Include="Scripts\subfilters\script.js" />
+    <Content Include="Scripts\subfilters\widget-filter.js" />
+    <Content Include="Scripts\tablesort\tableToExcel.js" />
     <Content Include="Scripts\warning.js" />
     <Content Include="Scripts\analisis.js" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
@@ -1162,6 +1170,9 @@
     <Content Include="Views\Recurrencias\Cancelar.cshtml" />
     <Content Include="Views\Solicitudes\Create.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Reportes\ReporteIntegracionTs.cshtml" />
+    <Content Include="Views\Reportes\ReporteProvisiones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

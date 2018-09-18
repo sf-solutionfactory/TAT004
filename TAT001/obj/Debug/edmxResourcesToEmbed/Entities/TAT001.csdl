@@ -226,7 +226,7 @@
     <Property Name="SPART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
     <Property Name="NAME1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="STCD1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
     <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -840,6 +840,7 @@
     <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
     <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
     <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+    <Property Name="EXCEDE_PRES" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -1148,6 +1149,7 @@
     <NavigationProperty Name="USUARIO" Relationship="Self.FK_FLUJO_USUARIO" FromRole="FLUJO" ToRole="USUARIO" />
     <NavigationProperty Name="USUARIO1" Relationship="Self.FK_FLUJO_USUARIO1" FromRole="FLUJO" ToRole="USUARIO" />
     <NavigationProperty Name="WORKFP" Relationship="Self.FK_FLUJO_WORKFP" FromRole="FLUJO" ToRole="WORKFP" />
+    <Property Name="STATUS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="GALL">
     <Key>
@@ -5764,6 +5766,7 @@
     <Property Name="FECHAC" Type="DateTime" Precision="3" />
     <Property Name="FECHAM" Type="DateTime" Precision="3" />
     <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTEF" ToRole="CLIENTE" />
+    <Property Name="USUARIO7_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="USUARIOF">
     <Key>

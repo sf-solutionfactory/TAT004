@@ -15,16 +15,16 @@
 @if (ViewBag.error != "")
 {
     <script>
-    $(document).ready(function () {
-        bmonto_apoyo
-        function errorMessage(msg) {
-            M.toast({ html: msg });
-        }
-        var message = '@ViewBag.error';
+$(document).ready(function () {
+bmonto_apoyo
+function errorMessage(msg) {
+M.toast({ html: msg });
+}
+var message = '@ViewBag.error';
 
-    if (message != "") {
-        errorMessage(message);
-    }
+if (message != "") {
+errorMessage(message);
+}
 });
     </script>
 }
@@ -47,12 +47,12 @@
                     @Html.LabelFor(model => model.USUARIOC_ID, "Usuario", new { @id = "lbl_userid" })
                 </div>
                 @*<div class="input-field col s4">
-                        @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
-                        @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
+                    @Html.EditorFor(model => model.USUARIO.MANAGER, new { htmlAttributes = new { @disabled = "disabled", @Value = us.MANAGER } })
+                    @Html.LabelFor(model => model.USUARIO.MANAGER, "Manager", new { @id = "lbl_manager" })
                     </div>
                     <div class="input-field col s4">
-                        @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
-                        @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
+                    @Html.EditorFor(model => model.USUARIO.BACKUP_ID, "BACKUP", new { htmlAttributes = new { @disabled = "disabled", @Value = us.BACKUP_ID } })
+                    @Html.LabelFor(model => model.USUARIO.BACKUP_ID, "Backup", new { @id = "lbl_backup" })
                     </div>*@
             </div>
         </div>
@@ -268,19 +268,19 @@
                                     }
                                 </div>
                                 @*<div class="form-group col s12">
-                                        @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @if (ViewBag.relacionada == "")
-                                            {
-                                            @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
-                                            }
-                                            else
-                                            {
-                                            <input type="hidden" value="@Model.GALL_ID" id="gall_id" />
-                                            <input type="text" value="@ViewBag.GALL_IDI" disabled="disabled" />
-                                            <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
-                                            }
-                                        </div>
+                                    @Html.LabelFor(model => model.TALL_ID, "Clasificación", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                    @if (ViewBag.relacionada == "")
+                                    {
+                                    @Html.DropDownList("GALL_ID", null, "", htmlAttributes: new { @id = "gall_id", @class = "form-control  " + @ViewBag.relacionada, onchange = @"selectTall(this.value)" })
+                                    }
+                                    else
+                                    {
+                                    <input type="hidden" value="@Model.GALL_ID" id="gall_id" />
+                                    <input type="text" value="@ViewBag.GALL_IDI" disabled="disabled" />
+                                    <input class="@ViewBag.relacionada" id="gall_idt" type="text" value="@ViewBag.GALL_IDI_VAL" disabled="disabled" style="display:none" />
+                                    }
+                                    </div>
                                     </div>*@
                                 @*@Html.HiddenFor(model => model.TALL_ID, new { @id = "tall_id", @class = "form-control" })*@
                                 <div class="form-group col s12">
@@ -343,39 +343,39 @@
                                 <script src="~/Scripts/autocomplete1.10.2.js"></script>
                                 <script src="~/Scripts/autocomplete1.11.4.js"></script>
                                 <script>
-                            var auto = $.noConflict(true);
-                            auto(document).ready(function () {
-                                /**/
-                                /**/
-                                /**/
-                                var pais = '@ViewBag.pais';
-                            /**/
-                            /**/
-                            /**/
-                            auto("#state_id").autocomplete({
-                                source: function (request, response) {
-                                    auto.ajax({
-                                        url: "../Listas/Estados",
-                                        type: "GET",
-                                        dataType: "json",
-                                        data: { pais: pais, Prefix: request.term },
-                                        success: function (data) {
-                                            response($.map(data, function (item) {
-                                                return { label: item.NAME, value: item.NAME };
-                                            }))
-                                        }
-                                    })
-                                },
-                                messages: {
-                                    noResults: '',
-                                    results: function (resultsCount) { }
-                                },
-                                change: function (e, ui) {
-                                    if (!(ui.item)) {
-                                    }
-                                }
-                            });
-                        })
+var auto = $.noConflict(true);
+auto(document).ready(function () {
+/**/
+/**/
+/**/
+var pais = '@ViewBag.pais';
+/**/
+/**/
+/**/
+auto("#state_id").autocomplete({
+source: function (request, response) {
+auto.ajax({
+url: "../Listas/Estados",
+type: "GET",
+dataType: "json",
+data: { pais: pais, Prefix: request.term },
+success: function (data) {
+response($.map(data, function (item) {
+return { label: item.NAME, value: item.NAME };
+}))
+}
+})
+},
+messages: {
+noResults: '',
+results: function (resultsCount) { }
+},
+change: function (e, ui) {
+if (!(ui.item)) {
+}
+}
+});
+})
                                 </script>
                                 <script src="~/Scripts/createa.js"></script>
                                 <div class="input-field col s12">
@@ -493,51 +493,51 @@
                                     @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id", @id = "lbl_payer" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
-                            auto(document).ready(function () {
-                                auto("#payer_id").autocomplete({
-                                    source: function (request, response) {
-                                        var userC = document.getElementById("USUARIOD_ID");
-                                        if (userC == undefined)
-                                            /**/
-                                            var user = '@ViewBag.usuario.ID';
-                        /**/
-                        /**/
-                        else
-                            var user = userC.value;
-                        auto.ajax({
-                            url: "../Listas/Clientes",
-                            type: "GET",
-                            dataType: "json",
-                            /**/
-                            /**/
-                            data: { Prefix: request.term, usuario: user, pais: '@Model.PAIS_ID' },
-                            /**/
-                            /**/
-                            success: function (data) {
-                                response(auto.map(data, function (item) {
-                                    return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
-                                }))
-                            }
-                        })
-                    },
-                    messages: {
-                        noResults: '',
-                        results: function (resultsCount) { }
-                    },
-                    change: function (e, ui) {
-                        if (!(ui.item)) {
-                            e.target.value = "";
-                        }
-                    },
+auto(document).ready(function () {
+auto("#payer_id").autocomplete({
+source: function (request, response) {
+var userC = document.getElementById("USUARIOD_ID");
+if (userC == undefined)
+/**/
+var user = '@ViewBag.usuario.ID';
+/**/
+/**/
+else
+var user = userC.value;
+auto.ajax({
+url: "../Listas/Clientes",
+type: "GET",
+dataType: "json",
+/**/
+/**/
+data: { Prefix: request.term, usuario: user, pais: '@Model.PAIS_ID' },
+/**/
+/**/
+success: function (data) {
+response(auto.map(data, function (item) {
+return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+}))
+}
+})
+},
+messages: {
+noResults: '',
+results: function (resultsCount) { }
+},
+change: function (e, ui) {
+if (!(ui.item)) {
+e.target.value = "";
+}
+},
 
-                    select: function (event, ui) {
+select: function (event, ui) {
 
-                        var label = ui.item.label;
-                        var value = ui.item.value;
-                        selectCliente(value);
-                    }
-                });
-            })
+var label = ui.item.label;
+var value = ui.item.value;
+selectCliente(value);
+}
+});
+})
                                 </script>
                                 <input type="hidden" id="txt_vkorg" />
                                 <input type="hidden" id="txt_vtweg" />
@@ -628,18 +628,18 @@
                                     <div class="col s12">
                                         <p>
                                             <label>
-                                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+                                                <input id="check_recurrente" type="checkbox" onchange="cambiaCheckRec(this)" />
                                                 <span id="span_docrec">Documento recurrente</span>
                                             </label>
                                         </p>
                                     </div>
                                     <div class="col s12">
                                         <label class="col s6">
-                                            <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+                                            <input name="group1" type="radio" checked id="btn-date" onchange="cambiaTemp(this.id)" />
                                             <span id="span_pfecha">Por fecha</span> @*B20180801 MGC Textos*@
                                         </label>
                                         <label class="col s6">
-                                            <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+                                            <input name="group1" type="radio" id="btn-peri" onchange="cambiaTemp(this.id)" />
                                             <span id="span_pperiodo">Por periodo</span> @*B20180801 MGC Textos*@
                                         </label>
                                     </div>
@@ -662,7 +662,6 @@
 
                                                 document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
                                                 document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
-
                                             }
                                             setDates(tipo);
                                             var elem = document.querySelectorAll('select');
@@ -672,7 +671,7 @@
                                             $("#fechai_vig").trigger('change');
                                             $("#fechaf_vig").trigger('change');
 
-                                            cambiaRec();
+                                            //cambiaRec();
                                         }
                                     </script>
                                     <div class="col s6">
@@ -911,257 +910,258 @@
                     </div>
                 </div>
             </div>
+
             @*Temporalidad*@
             <!--<div id="Temporalidad_cont" class="col s12" style="font-size:12px;">
-                 <div class="row">
-                     <div class="col s12">
-                         <div class="card-panel">
-                                 <h5>Vigencia</h5>
-                                 <div class="row" style="margin-bottom:0">
-                                     @if (ViewBag.relacionada == "")
-                                     {
-                                         <div class="col s12">
-                                             <label class="col s6">
-                                                 <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
-                                                 <span>Por fecha</span>
-                                             </label>
-                                             <label class="col s6">
-                                                 <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
-                                                 <span>Por periodo</span>
-                                             </label>
-                                         </div>
-                                         <script>
-                                             function cambiaTemp(id) {
-                                                 var tipo = id.split('-')[1];
-                                                 if (tipo == "date") {
-                                                     document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
-                                                     document.getElementById("anioi_id").setAttribute("disabled", "disabled");
-                                                     document.getElementById("periodof_id").setAttribute("disabled", "disabled");
-                                                     document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+            <div class="row">
+            <div class="col s12">
+            <div class="card-panel">
+            <h5>Vigencia</h5>
+            <div class="row" style="margin-bottom:0">
+            @if (ViewBag.relacionada == "")
+            {
+            <div class="col s12">
+            <label class="col s6">
+            <input name="group1" type="radio" checked id="btn-date" onclick="cambiaTemp(this.id)" />
+            <span>Por fecha</span>
+            </label>
+            <label class="col s6">
+            <input name="group1" type="radio" id="btn-peri" onclick="cambiaTemp(this.id)" />
+            <span>Por periodo</span>
+            </label>
+            </div>
+            <script>
+            function cambiaTemp(id) {
+            var tipo = id.split('-')[1];
+            if (tipo == "date") {
+            document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+            document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+            document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+            document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                                                     document.getElementById("fechai_vig2").removeAttribute("disabled");
-                                                     document.getElementById("fechaf_vig2").removeAttribute("disabled");
-                                                 } else {
-                                                     document.getElementById("periodoi_id").removeAttribute("disabled");
-                                                     document.getElementById("anioi_id").removeAttribute("disabled");
-                                                     document.getElementById("periodof_id").removeAttribute("disabled");
-                                                     document.getElementById("aniof_id").removeAttribute("disabled");
+            document.getElementById("fechai_vig2").removeAttribute("disabled");
+            document.getElementById("fechaf_vig2").removeAttribute("disabled");
+            } else {
+            document.getElementById("periodoi_id").removeAttribute("disabled");
+            document.getElementById("anioi_id").removeAttribute("disabled");
+            document.getElementById("periodof_id").removeAttribute("disabled");
+            document.getElementById("aniof_id").removeAttribute("disabled");
 
-                                                     document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
-                                                     document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+            document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+            document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
 
-                                                 }
-                                                 setDates(tipo);
-                                                 var elem = document.querySelectorAll('select');
-                                                 var instance = M.FormSelect.init(elem, []);
-                                                 pickerFecha2(".format_date");
-                                             }
-                                         </script>
-                                         <div class="col s6">
-                                             <div class="input-field col s12">
-                                                 <i class="material-icons prefix">date_range</i>
-                                                @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                                                 <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
-                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
-                                             </div>
-                                             <div class="input-field col s12">
-                                                 <i class="material-icons prefix">date_range</i>
-                                                 @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
-                                                 <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
-                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
-                                             </div>
-                                         </div>
-                                         <script>
-                                             asignaFechasInit();
-                                             function asignaFechasInit() {
-                                                 var datei = document.getElementById("fechai_vig").value;
-                                                 var datef = document.getElementById("fechaf_vig").value;
+            }
+            setDates(tipo);
+            var elem = document.querySelectorAll('select');
+            var instance = M.FormSelect.init(elem, []);
+            pickerFecha2(".format_date");
+            }
+            </script>
+            <div class="col s6">
+            <div class="input-field col s12">
+            <i class="material-icons prefix">date_range</i>
+            @Html.HiddenFor(model => model.FECHAI_VIG, new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+            <input type="text" class="datepicker" id="fechai_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechai_vig').value = this.value" />
+            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
+            </div>
+            <div class="input-field col s12">
+            <i class="material-icons prefix">date_range</i>
+            @Html.HiddenFor(model => model.FECHAF_VIG, new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada })
+            <input type="text" class="datepicker" id="fechaf_vig2" onkeyup="borrar(this);" onchange="document.getElementById('fechaf_vig').value = this.value" />
+            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
+            </div>
+            </div>
+            <script>
+            asignaFechasInit();
+            function asignaFechasInit() {
+            var datei = document.getElementById("fechai_vig").value;
+            var datef = document.getElementById("fechaf_vig").value;
 
-                                                 if (datei != "") {
-                                                     document.getElementById("fechai_vig2").value = datei;
-                                                 }
-                                                 if (datef != "") {
-                                                     document.getElementById("fechaf_vig2").value = datef;
-                                                 }
-                                             }
-                                         </script>
-                                         <div class="col s6">
-                                             <div class="col s12">
-                                                 <div class="input-field col s6">
-                                                     @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                     <label>De</label>
-                                                 </div>
-                                                 <div class="input-field col s3">
-                                                     @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                 </div>
-                                             </div><div class="col s12">
-                                                 <div class="input-field col s6">
-                                                     @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                     <label>Hasta</label>
-                                                 </div>
-                                                 <div class="input-field col s3">
-                                                     @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
-                                                 </div>
-                                             </div>
-                                         </div>
-                                         <script>
-                                             var datei = document.getElementById("fechai_vig").value;
-                                             var datef = document.getElementById("fechaf_vig").value;
-                                             var elemth = document.querySelector('#fechai_vig2');
-                                             var optionsth = {
-                                                 defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
-                                                 format: 'dd/mm/yyyy',
-                                                 i18n: {
-                                                     clear: 'Limpiar',
-                                                     today: 'Hoy',
-                                                     done: 'Seleccionar',
-                                                     previousMonth: '‹',
-                                                     nextMonth: '›',
-                                                     months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                     monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                     weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                     weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                     weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                 }
-                                             };
-                                             var instanceth = M.Datepicker.init(elemth, optionsth);
+            if (datei != "") {
+            document.getElementById("fechai_vig2").value = datei;
+            }
+            if (datef != "") {
+            document.getElementById("fechaf_vig2").value = datef;
+            }
+            }
+            </script>
+            <div class="col s6">
+            <div class="col s12">
+            <div class="input-field col s6">
+            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodoi_id", @disabled = "disabled", @onchange = "setDates('')" })
+            <label>De</label>
+            </div>
+            <div class="input-field col s3">
+            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "anioi_id", @disabled = "disabled", @onchange = "setDates('')" })
+            </div>
+            </div><div class="col s12">
+            <div class="input-field col s6">
+            @Html.DropDownList("PERIODOS", null, "", htmlAttributes: new { @id = "periodof_id", @disabled = "disabled", @onchange = "setDates('')" })
+            <label>Hasta</label>
+            </div>
+            <div class="input-field col s3">
+            @Html.DropDownList("ANIOS", null, "", htmlAttributes: new { @id = "aniof_id", @disabled = "disabled", @onchange = "setDates('')" })
+            </div>
+            </div>
+            </div>
+            <script>
+            var datei = document.getElementById("fechai_vig").value;
+            var datef = document.getElementById("fechaf_vig").value;
+            var elemth = document.querySelector('#fechai_vig2');
+            var optionsth = {
+            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
+            format: 'dd/mm/yyyy',
+            i18n: {
+            clear: 'Limpiar',
+            today: 'Hoy',
+            done: 'Seleccionar',
+            previousMonth: '‹',
+            nextMonth: '›',
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+            }
+            };
+            var instanceth = M.Datepicker.init(elemth, optionsth);
 
-                                             var elemtd = document.querySelector('#fechaf_vig2');
-                                             var optionstd = {
-                                                 defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
-                                                 format: 'dd/mm/yyyy',
-                                                 onClose: function (e) {
-                                                     var datei = $('#fechai_vig2').val();
-                                                     var datef = $('#fechaf_vig2').val();
-                                                     var res = validar_fechas(datei, datef);
+            var elemtd = document.querySelector('#fechaf_vig2');
+            var optionstd = {
+            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
+            format: 'dd/mm/yyyy',
+            onClose: function (e) {
+            var datei = $('#fechai_vig2').val();
+            var datef = $('#fechaf_vig2').val();
+            var res = validar_fechas(datei, datef);
 
-                                                     if (!res) {
-                                                         $('#fechaf_vig2').val("");
-                                                         M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
-                                                     }
-                                                 },
-                                                 i18n: {
-                                                     clear: 'Limpiar',
-                                                     today: 'Hoy',
-                                                     done: 'Seleccionar',
-                                                     previousMonth: '‹',
-                                                     nextMonth: '›',
-                                                     months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                     monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                     weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                     weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                     weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                 }
-                                             };
-                                             var instancetd = M.Datepicker.init(elemtd, optionstd);
+            if (!res) {
+            $('#fechaf_vig2').val("");
+            M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+            }
+            },
+            i18n: {
+            clear: 'Limpiar',
+            today: 'Hoy',
+            done: 'Seleccionar',
+            previousMonth: '‹',
+            nextMonth: '›',
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+            }
+            };
+            var instancetd = M.Datepicker.init(elemtd, optionstd);
 
-                                             function borrar(field) {
-                                                 field.value = "";
-                                             }
-                                         </script>
-                                     }
-                                     else
-                                     { <div class="col s12">
-                                             <div class="input-field col s6">
-                                                 <i class="material-icons prefix">date_range</i>
-                                                 @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
-                                                 @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
-                                             </div>
-                                             <div class="input-field col s6">
-                                                 <i class="material-icons prefix">date_range</i>
-                                                 @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
-                                                 @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
-                                             </div>
-                                         </div>
-                                     }
-                                 </div>
-                             </div>
-                             <div id="div_picker2"></div>
-                         <div class="card-panel">
-                             <h5>Recurrente</h5>
-                             <div class="row" style="margin-bottom:0;">
-                                 <p>
-                                     <label>
-                                         <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                         <span>Documento recurrente</span>
-                                     </label>
-                                 </p>
-                                 <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
-                                     <thead>
-                                         <tr>
-                                             <th>NO</th>
-                                             <th>TSOL</th>
-                                             <th>FECHA</th>
-                                             <th>Monto</th>
-                                             <th>Porcentaje</th>
-                                         </tr>
-                                     </thead>
-                                     <tbody></tbody>
-                                 </table>
-                                 <table id="table_rech" class="display" cellspacing="0" style="display:none">
-                                     <thead>
-                                         <tr>
-                                             <th>NO</th>
-                                             <th>TSOL</th>
-                                             <th>FECHA</th>
-                                             <th>Monto</th>
-                                             <th>Porcentaje</th>
-                                         </tr>
-                                     </thead>
-                                     <tbody>
-                                         @if (Model.DOCUMENTOREC != null)
-                                         {
+            function borrar(field) {
+            field.value = "";
+            }
+            </script>
+            }
+            else
+            { <div class="col s12">
+            <div class="input-field col s6">
+            <i class="material-icons prefix">date_range</i>
+            @Html.EditorFor(model => model.FECHAI_VIG, new { htmlAttributes = new { @id = "fechai_vig", @class = "form-control datepicker " + @ViewBag.relacionada, @onkeyup = "borrar(this);" } })
+            @Html.LabelFor(model => model.FECHAI_VIG, "De", htmlAttributes: new { @class = "active", @for = "fechai_vig2", @id = "lbl_fechavde2" }) @*B20180801 MGC Textos*@
+            </div>
+            <div class="input-field col s6">
+            <i class="material-icons prefix">date_range</i>
+            @Html.EditorFor(model => model.FECHAF_VIG, new { htmlAttributes = new { @id = "fechaf_vig", @class = "form-control datepicker " + @ViewBag.relacionada, onkeyup = "borrar(this);" } })
+            @Html.LabelFor(model => model.FECHAF_VIG, "Hasta", htmlAttributes: new { @class = "active", @for = "fechaf_vig2", @id = "lbl_fechavhasta2" }) @*B20180801 MGC Textos*@
+            </div>
+            </div>
+            }
+            </div>
+            </div>
+            <div id="div_picker2"></div>
+            <div class="card-panel">
+            <h5>Recurrente</h5>
+            <div class="row" style="margin-bottom:0;">
+            <p>
+            <label>
+            <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
+            <span>Documento recurrente</span>
+            </label>
+            </p>
+            <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
+            <thead>
+            <tr>
+            <th>NO</th>
+            <th>TSOL</th>
+            <th>FECHA</th>
+            <th>Monto</th>
+            <th>Porcentaje</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+            </table>
+            <table id="table_rech" class="display" cellspacing="0" style="display:none">
+            <thead>
+            <tr>
+            <th>NO</th>
+            <th>TSOL</th>
+            <th>FECHA</th>
+            <th>Monto</th>
+            <th>Porcentaje</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if (Model.DOCUMENTOREC != null)
+            {
 
-                                             for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
-                                             {
-                                                 <tr>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].NUM_DOC
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].POS
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].FECHAF
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].MONTO_BASE
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].PORC
-                                                     </td>
+            for (var i = 0; i < Model.DOCUMENTOREC.Count; i++)
+            {
+            <tr>
+            <td>
+            @Model.DOCUMENTOREC[i].NUM_DOC
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].POS
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].FECHAF
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].MONTO_BASE
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].PORC
+            </td>
 
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].DOC_REF
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].EJERCICIO
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].ESTATUS
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].MONTO_FIJO
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].MONTO_GRS
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].MONTO_NET
-                                                     </td>
-                                                     <td>
-                                                         @Model.DOCUMENTOREC[i].PERIODO
-                                                     </td>
-                                                 </tr>
-                                             }
-                                         }
-                                     </tbody>
-                                 </table>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>-->
+            <td>
+            @Model.DOCUMENTOREC[i].DOC_REF
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].EJERCICIO
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].ESTATUS
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].MONTO_FIJO
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].MONTO_GRS
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].MONTO_NET
+            </td>
+            <td>
+            @Model.DOCUMENTOREC[i].PERIODO
+            </td>
+            </tr>
+            }
+            }
+            </tbody>
+            </table>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>-->
             @*Soporte*@
             <div id="Soporte_cont">
                 <div class="row">
@@ -1179,13 +1179,13 @@
                                             </div>
                                             <!--RSG 23.05.2018-->
                                             <script>
-                                    /**/
-                                    /**/
-                                    /**/
-                                    soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()');
-                                    /**/
-                                    /**/
-                                    /**/
+/**/
+/**/
+/**/
+soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()');
+/**/
+/**/
+/**/
                                             </script>
                                         </form>
                                     </div>
@@ -1193,8 +1193,8 @@
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                                        archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                                            ;
+                                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                    ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1235,7 +1235,7 @@
                                 <div class="row" style="margin-bottom:0">
                                     <div class="row">
                                         <div class="input-field col s12">
-                                            <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+<textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
                                             <label id="lbl_notassoporte" for="notas_soporte"></label> @*B20180801 MGC Textos*@
                                         </div>
                                     </div>
@@ -1281,7 +1281,7 @@
                                     </div>
                                     @*<div class="row">*@
                                     <div class="input-field col s12">
-                                        <textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
+<textarea id="notas_soporte" name="notas_soporte" class="materialize-textarea" onkeyup="maxchar_notas();">@ViewBag.notas_soporte</textarea>
                                         <label id="lbl_notasrev" for="notas_soporte">Razón del reverso</label> @*B20180801 MGC Textos*@
                                     </div>
                                     @*</div>*@
@@ -1326,19 +1326,15 @@
                     <div class="card-panel">
                         @*<h5>Recurrente</h5>*@
                         <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;">
-                            @*<p>
-                                    <label>
-                                        <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                        <span id="span_docrec">Documento recurrente</span>
-                                    </label>
-                                </p>*@
+                        <div class="row">
                             <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;">
                                 <!--RSG 01.08.2018-->
                                 <thead>
                                     <tr>
+                                        <th id=""></th>@*B20180801 MGC Textos*@
                                         <th id="thead_rnumero">NO</th>@*B20180801 MGC Textos*@
-                                        <th id="thead_rtiposol">TSOL</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rperiodo">Periodo</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rtiposol">Solicitud</th>@*B20180801 MGC Textos*@
                                         <th id="thead_rfecha">FECHA</th>@*B20180801 MGC Textos*@
                                         <th id="thead_rmonto">Monto</th>@*B20180801 MGC Textos*@
                                         <th id="thead_rporc">Porcentaje</th>@*B20180801 MGC Textos*@
@@ -1406,6 +1402,26 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row" style="margin-bottom:0;">
+                            <div class="col s12 m6 offset-m6 right-align">
+                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango"/>
+                                </div>
+                                <div class="col s12 m6 offset-m6">
+                                    <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
+                                        <!--RSG 01.08.2018-->
+                                        <thead>
+                                            <tr>
+                                                <th id="">Documento</th>
+                                                <th id="">Rango</th>
+                                                <th id="">Objetivo inicio</th>
+                                                @*<th id="">Objetivo limite</th>*@
+                                                <th id="">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col s12">
@@ -1585,10 +1601,10 @@
                                 </div>
                                 @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
                                 @*<div id="div_categoria2" class="form-group col s6" style="display:none">
-                                        @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
-                                        </div>
+                                    @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                    @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
+                                    </div>
                                     </div>*@
                             </div>
                         </div>
@@ -1597,12 +1613,12 @@
                     {
                         <script>
                             $("#select_neg").prop("disabled", "disabled");
-                            $("#select_dis").prop("disabled", "disabled");
+                            //$("#select_dis").prop("disabled", "disabled");
 
                             var elem = document.getElementById('select_neg');
                             var instance = M.FormSelect.init(elem, []);
-                            elem = document.getElementById('select_dis');
-                            instance = M.FormSelect.init(elem, []);
+                            //elem = document.getElementById('select_dis');
+                            //instance = M.FormSelect.init(elem, []);
                         </script>
                     }
                     <div id="div_montobase" class="col s12 m6 l6" style="display:none">
@@ -1613,10 +1629,10 @@
                                 {
                                     @*if (Model.PAI.BACKORDER)
                                         {
-                                            <div class="input-field col s6">
-                                                <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
-                                                <label for="bmonto_apoyo">% Apoyo</label>
-                                            </div>
+                                        <div class="input-field col s6">
+                                        <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
+                                        <label for="bmonto_apoyo">% Apoyo</label>
+                                        </div>
                                         }*@
                                     <div class="input-field col s6">
                                         <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="@ViewBag.reversa" disabled="disabled" />
@@ -1631,14 +1647,14 @@
 
                                     @*if (Model.PAI.BACKORDER)
                                         {
-                                            <div class="input-field col s6">
-                                                <input value="$ 29,200.14" id="monto_venta" type="text" class="precio @ViewBag.reversa" disabled="disabled" />
-                                                <label for="monto_venta">Venta del mes</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <input value="" id="monto_back" type="text" class="precio @ViewBag.reversa" onblur="this.value = toShow(this.value);" />
-                                                <label for="monto_back">Backorder</label>
-                                            </div>
+                                        <div class="input-field col s6">
+                                        <input value="$ 29,200.14" id="monto_venta" type="text" class="precio @ViewBag.reversa" disabled="disabled" />
+                                        <label for="monto_venta">Venta del mes</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                        <input value="" id="monto_back" type="text" class="precio @ViewBag.reversa" onblur="this.value = toShow(this.value);" />
+                                        <label for="monto_back">Backorder</label>
+                                        </div>
                                         }*@
 
                                 }
@@ -1745,22 +1761,22 @@
                         <table id="table_dish" class="display" cellspacing="0" width="100%" style="display:none">
                             @*
                                 <thead>
-                                    <tr>
-                                        <th>Pos</th>
-                                        <th>Vigencia De</th>
-                                        <th>Vigencia Al</th>
-                                        <th>Material</th>
-                                        <th>Categoría</th>
-                                        <th>Categoría ID</th>
-                                        <th>Costo unitario</th>
-                                        <th>% Apoyo</th>
-                                        <th>Apoyo por pieza</th>
-                                        <th>Precio sugerido</th>
-                                        <th>Volumen estimado</th>
-                                        <th>Volumen real</th>
-                                        <th>Apoyo estimado</th>
-                                        <th>Apoyo real</th>
-                                    </tr>
+                                <tr>
+                                <th>Pos</th>
+                                <th>Vigencia De</th>
+                                <th>Vigencia Al</th>
+                                <th>Material</th>
+                                <th>Categoría</th>
+                                <th>Categoría ID</th>
+                                <th>Costo unitario</th>
+                                <th>% Apoyo</th>
+                                <th>Apoyo por pieza</th>
+                                <th>Precio sugerido</th>
+                                <th>Volumen estimado</th>
+                                <th>Volumen real</th>
+                                <th>Apoyo estimado</th>
+                                <th>Apoyo real</th>
+                                </tr>
                                 </thead>*@
                             <tbody>
                                 @if (Model.DOCUMENTOP != null)
@@ -1828,6 +1844,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
+                                        <input value="" id="txtPres" type="hidden" class="" />
                                         <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
@@ -1840,7 +1857,7 @@
                                         @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "moneda_id", @class = "form-control " + @ViewBag.relacionada, onchange = @"selectMoneda(this.value)" })
                                         @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "moneda_id", @id = "lbl_monedafin" })@*B20180801 MGC Textos*@
                                         @*
-                                                </div>
+                                            </div>
                                             </div>*@
                                     </div>
                                     <div class="form-group">
@@ -1974,158 +1991,158 @@
                                     </div>
                                 </div>
                                 <script>
-                            var clearing = [];
-                            function getClearing(gall) {
-                                $("#div_clearing").empty();
-                                clearing = [];
-                                /**/
-                                /**/
-                                /**/
-                                /**/
-                                var bukrs = '@Model.SOCIEDAD_ID';
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            var land = '@Model.PAIS_ID';
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            var ejercicio = '@Model.EJERCICIO';
-                            /**/
-                            /**/
-                            /**/
-                            /**/
-                            $.ajax({
-                                type: "POST",
-                                url: '../Listas/clearing',
-                                dataType: "json",
-                                data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
+var clearing = [];
+function getClearing(gall) {
+$("#div_clearing").empty();
+clearing = [];
+/**/
+/**/
+/**/
+/**/
+var bukrs = '@Model.SOCIEDAD_ID';
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+var land = '@Model.PAIS_ID';
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+var ejercicio = '@Model.EJERCICIO';
+/**/
+/**/
+/**/
+/**/
+$.ajax({
+type: "POST",
+url: '../Listas/clearing',
+dataType: "json",
+data: { bukrs: bukrs, land: land, gall: gall, ejercicio: ejercicio },
 
-                                success: function (data) {
-                                    if (data !== null || data !== "") {
-                                        //RSG 26.04.2018----------------
-                                        clearing.push(data.ABONO);
-                                        clearing.push(data.CARGO);
-                                        clearing.push(data.CLEARING);
-                                        clearing.push(data.LIMITE);
-                                        //RSG 26.04.2018----------------
-                                    }
+success: function (data) {
+if (data !== null || data !== "") {
+//RSG 26.04.2018----------------
+clearing.push(data.ABONO);
+clearing.push(data.CARGO);
+clearing.push(data.CLEARING);
+clearing.push(data.LIMITE);
+//RSG 26.04.2018----------------
+}
 
-                                },
-                                error: function (xhr, httpStatusMessage, customErrorMessage) {
-                                    //M.toast({ html: httpStatusMessage });
-                                },
-                                async: false
-                            });
+},
+error: function (xhr, httpStatusMessage, customErrorMessage) {
+//M.toast({ html: httpStatusMessage });
+},
+async: false
+});
 
-                        }
-                                    function formaClearing() {
-                                        var tex_abono = document.querySelector(".lbl_cabono").innerHTML;
-                                        var tex_cargo = document.querySelector(".lbl_ccargo").innerHTML;
-                                        var tex_clearing = document.querySelector(".lbl_cclear").innerHTML;
-                            getClearing(document.getElementById("tall_id").value);
-                            $("#div_clearing").empty();
-                            //var monto = document.getElementById("monto_dis").value;
-                            var monto = $('#monto_doc_md').val();
-                                    var div = "<ul class='collection'><li class='collection-item'>";
-                                    div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_abono + "</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
-                            div += "</li><li class='collection-item'>";
+}
+function formaClearing() {
+var tex_abono = document.querySelector(".lbl_cabono").innerHTML;
+var tex_cargo = document.querySelector(".lbl_ccargo").innerHTML;
+var tex_clearing = document.querySelector(".lbl_cclear").innerHTML;
+getClearing(document.getElementById("tall_id").value);
+$("#div_clearing").empty();
+//var monto = document.getElementById("monto_dis").value;
+var monto = $('#monto_doc_md').val();
+var div = "<ul class='collection'><li class='collection-item'>";
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_abono + "</div><div class='col s4'>" + clearing[0] + "</div><div class='col s4'>" + monto + "</div></div>";
+div += "</li><li class='collection-item'>";
 
-                            if (clearing[3] == null) {
-                                div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-                            } else {
-                                if (clearing[2] != null) {
-                                    if (monto <= clearing[3]) {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
-                                        div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
-                                        div += "</li>";
-                                    } else {
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
-                                        div += "</li><li class='collection-item'>";
-                                        div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
-                                        div += "</li>";
-                                    }
-                                }
-                            }
-                            div += "</li>";
-                            div += "</ul>";
-                            $("#div_clearing").append(div);
-                        }
+if (clearing[3] == null) {
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+} else {
+if (clearing[2] != null) {
+if (monto <= clearing[3]) {
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + monto + "</div></div>";
+div += "</li><li class='collection-item'>";
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>0.00</div></div>";
+div += "</li>";
+} else {
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_cargo + "</div><div class='col s4'>" + clearing[1] + "</div><div class='col s4'>" + clearing[3] + "</div></div>";
+div += "</li><li class='collection-item'>";
+div += "<div class='row' style='margin-bottom:0;'><div class='col s4'>" + tex_clearing + "</div><div class='col s4'>" + clearing[2] + "</div><div class='col s4'>" + (monto - clearing[3]) + "</div></div>";
+div += "</li>";
+}
+}
+}
+div += "</li>";
+div += "</ul>";
+$("#div_clearing").append(div);
+}
                                 </script>
                             </div>
                             @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <ul class="collection">
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Importe solicitud
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis1">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto provisión original
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis2">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                <h5>Análisis Solicitud</h5>
+                                <div class="row" style="margin-bottom:0">
+                                <div class="col s12">
+                                <ul class="collection">
+                                <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                <div class="col s6">
+                                Importe solicitud
+                                </div>
+                                <div class="col s6 right-align">
+                                <span id="analisis1">-</span>
+                                </div>
+                                </div>
+                                </li>
+                                <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                <div class="col s6">
+                                Monto provisión original
+                                </div>
+                                <div class="col s6 right-align">
+                                <span id="analisis2">-</span>
+                                </div>
+                                </div>
+                                </li>
 
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto aplicado
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis3">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                <li class="collection-item">
+                                <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                <div class="col s6">
+                                Monto aplicado
+                                </div>
+                                <div class="col s6 right-align">
+                                <span id="analisis3">-</span>
+                                </div>
+                                </div>
+                                </li>
 
-                                                <li class="collection-item" id="a4">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Remanente/Exceso
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis4">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                <li class="collection-item" id="a4">
+                                <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                <div class="col s6">
+                                Remanente/Exceso
+                                </div>
+                                <div class="col s6 right-align">
+                                <span id="analisis4">-</span>
+                                </div>
+                                </div>
+                                </li>
 
-                                                <li class="collection-item" id="a5">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto total
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis5">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                <li class="collection-item" id="a5">
+                                <div class="row" style="margin-bottom:0;padding-bottom:0;">
+                                <div class="col s6">
+                                Monto total
+                                </div>
+                                <div class="col s6 right-align">
+                                <span id="analisis5">-</span>
+                                </div>
+                                </div>
+                                </li>
 
-                                            </ul>
-                                        </div>
-                                    </div>
+                                </ul>
+                                </div>
+                                </div>
                                 </div>*@
                             <div class="card-panel">
                                 <h5 id="head_solicitudanalisis">Análisis Solicitud</h5>@*B20180801 MGC Textos*@
@@ -2192,83 +2209,83 @@
                                 </div>
                             </div>
                             @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <table class="tg">
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Importe solicitud</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto provisión original</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto aplicado</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr id="s_color">
-                                                <td class="tg-yw4l">
-                                                    <label id="">Remanente/(Exceso)</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto a</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impa"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto b</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impb"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Impuesto c</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_impc"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Retención</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id="s_ret"></label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tg-yw4l">
-                                                    <label>Monto total</label>
-                                                </td>
-                                                <td class="tg-yw4l">
-                                                    <label id=""></label>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                <h5>Análisis Solicitud</h5>
+                                <div class="row" style="margin-bottom:0">
+                                <table class="tg">
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Importe solicitud</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id=""></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Monto provisión original</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id=""></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Monto aplicado</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id=""></label>
+                                </td>
+                                </tr>
+                                <tr id="s_color">
+                                <td class="tg-yw4l">
+                                <label id="">Remanente/(Exceso)</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id=""></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Impuesto a</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id="s_impa"></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Impuesto b</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id="s_impb"></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Impuesto c</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id="s_impc"></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Retención</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id="s_ret"></label>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td class="tg-yw4l">
+                                <label>Monto total</label>
+                                </td>
+                                <td class="tg-yw4l">
+                                <label id=""></label>
+                                </td>
+                                </tr>
+                                </table>
+                                </div>
                                 </div>*@
                         </div>
                     </div>
@@ -2285,552 +2302,9 @@
     }
 
     <div id="validaciones">
-
         <script>
-            var lista1 = [];
-            var lista = @Html.Raw(ViewBag.listaValid);
-            var div = $("#validaciones");
-            var app = "<script>"
-            for (var i = 0; i < lista.length; i++) {
-                var campo = document.getElementById(lista[i].ID);
-                if (campo != undefined) {
-                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) { validar('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ")}); ";
-                    app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
-                    app += "var ban = ";
-                    for (var j = 0; j < lista[i].COND.length; j++) {
-                        app += lista[i].COND[j].andor + "warning($(this).val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                    }
-                    app += ";";
-                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL+ "' |'"+lista[i].TSOL+"'== ''){";
-                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}}); ";
-
-                }
-                else {
-                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { validarC('" + lista[i].ID + "', '" + lista[i].COND + "', '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '" + lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ");e.preventDefault(); e.stopPropagation();});";
-                    app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
-                    app += "var val = $(this).find('input').val(); if(val==undefined){ val = $(this).val();} var ban = ";
-                    for (var j = 0; j < lista[i].COND.length; j++) {
-                        app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                    }
-                    app += ";";
-                    app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)";
-                    app += ";e.preventDefault(); e.stopPropagation();});";
-                }
-            }
-            app += "$('#tab_soporte').on('click', function (e) {var ban = validarTab(e, 'tab_info','Informacion_cont'); }); ";
-            app += "$('#tab_dis').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
-                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} }); ";
-            app += "$('#tab_fin').on('click', function (e) { var ban = validarTab(e, 'tab_info', 'Informacion_cont');" +
-                " if(ban){ ban = validarTab(e, 'tab_soporte', 'Soporte_cont');} " +
-                " if(ban){ ban = validarTab(e, 'tab_dis', 'Distribucion_cont');} }); ";
-
-            app += "function validarTab(e, tabid, div) {";
-            app += "var ban = true;";
-            for (var i = 0; i < lista.length; i++) {
-                app += "ban = true;";
-                //if (lista[i].TAB == 'tab_info' | true) {
-                app += "if ('" + lista[i].TAB + "' == tabid) {";
-                var campo = document.getElementById(lista[i].ID);
-                if (campo != undefined) {
-                    //app += "$('#" + lista[i].ID + "').on('" + lista[i].ACTION + "', function (e) {";
-                    app += "ban = ";
-                    for (var j = 0; j < lista[i].COND.length; j++) {
-                        app += lista[i].COND[j].andor + "warning($('#" + lista[i].ID + "').val(), '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                    }
-                    app += ";";
-                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
-                    app += " validarN('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                    //app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban)}); ";
-                    app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;} ";
-
-                }
-                else {
-                    //app += "$('body').on('" + lista[i].ACTION + "','." + lista[i].ID + "', function (e) { ";
-                    //app += "var val = $('." + lista[i].ID + "').find('input').val(); if(val==undefined){ val = $('." + lista[i].ID + "').val();} ban = ";
-                    app += "var val = $('." + lista[i].ID + "').find('input').val();";
-                    if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
-                        app += "if(val==undefined){ var li = document.querySelectorAll('." + lista[i].ID + "');";
-                        app += "for(var j= 0; j<li.length;j++){ var par = $(li[j]).prop('tagName');if( par!= 'TH'){";
-                        app += " val = $(li[j]).text(); ban = ";
-                        for (var j = 0; j < lista[i].COND.length; j++) {
-                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                        }
-                        app += ";if(!ban){j=li.length;}";
-                        app += "}}}";
-                        app += "else{";
-                        app += "ban = ";
-                        for (var j = 0; j < lista[i].COND.length; j++) {
-                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                        }
-                        app += "}";
-                    } else {
-                        app += "ban = ";
-                        for (var j = 0; j < lista[i].COND.length; j++) {
-                            app += lista[i].COND[j].andor + "warning(val, '" + lista[i].COND[j].comp + "', '" + lista[i].COND[j].val2 + "')" + lista[i].COND[j].orand;
-                        }
-                    }
-                    app += ";";
-                    app += "if($('#tsol_id').val() =='" + lista[i].TSOL + "' |'" + lista[i].TSOL + "'== ''){";
-                        app += " validarNC('" + lista[i].ID + "', " + lista[i].NUM + ", '" + lista[i].MSG + "', '" + lista[i].TIPO + "', '";
-                        app += lista[i].COLOR + "', '" + lista[i].ELEM + "', " + i + ", ban);}else{ban=true;}";
-                    }
-                //}
-                    app += "if('" + lista[i].TIPO + "'=='info'){ban=true;}";
-                    var tabb = "";
-                    if (lista[i].TAB == "tab_info") {
-                        tabb = "Informacion_cont";
-                    }
-                    if (lista[i].TAB == "tab_soporte") {
-                        tabb = "Soporte_cont";
-                    }
-                    if (lista[i].TAB == "tab_dist") {
-                        tabb = "Distribucion_cont";
-                    }
-                app += "if(!ban){selectTab('" + tabb + "', e)}}";
-            }
-            app += " return ban;}";
-
-
-            //app += "function validarInfo(){";
-            //for (var i = 0; i < lista.length; i++) {
-            //    app += "if(!valido('" + lista[i][0] + "', '" + lista[i][1] + "')){if('" + lista[i][3] + "' == 'error'){selectTab('Informacion_cont')}}";
-            //}
-            //app += "}";
-            //app += " if(!valid('payer_id')){if('error' == 'error'){selectTab('Informacion_cont')}}";
-
-            div.append(app);
-
-            function validar(id, condicion, mensaje, icon, color, elem, ii) {
-                var campoVal = document.getElementById(id);
-                var campo = document.getElementById(elem);
-
-                if (campo != undefined & campoVal != undefined) {
-                    var value = campoVal.value;
-                    if (condiciones(ii)) {
-                        var valid = valido(value, condicion, ii);
-                        var tipo_condicion = condicion.split("-")[0];
-                        var valor_condicion = condicion.split("-")[1];
-
-                        if (!valid) {
-                            //dismiss(id + "-" + tipo_condicion);
-                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                            esInvalido(campo);
-                        } else {
-                            esValido(campo);
-                            dismiss(id + "-" + tipo_condicion);
-                        }
-                    }
-                }
-            }
-
-            function validarC(id, condicion, mensaje, icon, color, elem, ii) {
-                var campoVal = document.querySelectorAll("." + id);
-                var campo = document.querySelectorAll("." + elem);
-                if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
-                    for (var i = 0; i < campoVal.length; i++) {
-                        var value = $(campoVal[i]).find('input').val();
-                        if (value != undefined) {
-                            if (condiciones(ii)) {
-                                var valid = valido(value, condicion, ii);
-                                var tipo_condicion = condicion.split("-")[0];
-                                var valor_condicion = condicion.split("-")[1];
-
-                                if (!valid) {
-                                    //dismiss(id + "-" + tipo_condicion);
-                                    //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                    esInvalidoC(campo[i]);
-                                } else {
-                                    esValidoC(campo[i]);
-                                    dismiss(id + "-" + tipo_condicion);
-                                }
-                                i = campoVal.length;
-                            }
-                        }
-                    }
-                }
-            }
-
-            function condiciones(ii) {
-                var ban = true;
-                var cont = 0;
-                if (lista[ii].CONDICION != undefined)
-                    if (lista[ii].CONDICION != "undefined")
-                        if (lista[ii].CONDICION.length > 0) {
-                            for (var i = 0; i < lista[ii].CONDICION.length; i++) {
-                                var ccc = lista[ii].CONDICION;
-                                if (document.getElementById(ccc[i].id).value == ccc[i].val)
-                                    cont++;
-                            }
-                            if (cont != lista[ii].CONDICION.length)
-                                ban = false;
-                        }
-                return ban;
-            }
-
-            function valido(value, condicion, ii) {
-                var ban = true;
-                var valid = true;
-                if (ban) {
-                    var tipo_condicion = condicion.split("-")[0];
-                    var valor_condicion = condicion.split("-")[1];
-
-                    if (tipo_condicion != "") {
-                        if (tipo_condicion == "c") {
-                            if (valor_condicion == "!=null") {
-                                if (value == "")
-                                    valid = false;
-                            } else if (valor_condicion == "!=") {
-                                var compara = $("#" + condicion.split("-")[2]).text();
-                                if (parseFloat(toNum(value)) != parseFloat(toNum(compara)))
-                                    valid = false
-                            } else if (valor_condicion == ">") {
-                                var compara = condicion.split("-")[2];
-                                if (parseFloat(toNum(value)) <= parseFloat(toNum(compara)))
-                                    valid = false
-                            }
-                        } else if (tipo_condicion == "n") {
-                            if (tipo_condicion == 'n') {
-                                if (!$.isNumeric(value))
-                                    valid = false;
-                            }
-                        } else if (tipo_condicion == "l") {
-                            var longitud = parseInt(valor_condicion);
-                            if (longitud > 0) {
-                                if (value.length < longitud)
-                                    valid = false;
-                            }
-                        } else if (tipo_condicion == "lm") {
-                            var longitud = parseInt(valor_condicion);
-                            if (longitud > 0) {
-                                if (value.length > longitud)
-                                    valid = false;
-                            }
-                        } else if (tipo_condicion == "f") {
-                            valid = evaluarFiles();
-                        }
-                    }
-                }
-                return valid;
-            }
-
-            function toast(clases, dura, icon, mensaje, color) {
-                dismiss(clases);
-                M.toast({
-                    classes: clases,
-                    displayLength: dura,
-                    html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje
-                    + '<button class="btn-small btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>'
-                });
-            }
-
-            function dismiss(clase) {
-                var toastElement = document.querySelectorAll('.' + clase);
-                for (var i = 0; i < toastElement.length; i++) {
-                    var toastInstance = M.Toast.getInstance(toastElement[i]);
-                    toastInstance.dismiss();
-                }
-            }
-
-            function selectTab(tab, e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var ell = document.getElementById("tabs");
-                var instances = M.Tabs.getInstance(ell);
-                instances.select(tab);
-            }
-
-            function esValido(campo) {
-                campo.classList.add("valid");
-                campo.classList.remove("invalid");
-                campo.classList.remove("warn");
-            }
-            function esInvalido(campo) {
-                campo.classList.add("invalid");
-                campo.classList.remove("valid");
-                campo.classList.remove("warn");
-            }
-            function esWarning(campo) {
-                campo.classList.add("warn");
-                campo.classList.remove("valid");
-                campo.classList.remove("invalid");
-            }
-            function esValidoC(campo) {
-                $(campo).find('input').addClass("valid");
-                $(campo).find('input').removeClass("invalid");
-                $(campo).find('input').removeClass("warn");
-            }
-            function esInvalidoC(campo) {
-                $(campo).find('input').addClass("invalid");
-                $(campo).find('input').removeClass("valid");
-                $(campo).find('input').removeClass("warn");
-            }
-            function esWarningC(campo) {
-                campo.classList.add("warn");
-                campo.classList.remove("valid");
-                campo.classList.remove("invalid");
-            }
-
-            //function validarTab(e, tabId, tab) {
-            //    //M.Toast.dismissAll();
-            //    var ban = true;
-            //    for (var i = 0; i < lista.length; i++) {
-            //        if (lista[i].TAB == tabId) {
-            //            var condicion = lista[i].COND;
-            //            var id = lista[i].ID;
-            //            var campoVal = document.getElementById(lista[i].ID);
-            //            var campo = document.getElementById(lista[i].ELEM);
-
-            //            var clase = false;
-            //            if (campoVal == undefined & campo == undefined) {
-            //                campoVal = document.querySelectorAll("." + lista[i].ID);
-            //                campo = document.querySelectorAll("." + lista[i].ELEM);
-            //                clase = true;
-            //            }
-
-            //            if (campo != undefined & campoVal != undefined) {
-            //                var icon = lista[i].TIPO;
-            //                var color = lista[i].COLOR;
-            //                var mensaje = lista[i].MSG;
-            //                //var tipo_condicion = condicion.split("-")[0];
-            //                //var valor_condicion = condicion.split("-")[1];
-
-            //                if (!clase) {
-            //                    if (condiciones(i)) {
-            //                        //var b = valido(campoVal.value, lista[i].COND, i);
-            //                        var b = valido(campoVal.value, lista[i].COND, i);
-            //                        if (!b) {
-            //                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-            //                            if (lista[i].TIPO == 'error') {
-            //                                esInvalido(campo);
-            //                                selectTab(tab, e);
-            //                                campo.focus();
-            //                                ban = false;
-            //                            }
-            //                        } else {
-            //                            if (lista[i].TIPO == 'error')
-            //                                dismiss(id + "-" + tipo_condicion);
-            //                        }
-            //                    }
-            //                } else {
-            //                    for (var j = 0; j < campoVal.length; j++) {
-            //                        var value = $(campoVal[j]).find('input').val();
-            //                        if (value != undefined | tipo_condicion == 'f') {
-            //                            if (tipo_condicion == 'f')
-            //                                value = '';
-            //                            if (condiciones(i)) {
-            //                                var valid = valido(value, condicion, i);
-            //                                if (!valid) {
-            //                                    toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-            //                                    if (lista[i].TIPO == 'error') {
-            //                                        esInvalidoC(campo[i]);
-            //                                        selectTab(tab, e);
-            //                                        $(campo).find('input').focus();
-            //                                        ban = false;
-            //                                    }
-            //                                } else {
-            //                                    dismiss(id + "-" + tipo_condicion);
-            //                                }
-            //                                j = campoVal.length;
-            //                            }
-            //                        } else {
-
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    return ban;
-            //}
-
-            function validarN(id, num, mensaje, icon, color, elem, ii, ban) {
-                var campoVal = document.getElementById(id);
-                var campo = document.getElementById(elem);
-
-                if (campo != undefined & campoVal != undefined) {
-                    var value = campoVal.value;
-                    if (condiciones(ii)) {
-
-                        //var valid = valido(value, condicion, ii);
-                        var valid = ban;
-                        //var tipo_condicion = condicion.split("-")[0];
-                        var tipo_condicion = num;
-                        //var valor_condicion = condicion.split("-")[1];
-
-                        if (!valid) {
-                            //dismiss(id + "-" + tipo_condicion);
-                            //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                            toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                            if (color == "red")
-                                esInvalido(campo);
-                            else
-                                esWarning(campo);
-                        } else {
-                            esValido(campo);
-                            dismiss(id + "-" + tipo_condicion);
-                        }
-                    }
-                }
-            }
-            function validarNC(id, num, mensaje, icon, color, elem, ii, ban) {
-                //var campoVal = document.getElementById(id);
-                //var campo = document.getElementById(elem);
-                var campoVal = document.querySelectorAll("." + id);
-                var campo = document.querySelectorAll("." + elem);
-                for (var i = 0; i < campoVal.length; i++) {
-                    if (campo != undefined & campoVal != undefined & campo.length == campoVal.length) {
-                        var value = $(campoVal[i]).find('input').val();
-                        if (lista[i].COND.length > 0 & lista[i].COND[0].comp != 'f') {
-                            if (value == undefined)
-                                value = $(campoVal[i]).text();
-                        }
-                        var valid = ban;
-                        var tipo_condicion = num;
-                        //if (value == undefined) {
-                        //    var inputid = $(campoVal[i]).attr('id');
-                        //    if (!valid)
-                        //        toast(id + "-" + inputid, 1000000, icon, mensaje, color);
-                        //} else {
-                        if (!valid) {
-                        } else {
-                        }
-                        //}
-                        if (condiciones(ii) & value != undefined) {
-
-                            //var valid = valido(value, condicion, ii);
-                            //var tipo_condicion = condicion.split("-")[0];
-                            //var valor_condicion = condicion.split("-")[1];
-
-                            if (!valid) {
-                                //dismiss(id + "-" + tipo_condicion);
-                                //M.toast({ classes: id + "-" + tipo_condicion, displayLength: 1000000, html: '<span style="padding-right:15px;"><i class="material-icons">' + icon + '</i></span>  ' + mensaje + '<button class="btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>' });
-                                //toast(id + "-" + tipo_condicion, 1000000, icon, mensaje, color);
-                                toast(id + "-" + num, 1000000, icon, mensaje, color);
-                                if (color == "red")
-                                    esInvalidoC(campo[i]);
-                                else
-                                    esWarningC(campo[i]);
-                                //for (var j = 0; j < campo.length; j++) {
-                                //    esInvalido(campo[j]);
-                                //}
-                                i = campoVal.length;
-                            } else {
-                                esValidoC(campo[i]);
-                                //for (var j = 0; j < campo.length; j++) {
-                                //    esValido(campo[j]);
-                                //}
-                                dismiss(id + "-" + tipo_condicion);
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            function warning(val1, comp, val2) {
-                if (comp == '=') {
-                    if (val1 == val2)
-                        return true;
-                } if (comp == '!=') {
-                    if (val1 != val2)
-                        return true;
-                } if (comp == '&') {
-                    if (val1 & val2)
-                        return true;
-                    else
-                        return false;
-                } if (comp == '|') {
-                    if (val1 | val2)
-                        return true;
-                    else
-                        return false;
-                } if (comp == 'n') {
-                    if ($.isNumeric(toNum(val1)))
-                        return true;
-                } if (comp == 'e') {
-                    if ($.isNumeric(parseFloat(toNum(val1))) & Number.isInteger(parseFloat(toNum(val1))))
-                        return true;
-                } if (comp == 'dec') {
-                    if (!Number.isInteger(parseFloat(toNum(val1))) & $.isNumeric(parseFloat(toNum(val1))))
-                        return true;
-                }
-
-                if ($.isNumeric(toNum(val1))) {
-                    if (comp == '>') {
-                        if (parseFloat(toNum(val1)) > parseFloat(toNum(val2)))
-                            return true;
-                    } if (comp == '<') {
-                        if (parseFloat(toNum(val1)) < parseFloat(toNum(val2)))
-                            return true;
-                    } if (comp == '>=') {
-                        if (parseFloat(toNum(val1)) >= parseFloat(toNum(val2)))
-                            return true;
-                    } if (comp == '<=') {
-                        if (parseFloat(toNum(val1)) <= parseFloat(toNum(val2)))
-                            return true;
-                    }
-                }
-                if (comp == "l") {
-                    var longitud = parseInt(val2);
-                    if (longitud > 0) {
-                        if (val1.length == longitud)
-                            return true;
-                    }
-                }
-                else if (comp == "f") {
-                    return evaluarFiles();
-                }
-                else if (comp == "d") {
-                    return isDate(val1)
-                }
-                else if (comp == "M") {
-                    return ($("#select_neg").val() == "M")
-                }
-                else if (comp == "P") {
-                    return ($("#select_neg").val() == "P")
-                }
-                else if (comp == "MA") {
-                    return ($("#select_dis").val() == "M")
-                }
-                else if (comp == "CA") {
-                    return ($("#select_dis").val() == "C")
-                }
-                else if (comp == "TOT") {
-                    return (toNum(val1) == toNum($("#total_dis").text()))
-                }
-                else if (comp == "T") {
-                    return (parseFloat(toNum($("#total_dis").text()))>0)
-                }
-                else if (comp == "DIS") {
-                    evaluarDisTable();
-                    var len = $("#table_dis > tbody  > tr[role='row']").length;
-                    if (len > 0) {
-                        var cont = 0;
-                        $('#table_dis > tbody  > tr').each(function () {
-                            var mat = $(this).find("td:eq(" + (3) + ") input").val();
-                            var cat = $(this).find("td:eq(" + (4) + ")").text();
-                            if (mat != undefined & mat != "")
-                                cont++;
-                            else if(cat != undefined & cat != "")
-                                cont++;
-
-                        });
-                    }
-                    return cont > 0;
-                }
-                else if (comp == "INI") {
-                    return (val1.startsWith(val2))
-                }
-                return false;
-            }
-
-                            //var val = 'asdasdasd';
-                            ////var qq = warning(warning(val, "n", 0), '|', warning(warning(val, ">", 0), "&", warning(val, "<=", 100)));
-                            //var qq = warning(warning(val, "n", 0), '|', warning(warning(val, "==", "200c"), "|", warning(val, "==", "201c")));
-                            //alert(qq);
+var lista1 = [];
+var lista = @Html.Raw(ViewBag.listaValid);
         </script>
+        <script src="~/Scripts/warning.js"></script>
     </div>

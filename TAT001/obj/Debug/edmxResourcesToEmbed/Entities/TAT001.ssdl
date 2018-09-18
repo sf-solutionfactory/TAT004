@@ -210,7 +210,7 @@
     <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
     <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
     <Property Name="NAME1" Type="nvarchar" MaxLength="100" />
-    <Property Name="STCD1" Type="nvarchar" MaxLength="13" />
+    <Property Name="STCD1" Type="nvarchar" MaxLength="20" />
     <Property Name="STCD2" Type="nvarchar" MaxLength="20" />
     <Property Name="LAND" Type="nchar" MaxLength="2" />
     <Property Name="REGION" Type="nvarchar" MaxLength="50" />
@@ -261,6 +261,7 @@
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
     <Property Name="FECHAC" Type="datetime" />
     <Property Name="FECHAM" Type="datetime" />
+    <Property Name="USUARIO7_ID" Type="nvarchar" MaxLength="16" />
   </EntityType>
   <EntityType Name="CLIENTEI">
     <Key>
@@ -768,6 +769,7 @@
     <Property Name="OBJQ_PORC" Type="decimal" Precision="13" Scale="5" />
     <Property Name="CUENTAP" Type="numeric" Precision="10" Scale="0" />
     <Property Name="CUENTAPL" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="EXCEDE_PRES" Type="char" MaxLength="1" />
   </EntityType>
   <EntityType Name="DOCUMENTOA">
     <Key>
@@ -1053,6 +1055,7 @@
     <Property Name="FECHAC" Type="datetime" />
     <Property Name="FECHAM" Type="datetime" />
     <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+    <Property Name="STATUS" Type="nvarchar" MaxLength="20" />
   </EntityType>
   <EntityType Name="GALL">
     <Key>

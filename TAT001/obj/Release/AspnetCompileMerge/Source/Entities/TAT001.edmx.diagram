@@ -326,6 +326,11 @@
         <EntityTypeShape EntityType="TAT001Model.ACCIONT" Width="1.5" PointX="34.25" PointY="79.625" />
         <AssociationConnector Association="TAT001Model.FK_ACCIONT_ACCION" />
         <AssociationConnector Association="TAT001Model.FK_ACCIONT_SPRAS" />
+        <EntityTypeShape EntityType="TAT001Model.CLIENTEF" Width="1.5" PointX="23.25" PointY="47.875" />
+        <EntityTypeShape EntityType="TAT001Model.USUARIOF" Width="1.5" PointX="32.25" PointY="70.25" />
+        <AssociationConnector Association="TAT001Model.FK_CLIENTEF_CLIENTE" />
+        <AssociationConnector Association="TAT001Model.FK_USUARIOF_CLIENTE" />
+        <AssociationConnector Association="TAT001Model.FK_USUARIOF_USUARIO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1318,6 +1318,7 @@ $(document).ready(function () {
             copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
             copiarSopTableControl(""); //Soporte ahora en información //B20180625 MGC 2018.07.03
             enviaRec("");//RSG 28.05.2018 //B20180625 MGC 2018.07.03
+            excedePresup();
 
             //B20180625 MGC2 2018.07.04
             //enviar borrador

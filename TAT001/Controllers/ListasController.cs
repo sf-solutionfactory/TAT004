@@ -67,12 +67,16 @@ namespace TAT001.Controllers
             else
             {
 
-                var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
+                //var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
+                var det = db.USUARIOFs.Where(a => a.USUARIO_ID.Equals(usuario) & a.ACTIVO == true).ToList();
 
                 var c = (from N in db.CLIENTEs.ToList()
                          join D in det
                          on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
+                         join C in db.CLIENTEFs.ToList()
+                         on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR }
                          where N.KUNNR.Contains(Prefix)
+                            & C.USUARIO1_ID != null
                          select new { N.KUNNR, N.NAME1 }).ToList();
 
                 if (c.Count == 0)
@@ -80,7 +84,10 @@ namespace TAT001.Controllers
                     var c2 = (from N in db.CLIENTEs.ToList()
                               join D in det
                               on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
+                              join C in db.CLIENTEFs.ToList()
+                              on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR }
                               where CultureInfo.CurrentCulture.CompareInfo.IndexOf(N.NAME1, Prefix, CompareOptions.IgnoreCase) >= 0
+                                & C.USUARIO1_ID != null
                               select new { N.KUNNR, N.NAME1 }).ToList();
                     c.AddRange(c2);
                 }

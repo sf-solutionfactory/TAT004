@@ -632,6 +632,7 @@
     <EntitySetMapping Name="DOCUMENTOes">
       <EntityTypeMapping TypeName="TAT001Model.DOCUMENTO">
         <MappingFragment StoreEntitySet="DOCUMENTO">
+          <ScalarProperty Name="EXCEDE_PRES" ColumnName="EXCEDE_PRES" />
           <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
           <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
           <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
@@ -975,6 +976,7 @@
     <EntitySetMapping Name="FLUJOes">
       <EntityTypeMapping TypeName="TAT001Model.FLUJO">
         <MappingFragment StoreEntitySet="FLUJO">
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
           <ScalarProperty Name="WORKF_ID" ColumnName="WORKF_ID" />
           <ScalarProperty Name="WF_VERSION" ColumnName="WF_VERSION" />
           <ScalarProperty Name="WF_POS" ColumnName="WF_POS" />
@@ -2282,6 +2284,7 @@
     <EntitySetMapping Name="CLIENTEFs">
       <EntityTypeMapping TypeName="TAT001Model.CLIENTEF">
         <MappingFragment StoreEntitySet="CLIENTEF">
+          <ScalarProperty Name="USUARIO7_ID" ColumnName="USUARIO7_ID" />
           <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
           <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
           <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />

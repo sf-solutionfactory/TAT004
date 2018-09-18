@@ -215,7 +215,7 @@
           <Property Name="SPART" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="KUNNR" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="NAME1" Type="nvarchar" MaxLength="100" />
-          <Property Name="STCD1" Type="nvarchar" MaxLength="13" />
+          <Property Name="STCD1" Type="nvarchar" MaxLength="20" />
           <Property Name="STCD2" Type="nvarchar" MaxLength="20" />
           <Property Name="LAND" Type="nchar" MaxLength="2" />
           <Property Name="REGION" Type="nvarchar" MaxLength="50" />
@@ -266,6 +266,7 @@
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
           <Property Name="FECHAC" Type="datetime" />
           <Property Name="FECHAM" Type="datetime" />
+          <Property Name="USUARIO7_ID" Type="nvarchar" MaxLength="16" />
         </EntityType>
         <EntityType Name="CLIENTEI">
           <Key>
@@ -773,6 +774,7 @@
           <Property Name="OBJQ_PORC" Type="decimal" Precision="13" Scale="5" />
           <Property Name="CUENTAP" Type="numeric" Precision="10" Scale="0" />
           <Property Name="CUENTAPL" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="EXCEDE_PRES" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -1058,6 +1060,7 @@
           <Property Name="FECHAC" Type="datetime" />
           <Property Name="FECHAM" Type="datetime" />
           <Property Name="COMENTARIO" Type="nvarchar" MaxLength="255" />
+          <Property Name="STATUS" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="GALL">
           <Key>
@@ -5749,7 +5752,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <Property Name="SPART" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="KUNNR" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="NAME1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="STCD1" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="STCD1" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="STCD2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="LAND" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="REGION" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -6363,6 +6366,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="DOCUMENTOSAP" Relationship="Self.FK_DOCUMENTOSAP_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOSAP" />
           <NavigationProperty Name="DOCUMENTOTS" Relationship="Self.FK_DOCUMENTOTS_DOCUMENTO" FromRole="DOCUMENTO" ToRole="DOCUMENTOTS" />
           <NavigationProperty Name="FLUJOes" Relationship="Self.FK_FLUJO_DOCUMENTO" FromRole="DOCUMENTO" ToRole="FLUJO" />
+          <Property Name="EXCEDE_PRES" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="DOCUMENTOA">
           <Key>
@@ -6671,6 +6675,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <NavigationProperty Name="USUARIO" Relationship="Self.FK_FLUJO_USUARIO" FromRole="FLUJO" ToRole="USUARIO" />
           <NavigationProperty Name="USUARIO1" Relationship="Self.FK_FLUJO_USUARIO1" FromRole="FLUJO" ToRole="USUARIO" />
           <NavigationProperty Name="WORKFP" Relationship="Self.FK_FLUJO_WORKFP" FromRole="FLUJO" ToRole="WORKFP" />
+          <Property Name="STATUS" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GALL">
           <Key>
@@ -11287,6 +11292,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <Property Name="FECHAC" Type="DateTime" Precision="3" />
           <Property Name="FECHAM" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CLIENTE" Relationship="TAT001Model.FK_CLIENTEF_CLIENTE" FromRole="CLIENTEF" ToRole="CLIENTE" />
+          <Property Name="USUARIO7_ID" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="USUARIOF">
           <Key>
@@ -11994,6 +12000,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DOCUMENTOes">
             <EntityTypeMapping TypeName="TAT001Model.DOCUMENTO">
               <MappingFragment StoreEntitySet="DOCUMENTO">
+                <ScalarProperty Name="EXCEDE_PRES" ColumnName="EXCEDE_PRES" />
                 <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
                 <ScalarProperty Name="TALL_ID" ColumnName="TALL_ID" />
@@ -12337,6 +12344,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="FLUJOes">
             <EntityTypeMapping TypeName="TAT001Model.FLUJO">
               <MappingFragment StoreEntitySet="FLUJO">
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="WORKF_ID" ColumnName="WORKF_ID" />
                 <ScalarProperty Name="WF_VERSION" ColumnName="WF_VERSION" />
                 <ScalarProperty Name="WF_POS" ColumnName="WF_POS" />
@@ -13644,6 +13652,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="CLIENTEFs">
             <EntityTypeMapping TypeName="TAT001Model.CLIENTEF">
               <MappingFragment StoreEntitySet="CLIENTEF">
+                <ScalarProperty Name="USUARIO7_ID" ColumnName="USUARIO7_ID" />
                 <ScalarProperty Name="FECHAM" ColumnName="FECHAM" />
                 <ScalarProperty Name="FECHAC" ColumnName="FECHAC" />
                 <ScalarProperty Name="ACTIVO" ColumnName="ACTIVO" />
