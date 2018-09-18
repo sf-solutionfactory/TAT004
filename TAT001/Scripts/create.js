@@ -517,6 +517,8 @@ $(document).ready(function () {
                     var por_apoyo = 0;
                     por_apoyo = p_apoyo;
                     if (por_apoyo > 0) {
+                        if (ligada()) //RSG 17.09.2018
+                            por_apoyo = 0;
                         //var addedRow = addRowMat(t, "", "", "", "", "", por_apoyo, "", "", "", "", "", relacionada, reversa, ddate, adate, "", "pm");
                         var addedRow = addRowMat(t, "", "", "", "", "", toShowPorc(por_apoyo), "", "", "", "", "", relacionada, "", reversa, ddate, adate, "", "pm", "");//Add MGC B20180705 2018.07.05 ne no eliminar después de pm //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
                         //Si el porcentaje de apoyo es mayor a cero bloquear la columna de porcentaje de apoyo

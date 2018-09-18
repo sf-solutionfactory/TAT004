@@ -30,7 +30,7 @@
 }
 
 $(document).ready(function () {
-    $('#table_rec').DataTable({
+    var table = $('#table_rec').DataTable({
         "language": {
             "zerorecords": "no hay registros",
             "infoempty": "registros no disponibles",
@@ -42,6 +42,10 @@ $(document).ready(function () {
         "info": false,
         "searching": false,
         "columns": [
+            {
+                "name": 'ADD',
+                "className": 'ADD',
+            },
             {
                 "name": 'POS',
                 "className": 'POS',
@@ -68,6 +72,7 @@ $(document).ready(function () {
             }
         ]
     });
+
     //LEJ 31.07.2018---------------------
     var _rec = $('#valRec').val();
     if (_rec != undefined) {
@@ -84,6 +89,58 @@ $(document).ready(function () {
         $("#txt_ligada").val("");
     }
     //LEJ 31.07.2018---------------------
+
+    var tableR = $('#table_rangos').DataTable({
+        "language": {
+            "zerorecords": "no hay registros",
+            "infoempty": "registros no disponibles",
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        //        "ordering": false,
+        "info": false,
+        "searching": false,
+        "columns": [
+            {
+                "name": 'POS',
+                "className": 'POS',
+            },
+            {
+                "name": 'LIN',
+                "className": 'LIN',
+            },
+            {
+                "name": 'LIMITEI',
+                "className": 'LIMITEI'
+            },
+            {
+                "name": 'LIMITES',
+                "className": 'LIMITES'
+            },
+            {
+                "name": 'PORCENTAJE',
+                "className": 'PORCENTAJE'
+            }
+        ]
+    });
+
+
+    $('#table_rec tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+            $(".table_rangos").css("display", "none");
+            $("#btnRango").css("display", "none");
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $(".table_rangos").css("display", "table");
+            $("#btnRango").css("display", "inline-block");
+            var tableR = $('#table_rangos').DataTable();
+            showRangos(tableR, $(this));
+        }
+    });
 });
 //LEJ 31.07.2018---------------------
 function showPrTable() {
@@ -123,10 +180,13 @@ function fillTable(t, no, fecha, mt, porc) {
     ]).draw(false).node();
 }
 
+var listaRangos = [];//RSG 17.09.2018
+
 function cambiaRec() {
     $("#tabs_rec").addClass("disabled");
     var campo = document.getElementById("check_recurrente");
-    
+    listaRangos = [];//RSG 17.09.2018
+
     var radio = document.getElementById("btn-peri");
     var table = $('#table_rec').DataTable();
     table.clear().draw(true);
@@ -189,7 +249,12 @@ function cambiaRec() {
                                 monto = montoo;
                                 //////addRowRec(table, i, date, monto, tipo);
                                 //////primerDiaT(table, i, datei, monto, tipo);
-                                primerDiaT(table, i, (parseInt(pe1)+1), ej1, monto, tipoR, meses);
+                                primerDiaT(table, i, (parseInt(pe1) + 1), ej1, monto, tipoR, meses);
+                            } else if (ligada() & (tipo == "PM" | tipo == "PC")) {
+                                monto = montoo;
+                                ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
+                                var o = { POS: i, LIN: 1, PERIODO: pe1, OBJ1: 0, OBJ2: 0, PORC: 0 };
+                                listaRangos.push(o);
                             }
                         } else {
                             ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
@@ -210,7 +275,12 @@ function cambiaRec() {
                                 //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
                                 monto = montoo;
                                 //////primerDiaT(table, i, datei, monto, tipo);
-                                primerDiaT(table, i, (parseInt(pe1)+1), ej1, monto, tipoR, meses);
+                                primerDiaT(table, i, (parseInt(pe1) + 1), ej1, monto, tipoR, meses);
+                            } else if (ligada() & (tipo == "PM" | tipo == "PC")) {
+                                monto = montoo;
+                                ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
+                                var o = { POS: i, LIN: 1, PERIODO: pe1, OBJ1: 0, OBJ2: 0, PORC: 0 };
+                                listaRangos.push(o);
                             }
                         } else {
                             ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
@@ -238,15 +308,15 @@ function cambiaRec() {
 
 }
 
-function cambiaCheckRec(){
+function cambiaCheckRec() {
     var campo = document.getElementById("check_recurrente");
-    
+
     if (campo.checked) {
         document.getElementById("btn-peri").checked = true;
         document.getElementById("btn-date").disabled = true;
         document.getElementById("btn-peri").disabled = true;
         $("#btn-peri").trigger("change");
-    }else{
+    } else {
         document.getElementById("btn-date").disabled = false;
         document.getElementById("btn-peri").disabled = false;
     }
@@ -256,37 +326,50 @@ function addRowRec(t, num, date, monto, tipo, porc, periodo, meses) {
     var el = document.getElementById("tsol_id");
     var tsoll = el.options[el.selectedIndex].innerHTML;
     if (tipo !== "2") {
-        addRowRecl(
-            t,
-            //num, //POS
-            num+"/"+meses, //POS
-            //document.getElementById("tsol_id").value,
-            tsoll,
-            date,
-            toShow(monto),
-            toShowPorc(0.00)
-            //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
-            ,periodo
-        );
+        if (!ligada()) {
+            addRowRecl(
+                t,
+                //num, //POS
+                num + "/" + meses, //POS
+                //document.getElementById("tsol_id").value,
+                tsoll,
+                date,
+                toShow(monto),
+                toShowPorc(0.00)
+                //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+                , periodo
+            );
+        } else {
+            addRowRecl(
+                t,
+                num + "/" + meses, //POS
+                tsoll,
+                date,
+                //"<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
+                toShow(monto),
+                toShowPorc(porc)
+                , periodo
+            );
+        }
     } else {
         if (num !== 1) {
             addRowRecl(
                 t,
                 //num, //POS
-                num+"/"+meses, //POS
+                num + "/" + meses, //POS
                 //document.getElementById("tsol_id").value,
                 tsoll,
                 date,
                 "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
                 //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
                 toShowPorc(porc)
-            ,periodo
+                , periodo
             );
         } else {
             addRowRecl(
                 t,
                 //num, //POS
-                num+"/"+meses, //POS
+                num + "/" + meses, //POS
                 //document.getElementById("tsol_id").value,
                 tsoll,
                 date,
@@ -296,7 +379,7 @@ function addRowRec(t, num, date, monto, tipo, porc, periodo, meses) {
                 //"<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto + "\">",
                 //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
                 toShowPorc(porc)
-            ,periodo
+                , periodo
             );
         }
     }
@@ -306,6 +389,7 @@ function addRowRecl(t, pos, tsol, fecha, monto, porc, periodo) {
     //var t = $('#table_rec').DataTable();
 
     t.row.add([
+        "",
         pos
         , periodo
         , tsol
@@ -513,7 +597,7 @@ function primerDiaT(t, num, periodo, ejercicio, monto, tipo, meses) {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo, "", "P"+(periodo - 2 + num)+"-"+ejercicio, meses);
+            addRowRec(t, num, datee, monto, tipo, "", "P" + (periodo - 2 + num) + "-" + ejercicio, meses);
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -541,7 +625,7 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc, meses) {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo, porc, "P"+(periodo - 2 + num)+"-"+ejercicio, meses);
+            addRowRec(t, num, datee, monto, tipo, porc, "P" + (periodo - 2 + num) + "-" + ejercicio, meses);
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -657,4 +741,58 @@ function changeFile(campo) {
 
 function ligada() {
     return ($("#chk_ligada").is(":checked"));
+}
+
+function showRangos(table, tr) {
+    var pos = parseInt(tr.find("td.POS").text().split("/")[0]);
+    table.clear().draw(true);
+    for (var i = 0; i < listaRangos.length; i++) {
+        if (listaRangos[i].POS == pos) {
+            addRowRan(table, listaRangos[i].POS, listaRangos[i].LIN, listaRangos[i].OBJ1, listaRangos[i].OBJ2, listaRangos[i].PORC);
+        }
+    }
+    //alert(pos);
+}
+
+
+function addRowRan(t, pos, lin, obj1, obj2, porc) {
+
+    addRowRanl(t,
+        pos,
+        lin,
+        "<input type='text' style='font-size:12px' value='" + toShow(obj1) + "' onchange='this.value = toShow(this.value); cambiaRango(\"o1\", " + pos + "," + lin + ", this.value)'/>",
+        "<input type='text' style='font-size:12px' value='" + toShow(obj2) + "' onchange='this.value = toShow(this.value); cambiaRango(\"o2\", " + pos + "," + lin + ", this.value)'/>",
+        "<input type='text' style='font-size:12px' value='" + toShowPorc(porc) + "' onchange='this.value = toShowPorc(this.value); cambiaRango(\"p1\", " + pos + "," + lin + ", this.value)'/>"
+    );
+}
+
+function addRowRanl(t, pos, lin, obj1, obj2, porc) {
+    //var t = $('#table_rec').DataTable();
+
+    t.row.add([
+        pos
+        , lin
+        , obj1
+        , obj2
+        , porc
+    ]).draw(false);
+}
+
+function cambiaRango(tipo, pos, lin, val) {
+    for (var i = 0; i < listaRangos.length; i++) {
+        if (listaRangos[i].POS == pos & listaRangos[i].LIN == lin) {
+            if (tipo == "o1") {
+                listaRangos[i].OBJ1 = toNum(val);
+            } else if (tipo == "o2") {
+                listaRangos[i].OBJ2 = toNum(val);
+            } else if (tipo == "p1") {
+                listaRangos[i].PORC = toNum(val);
+            }
+        }
+    }
+}
+
+function addRango() {
+    var tableR = $('#table_rangos').DataTable();
+    addRowRan(tableR, 0, 0, 0, 0, 0);
 }

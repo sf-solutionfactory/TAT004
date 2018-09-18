@@ -171,12 +171,12 @@ errorMessage(message);
         <a href="@Url.Action("Index", "Home" )" class="btn btn-small" id="btn_cancel">Cancelar</a>
         <a id="btn_guardarh" class="btn btn-small disabled" onclick="guardah()">Enviar</a>
         <script>
-function guardah() {
-//alert("uno")
-M.toast({ html: "Guardando" })
-document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
-document.getElementById("btn_guardarh").classList.add("disabled");//RSG 26.04.2018
-}
+            function guardah() {
+                //alert("uno")
+                M.toast({ html: "Guardando" })
+                document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
+                document.getElementById("btn_guardarh").classList.add("disabled");//RSG 26.04.2018
+            }
         </script>
     </div>
     <div class="div_bottom">
@@ -383,33 +383,33 @@ if (!(ui.item)) {
                                     @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id", @id = "lbl_ciudad" }) @*B20180801 MGC Textos*@
                                 </div>
                                 <script>
-                                                                                                                                                                                                                                auto(document).ready(function () {
-                                                                                                                                                                                                                                    auto("#city_id").autocomplete({
-                                                                                                                                                                                                                                        source: function (request, response) {
-                                                                                                                                                                                                                                            var estado = $("#state_id").val();
-                                                                                                                                                                                                                                            auto.ajax({
-                                                                                                                                                                                                                                                url: "../Listas/Ciudades",
-                                                                                                                                                                                                                                                type: "GET",
-                                                                                                                                                                                                                                                dataType: "json",
-                                                                                                                                                                                                                                                data: { estado: estado, Prefix: request.term },
-                                                                                                                                                                                                                                                success: function (data) {
-                                                                                                                                                                                                                                                    response(auto.map(data, function (item) {
-                                                                                                                                                                                                                                                        return { label: item.NAME, value: item.NAME };
-                                                                                                                                                                                                                                                    }))
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                            })
-                                                                                                                                                                                                                                        },
-                                                                                                                                                                                                                                        messages: {
-                                                                                                                                                                                                                                            noResults: '',
-                                                                                                                                                                                                                                            results: function (resultsCount) { }
-                                                                                                                                                                                                                                        },
-                                                                                                                                                                                                                                        change: function (e, ui) {
-                                                                                                                                                                                                                                            if (!(ui.item)) {
+                                    auto(document).ready(function () {
+                                        auto("#city_id").autocomplete({
+                                            source: function (request, response) {
+                                                var estado = $("#state_id").val();
+                                                auto.ajax({
+                                                    url: "../Listas/Ciudades",
+                                                    type: "GET",
+                                                    dataType: "json",
+                                                    data: { estado: estado, Prefix: request.term },
+                                                    success: function (data) {
+                                                        response(auto.map(data, function (item) {
+                                                            return { label: item.NAME, value: item.NAME };
+                                                        }))
+                                                    }
+                                                })
+                                            },
+                                            messages: {
+                                                noResults: '',
+                                                results: function (resultsCount) { }
+                                            },
+                                            change: function (e, ui) {
+                                                if (!(ui.item)) {
 
-                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                })
+                                                }
+                                            }
+                                        });
+                                    })
                                 </script>
                             </div>
                         </div>
@@ -429,29 +429,29 @@ if (!(ui.item)) {
                                     <label id="lbl_periodo" for="periodo">Periodo</label>@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
-                                                                                                                                                                                                                                var elemdp = document.querySelector('#fechad');
-                                                                                                                                                                                                                                var optionsdp = {
-                                                                                                                                                                                                                                    format: 'dd/mm/yyyy',
-                                                                                                                                                                                                                                    onClose: function (e) {
-                                                                                                                                                                                                                                        var date = $('#fechad').val();
-                                                                                                                                                                                                                                        var periodo = date.split("/");
+                                    var elemdp = document.querySelector('#fechad');
+                                    var optionsdp = {
+                                        format: 'dd/mm/yyyy',
+                                        onClose: function (e) {
+                                            var date = $('#fechad').val();
+                                            var periodo = date.split("/");
 
-                                                                                                                                                                                                                                        $('#periodo').val(periodo[1]);
-                                                                                                                                                                                                                                    },
-                                                                                                                                                                                                                                    i18n: {
-                                                                                                                                                                                                                                        clear: 'Limpiar',
-                                                                                                                                                                                                                                        today: 'Hoy',
-                                                                                                                                                                                                                                        done: 'Seleccionar',
-                                                                                                                                                                                                                                        previousMonth: '‹',
-                                                                                                                                                                                                                                        nextMonth: '›',
-                                                                                                                                                                                                                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                                                                                                                                                                                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                                                                                                                                                                                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                                                                                                                                                                                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                                                                                                                                                                                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                };
-                                                                                                                                                                                                                                var instancedp = M.Datepicker.init(elemdp, optionsdp);
+                                            $('#periodo').val(periodo[1]);
+                                        },
+                                        i18n: {
+                                            clear: 'Limpiar',
+                                            today: 'Hoy',
+                                            done: 'Seleccionar',
+                                            previousMonth: '‹',
+                                            nextMonth: '›',
+                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                        }
+                                    };
+                                    var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
                                 </script>
                                 <div class="input-field col s6">
@@ -468,16 +468,16 @@ if (!(ui.item)) {
                                     @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt", @id = "lbl_notas" })@*B20180801 MGC Textos*@
                                 </div>
                                 <script>
-                                                                                                                                                                                                                                function maxchar(w) {
-                                                                                                                                                                                                                                    var maxLength = 255;
-                                                                                                                                                                                                                                    var text = $('#notas_txt').val();
-                                                                                                                                                                                                                                    var textLength = text.length;
-                                                                                                                                                                                                                                    if (textLength > (maxLength)) {
-                                                                                                                                                                                                                                        $('#notas_txt').val(text.substring(0, ((maxLength))));
-                                                                                                                                                                                                                                        var msg = 'Número máximo para la negociación es ' + maxLength;
-                                                                                                                                                                                                                                        M.toast({ html: msg });
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
+                                    function maxchar(w) {
+                                        var maxLength = 255;
+                                        var text = $('#notas_txt').val();
+                                        var textLength = text.length;
+                                        if (textLength > (maxLength)) {
+                                            $('#notas_txt').val(text.substring(0, ((maxLength))));
+                                            var msg = 'Número máximo para la negociación es ' + maxLength;
+                                            M.toast({ html: msg });
+                                        }
+                                    }
                                 </script>
                             </div>
                         </div>
@@ -644,35 +644,35 @@ selectCliente(value);
                                         </label>
                                     </div>
                                     <script>
-                                                                                                                                                                                                                        function cambiaTemp(id) {
-                                                                                                                                                                                                                            var tipo = id.split('-')[1];
-                                                                                                                                                                                                                            if (tipo == "date") {
-                                                                                                                                                                                                                                document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
-                                                                                                                                                                                                                                document.getElementById("anioi_id").setAttribute("disabled", "disabled");
-                                                                                                                                                                                                                                document.getElementById("periodof_id").setAttribute("disabled", "disabled");
-                                                                                                                                                                                                                                document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+                                        function cambiaTemp(id) {
+                                            var tipo = id.split('-')[1];
+                                            if (tipo == "date") {
+                                                document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                                document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                                                                                                                                                                                                                                document.getElementById("fechai_vig2").removeAttribute("disabled");
-                                                                                                                                                                                                                                document.getElementById("fechaf_vig2").removeAttribute("disabled");
-                                                                                                                                                                                                                            } else {
-                                                                                                                                                                                                                                document.getElementById("periodoi_id").removeAttribute("disabled");
-                                                                                                                                                                                                                                document.getElementById("anioi_id").removeAttribute("disabled");
-                                                                                                                                                                                                                                document.getElementById("periodof_id").removeAttribute("disabled");
-                                                                                                                                                                                                                                document.getElementById("aniof_id").removeAttribute("disabled");
+                                                document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                                document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                            } else {
+                                                document.getElementById("periodoi_id").removeAttribute("disabled");
+                                                document.getElementById("anioi_id").removeAttribute("disabled");
+                                                document.getElementById("periodof_id").removeAttribute("disabled");
+                                                document.getElementById("aniof_id").removeAttribute("disabled");
 
-                                                                                                                                                                                                                                document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
-                                                                                                                                                                                                                                document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                            setDates(tipo);
-                                                                                                                                                                                                                            var elem = document.querySelectorAll('select');
-                                                                                                                                                                                                                            var instance = M.FormSelect.init(elem, []);
-                                                                                                                                                                                                                            pickerFecha2(".format_date");
+                                                document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                                document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+                                            }
+                                            setDates(tipo);
+                                            var elem = document.querySelectorAll('select');
+                                            var instance = M.FormSelect.init(elem, []);
+                                            pickerFecha2(".format_date");
 
-                                                                                                                                                                                                                            $("#fechai_vig").trigger('change');
-                                                                                                                                                                                                                            $("#fechaf_vig").trigger('change');
+                                            $("#fechai_vig").trigger('change');
+                                            $("#fechaf_vig").trigger('change');
 
-                                                                                                                                                                                                                            //cambiaRec();
-                                                                                                                                                                                                                        }
+                                            //cambiaRec();
+                                        }
                                     </script>
                                     <div class="col s6">
                                         <div class="input-field col s12">
@@ -689,20 +689,20 @@ selectCliente(value);
                                         </div>
                                     </div>
                                     <script>
-                                                                                                                                                                                                                            asignaFechasInit();
-                                                                                                                                                                                                                            function asignaFechasInit() {
-                                                                                                                                                                                                                                var datei = document.getElementById("fechai_vig").value.split(' ')[0];
-                                                                                                                                                                                                                                var datef = document.getElementById("fechaf_vig").value.split(' ')[0];
+                                        asignaFechasInit();
+                                        function asignaFechasInit() {
+                                            var datei = document.getElementById("fechai_vig").value.split(' ')[0];
+                                            var datef = document.getElementById("fechaf_vig").value.split(' ')[0];
 
-                                                                                                                                                                                                                                if (datei != "") {
-                                                                                                                                                                                                                                    document.getElementById("fechai_vig").value = datei;
-                                                                                                                                                                                                                                    document.getElementById("fechai_vig2").value = datei;
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                if (datef != "") {
-                                                                                                                                                                                                                                    document.getElementById("fechaf_vig").value = datef;
-                                                                                                                                                                                                                                    document.getElementById("fechaf_vig2").value = datef;
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            }
+                                            if (datei != "") {
+                                                document.getElementById("fechai_vig").value = datei;
+                                                document.getElementById("fechai_vig2").value = datei;
+                                            }
+                                            if (datef != "") {
+                                                document.getElementById("fechaf_vig").value = datef;
+                                                document.getElementById("fechaf_vig2").value = datef;
+                                            }
+                                        }
                                     </script>
                                     <div class="col s6">
                                         <div class="col s12">
@@ -724,59 +724,59 @@ selectCliente(value);
                                         </div>
                                     </div>
                                     <script>
-                                                                                                                                                                                                                        var datei = document.getElementById("fechai_vig").value;
-                                                                                                                                                                                                                        var datef = document.getElementById("fechaf_vig").value;
-                                                                                                                                                                                                                        var elemth = document.querySelector('#fechai_vig2');
-                                                                                                                                                                                                                        var optionsth = {
-                                                                                                                                                                                                                            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
-                                                                                                                                                                                                                            format: 'dd/mm/yyyy',
-                                                                                                                                                                                                                            i18n: {
-                                                                                                                                                                                                                                clear: 'Limpiar',
-                                                                                                                                                                                                                                today: 'Hoy',
-                                                                                                                                                                                                                                done: 'Seleccionar',
-                                                                                                                                                                                                                                previousMonth: '‹',
-                                                                                                                                                                                                                                nextMonth: '›',
-                                                                                                                                                                                                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                                                                                                                                                                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                                                                                                                                                                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                                                                                                                                                                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                                                                                                                                                                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                        var instanceth = M.Datepicker.init(elemth, optionsth);
+                                        var datei = document.getElementById("fechai_vig").value;
+                                        var datef = document.getElementById("fechaf_vig").value;
+                                        var elemth = document.querySelector('#fechai_vig2');
+                                        var optionsth = {
+                                            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
+                                            format: 'dd/mm/yyyy',
+                                            i18n: {
+                                                clear: 'Limpiar',
+                                                today: 'Hoy',
+                                                done: 'Seleccionar',
+                                                previousMonth: '‹',
+                                                nextMonth: '›',
+                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                            }
+                                        };
+                                        var instanceth = M.Datepicker.init(elemth, optionsth);
 
-                                                                                                                                                                                                                        var elemtd = document.querySelector('#fechaf_vig2');
-                                                                                                                                                                                                                        var optionstd = {
-                                                                                                                                                                                                                            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
-                                                                                                                                                                                                                            format: 'dd/mm/yyyy',
-                                                                                                                                                                                                                            onClose: function (e) {
-                                                                                                                                                                                                                                var datei = $('#fechai_vig2').val();
-                                                                                                                                                                                                                                var datef = $('#fechaf_vig2').val();
-                                                                                                                                                                                                                                var res = validar_fechas(datei, datef);
+                                        var elemtd = document.querySelector('#fechaf_vig2');
+                                        var optionstd = {
+                                            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
+                                            format: 'dd/mm/yyyy',
+                                            onClose: function (e) {
+                                                var datei = $('#fechai_vig2').val();
+                                                var datef = $('#fechaf_vig2').val();
+                                                var res = validar_fechas(datei, datef);
 
-                                                                                                                                                                                                                                if (!res) {
-                                                                                                                                                                                                                                    $('#fechaf_vig2').val("");
-                                                                                                                                                                                                                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                            },
-                                                                                                                                                                                                                            i18n: {
-                                                                                                                                                                                                                                clear: 'Limpiar',
-                                                                                                                                                                                                                                today: 'Hoy',
-                                                                                                                                                                                                                                done: 'Seleccionar',
-                                                                                                                                                                                                                                previousMonth: '‹',
-                                                                                                                                                                                                                                nextMonth: '›',
-                                                                                                                                                                                                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                                                                                                                                                                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                                                                                                                                                                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                                                                                                                                                                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                                                                                                                                                                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        };
-                                                                                                                                                                                                                        var instancetd = M.Datepicker.init(elemtd, optionstd);
+                                                if (!res) {
+                                                    $('#fechaf_vig2').val("");
+                                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                                }
+                                            },
+                                            i18n: {
+                                                clear: 'Limpiar',
+                                                today: 'Hoy',
+                                                done: 'Seleccionar',
+                                                previousMonth: '‹',
+                                                nextMonth: '›',
+                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                            }
+                                        };
+                                        var instancetd = M.Datepicker.init(elemtd, optionstd);
 
-                                                                                                                                                                                                                        function borrar(field) {
-                                                                                                                                                                                                                            field.value = "";
-                                                                                                                                                                                                                        }
+                                        function borrar(field) {
+                                            field.value = "";
+                                        }
                                     </script>
                                 }
                                 else
@@ -1193,8 +1193,8 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                              archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                  ;
+                                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                    ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1240,16 +1240,16 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                         </div>
                                     </div>
                                     <script>
-                                                                                                                                                                                                                                                                function maxchar_notas() {
-                                                                                                                                                                                                                                                                    var maxLength = 500;
-                                                                                                                                                                                                                                                                    var text = $('#notas_soporte').val();
-                                                                                                                                                                                                                                                                    var textLength = text.length;
-                                                                                                                                                                                                                                                                    if (textLength > (maxLength)) {
-                                                                                                                                                                                                                                                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
-                                                                                                                                                                                                                                                                        var msg = 'Número máximo para la nota es ' + maxLength;
-                                                                                                                                                                                                                                                                        M.toast({ html: msg });
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
+                                        function maxchar_notas() {
+                                            var maxLength = 500;
+                                            var text = $('#notas_soporte').val();
+                                            var textLength = text.length;
+                                            if (textLength > (maxLength)) {
+                                                $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                                var msg = 'Número máximo para la nota es ' + maxLength;
+                                                M.toast({ html: msg });
+                                            }
+                                        }
                                     </script>
                                 </div>
                             </div>
@@ -1286,16 +1286,16 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                     </div>
                                     @*</div>*@
                                     <script>
-                                                                                                                                                                                                                                                                function maxchar_notas() {
-                                                                                                                                                                                                                                                                    var maxLength = 500;
-                                                                                                                                                                                                                                                                    var text = $('#notas_soporte').val();
-                                                                                                                                                                                                                                                                    var textLength = text.length;
-                                                                                                                                                                                                                                                                    if (textLength > (maxLength)) {
-                                                                                                                                                                                                                                                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
-                                                                                                                                                                                                                                                                        var msg = 'Número máximo para la nota es ' + maxLength;
-                                                                                                                                                                                                                                                                        M.toast({ html: msg });
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                }
+                                        function maxchar_notas() {
+                                            var maxLength = 500;
+                                            var text = $('#notas_soporte').val();
+                                            var textLength = text.length;
+                                            if (textLength > (maxLength)) {
+                                                $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                                var msg = 'Número máximo para la nota es ' + maxLength;
+                                                M.toast({ html: msg });
+                                            }
+                                        }
                                     </script>
                                     <div class="input-field col s12">
                                         @*<div class="col-md-10">*@
@@ -1326,17 +1326,12 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                     <div class="card-panel">
                         @*<h5>Recurrente</h5>*@
                         <input type="hidden" id="txt_trec" />
-                        <div class="row" style="margin-bottom:0;">
-                            @*<p>
-                                <label>
-                                <input id="check_recurrente" type="checkbox" onchange="cambiaRec(this)" />
-                                <span id="span_docrec">Documento recurrente</span>
-                                </label>
-                                </p>*@
+                        <div class="row">
                             <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none;font-size:12px;">
                                 <!--RSG 01.08.2018-->
                                 <thead>
                                     <tr>
+                                        <th id=""></th>@*B20180801 MGC Textos*@
                                         <th id="thead_rnumero">NO</th>@*B20180801 MGC Textos*@
                                         <th id="thead_rperiodo">Periodo</th>@*B20180801 MGC Textos*@
                                         <th id="thead_rtiposol">Solicitud</th>@*B20180801 MGC Textos*@
@@ -1407,6 +1402,26 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row" style="margin-bottom:0;">
+                            <div class="col s12 m6 offset-m6 right-align">
+                                <a href="#" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()">Agragar rango</a>
+                                </div>
+                                <div class="col s12 m6 offset-m6">
+                                    <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
+                                        <!--RSG 01.08.2018-->
+                                        <thead>
+                                            <tr>
+                                                <th id="">Documento</th>
+                                                <th id="">Rango</th>
+                                                <th id="">Objetivo inicio</th>
+                                                <th id="">Objetivo limite</th>
+                                                <th id="">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col s12">
@@ -1424,46 +1439,46 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                 @if (Model.OBJETIVOQ == true)
                                 {
                                     <script>
-                                                                                                                                                                                                                                                                document.getElementById("check_objetivoq").checked = true;
+                                        document.getElementById("check_objetivoq").checked = true;
                                     </script>
                                 }
                                 <script>
-                                                                                                                                                                                                                                function objetivoQ(ban) {
-                                                                                                                                                                                                                                    if (ban) {
-                                                                                                                                                                                                                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                                                                                                                                                                                                                        if (lengthT > 0) {
-                                                                                                                                                                                                                                            document.getElementById('table_objQ').classList.remove("hide");
-                                                                                                                                                                                                                                            var total = 0;
-                                                                                                                                                                                                                                            var porc = 0;
-                                                                                                                                                                                                                                            var fecha = "";
-                                                                                                                                                                                                                                            var tsol = "";
-                                                                                                                                                                                                                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                                                                                                                                                                                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                                                                                                                                                                                                                                //porc = toNum($(this).find("td.PORCENTAJE").text());
-                                                                                                                                                                                                                                                fecha = ($(this).find("td.FECHA").text());
-                                                                                                                                                                                                                                                tsol = $(this).find("td.TSOL").text();
-                                                                                                                                                                                                                                            });
-                                                                                                                                                                                                                                            document.getElementById("obqTSOL").innerText = tsol;
-                                                                                                                                                                                                                                            document.getElementById("obqFECHA").innerText = fecha;
-                                                                                                                                                                                                                                            document.getElementById("obqMONTO").innerText = toShow(total);
-                                                                                                                                                                                                                                            //document.getElementById("obqPORC").innerText = toShowPorc(porc);
-                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                    else {
-                                                                                                                                                                                                                                        document.getElementById('table_objQ').classList.add("hide");
-                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                function updateObjQ() {
-                                                                                                                                                                                                                                    var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                                                                                                                                                                                                                    if (lengthT > 0) {
-                                                                                                                                                                                                                                        var total = 0;
-                                                                                                                                                                                                                                        $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                                                                                                                                                                                                            total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                                                                                                                                                                                                                        });
-                                                                                                                                                                                                                                        document.getElementById("obqMONTO").innerText = toShow(total);
-                                                                                                                                                                                                                                    }
+                                    function objetivoQ(ban) {
+                                        if (ban) {
+                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                            if (lengthT > 0) {
+                                                document.getElementById('table_objQ').classList.remove("hide");
+                                                var total = 0;
+                                                var porc = 0;
+                                                var fecha = "";
+                                                var tsol = "";
+                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
+                                                    fecha = ($(this).find("td.FECHA").text());
+                                                    tsol = $(this).find("td.TSOL").text();
+                                                });
+                                                document.getElementById("obqTSOL").innerText = tsol;
+                                                document.getElementById("obqFECHA").innerText = fecha;
+                                                document.getElementById("obqMONTO").innerText = toShow(total);
+                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
+                                            }
+                                        }
+                                        else {
+                                            document.getElementById('table_objQ').classList.add("hide");
+                                        }
+                                    }
+                                    function updateObjQ() {
+                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                        if (lengthT > 0) {
+                                            var total = 0;
+                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                            });
+                                            document.getElementById("obqMONTO").innerText = toShow(total);
+                                        }
 
-                                                                                                                                                                                                                                }
+                                    }
                                 </script>
                             </p>
                             <div style="overflow:auto;">
@@ -1533,32 +1548,32 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                                         </label>
                                         <script>
 
-                                                                                                                                                                                                                                                                                                function cambiaLigada(campo) {
-                                                                                                                                                                                                                                                                                                    if (campo.checked) {
-                                                                                                                                                                                                                                                                                                        $("#select_neg").val("P");
-                                                                                                                                                                                                                                                                                                        //    $("#select_dis").val("C");
-                                                                                                                                                                                                                                                                                                        $("#select_negi").val("P");
-                                                                                                                                                                                                                                                                                                        //    $("#select_disi").val("C");
-                                                                                                                                                                                                                                                                                                        $("#select_neg").prop("disabled", "disabled");
-                                                                                                                                                                                                                                                                                                        //    $("#select_dis").prop("disabled", "disabled");
-                                                                                                                                                                                                                                                                                                        $("#select_neg").change();
-                                                                                                                                                                                                                                                                                                        //    $("#select_dis").change();
-                                                                                                                                                                                                                                                                                                        $("#div_objq").removeClass("hide");
-                                                                                                                                                                                                                                                                                                        $("#txt_ligada").val("X");
-                                                                                                                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                                                                                                                        $("#select_neg").prop("disabled", false);
-                                                                                                                                                                                                                                                                                                        //    $("#select_dis").prop("disabled", false);
-                                                                                                                                                                                                                                                                                                        $("#select_neg").change();
-                                                                                                                                                                                                                                                                                                        //    $("#select_dis").change();
-                                                                                                                                                                                                                                                                                                        $("#div_objq").addClass("hide");
-                                                                                                                                                                                                                                                                                                        $("#txt_ligada").val("");
-                                                                                                                                                                                                                                                                                                    }
+                                            function cambiaLigada(campo) {
+                                                if (campo.checked) {
+                                                    $("#select_neg").val("P");
+                                                    //    $("#select_dis").val("C");
+                                                    $("#select_negi").val("P");
+                                                    //    $("#select_disi").val("C");
+                                                    $("#select_neg").prop("disabled", "disabled");
+                                                    //    $("#select_dis").prop("disabled", "disabled");
+                                                    $("#select_neg").change();
+                                                    //    $("#select_dis").change();
+                                                    $("#div_objq").removeClass("hide");
+                                                    $("#txt_ligada").val("X");
+                                                } else {
+                                                    $("#select_neg").prop("disabled", false);
+                                                    //    $("#select_dis").prop("disabled", false);
+                                                    $("#select_neg").change();
+                                                    //    $("#select_dis").change();
+                                                    $("#div_objq").addClass("hide");
+                                                    $("#txt_ligada").val("");
+                                                }
 
-                                                                                                                                                                                                                                                                                                    var elem = document.getElementById('select_neg');
-                                                                                                                                                                                                                                                                                                    var instance = M.FormSelect.init(elem, []);
-                                                                                                                                                                                                                                                                                                    //elem = document.getElementById('select_dis');
-                                                                                                                                                                                                                                                                                                    //instance = M.FormSelect.init(elem, []);
-                                                                                                                                                                                                                                                                                                }
+                                                var elem = document.getElementById('select_neg');
+                                                var instance = M.FormSelect.init(elem, []);
+                                                //elem = document.getElementById('select_dis');
+                                                //instance = M.FormSelect.init(elem, []);
+                                            }
                                         </script>
                                     </div>
                                 }
@@ -1597,13 +1612,13 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                     @if (ViewBag.ligada != null & ViewBag.relacionadan == "")//RSG 09.07.2018
                     {
                         <script>
-                                                                                                                                                                $("#select_neg").prop("disabled", "disabled");
-                                                                                                                                                                $("#select_dis").prop("disabled", "disabled");
+                            $("#select_neg").prop("disabled", "disabled");
+                            //$("#select_dis").prop("disabled", "disabled");
 
-                                                                                                                                                                var elem = document.getElementById('select_neg');
-                                                                                                                                                                var instance = M.FormSelect.init(elem, []);
-                                                                                                                                                                elem = document.getElementById('select_dis');
-                                                                                                                                                                instance = M.FormSelect.init(elem, []);
+                            var elem = document.getElementById('select_neg');
+                            var instance = M.FormSelect.init(elem, []);
+                            //elem = document.getElementById('select_dis');
+                            //instance = M.FormSelect.init(elem, []);
                         </script>
                     }
                     <div id="div_montobase" class="col s12 m6 l6" style="display:none">
