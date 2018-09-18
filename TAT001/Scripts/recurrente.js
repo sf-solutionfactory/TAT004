@@ -793,6 +793,20 @@ function cambiaRango(tipo, pos, lin, val) {
 }
 
 function addRango() {
+    var lin = 1;
+    for (var i = 0; i < listaRangos.length; i++) {
+        if (listaRangos[i].POS == 1)
+            lin++;
+    }
+    var cont = 1;
     var tableR = $('#table_rangos').DataTable();
-    addRowRan(tableR, 0, 0, 0, 0, 0);
+
+    $('#table_rec > tbody  > tr').each(function () {
+        var o = { POS: cont, LIN: lin, PERIODO: 0, OBJ1: 0, OBJ2: 0, PORC: 0 };
+        if(cont==1)
+        addRowRan(tableR, 0, o.LIN, 0, 0, 0);
+        listaRangos.push(o);
+
+        cont++;
+    });
 }
