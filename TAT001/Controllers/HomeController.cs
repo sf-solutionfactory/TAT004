@@ -342,12 +342,20 @@ namespace TAT001.Controllers
                 //        & C.ID == u & C.ACTIVO == true
                 //        select P;
 
-                //flujo2
-                var p = from P in db.PAIS.ToList()
-                        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
-                        on P.LAND equals C.PAIS_ID
+                ////flujo2
+                //var p = from P in db.PAIS.ToList()
+                //        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                //        on P.LAND equals C.PAIS_ID
+                //        where P.ACTIVO == true
+                //        select P;
+                //flujo3
+                var p = (from P in db.PAIS.ToList()
+                        join C in db.CLIENTEs.Where(x => x.ACTIVO == true).ToList()
+                        on P.LAND equals C.LAND
+                        join U in db.USUARIOFs.Where(x => x.USUARIO_ID == u & x.ACTIVO == true)
+                        on new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR } equals new { U.VKORG, U.VTWEG, U.SPART, U.KUNNR }
                         where P.ACTIVO == true
-                        select P;
+                        select  P).DistinctBy(x=>x.LAND);
 
                 List<Delegados> delegados = new List<Delegados>();
                 DateTime fecha = DateTime.Now.Date;
@@ -360,11 +368,18 @@ namespace TAT001.Controllers
                     //          where P.ACTIVO == true
                     //          & C.ID == de.USUARIO_ID & C.ACTIVO == true
                     //          select P).ToList();
+                    //var pd = (from P in db.PAIS.ToList()
+                    //          join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == de.USUARIO_ID & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                    //          on P.LAND equals C.PAIS_ID
+                    //          where P.ACTIVO == true
+                    //          select P).ToList();
                     var pd = (from P in db.PAIS.ToList()
-                              join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == de.USUARIO_ID & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
-                              on P.LAND equals C.PAIS_ID
+                              join C in db.CLIENTEs.Where(x => x.ACTIVO == true).ToList()
+                              on P.LAND equals C.LAND
+                              join U in db.USUARIOFs.Where(x => x.USUARIO_ID == de.USUARIO_ID & x.ACTIVO == true)
+                              on new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR } equals new { U.VKORG, U.VTWEG, U.SPART, U.KUNNR }
                               where P.ACTIVO == true
-                              select P).ToList();
+                              select P).DistinctBy(x => x.LAND).ToList();
 
                     Delegados delegado = new Delegados();
                     delegado.usuario = de.USUARIO_ID;

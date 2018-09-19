@@ -70,7 +70,7 @@ namespace TAT001.Controllers
                 //var det = db.DET_AGENTEC.Where(a => a.USUARIOC_ID.Equals(usuario) & a.POS == 1 & a.PAIS_ID.Equals(pais) & a.ACTIVO == true).ToList();
                 var det = db.USUARIOFs.Where(a => a.USUARIO_ID.Equals(usuario) & a.ACTIVO == true).ToList();
 
-                var c = (from N in db.CLIENTEs.ToList()
+                var c = (from N in db.CLIENTEs.Where(x=>x.LAND==pais).ToList()
                          join D in det
                          on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
                          join C in db.CLIENTEFs.ToList()
@@ -81,7 +81,7 @@ namespace TAT001.Controllers
 
                 if (c.Count == 0)
                 {
-                    var c2 = (from N in db.CLIENTEs.ToList()
+                    var c2 = (from N in db.CLIENTEs.Where(x => x.LAND == pais).ToList()
                               join D in det
                               on new { N.VKORG, N.VTWEG, N.SPART, N.KUNNR } equals new { D.VKORG, D.VTWEG, D.SPART, D.KUNNR }
                               join C in db.CLIENTEFs.ToList()
