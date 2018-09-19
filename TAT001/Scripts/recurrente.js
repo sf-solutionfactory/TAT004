@@ -30,10 +30,10 @@
 }
 
 function excedePresup() {
-    var pres = parseFloat(toNum(document.getElementById("consu").value));
-    var monto = parseFloat(toNum(document.getElementById("monto_doc_md").innerHTML));
+    var pres = toNum(document.getElementById("consu").innerHTML);
+    var monto = toNum(document.getElementById("monto_doc_md").value);
 
-    if (monto > pres) {
+    if (parseFloat(monto) > parseFloat(pres)) {
         document.getElementById("txtPres").value = 'X';
     }
 }

@@ -23,11 +23,40 @@ namespace TAT001.Controllers
     {
         private TAT001Entities db = new TAT001Entities();
 
-        // GET: Solicitudes
         public ActionResult Index(string id)
         {
             using (TAT001Entities db = new TAT001Entities())
             {
+
+                //var queryP = (from cg in db.CUENTAGLs //on cu.ABONO equals cg.ID
+                //              join doc in db.DOCUMENTOes on cg.ID equals doc.CUENTAP  //NUM_DOC + DOCUMENTO_SAP PAYER_ID + CLIENTE-NAME1 + TALLT-TXT050 + DOCUMENTO-CONCEPTO --DOCUMENTO-USUARIOD
+                //              join docsap in db.DOCUMENTOSAPs on doc.NUM_DOC equals docsap.NUM_DOC
+                //              join ta in db.TALLTs on doc.TALL_ID equals ta.TALL_ID
+                //              join cli in db.CLIENTEs on new { doc.VKORG, doc.VTWEG, doc.SPART, doc.PAYER_ID } equals new { cli.VKORG, cli.VTWEG, cli.SPART, PAYER_ID = cli.KUNNR }   // NAME1
+                //              join fl in db.FLUJOes on doc.NUM_DOC equals fl.NUM_DOC  //FLUJO-COMENTARIO -- FLUJO-USUARIOA
+                //              where doc.SOCIEDAD_ID == "KCMX" && doc.PERIODO == 7 && cg.ID == 1854226533 && doc.EJERCICIO == "2018"
+                //              && fl.POS == 1
+                //              select new { cg.ID, cg.NOMBRE, doc.NUM_DOC, doc.DOCUMENTO_SAP, doc.PAYER_ID, doc.CONCEPTO, doc.USUARIOD_ID, cli.NAME1, fl.COMENTARIO, fl.USUARIOA_ID, ta.TALL_ID, ta.TXT50,
+                //                   FECHAC =  docsap == null ? null: docsap.FECHAC
+                //                  , doc.MONTO_DOC_MD }).Distinct().ToList();
+
+                //var ultimo2 = from player in db.FLUJOes
+                //             group player by player.NUM_DOC into playerGroup
+                //             select new
+                //             {
+                //                 Team = playerGroup.Key,
+                //                 BestScore = playerGroup.Max(x => x.POS),
+                //             };
+                //var ultimo = (from ff in db.FLUJOes
+                //              join j in 
+                //              (from d in db.DOCUMENTOes
+                //               join f in db.FLUJOes on d.NUM_DOC equals f.NUM_DOC
+                //               where f.COMENTARIO != null
+                //               group f by d.NUM_DOC into g
+                //               select new { NUM_DOC = g.Key, POS = g.Max(p => p.POS) })
+                //               on new { ff.NUM_DOC, ff.POS } equals new { j.NUM_DOC, j.POS }
+                //              select new { ff.NUM_DOC, ff.COMENTARIO }).ToList();
+
                 int pagina = 101; //ID EN BASE DE DATOS
                 string u = User.Identity.Name;
                 ////if (pais != null)
@@ -105,25 +134,87 @@ namespace TAT001.Controllers
                 else
                     us = User.Identity.Name;
 
-                List<CSP_DOCUMENTOSXUSER_Result> dOCUMENTOes = db.CSP_DOCUMENTOSXUSER(us, user.SPRAS_ID).ToList();
 
-                //dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
-                //dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
-                //ViewBag.Clientes = db.CLIENTEs.ToList();
-                //ViewBag.Cuentas = db.CUENTAs.ToList();
-                //ViewBag.DOCF = db.DOCUMENTOFs.ToList();
+                var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(us) | a.USUARIOD_ID.Equals(us)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
+                var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(us)).ToList();
+                var tsol = db.TSOLs.ToList();
+                var tall = db.TALLs.ToList();
+                foreach (DOCUMENTOV v in dOCUMENTOVs)
+                {
+                    DOCUMENTO d = new DOCUMENTO();
+                    var ppd = d.GetType().GetProperties();
+                    var ppv = v.GetType().GetProperties();
+                    foreach (var pv in ppv)
+                    {
+                        foreach (var pd in ppd)
+                        {
+                            if (pd.Name == pv.Name)
+                            {
+                                pd.SetValue(d, pv.GetValue(v));
+                                break;
+                            }
+                        }
+                    }
+                    d.TSOL = tsol.Where(a => a.ID.Equals(d.TSOL_ID)).FirstOrDefault();
+                    d.TALL = tall.Where(a => a.ID.Equals(d.TALL_ID)).FirstOrDefault();
+                    //d.ESTADO = db.STATES.Where(a => a.ID.Equals(v.ESTADO)).FirstOrDefault().NAME;
+                    //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
+                    //dOCUMENTOes.Add(d);
+                    d.FLUJOes = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).ToList();
+                    dOCUMENTOes.Add(d);
+                }
+                dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
+                dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
+                ViewBag.Clientes = db.CLIENTEs.ToList();
+                ViewBag.Cuentas = db.CUENTAs.ToList();
+                ViewBag.DOCF = db.DOCUMENTOFs.ToList();
                 //jemo inicio 4/07/2018
                 ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
+                //jemo inicio 4/07/2018
+
+                //List<DOCUMENTO> docs = new List<DOCUMENTO>();
+                //foreach(DOCUMENTO d in dOCUMENTOes)
+                //{
+                //    docs = d;
+                //}
+                //JsonResult cc = Json(dOCUMENTOes.ToList(), JsonRequestBehavior.AllowGet);
+                //string json = new JavaScriptSerializer().Serialize(cc.Data);
+                //ViewBag.documentos =  json;
+
+                ////Recurrente r = new Recurrente();
+                ////int ii = r.creaRecurrente("1000000491", "PR");
 
 
                 List<Documento> listaDocs = new List<Documento>();
-                foreach (CSP_DOCUMENTOSXUSER_Result item in dOCUMENTOes)
+                foreach (DOCUMENTO item in dOCUMENTOes)
                 {
                     Documento ld = new Documento();
-                    ld.BUTTON = item.BUTTON;
+                    if (item.TSOL.PADRE)
+                        if (item.DOCUMENTORECs.Count > 0)
+                            ld.BUTTON = "expand_more";
+                        else
+                            ld.BUTTON = "add";
+                    else if (item.DOCUMENTORECs.Count > 0)
+                        ld.BUTTON = "expand_more";
+                    else
+                        ld.BUTTON = "";
 
                     ld.NUM_DOC = item.NUM_DOC;
-                    ld.NUM_DOC_TEXT = item.NUM_DOC_TEXT;
+                    if (item.FLUJOes.Count > 0)
+                    {
+                        if (item.ESTATUS_WF == "R" & ViewBag.usuario.ID == item.FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIOD_ID)
+                        {
+                            ld.NUM_DOC_TEXT = "Edit";
+                        }
+                        else
+                        {
+                            ld.NUM_DOC_TEXT = "Details";
+                        }
+                    }
+                    else
+                    {
+                        ld.NUM_DOC_TEXT = "Details";
+                    }
                     ld.SOCIEDAD_ID = item.SOCIEDAD_ID;
                     ld.PAIS_ID = item.PAIS_ID;
                     ld.FECHADD = item.FECHAD.Value.Day + "/" + item.FECHAD.Value.Month + "/" + item.FECHAD.Value.Year;
@@ -131,60 +222,51 @@ namespace TAT001.Controllers
                     ld.HORAC = item.HORAC.Value.ToString().Split('.')[0];
                     ld.PERIODO = item.PERIODO + "";
 
-                    if (item.ESTATUS == "R")
-                    {
-                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) +
-                                        db.FLUJOes.Where(x => x.NUM_DOC == item.NUM_DOC & x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID +
-                                        item.ESTATUSS.Substring(6, 1);
-                    }
-                    else
-                    {
-                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) + " " + item.ESTATUSS.Substring(6, 1); ;
-                    }
                     Estatus e = new Estatus();
-                    ld.ESTATUS = e.getText(item.ESTATUSS);
-                    ld.ESTATUS_CLASS = e.getClass(item.ESTATUSS);
+                    ld.ESTATUS = e.getText(item);
+                    ld.ESTATUS_CLASS = e.getClass(item);
 
                     ld.PAYER_ID = item.PAYER_ID;
+                    if (item.CLIENTE == null)
+                        item.CLIENTE = db.CLIENTEs.Where(x => x.KUNNR == item.PAYER_ID).FirstOrDefault();
 
-                    ld.CLIENTE = item.NAME1;
-                    ld.CANAL = item.CANAL;
-                    ld.TSOL = item.TXT020;
-                    ld.TALL = item.TXT50;
-                    //foreach (CUENTA cuenta in db.CUENTAs.Where(x => x.SOCIEDAD_ID.Equals(item.SOCIEDAD_ID)).ToList())
-                    //{
-                    //    if (item.TALL != null)
-                    //    {
-                    //        if (cuenta.TALL_ID == item.TALL.ID)
-                    //        {
-                    //            ld.CUENTAS = cuenta.CARGO.ToString();
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-                    try
+                    if (item.CLIENTE != null)
                     {
-                        ld.CUENTAS = item.CARGO + "";
+                        ld.CLIENTE = item.CLIENTE.NAME1;
+                        ld.CANAL = item.CLIENTE.CANAL;
                     }
-                    catch { }
-                    ld.CONCEPTO = item.CONCEPTO;
-                    ld.MONTO_DOC_ML = item.MONTO_DOC_MD + "";
-
-                    ld.FACTURA = item.FACTURA;
-                    ld.FACTURAK = item.FACTURAK;
-
-                    ld.USUARIOC_ID = item.USUARIOD_ID;
-
-                    if (item.DOCUMENTO_SAP != null)
+                    ld.TSOL = item.TSOL.TSOLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT020;
+                    ld.TALL = item.TALL.TALLTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                    foreach (CUENTA cuenta in db.CUENTAs.Where(x => x.SOCIEDAD_ID.Equals(item.SOCIEDAD_ID)).ToList())
                     {
-                        if (item.PADRE)
+                        if (item.TALL != null)
+                        {
+                            if (cuenta.TALL_ID == item.TALL.ID)
+                            {
+                                ld.CUENTAS = cuenta.CARGO.ToString();
+                                break;
+                            }
+                        }
+                    }
+                    ld.CONCEPTO = item.CONCEPTO;
+                    ld.MONTO_DOC_ML = item.MONTO_DOC_ML + "";
+                    if (item.DOCUMENTOFs.Count > 0)
+                    {
+                        ld.FACTURA = item.DOCUMENTOFs.FirstOrDefault().FACTURA;
+                        ld.FACTURAK = item.DOCUMENTOFs.FirstOrDefault().FACTURAK;
+                    }
+                    ld.USUARIOC_ID = item.USUARIOC_ID;
+
+                    if (item.DOCUMENTOSAP != null)
+                    {
+                        if (item.TSOL.PADRE)
                         {
                             ld.NUM_PRO = item.DOCUMENTO_SAP;
                             ld.NUM_AP = "";
                             ld.NUM_NC = "";
                             ld.NUM_REV = "";
                         }
-                        else if (item.REVERSO)
+                        else if (item.TSOL.REVERSO)
                         {
                             ld.NUM_REV = item.DOCUMENTO_SAP;
                             ld.NUM_AP = "";
@@ -199,11 +281,11 @@ namespace TAT001.Controllers
                             ld.NUM_REV = "";
                         }
                         //<!--NUM_SAP-->
-                        ld.BLART = item.BLART;
-                        ld.NUM_PAYER = item.KUNNR;
-                        ld.NUM_CLIENTE = item.DESCR;
-                        ld.NUM_IMPORTE = item.IMPORTE + "";
-                        ld.NUM_CUENTA = item.CUENTA_C;
+                        ld.BLART = item.DOCUMENTOSAP.BLART;
+                        ld.NUM_PAYER = item.DOCUMENTOSAP.KUNNR;
+                        ld.NUM_CLIENTE = item.DOCUMENTOSAP.DESCR;
+                        ld.NUM_IMPORTE = item.DOCUMENTOSAP.IMPORTE + "";
+                        ld.NUM_CUENTA = item.DOCUMENTOSAP.CUENTA_C;
                     }
                     else
                     {
@@ -1791,6 +1873,8 @@ namespace TAT001.Controllers
                         throw new Exception();
                     }
                     //Obtener datos del payer
+                    Cadena cad = new Cadena();
+                    dOCUMENTO.PAYER_ID = cad.completaCliente(dOCUMENTO.PAYER_ID);
                     CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
                     //B20180621 MGC2 2018.06.21s
                     if (borrador_param == null)
@@ -3127,6 +3211,8 @@ namespace TAT001.Controllers
                     dOCUMENTO.TIPO_CAMBIOL2 = tcambio.getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
 
                     //Obtener datos del payer
+                    Cadena cad = new Cadena();
+                    dOCUMENTO.PAYER_ID = cad.completaCliente(dOCUMENTO.PAYER_ID);
                     CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
 
                     //Eliminar borrador anterior 

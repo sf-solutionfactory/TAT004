@@ -5532,7 +5532,8 @@ function selectCliente(valu) {
         document.getElementById("loader").style.display = "flex";//RSG 03.07.2018
         $.ajax({
             type: "POST",
-            url: 'SelectCliente',
+            //url: 'SelectCliente',
+            url: '../Listas/SelectCliente',
             data: { "kunnr": valu },
 
             success: function (data) {

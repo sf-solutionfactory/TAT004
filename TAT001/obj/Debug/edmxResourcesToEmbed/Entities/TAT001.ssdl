@@ -562,6 +562,8 @@
     <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
     <Property Name="PRESUPUESTO" Type="bit" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+    <Property Name="N_MONTO" Type="int" />
+    <Property Name="N_PRESUP" Type="int" />
   </EntityType>
   <EntityType Name="DET_TAX">
     <Key>
@@ -1749,6 +1751,7 @@
     <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="TXT020" Type="nvarchar" MaxLength="20" />
     <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+    <Property Name="TXT010" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="TSOPORTE">
     <Key>

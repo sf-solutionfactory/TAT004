@@ -502,6 +502,8 @@
     <EntitySetMapping Name="DET_APROBP">
       <EntityTypeMapping TypeName="TAT001Model.DET_APROBP">
         <MappingFragment StoreEntitySet="DET_APROBP">
+          <ScalarProperty Name="N_PRESUP" ColumnName="N_PRESUP" />
+          <ScalarProperty Name="N_MONTO" ColumnName="N_MONTO" />
           <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
           <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
           <ScalarProperty Name="VERSION" ColumnName="VERSION" />
@@ -1693,6 +1695,7 @@
     <EntitySetMapping Name="TSOLTs">
       <EntityTypeMapping TypeName="TAT001Model.TSOLT">
         <MappingFragment StoreEntitySet="TSOLT">
+          <ScalarProperty Name="TXT010" ColumnName="TXT010" />
           <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
           <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
           <ScalarProperty Name="TXT020" ColumnName="TXT020" />

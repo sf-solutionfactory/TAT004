@@ -37,6 +37,7 @@ function toNum(string) {
                 _i = -1;
             string = string.replace('(', '');
             string = string.replace(')', '');
+            string = string.replace('-', '0');
             //string = string.replace(_miles, '');
             if (_miles === '.')
                 string = string.replace(/\./g, '')

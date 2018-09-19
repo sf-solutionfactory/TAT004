@@ -567,6 +567,8 @@
           <Property Name="MONTO" Type="decimal" Precision="13" Scale="2" />
           <Property Name="PRESUPUESTO" Type="bit" />
           <Property Name="ACTIVO" Type="bit" Nullable="false" />
+          <Property Name="N_MONTO" Type="int" />
+          <Property Name="N_PRESUP" Type="int" />
         </EntityType>
         <EntityType Name="DET_TAX">
           <Key>
@@ -1754,6 +1756,7 @@
           <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="TXT020" Type="nvarchar" MaxLength="20" />
           <Property Name="TXT50" Type="nvarchar" MaxLength="50" />
+          <Property Name="TXT010" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TSOPORTE">
           <Key>
@@ -6134,6 +6137,8 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <Property Name="PRESUPUESTO" Type="Boolean" />
           <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBP_DET_APROBH" FromRole="DET_APROBP" ToRole="DET_APROBH" />
+          <Property Name="N_MONTO" Type="Int32" />
+          <Property Name="N_PRESUP" Type="Int32" />
         </EntityType>
         <EntityType Name="DET_TAX">
           <Key>
@@ -7548,6 +7553,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOLT_SPRAS" FromRole="TSOLT" ToRole="SPRAS" />
           <NavigationProperty Name="TSOL" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOLT" ToRole="TSOL" />
+          <Property Name="TXT010" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="TSOPORTE">
           <Key>
@@ -11870,6 +11876,8 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="DET_APROBP">
             <EntityTypeMapping TypeName="TAT001Model.DET_APROBP">
               <MappingFragment StoreEntitySet="DET_APROBP">
+                <ScalarProperty Name="N_PRESUP" ColumnName="N_PRESUP" />
+                <ScalarProperty Name="N_MONTO" ColumnName="N_MONTO" />
                 <ScalarProperty Name="SOCIEDAD_ID" ColumnName="SOCIEDAD_ID" />
                 <ScalarProperty Name="PUESTOC_ID" ColumnName="PUESTOC_ID" />
                 <ScalarProperty Name="VERSION" ColumnName="VERSION" />
@@ -13061,6 +13069,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
           <EntitySetMapping Name="TSOLTs">
             <EntityTypeMapping TypeName="TAT001Model.TSOLT">
               <MappingFragment StoreEntitySet="TSOLT">
+                <ScalarProperty Name="TXT010" ColumnName="TXT010" />
                 <ScalarProperty Name="SPRAS_ID" ColumnName="SPRAS_ID" />
                 <ScalarProperty Name="TSOL_ID" ColumnName="TSOL_ID" />
                 <ScalarProperty Name="TXT020" ColumnName="TXT020" />

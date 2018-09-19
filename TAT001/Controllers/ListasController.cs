@@ -236,7 +236,8 @@ namespace TAT001.Controllers
             //TAT001Entities db = new TAT001Entities();
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
             Presupuesto pr = new Presupuesto();
-            pm = pr.getPresupuesto(kunnr);
+            Cadena c = new Cadena();
+            pm = pr.getPresupuesto(c.completaCliente(kunnr));
             //try
             //{
             //    if (kunnr == null)
@@ -376,6 +377,8 @@ namespace TAT001.Controllers
         public JsonResult selectTaxeo(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string spras)
         {
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             var c = (from T in db.TAXEOHs
                      join TX in db.TX_CONCEPTOT
@@ -395,6 +398,8 @@ namespace TAT001.Controllers
         public JsonResult selectConcepto(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string concepto, string spras)
         {
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
             int co = int.Parse(concepto);
             var c = (from T in db.TAXEOHs
                      join TX in db.TX_NOTAT
@@ -415,6 +420,8 @@ namespace TAT001.Controllers
         public JsonResult selectImpuesto(string bukrs, string pais, string vkorg, string vtweg, string spart, string kunnr, string concepto, string spras)
         {
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
             int co = int.Parse(concepto);
             var c = (from T in db.TAXEOHs
                      where T.SOCIEDAD_ID == bukrs
@@ -480,6 +487,8 @@ namespace TAT001.Controllers
         public JsonResult categoriasCliente(string vkorg, string spart, string kunnr, string soc_id)
         {
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
             if (kunnr == null)
             {
                 kunnr = "";
@@ -775,6 +784,8 @@ namespace TAT001.Controllers
         {
 
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             CLIENTE_MOD id_cl = (from c in db.CLIENTEs
                                  join co in db.CONTACTOCs
@@ -785,6 +796,7 @@ namespace TAT001.Controllers
                                  {
                                      VKORG = c.VKORG,
                                      VTWEG = c.VTWEG,
+                                     VTWEG2 = c.VTWEG,//RSG 05.07.2018
                                      SPART = c.SPART,//RSG 28.05.2018-------------------
                                      NAME1 = c.NAME1,
                                      KUNNR = c.KUNNR,
@@ -804,6 +816,7 @@ namespace TAT001.Controllers
                          {
                              VKORG = c.VKORG,
                              VTWEG = c.VTWEG,
+                             VTWEG2 = c.VTWEG,//RSG 05.07.2018
                              SPART = c.SPART,//RSG 28.05.2018-------------------
                              NAME1 = c.NAME1,
                              KUNNR = c.KUNNR,
@@ -816,6 +829,37 @@ namespace TAT001.Controllers
                          }).FirstOrDefault();
             }
 
+            if (id_cl != null)
+            {
+                //Obtener el cliente
+                //CANAL canal = db.CANALs.Where(ca => ca.BANNER == id_cl.BANNER && ca.KUNNR == kunnr).FirstOrDefault();
+                CANAL canal = db.CANALs.Where(ca => ca.CANAL1 == id_cl.CANAL).FirstOrDefault();
+                id_cl.VTWEG = "";
+                //if (canal == null)
+                //{
+                //    string kunnrwz = kunnr.TrimStart('0');
+                //    string bannerwz = id_cl.BANNER.TrimStart('0');
+                //    canal = db.CANALs.Where(ca => ca.BANNER == bannerwz && ca.KUNNR == kunnrwz).FirstOrDefault();
+                //}
+
+                if (canal != null)
+                {
+                    id_cl.VTWEG = canal.CANAL1 + " - " + canal.CDESCRIPCION;
+                }
+
+                //Obtener el tipo de cliente
+                var clientei = (from c in db.TCLIENTEs
+                                join ct in db.TCLIENTETs
+                                on c.ID equals ct.PARVW_ID
+                                where c.ID == id_cl.PARVW && c.ACTIVO == true
+                                select ct).FirstOrDefault();
+                id_cl.PARVW = "";
+                if (clientei != null)
+                {
+                    id_cl.PARVW = clientei.TXT50;
+                }
+
+            }
 
             JsonResult jc = Json(id_cl, JsonRequestBehavior.AllowGet);
             return jc;
@@ -896,6 +940,8 @@ namespace TAT001.Controllers
                 Prefix = "";
 
             TAT001Entities db = new TAT001Entities();
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             var c = (from m in db.CONTACTOCs
                      where m.NOMBRE.Contains(Prefix) && m.ACTIVO == true

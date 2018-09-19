@@ -113,7 +113,7 @@ namespace TAT001.Services
                     if (paso_a.EMAIL.Equals("X"))
                         correcto = "1";
                     d.ESTATUS_WF = "P";
-                  
+
                     db.FLUJOes.Add(nuevo);
                     db.Entry(d).State = EntityState.Modified;
 
@@ -263,7 +263,7 @@ namespace TAT001.Services
                                         if (next.ACCION.TIPO.Equals("T"))
                                         {
                                             TAX_LAND tl = db.TAX_LAND.Where(a => a.SOCIEDAD_ID.Equals(d.SOCIEDAD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.ACTIVO == true).FirstOrDefault();
-                                            if (tl != null & cf.USUARIO7_ID !=null)
+                                            if (tl != null & cf.USUARIO7_ID != null)
                                             {
                                                 nuevo.USUARIOA_ID = db.DET_TAXEOC.Where(a => a.USUARIOC_ID.Equals(d.USUARIOD_ID) & a.PAIS_ID.Equals(d.PAIS_ID) & a.KUNNR == d.PAYER_ID & a.ACTIVO == true).FirstOrDefault().USUARIOA_ID;
                                                 nuevo.USUARIOA_ID = cf.USUARIO7_ID;
@@ -771,14 +771,22 @@ namespace TAT001.Services
             DET_APROBP dp = ddp.Where(a => a.POS == pos).FirstOrDefault();//Obtiene nivel de autorización
             if (dp != null)//----Si existe posición
             {
+                int detp = 0;
                 if (tipo != "B" & tipo != "M")//---Si no es notificación ni modificación por rechazo de TS
                 {
                     if (dp.MONTO != null)
                         if (d.MONTO_DOC_MD > dp.MONTO)
+                        {
                             ppos--;
-                    if (dp.PRESUPUESTO != null & d.EXCEDE_PRES != null)
-                        if (d.EXCEDE_PRES == "X")
-                            ppos--;
+                            detp = dp.N_MONTO == null ? (pos + 1) : (int)dp.N_MONTO;
+                        }
+                    if (ppos == 0)
+                        if (dp.PRESUPUESTO != null & d.EXCEDE_PRES != null)
+                            if (d.EXCEDE_PRES == "X" & dp.PRESUPUESTO == true)
+                            {
+                                ppos--;
+                                detp = dp.N_PRESUP == null ? (pos+1) : (int)dp.N_PRESUP;
+                            }
                 }
                 else
                 {
@@ -802,37 +810,65 @@ namespace TAT001.Services
                 }
                 else
                 {
-                    if (pos == 1)
+                    if ((detp - 1) == 1)
                     {
                         f.USUARIOA_ID = cf.USUARIO2_ID;
                         if (cf.USUARIO2_ID != null)
-                            f.DETPOS = 2;
+                            f.DETPOS = detp;
                         else
+                        {
                             ppos++;
+                            f.DETPOS = sop;
+                            if (sop == 99)
+                                f.USUARIOA_ID = cf.USUARIO6_ID;
+                            else
+                                f.USUARIOA_ID = d.USUARIOD_ID;
+                        }
                     }
-                    if (pos == 2)
+                    if ((detp - 1) == 2)
                     {
                         f.USUARIOA_ID = cf.USUARIO3_ID;
                         if (cf.USUARIO3_ID != null)
-                            f.DETPOS = 3;
+                            f.DETPOS = detp;
                         else
+                        {
                             ppos++;
+                            f.DETPOS = sop;
+                            if (sop == 99)
+                                f.USUARIOA_ID = cf.USUARIO6_ID;
+                            else
+                                f.USUARIOA_ID = d.USUARIOD_ID;
+                        }
                     }
-                    if (pos == 3)
+                    if ((detp - 1) == 3)
                     {
                         f.USUARIOA_ID = cf.USUARIO4_ID;
                         if (cf.USUARIO4_ID != null)
-                            f.DETPOS = 4;
+                            f.DETPOS = detp;
                         else
+                        {
                             ppos++;
+                            f.DETPOS = sop;
+                            if (sop == 99)
+                                f.USUARIOA_ID = cf.USUARIO6_ID;
+                            else
+                                f.USUARIOA_ID = d.USUARIOD_ID;
+                        }
                     }
-                    if (pos == 4)
+                    if ((detp - 1) == 4)
                     {
                         f.USUARIOA_ID = cf.USUARIO5_ID;
                         if (cf.USUARIO5_ID != null)
-                            f.DETPOS = 5;
+                            f.DETPOS = detp;
                         else
+                        {
                             ppos++;
+                            f.DETPOS = sop;
+                            if (sop == 99)
+                                f.USUARIOA_ID = cf.USUARIO6_ID;
+                            else
+                                f.USUARIOA_ID = d.USUARIOD_ID;
+                        }
                     }
                     if (pos == 98)//Despues de rechazo de TS para PRA - regresa a TS
                     {
@@ -846,7 +882,7 @@ namespace TAT001.Services
                 f.USUARIOA_ID = cf.USUARIO6_ID;
                 f.DETPOS = 99;
             }
-            else if(pos == 0)//Despues de rechazo de TS para PR - regresa a TS
+            else if (pos == 0)//Despues de rechazo de TS para PR - regresa a TS
             {
                 if (f.DETPOS == 99)
                     ppos = 1;

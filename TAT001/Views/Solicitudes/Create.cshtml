@@ -515,7 +515,7 @@ data: { Prefix: request.term, usuario: user, pais: '@Model.PAIS_ID' },
 /**/
 success: function (data) {
 response(auto.map(data, function (item) {
-return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+    return { label: trimStart('0', item.KUNNR) + " - " + item.NAME1, value: trimStart('0', item.KUNNR) };
 }))
 }
 })
@@ -1193,8 +1193,8 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                    ;
+                                                                                                                                                                  archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                      ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1404,24 +1404,24 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                         </div>
                         <div class="row" style="margin-bottom:0;">
                             <div class="col s12 m6 offset-m6 right-align">
-                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango"/>
-                                </div>
-                                <div class="col s12 m6 offset-m6">
-                                    <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
-                                        <!--RSG 01.08.2018-->
-                                        <thead>
-                                            <tr>
-                                                <th id="">Documento</th>
-                                                <th id="">Rango</th>
-                                                <th id="">Objetivo inicio</th>
-                                                @*<th id="">Objetivo limite</th>*@
-                                                <th id="">Porcentaje</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
+                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango" />
                             </div>
+                            <div class="col s12 m6 offset-m6">
+                                <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
+                                    <!--RSG 01.08.2018-->
+                                    <thead>
+                                        <tr>
+                                            <th id="">Documento</th>
+                                            <th id="">Rango</th>
+                                            <th id="">Objetivo inicio</th>
+                                            @*<th id="">Objetivo limite</th>*@
+                                            <th id="">Porcentaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col s12">
@@ -1844,7 +1844,7 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="txtPres" type="hidden" class="" />
+                                        <input value=" " id="txtPres" name="txtPres" type="hidden" class="" />
                                         <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
