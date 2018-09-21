@@ -608,6 +608,8 @@
     <Property Name="PRESUPUESTO" Type="Boolean" />
     <Property Name="ACTIVO" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="DET_APROBH" Relationship="Self.FK_DET_APROBP_DET_APROBH" FromRole="DET_APROBP" ToRole="DET_APROBH" />
+    <Property Name="N_MONTO" Type="Int32" />
+    <Property Name="N_PRESUP" Type="Int32" />
   </EntityType>
   <EntityType Name="DET_TAX">
     <Key>
@@ -738,6 +740,7 @@
     <NavigationProperty Name="DOCUMENTOBORRFs" Relationship="Self.FK_DOCUMENTOBORRF_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRF" />
     <NavigationProperty Name="DOCUMENTOBORRNs" Relationship="Self.FK_DOCUMENTOBORRN_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRN" />
     <NavigationProperty Name="DOCUMENTOBORRPs" Relationship="Self.FK_DOCUMENTOBORRP_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRP" />
+    <NavigationProperty Name="DOCUMENTOBORRRECs" Relationship="TAT001Model.FK_DOCUMENTOBORRREC_DOCUMENTBORR" FromRole="DOCUMENTBORR" ToRole="DOCUMENTOBORRREC" />
   </EntityType>
   <EntityType Name="DOCUMENTO">
     <Key>
@@ -1053,6 +1056,7 @@
     <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
     <Property Name="FECHAV" Type="DateTime" Precision="0" />
     <NavigationProperty Name="DOCUMENTO" Relationship="Self.FK_DOCUMENTOREC_DOCUMENTO" FromRole="DOCUMENTOREC" ToRole="DOCUMENTO" />
+    <NavigationProperty Name="DOCUMENTORANs" Relationship="TAT001Model.FK_DOCUMENTORAN_DOCUMENTOREC" FromRole="DOCUMENTOREC" ToRole="DOCUMENTORAN" />
   </EntityType>
   <EntityType Name="DOCUMENTOSAP">
     <Key>
@@ -2022,6 +2026,7 @@
     <Property Name="TXT50" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="SPRA" Relationship="Self.FK_TSOLT_SPRAS" FromRole="TSOLT" ToRole="SPRAS" />
     <NavigationProperty Name="TSOL" Relationship="Self.FK_TSOLT_TSOL" FromRole="TSOLT" ToRole="TSOL" />
+    <Property Name="TXT010" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="TSOPORTE">
     <Key>
@@ -5567,6 +5572,16 @@
       <End Role="USUARIO" EntitySet="USUARIOs" />
       <End Role="USUARIOF" EntitySet="USUARIOFs" />
     </AssociationSet>
+    <EntitySet Name="DOCUMENTOBORRRECs" EntityType="TAT001Model.DOCUMENTOBORRREC" />
+    <AssociationSet Name="FK_DOCUMENTOBORRREC_DOCUMENTBORR" Association="TAT001Model.FK_DOCUMENTOBORRREC_DOCUMENTBORR">
+      <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORRs" />
+      <End Role="DOCUMENTOBORRREC" EntitySet="DOCUMENTOBORRRECs" />
+    </AssociationSet>
+    <EntitySet Name="DOCUMENTORANs" EntityType="TAT001Model.DOCUMENTORAN" />
+    <AssociationSet Name="FK_DOCUMENTORAN_DOCUMENTOREC" Association="TAT001Model.FK_DOCUMENTORAN_DOCUMENTOREC">
+      <End Role="DOCUMENTOREC" EntitySet="DOCUMENTORECs" />
+      <End Role="DOCUMENTORAN" EntitySet="DOCUMENTORANs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="CPS_LISTA_CLI_PRO_Result">
     <Property Type="String" Name="KUNNR" Nullable="false" MaxLength="10" />
@@ -5834,6 +5849,65 @@
       </Principal>
       <Dependent Role="USUARIOF">
         <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DOCUMENTOBORRREC">
+    <Key>
+      <PropertyRef Name="USUARIOC_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="USUARIOC_ID" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="FECHAF" Type="DateTime" Precision="0" />
+    <Property Name="PERIODO" Type="Int32" />
+    <Property Name="EJERCICIO" Type="Int32" />
+    <Property Name="MONTO_BASE" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_FIJO" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_GRS" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_NET" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+    <Property Name="PORC" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="DOC_REF" Type="Decimal" Precision="10" Scale="0" />
+    <Property Name="FECHAV" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="DOCUMENTBORR" Relationship="TAT001Model.FK_DOCUMENTOBORRREC_DOCUMENTBORR" FromRole="DOCUMENTOBORRREC" ToRole="DOCUMENTBORR" />
+  </EntityType>
+  <Association Name="FK_DOCUMENTOBORRREC_DOCUMENTBORR">
+    <End Type="TAT001Model.DOCUMENTBORR" Role="DOCUMENTBORR" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTOBORRREC" Role="DOCUMENTOBORRREC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTBORR">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTOBORRREC">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DOCUMENTORAN">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="LIN" />
+    </Key>
+    <Property Name="NUM_DOC" Type="Decimal" Nullable="false" Precision="10" Scale="0" />
+    <Property Name="POS" Type="Int32" Nullable="false" />
+    <Property Name="LIN" Type="Int32" Nullable="false" />
+    <Property Name="OBJETIVOI" Type="Decimal" Precision="13" Scale="5" />
+    <Property Name="PORCENTAJE" Type="Decimal" Precision="13" Scale="5" />
+    <NavigationProperty Name="DOCUMENTOREC" Relationship="TAT001Model.FK_DOCUMENTORAN_DOCUMENTOREC" FromRole="DOCUMENTORAN" ToRole="DOCUMENTOREC" />
+  </EntityType>
+  <Association Name="FK_DOCUMENTORAN_DOCUMENTOREC">
+    <End Type="TAT001Model.DOCUMENTOREC" Role="DOCUMENTOREC" Multiplicity="1" />
+    <End Type="TAT001Model.DOCUMENTORAN" Role="DOCUMENTORAN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTOREC">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS" />
+      </Principal>
+      <Dependent Role="DOCUMENTORAN">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

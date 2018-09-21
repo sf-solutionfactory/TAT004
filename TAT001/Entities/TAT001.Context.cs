@@ -172,6 +172,8 @@ namespace TAT001.Entities
         public virtual DbSet<ACCIONT> ACCIONTs { get; set; }
         public virtual DbSet<CLIENTEF> CLIENTEFs { get; set; }
         public virtual DbSet<USUARIOF> USUARIOFs { get; set; }
+        public virtual DbSet<DOCUMENTOBORRREC> DOCUMENTOBORRRECs { get; set; }
+        public virtual DbSet<DOCUMENTORAN> DOCUMENTORANs { get; set; }
     
         [DbFunction("TAT001Entities", "split")]
         public virtual IQueryable<split_Result> split(string delimited, string delimiter)

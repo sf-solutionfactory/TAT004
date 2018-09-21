@@ -2322,5 +2322,35 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTOBORRRECs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTOBORRREC">
+        <MappingFragment StoreEntitySet="DOCUMENTOBORRREC">
+          <ScalarProperty Name="FECHAV" ColumnName="FECHAV" />
+          <ScalarProperty Name="DOC_REF" ColumnName="DOC_REF" />
+          <ScalarProperty Name="PORC" ColumnName="PORC" />
+          <ScalarProperty Name="ESTATUS" ColumnName="ESTATUS" />
+          <ScalarProperty Name="MONTO_NET" ColumnName="MONTO_NET" />
+          <ScalarProperty Name="MONTO_GRS" ColumnName="MONTO_GRS" />
+          <ScalarProperty Name="MONTO_FIJO" ColumnName="MONTO_FIJO" />
+          <ScalarProperty Name="MONTO_BASE" ColumnName="MONTO_BASE" />
+          <ScalarProperty Name="EJERCICIO" ColumnName="EJERCICIO" />
+          <ScalarProperty Name="PERIODO" ColumnName="PERIODO" />
+          <ScalarProperty Name="FECHAF" ColumnName="FECHAF" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="USUARIOC_ID" ColumnName="USUARIOC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DOCUMENTORANs">
+      <EntityTypeMapping TypeName="TAT001Model.DOCUMENTORAN">
+        <MappingFragment StoreEntitySet="DOCUMENTORAN">
+          <ScalarProperty Name="PORCENTAJE" ColumnName="PORCENTAJE" />
+          <ScalarProperty Name="OBJETIVOI" ColumnName="OBJETIVOI" />
+          <ScalarProperty Name="LIN" ColumnName="LIN" />
+          <ScalarProperty Name="POS" ColumnName="POS" />
+          <ScalarProperty Name="NUM_DOC" ColumnName="NUM_DOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

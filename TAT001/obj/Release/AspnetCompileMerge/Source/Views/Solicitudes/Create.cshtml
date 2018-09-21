@@ -10,6 +10,7 @@
 <script src="~/Scripts/formatos.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
+<script src="~/Scripts/rangos.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
 <script src="~/Scripts/ValidarNumero.js"></script><!--LEJ 09.07.2018-->
 @if (ViewBag.error != "")
@@ -515,7 +516,7 @@ data: { Prefix: request.term, usuario: user, pais: '@Model.PAIS_ID' },
 /**/
 success: function (data) {
 response(auto.map(data, function (item) {
-return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+    return { label: trimStart('0', item.KUNNR) + " - " + item.NAME1, value: trimStart('0', item.KUNNR) };
 }))
 }
 })
@@ -628,25 +629,39 @@ selectCliente(value);
                                     <div class="col s12">
                                         <p>
                                             <label>
-                                                <input id="check_recurrente" type="checkbox" onchange="cambiaCheckRec(this)" />
+                                                @if (Model.DOCUMENTORECs.Count > 1)
+                                                {
+                                                    <input id="check_recurrente" type="checkbox" onchange="cambiaCheckRec(this)" checked="checked" />
+                                                }
+                                                else
+                                                {
+                                                    <input id="check_recurrente" type="checkbox" onchange="cambiaCheckRec(this)" />
+                                                }
                                                 <span id="span_docrec">Documento recurrente</span>
                                             </label>
                                         </p>
                                     </div>
                                     <div class="col s12">
                                         <label class="col s6">
-                                            <input name="group1" type="radio" checked id="btn-date" onchange="cambiaTemp(this.id)" />
+                                            <input name="group1" type="radio" id="btn-date" onchange="cambiaTemp(this.id)" />
                                             <span id="span_pfecha">Por fecha</span> @*B20180801 MGC Textos*@
                                         </label>
                                         <label class="col s6">
-                                            <input name="group1" type="radio" id="btn-peri" onchange="cambiaTemp(this.id)" />
+                                            @if (Model.DOCUMENTORECs.Count > 1)
+                                            {
+                                                <input name="group1" type="radio" checked id="btn-peri" onchange="cambiaTemp(this.id)" />
+                                            }
+                                            else
+                                            {
+                                                <input name="group1" type="radio" id="btn-peri" onchange="cambiaTemp(this.id)" />
+                                            }
                                             <span id="span_pperiodo">Por periodo</span> @*B20180801 MGC Textos*@
                                         </label>
                                     </div>
                                     <script>
                                         function cambiaTemp(id) {
                                             var tipo = id.split('-')[1];
-                                            if (tipo == "date") {
+                                            if (tipo == "date" & document.getElementById(id).checked) {
                                                 document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
                                                 document.getElementById("anioi_id").setAttribute("disabled", "disabled");
                                                 document.getElementById("periodof_id").setAttribute("disabled", "disabled");
@@ -777,6 +792,7 @@ selectCliente(value);
                                         function borrar(field) {
                                             field.value = "";
                                         }
+
                                     </script>
                                 }
                                 else
@@ -1193,8 +1209,8 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             </div>
                         }
                         @{List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
-                                                                                                                                                                    ;
+                                                                                                                                                                            archivos = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>
+                                                                                                                                                                                ;
                             if (ViewBag.relacionadan != "" && archivos.Count > 0)
                             {
                                 string[] nombrefile;
@@ -1404,24 +1420,24 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                         </div>
                         <div class="row" style="margin-bottom:0;">
                             <div class="col s12 m6 offset-m6 right-align">
-                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango"/>
-                                </div>
-                                <div class="col s12 m6 offset-m6">
-                                    <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
-                                        <!--RSG 01.08.2018-->
-                                        <thead>
-                                            <tr>
-                                                <th id="">Documento</th>
-                                                <th id="">Rango</th>
-                                                <th id="">Objetivo inicio</th>
-                                                @*<th id="">Objetivo limite</th>*@
-                                                <th id="">Porcentaje</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
+                                <input type="button" id="btnRango" style="display:none;" class="btn-small" onclick="addRango()" value="Agragar rango" />
                             </div>
+                            <div class="col s12 m6 offset-m6">
+                                <table class="table_rangos display" id="table_rangos" cellspacing="0" style="width:100%;display:none;font-size:12px;">
+                                    <!--RSG 01.08.2018-->
+                                    <thead>
+                                        <tr>
+                                            <th id="">Documento</th>
+                                            <th id="">Rango</th>
+                                            <th id="">Objetivo inicio</th>
+                                            @*<th id="">Objetivo limite</th>*@
+                                            <th id="">Porcentaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col s12">
@@ -1844,7 +1860,7 @@ soportes(document.getElementById("tsol_id").value, '@Session["spras"].ToString()
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="txtPres" type="hidden" class="" />
+                                        <input value=" " id="txtPres" name="txtPres" type="hidden" class="" />
                                         <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label id="lbl_montodoc" for="monto_doc_md">Monto</label> @*B20180801 MGC Textos*@
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
@@ -2303,8 +2319,12 @@ $("#div_clearing").append(div);
 
     <div id="validaciones">
         <script>
-var lista1 = [];
-var lista = @Html.Raw(ViewBag.listaValid);
+            var lista1 = [];
+            var lista = @Html.Raw(ViewBag.listaValid);
+
+            //LEJ 30.07.2018
+            _ff();
+
         </script>
         <script src="~/Scripts/warning.js"></script>
     </div>

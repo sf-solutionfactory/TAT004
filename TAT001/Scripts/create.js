@@ -1732,6 +1732,66 @@ $(window).on('load', function () {
     }
 });
 
+//LEJ 30.07.2018--------------------------------------I
+function _ff() {
+    var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    var datei = $("#fechai_vig").val().split(" ")[0];
+    var _anoi = datei.split('/')[2];
+    if (datei != "") {
+    $.ajax({
+        type: "POST",
+        url: 'getPeriodo',
+        dataType: "json",
+        data: { "fecha": datei },
+        success: function (data) {
+            var _xd = data;
+            var pp = parseInt(data);
+            if (pp != 0) {
+                $("#periodoi_id").val(pp);
+                document.getElementById("btn-peri").checked = true;
+                $("#btn-peri").trigger("change");
+                $("#anioi_id").val(_anoi);
+            } else {
+                document.getElementById("btn-date").checked = true;
+                $("#btn-date").trigger("change");
+            }
+        },
+        error: function (xhr, httpStatusMessage, customErrorMessage) {
+            M.toast({ html: httpStatusMessage });
+        },
+        async: true
+    });}
+    var datef = $("#fechaf_vig").val().split(" ")[0];
+    var _anof = datef.split('/')[2];
+    if (datef != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getPeriodo',
+            dataType: "json",
+            data: { "fecha": datef },
+            success: function (data) {
+                var _xd = data;
+                var pp = parseInt(data);
+                if (pp != 0) {
+                    $("#periodof_id").val(pp);
+                    document.getElementById("btn-peri").checked = true;
+                    $("#btn-peri").trigger("change");
+                    $("#aniof_id").val(_anof);
+                } else {
+                    document.getElementById("btn-date").checked = true;
+                    $("#btn-date").trigger("change");
+                }
+
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: true
+        });
+    }
+}
+//LEJ 30.07.2018--------------------------------------T
+
 //B20180625 MGC 2018.07.04 para el auto-guardado del borrador
 $(document).on('mousemove keyup keypress', function () {
     clearTimeout(interval);//clear it as soon as any event occurs

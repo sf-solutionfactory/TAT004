@@ -1267,7 +1267,8 @@ namespace TAT001.Controllers
                         d.ESTADO = docb.ESTADO;
                         d.CONCEPTO = docb.CONCEPTO;
                         d.NOTAS = docb.NOTAS;
-                        d.PAYER_ID = docb.PAYER_ID;
+                        //d.PAYER_ID = docb.PAYER_ID;//RSG 20.09.2018 delete
+                        d.PAYER_ID = docb.PAYER_ID.TrimStart('0');
                         d.FECHAI_VIG = docb.FECHAI_VIG;
                         d.FECHAF_VIG = docb.FECHAF_VIG;
                         d.PAYER_EMAIL = docb.PAYER_EMAIL;
@@ -1312,6 +1313,30 @@ namespace TAT001.Controllers
                             docfl.Add(docf);
                         }
                         d.DOCUMENTOF = docfl;
+
+                        //RSG add 20.09.2018------------------------------------------
+                        foreach (DOCUMENTOBORRREC drec in docb.DOCUMENTOBORRRECs)
+                        {
+                            DOCUMENTOREC dbp = new DOCUMENTOREC();
+
+                            //dbp.USUARIOC_ID = doc.USUARIOC_ID;
+                            dbp.POS = drec.POS;
+
+                            dbp.DOC_REF = drec.DOC_REF;
+                            dbp.EJERCICIO = drec.EJERCICIO;
+                            dbp.ESTATUS = drec.ESTATUS;
+                            dbp.FECHAF = drec.FECHAF;
+                            dbp.FECHAV = drec.FECHAV;
+                            dbp.MONTO_BASE = drec.MONTO_BASE;
+                            dbp.MONTO_FIJO = drec.MONTO_FIJO;
+                            dbp.MONTO_GRS = drec.MONTO_GRS;
+                            dbp.MONTO_NET = drec.MONTO_NET;
+                            dbp.PERIODO = drec.PERIODO;
+                            dbp.PORC = drec.PORC;
+
+                            d.DOCUMENTORECs.Add(dbp);
+                        }
+                        //RSG add 20.09.2018------------------------------------------
 
                         //Obtener las posiciones del borrador
                         List<DOCUMENTOP_MOD> docpl = new List<DOCUMENTOP_MOD>();
@@ -1695,7 +1720,7 @@ namespace TAT001.Controllers
             "MONTO_BASE_NS_PCT_ML2,IMPUESTO,FECHAI_VIG,FECHAF_VIG,ESTATUS_EXT,SOLD_TO_ID,PAYER_ID,GRUPO_CTE_ID,CANAL_ID," +
             "MONEDA_ID,TIPO_CAMBIO,NO_FACTURA,FECHAD_SOPORTE,METODO_PAGO,NO_PROVEEDOR,PASO_ACTUAL,AGENTE_ACTUAL,FECHA_PASO_ACTUAL," +
             "VKORG,VTWEG,SPART,HORAC,FECHAC_PLAN,FECHAC_USER,HORAC_USER,CONCEPTO,PORC_ADICIONAL,PAYER_NOMBRE,PAYER_EMAIL," +
-            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, OBJQ_PORC")] DOCUMENTO dOCUMENTO,
+            "MONEDAL_ID,MONEDAL2_ID,TIPO_CAMBIOL,TIPO_CAMBIOL2,DOCUMENTOP, DOCUMENTOF, DOCUMENTOREC, GALL_ID, USUARIOD_ID, OBJQ_PORC, DOCUMENTORAN")] DOCUMENTO dOCUMENTO,
                 IEnumerable<HttpPostedFileBase> files_soporte, string notas_soporte, string[] labels_soporte, string unafact,
                 string FECHAD_REV, string TREVERSA, string select_neg, string select_dis, string select_negi, string select_disi,
                 string bmonto_apoyo, string catmat, string borrador_param, string monedadis, string chk_ligada, string sel_nn, string check_objetivoq,
@@ -2581,6 +2606,12 @@ namespace TAT001.Controllers
                                 ////int pos = drec.POS % num;
                                 //RSG 29.07.2018-add----------------------------------
 
+                                foreach(DOCUMENTORAN dran in dOCUMENTO.DOCUMENTORAN.Where(x=>x.POS == drec.POS))
+                                {
+                                    dran.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                    drec.DOCUMENTORANs.Add(dran);
+                                }
+
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
                             db.SaveChanges();
@@ -3240,6 +3271,7 @@ namespace TAT001.Controllers
                         guardarBorradorf(dOCUMENTO, unafact);
                         guardarBorradorp(dOCUMENTO);
                         guardarBorradorn(dOCUMENTO.USUARIOC_ID, notas_soporte);
+                        guardarBorradorRec(dOCUMENTO);
                         res = "true";
                     }
 
@@ -3407,7 +3439,6 @@ namespace TAT001.Controllers
 
             }
         }
-
         public void guardarBorradorn(string user, string notas)
         {
 
@@ -3430,6 +3461,47 @@ namespace TAT001.Controllers
                 }
             }
 
+        }
+        public void guardarBorradorRec(DOCUMENTO doc)
+        {
+            try
+            {
+
+                for (int i = 0; i < doc.DOCUMENTOREC.Count; i++)
+                {
+                    try
+                    {
+                        DOCUMENTOBORRREC dbp = new DOCUMENTOBORRREC();
+                        dbp.USUARIOC_ID = doc.USUARIOC_ID;
+                        dbp.POS = doc.DOCUMENTOREC[i].POS;
+
+                        dbp.DOC_REF = doc.DOCUMENTOREC[i].DOC_REF;
+                        dbp.EJERCICIO = doc.DOCUMENTOREC[i].EJERCICIO;
+                        dbp.ESTATUS = doc.DOCUMENTOREC[i].ESTATUS;
+                        dbp.FECHAF = doc.DOCUMENTOREC[i].FECHAF;
+                        dbp.FECHAV = doc.DOCUMENTOREC[i].FECHAV;
+                        dbp.MONTO_BASE = doc.DOCUMENTOREC[i].MONTO_BASE;
+                        dbp.MONTO_FIJO = doc.DOCUMENTOREC[i].MONTO_FIJO;
+                        dbp.MONTO_GRS = doc.DOCUMENTOREC[i].MONTO_GRS;
+                        dbp.MONTO_NET = doc.DOCUMENTOREC[i].MONTO_NET;
+                        dbp.PERIODO = doc.DOCUMENTOREC[i].PERIODO;
+                        dbp.PORC = doc.DOCUMENTOREC[i].PORC;
+
+                        db.DOCUMENTOBORRRECs.Add(dbp);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public string eliminarBorrador(DOCUMENTO doc)
@@ -3459,6 +3531,15 @@ namespace TAT001.Controllers
             try
             {
                 db.DOCUMENTOBORRNs.RemoveRange(db.DOCUMENTOBORRNs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
+                db.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            }
+            try//RSG 20.09.2018 ADD
+            {
+                db.DOCUMENTOBORRRECs.RemoveRange(db.DOCUMENTOBORRRECs.Where(d => d.USUARIOC_ID == doc.USUARIOC_ID));
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -6156,7 +6237,7 @@ namespace TAT001.Controllers
         public JsonResult getPeriodo(DateTime fecha)
         {
             Calendario445 c = new Calendario445();
-            var _f = c.getPeriodo(fecha);
+            var _f = c.getPeriodoF(fecha);
             JsonResult jl = Json(_f, JsonRequestBehavior.AllowGet);
             return jl;
         }
@@ -8098,6 +8179,21 @@ namespace TAT001.Controllers
 
             doc.DOCUMENTOREC = docs;
             return PartialView("~/Views/Solicitudes/_PartialRecTr.cshtml", doc);
+        }
+
+        [HttpPost]
+        public ActionResult getPartialRan(List<DOCUMENTORAN> docs)
+        {
+            DOCUMENTO doc = new DOCUMENTO();
+            //foreach (DOCUMENTORAN r in docs)
+            //{
+            //    r.NUM_DOC = 0;
+            //    r.POS = 0;
+            //    r.LIN = 0;
+            //}
+
+            doc.DOCUMENTORAN = docs;
+            return PartialView("~/Views/Solicitudes/_PartialRanTr.cshtml", doc);
         }
         //private string completaMaterial(string material)//RSG 07.06.2018---------------------------------------------
         //{

@@ -859,6 +859,25 @@
     <Property Name="VIGENCIA_AL" Type="date" />
     <Property Name="APOYO_EST" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
+  <EntityType Name="DOCUMENTOBORRREC">
+    <Key>
+      <PropertyRef Name="USUARIOC_ID" />
+      <PropertyRef Name="POS" />
+    </Key>
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="FECHAF" Type="date" />
+    <Property Name="PERIODO" Type="int" />
+    <Property Name="EJERCICIO" Type="int" />
+    <Property Name="MONTO_BASE" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_FIJO" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_GRS" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="MONTO_NET" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="ESTATUS" Type="nchar" MaxLength="1" />
+    <Property Name="PORC" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="DOC_REF" Type="numeric" Precision="10" Scale="0" />
+    <Property Name="FECHAV" Type="date" />
+  </EntityType>
   <EntityType Name="DOCUMENTOF">
     <Key>
       <PropertyRef Name="NUM_DOC" />
@@ -949,6 +968,18 @@
     <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" />
     <Property Name="FECHAC" Type="date" />
     <Property Name="COMENTARIO" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="DOCUMENTORAN">
+    <Key>
+      <PropertyRef Name="NUM_DOC" />
+      <PropertyRef Name="POS" />
+      <PropertyRef Name="LIN" />
+    </Key>
+    <Property Name="NUM_DOC" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="POS" Type="int" Nullable="false" />
+    <Property Name="LIN" Type="int" Nullable="false" />
+    <Property Name="OBJETIVOI" Type="decimal" Precision="13" Scale="5" />
+    <Property Name="PORCENTAJE" Type="decimal" Precision="13" Scale="5" />
   </EntityType>
   <EntityType Name="DOCUMENTOREC">
     <Key>
@@ -3063,6 +3094,18 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DOCUMENTOBORRREC_DOCUMENTBORR">
+    <End Role="DOCUMENTBORR" Type="Self.DOCUMENTBORR" Multiplicity="1" />
+    <End Role="DOCUMENTOBORRREC" Type="Self.DOCUMENTOBORRREC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTBORR">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Principal>
+      <Dependent Role="DOCUMENTOBORRREC">
+        <PropertyRef Name="USUARIOC_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_DOCUMENTOF_DOCUMENTO">
     <End Role="DOCUMENTO" Type="Self.DOCUMENTO" Multiplicity="1" />
     <End Role="DOCUMENTOF" Type="Self.DOCUMENTOF" Multiplicity="*" />
@@ -3146,6 +3189,20 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="DOCUMENTOR">
         <PropertyRef Name="TREVERSA_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DOCUMENTORAN_DOCUMENTOREC">
+    <End Role="DOCUMENTOREC" Type="Self.DOCUMENTOREC" Multiplicity="1" />
+    <End Role="DOCUMENTORAN" Type="Self.DOCUMENTORAN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DOCUMENTOREC">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS" />
+      </Principal>
+      <Dependent Role="DOCUMENTORAN">
+        <PropertyRef Name="NUM_DOC" />
+        <PropertyRef Name="POS" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -4560,12 +4617,14 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="DOCUMENTOBORRM" EntityType="Self.DOCUMENTOBORRM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOBORRN" EntityType="Self.DOCUMENTOBORRN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOBORRP" EntityType="Self.DOCUMENTOBORRP" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTOBORRREC" EntityType="Self.DOCUMENTOBORRREC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOF" EntityType="Self.DOCUMENTOF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOL" EntityType="Self.DOCUMENTOL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOM" EntityType="Self.DOCUMENTOM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTON" EntityType="Self.DOCUMENTON" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOP" EntityType="Self.DOCUMENTOP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOR" EntityType="Self.DOCUMENTOR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DOCUMENTORAN" EntityType="Self.DOCUMENTORAN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOREC" EntityType="Self.DOCUMENTOREC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOSAP" EntityType="Self.DOCUMENTOSAP" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DOCUMENTOTS" EntityType="Self.DOCUMENTOTS" Schema="dbo" store:Type="Tables" />
@@ -5071,6 +5130,10 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORR" />
       <End Role="DOCUMENTOBORRP" EntitySet="DOCUMENTOBORRP" />
     </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTOBORRREC_DOCUMENTBORR" Association="Self.FK_DOCUMENTOBORRREC_DOCUMENTBORR">
+      <End Role="DOCUMENTBORR" EntitySet="DOCUMENTBORR" />
+      <End Role="DOCUMENTOBORRREC" EntitySet="DOCUMENTOBORRREC" />
+    </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOF_DOCUMENTO" Association="Self.FK_DOCUMENTOF_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />
       <End Role="DOCUMENTOF" EntitySet="DOCUMENTOF" />
@@ -5098,6 +5161,10 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_DOCUMENTOR_TREVERSA" Association="Self.FK_DOCUMENTOR_TREVERSA">
       <End Role="TREVERSA" EntitySet="TREVERSA" />
       <End Role="DOCUMENTOR" EntitySet="DOCUMENTOR" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DOCUMENTORAN_DOCUMENTOREC" Association="Self.FK_DOCUMENTORAN_DOCUMENTOREC">
+      <End Role="DOCUMENTOREC" EntitySet="DOCUMENTOREC" />
+      <End Role="DOCUMENTORAN" EntitySet="DOCUMENTORAN" />
     </AssociationSet>
     <AssociationSet Name="FK_DOCUMENTOREC_DOCUMENTO" Association="Self.FK_DOCUMENTOREC_DOCUMENTO">
       <End Role="DOCUMENTO" EntitySet="DOCUMENTO" />

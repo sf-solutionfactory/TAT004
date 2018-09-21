@@ -425,6 +425,9 @@
     <Compile Include="Entities\DOCUMENTOBORRP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\DOCUMENTOBORRREC.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DOCUMENTOF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -441,6 +444,9 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCUMENTORAN.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTOREC.cs">
@@ -909,6 +915,7 @@
     <Content Include="images\logo-kellogg2.png" />
     <Content Include="images\logo_kellogg.png" />
     <Content Include="images\sf-logo.jpg" />
+    <Content Include="Scripts\rangos.js" />
     <Content Include="Scripts\subfilters\jquery.tablesorter.js" />
     <Content Include="Content\subfilters\jquery.tablesorter.pager.css" />
     <Content Include="Scripts\subfilters\jquery.tablesorter.pager.js" />
@@ -1173,6 +1180,7 @@
     <Content Include="Views\Reportes\Index.cshtml" />
     <Content Include="Views\Reportes\ReporteIntegracionTs.cshtml" />
     <Content Include="Views\Reportes\ReporteProvisiones.cshtml" />
+    <Content Include="Views\Solicitudes\_PartialRanTr.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
