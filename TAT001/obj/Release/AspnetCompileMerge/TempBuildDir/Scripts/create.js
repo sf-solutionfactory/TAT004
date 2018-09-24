@@ -900,7 +900,8 @@ $(document).ready(function () {
                 //    $('#tipo_cambio').val("$" + tc.replace('.', ','));
                 //}
 
-                $('#tipo_cambio').val(toShow(tc));
+                //$('#tipo_cambio').val(toShow(tc));
+                $('#tipo_cambio').val(toShow5(tc));
 
                 var monto = mt / tc;
                 monto = parseFloat(monto).toFixed(2);
@@ -1010,7 +1011,8 @@ $(document).ready(function () {
         var _miles = $("#miles").val(); //LEJ 09.07.18
         var _decimales = $("#dec").val(); //LEJ 09.07.18
         //var tipo_cambio = $('#tipo_cambio').val();
-        var tipo_cambio = $('#tipo_cambio').val().replace('$', ''); //LEJ 09.07.18
+        var tipo_cambio = $('#tipo_cambio').val().replace('$', '').replace(_miles, ''); //LEJ 09.07.18
+        tipo_cambio = tipo_cambio.replace(',', '.');
         if (tipo_cambio != "") {
             //LEJ 09.07.18------------------------I
             //if (_decimales === '.') {
@@ -1021,10 +1023,11 @@ $(document).ready(function () {
             //    _xtc = _xtc.replace(',', '.');
             //    tipo_cambio = _xtc;
             //}
-            tipo_cambio = toNum(tipo_cambio);
+            //////////////tipo_cambio = toNum(tipo_cambio);
             //LEJ 09.07.18------------------------T
             var is_num = $.isNumeric(tipo_cambio);
-            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            var tc = parseFloat(tipo_cambio);
             //Validar el monto en tipo de cambio
             if (tc > 0 & is_num == true) {
                 //Validar el monto
@@ -1037,7 +1040,8 @@ $(document).ready(function () {
                 //    tc = tc.replace('.', ',');
                 //    $('#tipo_cambio').val("$" + tc.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
                 //}
-                $('#tipo_cambio').val(toShow(tc.toString()));
+                //$('#tipo_cambio').val(toShow(tc.toString()));
+                $('#tipo_cambio').val(toShow5(tc.toString()));
                 //LEJ 10.07.18----------------------------------T
                 // var monto_doc_md = $('#monto_doc_md').val();
                 //var mt = parseFloat(monto_doc_md.replace(',', '')).toFixed(2);
@@ -1148,7 +1152,7 @@ $(document).ready(function () {
         //selectTcambio(MONEDA_ID, mt);
         var tipo_cambio = toNum($('#tipo_cambio').val());
         //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
-        var tc = parseFloat(toNum(tipo_cambio)).toFixed(2);
+        var tc = parseFloat(toNum(tipo_cambio));
         //Validar el monto en tipo de cambio
         var is_num2 = $.isNumeric(tipo_cambio);
         if (tc > 0 & is_num2 == true) {
@@ -1498,7 +1502,7 @@ $(document).ready(function () {
 //Cuando se termina de cargar la página
 $(window).on('load', function () {
 
-    $('#tipo_cambio').val(toShow($('#tipo_cambio').val()));
+    $('#tipo_cambio').val(toShow5($('#tipo_cambio').val()));
 
     //B20180625 MGC 2018.06.26 Verificar si hay algún borrador mostrar la sección de facturas
     var check = $("#check_facturas").val();
@@ -1728,7 +1732,8 @@ $(window).on('load', function () {
     }
     var mt = parseFloat(toNum(tipocambio)) //B20180625 MGC 2018.07.02
     if (mt > 0) { //B20180625 MGC 2018.07.02
-        $('#tipo_cambio').val(toShow(mt)); //B20180625 MGC 2018.07.02
+        //$('#tipo_cambio').val(toShow(mt)); //B20180625 MGC 2018.07.02
+        $('#tipo_cambio').val(toShow5(mt)); //B20180625 MGC 2018.07.02
     }
 });
 
@@ -1737,7 +1742,7 @@ function _ff() {
     var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     var datei = $("#fechai_vig").val().split(" ")[0];
     var _anoi = datei.split('/')[2];
-
+    if (datei != "") {
     $.ajax({
         type: "POST",
         url: 'getPeriodo',
@@ -1760,33 +1765,35 @@ function _ff() {
             M.toast({ html: httpStatusMessage });
         },
         async: true
-    });
+    });}
     var datef = $("#fechaf_vig").val().split(" ")[0];
     var _anof = datef.split('/')[2];
-    $.ajax({
-        type: "POST",
-        url: 'getPeriodo',
-        dataType: "json",
-        data: { "fecha": datef },
-        success: function (data) {
-            var _xd = data;
-            var pp = parseInt(data);
-            if (pp != 0) {
-                $("#periodof_id").val(pp);
-                document.getElementById("btn-peri").checked = true;
-                $("#btn-peri").trigger("change");
-                $("#aniof_id").val(_anof);
-            } else {
-                document.getElementById("btn-date").checked = true;
-                $("#btn-date").trigger("change");
-            }
+    if (datef != "") {
+        $.ajax({
+            type: "POST",
+            url: 'getPeriodo',
+            dataType: "json",
+            data: { "fecha": datef },
+            success: function (data) {
+                var _xd = data;
+                var pp = parseInt(data);
+                if (pp != 0) {
+                    $("#periodof_id").val(pp);
+                    document.getElementById("btn-peri").checked = true;
+                    $("#btn-peri").trigger("change");
+                    $("#aniof_id").val(_anof);
+                } else {
+                    document.getElementById("btn-date").checked = true;
+                    $("#btn-date").trigger("change");
+                }
 
-        },
-        error: function (xhr, httpStatusMessage, customErrorMessage) {
-            M.toast({ html: httpStatusMessage });
-        },
-        async: true
-    });
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: true
+        });
+    }
 }
 //LEJ 30.07.2018--------------------------------------T
 
@@ -1973,7 +1980,8 @@ function focusoutmonto(directo) {
             //Validar el monto en tipo de cambio
             var is_num2 = $.isNumeric(tipo_cambio);
             if (tc > 0 & is_num2 == true) {
-                $('#tipo_cambio').val(toShow(tc));
+                //$('#tipo_cambio').val(toShow(tc));
+                $('#tipo_cambio').val(toShow5(tc));
                 var monto = mt / tc;
                 monto = parseFloat(monto).toFixed(2);
                 $('#monto_doc_ml2').val(monto);
@@ -5738,10 +5746,11 @@ function selectMoneda(valu) {
                 success: function (data) {
 
                     if (data !== null || data !== "") {
-                        var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
+                        //var iNum = parseFloat(data.replace(',', '.')).toFixed(2);
+                        var iNum = parseFloat(data.replace(',', '.'));
                         if (iNum > 0) {
 
-                            $('#tipo_cambio').val(toShow(iNum));
+                            $('#tipo_cambio').val(iNum);
 
                             var monto_doc_md = $('#monto_doc_md').val()
 

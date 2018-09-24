@@ -1268,6 +1268,7 @@ namespace TAT001.Controllers
                         d.CONCEPTO = docb.CONCEPTO;
                         d.NOTAS = docb.NOTAS;
                         //d.PAYER_ID = docb.PAYER_ID;//RSG 20.09.2018 delete
+                        if(docb.PAYER_ID!=null)
                         d.PAYER_ID = docb.PAYER_ID.TrimStart('0');
                         d.FECHAI_VIG = docb.FECHAI_VIG;
                         d.FECHAF_VIG = docb.FECHAF_VIG;

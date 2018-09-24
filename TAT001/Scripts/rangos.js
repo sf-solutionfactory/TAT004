@@ -107,6 +107,7 @@ function cambiaRango(e, tipo, pos, lin, val) {
             }
         }
         e.value = toShow(val);
+        updateObjQ();
     }
 }
 
