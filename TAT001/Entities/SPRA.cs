@@ -17,6 +17,7 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SPRA()
         {
+            this.ACCIONTs = new HashSet<ACCIONT>();
             this.CAMPOZKE24T = new HashSet<CAMPOZKE24T>();
             this.CARPETATs = new HashSet<CARPETAT>();
             this.CATEGORIATs = new HashSet<CATEGORIAT>();
@@ -44,12 +45,13 @@ namespace TAT001.Entities
             this.WARNINGs = new HashSet<WARNING>();
             this.WARNINGPTs = new HashSet<WARNINGPT>();
             this.WORKFTs = new HashSet<WORKFT>();
-            this.ACCIONTs = new HashSet<ACCIONT>();
         }
     
         public string ID { get; set; }
         public string DESCRIPCION { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ACCIONT> ACCIONTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CAMPOZKE24T> CAMPOZKE24T { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -104,7 +106,5 @@ namespace TAT001.Entities
         public virtual ICollection<WARNINGPT> WARNINGPTs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WORKFT> WORKFTs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ACCIONT> ACCIONTs { get; set; }
     }
 }

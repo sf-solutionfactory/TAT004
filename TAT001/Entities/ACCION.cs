@@ -17,8 +17,8 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ACCION()
         {
-            this.WORKFPs = new HashSet<WORKFP>();
             this.ACCIONTs = new HashSet<ACCIONT>();
+            this.WORKFPs = new HashSet<WORKFP>();
         }
     
         public int ID { get; set; }
@@ -26,8 +26,8 @@ namespace TAT001.Entities
         public string TIPO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<WORKFP> WORKFPs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACCIONT> ACCIONTs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WORKFP> WORKFPs { get; set; }
     }
 }

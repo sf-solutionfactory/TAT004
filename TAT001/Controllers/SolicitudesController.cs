@@ -440,6 +440,12 @@ namespace TAT001.Controllers
             ViewBag.miles = DF.D.PAI.MILES;//LEJGG 090718
             ViewBag.dec = DF.D.PAI.DECIMAL;//LEJGG 090718
 
+            /////////DRS 24.09.18/////////
+            var nombrec = from x in db.CUENTAGLs
+                          join c in db.CUENTAs on x.ID equals c.ABONO
+                          where c.ABONO == x.ID
+                          select x.NOMBRE;
+            ViewBag.nombreC = nombrec;
 
             ///////////////////////////////CAMBIOS LGPP INICIO//////////////////////////*@
             if (DF.D.TIPO_TECNICO == "M")
@@ -685,11 +691,7 @@ namespace TAT001.Controllers
                 flujo.USUARIOA_ID = User.Identity.Name;
                 ProcesaFlujo pf = new ProcesaFlujo();
                 string c = pf.procesa(flujo, "");
-                if (c.Equals("0"))//Aprobado
-                {
-                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
-                }
-                else if (res.Equals("1") | res.Equals("2") | res.Equals("3"))//CORREO
+                if (res.Equals("1") | res.Equals("2") | res.Equals("3"))//CORREO
                 {
                     //return RedirectToAction("Enviar", "Mails", new { id = flujo.NUM_DOC, index = false, tipo = "A" });
                     Email em = new Email();
@@ -703,6 +705,21 @@ namespace TAT001.Controllers
                     {
                         em.enviaMailC(flujo.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Details", image);
                     }
+                }
+
+                using (TAT001Entities db1 = new TAT001Entities())
+                {
+                    FLUJO ff = db1.FLUJOes.Where(x => x.NUM_DOC == flujo.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                    Estatus es = new Estatus();//RSG 18.09.2018
+                    DOCUMENTO ddoc = db1.DOCUMENTOes.Find(flujo.NUM_DOC);
+                    ff.STATUS = es.getEstatus(ddoc);
+                    db1.Entry(ff).State = EntityState.Modified;
+                    db1.SaveChanges();
+                }
+
+                if (c.Equals("0"))//Aprobado
+                {
+                    return RedirectToAction("Details", "Solicitudes", new { id = flujo.NUM_DOC });
                 }
                 else
                 {
@@ -1268,8 +1285,8 @@ namespace TAT001.Controllers
                         d.CONCEPTO = docb.CONCEPTO;
                         d.NOTAS = docb.NOTAS;
                         //d.PAYER_ID = docb.PAYER_ID;//RSG 20.09.2018 delete
-                        if(docb.PAYER_ID!=null)
-                        d.PAYER_ID = docb.PAYER_ID.TrimStart('0');
+                        if (docb.PAYER_ID != null)
+                            d.PAYER_ID = docb.PAYER_ID.TrimStart('0');
                         d.FECHAI_VIG = docb.FECHAI_VIG;
                         d.FECHAF_VIG = docb.FECHAF_VIG;
                         d.PAYER_EMAIL = docb.PAYER_EMAIL;
@@ -2590,6 +2607,8 @@ namespace TAT001.Controllers
                                 if (drec.PORC == null) //RSG 31.05.2018-------------------
                                     drec.PORC = 0;
                                 dOCUMENTO.TIPO_RECURRENTE = db.TSOLs.Where(x => x.ID.Equals(dOCUMENTO.TSOL_ID)).FirstOrDefault().TRECU;
+                                if (dOCUMENTO.TIPO_RECURRENTE == "1" & dOCUMENTO.LIGADA == true)
+                                    dOCUMENTO.TIPO_RECURRENTE = "2";
                                 if (dOCUMENTO.TIPO_RECURRENTE != "1" & dOCUMENTO.OBJETIVOQ == true)
                                     dOCUMENTO.TIPO_RECURRENTE = "3";
                                 //RSG 29.07.2018-add----------------------------------
@@ -2600,18 +2619,19 @@ namespace TAT001.Controllers
                                 else
                                     drec.FECHAF = cal.getNextLunes((DateTime)drec.FECHAF);
                                 drec.EJERCICIO = drec.FECHAV.Value.Year;
-                                drec.PERIODO = cal.getPeriodo(drec.FECHAV.Value);
+                                drec.PERIODO = cal.getPeriodoF(drec.FECHAV.Value);
                                 if (dOCUMENTO.TIPO_RECURRENTE == "1")
                                     drec.PERIODO--;
+                                if (drec.PERIODO == 0) drec.PERIODO = 12;
                                 ////int num = int.Parse(sel_nn);
                                 ////int pos = drec.POS % num;
                                 //RSG 29.07.2018-add----------------------------------
-
-                                foreach(DOCUMENTORAN dran in dOCUMENTO.DOCUMENTORAN.Where(x=>x.POS == drec.POS))
-                                {
-                                    dran.NUM_DOC = dOCUMENTO.NUM_DOC;
-                                    drec.DOCUMENTORANs.Add(dran);
-                                }
+                                if (dOCUMENTO.DOCUMENTORAN != null)
+                                    foreach (DOCUMENTORAN dran in dOCUMENTO.DOCUMENTORAN.Where(x => x.POS == drec.POS))
+                                    {
+                                        dran.NUM_DOC = dOCUMENTO.NUM_DOC;
+                                        drec.DOCUMENTORANs.Add(dran);
+                                    }
 
                                 dOCUMENTO.DOCUMENTORECs.Add(drec);
                             }
@@ -2848,7 +2868,7 @@ namespace TAT001.Controllers
                         {
                             decimal num_ref = (decimal)dOCUMENTO.DOCUMENTO_REF;
                             DOCUMENTO referencia = db1.DOCUMENTOes.Find(num_ref);
-                            referencia.ESTATUS = "C";
+                            referencia.ESTATUS = "R";
                             db1.Entry(referencia).State = EntityState.Modified;
                             db1.SaveChanges();
                         }
@@ -2972,6 +2992,8 @@ namespace TAT001.Controllers
                 //Información del cliente
                 var id_clientes = db.CLIENTEs.Where(c => c.LAND.Equals(p) && c.ACTIVO == true).ToList();
                 //Obtener datos del payer
+                Cadena cad = new Cadena();
+                dOCUMENTO.PAYER_ID = cad.completaCliente(dOCUMENTO.PAYER_ID);
                 CLIENTE payer = getCliente(dOCUMENTO.PAYER_ID);
 
                 dOCUMENTO.VKORG = payer.VKORG;
@@ -4266,26 +4288,27 @@ namespace TAT001.Controllers
                 }
                 d.MONEDA_ID = id_bukrs.WAERS;
                 var date = DateTime.Now.Date;
-                TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO();
-                try
-                {
-                    tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();
-                    if (tcambio == null)
-                    {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();
-                    }
-                    decimal con = Convert.ToDecimal(tcambio.UKURS);
-                    var cons = con.ToString("0.##");
+                //TAT001.Entities.TCAMBIO tcambio = new TAT001.Entities.TCAMBIO();
+                //try
+                //{
+                //    tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(date)).FirstOrDefault();
+                //    if (tcambio == null)
+                //    {
+                //        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD")).Max(a => a.GDATU);
+                //        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(id_bukrs.WAERS) && t.TCURR.Equals("USD") && t.GDATU.Equals(max)).FirstOrDefault();
+                //    }
+                //    decimal con = Convert.ToDecimal(tcambio.UKURS);
+                //    var cons = con.ToString("0.##");
 
-                    ViewBag.tcambio = cons;
-                }
-                catch (Exception e)
-                {
-                    errorString = e.Message + "detail: conversion " + id_bukrs.WAERS + " to " + "USD" + " in date " + DateTime.Now.Date;
-                    ViewBag.tcambio = "";
-                }
+                //    ViewBag.tcambio = cons;
+                //}
+                //catch (Exception e)
+                //{
+                //    errorString = e.Message + "detail: conversion " + id_bukrs.WAERS + " to " + "USD" + " in date " + DateTime.Now.Date;
+                //    ViewBag.tcambio = "";
+                //}
 
+                ViewBag.tcambio = d.TIPO_CAMBIO;
 
             }//RSG 13.06.2018
 
@@ -5435,6 +5458,7 @@ namespace TAT001.Controllers
                     f.ESTATUS = "A";
                     f.FECHAM = DateTime.Now;
                     string c = pf.procesa(f, "");
+                    FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                     while (c == "1")
                     {
                         Email em = new Email();
@@ -5443,7 +5467,6 @@ namespace TAT001.Controllers
                         em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
 
 
-                        FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                         if (conta.WORKFP.ACCION.TIPO == "B")
                         {
                             WORKFP wpos = db.WORKFPs.Where(x => x.ID == conta.WORKF_ID & x.VERSION == conta.WF_VERSION & x.POS == conta.WF_POS).FirstOrDefault();
@@ -5460,16 +5483,27 @@ namespace TAT001.Controllers
                             //f1.FECHAC = DateTime.Now;
                             conta.FECHAM = DateTime.Now;
                             c = pf.procesa(conta, "");
+                            conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                         }
                         else
                         {
                             c = "";
                         }
+                    }
+                    //Estatus es = new Estatus();//RSG 18.09.2018
+                    //DOCUMENTO doc = db.DOCUMENTOes.Find(f.NUM_DOC);
+                    //conta.STATUS = es.getEstatus(doc);
+                    //db.Entry(conta).State = EntityState.Modified;
+                    //db.SaveChanges();
 
+                    using (TAT001Entities db1 = new TAT001Entities())
+                    {
+                        FLUJO ff = db1.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
                         Estatus es = new Estatus();//RSG 18.09.2018
-                        conta.STATUS = es.getEstatus(d);
-                        db.Entry(conta).State = EntityState.Modified;
-                        db.SaveChanges();
+                        DOCUMENTO ddoc = db1.DOCUMENTOes.Find(f.NUM_DOC);
+                        ff.STATUS = es.getEstatus(ddoc);
+                        db1.Entry(ff).State = EntityState.Modified;
+                        db1.SaveChanges();
                     }
                 }
                 catch (Exception ee)
@@ -6393,6 +6427,9 @@ namespace TAT001.Controllers
                 kunnr = "";
             }
 
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
+
             //if (catid == null)
             //{
             //    catid = "";
@@ -6509,53 +6546,54 @@ namespace TAT001.Controllers
                     //}
 
                     CONFDIST_CAT conf = getCatConf(soc_id);
-                    if (conf.CAMPO == "GRSLS")
-                    {
-                        jd = (from ps in pres
-                              join cl in cie
-                              on ps.KUNNR equals cl.KUNNR
-                              join m in matt
-                              on ps.MATNR equals m.ID
-                              join mk in cat
-                              on m.MATERIALGP_ID equals mk.MATERIALGP_ID
-                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
-                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
-                              ) && ps.BUKRS == soc_id
-                              && ps.GRSLS > 0
-                              select new DOCUMENTOM_MOD
-                              {
-                                  ID_CAT = m.MATERIALGP_ID,
-                                  MATNR = ps.MATNR,
-                                  //mk.TXT50
-                                  VAL = Convert.ToDecimal(ps.GRSLS),
-                                  EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
-                              }).ToList();
-                    }
-                    else
-                    {
-                        jd = (from ps in pres
-                              join cl in cie
-                              on ps.KUNNR equals cl.KUNNR
-                              join m in matt
-                              on ps.MATNR equals m.ID
-                              join mk in cat
-                              on m.MATKL_ID equals mk.MATERIALGP_ID
-                              where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
-                              (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
-                                                                                                    //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
-                              ) && ps.BUKRS == soc_id
-                              && ps.NETLB > 0
-                              select new DOCUMENTOM_MOD
-                              {
-                                  ID_CAT = m.MATERIALGP_ID,
-                                  MATNR = ps.MATNR,
-                                  //mk.TXT50
+                    if (conf != null)
+                        if (conf.CAMPO == "GRSLS")
+                        {
+                            jd = (from ps in pres
+                                  join cl in cie
+                                  on ps.KUNNR equals cl.KUNNR
+                                  join m in matt
+                                  on ps.MATNR equals m.ID
+                                  join mk in cat
+                                  on m.MATERIALGP_ID equals mk.MATERIALGP_ID
+                                  where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                                  (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                        //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                                  ) && ps.BUKRS == soc_id
+                                  && ps.GRSLS > 0
+                                  select new DOCUMENTOM_MOD
+                                  {
+                                      ID_CAT = m.MATERIALGP_ID,
+                                      MATNR = ps.MATNR,
+                                      //mk.TXT50
+                                      VAL = Convert.ToDecimal(ps.GRSLS),
+                                      EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
+                                  }).ToList();
+                        }
+                        else
+                        {
+                            jd = (from ps in pres
+                                  join cl in cie
+                                  on ps.KUNNR equals cl.KUNNR
+                                  join m in matt
+                                  on ps.MATNR equals m.ID
+                                  join mk in cat
+                                  on m.MATKL_ID equals mk.MATERIALGP_ID
+                                  where (ps.ANIO >= aii && ps.PERIOD >= mii) && (ps.ANIO <= aff && ps.PERIOD <= mff) &&
+                                  (ps.VKORG == cl.VKORG && ps.VTWEG == cl.VTWEG && ps.SPART == cl.SPART //&& ps.VKBUR == cl.VKBUR &&
+                                                                                                        //ps.VKGRP == cl.VKGRP && ps.BZIRK == cl.BZIRK
+                                  ) && ps.BUKRS == soc_id
+                                  && ps.NETLB > 0
+                                  select new DOCUMENTOM_MOD
+                                  {
+                                      ID_CAT = m.MATERIALGP_ID,
+                                      MATNR = ps.MATNR,
+                                      //mk.TXT50
 
-                                  VAL = Convert.ToDecimal(ps.NETLB),
-                                  EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
-                              }).ToList();
-                    }
+                                      VAL = Convert.ToDecimal(ps.NETLB),
+                                      EXCLUIR = mk.MATERIALGP.EXCLUIR //RSG 09.07.2018 ID167
+                                  }).ToList();
+                        }
                 }
             }
 
@@ -6998,6 +7036,8 @@ namespace TAT001.Controllers
             {
                 kunnr = "";
             }
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             List<DOCUMENTOM_MOD> jd = new List<DOCUMENTOM_MOD>();
 
@@ -7225,6 +7265,9 @@ namespace TAT001.Controllers
             {
                 kunnr = "";
             }
+
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             if (catid == null)
             {
@@ -7640,6 +7683,8 @@ namespace TAT001.Controllers
 
             //Negaciación por monto
 
+            Cadena cad = new Cadena();
+            kunnr = cad.completaCliente(kunnr);
 
             //Obtener de la lista de categorias los materiales de la categoría del item
             List<CategoriaMaterial> ccategor = new List<CategoriaMaterial>();
