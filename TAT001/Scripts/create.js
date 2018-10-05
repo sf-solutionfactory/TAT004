@@ -8,6 +8,12 @@ var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inacti
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
 var proverror = "";//B20180625 MGC 2018.06.27
 var importe_fac = 0; // jemo 25-07-2018
+var globalUnica = false;
+var pastCat;
+var pastTEXT50;
+var unica1;
+var catsArr = new Array();
+var uniqueArr = new Array();
 $(document).ready(function () {
 
     //Validar que los labels esten activos
@@ -304,7 +310,12 @@ $(document).ready(function () {
     $('#addRowB').on('click', function () {
 
         var relacionada = "";
-
+        if ($('#table_dis > tbody > tr').length == 1 && $('table_dis').find(' tbody tr:eq(0)').attr('class')!="row") {
+            catsArr = new Array();
+            uniqueArr = new Array();
+            unica1 = false;
+            unica = false;
+        }
         if ($("#txt_rel").length) {
             var vrelacionada = $('#txt_rel').val();
             if (vrelacionada != "") {
@@ -427,39 +438,16 @@ $(document).ready(function () {
                         }
                     }
 
-                } else if (dis == "M") {
-                    //Distribución por material                     
-
-                    //var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, reversa, ddate, adate, "");
-                    var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, relacionadaed, reversa, ddate, adate, "", "");//Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
-
-                    //t.row.add([
-                    //    "",
-                    //    "",
-                    //    "",
-                    //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + relacionada + " input_oper format_date input_fe\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + relacionada + " input_oper input_material number\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "",
-                    //    "",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //    "<input class=\"" + reversa + " input_oper numberd input_dc total\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-                    //]).draw(false);
-
-                    $('#table_dis').css("font-size", "12px");
-                    $('#table_dis').css("display", "table");
-                    //$('#tfoot_dis').css("display", "table-footer-group");
-
-                    //if ($('#select_dis').val() == "M") {
-
-                    t.column(0).visible(false);
-                    t.column(1).visible(false);
-                    //}
+                } else if (dis == "M") {//falta validar
+                    var classtd = $("#table_dis tbody tr:first td").attr("class");
+                    indext = getIndex();
+                    
+                    //Distribución por material 
+                        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, relacionadaed, reversa, ddate, adate, "", "");//Add MGC B20180705 2018.07.05 ne no eliminar //Add MGC B20180705 2018.07.05 relacionadaed editar el material en los nuevos renglones
+                        $('#table_dis').css("font-size", "12px");
+                        $('#table_dis').css("display", "table");
+                        t.column(0).visible(false);
+                        t.column(1).visible(false);
                 }
                 updateFooter();
 
@@ -1746,29 +1734,30 @@ function _ff() {
     var datei = $("#fechai_vig").val().split(" ")[0];
     var _anoi = datei.split('/')[2];
     if (datei != "") {
-    $.ajax({
-        type: "POST",
-        url: 'getPeriodo',
-        dataType: "json",
-        data: { "fecha": datei },
-        success: function (data) {
-            var _xd = data;
-            var pp = parseInt(data);
-            if (pp != 0) {
-                $("#periodoi_id").val(pp);
-                document.getElementById("btn-peri").checked = true;
-                $("#btn-peri").trigger("change");
-                $("#anioi_id").val(_anoi);
-            } else {
-                document.getElementById("btn-date").checked = true;
-                $("#btn-date").trigger("change");
-            }
-        },
-        error: function (xhr, httpStatusMessage, customErrorMessage) {
-            M.toast({ html: httpStatusMessage });
-        },
-        async: true
-    });}
+        $.ajax({
+            type: "POST",
+            url: 'getPeriodo',
+            dataType: "json",
+            data: { "fecha": datei },
+            success: function (data) {
+                var _xd = data;
+                var pp = parseInt(data);
+                if (pp != 0) {
+                    $("#periodoi_id").val(pp);
+                    document.getElementById("btn-peri").checked = true;
+                    $("#btn-peri").trigger("change");
+                    $("#anioi_id").val(_anoi);
+                } else {
+                    document.getElementById("btn-date").checked = true;
+                    $("#btn-date").trigger("change");
+                }
+            },
+            error: function (xhr, httpStatusMessage, customErrorMessage) {
+                M.toast({ html: httpStatusMessage });
+            },
+            async: true
+        });
+    }
     var datef = $("#fechaf_vig").val().split(" ")[0];
     var _anof = datef.split('/')[2];
     if (datef != "") {
@@ -1907,7 +1896,7 @@ function guardarBorrador(asyncv) {
         url: 'Borrador',
         dataType: "json",
         data: form.serialize() + "&notas_soporte = " + notas_soporte + "&unafact = " + unafact + "&select_neg = " + select_neg + "&select_dis = " + select_dis +
-        "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
+            "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
         //data: {
         //    object: form.serialize(), "notas_soporte": notas_soporte, "unafact": unafact, "select_neg": select_neg, "select_dis": select_dis,
         //    "select_negi": select_negi, "select_disi": select_disi, "bmonto_apoyo": bmonto_apoyo, "monedadis": monedadis},
@@ -4872,31 +4861,76 @@ function evaluarInfoFacturas() {
 
     return res;
 }
-
+function checkUnicas(arrTr)
+{
+    if (arrTr.length > 0) {
+        for (var i = 1; i < arrTr.length; i++) {
+            if (arrTr[i] !== arrTr[0])
+                return false;
+        }
+    }
+    return true;
+}
 //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
 function evaluarDisTable() {
     var res = "";
 
     var dis = $("#select_dis").val();
     var indext = getIndex();
-
+    var arrTr = new Array();
     //La tabla debe de contener como mínimo un registro
     var lengthT = $("table#table_dis tbody tr[role='row']").length;
+    var arrayClass = new Array();
+    var soloUnicas = true;
     if (lengthT > 0) {
+        $("#table_dis > tbody  > tr[role='row']").each(function () {
+            if ($(this).hasClass("unica")) {
+                arrTr.push("unica");
+            } else if ($(this).hasClass("nounica")) {
+                arrTr.push("nounica");
+            }
+            if (!checkUnicas(arrTr) && $(this).hasClass("unica")) {
+                $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+            }
+        });
+  
 
         $("#table_dis > tbody  > tr[role='row']").each(function () {
-
+            
             //Distribución por material
             if (dis == "M") {
+                
+                if (!checkUnicas(arrTr))
+                {
+                    M.toast({ html: 'Las categorías unicas no se pueden mezclar con otras categorias y/o Materiales.' });
+                    res = "Error con el material ";
+                    return false;
+                }
+                //if (!soloUnicas)
+                //{
+                //    M.toast({ html: 'Las categorías unicas no se pueden mezclar con otras categorias y/o Materiales.' });
+                //    if ($(this).hasClass("unica"))
+                //    {
+                //        $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
+                //    }
+                //    return false;
+                //}
+                //if ($(this).attr("class") == "odd" || $(this).attr("class") == "even") {
+                //    arrayClass.push("false");
+                //} else {
+                //    arrayClass.push($(this).attr("class"));
+                //}
                 var val = $(this).find("td:eq(" + (5 + indext) + ") input").val();
                 //Validar material
                 if (val == "") {
                     //Sin material elimina el renglón
                     $(this).addClass('selected');
                 } else {
+                    
                     //Validar que el material exista
                     //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
                     var valp = valMaterial(val, "X");
+                   
                     if (valp.ID == null || valp.ID == "") {
                         $(this).find('td').eq((5 + indext)).addClass("errorMaterial");
                         return false;
@@ -4904,6 +4938,7 @@ function evaluarDisTable() {
 
                         //selectMaterial(val.ID, val.MAKTX, $(this));
                         //Validar registros duplicados
+                        
                         if (evaluarDisTableCount(val, dis) > 1) {
                             res = "Error con el material " + val;
                             if (res != "") {
@@ -4994,7 +5029,8 @@ function evaluarDisTable() {
 
         var t = $('#table_dis').DataTable();
         t.rows('.selected').remove().draw(false);
-    } else {
+    }
+    else {
         res = "Posiciones en tabla de distribución como mínimo un registro";
     }
     updateFooter();//RSG 05.09.2018

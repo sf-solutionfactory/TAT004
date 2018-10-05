@@ -31,6 +31,7 @@ namespace TAT001.Entities
         public virtual DbSet<ACCIONT> ACCIONTs { get; set; }
         public virtual DbSet<APPSETTING> APPSETTINGs { get; set; }
         public virtual DbSet<CALENDARIO_AC> CALENDARIO_AC { get; set; }
+        public virtual DbSet<CALENDARIO_EX> CALENDARIO_EX { get; set; }
         public virtual DbSet<CAMPOS> CAMPOS { get; set; }
         public virtual DbSet<CAMPOZKE24> CAMPOZKE24 { get; set; }
         public virtual DbSet<CAMPOZKE24T> CAMPOZKE24T { get; set; }
@@ -46,6 +47,7 @@ namespace TAT001.Entities
         public virtual DbSet<CLIENTEF> CLIENTEFs { get; set; }
         public virtual DbSet<CLIENTEI> CLIENTEIs { get; set; }
         public virtual DbSet<CONDICION> CONDICIONs { get; set; }
+        public virtual DbSet<CONDICIONT> CONDICIONTs { get; set; }
         public virtual DbSet<CONFDIST_CAT> CONFDIST_CAT { get; set; }
         public virtual DbSet<CONMAIL> CONMAILs { get; set; }
         public virtual DbSet<CONPOSAPH> CONPOSAPHs { get; set; }
@@ -169,6 +171,7 @@ namespace TAT001.Entities
         public virtual DbSet<WORKFV> WORKFVs { get; set; }
         public virtual DbSet<ZBRAND> ZBRANDs { get; set; }
         public virtual DbSet<ZCTGR> ZCTGRs { get; set; }
+        public virtual DbSet<TAB_CAMPO> TAB_CAMPO { get; set; }
         public virtual DbSet<CARPETAV> CARPETAVs { get; set; }
         public virtual DbSet<CREADOR> CREADORs { get; set; }
         public virtual DbSet<CREADOR2> CREADOR2 { get; set; }

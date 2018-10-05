@@ -75,27 +75,24 @@ function trimStart(character, string) {//RSG 07.06.2018
 //}
 function selectMaterial(val, desc, tr) {
     var index = getIndex();
+    var cat = getCategoria(val);    
     desc = $.trim(desc);
     if (index == -2) {
-        var classtd = $("#table_dis tbody tr:first td").attr("class");
-        if (unica == true && $("#table_dis tbody tr").length>1)
+        unica1 = false;
+        if (cat.UNICA)
         {
-            M.toast({ html: 'Healthy drinks no pueden mezclarse con otras categorías y/o materiales.' });
-            tr.find('td').eq((5 + index)).addClass("errorMaterial");
-
+            tr.addClass("unica");
+            M.toast({ html: cat.TXT50 + ' Advertencia este material es único' });
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            //Descripción
+            tr.find("td:eq(" + (7 + index) + ")").text(desc);
         }
-        var cat = getCategoria(val);
-        M.toast
-        tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
-        //Descripción
-        tr.find("td:eq(" + (7 + index) + ")").text(desc);
-        if (cat.UNICA) {
-            unica = true;
-        }
-        else if (cat.UNICA == false)
+        if (!cat.UNICA)
         {
-            unica = false;
-            $(this).find('td').eq((5 + index)).removeClass("errorMaterial");
+            tr.addClass("nounica");
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            //Descripción
+            tr.find("td:eq(" + (7 + index) + ")").text(desc);
         }
 
     } else { 

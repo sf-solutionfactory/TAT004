@@ -68,8 +68,12 @@ $(document).ready(function () {
                 "className": 'TSOL'
             },
             {
-                "name": 'FECHA',
-                "className": 'FECHA'
+                "name": 'NUM_DOC',
+                "className": 'NUM_DOC'
+            },
+            {
+                "name": 'FECHAV',
+                "className": 'FECHAV'
             },
             {
                 "name": 'MONTO',
@@ -78,6 +82,10 @@ $(document).ready(function () {
             {
                 "name": 'PORCENTAJE',
                 "className": 'PORCENTAJE'
+            },
+            {
+                "name": 'ESTATUS',
+                "className": 'ESTATUS'
             }
         ]
     });
@@ -112,6 +120,10 @@ $(document).ready(function () {
         "info": false,
         "searching": false,
         "columns": [
+            //{
+            //    "name": 'SEL',
+            //    "className": 'select_row',
+            //},
             {
                 "name": 'POS',
                 "className": 'POS',
@@ -147,16 +159,26 @@ $(document).ready(function () {
             $(this).removeClass('selected');
             $(".table_rangos").css("display", "none");
             $("#btnRango").css("display", "none");
+            $("#btnDelRango").css("display", "none");
         }
         else {
             table.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
             $(".table_rangos").css("display", "table");
             $("#btnRango").css("display", "inline-block");
+            $("#btnDelRango").css("display", "inline-block");
             var tableR = $('#table_rangos').DataTable();
             showRangos(tableR, $(this));
         }
     });
+
+    //$('#table_rangos tbody').on('click', 'td.select_row', function () {
+    //    var tr = $(this).closest('tr');
+    //    var lin = tr.find('.LIN').text();
+    //    if (lin != "1") {
+    //        $(tr).toggleClass('selected');
+    //    }
+    //});
     cambiaCheckRec();
 });
 //LEJ 31.07.2018---------------------
@@ -214,7 +236,7 @@ function cambiaRec() {
     var porc = document.getElementById("bmonto_apoyo").value;//RSG 09.07.2018
 
     if (radio != null) { //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
-        if (radio.checked) {
+        if (radio.checked & !isRelacionada()) {
 
             var pe1 = document.getElementById("periodoi_id").value;
             var pe2 = document.getElementById("periodof_id").value;
@@ -230,7 +252,7 @@ function cambiaRec() {
     }
     if (campo.checked) {
         $("#tabs_rec").removeClass("disabled");
-        if (montoo === "") {
+        if (montoo === "" | ligada()) {
             var dist = $('#table_dis').DataTable();
             var montooo = 0.00;
             $('#table_dis > tbody  > tr').each(function () {
@@ -413,9 +435,11 @@ function addRowRecl(t, pos, tsol, fecha, monto, porc, periodo) {
         pos
         , periodo
         , tsol
-        , fecha
+        , "No generado"
+        , "<span style='display:none;'>"+fecha+"</span>"+"No generado"
         , monto
         , porc
+        , "Pendiente"
     ]).draw(false);
 }
 
@@ -447,7 +471,7 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
 
             var pos = $(this).find("td.POS").text().split("/")[0];
             var tsol = $(this).find("td.TSOL").text();
-            var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td.FECHAV span").text();
             var monto = "";
             if (tipo === "P") {
                 if (ligada()) {
@@ -543,7 +567,7 @@ function copiarTableVistaRec() {
 
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(1)").text();
-            //var fecha = $(this).find("td.FECHA").text();
+            //var fecha = $(this).find("td.FECHAV").text();
             var fecha = $(this).find("td:eq(2)").text().trim();
 
             var ffecha = fecha.split(' ');
@@ -557,7 +581,7 @@ function copiarTableVistaRec() {
             //if ($("#check_factura").is(':checked')) {
 
             //    factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
-            //    ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
+            //    ffecha[0] = "<input class=\"FECHAV input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
             //    prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
             //    control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
             //    autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion + "\">";

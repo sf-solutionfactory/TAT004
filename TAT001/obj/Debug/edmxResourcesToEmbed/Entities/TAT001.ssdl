@@ -26,6 +26,52 @@
     <Property Name="VALUE" Type="nvarchar" MaxLength="255" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="CALENDARIO_AC">
+    <Key>
+      <PropertyRef Name="EJERCICIO" />
+      <PropertyRef Name="PERIODO" />
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="TSOL_ID" />
+    </Key>
+    <Property Name="EJERCICIO" Type="smallint" Nullable="false" />
+    <Property Name="PERIODO" Type="int" Nullable="false" />
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="PRE_FROMF" Type="date" Nullable="false" />
+    <Property Name="PRE_FROMH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="PRE_TOF" Type="date" Nullable="false" />
+    <Property Name="PRE_TOH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="CIE_FROMF" Type="date" Nullable="false" />
+    <Property Name="CIE_FROMH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="CIE_TOF" Type="date" Nullable="false" />
+    <Property Name="CIE_TOH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="FECHAC" Type="datetime" Nullable="false" />
+    <Property Name="USUARIOM_ID" Type="nvarchar" MaxLength="16" />
+    <Property Name="FECHAM" Type="datetime" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CALENDARIO_EX">
+    <Key>
+      <PropertyRef Name="EJERCICIO" />
+      <PropertyRef Name="PERIODO" />
+      <PropertyRef Name="SOCIEDAD_ID" />
+      <PropertyRef Name="TSOL_ID" />
+      <PropertyRef Name="USUARIO_ID" />
+    </Key>
+    <Property Name="EJERCICIO" Type="smallint" Nullable="false" />
+    <Property Name="PERIODO" Type="int" Nullable="false" />
+    <Property Name="SOCIEDAD_ID" Type="nchar" MaxLength="4" Nullable="false" />
+    <Property Name="TSOL_ID" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="USUARIO_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="EX_FROMF" Type="date" Nullable="false" />
+    <Property Name="EX_FROMH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="EX_TOF" Type="date" Nullable="false" />
+    <Property Name="EX_TOH" Type="time" Precision="7" Nullable="false" />
+    <Property Name="USUARIOC_ID" Type="nvarchar" MaxLength="16" Nullable="false" />
+    <Property Name="FEHAC" Type="datetime" Nullable="false" />
+    <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="CAMPOS">
     <Key>
       <PropertyRef Name="PAGINA_ID" />
@@ -286,6 +332,15 @@
     <Property Name="DESCR" Type="nvarchar" MaxLength="50" />
     <Property Name="COND" Type="nvarchar" MaxLength="4" />
     <Property Name="ACTIVO" Type="bit" />
+  </EntityType>
+  <EntityType Name="CONDICIONT">
+    <Key>
+      <PropertyRef Name="SPRAS_ID" />
+      <PropertyRef Name="CONDICION_ID" />
+    </Key>
+    <Property Name="SPRAS_ID" Type="nchar" MaxLength="2" Nullable="false" />
+    <Property Name="CONDICION_ID" Type="int" Nullable="false" />
+    <Property Name="TXT050" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="CONFDIST_CAT">
     <Key>
@@ -1553,6 +1608,16 @@
     <Property Name="NAME" Type="varchar" MaxLength="30" Nullable="false" />
     <Property Name="COUNTRY_ID" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="TAB">
     <Key>
       <PropertyRef Name="ID" />
@@ -1561,6 +1626,16 @@
     <Property Name="CONTAINER" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="DESCR" Type="nvarchar" MaxLength="50" />
     <Property Name="ACTIVO" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TAT004.dbo.TAB_CAMPO' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="TAB_CAMPO">
+    <Key>
+      <PropertyRef Name="TAB_ID" />
+      <PropertyRef Name="CAMPO_ID" />
+    </Key>
+    <Property Name="TAB_ID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CAMPO_ID" Type="nvarchar" MaxLength="25" Nullable="false" />
   </EntityType>
   <EntityType Name="TALL">
     <Key>
@@ -2234,6 +2309,72 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_CALENDARIO_AC_PERIODO">
+    <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="1" />
+    <End Role="CALENDARIO_AC" Type="Self.CALENDARIO_AC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERIODO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CALENDARIO_AC">
+        <PropertyRef Name="PERIODO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CALENDARIO_AC_SOCIEDAD">
+    <End Role="SOCIEDAD" Type="Self.SOCIEDAD" Multiplicity="1" />
+    <End Role="CALENDARIO_AC" Type="Self.CALENDARIO_AC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SOCIEDAD">
+        <PropertyRef Name="BUKRS" />
+      </Principal>
+      <Dependent Role="CALENDARIO_AC">
+        <PropertyRef Name="SOCIEDAD_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CALENDARIO_AC_TSOL">
+    <End Role="TSOL" Type="Self.TSOL" Multiplicity="1" />
+    <End Role="CALENDARIO_AC" Type="Self.CALENDARIO_AC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TSOL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CALENDARIO_AC">
+        <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CALENDARIO_EX_CALENDARIO_AC">
+    <End Role="CALENDARIO_AC" Type="Self.CALENDARIO_AC" Multiplicity="1" />
+    <End Role="CALENDARIO_EX" Type="Self.CALENDARIO_EX" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CALENDARIO_AC">
+        <PropertyRef Name="EJERCICIO" />
+        <PropertyRef Name="PERIODO" />
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="TSOL_ID" />
+      </Principal>
+      <Dependent Role="CALENDARIO_EX">
+        <PropertyRef Name="EJERCICIO" />
+        <PropertyRef Name="PERIODO" />
+        <PropertyRef Name="SOCIEDAD_ID" />
+        <PropertyRef Name="TSOL_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CALENDARIO_EX_USUARIO">
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+    <End Role="CALENDARIO_EX" Type="Self.CALENDARIO_EX" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USUARIO">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CALENDARIO_EX">
+        <PropertyRef Name="USUARIO_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_CAMPOS_PAGINA">
     <End Role="PAGINA" Type="Self.PAGINA" Multiplicity="1" />
     <End Role="CAMPOS" Type="Self.CAMPOS" Multiplicity="*" />
@@ -2449,6 +2590,30 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       </Principal>
       <Dependent Role="CLIENTEI">
         <PropertyRef Name="MWSKZ" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONDICIONT_CONDICION">
+    <End Role="CONDICION" Type="Self.CONDICION" Multiplicity="1" />
+    <End Role="CONDICIONT" Type="Self.CONDICIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CONDICION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONDICIONT">
+        <PropertyRef Name="CONDICION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_CONDICIONT_SPRAS">
+    <End Role="SPRAS" Type="Self.SPRAS" Multiplicity="1" />
+    <End Role="CONDICIONT" Type="Self.CONDICIONT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SPRAS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="CONDICIONT">
+        <PropertyRef Name="SPRAS_ID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3778,6 +3943,18 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TAB_CAMPO_TAB">
+    <End Role="TAB" Type="Self.TAB" Multiplicity="1" />
+    <End Role="TAB_CAMPO" Type="Self.TAB_CAMPO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TAB">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TAB_CAMPO">
+        <PropertyRef Name="TAB_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TALL_GALL">
     <End Role="GALL" Type="Self.GALL" Multiplicity="0..1" />
     <End Role="TALL" Type="Self.TALL" Multiplicity="*" />
@@ -4559,6 +4736,37 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <Parameter Name="ACTIVO" Type="bit" Mode="In" />
     <Parameter Name="ACCION" Type="int" Mode="In" />
   </Function>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="split" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="delimited" Type="nvarchar(max)" Mode="In" />
     <Parameter Name="delimiter" Type="nvarchar" Mode="In" />
@@ -4575,6 +4783,8 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="ACCION" EntityType="Self.ACCION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ACCIONT" EntityType="Self.ACCIONT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="APPSETTING" EntityType="Self.APPSETTING" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CALENDARIO_AC" EntityType="Self.CALENDARIO_AC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CALENDARIO_EX" EntityType="Self.CALENDARIO_EX" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOS" EntityType="Self.CAMPOS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOZKE24" EntityType="Self.CAMPOZKE24" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CAMPOZKE24T" EntityType="Self.CAMPOZKE24T" Schema="dbo" store:Type="Tables" />
@@ -4590,6 +4800,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="CLIENTEF" EntityType="Self.CLIENTEF" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CLIENTEI" EntityType="Self.CLIENTEI" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONDICION" EntityType="Self.CONDICION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CONDICIONT" EntityType="Self.CONDICIONT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONFDIST_CAT" EntityType="Self.CONFDIST_CAT" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONMAIL" EntityType="Self.CONMAIL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CONPOSAPH" EntityType="Self.CONPOSAPH" Schema="dbo" store:Type="Tables" />
@@ -4671,6 +4882,7 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="SOCIEDAD" EntityType="Self.SOCIEDAD" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SPRAS" EntityType="Self.SPRAS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATES" EntityType="Self.STATES" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAB" EntityType="Self.TAB" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALL" EntityType="Self.TALL" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TALLT" EntityType="Self.TALLT" Schema="dbo" store:Type="Tables" />
@@ -4713,6 +4925,12 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <EntitySet Name="WORKFV" EntityType="Self.WORKFV" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ZBRAND" EntityType="Self.ZBRAND" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ZCTGR" EntityType="Self.ZCTGR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TAB_CAMPO" EntityType="Self.TAB_CAMPO" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [TAB_CAMPO].[TAB_ID] AS [TAB_ID], 
+    [TAB_CAMPO].[CAMPO_ID] AS [CAMPO_ID]
+    FROM [dbo].[TAB_CAMPO] AS [TAB_CAMPO]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="CARPETAV" EntityType="Self.CARPETAV" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [CARPETAV].[USUARIO_ID] AS [USUARIO_ID], 
@@ -4858,6 +5076,26 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
       <End Role="SPRAS" EntitySet="SPRAS" />
       <End Role="ACCIONT" EntitySet="ACCIONT" />
     </AssociationSet>
+    <AssociationSet Name="FK_CALENDARIO_AC_PERIODO" Association="Self.FK_CALENDARIO_AC_PERIODO">
+      <End Role="PERIODO" EntitySet="PERIODO" />
+      <End Role="CALENDARIO_AC" EntitySet="CALENDARIO_AC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CALENDARIO_AC_SOCIEDAD" Association="Self.FK_CALENDARIO_AC_SOCIEDAD">
+      <End Role="SOCIEDAD" EntitySet="SOCIEDAD" />
+      <End Role="CALENDARIO_AC" EntitySet="CALENDARIO_AC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CALENDARIO_AC_TSOL" Association="Self.FK_CALENDARIO_AC_TSOL">
+      <End Role="TSOL" EntitySet="TSOL" />
+      <End Role="CALENDARIO_AC" EntitySet="CALENDARIO_AC" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CALENDARIO_EX_CALENDARIO_AC" Association="Self.FK_CALENDARIO_EX_CALENDARIO_AC">
+      <End Role="CALENDARIO_AC" EntitySet="CALENDARIO_AC" />
+      <End Role="CALENDARIO_EX" EntitySet="CALENDARIO_EX" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CALENDARIO_EX_USUARIO" Association="Self.FK_CALENDARIO_EX_USUARIO">
+      <End Role="USUARIO" EntitySet="USUARIO" />
+      <End Role="CALENDARIO_EX" EntitySet="CALENDARIO_EX" />
+    </AssociationSet>
     <AssociationSet Name="FK_CAMPOS_PAGINA" Association="Self.FK_CAMPOS_PAGINA">
       <End Role="PAGINA" EntitySet="PAGINA" />
       <End Role="CAMPOS" EntitySet="CAMPOS" />
@@ -4925,6 +5163,14 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_CLIENTEI_IMPUESTO" Association="Self.FK_CLIENTEI_IMPUESTO">
       <End Role="IMPUESTO" EntitySet="IMPUESTO" />
       <End Role="CLIENTEI" EntitySet="CLIENTEI" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONDICIONT_CONDICION" Association="Self.FK_CONDICIONT_CONDICION">
+      <End Role="CONDICION" EntitySet="CONDICION" />
+      <End Role="CONDICIONT" EntitySet="CONDICIONT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_CONDICIONT_SPRAS" Association="Self.FK_CONDICIONT_SPRAS">
+      <End Role="SPRAS" EntitySet="SPRAS" />
+      <End Role="CONDICIONT" EntitySet="CONDICIONT" />
     </AssociationSet>
     <AssociationSet Name="FK_CONFDIST_CAT_CAMPOZKE24" Association="Self.FK_CONFDIST_CAT_CAMPOZKE24">
       <End Role="CAMPOZKE24" EntitySet="CAMPOZKE24" />
@@ -5353,6 +5599,10 @@ advertencia 6002: La tabla o vista 'TAT004.dbo.WARNINGV' no tiene definida ningu
     <AssociationSet Name="FK_STATES_COUNTRIES" Association="Self.FK_STATES_COUNTRIES">
       <End Role="COUNTRIES" EntitySet="COUNTRIES" />
       <End Role="STATES" EntitySet="STATES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TAB_CAMPO_TAB" Association="Self.FK_TAB_CAMPO_TAB">
+      <End Role="TAB" EntitySet="TAB" />
+      <End Role="TAB_CAMPO" EntitySet="TAB_CAMPO" />
     </AssociationSet>
     <AssociationSet Name="FK_TALL_GALL" Association="Self.FK_TALL_GALL">
       <End Role="GALL" EntitySet="GALL" />
