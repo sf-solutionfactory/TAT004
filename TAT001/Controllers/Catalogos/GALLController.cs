@@ -8,9 +8,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
+using TAT001.Filters;
 
 namespace TAT001.Controllers.Catalogos
 {
+    [Authorize]
+    [LoginActive]
     public class GALLController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
@@ -46,7 +49,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.lan = user.SPRAS_ID;
             }
             var qr = db.GALLs.Include(x => x.GALLTs).ToList();
-            return View(qr.Where(x => x.ACTIVO == true));
+            return View(qr);
         }
 
         // GET: GALL/Details/5
@@ -94,6 +97,7 @@ namespace TAT001.Controllers.Catalogos
         // GET: GALL/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -129,7 +133,7 @@ namespace TAT001.Controllers.Catalogos
                 ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
                 ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(721) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
 
                 try
                 {
@@ -153,6 +157,21 @@ namespace TAT001.Controllers.Catalogos
             {
                 return HttpNotFound();
             }
+            GALL tSOPORTE = db.GALLs.Find(id);
+            if (tSOPORTE.GALLTs.Count > 0)
+                foreach (var e in tSOPORTE.GALLTs)
+                {
+                    if (e.SPRAS_ID == "EN")
+                        ViewBag.EN = e.TXT50;
+                    if (e.SPRAS_ID == "ES")
+                        ViewBag.ES = e.TXT50;
+                    if (e.SPRAS_ID == "PT")
+                        ViewBag.PT = e.TXT50;
+                }
+            else
+            {
+                ViewBag.EN = tSOPORTE.DESCRIPCION;
+            }
             ViewBag.SPRAS = db.SPRAS.ToList();
             return View(gALL);
         }
@@ -162,125 +181,169 @@ namespace TAT001.Controllers.Catalogos
         // más información vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,ACTIVO,GRUPO_ALL")] GALL gALL, string txtN, string sp, string[] txval)
+        public ActionResult Edit([Bind(Include = "ID,DESCRIPCION,ACTIVO,GRUPO_ALL")] GALL gALL, FormCollection collection)
         {
             if (ModelState.IsValid)
             {
-                try
+                var GALLID = from a in db.GALLs where a.ID == gALL.ID select a.GRUPO_ALL;
+                gALL.GRUPO_ALL = GALLID.FirstOrDefault();
+                gALL.ACTIVO =gALL.ACTIVO == null?false :gALL.ACTIVO;
+                //gALL.ACTIVO = gALL.ACTIVO;
+                db.Entry(gALL).State = EntityState.Modified;
+                //db.SaveChanges();
+
+                GALL mATERIAL1 = db.GALLs.Find(gALL.ID);
+                var materialtextos = db.GALLTs.Where(t => t.GALL_ID == gALL.ID).ToList();
+                db.GALLTs.RemoveRange(materialtextos);
+                List<GALLT> ListmATERIALTs = new List<GALLT>();
+                if (collection.AllKeys.Contains("EN"))
                 {
-                    GALLT g = new GALLT();
-                    g.GALL_ID = gALL.ID;
-                    g.TXT50 = txtN;
-                    g.SPRAS_ID = sp;
-                    db.Entry(g).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                }
-                if (txval != null)
-                {
-                    //Posterior a lo ingresado
-                    List<GALLT> lstc = db.GALLTs.Where(i => i.GALL_ID == gALL.ID).ToList();
-                    //si el arreglo solo incluye 1 dato, significa que ya hay 2 lenguajes
-                    if (txval.Length == 1)
+                    if (!String.IsNullOrEmpty(collection["EN"]))
                     {
-                        var x1 = lstc[0].SPRAS_ID;
-                        var x2 = lstc[1].SPRAS_ID;
-                        if (lstc[0].SPRAS_ID == "EN")
-                        {
-                            if (lstc[1].SPRAS_ID == "ES")
-                            {
-                                // Lleno el primer objeto
-                                GALLT trvt = new GALLT();
-                                trvt.SPRAS_ID = "PT";
-                                trvt.GALL_ID = gALL.ID;
-                                trvt.TXT50 = txval[0];
-                                db.GALLTs.Add(trvt);
-                                db.SaveChanges();
-                            }
-                            if (lstc[1].SPRAS_ID == "PT")
-                            {  //Lleno el primer objeto
-                                GALLT trvt = new GALLT();
-                                trvt.SPRAS_ID = "ES";
-                                trvt.GALL_ID = gALL.ID;
-                                trvt.TXT50 = txval[0];
-                                db.GALLTs.Add(trvt);
-                                db.SaveChanges();
-                            }
-                        }
-                        if (lstc[0].SPRAS_ID == "ES")
-                        {
-                            if (lstc[1].SPRAS_ID == "PT")
-                            {
-                                //Lleno el primer objeto
-                                GALLT trvt = new GALLT();
-                                trvt.SPRAS_ID = "EN";
-                                trvt.GALL_ID = gALL.ID;
-                                trvt.TXT50 = txval[0];
-                                db.GALLTs.Add(trvt);
-                                db.SaveChanges();
-                            }
-                        }
-                    }
-                    //si el arreglo  incluye 2 datos, significa que ya hay 1 lenguaje
-                    else if (txval.Length == 2)
-                    {
-                        if (lstc[0].SPRAS_ID == "ES")
-                        {
-                            //Lleno el primer objeto
-                            GALLT trvt = new GALLT();
-                            trvt.SPRAS_ID = "EN";
-                            trvt.GALL_ID = gALL.ID;
-                            trvt.TXT50 = txval[0];
-                            db.GALLTs.Add(trvt);
-                            db.SaveChanges();
-                            //Lleno el segundo objeto
-                            GALLT trvt2 = new GALLT();
-                            trvt2.SPRAS_ID = "PT";
-                            trvt2.GALL_ID = gALL.ID;
-                            trvt2.TXT50 = txval[1];
-                            db.GALLTs.Add(trvt2);
-                            db.SaveChanges();
-                        }
-                        else if (lstc[0].SPRAS_ID == "EN")
-                        {
-                            //Lleno el primer objeto
-                            GALLT trvt = new GALLT();
-                            trvt.SPRAS_ID = "ES";
-                            trvt.GALL_ID = gALL.ID;
-                            trvt.TXT50 = txval[0];
-                            db.GALLTs.Add(trvt);
-                            db.SaveChanges();
-                            //Lleno el segundo objeto
-                            GALLT trvt2 = new GALLT();
-                            trvt2.SPRAS_ID = "PT";
-                            trvt2.GALL_ID = gALL.ID;
-                            trvt2.TXT50 = txval[1];
-                            db.GALLTs.Add(trvt2);
-                            db.SaveChanges();
-                        }
-                        else if (lstc[0].SPRAS_ID == "PT")
-                        {
-                            //Lleno el primer objeto
-                            GALLT trvt = new GALLT();
-                            trvt.SPRAS_ID = "ES";
-                            trvt.GALL_ID = gALL.ID;
-                            trvt.TXT50 = txval[0];
-                            db.GALLTs.Add(trvt);
-                            db.SaveChanges();
-                            //Lleno el segundo objeto
-                            GALLT trvt2 = new GALLT();
-                            trvt2.SPRAS_ID = "EN";
-                            trvt2.GALL_ID = gALL.ID;
-                            trvt2.TXT50 = txval[1];
-                            db.GALLTs.Add(trvt2);
-                            db.SaveChanges();
-                        }
+                        GALLT m = new GALLT { SPRAS_ID = "EN", GALL_ID = gALL.ID, TXT50 = collection["EN"]};
+                        ListmATERIALTs.Add(m);
                     }
                 }
+                if (collection.AllKeys.Contains("ES") && !String.IsNullOrEmpty(collection["ES"]))
+                {
+                    GALLT m = new GALLT { SPRAS_ID = "ES", GALL_ID = gALL.ID, TXT50 = collection["ES"]};
+                    ListmATERIALTs.Add(m);
+                }
+                if (collection.AllKeys.Contains("PT") && !String.IsNullOrEmpty(collection["PT"]))
+                {
+                    GALLT m = new GALLT { SPRAS_ID = "PT", GALL_ID = gALL.ID, TXT50 = collection["PT"]};
+                    ListmATERIALTs.Add(m);
+                }
+                db.GALLTs.AddRange(ListmATERIALTs);
+                //db.Entry(mATERIAL).State = EntityState.Modified;
+
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            //if (ModelState.IsValid)
+            //{
+            //    gALL.ACTIVO = gALL.ACTIVO;
+            //    db.Entry(gALL).State = EntityState.Modified;
+
+            //    foreach (SPRA spr in db.SPRAS.ToList())
+            //    {
+            //        string val = Request.Form["A" + spr.ID];
+            //        GALLT tt = db.GALLTs.Where(x => x.SPRAS_ID == spr.ID & x.GALL_ID == gALL.ID).FirstOrDefault();
+            //        tt.TXT50 = val;
+            //        db.Entry(tt).State = EntityState.Modified;
+            //        db.SaveChanges();
+
+            //    }
+            //    GALL t = db.GALLs.Where(x => x.ID == gALL.ID).FirstOrDefault();
+            //    t.ID = gALL.ID;
+            //    try { t.DESCRIPCION = Request.Form["AEN"]; } catch { }
+            //    db.Entry(t).State = EntityState.Modified;
+            //    db.SaveChanges();
+
+            //    if (txval != null)
+            //    {
+            //        //Posterior a lo ingresado
+            //        List<GALLT> lstc = db.GALLTs.Where(i => i.GALL_ID == gALL.ID).ToList();
+            //        //si el arreglo solo incluye 1 dato, significa que ya hay 2 lenguajes
+            //        if (txval.Length == 1)
+            //        {
+            //            var x1 = lstc[0].SPRAS_ID;
+            //            var x2 = lstc[1].SPRAS_ID;
+            //            if (lstc[0].SPRAS_ID == "EN")
+            //            {
+            //                if (lstc[1].SPRAS_ID == "ES")
+            //                {
+            //                    // Lleno el primer objeto
+            //                    GALLT trvt = new GALLT();
+            //                    trvt.SPRAS_ID = "PT";
+            //                    trvt.GALL_ID = gALL.ID;
+            //                    trvt.TXT50 = txval[0];
+            //                    db.GALLTs.Add(trvt);
+            //                    db.SaveChanges();
+            //                }
+            //                if (lstc[1].SPRAS_ID == "PT")
+            //                {  //Lleno el primer objeto
+            //                    GALLT trvt = new GALLT();
+            //                    trvt.SPRAS_ID = "ES";
+            //                    trvt.GALL_ID = gALL.ID;
+            //                    trvt.TXT50 = txval[0];
+            //                    db.GALLTs.Add(trvt);
+            //                    db.SaveChanges();
+            //                }
+            //            }
+            //            if (lstc[0].SPRAS_ID == "ES")
+            //            {
+            //                if (lstc[1].SPRAS_ID == "PT")
+            //                {
+            //                    //Lleno el primer objeto
+            //                    GALLT trvt = new GALLT();
+            //                    trvt.SPRAS_ID = "EN";
+            //                    trvt.GALL_ID = gALL.ID;
+            //                    trvt.TXT50 = txval[0];
+            //                    db.GALLTs.Add(trvt);
+            //                    db.SaveChanges();
+            //                }
+            //            }
+            //        }
+            //        //si el arreglo  incluye 2 datos, significa que ya hay 1 lenguaje
+            //        else if (txval.Length == 2)
+            //        {
+            //            if (lstc[0].SPRAS_ID == "ES")
+            //            {
+            //                //Lleno el primer objeto
+            //                GALLT trvt = new GALLT();
+            //                trvt.SPRAS_ID = "EN";
+            //                trvt.GALL_ID = gALL.ID;
+            //                trvt.TXT50 = txval[0];
+            //                db.GALLTs.Add(trvt);
+            //                db.SaveChanges();
+            //                //Lleno el segundo objeto
+            //                GALLT trvt2 = new GALLT();
+            //                trvt2.SPRAS_ID = "PT";
+            //                trvt2.GALL_ID = gALL.ID;
+            //                trvt2.TXT50 = txval[1];
+            //                db.GALLTs.Add(trvt2);
+            //                db.SaveChanges();
+            //            }
+            //            else if (lstc[0].SPRAS_ID == "EN")
+            //            {
+            //                //Lleno el primer objeto
+            //                GALLT trvt = new GALLT();
+            //                trvt.SPRAS_ID = "ES";
+            //                trvt.GALL_ID = gALL.ID;
+            //                trvt.TXT50 = txval[0];
+            //                db.GALLTs.Add(trvt);
+            //                db.SaveChanges();
+            //                //Lleno el segundo objeto
+            //                GALLT trvt2 = new GALLT();
+            //                trvt2.SPRAS_ID = "PT";
+            //                trvt2.GALL_ID = gALL.ID;
+            //                trvt2.TXT50 = txval[1];
+            //                db.GALLTs.Add(trvt2);
+            //                db.SaveChanges();
+            //            }
+            //            else if (lstc[0].SPRAS_ID == "PT")
+            //            {
+            //                //Lleno el primer objeto
+            //                GALLT trvt = new GALLT();
+            //                trvt.SPRAS_ID = "ES";
+            //                trvt.GALL_ID = gALL.ID;
+            //                trvt.TXT50 = txval[0];
+            //                db.GALLTs.Add(trvt);
+            //                db.SaveChanges();
+            //                //Lleno el segundo objeto
+            //                GALLT trvt2 = new GALLT();
+            //                trvt2.SPRAS_ID = "EN";
+            //                trvt2.GALL_ID = gALL.ID;
+            //                trvt2.TXT50 = txval[1];
+            //                db.GALLTs.Add(trvt2);
+            //                db.SaveChanges();
+            //            }
+            //        }
+            //    }
+            //    return RedirectToAction("Index");
+            //}
             int pagina = 723; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
@@ -352,34 +415,48 @@ namespace TAT001.Controllers.Catalogos
             try
             {
                 //Creamos el encabezado
-                worksheet.Cell("A1").Value = new[]
-             {
+                worksheet.Cell("A1").Value = new[]{
+                  new {
+                      BANNER = "ID GRUPO ALLOWANCE"
+                      },
+                    };
+                worksheet.Cell("B1").Value = new[]{
                   new {
                       BANNER = "DESCRIPCION"
                       },
                     };
-                worksheet.Cell("B1").Value = new[]
-            {
+                worksheet.Cell("C1").Value = new[]{
                   new {
                       BANNER = "GRUPO"
                       },
                     };
-                worksheet.Cell("C1").Value = new[]
-            {
+                worksheet.Cell("D1").Value = new[]{
                   new {
                       BANNER = "TEXTO"
                       },
                     };
+                worksheet.Cell("E1").Value = new[]{
+                  new {
+                      BANNER = "ACTIVO"
+                      },
+                    };
                 for (int i = 2; i <= (lst.Count + 1); i++)
                 {
+                    string activo = lst[i - 2].ACTIVO==true ? "SI" : "NO";
                     worksheet.Cell("A" + i).Value = new[]
-               {
+                    {
+                  new {
+                      BANNER       = lst[i-2].ID
+                      },
+                    };
+                    worksheet.Cell("B" + i).Value = new[]
+                    {
                   new {
                       BANNER       = lst[i-2].DESCRIPCION
                       },
                     };
-                    worksheet.Cell("B" + i).Value = new[]
-                {
+                    worksheet.Cell("C" + i).Value = new[]
+                    {
                   new {
                       BANNER       = lst[i-2].GRUPO_ALL
                       },
@@ -388,11 +465,17 @@ namespace TAT001.Controllers.Catalogos
                     string u = User.Identity.Name;
                     var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                     var tslt = tst.Where(x => x.SPRAS_ID == user.SPRAS_ID).FirstOrDefault();
-                    worksheet.Cell("C" + i).Value = new[]
+                    worksheet.Cell("D" + i).Value = new[]
                     {
                         new {
                             BANNER       = tslt.TXT50
                         },
+                    };
+                    worksheet.Cell("E" + i).Value = new[]
+                   {
+                  new {
+                      BANNER       = activo
+                      },
                     };
                 }
                 var rt = ruta + @"\DocGall" + DateTime.Now.ToShortDateString() + ".xlsx";

@@ -2,14 +2,39 @@
 @{
     ViewBag.pagina_r = 641;
     ViewBag.carpeta_r = 500;
-    //ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-}<div class="row">
+}
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+<link href="~/Content/dataTable.css" rel="stylesheet" />
+<link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+<style>
+    .pnl-cli {
+        background-color: white;
+        padding: 5px 15px 5px 15px;
+        border-radius: 5px;
+    }
+
+    .dataTables_length {
+        display: none;
+    }
+
+    .dataTables_filter {
+        display: none;
+    }
+
+    .dataTables_scrollHeadInner, .mdl-data-table {
+        width: 100%;
+    }
+</style>
+<div class="row">
+    <div class="row left pnl-cli">
+        <h6>@ViewBag.NoCliente - @ViewBag.Cliente</h6>
+    </div>
     <div class="row right">
-        <div class="col l12 m12 right">
-            <a href="@Url.Action("Create", "Contacto", new { vko=Model.vkorg, vtw=Model.vtweg,kun=Model.kunnr,spa=Model.spart})" class="btn-small">Crear</a>
-        </div>
+        <a href="@Url.Action("Create", "Contacto", new { vko=Model.vkorg, vtw=Model.vtweg,kun=Model.kunnr,spa=Model.spart})" id="btnCrear" class="btn-small">Crear</a>
     </div>
 </div>
 <div class="card-panel">
@@ -33,25 +58,20 @@
         var options = [];
         var instance = M.FormSelect.init(elem, options);
     </script>
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
-    <link href="~/Content/dataTable.css" rel="stylesheet" />
-    <link href="//cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
 
 
     <div class="row">
 
-        <div class="row">
+        <div class="row" style="overflow:auto;">
             <div class="col s12">
                 <table class="table mdl-data-table striped" id="table" style="width:100%;">
                     <thead>
                         <tr class="header">
-                            <th>NOMBRE</th>
-                            <th>TELEFONO</th>
-                            <th>E-MAIL</th>
-                            <th>CONTACTO POR DEFECTO</th>
-                            <th>SELECCIÓN</th>
+                            <th id="th_Nombre">NOMBRE</th>
+                            <th id="th_telefono">TELEFONO</th>
+                            <th id="th_mail">E-MAIL</th>
+                            <th id="th_condef">CONTACTO POR DEFECTO</th>
+                            <th id="th_seleccion">SELECCIÓN</th>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.tabContacto)
@@ -66,7 +86,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.EMAIL)
                                 </td>
-                                @if ((bool)item.DEFECTO == true)
+                                @if (item.DEFECTO != null && (bool)item.DEFECTO == true)
                                 {
                                     <td style="text-align:center;"><i class='material-icons green-text'>check</i></td>
                                 }
@@ -74,9 +94,6 @@
                                 {
                                     <td style="text-align:center;"><i class='material-icons red-text'>clear</i></td>
                                 }
-                                @*<td>
-                                        @Html.CheckBoxFor(modelItem => Convert.ToBoolean(item.DEFECTO))
-                                    </td>*@
                                 <td>
                                     <a data-form-method="post" href="@Url.Action("Edit", "Contacto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART, id = item.ID })">
                                         <i class='material-icons green-text'>edit</i>
@@ -84,9 +101,18 @@
                                     <a data-form-method="post" href="@Url.Action("Details", "Contacto", new { vko = item.VKORG, vtw = item.VTWEG, kun = item.KUNNR, spa = item.SPART, id = item.ID })">
                                         <i class='material-icons blue-text'>search</i>
                                     </a>
-                                    <a href="@Url.Action("Delete", "Contacto", new { id = item.ID })">
-                                        <i class='material-icons red-text'>delete</i>
-                                    </a>
+                                    <a class="modal-trigger" href="#modal_@item.ID"><i class='material-icons red-text'>delete</i></a>
+                                    <a id="actionDelete_@item.ID" href="@Url.Action("Delete", "Contacto", new { id = item.ID })"></a>
+                                    <!-- Modal Delete -->
+                                    <div id="modal_@item.ID" class="modal" style=" background-color: #fff; height: 200px; width: 450px;">
+                                        <div class="modal-content">
+                                            <p style="font-size: 16px;text-align: left;" class="lbl_eliminar"></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="modal-close waves-effect  btn-flat"><label class="lbl_eliminarNo"></label></a>
+                                            <a onclick="eliminarContacto('actionDelete_@item.ID')" class="modal-close waves-effect  btn-flat"><label class="lbl_eliminarSi"></label></a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -99,36 +125,34 @@
 
 
 </div>
+<div>
+    <a href="@Url.Action("Index", "Clientes")" id="btn_return"> </a>
+</div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('.modal');
+       M.Modal.init(elems, options);
+    });
+      var root = "@Url.Content("~")",
+        spras_id = "@ViewBag.spras_id",
+        urlLanguage = root + "Scripts/lang/" + spras_id + ".json";
     $(document).ready(function () {
-        var i = 0;
-        $('#table tfoot th').each(function () {
-            i++;
-            var title = $(this).text();
-            $(this).html('<input type="text" id="lbl_search' + i + '" />');
-        });
         var table = $('#table').DataTable({
+            scrollX: "50vh",
+            scrollY: "50vh",
+            scrollCollapse: true,
             language: {
-                "url": "../Scripts/lang/@Session["spras"].ToString()"+".json"
-            },
-            columnDefs: [
+                "url": urlLanguage
+            }, columnDefs: [
                 {
-                    targets: [0, 1, 2],
+                    targets: [0,1,2],
                     className: 'mdl-data-table__cell--non-numeric'
                 }
-            ]
+            ],
+            order: [[0, "asc"]]
         });
-        table.columns().every(function () {
-            var that = this;
-            $('input', this.footer()).on('keyup change', function () {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        })
+
         var a = $('#selecc').val();
         table.page.len(a).draw();
         $('#selecc').on('change', function () {
@@ -144,18 +168,10 @@
         $('#table').DataTable().search(
             $('#global_filter').val()).draw();
     }
+
+    function eliminarContacto(idLink) {
+        $('#' + idLink).get(0).click().click();
+    }
+
 </script>
-<style>
 
-    .dataTables_length {
-        display: none;
-    }
-
-    .dataTables_filter {
-        display: none;
-    }
-
-    .dataTables_scrollHeadInner, .mdl-data-table {
-        width: 100%;
-    }
-</style>

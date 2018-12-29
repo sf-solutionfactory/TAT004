@@ -10,172 +10,175 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
-
+using TAT001.Filters;
+using TAT001.Services;
 
 namespace TAT001.Controllers
 {
+    [AllowAnonymous]
     public class NegociacionesController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
 
         // GET: Negociaciones
-        public ActionResult Index(string pay, string vkorg, string vtweg, string spart, string correo, string fi, string ff)
+        ////public ActionResult Index(string pay, string vkorg, string vtweg, string spart, string correo, string fi, string ff)
+        public ActionResult Index(string pay, string vkorg, string vtweg, string spart, string correo, string fn)
         {
             DOCUMENTOA dz = null;
             List<DOCUMENTO> dx = new List<DOCUMENTO>();
             try
             {
-                var _fi = DateTime.Parse(fi);
-                var _ff = DateTime.Parse(ff);
-                var _idN = db.NEGOCIACIONs.Where(x => x.FECHAI == _fi && x.FECHAF == _ff).FirstOrDefault().ID;
-                //var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.PAYER_ID == pay && x.VKORG == vkorg && x.VTWEG == vtweg && x.SPART == spart && x.PAYER_EMAIL == correo && ((x.FECHAC.Value.Day >= _fi.Day && x.FECHAC.Value.Day <= _ff.Day) && x.FECHAC.Value.Month == _ff.Month && x.FECHAC.Value.Year == _ff.Year)).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).ToList();
-                var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.PAYER_ID == pay && x.VKORG == vkorg && x.VTWEG == vtweg && x.SPART == spart && x.PAYER_EMAIL == correo && ((x.FECHAC >= _fi && x.FECHAC <= _ff))).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).ToList();
-                for (int i = 0; i < dOCUMENTOes.Count; i++)
+                var _fn = DateTime.Parse(fn);
+                var _idN = db.NEGOCIACIONs.Where(x => x.ID == 1 && x.FECHAN == _fn && x.ACTIVO).FirstOrDefault();
+                if (_idN != null)
                 {
-                    //si el documentoref es nullo, significa que no depende de alguno otro
-                    if (dOCUMENTOes[i].DOCUMENTO_REF == null)
+                    var _fi = _idN.FECHAI;
+                    var _ff = _idN.FECHAF;
+                    ////var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.PAYER_ID == pay && x.VKORG == vkorg && x.VTWEG == vtweg && x.SPART == spart && x.PAYER_EMAIL == correo && ((x.FECHAC.Value.Day >= _fi.Day && x.FECHAC.Value.Day <= _ff.Day) && x.FECHAC.Value.Month == _ff.Month && x.FECHAC.Value.Year == _ff.Year)).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).ToList();
+                    var dOCUMENTOes = db.DOCUMENTOes.Where(x => x.PAYER_ID == pay && x.VKORG == vkorg && x.VTWEG == vtweg && x.SPART == spart && x.PAYER_EMAIL == correo && ((x.FECHAC >= _fi && x.FECHAC <= _ff))).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).ToList();
+                    for (int i = 0; i < dOCUMENTOes.Count; i++)
                     {
-                        //recupero el numdoc
-                        var de = dOCUMENTOes[i].NUM_DOC;
-                        //sino ecuentra una coincidencia con el criterio discriminatorio se agregan o no a la lista
-                        dz = db.DOCUMENTOAs.Where(x => x.NUM_DOC == de && x.CLASE != "OTR").FirstOrDefault();
-                        if (dz == null || dz != null)
-                        {
-                            if (dOCUMENTOes[i].TSOL.NEGO == true)//para el ultimo filtro
-                            {
-                                string estatus = "";
-                                if (dOCUMENTOes[i].ESTATUS != null) { estatus += dOCUMENTOes[i].ESTATUS; } else { estatus += " "; }
-                                if (dOCUMENTOes[i].ESTATUS_C != null) { estatus += dOCUMENTOes[i].ESTATUS_C; } else { estatus += " "; }
-                                if (dOCUMENTOes[i].ESTATUS_SAP != null) { estatus += dOCUMENTOes[i].ESTATUS_SAP; } else { estatus += " "; }
-                                if (dOCUMENTOes[i].ESTATUS_WF != null) { estatus += dOCUMENTOes[i].ESTATUS_WF; } else { estatus += " "; }
-                                if (dOCUMENTOes[i].FLUJOes.Count > 0)
-                                {
-                                    estatus += dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO;
-                                }
-                                else
-                                {
-                                    estatus += " ";
-                                }
-                                if (dOCUMENTOes[i].TSOL.PADRE) { estatus += "P"; } else { estatus += " "; }
-                                if (dOCUMENTOes[i].FLUJOes.Where(x => x.ESTATUS == "R").ToList().Count > 0)
-                                {
-                                    estatus += dOCUMENTOes[i].FLUJOes.Where(x => x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID;
-                                }
-                                else
-                                {
-                                    estatus += " ";
-                                }
 
-                                if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[P][R].."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R]..[8]"))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[P]..[A]..."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[P][A]..."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[E][A]..."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A].[P]."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A]..."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[T]..."))
-                                    dx.Add(dOCUMENTOes[i]);
-                                //if (dOCUMENTOes[i].ESTATUS_WF == "P")//LEJ 19.07.2018---------------------------I
-                                //{
-                                //    if (dOCUMENTOes[i].FLUJOes.Count > 0)
-                                //    {
-                                //        if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
-                                //        {
-                                //            //(Pendiente Validación TS)
-                                //            if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
-                                //            {
-                                //                dx.Add(dOCUMENTOes[i]);
-                                //            }
-                                //        }
-                                //    }
-                                //}
-                                //else if (dOCUMENTOes[i].ESTATUS_WF == "R")//(Pendiente Corrección)
-                                //{
-                                //    if (dOCUMENTOes[i].FLUJOes.Count > 0)
-                                //    {
-                                //        dx.Add(dOCUMENTOes[i]);
-                                //    }
-                                //}
-                                //else if (dOCUMENTOes[i].ESTATUS_WF == "T")//(Pendiente Taxeo)
-                                //{
-                                //    if (dOCUMENTOes[i].TSOL_ID == "NCIA")
-                                //    {
-                                //        if (dOCUMENTOes[i].PAIS_ID == "CO")//(sólo Colombia)
-                                //        {
-                                //            dx.Add(dOCUMENTOes[i]);
-                                //        }
-                                //    }
-                                //}
-                                //else if (dOCUMENTOes[i].ESTATUS_WF == "A")//(Por Contabilizar)
-                                //{
-                                //    if (dOCUMENTOes[i].ESTATUS == "P")
-                                //    {
-                                //        dx.Add(dOCUMENTOes[i]);
-                                //    }
-                                //}
-                                //else if (dOCUMENTOes[i].ESTATUS_SAP == "E")//Error en SAP
-                                //{
-                                //    // dx.Add(dOCUMENTOes[i]);
-                                //}
-                                //else if (dOCUMENTOes[i].ESTATUS_SAP == "X")//Succes en SAP
-                                //{
-                                //    dx.Add(dOCUMENTOes[i]);
-                                //}
-                            }
-                            //LEJ 19.07.2018----------------------------------------------------------------T
-                            // dx.Add(dOCUMENTOes[i]);
+                        PorEnviar pe = new PorEnviar();
+                        if (pe.seEnvia(dOCUMENTOes[i], db, null))
+                            dx.Add(dOCUMENTOes[i]);
+
+                        //////si el documentoref es nullo, significa que no depende de alguno otro
+                        ////if (dOCUMENTOes[i].DOCUMENTO_REF == null)
+                        ////{
+                        ////    //recupero el numdoc
+                        ////    var de = dOCUMENTOes[i].NUM_DOC;
+                        ////    //sino ecuentra una coincidencia con el criterio discriminatorio se agregan o no a la lista
+                        ////    dz = db.DOCUMENTOAs.Where(x => x.NUM_DOC == de && x.CLASE != "OTR").FirstOrDefault();
+                        ////    if (dz == null || dz != null)
+                        ////    {
+                        ////        if (dOCUMENTOes[i].TSOL.NEGO)//para el ultimo filtro
+                        ////        {
+                        ////            Estatus es = new Estatus();
+                        ////            string estatus = es.getEstatus(dOCUMENTOes[i]);
+                        ////            List<int> ee = new List<int>();
+                        ////            ee.Add(20);
+                        ////            ee.Add(90);
+                        ////            ee.Add(100);
+                        ////            ee.Add(110);
+                        ////            ee.Add(120);
+                        ////            ee.Add(130);
+                        ////            ee.Add(160);
+
+                        ////            List<ESTATUSR> ess = (from e in db.ESTATUSRs.ToList()
+                        ////                                  join n in ee
+                        ////                                  on e.ESTATUS_ID equals n
+                        ////                                  select e).ToList();
+
+                        ////            foreach (ESTATUSR e in ess)
+                        ////            {
+                        ////                if (System.Text.RegularExpressions.Regex.IsMatch(estatus, e.REGEX))
+                        ////                {
+                        ////                    dx.Add(dOCUMENTOes[i]);
+                        ////                    break;
+                        ////                }
+                        ////            }
+
+                        ////            ////if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[P][R].."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R]..[8]"))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[P]..[A]..."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[P][A]..."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[E][A]..."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A].[P]."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A]..."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+                        ////            ////else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[T]..."))
+                        ////            ////    dx.Add(dOCUMENTOes[i]);
+
+                        ////        }
+                        ////    }
+                        ////}
+                    }
+                    if (dx.Count > 0)
+                    {
+                        var uId = dx[0].USUARIOC_ID;
+                        var clUsu = db.USUARIOs.Where(x => x.ID == uId).FirstOrDefault();
+                        var clSoc = dx[0].SOCIEDAD_ID;
+                        int n = 0;
+                        var isNumeric = int.TryParse(dx[0].CIUDAD, out n);
+                        var clCd = "";
+                        var clEdo = "";
+                        if (isNumeric)
+                        {
+                            int c = Convert.ToInt32(dx[0].CIUDAD);
+                            var cd = db.CITIES.Where(i => i.ID == c).FirstOrDefault();
+                            var edo = db.STATES.Where(i => i.ID == cd.STATE_ID).FirstOrDefault();
+                            clCd = cd.NAME;
+                            clEdo = edo.NAME;
                         }
+                        else
+                        {
+                            clCd = dx[0].CIUDAD;
+                            clEdo = dx[0].ESTADO;
+                        }
+                        ViewBag.clCorreo = clUsu.EMAIL;
+                        var cl = db.CLIENTEs.Where(a => a.KUNNR == pay & a.VKORG == vkorg).FirstOrDefault();
+                        ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(905)) && a.SPRAS_ID.Equals(cl.SPRAS)).ToList();
+                        ViewBag.clCon = cl.CONTAC;
+                        ViewBag.clName = cl.NAME1;
+                        ViewBag.clDir = cl.STRAS_GP;
+                        DateTime hoy = DateTime.Now;
+                        ViewBag.fi = _fi.ToShortDateString();
+                        ViewBag.ff = _fn.ToShortDateString();
+                        ViewBag.clPayId = pay;
+                        ViewBag.clFunci = clUsu.NOMBRE + " " + clUsu.APELLIDO_P + " " + clUsu.APELLIDO_M;
+                        ViewBag.clPos = db.PUESTOTs.Where(x => x.PUESTO_ID == clUsu.PUESTO_ID && x.SPRAS_ID == "ES").Select(s => s.TXT50).FirstOrDefault();
+                        ViewBag.FechaH = DateTime.Now.ToShortDateString();
+                        ViewBag.KellCom = db.SOCIEDADs.Where(s => s.BUKRS == clSoc).Select(r => r.NAME1).FirstOrDefault();
+                        ViewBag.cd = clCd;
+                        ViewBag.edo = clEdo;
+                        ViewBag.idf = _idN.ID;
+                        ViewBag.vk = vkorg;
+                        ViewBag.vtw = vtweg;
+                        ViewBag.clCorreo2 = correo.Replace('@', '/').Replace('.', '*').Replace('-', '#');
+                        ViewBag.spras = cl.SPRAS;
+                        List<TEXTO> tt = db.TEXTOes.Where(x => x.PAGINA_ID == 905 && x.SPRAS_ID == cl.SPRAS).ToList();
+                        try { ViewBag.lbl_control = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_control").TEXTOS; } catch { }
+                        try
+                        {
+                            ViewBag.lbl_dear = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_dear").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_dear = ""; }
+                        try
+                        {
+                            ViewBag.lbl_next = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_next").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_next = ""; }
+                        try
+                        {
+                            ViewBag.lbl_pres = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_pres").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_pres = ""; }
+                        try
+                        {
+                            ViewBag.lbl_numsol = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_numsol").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_numsol = ""; }
+                        try
+                        {
+                            ViewBag.lbl_vigencia = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_vigencia").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_vigencia = ""; }
+                        try
+                        {
+                            ViewBag.lbl_desc = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_desc").TEXTOS;
+                        }
+                        catch { ViewBag.lbl_desc = ""; }
+                        try
+                        { ViewBag.lbl_soporte = tt.FirstOrDefault(x => x.CAMPO_ID == "lbl_soporte").TEXTOS; }
+                        catch { ViewBag.lbl_soporte = ""; }
                     }
-                }
-                if (dx.Count > 0)
-                {
-                    var uId = dx[0].USUARIOC_ID;
-                    var clUsu = db.USUARIOs.Where(x => x.ID == uId).FirstOrDefault();
-                    var clSoc = dx[0].SOCIEDAD_ID;
-                    int n = 0;
-                    var isNumeric = int.TryParse(dx[0].CIUDAD, out n);
-                    var clCd = "";
-                    var clEdo = "";
-                    if (isNumeric)
-                    {
-                        int c = Convert.ToInt32(dx[0].CIUDAD);
-                        var cd = db.CITIES.Where(i => i.ID == c).FirstOrDefault();
-                        var edo = db.STATES.Where(i => i.ID == cd.STATE_ID).FirstOrDefault();
-                        clCd = cd.NAME;
-                        clEdo = edo.NAME;
-                    }
-                    else
-                    {
-                        clCd = dx[0].CIUDAD;
-                        clEdo = dx[0].ESTADO;
-                    }
-                    ViewBag.clCorreo = clUsu.EMAIL;
-                    var cl = db.CLIENTEs.Where(a => a.KUNNR == pay & a.VKORG == vkorg).FirstOrDefault();
-                    ViewBag.clCon = cl.CONTAC;
-                    ViewBag.clName = cl.NAME1;
-                    ViewBag.clDir = cl.STRAS_GP;
-                    DateTime hoy = DateTime.Now;
-                    ViewBag.fi = fi;
-                    ViewBag.ff = ff;
-                    ViewBag.clPayId = pay;
-                    ViewBag.clFunci = clUsu.NOMBRE + " " + clUsu.APELLIDO_P + " " + clUsu.APELLIDO_M;
-                    ViewBag.clPos = db.PUESTOTs.Where(x => x.PUESTO_ID == clUsu.PUESTO_ID && x.SPRAS_ID == "ES").Select(s => s.TXT50).FirstOrDefault();
-                    ViewBag.FechaH = DateTime.Now.ToShortDateString();
-                    ViewBag.KellCom = db.SOCIEDADs.Where(s => s.BUKRS == clSoc).Select(r => r.NAME1).FirstOrDefault();
-                    ViewBag.cd = clCd;
-                    ViewBag.edo = clEdo;
-                    ViewBag.idf = _idN;
-                    ViewBag.vk = vkorg;
-                    ViewBag.vtw = vtweg;
-                    ViewBag.clCorreo2 = correo.Replace('@', '/').Replace('.', '*').Replace('-', '#');
-                    ViewBag.spras = cl.SPRAS;
                 }
             }
             catch (Exception e)

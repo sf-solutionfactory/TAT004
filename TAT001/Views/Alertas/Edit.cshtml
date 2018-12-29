@@ -76,7 +76,7 @@
                     <div class="form-group">
                         <label id="lbl_tipo"></label>
                         <div class="col-md-10">
-                            @Html.DropDownListFor(model => model.alerta.TSOL_ID, Model.tiposSolicitud, "", new { @disabled = true })
+                            @Html.DropDownListFor(model => model.alerta.TSOL_ID, Model.cmbTiposSolicitud, "", new { @disabled = true })
                         </div>
                     </div>
                 </div>
@@ -100,10 +100,18 @@
         </div>
         <p class="text-center"><label id="lbl_condicion_regla"></label></p>
         <hr>
-        @if (Model.alerta.SOCIEDAD_ID != null && Model.alerta.TSOL_ID != null)
+        @if (Model.alerta.SOCIEDAD_ID != null && Model.alerta.TSOL_ID != null && Model.alerta.ID!="concepto1")
         {
 
             <div class="row">
+                <div class="col s1">
+                    <div class="form-group">
+                        <label>
+                            @Html.RadioButtonFor(model => model.alertaCondiciones[1].ANDOR, "", new { @onchange = "actualizarCondiciones(this.value)" })
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
                 <div class="col s3">
                     <div class="form-group">
                         <div class="col-md-10">
@@ -139,14 +147,6 @@
                         </label>
                     </div>
                 </div>
-                <div class="col s1">
-                    <div class="form-group">
-                        <label>
-                            @Html.RadioButtonFor(model => model.alertaCondiciones[1].ANDOR, "", new { @onchange = "actualizarCondiciones(this.value)" })
-                            <span></span>
-                        </label>
-                    </div>
-                </div>
                 <div class="col s2">
                     <div class="form-group">
                         <div class="col-md-10">
@@ -170,12 +170,22 @@
         }
         else
         {
+            string spras_id = ViewBag.spras_id;
             string condicion = "";
             Model.alertaCondiciones.ForEach(x =>
             {
-                string condicionT = x.CONDICION.CONDICIONTs.Where(y => y.SPRAS_ID == @ViewBag.spras_id).First().TXT050;
-                string condicionValorT = Model.condValores.Any(y => y.Value == x.VALOR_COMP) ? Model.condValores.Where(y => y.Value == x.VALOR_COMP).First().Text : x.VALOR_COMP;
-                condicion = condicion + x.ANDOR + " " + condicionT + " " + condicionValorT + " " + x.ORAND + " ";
+                string condTexto = x.CONDICION.DESCR;
+                if (x.CONDICION.CONDICIONTs.Any(y => y.SPRAS_ID == spras_id))
+                {
+                    condTexto = x.CONDICION.CONDICIONTs.Where(y => y.SPRAS_ID == spras_id).First().TXT050;
+                }
+                string valComp = x.VALOR_COMP == "" ? "v" : x.VALOR_COMP;
+                string condValorTexto = x.VALOR_COMP;
+                if (Model.condValores.Any(y => y.Value == valComp))
+                {
+                    condValorTexto = Model.condValores.Where(y => y.Value == valComp).First().Text;
+                }
+                condicion = condicion + x.ANDOR + " " + condTexto + " " + condValorTexto + " " + x.ORAND + " ";
             });
             <div class="row">
                 <div class="col s12 text-center">
@@ -186,7 +196,7 @@
                     <p class="text-center"><label id="lbl_mensajes"></label></p>
                     <hr>
                     <div class="row">
-                        <div class="col s4">
+                        <div class="col s6">
                             <div class="form-group">
                                 <label>ES</label>
                                 <div class="col-md-10">
@@ -197,7 +207,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col s4">
+                        <div class="col s6">
                             <div class="form-group">
                                 <label>EN</label>
                                 <div class="col-md-10">
@@ -205,17 +215,6 @@
                                     @Html.HiddenFor(model => model.alertaMensajes[1].SPRAS_ID)
                                     @Html.HiddenFor(model => model.alertaMensajes[1].TAB_ID)
                                     @Html.HiddenFor(model => model.alertaMensajes[1].WARNING_ID)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col s4">
-                            <div class="form-group">
-                                <label>PT</label>
-                                <div class="col-md-10">
-                                    @Html.TextBoxFor(model => model.alertaMensajes[2].TXT100, new { @required = "", @maxlength = 100 })
-                                    @Html.HiddenFor(model => model.alertaMensajes[2].SPRAS_ID)
-                                    @Html.HiddenFor(model => model.alertaMensajes[2].TAB_ID)
-                                    @Html.HiddenFor(model => model.alertaMensajes[2].WARNING_ID)
                                 </div>
                             </div>
                         </div>
@@ -228,27 +227,37 @@
         <a id="btn_return" href="@Url.Action("Index")"></a>
     </div>
     <script type="text/javascript" src="~/Scripts/fnCommon.js"></script>
-   @if (Model.alerta.SOCIEDAD_ID != null && Model.alerta.TSOL_ID != null)
-    {
+   @if (Model.alerta.SOCIEDAD_ID != null && Model.alerta.TSOL_ID != null && Model.alerta.ID!= "concepto1")
+   {
     <script>
              // Asignar valor a combos de list
             var idAndOr = "@Model.alertaCondiciones[1].ANDOR";
+            if (idAndOr == "&amp;") { idAndOr = "&";}
             $('#alertaCondiciones_0__CONDICION_ID').val('@Model.alertaCondiciones[0].CONDICION_ID');
             $('#alertaCondiciones_0__VALOR_COMP').val('@Model.alertaCondiciones[0].VALOR_COMP');
             $('#alertaCondiciones_1__ANDOR[value="' + idAndOr + '"]').prop("checked", true);
             if (idAndOr != '') {
             $('#alertaCondiciones_1__CONDICION_ID').val('@Model.alertaCondiciones[1].CONDICION_ID');
             $('#alertaCondiciones_1__VALOR_COMP').val('@Model.alertaCondiciones[1].VALOR_COMP');
+            $('#alertaCondiciones_0__ANDOR').val('(');
+            $('#alertaCondiciones_1__CONDICION_ID').prop('disabled', false);
+            $('#alertaCondiciones_1__VALOR_COMP').prop('disabled', false);
             }
+
+            //----  Se agrega carga de Select Campos----
+        var root = "@Url.Content("~")";
+        fnCommon.fillOptionsInSelect('alertaCondiciones_0__CONDICION_ID', root + 'Alertas/ObtenerCondValores', 'alertaCondiciones_0__VALOR_COMP');
+        fnCommon.fillOptionsInSelect('alertaCondiciones_1__CONDICION_ID', root + 'Alertas/ObtenerCondValores', 'alertaCondiciones_1__VALOR_COMP');
         </script>
    }
         <script>
          //---- Inicializador de componentes Materialize----
-         fnCommon.materializeInit('select', 'select');
+         fnCommon.materializeInit( 'select');
 
          //----  Se agrega validaciones al formulario----
          fnCommon.selectRequired();
          fnCommon.formValidation('alertaForm');
+
 
          function actualizarCondiciones(andor) {
              if (andor === "&" || andor === "|") {
@@ -262,17 +271,15 @@
             $('#alertaCondiciones_1__VALOR_COMP').val(null);
             $('#alertaCondiciones_0__ANDOR').val(null);
              }
-             fnCommon.materializeInit('select', 'select');
+             fnCommon.materializeInit( 'select');
              fnCommon.selectRequired();
 
          }
 
-
-
          // Valida si ocurrio un error al intentar crear el periodo y otro.
          var mnjError = '@ViewBag.mnjError';
-         if (mnjError) {
-             M.toast({ html: mnjError });
-         }
+            if (mnjError) {
+                M.toast({ html: mnjError });
+            }
       </script>
 

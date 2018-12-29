@@ -5,6 +5,19 @@
     ViewBag.carpeta_r = 100;
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    string regresar = TempData["return"] != null ? TempData["return"].ToString() : null;
+    string accion = "Details";
+    string controller = "Solicitudes";
+    TempData["vista"] = regresar;
+    if (regresar == "LIST")
+    {
+        accion = "Lista";
+        controller = "CartaV";
+        TempData["swf"] = TempData["ESTATUS_WF"];
+    }
+
 }
 @using (Html.BeginForm())
 {
@@ -13,9 +26,16 @@
     <div class="row">
         <div class="row right">
             <div class="col l12 m12 right">
-                <a href="@Url.Action("Details", "Solicitudes", new { id = Model.num_doc })" class="btn btn-default">Regresar</a>
-                <input type="submit" value="Imprimir" class="btn btn-default" onclick="timer()" />
-            </div>
+                @if (accion == "Lista")
+                {
+                    <a href="@Url.Action(accion, controller, new { id = Model.num_doc, swf = TempData["ESTATUS_WF"] })" class="btn btn-small">Regresar</a>
+                }
+                else
+                {
+                    <a href="@Url.Action(accion, controller, new { id = Model.num_doc })" class="btn btn-small">Regresar</a>
+                }
+                    <input type="submit" id="btn_impb" value="Imprimir" class="btn btn-small" />
+                </div>
         </div>
     </div>
 
@@ -214,8 +234,12 @@
                                     @if (a == 0)
                                     {
                                         <tr style="background-color:#CCCCCC">
-                                            <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[0]</b>
+                                            <th style="text-align:center"><br />
+                                                  <b>@Model.numColEncabezado[0]</b><br/>
+                                                <label>
+                                                    <input type="checkbox" name="material_x" value="true" id="material_x" @Html.Raw((Model.material_x) ? "checked=\"checked\"" : "") />
+                                                    <span style="height: 10px;"></span>
+                                                </label>
                                             </th>
                                             <th style="text-align:center">
                                                 <b>@Model.numColEncabezado[1]</b>
@@ -224,52 +248,52 @@
                                                 <b>@Model.numColEncabezado[2]</b>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[3]</b>
+                                                <b>@Model.numColEncabezado[3]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="costoun_x" value="true" id="costoun_x" @Html.Raw((Model.costoun_x) ? "checked=\"checked\"" : "") />
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[4]</b>
+                                                <b>@Model.numColEncabezado[4]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="apoyo_x" value="true" id="apoyo_x" @Html.Raw((Model.apoyo_x) ? "checked=\"checked\"" : "") />
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[5]</b>
+                                                <b>@Model.numColEncabezado[5]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="apoyop_x" value="true" id="apoyop_x" @Html.Raw((Model.apoyop_x) ? "checked=\"checked\"" : "") />
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[6]</b>
+                                                <b>@Model.numColEncabezado[6]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="costoap_x" value="true" id="costoap_x" @Html.Raw((Model.costoap_x) ? "checked=\"checked\"" : "") />
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[7]</b>
+                                                <b>@Model.numColEncabezado[7]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="precio_x" value="true" id="precio_x" @Html.Raw((Model.precio_x) ? "checked=\"checked\"" : "") />
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[8]</b>
+                                                <b>@Model.numColEncabezado[8]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="volumen_x" value="true" id="apoyoEst_x" @Html.Raw((Model.volumen_x) ? "checked=\"checked\"" : "") /> @*//B20180726 MGC 2018.07.26*@
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                             <th style="text-align:center">
-                                                <b>@Model.numColEncabezado[9]</b>
+                                                <b>@Model.numColEncabezado[9]</b><br/>
                                                 <label>
                                                     <input type="checkbox" name="apoyototal_x" value="true" id="apoyoRea_x" @Html.Raw((Model.apoyototal_x) ? "checked=\"checked\"" : "") /> @*//B20180726 MGC 2018.07.26*@
-                                                    <span style="height:1"></span>
+                                                    <span style="height: 10px;"></span>
                                                 </label>
                                             </th>
                                         </tr>
@@ -320,7 +344,7 @@
                                         <tr>
                                             @for (int j = 0; j < columnas; j++)
                                             {
-                                                <td>@Model.listaCuerpo[pos]</td>
+                                                <td style="text-align:center">@Model.listaCuerpo[pos]</td>
                                                 pos++;
                                             }
                                         </tr>
@@ -345,7 +369,6 @@
                                     @Html.HiddenFor(model => model.monto)
                                     @Html.HiddenFor(model => model.moneda)
                                     @{ string monto = @ViewBag.mon; }
-                                    @*@Html.LabelFor(model => model.monto, monto + " " + Model.monto + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" })*@ @*//B20180801 MGC Formato*@
                                     @Html.LabelFor(model => model.monto, monto + " " + montoformat + " " + Model.moneda, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_monto" }) @*//B20180801 MGC Formato*@
                                 </div>
                             </div>
@@ -403,7 +426,59 @@
                             </div>
                         </div>
                     }
-                    <br />
+                    <br/>
+                <br/>
+                @if (Model.numfilasTabla3 > 0)
+                {
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="col l1 s1">
+                                <label>
+                                    <input type="checkbox" name="tercerTab_x" value="true" id="tercerTab_x" @Html.Raw((Model.tercerTab_x) ? "checked=\"checked\"" : "") />
+                                    <span style="height:0"></span>
+                                </label>
+                           </div>
+                            <div class="input-field col l11 m11" style="margin-bottom:0;">
+                                <table class="table" style="font-size: 12px;">
+                                    <thead>
+                                        <tr><b style="font-size:x-large" id="lbl_TituloObjQ"></b></tr>
+                                    </thead>
+                                    <tr style="background-color:#CCCCCC;">
+                                        <th style="text-align:center">
+                                            <b>@Model.numColEncabezado3[0]</b>
+                                        </th>
+                                        <th style="text-align:center">
+                                            <b>@Model.numColEncabezado3[1]</b>
+                                        </th>
+                                        <th style="text-align:center">
+                                            <b>@Model.numColEncabezado3[2]</b>
+                                        </th>
+                                        <th style="text-align:center">
+                                            <b>@Model.numColEncabezado3[3]</b>
+                                        </th>
+                                        <th style="text-align:center">
+                                            <b>@Model.numColEncabezado3[4]</b>
+                                        </th>
+                                    </tr>
+                                    @{int cols3 = Model.numColEncabezado3.Count(); }
+                                    @{int pos3 = 0; }
+                                    @for (int i = 0; i < Model.numfilasTabla3; i++)
+                                    {
+                                        <tr>
+                                            @for (int j = 0; j < cols3; j++)
+                                            {
+                                                <td style='text-align:center;'>@Model.listaCuerpoObjQ[pos3]</td>
+                                                pos3++;
+                                            }
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                <br/>
+                <br />
                     <div class="row">
                         <div class="col l6 m6">
                             <div class="row">
@@ -503,7 +578,7 @@
                     <div class="row">
                         <div class="col l12 m6">
                             <div class="row">
-                                <div class="col l6 m8 sl2">
+                                <div class="col l12 m8 sl2">
                                     <div class="col l12 m12 s12">
                                         <div class="col l1 s2">
                                             <label>
@@ -517,7 +592,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col l6 m8 sl2">
+                                @*<div class="col l6 m8 sl2">
                                     <div class="col l12 m12 s12">
                                         <div class="col l1 s2">
                                             <label>
@@ -530,13 +605,13 @@
                                             @Html.LabelFor(model => model.compromisoK, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_comproK" })
                                         </div>
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                         <div class="col l12 m6">
                             <div class="row">
                                 <div class="col l6 m8 sl2">
-                                    <div class="col l12 m12 s12">
+                                    @*<div class="col l12 m12 s12">
                                         <div class="col l1 s2">
                                             <label>
                                                 <input type="checkbox" name="compromisoC_x" value="true" id="compromisoC_x" @Html.Raw((Model.compromisoC_x) ? "checked=\"checked\"" : "") />
@@ -547,7 +622,7 @@
                                             @Html.TextAreaFor(model => model.compromisoC, new { @class = "materialize-textarea" })
                                             @Html.LabelFor(model => model.compromisoC, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_comproC" })
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -589,8 +664,5 @@
                     <div class="col l2 yellow" style="height:10px;padding:0;"></div>
                 </div>
             </div>
-        </div>
-        <div>
-            @Html.ActionLink("Back to List", "Index")
         </div>
     }

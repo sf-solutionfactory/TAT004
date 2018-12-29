@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
 
@@ -18,13 +16,19 @@ namespace TAT001.Models
 
             sociedades = new List<SelectListItem>();
             tabs = new List<SelectListItem>();
-            tiposSolicitud = new List<SelectListItem>();
+            cmbTiposSolicitud = new List<SelectListItem>();
             campos = new List<SelectListItem>();
             tipos = new List<SelectListItem>();
             condCampos = new List<SelectListItem>();
             condValores = new List<SelectListItem>();
             condCampos1 = new List<SelectListItem>();
             condValores1 = new List<SelectListItem>();
+
+            treeTiposSolicitud = new List<SelectTreeItem>();
+
+            tabCampos = new List<TEXTO>();
+
+            sociedadesSelected = new List<string>();
 
         }
         public List<WARNINGP> alertas { get; set; }
@@ -33,7 +37,7 @@ namespace TAT001.Models
         public List<WARNING_COND> alertaCondiciones { get; set; }
 
         public List<SelectListItem> sociedades { get; set; }
-        public List<SelectListItem> tiposSolicitud { get; set; }
+        public List<SelectListItem> cmbTiposSolicitud { get; set; }
         public List<SelectListItem> tabs { get; set; }
         public List<SelectListItem> campos { get; set; }
         public List<SelectListItem> tipos { get; set; }
@@ -41,5 +45,13 @@ namespace TAT001.Models
         public List<SelectListItem> condValores { get; set; }
         public List<SelectListItem> condCampos1 { get; set; }
         public List<SelectListItem> condValores1 { get; set; }
+   
+        public List<SelectTreeItem> treeTiposSolicitud { get; set; }
+
+        public List<TEXTO> tabCampos { get; set; }
+
+        public List<string> sociedadesSelected { get; set; }
+
     }
+    
 }

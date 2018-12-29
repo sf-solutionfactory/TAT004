@@ -10,7 +10,7 @@ namespace TAT001.Services
 {
     public class Reversa
     {
-        public decimal creaReversa(string id_d, string tsol)
+        public string creaReversa(string id_d, string tsol, ref decimal num_doc, bool total = false)
         {
             string dates = DateTime.Now.ToString("dd/MM/yyyy");
             DateTime theTime = DateTime.ParseExact(dates, //"06/04/2018 12:00:00 a.m."
@@ -148,7 +148,8 @@ namespace TAT001.Services
                     if (docsrel.Count > 0)
                     {
                         docsrelp = docsrel
-                            .Join(
+                            .Where(x => x.ESTATUS_C != "C" & x.ESTATUS_WF != "B")//ADD RSG 15.11.2018
+                                .Join(
                             db.DOCUMENTOPs,
                             docsl => docsl.NUM_DOC,
                             docspl => docspl.NUM_DOC,
@@ -172,6 +173,7 @@ namespace TAT001.Services
                             }).ToList();
                     }
                     List<TAT001.Models.DOCUMENTOP_MOD> docsp = new List<DOCUMENTOP_MOD>();
+                    decimal resta = 0;//ADD RSG 15.11.2018
                     var dis = "";
                     for (int j = 0; j < docpl.Count; j++)
                     {
@@ -193,11 +195,12 @@ namespace TAT001.Services
                             docP.PORC_APOYO = docpl[j].PORC_APOYO;
                             docP.MONTO_APOYO = docpl[j].MONTO_APOYO;
                             docP.PRECIO_SUG = docpl[j].PRECIO_SUG;
-                            docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
+                            ////docP.VOLUMEN_EST = docpl[j].VOLUMEN_EST;
                             docP.VIGENCIA_DE = docpl[j].VIGENCIA_DE;
                             docP.VIGENCIA_AL = docpl[j].VIGENCIA_AL;
-                            docP.APOYO_EST = docpl[j].APOYO_EST;
-                            docP.APOYO_REAL = docpl[j].APOYO_REAL;
+                            ////docP.APOYO_EST = docpl[j].APOYO_EST;
+                            docP.APOYO_REAL = docpl[j].APOYO_EST;//RSG 26.12.2018
+                            docP.VOLUMEN_REAL = docpl[j].VOLUMEN_EST;//RSG 26.12.2018
 
                             //Verificar si hay materiales en las relacionadas
                             if (docsrelp.Count > 0)
@@ -220,8 +223,10 @@ namespace TAT001.Services
                                     decimal docr_vr = Convert.ToDecimal(docrel[k].VOLUMEN_REAL);
                                     decimal docr_ar = Convert.ToDecimal(docrel[k].APOYO_REAL);
 
-                                    docP.VOLUMEN_EST -= docr_vr;
-                                    docP.APOYO_EST -= docr_ar;
+                                    ////docP.VOLUMEN_EST -= docr_vr;
+                                    ////docP.APOYO_EST -= docr_ar;
+                                    docP.VOLUMEN_REAL -= docr_vr;//RSG 26.12.2018
+                                    docP.APOYO_REAL -= docr_ar;//RSG 26.12.2018
 
                                     if (dis == "C")
                                     {
@@ -233,13 +238,14 @@ namespace TAT001.Services
                             }
 
                             //Siempre tiene que ser igual a 0
-                            if (docP.VOLUMEN_EST < 0)
+                            if (docP.VOLUMEN_REAL < 0)
                             {
-                                docP.VOLUMEN_EST = 0;
+                                docP.VOLUMEN_REAL = 0;
                             }
-                            if (docP.APOYO_EST < 0)
+                            if (docP.APOYO_REAL < 0)
                             {
-                                docP.APOYO_EST = 0;
+                                resta += (decimal)docP.APOYO_REAL;
+                                docP.APOYO_REAL = 0;
                             }
 
                             docP.MATNR = docpl[j].MATNR.TrimStart('0');//RSG 07.06.2018
@@ -251,6 +257,37 @@ namespace TAT001.Services
                         }
                     }
 
+                    //ADD RSG 15.11.2018------------------------------------I
+                    for (int j = 0; j < docsrelp.Count; j++)
+                    {
+                        List<DOCUMENTOP> docrel = new List<DOCUMENTOP>();
+                        docrel = docpl.Where(docrell => docrell.MATNR == docsrelp[j].MATNR).ToList();
+                        if (docrel.Count == 0)
+                        {
+                            resta -= Convert.ToDecimal(docsrelp[j].APOYO_REAL);
+                        }
+                    }
+                    
+                    //if ((docsp.Count - mayores) > 0)
+                    //    resta = resta / (docsp.Count - mayores);
+                    while (resta != 0)
+                    {
+                        foreach (DOCUMENTOP_MOD ddp in docsp)
+                        {
+                            if (ddp.APOYO_REAL > 0)
+                            {
+                                ddp.APOYO_REAL += resta;
+                                if (ddp.APOYO_REAL <= 0)
+                                {
+                                    resta = (decimal)ddp.APOYO_REAL;
+                                    ddp.APOYO_REAL = 0;
+                                }
+                                else
+                                    resta = 0;
+                            }
+                        }
+                    }
+                    //ADD RSG 15.11.2018------------------------------------F
                     dOCUMENTO.DOCUMENTOP = docsp;
                 }
             }
@@ -295,8 +332,9 @@ namespace TAT001.Services
                 foreach (DOCUMENTOM dm in dpp.DOCUMENTOMs)
                 {
                     DOCUMENTOM dmm = new DOCUMENTOM();
-                    dmm.APOYO_EST = dm.APOYO_EST;
-                    dmm.APOYO_REAL = dm.APOYO_REAL;
+                    ////dmm.APOYO_EST = dm.APOYO_EST;
+                    ////dmm.APOYO_REAL = dm.APOYO_REAL;
+                    dmm.APOYO_REAL = dm.APOYO_EST;
                     dmm.MATNR = dm.MATNR;
                     //dmm.NUM_DOC = dm.NUM_DOC;
                     dmm.PORC_APOYO = dm.PORC_APOYO;
@@ -310,12 +348,13 @@ namespace TAT001.Services
                 }
 
                 dOCUMENTO.DOCUMENTOPs.Add(ddp);
-                dOCUMENTO.MONTO_DOC_MD += ddp.APOYO_EST;
+                ////dOCUMENTO.MONTO_DOC_MD += ddp.APOYO_EST;
+                dOCUMENTO.MONTO_DOC_MD += ddp.APOYO_REAL;
             }
 
             foreach (DOCUMENTOP dpp in dOCpADRE.DOCUMENTOPs)
             {
-               
+
             }
             ////HTTPPOST
             DOCUMENTO d = new DOCUMENTO();
@@ -342,7 +381,7 @@ namespace TAT001.Services
             }
 
             //Tipo técnico
-            dOCUMENTO.TIPO_TECNICO = "";
+            dOCUMENTO.TIPO_TECNICO = relacionada_neg;
 
             USUARIO u = db.USUARIOs.Find(d.USUARIOC_ID);//RSG 02/05/2018
             Rangos rangos = new Rangos();//RSG 01.08.2018
@@ -440,12 +479,12 @@ namespace TAT001.Services
             db.SaveChanges();
             //Guardar los documentos p para el documento guardado
 
-            ProcesaFlujo2 pf = new ProcesaFlujo2();
+            ProcesaFlujo pf = new ProcesaFlujo();
             //db.DOCUMENTOes.Add(dOCUMENTO);
             //db.SaveChanges();
 
             USUARIO user = db.USUARIOs.Where(a => a.ID.Equals(d.USUARIOC_ID)).FirstOrDefault();
-            int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
+            //int rol = user.MIEMBROS.FirstOrDefault().ROL_ID;
             try
             {
                 //WORKFV wf = db.WORKFHs.Where(a => a.BUKRS.Equals(dOCUMENTO.SOCIEDAD_ID) & a.ROL_ID == rol).FirstOrDefault().WORKFVs.OrderByDescending(a => a.VERSION).FirstOrDefault();
@@ -477,6 +516,17 @@ namespace TAT001.Services
                     ////conta.FECHAM = DateTime.Now;
                     ////pf.procesa(conta, "");
                     //RSG 28.05.2018 -----------------------------------
+                    //RSG 24.12.2018 -----------------------------------
+
+                    FLUJO conta = db.FLUJOes.Where(x => x.NUM_DOC == f.NUM_DOC).Include(x => x.WORKFP).OrderByDescending(x => x.POS).FirstOrDefault();
+                    Estatus es = new Estatus();//RSG 18.09.2018
+                    DOCUMENTO doc = db.DOCUMENTOes.Find(f.NUM_DOC);
+                    conta.STATUS = es.getEstatus(doc);
+                    db.Entry(conta).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    num_doc = f.NUM_DOC;
+                    return c;
                 }
             }
             catch (Exception ee)
@@ -484,12 +534,11 @@ namespace TAT001.Services
                 if (errorString == "")
                 {
                     errorString = ee.Message.ToString();
-                    return 0;
+                    return "0";
                 }
                 //ViewBag.error = errorString;
             }
-
-            return dOCUMENTO.NUM_DOC;
+            return "";
         }
 
 

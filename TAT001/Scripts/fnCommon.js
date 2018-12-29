@@ -1,15 +1,16 @@
 ﻿var fnCommon = {
 
-    materializeInit: function (component, type, spras_id) {
+    materializeInit: function (type, spras_id) {
+        var options = {};
         switch (type) {
             case 'select':
-                var options = {};
+                 options = {};
                 var selects = document.querySelectorAll('select');
                 M.FormSelect.init(selects, options);
                 break;
             case 'datepicker':
-                var options = { format: 'dd/mm/yyyy' };
-                if (spras_id=='ES'){
+                 options = { format: 'dd/mm/yyyy' };
+                if (spras_id==='ES'){
                     options.i18n = {
                         clear: 'Limpiar',
                         today: 'Hoy',
@@ -27,23 +28,27 @@
                 M.Datepicker.init(datepickers, options);
                 break;
             case 'timepicker':
-                $(component).pickatime({
-                    twelvehour: false,
-                    donetext: 'OK',
-                    cleartext: '',
-                    autoclose: false,
-                    value: ''
-                });
+                 options = {
+                    twelveHour: false,
+                    autoClose: true
+                };
+                var timepickers = document.querySelectorAll('.timepicker');
+                var instances = M.Timepicker.init(timepickers, options);
                 break;
             case 'tabs':
-                var options = {};
+                 options = {};
                 var tabs = document.querySelectorAll('.tabs');
                 M.Tabs.init(tabs, options);
                 break;
             case 'collapsible':
-                var options = {};
+                 options = {};
                 var collapsibles = document.querySelectorAll('.collapsible');
                 M.Collapsible.init(collapsibles, options);
+                break;
+            case 'modal':
+                options = {};
+                var modals = document.querySelectorAll('.modal');
+                M.Modal.init(modals, options);
                 break;
             default:
                 break;
@@ -105,7 +110,25 @@
             if (fechaFMaxM) { fechaFMaxM.options.maxDate = date; }
         }
     },
-    configurarTable: function (idTable, scrollY, scrollX, urlLanguage,idSelectPag,idGFilter) {
+    configurarTableNoPagNoBusq: function (idTable, scrollY, scrollX, urlLanguage, targets) {
+     $('#' + idTable).DataTable({
+            scrollY: scrollY,
+            scrollX: scrollX,
+            scrollCollapse: true,
+            paging: false,
+            info: false,
+            searching: false,
+            ordering: false,
+            language: {
+                url: urlLanguage
+            },
+            columnDefs: [{
+                targets: targets ? targets : [0, 1, 2, 4, 5, 6],
+                className: 'mdl-data-table__cell--non-numeric'
+            }]
+        });
+    },
+    configurarTable: function (idTable, scrollY, scrollX, urlLanguage,idSelectPag,idGFilter,targets) {
         var table =  $('#'+idTable).DataTable({
             scrollY: scrollY,
             scrollX: scrollX,
@@ -114,7 +137,7 @@
                 url: urlLanguage
             },
             columnDefs: [{
-                targets: [0, 1, 2,4,5,6],
+                targets: targets ? targets:[0, 1, 2,4,5,6],
                 className: 'mdl-data-table__cell--non-numeric'
             }]
         });
@@ -126,22 +149,6 @@
         });
 
        
-        $('#' + idTable + ' tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = table.row(tr);
-
-            if (row.child.isShown()) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                // Open this row
-                var child = format(row.data(), row, tr);
-                if (child != undefined) {
-                }
-            }
-        });
 
         $('input.global_filter').on('keyup click', function () {
             fnCommon.filterGlobal(idTable, idGFilter);
@@ -151,27 +158,55 @@
         var filterVal = $('#' + idGFilter).val();
         $('#' + idTable).DataTable().search(filterVal).draw();
     },
-    fillOptionsInSelect: function (idSelect, url, idSelectToFill) {
+    fillOptionsInSelect: function (idSelect, url, idSelectToFill,callBack) {
         $('#' + idSelect).change(function () {
-            var id = $('#' + idSelect).val();
-
-            $.ajax({
-                url: url ,
-                data: { id: id },
-                cache: false,
-                type: 'POST',
-                success: function (selectItems) {
-                    var options = '<option value=""></option>';
-                    selectItems.forEach(function (selectItem) {
-                        options += '<option value=' + selectItem.Value + '>' + selectItem.Text + '</option>';
-                    });
-                    if (selectItems.length > 0) {
+            var val = $('#' + idSelect).val();
+            if (val === "") {
+                var options = '<option value></option>';
+                $('#' + idSelectToFill).html(options);
+                fnCommon.materializeInit( 'select');
+                fnCommon.selectRequired();
+            } else {
+                $.ajax({
+                    url: url,
+                    data: { val: val },
+                    cache: false,
+                    type: 'POST',
+                    success: function (selectItems) {
+                        var options = '<option value></option>';
+                        selectItems.forEach(function (selectItem) {
+                            options += '<option value=' + selectItem.Value  + '>' + selectItem.Text + '</option>';
+                        });
                         $('#' + idSelectToFill).html(options);
-                        fnCommon.materializeInit('select', 'select');
+                        fnCommon.materializeInit( 'select');
                         fnCommon.selectRequired();
+                        if (callBack) {
+                            callBack();
+                        }
                     }
-                }
-            });
+                });
+            }
+        });
+    },
+    showProcess: function (show) {
+        if (show){
+            document.getElementById("loader").style.display = "flex";
+        } else {
+            document.getElementById("loader").style.display = "none";
+        }
+    },
+    autoAjax: function (url, response, params, fnData) {
+        $ = $ === undefined ? auto : $;
+        return $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",
+            data: params,
+            success: function (data) {
+                response($.map(data, function (item) {
+                    return fnData(item);
+                }));
+            }
         });
     }
 

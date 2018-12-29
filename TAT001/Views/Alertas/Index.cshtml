@@ -71,22 +71,39 @@
                         <tbody>
                             @foreach (var item in Model.alertas)
                             {
+                                string spras_id = ViewBag.spras_id;
                                 string mensaje = "";
                                 string condicion = "";
-                                Model.alertaMensajes.ForEach(x => {
-                                    if (x.WARNING_ID == item.ID && x.SPRAS_ID == @ViewBag.spras_id)
-                                    {
-                                        mensaje = x.TXT100;
+                                string tab = "";
+                                string campo = "";
+
+                                if (Model.alertaMensajes.Any(x => x.WARNING_ID==item.ID)) {
+                                    mensaje = Model.alertaMensajes.Where(x => x.WARNING_ID == item.ID).First().TXT100;
+                                }
+
+                                Model.alertaCondiciones.Where(x=>x.WARNING_ID==item.ID).ToList().ForEach(x =>
+                                {
+                                    string condTexto = x.CONDICION.DESCR;
+                                    if (x.CONDICION.CONDICIONTs.Any(y => y.SPRAS_ID == spras_id)) {
+                                        condTexto=x.CONDICION.CONDICIONTs.Where(y => y.SPRAS_ID == spras_id).First().TXT050;
                                     }
-                                });
-                                Model.alertaCondiciones.ForEach(x =>{
-                                    if (x.WARNING_ID == item.ID )
-                                    {
-                                        string condicionT = x.CONDICION.CONDICIONTs.Where(y => y.SPRAS_ID == @ViewBag.spras_id).First().TXT050;
-                                        string condicionValorT = Model.condValores.Any(y => y.Value == x.VALOR_COMP)?Model.condValores.Where(y => y.Value== x.VALOR_COMP).First().Text: x.VALOR_COMP;
-                                        condicion = condicion+ x.ANDOR + " " + condicionT + " "+ condicionValorT + " " + x.ORAND + " ";
+                                    string valComp= x.VALOR_COMP == "" ? "v" : x.VALOR_COMP;
+                                    string condValorTexto = x.VALOR_COMP;
+                                    if (Model.condValores.Any(y => y.Value == valComp)) {
+                                        condValorTexto=Model.condValores.Where(y => y.Value == valComp).First().Text;
                                     }
+                                    condicion = condicion + x.ANDOR + " " + condTexto + " " + condValorTexto + " " + x.ORAND + " ";
+
                                 });
+
+                                tab = Model.tabs.Where(x => x.Value == item.TAB_ID).First().Text;
+                                campo = item.CAMPO_ID;
+                                if (Model.tabCampos.Any(x => x.CAMPO_ID == item.CAMPO_ID))
+                                {
+                                    campo = Model.tabCampos.Where(x => x.CAMPO_ID == item.CAMPO_ID).First().TEXTOS;
+                                }
+
+
                                 <tr class="text-left">
                                     <td>
                                         @Html.DisplayFor(modelItem => item.ID)
@@ -101,10 +118,10 @@
                                         @Html.DisplayFor(modelItem => item.TSOL_ID)
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.TAB_ID)
+                                        @tab
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.CAMPO_ID)
+                                        @campo
                                     </td>
                                     <td>
                                         @mensaje
@@ -118,8 +135,20 @@
                                     <td>
                                         <a href="@Url.Action("Edit", "Alertas", new { warning_id=item.ID,  tab_id= item.TAB_ID })"><i class='material-icons green-text'>edit</i></a>
                                         <a style="cursor: pointer;" onclick="mostrarAlerta('@item.ID','@item.TIPO','@mensaje')"><i class='material-icons blue-text'>chat</i></a>
-                                        @if ((item.SOCIEDAD_ID != null && item.TSOL_ID != null) && !(item.ID== "concepto1"&& item.TAB_ID== "tab_info")) {
-                                        <a href="@Url.Action("Delete", "Alertas", new { warning_id = item.ID, tab_id = item.TAB_ID })"><i class='material-icons green-text'>delete</i></a>
+                                        @if ((item.SOCIEDAD_ID != null && item.TSOL_ID != null) && !(item.ID == "concepto1" && item.TAB_ID == "tab_info"))
+                                        {
+                                            <a class="modal-trigger" href="#modal_@item.ID" ><i class='material-icons red-text'>delete</i></a>
+                                            <a id="actionDelete_@item.ID" href="@Url.Action("Delete", "Alertas", new { warning_id = item.ID, tab_id = item.TAB_ID })"></a>
+                                            <!-- Modal Delete -->
+                                            <div id="modal_@item.ID" class="modal" style=" background-color: #fff; height: 200px; width: 450px;">
+                                                <div class="modal-content">
+                                                    <p style="font-size: 16px;" class="lbl_eliminar"></p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a class="modal-close waves-effect  btn-flat"><label class="lbl_eliminarNo"></label></a>
+                                                    <a onclick="eliminarAlerta('actionDelete_@item.ID')" class="modal-close waves-effect  btn-flat"><label class="lbl_eliminarSi"></label></a>
+                                                </div>
+                                            </div>
                                         }
                                     </td>
                                 </tr>                       
@@ -132,12 +161,17 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="~/Scripts/fnCommon.js"></script>
 <script>
 
     //---- Inicializador de componentes Materialize----
-    fnCommon.materializeInit('select', 'select');
+    fnCommon.materializeInit('select');
+    fnCommon.materializeInit( 'modal');
 
+    function eliminarAlerta(idLink) {
+        $('#' + idLink).get(0).click().click();
+    }
     function mostrarAlerta(warning_id, tipo, mensaje) {
         var dura = 1000000,
             color = 'yellow',
@@ -149,13 +183,12 @@
         }
         dismiss(classe)
             M.toast({
-                classes: classe,
-                displayLength: dura,
-                html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje
-                + '<button class="btn-small btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>'
-            });
-        
-    }
+            classes: classe,
+            displayLength: dura,
+            html: '<span style="padding-right:15px;"><i class="material-icons ' + color + '-text">' + icon + '</i></span>  ' + mensaje
+            + '<button class="btn-small btn-flat toast-action" onclick="dismiss(\'toast\')">Aceptar</button>'
+        });
+      }
     function dismiss(classe) {
         var toastElement = document.querySelectorAll('.' + classe);
         for (var i = 0; i < toastElement.length; i++) {
@@ -166,9 +199,9 @@
     //----- Configuracion de Tablas-----
     $(document).ready(function () {
         var root = "@Url.Content("~")",
-            spras_id = "@ViewBag.spras_id",
-            urlLanguage = root + "/Scripts/lang/" + spras_id + ".json";
+        spras_id = "@ViewBag.spras_id",
+        urlLanguage = root + "Scripts/lang/" + spras_id + ".json";
         fnCommon.configurarTable('tablePeriodo445', '50vh', '50vh', urlLanguage, 'cmbPagAlertas','gfilterAlertas');
-        });
+     });
 
 </script>

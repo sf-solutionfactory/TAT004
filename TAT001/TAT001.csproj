@@ -51,6 +51,9 @@
     <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.BulkInsert, Version=6.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.BulkInsert-ef6-ext.6.0.3.1\lib\net45\EntityFramework.BulkInsert.dll</HintPath>
     </Reference>
@@ -72,11 +75,20 @@
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="SimpleImpersonation, Version=2.0.1.27158, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleImpersonation.2.0.1\lib\net40-Client\SimpleImpersonation.dll</HintPath>
     </Reference>
@@ -201,21 +213,32 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\FnCommon.cs" />
+    <Compile Include="Common\FnCommonCarta.cs" />
+    <Compile Include="Common\Log.cs" />
+    <Compile Include="Common\TATConstantes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AyudaController.cs" />
     <Compile Include="Controllers\CartaDController.cs" />
     <Compile Include="Controllers\CartaVController.cs" />
     <Compile Include="Controllers\Catalogos\AlertasController.cs" />
     <Compile Include="Controllers\Catalogos\Calendario445Controller.cs" />
     <Compile Include="Controllers\Catalogos\CalendarioEx445Controller.cs" />
+    <Compile Include="Controllers\Catalogos\CANALController.cs" />
     <Compile Include="Controllers\Catalogos\ConsoporteController.cs" />
     <Compile Include="Controllers\Catalogos\CuentaController.cs" />
-    <Compile Include="Controllers\Catalogos\CuentasController.cs" />
+    <Compile Include="Controllers\Catalogos\DesviacionesTSController.cs" />
+    <Compile Include="Controllers\Catalogos\DocRelacionController.cs" />
     <Compile Include="Controllers\Catalogos\GALLController.cs" />
     <Compile Include="Controllers\Catalogos\IimpuestoController.cs" />
     <Compile Include="Controllers\Catalogos\ImpuestosController.cs" />
-    <Compile Include="Controllers\Catalogos\UsuariosController2.cs" />
+    <Compile Include="Controllers\Catalogos\MonedaController.cs" />
+    <Compile Include="Controllers\Catalogos\RegionController.cs" />
+    <Compile Include="Controllers\Catalogos\SociedadesController.cs" />
+    <Compile Include="Controllers\Catalogos\SoporteController.cs" />
+    <Compile Include="Controllers\Catalogos\TALLsController.cs" />
+    <Compile Include="Controllers\Catalogos\TextocvController.cs" />
     <Compile Include="Controllers\Configuracion\ccatController.cs" />
-    <Compile Include="Controllers\Catalogos\ClienteController.cs" />
     <Compile Include="Controllers\Catalogos\ClientesController.cs" />
     <Compile Include="Controllers\Catalogos\ContactoController.cs" />
     <Compile Include="Controllers\Catalogos\LeyendaController.cs" />
@@ -236,7 +259,8 @@
     <Compile Include="Controllers\FlujosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Catalogos\ImpuestoController.cs" />
-    <Compile Include="Controllers\ListasController2.cs" />
+    <Compile Include="Controllers\LAContabilizacionController.cs" />
+    <Compile Include="Controllers\LayoutCargaMasivaController.cs" />
     <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\MailsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -244,6 +268,7 @@
     <Compile Include="Controllers\Catalogos\PaginasController.cs" />
     <Compile Include="Controllers\Catalogos\PaisController.cs" />
     <Compile Include="Controllers\MasivaController.cs" />
+    <Compile Include="Controllers\ModificacionesGlobalesController.cs" />
     <Compile Include="Controllers\NegociacionesController.cs" />
     <Compile Include="Controllers\Configuracion\NegsController.cs" />
     <Compile Include="Controllers\PresupuestoController.cs" />
@@ -253,8 +278,6 @@
     <Compile Include="Controllers\RecurrenciasController.cs" />
     <Compile Include="Controllers\Reportes\ReportesController.cs" />
     <Compile Include="Controllers\SolicitudesController.cs" />
-    <Compile Include="Controllers\SolicitudesController3.cs" />
-    <Compile Include="Controllers\SolicitudesController2.cs" />
     <Compile Include="Controllers\Catalogos\TCambioController.cs" />
     <Compile Include="Controllers\Catalogos\TextosController.cs" />
     <Compile Include="Controllers\Catalogos\UsuariosController.cs" />
@@ -346,13 +369,50 @@
     <Compile Include="Entities\COUNTRy.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CPS_LISTA_CITIES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_CLIENTES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CPS_LISTA_CLI_PRO_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_CONTACTOS_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_DOCUMENTOP_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_DOC_MATERIALES_Result.cs" />
+    <Compile Include="Entities\CPS_LISTA_MATERIALES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_SOCIEDADES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_SOLICITUDES_POR_APROBAR_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_SOLICITUDES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_SPRAS_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_STATES_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CPS_LISTA_USUARIOS_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CREADOR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CREADOR2.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_BANNERSINCANAL_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CSP_CAMBIO_Result.cs">
@@ -364,7 +424,25 @@
     <Compile Include="Entities\CSP_CONSULTARPRESUPUESTO_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CSP_DOCUMENTOSRECCXSOL_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_DOCUMENTOSRELXSOL_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_DOCUMENTOSXCOCODE_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_DOCUMENTOSXUSER2_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CSP_DOCUMENTOSXUSER_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_DOCUMENTOSXUSER_test_Result.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\CSP_LISTA_TALL_CUENTA_Result.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\CSP_PERMISO_Result.cs">
@@ -419,6 +497,15 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DET_TAXEOC.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCTOAYUDA.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCTOCLASIF.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DOCTOCLASIFT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DOCUMENTBORR.cs">
@@ -478,6 +565,15 @@
     <Compile Include="Entities\DOCUMENTOV.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ESTATU.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ESTATUSR.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ESTATUST.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\FACTURASCONF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -496,10 +592,19 @@
     <Compile Include="Entities\GAUTORIZACION.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Grupo.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\GrupoCat.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\IIMPUESTO.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\IMPUESTO.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\LAYOUT_CARGA.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\LEYENDA.cs">
@@ -530,6 +635,12 @@
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NEGOCIACION.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <!--<<<<<<< HEAD
+    <Compile Include="Entities\NEGOCIACION2.cs" />
+=======-->
+    <Compile Include="Entities\NEGOCIACION2.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\NOTICIA.cs">
@@ -691,6 +802,15 @@
     <Compile Include="Entities\TSOLT.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TSOL_GROUP.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOL_GROUPT.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TSOL_TREE.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\TSOPORTE.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -730,6 +850,9 @@
     <Compile Include="Entities\USUARIOF.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\USUARIOLOG.cs">
+      <DependentUpon>TAT001.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\USUARIOSAP.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
@@ -766,27 +889,54 @@
     <Compile Include="Entities\ZCTGR.cs">
       <DependentUpon>TAT001.tt</DependentUpon>
     </Compile>
+    <Compile Include="Filters\LoginActiveFilter.cs" />
     <Compile Include="Models\AlertaViewModel.cs" />
+    <Compile Include="Models\ArchivoC.cs" />
+    <Compile Include="Models\ArchivoContable2.cs" />
     <Compile Include="Models\Calendario445ViewModel.cs" />
     <Compile Include="Models\CargaMasivaModels.cs" />
     <Compile Include="Models\CartaD.cs" />
     <Compile Include="Models\CartaDEsqueleto.cs" />
     <Compile Include="Models\CategoriaMaterial.cs" />
+    <Compile Include="Models\ClienteViewModel.cs" />
     <Compile Include="Models\Comentarios.cs" />
+    <Compile Include="Models\Dao\CamposDao.cs" />
+    <Compile Include="Models\Dao\CitiesDao.cs" />
+    <Compile Include="Models\Dao\ClientesDao.cs" />
+    <Compile Include="Models\Dao\ContactosDao.cs" />
+    <Compile Include="Models\Dao\MaterialesgptDao.cs" />
+    <Compile Include="Models\Dao\PeriodosDao.cs" />
+    <Compile Include="Models\Dao\SolicitudesDao.cs" />
+    <Compile Include="Models\Dao\SprasDao.cs" />
+    <Compile Include="Models\Dao\TabsDao.cs" />
+    <Compile Include="Models\Dao\TallsDao.cs" />
+    <Compile Include="Models\Dao\TiposSolicitudesDao.cs" />
+    <Compile Include="Models\Dao\UsuariosDao.cs" />
     <Compile Include="Models\dby.cs" />
+    <Compile Include="Models\DesviacionesTS.cs" />
     <Compile Include="Models\Documento.cs" />
     <Compile Include="Models\DOCUMENTOM_MOD.cs" />
     <Compile Include="Models\Delegados.cs" />
+    <Compile Include="Models\DOCUMENTOP_CAT.cs" />
+    <Compile Include="Models\DOCUMENTOP_SP.cs" />
     <Compile Include="Models\DOCUMENTO_MOD.cs" />
     <Compile Include="Models\HeaderFooterD.cs" />
+    <Compile Include="Models\LayoutCargaMasivaViewModels.cs" />
     <Compile Include="Models\listacuerpoc.cs" />
     <Compile Include="Models\Masiva\Distribucion.cs" />
     <Compile Include="Models\Masiva\Encabezado.cs" />
     <Compile Include="Models\Masiva\Multiple.cs" />
     <Compile Include="Models\Masiva\Relacionada.cs" />
+    <Compile Include="Models\Dao\MaterialesDao.cs" />
+    <Compile Include="Models\MaterialViewModel.cs" />
+    <Compile Include="Models\ModificacionesGlobalesViewModel.cs" />
+    <Compile Include="Models\ProveedorViewModel.cs" />
     <Compile Include="Models\ReportesModel.cs" />
+    <Compile Include="Models\SelectTreeItem.cs" />
+    <Compile Include="Models\Dao\SociedadesDao.cs" />
     <Compile Include="Models\SOLICITUD_MOD.cs" />
     <Compile Include="Models\Flujos.cs" />
+    <Compile Include="Models\SolxContabilizar.cs" />
     <Compile Include="Models\TALLT_MOD.cs" />
     <Compile Include="Models\Soporte.cs" />
     <Compile Include="Models\TSOLT_MODBD.cs" />
@@ -827,9 +977,7 @@
     <Compile Include="Models\Pass.cs" />
     <Compile Include="Models\PresupuestoModels.cs" />
     <Compile Include="Models\Usuario.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="MoreLinq\MoreEnumerable.DistinctBy.cs" />
     <!--<Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -837,7 +985,11 @@
     <Compile Include="obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />-->
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ProcesaFlujo3.cs" />
+    <Compile Include="Services\Cancelar.cs" />
+    <Compile Include="Services\Duplicado.cs" />
+    <Compile Include="Services\ExcelExport.cs" />
+    <Compile Include="Services\PorEnviar.cs" />
+    <Compile Include="Services\UsuarioLogin.cs" />
     <Compile Include="Services\Warning.cs" />
     <Compile Include="Services\Presupuesto.cs" />
     <Compile Include="Services\Estatus.cs" />
@@ -846,7 +998,6 @@
     <Compile Include="Services\Email.cs" />
     <Compile Include="Services\Files.cs" />
     <Compile Include="Services\FormatosC.cs" />
-    <Compile Include="Services\ProcesaFlujo2.cs" />
     <Compile Include="Services\ProcesaFlujo.cs" />
     <Compile Include="Services\Rangos.cs" />
     <Compile Include="Services\Reversa.cs" />
@@ -925,19 +1076,23 @@
     <Content Include="bin\TAT001.dll" />-->
     <!--<Content Include="bin\TAT001.pdb" />-->
     <!--<Content Include="bin\WebGrease.dll" />-->
+    <Content Include="Archivos\DoctosAyuda\readme.txt" />
+    <Content Include="Archivos\LayoutCargaMasiva\readme.txt" />
     <Content Include="Content\autocomplete.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTable.css" />
     <Content Include="Content\dataTables1.material.min.css" />
     <Content Include="Content\dataTables.material.min.css" />
+    <Content Include="Content\dropdowntree.css" />
     <Content Include="Content\formatos.css" />
     <Content Include="Content\g-materialize.css" />
     <Content Include="Content\material.min.css" />
-    <Content Include="Content\materialize.clockpicker.css" />
     <Content Include="Content\materialize.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\sideMenu.css" />
     <Content Include="Content\subfilters\jquery.tablesorter.pager.css" />
+    <Content Include="Archivos\readme.txt" />
     <Content Include="Entities\TAT001.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>TAT001.edmx</DependentUpon>
@@ -963,6 +1118,7 @@
     <Content Include="fonts\roboto\Roboto-Thin.woff" />
     <Content Include="fonts\roboto\Roboto-Thin.woff2" />
     <Content Include="images\6792532.jpg" />
+    <Content Include="images\auto_loading.gif" />
     <Content Include="images\expandl.png" />
     <Content Include="images\expandm.png" />
     <Content Include="images\flags\1x1\ad.png" />
@@ -971,6 +1127,7 @@
     <Content Include="images\flags\1x1\as.svg" />
     <Content Include="images\flags\1x1\at.png" />
     <Content Include="images\flags\1x1\be.png" />
+    <Content Include="images\flags\1x1\bo.png" />
     <Content Include="images\flags\1x1\br.png" />
     <Content Include="images\flags\1x1\bs.png" />
     <Content Include="images\flags\1x1\bz.png" />
@@ -999,6 +1156,7 @@
     <Content Include="images\flags\4x3\as.svg" />
     <Content Include="images\flags\4x3\at.png" />
     <Content Include="images\flags\4x3\be.png" />
+    <Content Include="images\flags\4x3\bo.png" />
     <Content Include="images\flags\4x3\br.png" />
     <Content Include="images\flags\4x3\bs.png" />
     <Content Include="images\flags\4x3\bz.png" />
@@ -1022,6 +1180,7 @@
     <Content Include="images\flags\4x3\sv.png" />
     <Content Include="images\flags\4x3\ve.png" />
     <Content Include="images\flags\4x3\ve.svg" />
+    <Content Include="images\flags\mini\mx.png" />
     <Content Include="images\parallax.jpg" />
     <Content Include="images\play.png" />
     <Content Include="images\playb.png" />
@@ -1300,14 +1459,17 @@
     <Content Include="obj\Release\TempPE\Entities.TAT001.cs.dll" />
     <Content Include="obj\Release\TempPE\Entities.TAT001.Designer.cs.dll" />-->
     <Content Include="images\Simple-wallpapers-HD-for-desktop.png" />
-    <Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
+    <!--<Content Include="PdfTemp\readme.txt" />-->
+    <!--<Content Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />-->
+    <Content Include="Scripts\CargaUsuarios.js" />
+    <Content Include="Scripts\CargaClientes.js" />
     <!--<Content Include="obj\Debug\TAT001.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\TAT001.dll" />
     <Content Include="obj\Debug\TAT001.pdb" />-->
-    <Content Include="Scripts\copiacreatesolicitud.js" />
-    <Content Include="PdfTemp\Doc06\06\2018.xlsx" />
-    <Content Include="PdfTemp\Doc29\05\2018.xlsx" />
-    <Content Include="PdfTemp\DocPr04\06\2018.xlsx" />
+    <Content Include="PdfTemp\Solicitudes_Consulta\Solicitudes_Consulta09\11\2018.xlsx" />
+    <Content Include="PdfTemp\Solicitudes_Consulta\Solicitudes_Consulta\09\11\2018.xlsx" />
+    <Content Include="PdfTemp\Solicitudes_Consulta\09\11\2018.xlsx" />
+    <Compile Include="Models\Dao\StatesDao.cs" />
     <EntityDeploy Include="Entities\TAT001.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TAT001.Designer.cs</LastGenOutput>
@@ -1315,43 +1477,458 @@
     <Content Include="Entities\TAT001.edmx.diagram">
       <DependentUpon>TAT001.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Consoporte\Create.cshtml" />
-    <Content Include="Views\Consoporte\Delete.cshtml" />
-    <Content Include="Views\Consoporte\Details.cshtml" />
-    <Content Include="Views\Consoporte\Edit.cshtml" />
-    <Content Include="Views\Consoporte\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\borrador.js" />
+    <Content Include="Content\Datatables\datatables.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.bootstrap.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.dataTables.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.foundation.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.foundation.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.jqueryui.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.semanticui.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\css\autoFill.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.bootstrap.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.foundation.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.foundation.min.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.jqueryui.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.semanticui.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\autoFill.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\dataTables.autoFill.js" />
+    <Content Include="Scripts\DataTables\AutoFill-2.3.2\js\dataTables.autoFill.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.bootstrap.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.foundation.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.foundation.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.jqueryui.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.semanticui.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\dataTables.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\jquery.dataTables.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\css\jquery.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\images\sort_asc.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\images\sort_asc_disabled.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\images\sort_both.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\images\sort_desc.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\images\sort_desc_disabled.png" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.bootstrap.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.foundation.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.foundation.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.jqueryui.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.semanticui.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\dataTables.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\jquery.dataTables.js" />
+    <Content Include="Scripts\DataTables\DataTables-1.10.18\js\jquery.dataTables.min.js" />
+    <Content Include="Scripts\DataTables\datatables.css" />
+    <Content Include="Scripts\DataTables\datatables.js" />
+    <Content Include="Scripts\DataTables\datatables.min.css" />
+    <Content Include="Scripts\DataTables\datatables.min.js" />
+    <Content Include="Scripts\DataTables\dataTables.rowGroup.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.bootstrap.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.dataTables.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.foundation.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.foundation.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.jqueryui.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.semanticui.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\css\editor.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\dataTables.editor.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\dataTables.editor.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.bootstrap.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.foundation.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.foundation.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.jqueryui.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.semanticui.js" />
+    <Content Include="Scripts\DataTables\Editor-2019-01-02-1.8.1\js\editor.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.bootstrap.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.dataTables.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.foundation.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.foundation.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.jqueryui.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.semanticui.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\css\fixedColumns.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\dataTables.fixedColumns.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\dataTables.fixedColumns.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.bootstrap.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.dataTables.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.foundation.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.foundation.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.jqueryui.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.semanicui.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.semanticui.js" />
+    <Content Include="Scripts\DataTables\FixedColumns-3.2.5\js\fixedColumns.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.bootstrap.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.dataTables.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.foundation.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.foundation.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.jqueryui.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.semanticui.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\css\fixedHeader.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\dataTables.fixedHeader.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\dataTables.fixedHeader.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.bootstrap.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.dataTables.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.foundation.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.foundation.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.jqueryui.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.semanicui.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.semanticui.js" />
+    <Content Include="Scripts\DataTables\FixedHeader-3.1.4\js\fixedHeader.semanticui.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.bootstrap.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.bootstrap.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.bootstrap4.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.bootstrap4.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.dataTables.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.dataTables.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.foundation.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.foundation.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.jqueryui.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.jqueryui.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.semanticui.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\css\select.semanticui.min.css" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\dataTables.select.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\dataTables.select.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.bootstrap.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.bootstrap.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.bootstrap4.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.bootstrap4.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.dataTables.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.foundation.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.foundation.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.jqueryui.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.jqueryui.min.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.semanticui.js" />
+    <Content Include="Scripts\DataTables\Select-1.2.6\js\select.semanticui.min.js" />
+    <Content Include="Scripts\dropdowntree.js" />
     <Content Include="Scripts\fnCommon.js" />
+    <Content Include="Scripts\jquery.mask.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\listas.js" />
     <Content Include="Scripts\Masiva\create.js" />
-    <Content Include="Scripts\materialize.clockpicker.js" />
+    <Content Include="Scripts\Masiva\formatosMasiva.js" />
+    <Content Include="Scripts\Masiva\validaTabs.js" />
+    <Content Include="Scripts\Masiva\warningm.js" />
+    <Content Include="Scripts\messagesCat.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\rangos.js" />
+    <Content Include="Scripts\Solicitudes\comun.js" />
     <Content Include="Scripts\subfilters\jquery.tablesorter.js" />
     <Content Include="Scripts\subfilters\jquery.tablesorter.pager.js" />
     <Content Include="Scripts\subfilters\script.js" />
     <Content Include="Scripts\subfilters\widget-filter.js" />
     <Content Include="Scripts\tablesort\tableToExcel.js" />
     <Content Include="Scripts\warning.js" />
-    <Content Include="Scripts\analisis.js" />
     <Content Include="Scripts\autocomplete1.11.4.js" />
     <Content Include="Scripts\CargaPresupuesto.js" />
     <Content Include="Scripts\ConsultarPresupuesto.js" />
     <Content Include="Scripts\cartaV.js" />
-    <Content Include="Scripts\correos.js" />
     <Content Include="Scripts\create.js" />
-    <Content Include="Scripts\create2.js" />
-    <Content Include="Scripts\edit - antes.js" />
     <Content Include="Scripts\edit.js" />
     <Content Include="Scripts\createa.js" />
     <Content Include="Scripts\dataTables.fixedColumns.min.js" />
     <Content Include="Scripts\dataTables.material.min.js" />
     <Content Include="files\masiva.xlsx" />
+    <!--<Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.csdl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.msl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.ssdl" />
+    <Content Include="obj\Debug\TAT001.csproj.CopyComplete" />
+    <Content Include="obj\Debug\TAT001.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\bin\roslyn\VBCSCompiler.exe.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Entities\TAT001.edmx.diagram" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Bold.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Bold.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Light.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Light.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Medium.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Medium.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Regular.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Regular.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Thin.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\fonts\roboto\Roboto-Thin.woff2" />-->
+    <!--<Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
+    <Content Include="bin\TAT001.dll.config" />-->
+    <!--<Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.csdl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.msl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.ssdl" />
+    <Content Include="obj\Debug\TAT001.csproj.CopyComplete" />
+    <Content Include="obj\Debug\TAT001.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\TAT001.csprojAssemblyReference.cache" />-->
+    <!--<Content Include="PdfTemp\Doc06\06\2018.xlsx" />
+    <Content Include="PdfTemp\Doc29\05\2018.xlsx" />
+    <Content Include="PdfTemp\DocPr04\06\2018.xlsx" />
+    <Content Include="PdfTemp\20180913_200852.pdf" />-->
+    <!--<Content Include="obj\Release\AspnetCompileMerge\Source\Scripts\jquery-3.0.0.min.map" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\Login.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\Register.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ResetPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\SendCode.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\VerifyCode.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\CartaV\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\CartaV\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\CartaV\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Flujos\Procesa.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Home\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Home\Pais.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\Ciudades.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\Clientes.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\Det_Aprob.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\Estados.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\Grupos.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Listas\UsuariosPuesto.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Mails\Enviar.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Mails\Solicitud.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Mails\Solicitudes.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\ChangePassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\ManageLogins.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\SetPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Paginas\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Paginas\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Paginas\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Paginas\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Paginas\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Presupuesto\Carga.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Presupuesto\Descargar.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Presupuesto\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Provision\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Puestos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Puestos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Puestos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Puestos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Puestos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\Error.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\Lockout.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\_Layout.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\_LayoutMail.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\CreateNew.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\DetailsF.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Solicitudes\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Textos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Textos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Textos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Textos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Textos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\AgregarRol.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Usuarios\Pass.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Warnings\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Warnings\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Warnings\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Warnings\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Warnings\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Web.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Workflows\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Workflows\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Workflows\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Workflows\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\Workflows\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Views\_ViewStart.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\Source\Web.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\bin\App_global.asax.compiled" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\bin\roslyn\VBCSCompiler.exe.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Entities\TAT001.edmx.diagram" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Bold.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Bold.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Light.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Light.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Medium.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Medium.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Regular.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Regular.woff2" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Thin.woff" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\fonts\roboto\Roboto-Thin.woff2" />
+    <None Include="obj\Release\AspnetCompileMerge\TempBuildDir\packages.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\PrecompiledApp.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Scripts\jquery-3.0.0.min.map" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\Login.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\Register.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ResetPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\SendCode.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\VerifyCode.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\CartaV\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\CartaV\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\CartaV\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Flujos\Procesa.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Home\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Home\Pais.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\Ciudades.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\Clientes.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\Det_Aprob.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\Estados.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\Grupos.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Listas\UsuariosPuesto.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Mails\Enviar.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Mails\Solicitud.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Mails\Solicitudes.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\ChangePassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\ManageLogins.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\SetPassword.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Paginas\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Paginas\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Paginas\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Paginas\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Paginas\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Presupuesto\Carga.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Presupuesto\Descargar.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Presupuesto\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Provision\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Puestos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Puestos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Puestos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Puestos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Puestos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\Error.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\Lockout.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\_Layout.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\_LayoutMail.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\CreateNew.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\DetailsF.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Solicitudes\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Textos\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Textos\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Textos\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Textos\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Textos\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\AgregarRol.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Usuarios\Pass.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Warnings\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Warnings\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Warnings\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Warnings\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Warnings\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Web.config" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Workflows\Create.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Workflows\Delete.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Workflows\Details.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Workflows\Edit.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\Workflows\Index.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Views\_ViewStart.cshtml" />
+    <Content Include="obj\Release\AspnetCompileMerge\TempBuildDir\Web.config" />
+    <Content Include="obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Release\edmxResourcesToEmbed\Entities\TAT001.csdl" />
+    <Content Include="obj\Release\edmxResourcesToEmbed\Entities\TAT001.msl" />
+    <Content Include="obj\Release\edmxResourcesToEmbed\Entities\TAT001.ssdl" />
+    <Content Include="obj\Release\TAT001.csproj.CopyComplete" />
+    <Content Include="obj\Release\TAT001.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.csdl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.msl" />
+    <Content Include="obj\Debug\edmxResourcesToEmbed\Entities\TAT001.ssdl" />
+    <Content Include="obj\Debug\TAT001.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\TAT001.csprojAssemblyReference.cache" />-->
     <Content Include="Content\LAYOUT CARGA MASIVA.xlsx" />
+    <!--<Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\TAT001.csproj.CopyComplete" />-->
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Properties\PublishProfiles\SERVER.pubxml" />
@@ -1383,6 +1960,9 @@
     <Content Include="Scripts\ValidarProv.js" />
     <Content Include="Scripts\ValidarTCambio.js" />
     <Content Include="Views\Mails\logo_kellogg.png" />
+    <Content Include="Views\LayoutCargaMasiva\Details.cshtml" />
+    <Content Include="Views\LayoutCargaMasiva\Edit.cshtml" />
+    <Content Include="Views\ModificacionesGlobales\ListModSolicitudes.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1420,10 +2000,8 @@
     <Content Include="Views\Mails\Solicitudes.cshtml" />
     <Content Include="Views\Listas\Estados.cshtml" />
     <Content Include="Views\Listas\Ciudades.cshtml" />
-    <Content Include="Views\Solicitudes\CreateNew.cshtml" />
     <Content Include="Views\CartaV\Details.cshtml" />
     <Content Include="Views\CartaV\Index.cshtml" />
-    <Content Include="Views\CartaV\Create1.cshtml" />
     <Content Include="Views\Solicitudes\DetailsF.cshtml" />
     <Content Include="Views\Puestos\Create.cshtml" />
     <Content Include="Views\Puestos\Delete.cshtml" />
@@ -1433,11 +2011,7 @@
     <Content Include="Views\Presupuesto\Descargar.cshtml" />
     <Content Include="Views\Listas\Det_Aprob.cshtml" />
     <Content Include="Views\Listas\UsuariosPuesto.cshtml" />
-    <Content Include="Views\Usuarios\AgregarRol.cshtml" />
     <Content Include="Views\Listas\Grupos.cshtml" />
-    <Content Include="Views\Cliente\Details.cshtml" />
-    <Content Include="Views\Cliente\Edit.cshtml" />
-    <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Contacto\Create.cshtml" />
     <Content Include="Views\Contacto\Details.cshtml" />
     <Content Include="Views\Contacto\Edit.cshtml" />
@@ -1464,13 +2038,9 @@
     <Content Include="Views\Det_Aprobs\Details.cshtml" />
     <Content Include="Views\Det_Aprobs\Edit.cshtml" />
     <Content Include="Views\Det_Aprobs\Index.cshtml" />
-    <Content Include="Views\Clientes\Create.cshtml" />
-    <Content Include="Views\Clientes\Delete.cshtml" />
     <Content Include="Views\Clientes\Details.cshtml" />
     <Content Include="Views\Clientes\Edit.cshtml" />
     <Content Include="Views\Clientes\Index.cshtml" />
-    <Content Include="Views\Materiales\Create.cshtml" />
-    <Content Include="Views\Materiales\Delete.cshtml" />
     <Content Include="Views\Materiales\Details.cshtml" />
     <Content Include="Views\Materiales\Edit.cshtml" />
     <Content Include="Views\Materiales\Index.cshtml" />
@@ -1502,8 +2072,6 @@
     <Content Include="Views\Leyenda\Details.cshtml" />
     <Content Include="Views\Leyenda\Edit.cshtml" />
     <Content Include="Views\Proveedor\Index.cshtml" />
-    <Content Include="Views\Proveedor\Create.cshtml" />
-    <Content Include="Views\Proveedor\Delete.cshtml" />
     <Content Include="Views\Proveedor\Details.cshtml" />
     <Content Include="Views\Proveedor\Edit.cshtml" />
     <Content Include="Views\TSOL\Details.cshtml" />
@@ -1526,9 +2094,7 @@
     <Content Include="Views\ccat\Delete.cshtml" />
     <Content Include="Views\ccat\Details.cshtml" />
     <Content Include="Views\ccat\Edit.cshtml" />
-    <Content Include="Views\CartaV\Create2.cshtml" />
     <Content Include="Views\CartaV\Create.cshtml" />
-    <Content Include="Views\Solicitudes\Create3.cshtml" />
     <Content Include="Views\Listas\getPeriodo.cshtml" />
     <Content Include="Views\Correos\Index.cshtml" />
     <Content Include="Views\Correos\Details.cshtml" />
@@ -1558,7 +2124,6 @@
     <Content Include="Views\Taxeop\Delete.cshtml" />
     <Content Include="Views\Taxeop\Details.cshtml" />
     <Content Include="Views\Taxeop\Edit.cshtml" />
-    <Content Include="Views\Usuarios\Details1.cshtml" />
     <Content Include="Views\Negs\Index.cshtml" />
     <Content Include="Views\Negs\Create.cshtml" />
     <Content Include="Views\Negs\Delete.cshtml" />
@@ -1566,8 +2131,6 @@
     <Content Include="Views\Negs\Edit.cshtml" />
     <Content Include="Views\Flujos\Carga.cshtml" />
     <Content Include="Views\CartaD\Create.cshtml" />
-    <Content Include="Views\CartaD\Create1.cshtml" />
-    <Content Include="Views\CartaD\Create2.cshtml" />
     <Content Include="Views\CartaD\Details.cshtml" />
     <Content Include="Views\CartaD\Index.cshtml" />
     <Content Include="Views\CartaV\_PartialMatTr.cshtml" />
@@ -1581,7 +2144,6 @@
     <Content Include="Views\NOTICIAs\Delete.cshtml" />
     <Content Include="Views\NOTICIAs\Details.cshtml" />
     <Content Include="Views\NOTICIAs\Edit.cshtml" />
-    <Content Include="Views\Solicitudes\Create2.cshtml" />
     <Content Include="Views\Recurrencias\Cancelar.cshtml" />
     <Content Include="Views\Solicitudes\Create.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
@@ -1603,31 +2165,122 @@
     <Content Include="Views\Alertas\Create.cshtml" />
     <Content Include="Views\Reportes\ReporteTrackingTS.cshtml" />
     <Content Include="Views\Alertas\Edit.cshtml" />
-    <Content Include="Views\Reportes\ReporteConcentrado.cshtml" />
-    <Content Include="Views\Reportes\ReporteMRLTS.cshtml" />
-    <Content Include="Views\Error\Error.cshtml" />
-    <Content Include="Views\Error\NotFound.cshtml" />
-    <Content Include="Views\Cuentas\Create.cshtml" />
-    <Content Include="Views\Cuentas\Delete.cshtml" />
-    <Content Include="Views\Cuentas\Details.cshtml" />
-    <Content Include="Views\Cuentas\Edit.cshtml" />
-    <Content Include="Views\Cuentas\Index.cshtml" />
+    <Content Include="Views\Sociedades\Details.cshtml" />
+    <Content Include="Views\Sociedades\Edit.cshtml" />
+    <Content Include="Views\Sociedades\Index.cshtml" />
+    <Content Include="Views\Consoporte\Create.cshtml" />
+    <Content Include="Views\Consoporte\Details.cshtml" />
+    <Content Include="Views\Consoporte\Edit.cshtml" />
+    <Content Include="Views\Consoporte\Index.cshtml" />
     <Content Include="Views\Cuenta\Create.cshtml" />
     <Content Include="Views\Cuenta\Delete.cshtml" />
     <Content Include="Views\Cuenta\Details.cshtml" />
     <Content Include="Views\Cuenta\Edit.cshtml" />
     <Content Include="Views\Cuenta\Index.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Reportes\ReporteConcentrado.cshtml" />
+    <Content Include="Views\Reportes\ReporteMRLTS.cshtml" />
+    <Content Include="Views\Recurrencias\Ejecutar.cshtml" />
+    <Content Include="Views\TALLs\Index.cshtml" />
+    <Content Include="Views\TALLs\Create.cshtml" />
+    <Content Include="Views\TALLs\Delete.cshtml" />
+    <Content Include="Views\TALLs\Details.cshtml" />
+    <Content Include="Views\TALLs\Edit.cshtml" />
+    <Content Include="Views\Reportes\ReporteAllowancesB.cshtml" />
+    <Content Include="Views\Reportes\ReporteAllowancesPL.cshtml" />
+    <Content Include="Views\Clientes\List.cshtml" />
+    <Content Include="Views\DesviacionesTS\Create.cshtml" />
+    <Content Include="Views\DesviacionesTS\Details.cshtml" />
+    <Content Include="Views\DesviacionesTS\Edit.cshtml" />
+    <Content Include="Views\DesviacionesTS\Index.cshtml" />
+    <Content Include="Views\DocRelacion\Create.cshtml" />
+    <Content Include="Views\DocRelacion\Details.cshtml" />
+    <Content Include="Views\DocRelacion\Edit.cshtml" />
+    <Content Include="Views\DocRelacion\Index.cshtml" />
+    <Content Include="Views\Soporte\Create.cshtml" />
+    <Content Include="Views\Soporte\Details.cshtml" />
+    <Content Include="Views\Soporte\Edit.cshtml" />
+    <Content Include="Views\Soporte\Index.cshtml" />
+    <Content Include="Views\Usuarios\AddBackup.cshtml" />
+    <Content Include="Views\Usuarios\EditBackup.cshtml" />
+    <Content Include="Views\Materiales\List.cshtml" />
+    <Content Include="Views\TSOL\Create.cshtml" />
+    <Content Include="Views\Moneda\Create.cshtml" />
+    <Content Include="Views\Moneda\Delete.cshtml" />
+    <Content Include="Views\Moneda\Details.cshtml" />
+    <Content Include="Views\Moneda\Edit.cshtml" />
+    <Content Include="Views\Moneda\Index.cshtml" />
+    <Content Include="Views\Proveedor\List.cshtml" />
+    <Content Include="Views\Clientes\CargaList.cshtml" />
+    <Content Include="Views\Textocv\Create.cshtml" />
+    <Content Include="Views\Textocv\Delete.cshtml" />
+    <Content Include="Views\Textocv\Details.cshtml" />
+    <Content Include="Views\Textocv\Edit.cshtml" />
+    <Content Include="Views\Textocv\Index.cshtml" />
+    <Content Include="Views\Txc\CreateA.cshtml" />
+    <Content Include="Views\Txn\CreateA.cshtml" />
+    <Content Include="Views\CANAL\Create.cshtml" />
+    <Content Include="Views\CANAL\Delete.cshtml" />
+    <Content Include="Views\CANAL\Details.cshtml" />
+    <Content Include="Views\CANAL\Edit.cshtml" />
+    <Content Include="Views\CANAL\Index.cshtml" />
+    <Content Include="Views\Solicitudes\_CreateTabInfo.cshtml" />
+    <Content Include="Views\Solicitudes\_CreateTabSop.cshtml" />
+    <Content Include="Views\Solicitudes\_CreateTabDis.cshtml" />
+    <Content Include="Views\Solicitudes\_CreateTabRec.cshtml" />
+    <Content Include="Views\Solicitudes\_CreateTabFin.cshtml" />
+    <Content Include="Views\Solicitudes\_DetailsTabInfo.cshtml" />
+    <Content Include="Views\Solicitudes\_DetailsTabDis.cshtml" />
+    <Content Include="Views\Solicitudes\_DetailsTabRec.cshtml" />
+    <Content Include="Views\Solicitudes\_DetailsTabFin.cshtml" />
+    <Content Include="Views\Solicitudes\_DetailsTabSop.cshtml" />
+    <Content Include="Views\Clientes\VerFlujo.cshtml" />
+    <Content Include="Views\Account\ValidateLoginView.cshtml" />
+    <Content Include="Views\Ayuda\Create.cshtml" />
+    <Content Include="Views\Ayuda\Delete.cshtml" />
+    <Content Include="Views\Ayuda\Details.cshtml" />
+    <Content Include="Views\Ayuda\Edit.cshtml" />
+    <Content Include="Views\Ayuda\Index.cshtml" />
+    <Content Include="Views\Ayuda\Consulta.cshtml" />
+    <Content Include="Views\LayoutCargaMasiva\Create.cshtml" />
+    <Content Include="Views\LayoutCargaMasiva\Index.cshtml" />
+    <Content Include="Views\Calendario445\List.cshtml" />
+    <Content Include="Views\Calendario445\ListEx.cshtml" />
+    <Content Include="Views\Region\Create.cshtml" />
+    <Content Include="Views\Region\Delete.cshtml" />
+    <Content Include="Views\Region\Details.cshtml" />
+    <Content Include="Views\Region\Edit.cshtml" />
+    <Content Include="Views\Region\Index.cshtml" />
+    <Content Include="Views\ModificacionesGlobales\Index.cshtml" />
+    <Content Include="Views\ModificacionesGlobales\ListModAutorizador.cshtml" />
+    <Content Include="Views\Solicitudes\_EditTabDis.cshtml" />
+    <Content Include="Views\Solicitudes\_EditTabFin.cshtml" />
+    <Content Include="Views\Solicitudes\_EditTabInfo.cshtml" />
+    <Content Include="Views\Solicitudes\_EditTabRec.cshtml" />
+    <Content Include="Views\Solicitudes\_EditTabSop.cshtml" />
+    <Content Include="Views\Sociedades\Flujos.cshtml" />
+    <Content Include="Views\Sociedades\MAFlujos.cshtml" />
+    <Content Include="Views\Sociedades\EditF.cshtml" />
+    <Content Include="Views\Sociedades\CreateF.cshtml" />
+    <Content Include="Views\Sociedades\CreateFA.cshtml" />
+    <Content Include="Views\LAContabilizacion\Index.cshtml" />
+    <Content Include="Views\Correos\Cancelacion.cshtml" />
+    <Content Include="Views\Correos\Taxeo.cshtml" />
+    <Content Include="Views\Correos\Backup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <!--<Folder Include="obj\Debug\TempPE\" />-->
     <Folder Include="App_Data\" />
-    <Folder Include="obj\Release\AspnetCompileMerge\Source\" />
+    <Folder Include="files\Ayuda\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\materialize.min.js" />
     <Content Include="Views\Home\Pais.cshtml" />
@@ -1637,7 +2290,6 @@
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Warnings\Create.cshtml" />
-    <Content Include="Views\Warnings\Delete.cshtml" />
     <Content Include="Views\Warnings\Details.cshtml" />
     <Content Include="Views\Warnings\Edit.cshtml" />
     <Content Include="Views\Warnings\Index.cshtml" />
@@ -1669,7 +2321,6 @@
     <Content Include="Views\Flujos\Index.cshtml" />
     <Content Include="Views\Flujos\Procesa.cshtml" />
     <Content Include="Views\Usuarios\Create.cshtml" />
-    <Content Include="Views\Usuarios\Delete.cshtml" />
     <Content Include="Views\Usuarios\Details.cshtml" />
     <Content Include="Views\Usuarios\Edit.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
@@ -1682,6 +2333,35 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>9</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

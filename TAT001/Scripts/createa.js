@@ -1,4 +1,4 @@
-﻿
+﻿var materialesExist=false;
 $('body').on('keydown.autocomplete', '.input_material', function () {
     var tr = $(this).closest('tr'); //Obtener el row
     var vk = '0152';
@@ -12,15 +12,17 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
         source: function (request, response) {
             auto.ajax({
                 type: "POST",
-                //url: 'materiales',//Anterior
-                url: '../Listas/materiales',
+                url: root+'Listas/materiales',
                 dataType: "json",
                 data: { "Prefix": request.term, vkorg: vk, vtweg: vt, spras: sp },
                 success: function (data) {
+                    materialesExist = (data.length > 0);
                     response(auto.map(data, function (item) {
-                        //return { label: item.ID + " - " + item.MAKTX, value: item.ID };
                         return { label: trimStart('0', item.ID) + " - " + item.MAKTX, value: trimStart('0', item.ID) };//RSG 07.06.2018
                     }))
+                },
+                complete: function () {
+                    
                 }
             })
         },
@@ -77,20 +79,22 @@ function selectMaterial(val, desc, tr) {
     var index = getIndex();
     var cat = getCategoria(val);    
     desc = $.trim(desc);
-    if (index == -2) {
+    if (val!==""){ tr.find('td').eq((5 + index)).removeClass("errorMaterial");}
+    if (index === -2) {
         unica1 = false;
         if (cat.UNICA)
         {
+            tr.removeClass("nounica");
             tr.addClass("unica");
-            M.toast({ html: cat.TXT50 + ' Advertencia este material es único' });
-            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.DESCRIPCION);
             //Descripción
             tr.find("td:eq(" + (7 + index) + ")").text(desc);
         }
         if (!cat.UNICA)
         {
+            tr.removeClass("unica");
             tr.addClass("nounica");
-            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.DESCRIPCION);
             //Descripción
             tr.find("td:eq(" + (7 + index) + ")").text(desc);
         }
@@ -102,14 +106,14 @@ function selectMaterial(val, desc, tr) {
     //Categoría
     var cat = getCategoria(val);
 
-    tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+    tr.find("td:eq(" + (6 + index) + ")").text(cat.DESCRIPCION);
     //Descripción
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
 
     //Remove background a celda de material
     //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
     if (matExist) {
-        M.toast({ html: 'Ya hay un material con ese mismo identificador' });
+        //M.toast({ html: 'Ya hay un material con ese mismo identificador' });
         tr.find('td').eq((5 + index)).addClass("errorMaterial");
     } else {
         tr.find('td').eq((5 + index)).removeClass("errorMaterial");
@@ -118,6 +122,10 @@ function selectMaterial(val, desc, tr) {
 }
 
 $('body').on('keydown.autocomplete', '.input_proveedor', function () {
+    var kunnr=document.getElementById('payer_id').value;
+    if (!kunnr) {
+        return;
+    }
     var tr = $(this).closest('tr'); //Obtener el row
     auto(this).autocomplete({
         source: function (request, response) {
@@ -125,7 +133,7 @@ $('body').on('keydown.autocomplete', '.input_proveedor', function () {
                 type: "POST",
                 url: 'proveedores',
                 dataType: "json",
-                data: { "Prefix": request.term },
+                data: { "Prefix": request.term, kunnr: kunnr },
                 success: function (data) {
                     response(auto.map(data, function (item) {
                         return { label: item.ID + " - " + item.NOMBRE, value: item.ID };

@@ -14,6 +14,7 @@
             var _dsPAp = $("#dsPAp-" + i).text().replace('%', '');
             var _dsVE = $("#dsVE-" + i).text();
             var _dsVR = $("#dsVR-" + i).text();
+            var _dsRes = $("#dsRes-" + i).text();
 
             //Separo enteros[0] y decimales[1]
             var _dsMnA = _dsMn.split('.');
@@ -24,6 +25,7 @@
             var _dsPapA = _dsPAp.split('.');
             var _dsVEA = _dsVE.split('.');
             var _dsVRA = _dsVR.split('.');
+            var _dsResA = _dsRes.split('.');
 
             //La siguiente linea agrega la coma(,) o el(.) cada que sea unidad de millar
             var _millesdsMn = _dsMnA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -34,6 +36,7 @@
             var _millesdsPap = _dsPapA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             var _millesdsVE = _dsVEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             var _millesdsVR = _dsVRA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var _millesdsRes = _dsResA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
             //junto la cantidad separada por millar junto con su parte decimal
             var dsMn = _millesdsMn + "." + _dsMnA[1];
@@ -44,6 +47,7 @@
             var dsPAp = _millesdsPap + "." + _dsPapA[1];
             var dsVE = _millesdsVE + "." + _dsVEA[1];
             var dsVR = _millesdsVR + "." + _dsVRA[1];
+            var dsRes = _millesdsRes + "." + _dsResA[1];
 
             //compruebo si es un valor negativo
             if (dsMn.indexOf("-") >= 0) {
@@ -94,6 +98,12 @@
                 _dsARx += ")";
                 dsVR = _dsARx;
             }
+            if (dsRes.indexOf("-") >= 0) {
+                var _dsARx = dsRes;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsRes = _dsARx;
+            }
 
             //Reasignamos los valores
             $("#dsMn-" + i).text("$" + dsMn);
@@ -104,6 +114,7 @@
             $("#dsPAp-" + i).text(dsPAp + "%");
             $("#dsVE-" + i).text(dsVE);
             $("#dsVR-" + i).text(dsVR);
+            $("#dsRes-" + i).text("$" +dsRes);
         }
         else if (_decimales === ',') {
             //Recuperamos los valores con jquery
@@ -115,6 +126,7 @@
             var _dsPAp = $("#dsPAp-" + i).text().replace('%', '');
             var _dsVE = $("#dsVE-" + i).text();
             var _dsVR = $("#dsVR-" + i).text();
+            var _dsRes = $("#dsRes-" + i).text();
 
             //Separo enteros[0] y decimales[1]
             var _dsMnA = _dsMn.split('.');
@@ -125,6 +137,7 @@
             var _dsPapA = _dsPAp.split('.');
             var _dsVEA = _dsVE.split('.');
             var _dsVRA = _dsVR.split('.');
+            var _dsResA = _dsRes.split('.');
 
             //La siguiente linea agrega la coma(,) o el(.) cada que sea unidad de millar
             var _millesdsMn = _dsMnA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -135,6 +148,7 @@
             var _millesdsPap = _dsPapA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             var _millesdsVE = _dsVEA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             var _millesdsVR = _dsVRA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            var _millesdsRes = _dsResA[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
             //junto la cantidad separada por millar junto con su parte decimal
             var dsMn = _millesdsMn + "," + _dsMnA[1];
@@ -145,6 +159,7 @@
             var dsPAp = _millesdsPap + "," + _dsPapA[1];
             var dsVE = _millesdsVE + "," + _dsVEA[1];
             var dsVR = _millesdsVR + "," + _dsVRA[1];
+            var dsRes = _millesdsRes + "," + _dsResA[1];
 
             //compruebo si es un valor negativo           
             //--
@@ -196,6 +211,12 @@
                 _dsARx += ")";
                 dsVR = _dsARx;
             }
+            if (dsRes.indexOf("-") >= 0) {
+                var _dsARx = dsRes;
+                _dsARx = _dsARx.replace('-', '(');
+                _dsARx += ")";
+                dsRes = _dsARx;
+            }
 
             //Reasignamos los valores
             $("#dsMn-" + i).text("$" + dsMn);
@@ -206,6 +227,7 @@
             $("#dsPAp-" + i).text(dsPAp + "%");
             $("#dsVE-" + i).text(dsVE);
             $("#dsVR-" + i).text(dsVR);
+            $("#dsRes-" + i).text("$" +dsRes);
         }
     }
     //LEJ 12.07.2018------------------------------
@@ -628,25 +650,7 @@
         }
     });
 
-    //LEJ 12.07.2018----------------------------------------
-    //Para cuando clicke el checkbox
-    $("input[type=checkbox]").on("click", function (e) {
-        //recupero los datos de lo que clickeo
-        var x = e.target;
-        if (!x.classList.contains("trade"))
-            if (x.checked === true) {
-                revisarChecked(x.id);
-            }
-    });
-
-    function revisarChecked(id) {
-        //deshabilito los checbox, para que solo este 1 checked true
-        $("input[type=checkbox]").each(function () {
-            if ($(this).attr('id') !== id) {
-                $(this).prop('checked', false);
-            }
-        });
-    }
+    
 
     //LEJ 17.07.2018--------------------------------------
     //Saco los nodos span para modificarlos
@@ -728,43 +732,4 @@
         }
     }
 
-    //LEJ 13.07.2018-----------------------------------------------------
-    $('.btnEnviar').on("click", function (e) {
-        //var _xfile = document.getElementById("file_carta").files.length;
-        var msg = "";
-        var ban = 0;
-        if (document.getElementById("file_carta").files.length > 0) {
-            var inputs = $(".cpC").find($("input[type=checkbox]"));
-            if (ligada()) {
-                ban++;
-                //var _pTb = _xid.split('b');
-                //var tt = $("#Tt-" + _pTb[1]).text();
-                //var arrTt = tt.split('-');
-                //$("#pos").val(tt[0]);
-                $('#btn_guardar').click();
-            } else {
-                $(".cpC :input[type=checkbox]").each(function () {
-                    var _xid = $(this).attr('id');
-                    var checkedTrue = $('#' + _xid + ':checked').length > 0;
-                    if (checkedTrue) {
-                        ban++;
-                        var _pTb = _xid.split('b');
-                        var tt = $("#Tt-" + _pTb[1]).text();
-                        var arrTt = tt.split('-');
-                        $("#pos").val(tt[0]);
-                        $('#btn_guardar').click();
-                    }
-                });
-            }
-            if (ban == 0) {
-                msg = "Seleccionar una Distribucion";
-                M.toast({ html: msg })
-                document.getElementById("loader").style.display = "none"; //LEJ 13.07.2018
-            }
-        } else {
-            msg = "Favor de subir archivo";
-            M.toast({ html: msg })
-            document.getElementById("loader").style.display = "none"; //LEJ 13.07.2018
-        }
-    });
 });

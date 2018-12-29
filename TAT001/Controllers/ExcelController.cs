@@ -15,10 +15,12 @@ using TAT001.Models;
 using TAT001.Services;
 using TAT001.Controllers;
 using ClosedXML.Excel;
+using TAT001.Filters;
 
 namespace TAT001.Controllers
 {
     [Authorize]
+    [LoginActive]
     public class ExcelController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
@@ -935,7 +937,7 @@ namespace TAT001.Controllers
                     updateRango(doc.TSOL_ID, doc.NUM_DOC);
                     guardaArchivos(N_DOC);//ALMACENAMOS LOS ARCHIVOS DE SOPORTE
                     li.Add(doc.NUM_DOC.ToString());
-                    ProcesaFlujo2 pf = new ProcesaFlujo2();
+                    ProcesaFlujo pf = new ProcesaFlujo();
 
                     try
                     {
@@ -960,7 +962,7 @@ namespace TAT001.Controllers
                                 string image = Server.MapPath("~/images/logo_kellogg.png");
                                 Email em = new Email();
                                 string UrlDirectory = Request.Url.GetLeftPart(UriPartial.Path);
-                                em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
+                                //em.enviaMailC(f.NUM_DOC, true, Session["spras"].ToString(), UrlDirectory, "Index", image);
                             }
                         }
                     }
@@ -1111,7 +1113,6 @@ namespace TAT001.Controllers
         {
             List<HttpPostedFileBase> archiArr = new List<HttpPostedFileBase>();
             List<DOCUMENTOA> docupA = new List<DOCUMENTOA>();
-            SolicitudesController3 sc = new SolicitudesController3();
             int numFiles = 0;
 
             //REVISAR SI HAY ARCHIVOS POR SUBIR

@@ -18,6 +18,7 @@ namespace TAT001.Models
         public string PERIODO { get; set; }
         public string ESTATUS { get; set; }
         public string ESTATUS_CLASS { get; set; }
+        public string ESTATUS_WF { get; set; }
         public string PAYER_ID { get; set; }
         public string CLIENTE { get; set; }
         public string CANAL { get; set; }
@@ -40,5 +41,10 @@ namespace TAT001.Models
         public string NUM_CLIENTE { get; set; }
         public string NUM_IMPORTE { get; set; }
         public string NUM_CUENTA { get; set; }
+        public decimal? CUENTAP { get; set; }
+        public decimal? CUENTAPL { get; set; }
+        public decimal? CUENTACL { get; set; }
+        public string TIPO_RECURRENTE { get; set; }
+        public decimal? DOCUMENTO_REF { get; set; }
     }
 }

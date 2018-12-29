@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TAT001.Common;
 using TAT001.Entities;
+using TAT001.Filters;
 using TAT001.Models;
 
 namespace TAT001.Controllers.Catalogos
 {
+    [Authorize]
+    [LoginActive]
     public class ContactoController : Controller
     {
         // GET: Contacto
@@ -17,15 +21,7 @@ namespace TAT001.Controllers.Catalogos
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
+                FnCommon.ObtenerConfPage(db,pagina,u, this.ControllerContext.Controller);
                 try
                 {
                     string p = Session["pais"].ToString();
@@ -35,32 +31,36 @@ namespace TAT001.Controllers.Catalogos
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
 
                 if (vko != null && vtw != null && kun != null && spa != null)
                 {
                     var con = db.CONTACTOCs
                             .Where(x => x.VKORG == vko && x.VTWEG == vtw && x.KUNNR == kun && x.SPART == spa && x.ACTIVO == true).ToList();
-
-                    Contactoc conCli = new Contactoc();
-                    conCli.vkorg = vko;
-                    conCli.vtweg = vtw;
-                    conCli.kunnr = kun;
-                    conCli.spart = spa;
-                    conCli.tabContacto = con;
-
+                    CLIENTE cli = db.CLIENTEs.Find(vko, vtw, spa, kun);
+                    Contactoc conCli = new Contactoc
+                    {
+                        vkorg = vko,
+                        vtweg = vtw,
+                        kunnr = kun,
+                        spart = spa,
+                        tabContacto = con
+                    };
+                    ViewBag.Cliente = cli.NAME1;
+                    ViewBag.NoCliente = cli.KUNNR;
                     return View(conCli);
                 }
                 else
                 {
                     var con = db.CONTACTOCs.Where(x => x.ACTIVO == true).ToList();
 
-                    Contactoc conCli = new Contactoc();
-                    conCli.vkorg = vko;
-                    conCli.vtweg = vtw;
-                    conCli.kunnr = kun;
-                    conCli.spart = spa;
-                    conCli.tabContacto = con;
+                    Contactoc conCli = new Contactoc
+                    {
+                        vkorg = vko,
+                        vtweg = vtw,
+                        kunnr = kun,
+                        spart = spa,
+                        tabContacto = con
+                    };
 
                     return View(conCli);
                 }
@@ -74,15 +74,7 @@ namespace TAT001.Controllers.Catalogos
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
+                FnCommon.ObtenerConfPage(db, pagina, u, this.ControllerContext.Controller);
                 try
                 {
                     string p = Session["pais"].ToString();
@@ -92,17 +84,18 @@ namespace TAT001.Controllers.Catalogos
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
 
                 var con = db.CONTACTOCs
                             .Where(x => x.VKORG == vko && x.VTWEG == vtw && x.KUNNR == kun && x.SPART == spa && x.ACTIVO == true).ToList();
 
-                Contactoc conCli = new Contactoc();
-                conCli.kunnr = kun;
-                conCli.vkorg = vko;
-                conCli.vtweg = vtw;
-                conCli.spart = spa;
-                conCli.tabContacto = con; ;
+                Contactoc conCli = new Contactoc
+                {
+                    kunnr = kun,
+                    vkorg = vko,
+                    vtweg = vtw,
+                    spart = spa,
+                    tabContacto = con
+                };
 
                 return View(conCli);
             }
@@ -114,15 +107,7 @@ namespace TAT001.Controllers.Catalogos
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
+                FnCommon.ObtenerConfPage(db, pagina, u, this.ControllerContext.Controller);
                 try
                 {
                     string p = Session["pais"].ToString();
@@ -132,55 +117,41 @@ namespace TAT001.Controllers.Catalogos
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
 
                 var cli = db.CONTACTOCs
                           .Where(x => x.VKORG == vko && x.VTWEG == vtw && x.KUNNR == kun && x.SPART == spa && x.ID == id)
                           .First();
 
-                Contactoc cl = new Contactoc();
-                cl.vkorg = cli.VKORG;
-                cl.vtweg = cli.VTWEG;
-                cl.kunnr = cli.KUNNR;
-                cl.spart = cli.SPART;
-                cl.id = cli.ID.ToString();
-                cl.nombre = cli.NOMBRE;
-                cl.telefono = cli.PHONE;
-                cl.correo = cli.EMAIL;
-                cl.defecto = Convert.ToBoolean(cli.DEFECTO);
+                Contactoc cl = new Contactoc
+                {
+                    vkorg = cli.VKORG,
+                    vtweg = cli.VTWEG,
+                    kunnr = cli.KUNNR,
+                    spart = cli.SPART,
+                    id = cli.ID.ToString(),
+                    nombre = cli.NOMBRE,
+                    telefono = cli.PHONE,
+                    correo = cli.EMAIL,
+                    defecto = Convert.ToBoolean(cli.DEFECTO),
+                    carta = Convert.ToBoolean(cli.CARTA)
+                };
+                CLIENTE cliente = db.CLIENTEs.Find(vko, vtw, spa, kun);
+                ViewBag.Cliente = cliente.NAME1;
+                ViewBag.NoCliente = cliente.KUNNR;
                 return View(cl);
             }
         }
 
-        //// GET: Contacto/Create
-        //public ActionResult Create(string vko, string vtw, string kun, string spa)
-        //{
-        //    Contactoc conCli = new Contactoc();
-        //    conCli.kunnr = kun;
-        //    conCli.vkorg = vko;
-        //    conCli.vtweg = vtw;
-        //    conCli.spart = spa;
-
-        //    return View(conCli);
-        //}
-
+      
         // POST: Contacto/Create
         [HttpGet]
         public ActionResult Create(string vko, string vtw, string kun, string spa)
         {
-            int pagina = 642; //ID EN BASE DE DATOS
+            int pagina = 643; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
+                FnCommon.ObtenerConfPage(db, pagina, u, this.ControllerContext.Controller);
                 try
                 {
                     string p = Session["pais"].ToString();
@@ -190,14 +161,17 @@ namespace TAT001.Controllers.Catalogos
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
 
-                Contactoc conC = new Contactoc();
-                conC.vkorg = vko;
-                conC.vtweg = vtw;
-                conC.kunnr = kun;
-                conC.spart = spa;
-
+                Contactoc conC = new Contactoc
+                {
+                    vkorg = vko,
+                    vtweg = vtw,
+                    kunnr = kun,
+                    spart = spa
+                };
+                CLIENTE cliente = db.CLIENTEs.Find(vko, vtw, spa, kun);
+                ViewBag.Cliente = cliente.NAME1;
+                ViewBag.NoCliente = cliente.KUNNR;
                 return View(conC);
             }
         }
@@ -207,10 +181,8 @@ namespace TAT001.Controllers.Catalogos
         {
             using (TAT001Entities db = new TAT001Entities())
             {
-                string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
 
-                if (conC.defecto == true)
+                if (conC.defecto)
                 {
                     var conAct = db.CONTACTOCs
                                    .Where(x => x.VKORG == vko && x.VTWEG == vtw && x.KUNNR == kun && x.SPART == spa && x.DEFECTO == true).ToList();
@@ -223,13 +195,13 @@ namespace TAT001.Controllers.Catalogos
                     db.SaveChanges();
 
                     var con = db.CONTACTOCs
-                            .Add(new CONTACTOC { NOMBRE = conC.nombre, PHONE = conC.telefono, EMAIL = conC.correo, VKORG = vko, VTWEG = vtw, KUNNR = kun, SPART = spa, ACTIVO = true, DEFECTO = conC.defecto });
+                            .Add(new CONTACTOC { NOMBRE = conC.nombre, PHONE = conC.telefono, EMAIL = conC.correo, VKORG = vko, VTWEG = vtw, KUNNR = kun, SPART = spa, ACTIVO = true, DEFECTO = conC.defecto, CARTA = conC.carta });
                     db.SaveChanges();
                 }
                 else
                 {
                     var con = db.CONTACTOCs
-                            .Add(new CONTACTOC { NOMBRE = conC.nombre, PHONE = conC.telefono, EMAIL = conC.correo, VKORG = vko, VTWEG = vtw, KUNNR = kun, SPART = spa, ACTIVO = true, DEFECTO = conC.defecto });
+                            .Add(new CONTACTOC { NOMBRE = conC.nombre, PHONE = conC.telefono, EMAIL = conC.correo, VKORG = vko, VTWEG = vtw, KUNNR = kun, SPART = spa, ACTIVO = true, DEFECTO = conC.defecto, CARTA = conC.carta });
                     db.SaveChanges();
                 }
                 return RedirectToAction("Index", new { vko = vko, vtw = vtw, kun = kun, spa = spa });
@@ -239,19 +211,11 @@ namespace TAT001.Controllers.Catalogos
         // GET: Contacto/Edit/5
         public ActionResult Edit(string vko, string vtw, string kun, string spa, int id)
         {
-            int pagina = 642; //ID EN BASE DE DATOS
+            int pagina = 644; //ID EN BASE DE DATOS
             using (TAT001Entities db = new TAT001Entities())
             {
                 string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
-                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
-                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery;;
-                ViewBag.rol = user.MIEMBROS.FirstOrDefault().ROL.NOMBRE;
-                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
-                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
-
+                FnCommon.ObtenerConfPage(db, pagina, u, this.ControllerContext.Controller);
                 try
                 {
                     string p = Session["pais"].ToString();
@@ -261,22 +225,27 @@ namespace TAT001.Controllers.Catalogos
                 {
                     //return RedirectToAction("Pais", "Home");
                 }
-                Session["spras"] = user.SPRAS_ID;
 
                 var con = db.CONTACTOCs
                           .Where(x => x.VKORG == vko && x.VTWEG == vtw && x.KUNNR == kun && x.SPART == spa && x.ID == id)
                           .First();
 
-                Contactoc co = new Contactoc();
-                co.vkorg = con.VKORG;
-                co.vtweg = con.VTWEG;
-                co.kunnr = con.KUNNR;
-                co.spart = con.SPART;
-                co.id = con.ID.ToString();
-                co.nombre = con.NOMBRE;
-                co.telefono = con.PHONE;
-                co.correo = con.EMAIL;
-                co.defecto = Convert.ToBoolean(con.DEFECTO);
+                Contactoc co = new Contactoc
+                {
+                    vkorg = con.VKORG,
+                    vtweg = con.VTWEG,
+                    kunnr = con.KUNNR,
+                    spart = con.SPART,
+                    id = con.ID.ToString(),
+                    nombre = con.NOMBRE,
+                    telefono = con.PHONE,
+                    correo = con.EMAIL,
+                    defecto = Convert.ToBoolean(con.DEFECTO),
+                    carta = Convert.ToBoolean(con.CARTA)
+                };
+                CLIENTE cli = db.CLIENTEs.Find(vko, vtw, spa, kun);
+                ViewBag.Cliente = cli.NAME1;
+                ViewBag.NoCliente = cli.KUNNR;
                 return View(co);
             }
         }
@@ -289,11 +258,9 @@ namespace TAT001.Controllers.Catalogos
             {
                 try
                 {
-                    string u = User.Identity.Name;
-                    var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
                     var idCli = db.CONTACTOCs.Where(x => x.ID == id).First();
 
-                    if (co.defecto == true)
+                    if (co.defecto )
                     {
                         var conAct = db.CONTACTOCs
                                        .Where(x => x.VKORG == idCli.VKORG && x.VTWEG == idCli.VTWEG && x.KUNNR == idCli.KUNNR && x.SPART == idCli.SPART && x.DEFECTO == true).ToList();
@@ -310,6 +277,7 @@ namespace TAT001.Controllers.Catalogos
                         con.PHONE = co.telefono;
                         con.EMAIL = co.correo;
                         con.DEFECTO = co.defecto;
+                        con.CARTA = co.carta; 
                         db.SaveChanges();
                     }
                     else
@@ -325,7 +293,10 @@ namespace TAT001.Controllers.Catalogos
                 }
                 catch
                 {
-                    return View("Edit");
+                    int pagina = 644; //ID EN BASE DE DATOS
+                    string u = User.Identity.Name;
+                    FnCommon.ObtenerConfPage(db, pagina, u, this.ControllerContext.Controller);
+                    return View(co);
                 }
             }
         }
@@ -335,29 +306,10 @@ namespace TAT001.Controllers.Catalogos
         {
             using (TAT001Entities db = new TAT001Entities())
             {
-                string u = User.Identity.Name;
-                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
-
                 var con = db.CONTACTOCs.Where(x => x.ID == id).First();
                 con.ACTIVO = false;
                 db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-        }
-
-        // POST: Contacto/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                return RedirectToAction("Index", new { vko = con.VKORG, vtw = con.VTWEG, kun = con.KUNNR, spa = con.SPART });
             }
         }
     }

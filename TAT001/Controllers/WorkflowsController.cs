@@ -7,10 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
+using TAT001.Filters;
 
 namespace TAT001.Controllers
 {
     [Authorize]
+    [LoginActive]
     public class WorkflowsController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
@@ -43,7 +45,7 @@ namespace TAT001.Controllers
                 }
                 Session["spras"] = user.SPRAS_ID;
             }
-            return View(db.WORKFHs.ToList());
+            return View(db.WORKFHs.Where(x=>x.ESTATUS == true).ToList());
         }
 
         // GET: Workflows/Details/5

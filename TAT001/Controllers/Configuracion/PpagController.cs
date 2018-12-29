@@ -7,9 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using TAT001.Entities;
+using TAT001.Filters;
 
 namespace TAT001.Controllers.Configuracion
     {
+    [Authorize]
+    [LoginActive]
     public class PpagController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
@@ -129,7 +132,7 @@ namespace TAT001.Controllers.Configuracion
                 ViewBag.IDI = id;
             }
             List<PERMISO_PAGINA> pp = db.PERMISO_PAGINA.Where(x => x.ROL_ID == id).ToList();
-            List<PAGINA> pi = db.PAGINAs.ToList();
+            List<PAGINA> pi = db.PAGINAs.Where(t=>t.ACTIVO).ToList();
             List<PAGINA> lst = new List<PAGINA>();
             for (int y = 0; y < pi.Count; y++)
             {
@@ -139,9 +142,10 @@ namespace TAT001.Controllers.Configuracion
                     lst.Add(pi[y]);
                 }
             }
-            ViewBag.PAGINA_ID = new SelectList(lst, "ID", "ID");
-            ViewBag.ROL_ID = new SelectList(db.PUESTOes, "ID", "ID");
-            return View();
+            ViewBag.PAGINA_ID = new SelectList(lst, "ID", "URL");
+            PERMISO_PAGINA perpag = new PERMISO_PAGINA { ROL_ID = id };
+            //ViewBag.ROL_ID = new SelectList(db.PUESTOes, "ID", "ID");
+            return View(perpag);
         }
 
         // POST: Ppag/Create

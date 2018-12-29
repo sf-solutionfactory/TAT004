@@ -1,61 +1,69 @@
 ﻿@model TAT001.Entities.CUENTA
-
 @{
     ViewBag.pagina_r = 692;
     ViewBag.carpeta_r = 500;
     //ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script type="text/javascript" src="~/Scripts/jquery.validate.min.js"></script>
+<link href="~/Content/autocomplete.css" rel="stylesheet" />
+<script src="~/Scripts/autocomplete1.11.4.js"></script>
 
-@using (Html.BeginForm())
+
+@using (Html.BeginForm("Edit", "Cuenta", FormMethod.Post, new { @id = "cuentasForm" }))
 {
+    string abono = Model.ABONO.ToString();
+    string cargo = Model.CARGO.ToString();
+    string clearing = Model.CLEARING.ToString();
     @Html.AntiForgeryToken()
-    <div class="row">
+                <div class="row">
         <div class="row right">
             <div class="col l12 m12 right">
-                <input type="submit" value="Editar" class="btn btn-default" />
+                <button type="submit" id="btn_guardar" value="Agregar" class="btn btn-default" />
             </div>
         </div>
     </div>
+    @Html.HiddenFor(model => model.SOCIEDAD_ID)
+    @Html.HiddenFor(model => model.PAIS_ID)
+    @Html.HiddenFor(model => model.TALL_ID)
+    @Html.HiddenFor(model => model.EJERCICIO)
+    <div class="card-panel">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="form-group col m6" style="margin-bottom:0;">
+                    @Html.LabelFor(model => model.SOCIEDAD_ID, "Co. Code", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_sociedad" })
+                    @Html.EditorFor(model => model.SOCIEDAD_ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-    <div class="row" style="height:10px;width:100%;">
-        <div class="col l7 pink darken-1" style="height:10px;padding:0;"></div>
-        <div class="col l3 pink darken-4" style="height:10px;padding:0;">
-            <div class="col l3 pink darken-4" style="height:10px;padding:0;"></div>
-            <div class="col l8 orange" style="height:10px;padding:0;"></div>
-            <div class="col l1 red" style="height:10px;padding:0;"></div>
-        </div>
-        <div class="col l2 yellow" style="height:10px;padding:0;"></div>
-    </div>
-    <br />
-
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.SOCIEDAD_ID)
-        @Html.HiddenFor(model => model.PAIS_ID)
-        @Html.HiddenFor(model => model.TALL_ID)
-        @Html.HiddenFor(model => model.EJERCICIO)
-
-        <div class="row">
-            <div class="col s6 m6 l6 col offset-s3 offset-m3 offset-l3">
-                <div class="input-field col l10 m10" style="margin-bottom:0;">
-                    @Html.EditorFor(model => model.ABONO, new { htmlAttributes = new { @class = "form-control", @onblur = "ponerCeros(this)", @maxlength = 10, onKeyPress = "return soloNumeros(event)" } })
+                </div>
+                <div class="form-group col m4" style="margin-bottom:0;">
+                    @Html.LabelFor(model => model.PAIS_ID, "PAIS_ID", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_pais" })
+                    @Html.EditorFor(model => model.PAIS_ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col m6" style="margin-bottom:0;">
+                    @Html.LabelFor(model => model.TALL_ID, "TALL_ID", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_gal" })
+                    @Html.EditorFor(model => model.TALL_ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+                <div class="form-group col m4" style="margin-bottom:0;">
+                    @Html.LabelFor(model => model.EJERCICIO, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_ejercicio" })
+                    @Html.DropDownList("EJERCICIO", new SelectList(Enumerable.Range(DateTime.Now.Year, 10).ToList()), htmlAttributes: new { @class = "form-control", @id = "sel-ano", disabled = true })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col m4" style="margin-bottom:0;">
                     @Html.LabelFor(model => model.ABONO, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_abono" })
+                    @Html.EditorFor(model => model.ABONO, new { htmlAttributes = new { @class = "form-control", @required = "", @maxlength = 50, @Value= abono } })
                 </div>
 
-                <div class="input-field col l10 m10" style="margin-bottom:0;">
-                    @Html.EditorFor(model => model.CARGO, new { htmlAttributes = new { @class = "form-control", @onblur = "ponerCeros(this)", @maxlength = 10, onKeyPress = "return soloNumeros(event)" } })
+                <div class="form-group col m4" style="margin-bottom:0;">
                     @Html.LabelFor(model => model.CARGO, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_cargo" })
+                    @Html.EditorFor(model => model.CARGO, new { htmlAttributes = new { @class = "form-control", @required = "", @maxlength = 50, @Value=cargo } })
                 </div>
 
-                <div class="input-field col l10 m10" style="margin-bottom:0;">
-                    @Html.EditorFor(model => model.CLEARING, new { htmlAttributes = new { @class = "form-control", @onblur = "ponerCeros(this)", @maxlength = 10, onKeyPress = "return soloNumeros(event)" } })
+                <div class="form-group col m4" style="margin-bottom:0;">
                     @Html.LabelFor(model => model.CLEARING, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_cargofv" })
-                </div>
-
-                <div class="input-field col l10 m10" style="margin-bottom:0;">
-                    @Html.EditorFor(model => model.LIMITE, new { htmlAttributes = new { @class = "form-control", @onblur = "ponerCeros(this)", @maxlength = 10, onKeyPress = "return soloNumeros(event)" } })
-                    @Html.LabelFor(model => model.LIMITE, htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_limite" })
+                    @Html.EditorFor(model => model.CLEARING, new { htmlAttributes = new { @class = "form-control",  @maxlength = 50, @Value = clearing } })
                 </div>
             </div>
         </div>
@@ -63,7 +71,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar", "Index", new { }, new { id = "lblRegresar" })
 </div>
 
 <script type="text/javascript">
@@ -71,12 +79,84 @@
         while (num.value.length < 10)
             num.value = '0' + num.value;
     }
+    var elem = document.querySelectorAll('select');
+    var instance = M.FormSelect.init(elem, []);
+    $("input[type='hidden']").each(function (index, element) {
+        $(this).appendTo($(element).parent());
+    });
 </script>
 
 <script type="text/javascript">
     function soloNumeros(e) {
         var key = window.Event ? e.which : e.keyCode
-        return (key >= 46 && key <= 57)
+        return (key >= 48 && key <= 57)
     }
 </script>
+<script type="text/javascript" src="~/Scripts/fnCommon.js"></script>
+<script>
+    var root = "@Url.Content("~")";
 
+    fnCommon.formValidation('cuentasForm');
+
+    var auto = $.noConflict(true);
+    auto(document).ready(function () {
+        auto("#ABONO").autocomplete({
+            source: function (request, response) {
+                fnCommon.autoAjax(root + "Listas/cuentas", response, { Prefix: request.term }, function (item) { return { label: item.TXT50, value: item.ID }; });
+            },
+            messages: {
+                noResults: '',
+                results: function (resultsCount) { }
+            },
+            select: function (event, ui) {
+                var label = ui.item.label;
+                var value = ui.item.value;
+            },
+            change: function (e, ui) {
+                if (!(ui.item)) {
+                    e.target.value = "";
+                }
+            }
+        });
+    })
+    auto(document).ready(function () {
+        auto("#CARGO").autocomplete({
+            source: function (request, response) {
+                fnCommon.autoAjax(root + "Listas/cuentas", response, { Prefix: request.term }, function (item) { return { label: item.TXT50, value: item.ID }; });
+            },
+            messages: {
+                noResults: '',
+                results: function (resultsCount) { }
+            },
+            select: function (event, ui) {
+                var label = ui.item.label;
+                var value = ui.item.value;
+            },
+            change: function (e, ui) {
+                if (!(ui.item)) {
+                    e.target.value = "";
+                }
+            }
+        });
+    })
+    auto(document).ready(function () {
+        auto("#CLEARING").autocomplete({
+            source: function (request, response) {
+                fnCommon.autoAjax(root + "Listas/cuentas", response, { Prefix: request.term }, function (item) { return { label: item.TXT50, value: item.ID }; });
+            },
+            messages: {
+                noResults: '',
+                results: function (resultsCount) { }
+            },
+            select: function (event, ui) {
+                var label = ui.item.label;
+                var value = ui.item.value;
+            },
+            change: function (e, ui) {
+                if (!(ui.item)) {
+                    e.target.value = "";
+                }
+            }
+        });
+    })
+</script>

@@ -6,7 +6,6 @@
             addRowRan(table, listaRangos[i].POS, listaRangos[i].LIN, listaRangos[i].OBJ1, listaRangos[i].OBJ2, listaRangos[i].PORC);
         }
     }
-    //alert(pos);
 }
 
 
@@ -104,7 +103,7 @@ function cambiaRango(e, tipo, pos, lin, val) {
         for (var j = 0; j < listaRangos.length; j++) {
             if (listaRangos[j].POS == pos & listaRangos[j].LIN == lin) {
                 if (tipo == "o1") {
-                    listaRangos[j].OBJ1 = toNum(val);
+                    listaRangos[j].OBJ1 = parseFloat(toNum(val));
                 }
             }
         }
@@ -140,7 +139,7 @@ function enviaRan(borrador) { //B20180625 MGC 2018.07.03
     var tipo = document.getElementById("select_neg").value;
     var tipoR = document.getElementById("txt_trec").value;
 
-    if (lengthT > 0) {
+    if (lengthT > 1) {
         var indext = 0;
         jsonObjDocs = [];
         var j = 1;
@@ -209,4 +208,84 @@ function delRango() {
     });
 
     t.rows('.selected').remove().draw(false);
+}
+
+
+function updateObjQ() {
+    $(".objqT").remove();
+    var lengthT = $("table#table_rec tbody tr[role='row']").length;
+    if (lengthT > 0) {
+        var total = 0;
+        var porc = 0;
+        var fecha = "";
+        var tsol = "";
+        $("#table_rec > tbody  > tr[role='row']").each(function () {
+            //total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+            //porc = toNum($(this).find("td.PORCENTAJE").text());
+            fecha = ($(this).find("td.FECHA").text());
+            tsol = $(this).find("td.TSOL").text();
+
+
+            var pos = $(this).find("td.POS").text().split("/")[0];
+            if (pos != "1") {
+                var tr = "";
+                tr += "<tr class='objqT'>"
+                tr += "<td>Q " + pos + "</td>"
+                tr += "<td>" + tsol + "</td>";
+                tr += "<td>" + fecha + "</td>";
+                total = 0;
+                for (var i = 0; i < listaRangos.length; i++) {
+                    var poss = listaRangos[i].LIN;
+                    if (poss == 1 & pos == listaRangos[i].POS)
+                        total += parseFloat(toNum(listaRangos[i].OBJ1));
+                }
+                tr += "<td>" + toShow(total) + "</td>";
+                tr += "<td>" + toShowPorc($('#objPORC').val()) + "</td>";
+                tr += "</tr>"
+                $("#table_objQ tbody").append(tr);
+            } else {
+                total = 0;
+                for (var i = 0; i < listaRangos.length; i++) {
+                    var poss = listaRangos[i].LIN;
+                    if (poss == 1 & pos == listaRangos[i].POS)
+                        total += parseFloat(toNum(listaRangos[i].OBJ1));
+                }
+                document.getElementById("obqTSOL").innerText = tsol;
+                document.getElementById("obqFECHA").innerText = fecha;
+                document.getElementById("obqMONTO").innerText = toShow(total);
+            }
+        });
+    }
+    $("#table_objQ").DataTable();
+}
+
+
+function copiarTableVistaRan() {
+
+    var lengthT = $("table#table_ranh tbody tr").length;
+    var tipo = document.getElementById("select_neg").value;
+    listaRangos = [];
+
+    if (lengthT > 0) {
+        //Obtener los valores de la tabla para agregarlos a la tabla de la vista en información
+        //Se tiene que jugar con los index porque las columnas (ocultas) en vista son diferentes a las del plugin
+        //$('#check_recurrente').trigger('change');
+        var rowsn = 0;
+
+        var tsol = "";
+        var sol = $("#TSOL_ID").val();
+
+        var i = 1;
+        $('#table_ranh > tbody  > tr').each(function () {
+            var pos = parseInt($(this).find("td:eq(1) input").val().trim());
+            var lin = parseInt($(this).find("td:eq(2) input").val().trim());
+            var porc = parseFloat($(this).find("td:eq(4) input").val().trim());
+            var obj = parseFloat($(this).find("td:eq(3) input").val().trim());
+            
+            var o = { POS: pos, LIN: lin, PERIODO: 0, OBJ1: obj, OBJ2: 0, PORC: porc };
+            listaRangos.push(o);
+            $(this).remove();
+        });
+    }
+
 }

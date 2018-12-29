@@ -11,16 +11,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TAT001.Entities;
+using TAT001.Filters;
 using TAT001.Models;
 using TAT001.Services;
 
 namespace TAT001.Controllers
 {
     [Authorize]
+    [LoginActive]
     public class RecurrenciasController : Controller
     {
         private TAT001Entities db = new TAT001Entities();
+        private UsuarioLogin usuValidateLogin = new UsuarioLogin();
 
         #region anterior
         [AllowAnonymous]
@@ -556,8 +560,8 @@ namespace TAT001.Controllers
             //////----------------------------RSG 18.05.2018
 
             ////return View(d);
-            Recurrente rec = new Recurrente();
-            rec.creaRecurrente(id_d, tsol);
+            ////Recurrente rec = new Recurrente();
+            ////rec.creaRecurrente(id_d, tsol);
             return RedirectToAction("Index", "Solicitudes");
         }
 
@@ -637,7 +641,8 @@ namespace TAT001.Controllers
                     dOCUMENTO.TIPO_TECNICO = select_neg;
 
                     //Obtener el número de documento
-                    decimal N_DOC = getSolID(dOCUMENTO.TSOL_ID);
+                    Rangos ran = new Rangos();
+                    decimal N_DOC = ran.getSolID(dOCUMENTO.TSOL_ID);
                     dOCUMENTO.NUM_DOC = N_DOC;
 
 
@@ -704,7 +709,8 @@ namespace TAT001.Controllers
                     dOCUMENTO.MONTO_DOC_MD = Convert.ToDecimal(MONTO_DOC_MD);
 
                     //Obtener el monto de la sociedad
-                    dOCUMENTO.MONTO_DOC_ML = getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
+                    TCambio tc = new TCambio();
+                    dOCUMENTO.MONTO_DOC_ML = tc.getValSoc(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, Convert.ToDecimal(dOCUMENTO.MONTO_DOC_MD), out errorString);
                     if (!errorString.Equals(""))
                     {
                         throw new Exception();
@@ -721,10 +727,10 @@ namespace TAT001.Controllers
                     dOCUMENTO.MONEDAL2_ID = "USD";
 
                     //Tipo cambio de la moneda de la sociedad TIPO_CAMBIOL
-                    dOCUMENTO.TIPO_CAMBIOL = getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL = tc.getUkurs(id_bukrs.WAERS, dOCUMENTO.MONEDA_ID, out errorString);
 
                     //Tipo cambio dolares TIPO_CAMBIOL2
-                    dOCUMENTO.TIPO_CAMBIOL2 = getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
+                    dOCUMENTO.TIPO_CAMBIOL2 = tc.getUkursUSD(dOCUMENTO.MONEDA_ID, "USD", out errorString);
                     if (!errorString.Equals(""))
                     {
                         throw new Exception();
@@ -742,7 +748,7 @@ namespace TAT001.Controllers
                     db.SaveChanges();
 
                     //Actualizar el rango
-                    updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
+                    ran.updateRango(dOCUMENTO.TSOL_ID, dOCUMENTO.NUM_DOC);
 
                     //RSG 28.05.2018----------------------------------------------
                     drecc.DOC_REF = dOCUMENTO.NUM_DOC;
@@ -1174,7 +1180,7 @@ namespace TAT001.Controllers
                         //Guardar número de documento creado
                         Session["ERROR_FILES"] = errorMessage;
                     }
-                    ProcesaFlujo2 pf = new ProcesaFlujo2();
+                    ProcesaFlujo pf = new ProcesaFlujo();
                     //db.DOCUMENTOes.Add(dOCUMENTO);
                     //db.SaveChanges();
 
@@ -1509,128 +1515,14 @@ namespace TAT001.Controllers
             return View(dOCUMENTO);
         }
 
-        [HttpPost]
-        public FileResult Descargar(string archivo)
-        {
-            Models.PresupuestoModels carga = new Models.PresupuestoModels();
-            string nombre = "", contentyp = "";
-            carga.contDescarga(archivo, ref contentyp, ref nombre);
-            return File(archivo, contentyp, nombre);
-        }
-        public decimal getValSoc(string waers, string moneda_id, decimal monto_doc_md, out string errorString)
-        {
-            decimal val = 0;
-
-            //Siempre la conversión va a la sociedad    
-
-            var UKURS = getUkurs(waers, moneda_id, out errorString);
-
-            if (errorString.Equals(""))
-            {
-
-                decimal uk = Convert.ToDecimal(UKURS);
-
-                if (UKURS > 0)
-                {
-                    val = uk * Convert.ToDecimal(monto_doc_md);
-                }
-            }
-
-            return val;
-        }
-
-        public decimal getUkurs(string waers, string moneda_id, out string errorString)
-        {
-            decimal ukurs = 0;
-            errorString = string.Empty;
-            using (TAT001Entities db = new TAT001Entities())
-            {
-                try
-                {
-                    //Siempre la conversión va a la sociedad    
-                    var date = DateTime.Now.Date;
-                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(date)).FirstOrDefault();
-                    if (tcambio == null)
-                    {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers)).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(moneda_id) && t.TCURR.Equals(waers) && t.GDATU.Equals(max)).FirstOrDefault();
-                    }
-
-                    ukurs = Convert.ToDecimal(tcambio.UKURS);
-
-                }
-                catch (Exception e)
-                {
-                    errorString = "detail: conversion " + moneda_id + " to " + waers + " in date " + DateTime.Now.Date;
-                    return 0;
-                }
-            }
-
-            return ukurs;
-        }
-
-        public decimal getUkursUSD(string waers, string waersusd, out string errorString)
-        {
-            decimal ukurs = 0;
-            errorString = string.Empty;
-            using (TAT001Entities db = new TAT001Entities())
-            {
-                try
-                {
-                    var date = DateTime.Now.Date;
-                    var tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(date)).FirstOrDefault();
-                    if (tcambio == null)
-                    {
-                        var max = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd)).Max(a => a.GDATU);
-                        tcambio = db.TCAMBIOs.Where(t => t.FCURR.Equals(waers) && t.TCURR.Equals(waersusd) && t.GDATU.Equals(max)).FirstOrDefault();
-                    }
-
-                    ukurs = Convert.ToDecimal(tcambio.UKURS);
-                }
-                catch (Exception e)
-                {
-                    errorString = "detail: conversion " + waers + " to " + waersusd + " in date " + DateTime.Now.Date;
-                    return 0;
-                }
-
-            }
-
-            return ukurs;
-        }
-
-        public RANGO getRango(string TSOL_ID)
-        {
-            RANGO rango = new RANGO();
-            using (TAT001Entities db = new TAT001Entities())
-            {
-
-                rango = (from r in db.RANGOes
-                         join s in db.TSOLs
-                         on r.ID equals s.RANGO_ID
-                         where s.ID == TSOL_ID && r.ACTIVO == true
-                         select r).FirstOrDefault();
-
-            }
-
-            return rango;
-
-        }
-
-        public decimal getSolID(string TSOL_ID)
-        {
-
-            decimal id = 0;
-
-            RANGO rango = getRango(TSOL_ID);
-
-            if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
-            {
-                rango.ACTUAL++;
-                id = (decimal)rango.ACTUAL;
-            }
-
-            return id;
-        }
+        //[HttpPost]
+        //public FileResult Descargar(string archivo)
+        //{
+        //    Models.PresupuestoModels carga = new Models.PresupuestogetUkursModels();
+        //    string nombre = "", contentyp = "";
+        //    carga.contDescarga(archivo, ref contentyp, ref nombre);
+        //    return File(archivo, contentyp, nombre);
+        //}
 
         public STATE getEstado(int id)
         {
@@ -1662,22 +1554,6 @@ namespace TAT001.Controllers
 
             }
             return payer;
-
-        }
-
-
-        public void updateRango(string TSOL_ID, decimal actual)
-        {
-
-            RANGO rango = getRango(TSOL_ID);
-
-            if (rango.ACTUAL > rango.INICIO && rango.ACTUAL < rango.FIN)
-            {
-                rango.ACTUAL = actual;
-            }
-
-            db.Entry(rango).State = EntityState.Modified;
-            db.SaveChanges();
 
         }
 
@@ -3440,10 +3316,17 @@ namespace TAT001.Controllers
                 doc.PORC_APOYO = D.PORC_APOYO;
                 foreach (DOCUMENTOP dp in doc.DOCUMENTOPs)
                 {
-                    if (dp.APOYO_EST > 0)
+                    if (dOCpADRE.TSOL.PADRE)
                         dp.APOYO_EST = D.MONTO_DOC_MD * dp.PORC_APOYO / 100;
-                    if (dp.APOYO_REAL > 0)
+                    else
                         dp.APOYO_REAL = D.MONTO_DOC_MD * dp.PORC_APOYO / 100;
+                    foreach (DOCUMENTOM dm in dp.DOCUMENTOMs)
+                    {
+                        if (dOCpADRE.TSOL.PADRE)
+                            dm.APOYO_EST = dp.APOYO_EST * dm.PORC_APOYO / 100;
+                        else
+                            dm.APOYO_REAL = dp.APOYO_REAL * dm.PORC_APOYO / 100;
+                    }
                 }
 
 
@@ -3509,24 +3392,35 @@ namespace TAT001.Controllers
             {
                 List<string> li = new List<string>();
                 Files sc = new Files();
-                Reversa rv = new Reversa();
-                DOCUMENTOREC docRe = new DOCUMENTOREC();
-                docRe = db.DOCUMENTORECs.Where(x => x.DOC_REF == id).FirstOrDefault();
-                docRe.ESTATUS = "C";
+                ////Reversa rv = new Reversa();
+                DOCUMENTO docRe = new DOCUMENTO();
+                docRe = db.DOCUMENTOes.Find(id);
+                docRe.ESTATUS_C = "C";
                 db.Entry(docRe).State = EntityState.Modified;
-                List<DOCUMENTOREC> docRes = db.DOCUMENTORECs.Where(x => x.NUM_DOC.Equals(docRe.NUM_DOC) & x.POS > docRe.POS).ToList();
+                List<DOCUMENTOREC> docRes = db.DOCUMENTORECs.Where(x => x.NUM_DOC.Equals(id) && x.ESTATUS != "P").ToList();
                 foreach (DOCUMENTOREC dR in docRes)
                 {
-                    dR.ESTATUS = "C";
+                    if (dR.ESTATUS == "B")
+                    {
+                        dR.ESTATUS = "P";
+                        if (docRe.OBJETIVOQ == true)
+                            dR.ESTATUS_Q = "P";
+                    }
+                    else if(dR.ESTATUS != "P")
+                    {
+                        dR.ESTATUS = "C";
+                        if (docRe.OBJETIVOQ == true)
+                            dR.ESTATUS_Q = "C";
+                    } 
                     db.Entry(dR).State = EntityState.Modified;
                 }
                 db.SaveChanges();
 
-                string tsolR = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault().TSOL.TSOLR;
-                decimal numR = rv.creaReversa(id.ToString(), tsolR);
+                ////string tsolR = db.DOCUMENTOes.Where(x => x.NUM_DOC == id).FirstOrDefault().TSOL.TSOLR;
+                ////decimal numR = rv.creaReversa(id.ToString(), tsolR);
 
                 DOCUMENTOR docR = new DOCUMENTOR();
-                docR.NUM_DOC = numR;
+                docR.NUM_DOC = id;
                 docR.TREVERSA_ID = 1;
                 docR.USUARIOC_ID = User.Identity.Name;
                 docR.FECHAC = DateTime.Now;
@@ -3536,7 +3430,7 @@ namespace TAT001.Controllers
                 string fileExt = System.IO.Path.GetExtension(file.FileName);
                 string nombreV = file.FileName;
                 string url = ConfigurationManager.AppSettings["URL_SAVE"];
-                string nomNum = numR.ToString();
+                string nomNum = id.ToString();
                 var dir = sc.createDir(url, nomNum, DateTime.Now.Year.ToString());
                 if (dir.Equals(""))
                 {
@@ -3547,7 +3441,7 @@ namespace TAT001.Controllers
                 url = url + nomNum + @"\" + nombreV;
 
                 DOCUMENTOA docA = new DOCUMENTOA();
-                docA.NUM_DOC = numR;
+                docA.NUM_DOC = id;
                 docA.POS = 1;
                 docA.TIPO = fileExt.Replace(".", "");
                 docA.CLASE = "OTR";
@@ -3558,8 +3452,8 @@ namespace TAT001.Controllers
                 db.DOCUMENTOAs.Add(docA);
 
                 db.SaveChanges();
-                li.Add(numR.ToString());
-                TempData["docs_masiva"] = li;
+                //li.Add(id.ToString());
+                //TempData["docs_masiva"] = li;
 
                 return RedirectToAction("Index", "Home");
             }
@@ -3569,5 +3463,166 @@ namespace TAT001.Controllers
             }
         }
         ///////////////////////////////CAMBIOS LGPP FIN//////////////////////////
+
+        [HttpGet]
+        public ActionResult Ejecutar()
+        {
+            int pagina = 999; //ID EN BASE DE DATOS
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                if (!usuValidateLogin.validaUsuario(user.ID))
+                {
+                    FormsAuthentication.SignOut();
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title += " ";
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                Session["spras"] = user.SPRAS_ID;
+            }
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Ejecutar(string fecha)
+        {
+            DateTime hoy = DateTime.Parse(fecha);
+            var docs = db.DOCUMENTOes.Where(a => (a.TIPO_RECURRENTE.Equals("1") | a.TIPO_RECURRENTE.Equals("2") | a.TIPO_RECURRENTE.Equals("3")) & a.ESTATUS.Equals("A") & a.ESTATUS_WF.Equals("A")).ToList();
+            List<DOCUMENTOREC> ddrec = new List<DOCUMENTOREC>();
+            foreach (DOCUMENTO d in docs)
+            {
+                DOCUMENTOREC drec = d.DOCUMENTORECs.Where(a => a.FECHAF == hoy).FirstOrDefault();
+                if (drec != null)
+                    if (drec.DOC_REF == 0)
+                        ddrec.Add(drec);
+            }
+
+            int c = 0;
+            foreach (DOCUMENTOREC drec in ddrec)
+            {
+                drec.ESTATUS = "A";
+                db.Entry(drec).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                //Mail m = new Mail();
+                //m.enviaMail(drec);
+
+            }
+
+            foreach (DOCUMENTOREC drec in ddrec)
+            {
+                try
+                {
+                    Recurrente r = new Recurrente();
+                    bool ban = true;
+                    if (ban)
+                    {
+                        int x = r.creaRecurrente(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, hoy, drec.POS, false);
+                        if (drec.DOCUMENTO.OBJETIVOQ == true)
+                            r.creaRecurrente(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, hoy, drec.POS, true);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return RedirectToAction("Ejecutar");
+        }
+
+        [HttpPost]
+        public ActionResult EjecutarLigada(string fecha)
+        {
+            DateTime hoy = DateTime.Parse(fecha);
+            ////List <DOCUMENTOL> docs = db.DOCUMENTOLs.Where(a => a.FECHAF == hoy).ToList();
+            List<DOCUMENTOREC> drecc = db.DOCUMENTORECs.Where(a => a.FECHAF == hoy && a.ESTATUS == "E").ToList();
+            foreach (DOCUMENTOREC drec in drecc)
+            {
+                Recurrente r = new Recurrente(); bool ban = true;
+                if (ban)
+                {
+                    int x = r.calcDistribucion(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, hoy, drec.POS, false);
+                    if (drec.DOCUMENTO.OBJETIVOQ == true)
+                        r.calcDistribucion(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, hoy, drec.POS, true);
+                }
+            }
+            return RedirectToAction("Ejecutar");
+        }
+
+        public ActionResult Calcular(decimal id_d)
+        {
+            DOCUMENTO doc = db.DOCUMENTOes.Find(id_d);
+            ////List <DOCUMENTOL> docs = db.DOCUMENTOLs.Where(a => a.FECHAF == hoy).ToList();
+            List<DOCUMENTOREC> drecc = db.DOCUMENTORECs.Where(a => a.DOC_REF == id_d && a.ESTATUS == "E").ToList();
+            foreach (DOCUMENTOREC drec in drecc)
+            {
+                Recurrente r = new Recurrente(); bool ban = true;
+                if (ban)
+                {
+                    r.calcDistribucion(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, drec.FECHAF.Value, drec.POS, false);
+                }
+            }
+            drecc = db.DOCUMENTORECs.Where(a => a.NUM_DOC_Q == id_d && a.ESTATUS_Q == "E").ToList();
+            foreach (DOCUMENTOREC drec in drecc)
+            {
+                Recurrente r = new Recurrente(); bool ban = true;
+                if (ban)
+                {
+                    r.calcDistribucion(drec.NUM_DOC, drec.DOCUMENTO.TSOL_ID, drec.FECHAF.Value, drec.POS, true);
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult BackorderPos()
+        {
+            bool ban = true;
+            decimal id_d = decimal.Parse(Request.Form["backorder_num"].ToString());
+            List<DOCUMENTOREC> ddrec = db.DOCUMENTORECs.Where(x => x.NUM_DOC == id_d).ToList();
+
+            foreach (DOCUMENTOREC drec in ddrec.Where(x => x.DOC_REF != 0))
+            {
+                try
+                {
+                    DOCUMENTO D = db.DOCUMENTOes.Where(x => x.NUM_DOC == drec.DOC_REF).FirstOrDefault();
+                    DOCUMENTOL dl = db.DOCUMENTOLs.Where(x => x.NUM_DOC == drec.DOC_REF).Include(x => x.DOCUMENTO).FirstOrDefault();
+                    FormatosC fc = new FormatosC();
+                    string BACKORDER = Request.Form["back_" + drec.POS].ToString();
+                    BACKORDER = fc.toNum(BACKORDER, dl.DOCUMENTO.PAI.MILES, dl.DOCUMENTO.PAI.DECIMAL).ToString();
+                    dl.BACKORDER = decimal.Parse(BACKORDER);
+                    db.Entry(dl).State = EntityState.Modified;
+
+                    DOCUMENTO dOCpADRE = db.DOCUMENTOes.Where(x => x.NUM_DOC == drec.NUM_DOC).FirstOrDefault();
+                    foreach (DOCUMENTORAN dran in dOCpADRE.DOCUMENTORECs.FirstOrDefault(x => x.POS == drec.POS).DOCUMENTORANs)
+                    {
+                        if ((dl.MONTO_VENTA + dl.BACKORDER) > dran.OBJETIVOI)
+                        {
+                            D.PORC_APOYO = dran.PORCENTAJE;
+                            break;
+                        }
+                    }
+                    db.Entry(D).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.Write(e.Message.ToString());
+                }
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

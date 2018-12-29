@@ -71,17 +71,18 @@
     @using (Html.BeginForm("Index", "Presupuesto", FormMethod.Post))
     {
         string[] defaulS = new string[1];
-        string defaul = "";
+        string[] defaul2 = new string[1];
+        string defaul = "", moneda = "";
         System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-US", false).TextInfo;
         System.Globalization.DateTimeFormatInfo formatoFecha = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat;
         int j = 0;
 
         <div class="row">
-            <div class="input-field col s2">
-                <select name="select" id="selec">
+            <div class="input-field col s2 g" name="sociedad">
+                <select name="select" id="selec" multiple required>
                     @try
                     {
-                        defaul = Session["sociedad"].ToString();
+                        defaul2 = Session["sociedad"] as string[];
                     }
                     catch (Exception)
                     {
@@ -91,9 +92,16 @@
                     {
                         for (int i = 0; i < Model.sociedad.Count; i++)
                         {
-                            if (defaul == Model.sociedad[i].BUKRS)
+                            if (defaul2 != null)
                             {
-                                <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
+                                if (defaul2.Contains(Model.sociedad[i].BUKRS))
+                                {
+                                    <option value="@Model.sociedad[i].BUKRS" selected>@Model.sociedad[i].BUKRS</option>
+                                }
+                                else
+                                {
+                                    <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
+                                }
                             }
                             else
                             {
@@ -106,7 +114,7 @@
                         <option value="">No hay opciones</option>
                     }
                 </select>
-                <label id="lbl_bukrs">Sociedad</label>
+                <label id="lbl_bukrs">Cos. Code</label>
             </div>
             @try
             {
@@ -150,7 +158,7 @@
                             }
                         }
                     </select>
-                    <label>Año</label>
+                    <label id="lbl_anio">Años</label>
                 </div>
             }
             catch (Exception)
@@ -174,14 +182,14 @@
                             }
                         }
                     </select>
-                    <label>Periodo</label>
+                    <label id="lbl_periodo">Periodo</label>
                 </div>
             }
             else
             {
                 <div class="input-field col s2" id="selection">
                     <select name="periodoconsu">
-                        <option value="" disabled selected>Todos</option>
+                        <option value=""  selected>Todos</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
                         <option value="3">Marzo</option>
@@ -195,18 +203,19 @@
                         <option value="11">Noviembre</option>
                         <option value="12">Diciembre</option>
                     </select>
-                    <label>Periodo</label>
+                    <label id="lbl_periodo">Periodo</label>
                 </div>
             }
             <div class="input-field col s2">
                 <select name="cambio" id="selec">
                     @try
                     {
+                        <option value="" selected>LC</option>
                         defaul = Session["cambio"].ToString();
                     }
                     catch (Exception)
                     {
-                        <option value="" disabled selected></option>
+
                     }
                     @try
                     {
@@ -223,6 +232,7 @@
                                 <option value="@cambio">@Model.cambio[i].TCURR</option>
                             }
                         }
+
                     }
                     catch (Exception)
                     {
@@ -236,7 +246,23 @@
                     Consultar
                 </button>
                 <p id="fechUlt"><label id="lbl_last">Ultima fecha de carga CPT: </label> @ViewBag.ultMod</p>
-                <p id="fechUlt">$ en miles LC</p>
+                @try
+                {
+                    if (Session["cambio"].ToString() == "")
+                    {
+                        moneda = "LC";
+                    }
+                    else
+                    {
+                        string[] monedas = Session["cambio"].ToString().Split('-');
+                        moneda = monedas[1];
+                    }
+                }
+                catch (Exception)
+                {
+                    moneda = "LC";
+                }
+                <p id="fechUlt">$ en miles @moneda</p>
             </div>
             <div>
                 <p>
@@ -356,7 +382,7 @@
                     </div>
                     <div class="input-field col s2 f" name="PROCESOFltr">
                         <select multiple id="PROCESOFltr" name="filtro" col="19"></select>
-                        <label>En Proceso en TAT</label>
+                        <label>En Proceso en ICON</label>
                     </div>
                     <div class="input-field col s2 f" name="consumidoFltr">
                         <select multiple id="consumidoFltr" name="filtro" col="20"></select>
@@ -436,9 +462,9 @@
                             <th>OHV  </th>*@
                         @if (ViewBag.chkcpt == null)
                         {
-                            <th>Allowance Registros Manuales</th>
-                            <th>Allowance Facturados</th>
-                            <th>En Proceso en TAT</th>
+                            <th>Allowances Registros Icon & Manuales</th>
+                            <th>Allowances Facturados</th>
+                            <th>En Proceso en ICON</th>
                             <th>Consumido</th>
 
                             <th>PPTO Disponible</th>
@@ -454,7 +480,7 @@
                             <tr>
                                 <td>@Model.presupuesto[i].CANAL<br>@Model.presupuesto[i].CDESCRIPCION</td>
                                 <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PPTOC)</td>
-                                <td>@Model.presupuesto[i].BANNER<br>@Model.presupuesto[i].BDESCRIPCION</td>
+                                <td>@Model.presupuesto[i].BANNER.TrimStart('0')<br>@Model.presupuesto[i].BDESCRIPCION</td>
                                 <td>$@String.Format("{0:0,0}", Model.presupuesto[i].PPTO)</td>
                                 <td>@Model.presupuesto[i].PERIODO.Trim().PadLeft(2, '0')</td>
                                 @*<td>$@String.Format("{0:0,0.000}", Model.presupuesto[i].GRSLS)</td>*@
