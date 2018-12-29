@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TAT001.Entities.DOCUMENTO>
+@model IEnumerable<TAT001.Entities.DOCUMENTO>
 @{
     Layout = null;
 }
@@ -7,6 +7,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <style>
+
 
         .texto {
             text-align: left;
@@ -45,7 +46,6 @@
     <div style="text-align:right; margin-top:65px; width:75%">
         <p>@ViewBag.cd,@ViewBag.edo,@ViewBag.FechaH</p>
     </div>
-
     <div style="width:75%;">
         <div style="width:60%; float:left;">
             <p>
@@ -53,7 +53,6 @@
                 @ViewBag.clDir<br>
             </p>
         </div>
-
         <div style="width:40%; float:left;">
             <table style="width:100%;" id="table2;" class="table borde;">
                 <thead>
@@ -72,10 +71,12 @@
     <div style="width:75%; float:left;">
         <div style="margin-top:20px; width:100%">
             <br />
-            <p>
+            <p align="justify">
                 Estimado/a @ViewBag.clCon,<br /><br />
-                A continuación compartimos con usted listado de todas las negociaciones de descuentos vigentes y comprometidas con usted por parte de Kellogg’s en el periodo comprendido del @ViewBag.fi al @ViewBag.ff .
-                La presente conciliación se comparte con fines de validación y aprobación de su parte. En caso de detectar alguna omisión o desviación, le solicitamos que nos envíe sus comentarios en un plazo no mayor de 3 días hábiles contados a partir de la fecha de recepción del presente correo. En el supuesto de no recibir ningún comentario, se entenderá que usted está de acuerdo con la información señalada.
+                A continuación compartimos listado de las negociaciones de descuentos vigentes y comprometidas con usted por parte de Kellogg’s al @ViewBag.ff.<br />
+                <br />
+                <br />
+                La presente conciliación se comparte con fines de validación y aprobación de su parte. En caso de detectar alguna omisión o desviación, le solicitamos que nos envíe sus comentarios en un plazo no mayor de 3 días hábiles contados a partir de la fecha de recepción del presente correo. Le pedimos que los comentarios estén relacionados con las negociaciones comerciales detalladas en el presente comunicado. En el supuesto de no recibir ningún comentario, se entenderá que usted está de acuerdo con la información señalada.
             </p>
         </div>
         <div style="margin-top:90px; width:100%; margin-left:20px;">
@@ -83,16 +84,16 @@
                 <thead>
                     <tr>
                         <th class="texto th borde">
-                            @Html.DisplayNameFor(model => model.NUM_DOC)
+                            <span>Número de solicitud</span>
                         </th>
                         <th class="texto th borde">
-                            @Html.DisplayNameFor(model => model.FECHAC)
+                            <span> Vigencia de negociación</span>
                         </th>
                         <th class="texto th borde">
-                            @Html.DisplayNameFor(model => model.CONCEPTO)
+                            <span>Descripción negociación</span>
                         </th>
                         <th class="texto th borde">
-                            @Html.DisplayNameFor(model => model.TSOL.DESCRIPCION)
+                            <span>Soporte negociación</span>
                         </th>
                     </tr>
                 </thead>
@@ -104,13 +105,33 @@
                                 @item.NUM_DOC
                             </td>
                             <td class="borde">
-                                @item.FECHAC.Value.Day/@item.FECHAC.Value.Month/@item.FECHAC.Value.Year
+                                @item.FECHAI_VIG.Value.Day/@item.FECHAI_VIG.Value.Month/@item.FECHAI_VIG.Value.Year - @item.FECHAF_VIG.Value.Day/@item.FECHAF_VIG.Value.Month/@item.FECHAF_VIG.Value.Year
                             </td>
                             <td class="borde">
                                 @Html.DisplayFor(modelItem => item.CONCEPTO)
                             </td>
                             <td class="borde">
-                                @Html.DisplayFor(modelItem => item.TSOL.DESCRIPCION)
+                                @{
+                                    int cont = 1;
+                                    int cont2 = item.DOCUMENTOAs.Where(x=>x.ACTIVO).Count();
+                                    foreach (TAT001.Entities.DOCUMENTOA a in item.DOCUMENTOAs.Where(x => x.ACTIVO))
+                                    {
+                                        string spras = ViewBag.spras;
+                                        var t = a.TSOPORTE.TSOPORTETs.Where(x => x.SPRAS_ID == spras).FirstOrDefault();
+                                        if (t != null)
+                                        {
+                                            if (cont == cont2)
+                                            {
+                                            <span>@t.TXT50</span>
+                                            }
+                                            else if (cont2 > 1)
+                                            {
+                                                <span>@t.TXT50, </span>
+                                            }
+                                        }
+                                        cont++;
+                                    }
+                                }
                             </td>
                         </tr>
                     }
@@ -151,7 +172,7 @@
                 De Acuerdo
             </a>
             <a type="button" class="btn-small" id="btn_Ok"
-                   style="height: 32.4px;line-height: 32.4px;
+               style="height: 32.4px;line-height: 32.4px;
                         font-size: 13px;
                         text-decoration: none;
                         color: #fff;
@@ -171,7 +192,7 @@
                         vertical-align: middle;
                         margin-right:5px;
                         -webkit-tap-highlight-color: transparent;"
-                   href="mailto:LA_TAT@kellogg.com?Subject=Tengo%20Observaciones-@ViewBag.clPayId.@ViewBag.idf.@ViewBag.vk.@ViewBag.vtw.@ViewBag.clCorreo2" target="_top">
+               href="mailto:LA_TAT@kellogg.com?Subject=Tengo%20Observaciones-@ViewBag.clPayId.@ViewBag.idf.@ViewBag.vk.@ViewBag.vtw.@ViewBag.clCorreo2" target="_top">
                 Tengo Observaciones
             </a>
         </div>

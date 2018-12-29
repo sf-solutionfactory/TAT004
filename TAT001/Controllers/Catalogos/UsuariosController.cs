@@ -1,13 +1,17 @@
-﻿using System;
+﻿using ExcelDataReader;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.HtmlControls;
 using TAT001.Entities;
 using TAT001.Models;
+using TAT001.Services;
 
 namespace TAT001.Controllers.Catalogos
 {
@@ -356,7 +360,6 @@ namespace TAT001.Controllers.Catalogos
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
 
         // GET: Usuarios/Edit/5
         public ActionResult Pass(string id)
@@ -707,5 +710,1374 @@ namespace TAT001.Controllers.Catalogos
             }
             base.Dispose(disposing);
         }
+
+        public ActionResult Carga()
+        {
+            int pagina = 601;
+            using (TAT001Entities db = new TAT001Entities())
+            {
+                string u = User.Identity.Name;
+                //string u = "admin";
+                var user = db.USUARIOs.Where(a => a.ID.Equals(u)).FirstOrDefault();
+                ViewBag.permisos = db.PAGINAVs.Where(a => a.ID.Equals(user.ID)).ToList();
+                ViewBag.carpetas = db.CARPETAVs.Where(a => a.USUARIO_ID.Equals(user.ID)).ToList();
+                ViewBag.usuario = user; ViewBag.returnUrl = Request.Url.PathAndQuery; ;
+                ViewBag.rol = user.PUESTO.PUESTOTs.Where(a => a.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.Title = db.PAGINAs.Where(a => a.ID.Equals(pagina)).FirstOrDefault().PAGINATs.Where(b => b.SPRAS_ID.Equals(user.SPRAS_ID)).FirstOrDefault().TXT50;
+                ViewBag.warnings = db.WARNINGVs.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+                ViewBag.textos = db.TEXTOes.Where(a => (a.PAGINA_ID.Equals(pagina) || a.PAGINA_ID.Equals(0)) && a.SPRAS_ID.Equals(user.SPRAS_ID)).ToList();
+
+                try
+                {
+                    string p = Session["pais"].ToString();
+                    ViewBag.pais = p + ".png";
+                }
+                catch
+                {
+                    //ViewBag.pais = "mx.png";
+                    //return RedirectToAction("Pais", "Home");
+                }
+                Session["spras"] = user.SPRAS_ID;
+            }
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Carga(IEnumerable<HttpPostedFileBase> files)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult LoadExcel()
+        {
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase file = Request.Files["FileUpload"];
+                string extension = System.IO.Path.GetExtension(file.FileName);
+                IExcelDataReader reader = ExcelReaderFactory.CreateReader(file.InputStream);
+                DataSet result = reader.AsDataSet();
+                DataTable dt = result.Tables[0];
+                ld = objAList1(dt);
+
+                reader.Close();
+            }
+
+            List<Usuarios> uu = new List<Usuarios>();
+            List<USUARIO> usuarios = new List<USUARIO>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+            List<PUESTO> puesto = new List<PUESTO>();
+            List<SOCIEDAD> sociedad = new List<SOCIEDAD>();
+            int rowst = ld.Count();
+            string[] IDs = new string[rowst];
+            int cont2 = 0;
+            string[,] tablas = new string[rowst, 11];
+            string[,] client = new string[rowst, 2];
+            string[] gua = new string[rowst];
+
+            foreach (DET_AGENTE1 da in ld)
+            {
+                int cont = 1;
+                string messa = "";
+                bool vus = false;
+                Usuarios us = new Usuarios();
+                Cryptography c = new Cryptography();
+
+                us.KUNNR = da.KUNNR;
+                us.KUNNRX = true;
+                us.BUNIT = da.BUNIT;
+                us.BUNITX = true;
+                us.PUESTO_ID = da.PUESTO_ID.ToString();
+                us.PUESTO_IDX = true;
+                us.ID = da.ID;
+                us.IDX = true;
+                us.NOMBRE = da.NOMBRE;
+                us.APELLIDO_P = da.APELLIDO_P;
+                us.APELLIDO_M = da.APELLIDO_M;
+                us.EMAIL = da.EMAIL;
+                us.EMAILX = true;
+                us.SPRAS_ID = da.SPRAS_ID;
+                us.SPRAS_IDX = true;
+                us.PASS = da.PASS;
+
+                //Comprobacion de la asignacion de varios clientes
+                if (cont2 > 0)
+                    if (us.KUNNR != gua[cont2 - 1] && us.BUNIT == "" && us.PUESTO_ID == "" && us.ID == "" && us.NOMBRE == "" && us.APELLIDO_P == "" && us.APELLIDO_M == "" && us.EMAIL == "" && us.SPRAS_ID == "" && us.PASS == "")
+                    {
+                        vus = true;
+                    }
+                //Usuario nuevo
+                if (vus == false)
+                {
+                    ////-------------------------------CLIENTE
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            client[cont2, 0] = us.KUNNR.ToString();
+                            tablas[cont2, 0] = da.KUNNR.ToString();
+                            gua[cont2] = da.KUNNR.ToString();
+                        }
+                    }
+                    if (!us.KUNNRX)
+                    {
+                        us.KUNNR = us.KUNNR + "?";
+                        messa = cont + ". Error en el cliente<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------COMPANY CODE
+                    SOCIEDAD b = sociedad.Where(x => x.BUKRS.Equals(us.BUNIT)).FirstOrDefault();
+                    if (b == null)
+                    {
+                        b = db.SOCIEDADs.Where(x => x.BUKRS.Equals(us.BUNIT) & x.ACTIVO == true).FirstOrDefault();
+                        if (b == null)
+                            us.BUNITX = false;
+                        else
+                        {
+                            sociedad.Add(b);
+                            tablas[cont2, 1] = da.BUNIT.ToString();
+                        }
+                    }
+                    if (!us.BUNITX)
+                    {
+                        us.BUNIT = us.BUNIT + "?";
+                        messa = messa + cont + ". Error en la sociedad<br/>";
+                        cont++;
+                    }
+                    int pues = 0;
+
+                    ////-------------------------------NIVEL
+                    if (us.PUESTO_ID != null && us.PUESTO_ID != "")
+                        pues = int.Parse(us.PUESTO_ID);
+
+                    PUESTO pi = puesto.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                    if (pi == null)
+                    {
+                        pi = db.PUESTOes.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                        if (pi == null)
+                            us.PUESTO_IDX = false;
+                        else
+                        {
+                            puesto.Add(pi);
+                            tablas[cont2, 2] = da.PUESTO_ID.ToString();
+                        }
+                    }
+                    if (!us.PUESTO_IDX)
+                    {
+                        us.PUESTO_ID = us.PUESTO_ID + "?";
+                        messa = messa + cont + ". Error en el nivel<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------USUARIO ID
+                    var err = ". Error en el ID de usuario<br/>";
+                    if (us.ID == null || us.ID == "")
+                        us.IDX = false;
+                    else if (IDs.Contains(us.ID))
+                        us.IDX = false;
+                    else
+                    {
+                        USUARIO u = db.USUARIOs.Where(xu => xu.ID.Equals(us.ID)).FirstOrDefault();
+                        if (u != null)
+                        {
+                            us.IDX = false;
+                            err = ". Usuario duplicado<br/>";
+                            client[cont2, 1] = us.ID.ToString();
+                            tablas[cont2, 3] = da.ID.ToString();
+                            tablas[cont2, 4] = da.NOMBRE.ToString();
+                            tablas[cont2, 5] = da.APELLIDO_P.ToString();
+                            tablas[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                        else
+                        {
+                            usuarios.Add(u);
+                            IDs[cont2] = us.ID;
+                            client[cont2, 1] = us.ID.ToString();
+                            tablas[cont2, 3] = da.ID.ToString();
+                            tablas[cont2, 4] = da.NOMBRE.ToString();
+                            tablas[cont2, 5] = da.APELLIDO_P.ToString();
+                            tablas[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                    }
+
+                    if (!us.IDX)
+                    {
+                        us.ID = us.ID + "?";
+                        messa = messa + cont + err;
+                        cont++;
+                    }
+
+                    ////-------------------------------EMAIL
+                    if (ComprobarEmail(us.EMAIL) == false)
+                    {
+                        us.EMAILX = false;
+                    }
+                    else
+                        tablas[cont2, 7] = da.EMAIL.ToString();
+                    if (!us.EMAILX)
+                    {
+                        us.EMAIL = us.EMAIL + "?";
+                        messa = messa + cont + ". Error en el correo<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------IDIOMA
+                    if (us.SPRAS_ID == "")
+                    {
+                        us.SPRAS_ID = "ES";
+                        da.SPRAS_ID = us.SPRAS_ID;
+                    }
+                    SPRA si = db.SPRAS.Where(x => x.ID.Equals(us.SPRAS_ID) == true).FirstOrDefault();
+                    if (si == null)
+                    {
+                        us.SPRAS_IDX = false;
+                    }
+                    else
+                    {
+                        tablas[cont2, 8] = da.SPRAS_ID.ToString();
+                        tablas[cont2, 9] = c.Encrypt(da.PASS.ToString());
+                    }
+                    if (!us.SPRAS_IDX)
+                    {
+                        us.SPRAS_ID = us.SPRAS_ID + "?";
+                        messa = messa + cont + ". Error en el idioma<br/>";
+                        cont++;
+                    }
+
+                    da.mess = messa;
+                    us.mess = da.mess;
+                    tablas[cont2, 10] = messa;
+                }
+                //Asignacion de mas clientes
+                else
+                {
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            client[cont2, 0] = us.KUNNR.ToString();
+                        }
+                    }
+                    da.ID = IDs[cont2 - 1];
+                    client[cont2, 1] = da.ID;
+                    us.mess = da.mess;
+                    tablas[cont2, 10] = messa;
+                }
+
+                cont2++;
+
+                uu.Add(us);
+            }
+            Session["tablas"] = tablas;
+            Session["client"] = client;
+            Session["rowst"] = rowst;
+            JsonResult jl = Json(uu, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        public static bool ComprobarEmail(string email)
+        {
+            String sFormato;
+            sFormato = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(email, sFormato))
+            {
+                if (Regex.Replace(email, sFormato, String.Empty).Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private string completa(string s, int longitud)
+        {
+            string cadena = "";
+            try
+            {
+                long a = Int64.Parse(s);
+                int l = a.ToString().Length;
+                for (int i = l; i < longitud; i++)
+                {
+                    cadena += "0";
+                }
+                cadena += a.ToString();
+            }
+            catch
+            {
+                cadena = s;
+            }
+            return cadena;
+        }
+
+        private List<DET_AGENTE1> objAList1(DataTable dt)
+        {
+
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+
+            var rowsc = dt.Rows.Count;
+            var columnsc = dt.Columns.Count;
+            var rows = 1;
+            var pos = 1;
+
+            for (int i = rows; i < rowsc; i++)
+            {
+                DET_AGENTE1 doc = new DET_AGENTE1();
+
+                string a = Convert.ToString(pos);
+
+                doc.POS = Convert.ToInt32(a);
+                try
+                {
+                    doc.KUNNR = dt.Rows[i][0].ToString();
+                    doc.KUNNR = completa(doc.KUNNR, 10);
+
+                    CLIENTE u = clientes.Where(x => x.KUNNR.Equals(doc.KUNNR)).FirstOrDefault();
+                    if (u == null)
+                    {
+                        u = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (u == null)
+                            doc.VKORG = null;
+                        else
+                            clientes.Add(u);
+                    }
+
+                    CLIENTE c = clientes.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                    if (c != null)
+                    {
+                        doc.VKORG = c.VKORG;
+                        doc.VTWEG = c.VTWEG;
+                        doc.SPART = c.SPART;
+                    }
+                    else
+                    {
+                        doc.VKORG = null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    doc.KUNNR = null;
+                }
+                try
+                {
+                    doc.BUNIT = dt.Rows[i][1].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.BUNIT = null;
+                }
+                try
+                {
+                    doc.PUESTO_ID = int.Parse(dt.Rows[i][2].ToString());
+                }
+                catch (Exception e)
+                {
+                    doc.PUESTO_ID = null;
+                }
+                try
+                {
+                    doc.ID = dt.Rows[i][3].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.ID = null;
+                }
+                try
+                {
+                    doc.NOMBRE = dt.Rows[i][4].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.NOMBRE = null;
+                }
+                try
+                {
+                    doc.APELLIDO_P = dt.Rows[i][5].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.APELLIDO_P = null;
+                }
+                try
+                {
+                    doc.APELLIDO_M = dt.Rows[i][6].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.APELLIDO_M = null;
+                }
+                try
+                {
+                    doc.EMAIL = dt.Rows[i][7].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.EMAIL = null;
+                }
+                try
+                {
+                    doc.SPRAS_ID = dt.Rows[i][8].ToString().ToUpper();
+                }
+                catch (Exception e)
+                {
+                    doc.SPRAS_ID = null;
+                }
+                try
+                {
+                    doc.PASS = dt.Rows[i][9].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.PASS = null;
+                }
+                try
+                {
+                    doc.mess = dt.Rows[i][10].ToString();
+                }
+                catch (Exception e)
+                {
+                    doc.mess = null;
+                }
+
+                ld.Add(doc);
+                pos++;
+            }
+            return ld;
+        }
+
+        public partial class DET_AGENTE1 : IEquatable<DET_AGENTE1>
+        {
+            public string KUNNR { get; set; }
+            public string VKORG { get; set; }
+            public string VTWEG { get; set; }
+            public string SPART { get; set; }
+            public string BUNIT { get; set; }
+            public Nullable<int> PUESTO_ID { get; set; }
+            public string ID { get; set; }
+            public string NOMBRE { get; set; }
+            public string APELLIDO_P { get; set; }
+            public string APELLIDO_M { get; set; }
+            public string EMAIL { get; set; }
+            public string SPRAS_ID { get; set; }
+            public string PASS { get; set; }
+            public string mess { get; set; }
+            public int POS { get; set; }
+
+            public virtual CLIENTE CLIENTE { get; set; }
+            public virtual USUARIO USUARIO { get; set; }
+
+            public bool Equals(DET_AGENTE1 other)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Agregar()
+        {
+            string[,] tablas = (string[,])Session["tablas"];
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+            List<DET_AGENTE1> ld1 = new List<DET_AGENTE1>();
+            ld = ObjAList2(tablas);
+            int cont = 0;
+
+            foreach (DET_AGENTE1 da in ld)
+            {
+                USUARIO us = new USUARIO();
+
+                if (da.mess == null || da.mess == "")
+                {
+                    if (da.ID != null)
+                    {
+                        ////---------------------------- USUARIO
+                        us.ID = da.ID;
+                        us.PASS = da.PASS;
+                        us.NOMBRE = da.NOMBRE;
+                        us.APELLIDO_P = da.APELLIDO_P;
+                        us.APELLIDO_M = da.APELLIDO_M;
+                        us.EMAIL = da.EMAIL;
+                        us.SPRAS_ID = da.SPRAS_ID;
+                        us.ACTIVO = true;
+                        us.PUESTO_ID = da.PUESTO_ID;
+                        us.MANAGER = null;
+                        us.BACKUP_ID = null;
+                        us.BUNIT = da.BUNIT;
+
+                        db.USUARIOs.Add(us);
+                        db.SaveChanges();
+                        cont++;
+                    }
+                }
+            }
+
+            //List<DET_AGENTE1> ld1 = new List<DET_AGENTE1>();
+            ld1 = ObjAList3();
+
+            foreach (DET_AGENTE1 da in ld1)
+            {
+                USUARIOF uf = new USUARIOF();
+
+                if (da.mess == null || da.mess == "")
+                {
+                    ////---------------------------- USUARIOF
+                    uf.USUARIO_ID = da.ID;
+                    uf.VKORG = da.VKORG;
+                    uf.VTWEG = da.VTWEG;
+                    uf.SPART = da.SPART;
+                    uf.KUNNR = da.KUNNR;
+                    uf.ACTIVO = true;
+                    uf.USUARIOC_ID = null;
+                    uf.FECHAC = DateTime.Today;
+                    uf.USUARIOM_ID = null;
+                    uf.FECHAM = null;
+
+                    db.USUARIOFs.Add(uf);
+                    db.SaveChanges();
+                }
+            }
+
+            JsonResult jl = Json(cont, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        private List<DET_AGENTE1> ObjAList2(string [,] dt)
+        {
+
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+
+            //var dt = (string[,])Session["tablas"];
+            var rowsc = (int)Session["rowst"];
+            var rows = 0;
+            var pos = 1;
+
+            for (int i = rows; i < rowsc; i++)
+            {
+                DET_AGENTE1 doc = new DET_AGENTE1();
+
+                string a = Convert.ToString(pos);
+
+                doc.POS = Convert.ToInt32(a);
+                try
+                {
+                    doc.KUNNR = dt[i, 0];
+                    doc.KUNNR = completa(doc.KUNNR, 10);
+
+                    CLIENTE u = clientes.Where(x => x.KUNNR.Equals(doc.KUNNR)).FirstOrDefault();
+                    if (u == null)
+                    {
+                        u = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (u == null)
+                            doc.VKORG = null;
+                        else
+                            clientes.Add(u);
+                    }
+
+                    CLIENTE c = clientes.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                    if (c != null)
+                    {
+                        doc.VKORG = c.VKORG;
+                        doc.VTWEG = c.VTWEG;
+                        doc.SPART = c.SPART;
+                    }
+                    else
+                    {
+                        doc.VKORG = null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    doc.KUNNR = null;
+                }
+                try
+                {
+                    doc.BUNIT = dt[i, 1];
+                }
+                catch (Exception e)
+                {
+                    doc.BUNIT = null;
+                }
+                try
+                {
+                    doc.PUESTO_ID = int.Parse(dt[i, 2]);
+                }
+                catch (Exception e)
+                {
+                    doc.PUESTO_ID = null;
+                }
+                try
+                {
+                    doc.ID = dt[i, 3];
+                }
+                catch (Exception e)
+                {
+                    doc.ID = null;
+                }
+                try
+                {
+                    doc.NOMBRE = dt[i, 4];
+                }
+                catch (Exception e)
+                {
+                    doc.NOMBRE = null;
+                }
+                try
+                {
+                    doc.APELLIDO_P = dt[i, 5];
+                }
+                catch (Exception e)
+                {
+                    doc.APELLIDO_P = null;
+                }
+                try
+                {
+                    doc.APELLIDO_M = dt[i, 6];
+                }
+                catch (Exception e)
+                {
+                    doc.APELLIDO_M = null;
+                }
+                try
+                {
+                    doc.EMAIL = dt[i, 7];
+                }
+                catch (Exception e)
+                {
+                    doc.EMAIL = null;
+                }
+                try
+                {
+                    doc.SPRAS_ID = dt[i, 8];
+                }
+                catch (Exception e)
+                {
+                    doc.SPRAS_ID = null;
+                }
+                try
+                {
+                    doc.PASS = dt[i, 9];
+                }
+                catch (Exception e)
+                {
+                    doc.PASS = null;
+                }
+                try
+                {
+                    doc.mess = dt[i, 10];
+                }
+                catch (Exception e)
+                {
+                    doc.mess = null;
+                }
+
+                ld.Add(doc);
+                pos++;
+            }
+            return ld;
+        }
+
+        private List<DET_AGENTE1> ObjAList3()
+        {
+
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+
+            var dt = (string[,])Session["client"];
+            var rowsc = (int)Session["rowst"];
+            var rows = 0;
+            var pos = 1;
+
+            for (int i = rows; i < rowsc; i++)
+            {
+                DET_AGENTE1 doc = new DET_AGENTE1();
+
+                string a = Convert.ToString(pos);
+
+                doc.POS = Convert.ToInt32(a);
+                try
+                {
+                    doc.KUNNR = dt[i, 0];
+                    doc.KUNNR = completa(doc.KUNNR, 10);
+
+                    CLIENTE u = clientes.Where(x => x.KUNNR.Equals(doc.KUNNR)).FirstOrDefault();
+                    if (u == null)
+                    {
+                        u = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (u == null)
+                            doc.VKORG = null;
+                        else
+                            clientes.Add(u);
+                    }
+
+                    CLIENTE c = clientes.Where(cc => cc.KUNNR.Equals(doc.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                    if (c != null)
+                    {
+                        doc.VKORG = c.VKORG;
+                        doc.VTWEG = c.VTWEG;
+                        doc.SPART = c.SPART;
+                    }
+                    else
+                    {
+                        doc.VKORG = null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    doc.KUNNR = null;
+                }
+                try
+                {
+                    doc.ID = dt[i, 1];
+                }
+                catch (Exception e)
+                {
+                    doc.ID = null;
+                }
+                ld.Add(doc);
+                pos++;
+            }
+            return ld;
+        }
+
+        [HttpPost]
+        public JsonResult Comprobar()
+        {
+            int rowst = (int)Session["rowst"];
+            string[,] tablas = (string[,])Session["tablas"];
+            string[,] client = (string[,])Session["client"];
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+
+            var cli = Request["cli"];
+            var com = Request["com"];
+            var niv = Request["niv"];
+            var usc = Request["usc"];
+            var nom = Request["nom"];
+            var app = Request["app"];
+            var apm = Request["apm"];
+            var ema = Request["ema"];
+            var idi = Request["idi"];
+            var pas = Request["pas"];
+
+            string[,] compara = new string[rowst, 11];
+            for(int i=0;i<rowst;i++)
+            {
+                    compara[i, 0] = cli.Split(',')[i];
+                    compara[i, 1] = com.Split(',')[i];
+                    compara[i, 2] = niv.Split(',')[i];
+                    compara[i, 3] = usc.Split(',')[i];
+                    compara[i, 4] = nom.Split(',')[i];
+                    compara[i, 5] = app.Split(',')[i];
+                    compara[i, 6] = apm.Split(',')[i];
+                    compara[i, 7] = ema.Split(',')[i];
+                    compara[i, 8] = idi.Split(',')[i];
+                    compara[i, 9] = pas.Split(',')[i];
+            }
+
+            ld = ObjAList2(compara);
+
+            List<Usuarios> uu = new List<Usuarios>();
+            List<USUARIO> usuarios = new List<USUARIO>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+            List<PUESTO> puesto = new List<PUESTO>();
+            List<SOCIEDAD> sociedad = new List<SOCIEDAD>();
+            int cont2 = 0;
+            string[] gua = new string[rowst];
+            string[] IDs = new string[rowst];
+
+            foreach (DET_AGENTE1 da in ld)
+            {
+                int cont = 1;
+                string messa = "";
+                bool vus = false;
+                Usuarios us = new Usuarios();
+                Cryptography c = new Cryptography();
+
+                us.KUNNR = da.KUNNR;
+                us.KUNNRX = true;
+                us.BUNIT = da.BUNIT;
+                us.BUNITX = true;
+                us.PUESTO_ID = da.PUESTO_ID.ToString();
+                us.PUESTO_IDX = true;
+                us.ID = da.ID;
+                us.IDX = true;
+                us.NOMBRE = da.NOMBRE;
+                us.APELLIDO_P = da.APELLIDO_P;
+                us.APELLIDO_M = da.APELLIDO_M;
+                us.EMAIL = da.EMAIL;
+                us.EMAILX = true;
+                us.SPRAS_ID = da.SPRAS_ID;
+                us.SPRAS_IDX = true;
+                us.PASS = da.PASS;
+
+                //Comprobacion de la asignacion de varios clientes
+                if (cont2 > 0)
+                    if (us.KUNNR != gua[cont2 - 1] && us.BUNIT == "" && us.PUESTO_ID == "" && us.ID == "" && us.NOMBRE == "" && us.APELLIDO_P == "" && us.APELLIDO_M == "" && us.EMAIL == "" && us.SPRAS_ID == "" && us.PASS == "")
+                    {
+                        vus = true;
+                    }
+                //Usuario nuevo
+                if (vus == false)
+                {
+                    ////-------------------------------CLIENTE
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            client[cont2, 0] = us.KUNNR.ToString();
+                            tablas[cont2, 0] = da.KUNNR.ToString();
+                            gua[cont2] = da.KUNNR.ToString();
+                        }
+                    }
+                    else
+                    {
+                        clientes.Add(k);
+                        client[cont2, 0] = us.KUNNR.ToString();
+                        tablas[cont2, 0] = da.KUNNR.ToString();
+                        gua[cont2] = da.KUNNR.ToString();
+                    }
+                    if (!us.KUNNRX)
+                    {
+                        us.KUNNR = us.KUNNR + "?";
+                        messa = cont + ". Error en el cliente<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------COMPANY CODE
+                    SOCIEDAD b = sociedad.Where(x => x.BUKRS.Equals(us.BUNIT)).FirstOrDefault();
+                    if (b == null)
+                    {
+                        b = db.SOCIEDADs.Where(x => x.BUKRS.Equals(us.BUNIT) & x.ACTIVO == true).FirstOrDefault();
+                        if (b == null)
+                            us.BUNITX = false;
+                        else
+                        {
+                            sociedad.Add(b);
+                            tablas[cont2, 1] = da.BUNIT.ToString();
+                        }
+                    }
+                    else
+                    {
+                        sociedad.Add(b);
+                        tablas[cont2, 1] = da.BUNIT.ToString();
+                    }
+                    if (!us.BUNITX)
+                    {
+                        us.BUNIT = us.BUNIT + "?";
+                        messa = messa + cont + ". Error en la sociedad<br/>";
+                        cont++;
+                    }
+                    int pues = 0;
+
+                    ////-------------------------------NIVEL
+                    if (us.PUESTO_ID != null && us.PUESTO_ID != "")
+                        pues = int.Parse(us.PUESTO_ID);
+
+                    PUESTO pi = puesto.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                    if (pi == null)
+                    {
+                        pi = db.PUESTOes.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                        if (pi == null)
+                            us.PUESTO_IDX = false;
+                        else
+                        {
+                            puesto.Add(pi);
+                            tablas[cont2, 2] = da.PUESTO_ID.ToString();
+                        }
+                    }
+                    else
+                    {
+                        puesto.Add(pi);
+                        tablas[cont2, 2] = da.PUESTO_ID.ToString();
+                    }
+                    if (!us.PUESTO_IDX)
+                    {
+                        us.PUESTO_ID = us.PUESTO_ID + "?";
+                        messa = messa + cont + ". Error en el nivel<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------USUARIO ID
+                    var err = ". Error en el ID de usuario<br/>";
+                    if (us.ID == null || us.ID == "")
+                        us.IDX = false;
+                    else if (IDs.Contains(us.ID))
+                        us.IDX = false;
+                    else
+                    {
+                        USUARIO u = db.USUARIOs.Where(xu => xu.ID.Equals(us.ID)).FirstOrDefault();
+                        if (u != null)
+                        {
+                            us.IDX = false;
+                            err = ". Usuario duplicado<br/>";
+                            client[cont2, 1] = us.ID.ToString();
+                            tablas[cont2, 3] = da.ID.ToString();
+                            tablas[cont2, 4] = da.NOMBRE.ToString();
+                            tablas[cont2, 5] = da.APELLIDO_P.ToString();
+                            tablas[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                        else
+                        {
+                            usuarios.Add(u);
+                            IDs[cont2] = us.ID;
+                            client[cont2, 1] = us.ID.ToString();
+                            tablas[cont2, 3] = da.ID.ToString();
+                            tablas[cont2, 4] = da.NOMBRE.ToString();
+                            tablas[cont2, 5] = da.APELLIDO_P.ToString();
+                            tablas[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                    }
+
+                    if (!us.IDX)
+                    {
+                        us.ID = us.ID + "?";
+                        messa = messa + cont + err;
+                        cont++;
+                    }
+
+                    ////-------------------------------EMAIL
+                    if (ComprobarEmail(us.EMAIL) == false)
+                    {
+                        us.EMAILX = false;
+                    }
+                    else
+                        tablas[cont2, 7] = da.EMAIL.ToString();
+                    if (!us.EMAILX)
+                    {
+                        us.EMAIL = us.EMAIL + "?";
+                        messa = messa + cont + ". Error en el correo<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------IDIOMA
+                    if (us.SPRAS_ID == "")
+                    {
+                        us.SPRAS_ID = "ES";
+                        da.SPRAS_ID = us.SPRAS_ID;
+                    }
+                    SPRA si = db.SPRAS.Where(x => x.ID.Equals(us.SPRAS_ID) == true).FirstOrDefault();
+                    if (si == null)
+                    {
+                        us.SPRAS_IDX = false;
+                    }
+                    else
+                    {
+                        tablas[cont2, 8] = da.SPRAS_ID.ToString();
+                        tablas[cont2, 9] = c.Encrypt(da.PASS.ToString());
+                    }
+                    if (!us.SPRAS_IDX)
+                    {
+                        us.SPRAS_ID = us.SPRAS_ID + "?";
+                        messa = messa + cont + ". Error en el idioma<br/>";
+                        cont++;
+                    }
+
+                    da.mess = messa;
+                    us.mess = da.mess;
+                    tablas[cont2, 10] = messa;
+                }
+                //Asignacion de mas clientes
+                else
+                {
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            client[cont2, 0] = us.KUNNR.ToString();
+                        }
+                    }
+                    da.ID = IDs[cont2 - 1];
+                    client[cont2, 1] = da.ID;
+                    us.mess = da.mess;
+                    tablas[cont2, 10] = messa;
+                }
+
+                cont2++;
+
+                uu.Add(us);
+            }
+            
+            JsonResult jl = Json(uu, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        public JsonResult Borrar()
+        {
+            int rowst = (int)Session["rowst"];
+            string[,] tablas = (string[,])Session["tablas"];
+            string[,] client = (string[,])Session["client"];
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+
+            var bor = Request["bor"].Split(',');
+            var cli = Request["cli"];
+            var com = Request["com"];
+            var niv = Request["niv"];
+            var usc = Request["usc"];
+            var nom = Request["nom"];
+            var app = Request["app"];
+            var apm = Request["apm"];
+            var ema = Request["ema"];
+            var idi = Request["idi"];
+            var pas = Request["pas"];
+
+            var rows1 = rowst - bor.Length;
+
+            string[,] compara = new string[rows1, 11];
+            string[,] compara1 = new string[rows1, 2];
+            int j = 0;
+            for (int i = 0; i < rowst; i++)
+            {
+                if (i != int.Parse(bor[i]))
+                {
+                    compara[j, 0] = cli.Split(',')[i];
+                    compara[j, 1] = com.Split(',')[i];
+                    compara[j, 2] = niv.Split(',')[i];
+                    compara[j, 3] = usc.Split(',')[i];
+                    compara[j, 4] = nom.Split(',')[i];
+                    compara[j, 5] = app.Split(',')[i];
+                    compara[j, 6] = apm.Split(',')[i];
+                    compara[j, 7] = ema.Split(',')[i];
+                    compara[j, 8] = idi.Split(',')[i];
+                    compara[j, 9] = pas.Split(',')[i];
+                    j++;
+                }
+            }
+
+            Session["rowst"] = rows1;
+
+            ld = ObjAList2(compara);
+
+            List<Usuarios> uu = new List<Usuarios>();
+            List<USUARIO> usuarios = new List<USUARIO>();
+            List<CLIENTE> clientes = new List<CLIENTE>();
+            List<PUESTO> puesto = new List<PUESTO>();
+            List<SOCIEDAD> sociedad = new List<SOCIEDAD>();
+            int cont2 = 0;
+            string[] gua = new string[rowst];
+            string[] IDs = new string[rowst];
+
+            foreach (DET_AGENTE1 da in ld)
+            {
+                int cont = 1;
+                string messa = "";
+                bool vus = false;
+                Usuarios us = new Usuarios();
+                Cryptography c = new Cryptography();
+
+                us.KUNNR = da.KUNNR;
+                us.KUNNRX = true;
+                us.BUNIT = da.BUNIT;
+                us.BUNITX = true;
+                us.PUESTO_ID = da.PUESTO_ID.ToString();
+                us.PUESTO_IDX = true;
+                us.ID = da.ID;
+                us.IDX = true;
+                us.NOMBRE = da.NOMBRE;
+                us.APELLIDO_P = da.APELLIDO_P;
+                us.APELLIDO_M = da.APELLIDO_M;
+                us.EMAIL = da.EMAIL;
+                us.EMAILX = true;
+                us.SPRAS_ID = da.SPRAS_ID;
+                us.SPRAS_IDX = true;
+                us.PASS = da.PASS;
+
+                //Comprobacion de la asignacion de varios clientes
+                if (cont2 > 0)
+                    if (us.KUNNR != gua[cont2 - 1] && us.BUNIT == "" && us.PUESTO_ID == "" && us.ID == "" && us.NOMBRE == "" && us.APELLIDO_P == "" && us.APELLIDO_M == "" && us.EMAIL == "" && us.SPRAS_ID == "" && us.PASS == "")
+                    {
+                        vus = true;
+                    }
+                //Usuario nuevo
+                if (vus == false)
+                {
+                    ////-------------------------------CLIENTE
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            compara1[cont2, 0] = us.KUNNR.ToString();
+                            compara[cont2, 0] = da.KUNNR.ToString();
+                            gua[cont2] = da.KUNNR.ToString();
+                        }
+                    }
+                    else
+                    {
+                        clientes.Add(k);
+                        compara1[cont2, 0] = us.KUNNR.ToString();
+                        compara[cont2, 0] = da.KUNNR.ToString();
+                        gua[cont2] = da.KUNNR.ToString();
+                    }
+                    if (!us.KUNNRX)
+                    {
+                        us.KUNNR = us.KUNNR + "?";
+                        messa = cont + ". Error en el cliente<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------COMPANY CODE
+                    SOCIEDAD b = sociedad.Where(x => x.BUKRS.Equals(us.BUNIT)).FirstOrDefault();
+                    if (b == null)
+                    {
+                        b = db.SOCIEDADs.Where(x => x.BUKRS.Equals(us.BUNIT) & x.ACTIVO == true).FirstOrDefault();
+                        if (b == null)
+                            us.BUNITX = false;
+                        else
+                        {
+                            sociedad.Add(b);
+                            compara[cont2, 1] = da.BUNIT.ToString();
+                        }
+                    }
+                    else
+                    {
+                        sociedad.Add(b);
+                        compara[cont2, 1] = da.BUNIT.ToString();
+                    }
+                    if (!us.BUNITX)
+                    {
+                        us.BUNIT = us.BUNIT + "?";
+                        messa = messa + cont + ". Error en la sociedad<br/>";
+                        cont++;
+                    }
+                    int pues = 0;
+
+                    ////-------------------------------NIVEL
+                    if (us.PUESTO_ID != null && us.PUESTO_ID != "")
+                        pues = int.Parse(us.PUESTO_ID);
+
+                    PUESTO pi = puesto.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                    if (pi == null)
+                    {
+                        pi = db.PUESTOes.Where(x => x.ID == pues & x.ACTIVO == true).FirstOrDefault();
+                        if (pi == null)
+                            us.PUESTO_IDX = false;
+                        else
+                        {
+                            puesto.Add(pi);
+                            compara[cont2, 2] = da.PUESTO_ID.ToString();
+                        }
+                    }
+                    else
+                    {
+                        puesto.Add(pi);
+                        compara[cont2, 2] = da.PUESTO_ID.ToString();
+                    }
+                    if (!us.PUESTO_IDX)
+                    {
+                        us.PUESTO_ID = us.PUESTO_ID + "?";
+                        messa = messa + cont + ". Error en el nivel<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------USUARIO ID
+                    var err = ". Error en el ID de usuario<br/>";
+                    if (us.ID == null || us.ID == "")
+                        us.IDX = false;
+                    else if (IDs.Contains(us.ID))
+                        us.IDX = false;
+                    else
+                    {
+                        USUARIO u = db.USUARIOs.Where(xu => xu.ID.Equals(us.ID)).FirstOrDefault();
+                        if (u != null)
+                        {
+                            us.IDX = false;
+                            err = ". Usuario duplicado<br/>";
+                            compara1[cont2, 1] = us.ID.ToString();
+                            compara[cont2, 3] = da.ID.ToString();
+                            compara[cont2, 4] = da.NOMBRE.ToString();
+                            compara[cont2, 5] = da.APELLIDO_P.ToString();
+                            compara[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                        else
+                        {
+                            usuarios.Add(u);
+                            IDs[cont2] = us.ID;
+                            compara1[cont2, 1] = us.ID.ToString();
+                            compara[cont2, 3] = da.ID.ToString();
+                            compara[cont2, 4] = da.NOMBRE.ToString();
+                            compara[cont2, 5] = da.APELLIDO_P.ToString();
+                            compara[cont2, 6] = da.APELLIDO_M.ToString();
+                        }
+                    }
+
+                    if (!us.IDX)
+                    {
+                        us.ID = us.ID + "?";
+                        messa = messa + cont + err;
+                        cont++;
+                    }
+
+                    ////-------------------------------EMAIL
+                    if (ComprobarEmail(us.EMAIL) == false)
+                    {
+                        us.EMAILX = false;
+                    }
+                    else
+                        compara[cont2, 7] = da.EMAIL.ToString();
+                    if (!us.EMAILX)
+                    {
+                        us.EMAIL = us.EMAIL + "?";
+                        messa = messa + cont + ". Error en el correo<br/>";
+                        cont++;
+                    }
+
+                    ////-------------------------------IDIOMA
+                    if (us.SPRAS_ID == "")
+                    {
+                        us.SPRAS_ID = "ES";
+                        da.SPRAS_ID = us.SPRAS_ID;
+                    }
+                    SPRA si = db.SPRAS.Where(x => x.ID.Equals(us.SPRAS_ID) == true).FirstOrDefault();
+                    if (si == null)
+                    {
+                        us.SPRAS_IDX = false;
+                    }
+                    else
+                    {
+                        compara[cont2, 8] = da.SPRAS_ID.ToString();
+                        compara[cont2, 9] = c.Encrypt(da.PASS.ToString());
+                    }
+                    if (!us.SPRAS_IDX)
+                    {
+                        us.SPRAS_ID = us.SPRAS_ID + "?";
+                        messa = messa + cont + ". Error en el idioma<br/>";
+                        cont++;
+                    }
+
+                    da.mess = messa;
+                    us.mess = da.mess;
+                    compara[cont2, 10] = messa;
+                }
+                //Asignacion de mas clientes
+                else
+                {
+                    CLIENTE k = clientes.Where(x => x.KUNNR.Equals(us.KUNNR)).FirstOrDefault();
+                    if (k == null)
+                    {
+                        k = db.CLIENTEs.Where(cc => cc.KUNNR.Equals(us.KUNNR) & cc.ACTIVO == true).FirstOrDefault();
+                        if (k == null)
+                            us.KUNNRX = false;
+                        else
+                        {
+                            clientes.Add(k);
+                            compara1[cont2, 0] = us.KUNNR.ToString();
+                        }
+                    }
+                    da.ID = IDs[cont2 - 1];
+                    compara1[cont2, 1] = da.ID;
+                    us.mess = da.mess;
+                    compara[cont2, 10] = messa;
+                }
+
+                cont2++;
+
+                uu.Add(us);
+            }
+            Session["tablas"] = compara;
+            Session["client"] = compara1;
+
+            JsonResult jl = Json(uu, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
+        [HttpPost]
+        public JsonResult Actualizar()
+        {
+            string[,] tablas = (string[,])Session["tablas"];
+            string[,] client = (string[,])Session["client"];
+            int rowst = (int)Session["rowst"];
+            List<DET_AGENTE1> ld = new List<DET_AGENTE1>();
+            int cont = 0;
+
+            ////---------------------------- USUARIO
+            ld = ObjAList2(tablas);
+            foreach (DET_AGENTE1 da in ld)
+            {
+                USUARIO us = new USUARIO();
+
+                if ((da.mess).Contains("Usuario duplicado"))
+                {
+                    if (da.ID != null)
+                    {
+                        us.ID = da.ID;
+                        us.PASS = da.PASS;
+                        us.NOMBRE = da.NOMBRE;
+                        us.APELLIDO_P = da.APELLIDO_P;
+                        us.APELLIDO_M = da.APELLIDO_M;
+                        us.EMAIL = da.EMAIL;
+                        us.SPRAS_ID = da.SPRAS_ID;
+                        us.ACTIVO = true;
+                        us.PUESTO_ID = da.PUESTO_ID;
+                        us.MANAGER = null;
+                        us.BACKUP_ID = null;
+                        us.BUNIT = da.BUNIT;
+
+                        db.Entry(us).State = EntityState.Modified;
+                        db.SaveChanges();
+                        cont++;
+                    }
+                }
+            }
+
+            ////---------------------------- USUARIOF
+            ld = ObjAList3();
+            foreach (DET_AGENTE1 da in ld)
+            {
+                USUARIOF uf = new USUARIOF();
+
+                uf.USUARIO_ID = da.ID;
+                uf.VKORG = da.VKORG;
+                uf.VTWEG = da.VTWEG;
+                uf.SPART = da.SPART;
+                uf.KUNNR = da.KUNNR;
+                uf.ACTIVO = true;
+                uf.USUARIOC_ID = null;
+                uf.FECHAC = DateTime.Today;
+                uf.USUARIOM_ID = null;
+                uf.FECHAM = null;
+
+                db.Entry(uf).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            JsonResult jl = Json(cont, JsonRequestBehavior.AllowGet);
+            return jl;
+        }
+
     }
 }
+

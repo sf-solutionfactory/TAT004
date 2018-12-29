@@ -41,54 +41,93 @@ namespace TAT001.Controllers
                         dz = db.DOCUMENTOAs.Where(x => x.NUM_DOC == de && x.CLASE != "OTR").FirstOrDefault();
                         if (dz == null || dz != null)
                         {
-                            if (dOCUMENTOes[i].TSOL.NEGO==true)//para el ultimo filtro
+                            if (dOCUMENTOes[i].TSOL.NEGO == true)//para el ultimo filtro
                             {
-                                if (dOCUMENTOes[i].ESTATUS_WF == "P")//LEJ 19.07.2018---------------------------I
+                                string estatus = "";
+                                if (dOCUMENTOes[i].ESTATUS != null) { estatus += dOCUMENTOes[i].ESTATUS; } else { estatus += " "; }
+                                if (dOCUMENTOes[i].ESTATUS_C != null) { estatus += dOCUMENTOes[i].ESTATUS_C; } else { estatus += " "; }
+                                if (dOCUMENTOes[i].ESTATUS_SAP != null) { estatus += dOCUMENTOes[i].ESTATUS_SAP; } else { estatus += " "; }
+                                if (dOCUMENTOes[i].ESTATUS_WF != null) { estatus += dOCUMENTOes[i].ESTATUS_WF; } else { estatus += " "; }
+                                if (dOCUMENTOes[i].FLUJOes.Count > 0)
                                 {
-                                    if (dOCUMENTOes[i].FLUJOes.Count > 0)
-                                    {
-                                        if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
-                                        {
-                                            //(Pendiente Validación TS)
-                                            if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
-                                            {
-                                                dx.Add(dOCUMENTOes[i]);
-                                            }
-                                        }
-                                    }
+                                    estatus += dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().WORKFP.ACCION.TIPO;
                                 }
-                                else if (dOCUMENTOes[i].ESTATUS_WF == "R")//(Pendiente Corrección)
+                                else
                                 {
-                                    if (dOCUMENTOes[i].FLUJOes.Count > 0)
-                                    {
-                                        dx.Add(dOCUMENTOes[i]);
-                                    }
+                                    estatus += " ";
                                 }
-                                else if (dOCUMENTOes[i].ESTATUS_WF == "T")//(Pendiente Taxeo)
+                                if (dOCUMENTOes[i].TSOL.PADRE) { estatus += "P"; } else { estatus += " "; }
+                                if (dOCUMENTOes[i].FLUJOes.Where(x => x.ESTATUS == "R").ToList().Count > 0)
                                 {
-                                    if (dOCUMENTOes[i].TSOL_ID == "NCIA")
-                                    {
-                                        if (dOCUMENTOes[i].PAIS_ID == "CO")//(sólo Colombia)
-                                        {
-                                            dx.Add(dOCUMENTOes[i]);
-                                        }
-                                    }
+                                    estatus += dOCUMENTOes[i].FLUJOes.Where(x => x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID;
                                 }
-                                else if (dOCUMENTOes[i].ESTATUS_WF == "A")//(Por Contabilizar)
+                                else
                                 {
-                                    if (dOCUMENTOes[i].ESTATUS == "P")
-                                    {
-                                        dx.Add(dOCUMENTOes[i]);
-                                    }
+                                    estatus += " ";
                                 }
-                                else if (dOCUMENTOes[i].ESTATUS_SAP == "E")//Error en SAP
-                                {
-                                    // dx.Add(dOCUMENTOes[i]);
-                                }
-                                else if (dOCUMENTOes[i].ESTATUS_SAP == "X")//Succes en SAP
-                                {
+
+                                if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[P][R].."))
                                     dx.Add(dOCUMENTOes[i]);
-                                }
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[R]..[8]"))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "[P]..[A]..."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[P][A]..."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "..[E][A]..."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A].[P]."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[A]..."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                else if (System.Text.RegularExpressions.Regex.IsMatch(estatus, "...[T]..."))
+                                    dx.Add(dOCUMENTOes[i]);
+                                //if (dOCUMENTOes[i].ESTATUS_WF == "P")//LEJ 19.07.2018---------------------------I
+                                //{
+                                //    if (dOCUMENTOes[i].FLUJOes.Count > 0)
+                                //    {
+                                //        if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO != null)
+                                //        {
+                                //            //(Pendiente Validación TS)
+                                //            if (dOCUMENTOes[i].FLUJOes.OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID == 8)
+                                //            {
+                                //                dx.Add(dOCUMENTOes[i]);
+                                //            }
+                                //        }
+                                //    }
+                                //}
+                                //else if (dOCUMENTOes[i].ESTATUS_WF == "R")//(Pendiente Corrección)
+                                //{
+                                //    if (dOCUMENTOes[i].FLUJOes.Count > 0)
+                                //    {
+                                //        dx.Add(dOCUMENTOes[i]);
+                                //    }
+                                //}
+                                //else if (dOCUMENTOes[i].ESTATUS_WF == "T")//(Pendiente Taxeo)
+                                //{
+                                //    if (dOCUMENTOes[i].TSOL_ID == "NCIA")
+                                //    {
+                                //        if (dOCUMENTOes[i].PAIS_ID == "CO")//(sólo Colombia)
+                                //        {
+                                //            dx.Add(dOCUMENTOes[i]);
+                                //        }
+                                //    }
+                                //}
+                                //else if (dOCUMENTOes[i].ESTATUS_WF == "A")//(Por Contabilizar)
+                                //{
+                                //    if (dOCUMENTOes[i].ESTATUS == "P")
+                                //    {
+                                //        dx.Add(dOCUMENTOes[i]);
+                                //    }
+                                //}
+                                //else if (dOCUMENTOes[i].ESTATUS_SAP == "E")//Error en SAP
+                                //{
+                                //    // dx.Add(dOCUMENTOes[i]);
+                                //}
+                                //else if (dOCUMENTOes[i].ESTATUS_SAP == "X")//Succes en SAP
+                                //{
+                                //    dx.Add(dOCUMENTOes[i]);
+                                //}
                             }
                             //LEJ 19.07.2018----------------------------------------------------------------T
                             // dx.Add(dOCUMENTOes[i]);
@@ -135,7 +174,8 @@ namespace TAT001.Controllers
                     ViewBag.idf = _idN;
                     ViewBag.vk = vkorg;
                     ViewBag.vtw = vtweg;
-                    ViewBag.clCorreo2 = correo.Replace('@','/').Replace('.','*').Replace('-','#');
+                    ViewBag.clCorreo2 = correo.Replace('@', '/').Replace('.', '*').Replace('-', '#');
+                    ViewBag.spras = cl.SPRAS;
                 }
             }
             catch (Exception e)

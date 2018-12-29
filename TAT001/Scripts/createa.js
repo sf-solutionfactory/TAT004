@@ -6,13 +6,14 @@ $('body').on('keydown.autocomplete', '.input_material', function () {
     var vt = '50';
     vt = document.getElementById("txt_vtweg").value;
     var sp = 'ES';
+    
     sp = document.getElementById("txt_spras").value;
     auto(this).autocomplete({
         source: function (request, response) {
             auto.ajax({
                 type: "POST",
-                url: 'materiales',//Anterior
-                //url: '../Listas/materiales',
+                //url: 'materiales',//Anterior
+                url: '../Listas/materiales',
                 dataType: "json",
                 data: { "Prefix": request.term, vkorg: vk, vtweg: vt, spras: sp },
                 success: function (data) {
@@ -51,16 +52,56 @@ function trimStart(character, string) {//RSG 07.06.2018
 
     return string.substr(startIndex);
 }
+//function allowAddrow(table)
+//{
+//    var index = getIndex();
+//    var forMat = 3;
+//    var mat2 = ('#table_dis').find('tr').find('>td:eq(' + forMat + ')');
+//    console.log(mat2);
+//    if (!unica) {
 
+//        var addedRow = addRowMat(t, "", "", "", "", "", "", "", "", "", "", "", relacionada, relacionadaed, reversa, ddate, adate, "", "");
+//        $('#table_dis').css("font-size", "12px");
+//        $('#table_dis').css("display", "table");
+//        t.column(0).visible(false);
+//        t.column(1).visible(false);
+//    }
+//    else if (unica)
+//    {
+//        M.toast({ html: 'Uno de los materiales no se puede mezclar con otros' });
+//        tr.find('td').eq((5 + index)).addClass("errorMaterial");
+//    }
+
+//}
 function selectMaterial(val, desc, tr) {
     var index = getIndex();
+    var cat = getCategoria(val);    
     desc = $.trim(desc);
+    if (index == -2) {
+        unica1 = false;
+        if (cat.UNICA)
+        {
+            tr.addClass("unica");
+            M.toast({ html: cat.TXT50 + ' Advertencia este material es único' });
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            //Descripción
+            tr.find("td:eq(" + (7 + index) + ")").text(desc);
+        }
+        if (!cat.UNICA)
+        {
+            tr.addClass("nounica");
+            tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
+            //Descripción
+            tr.find("td:eq(" + (7 + index) + ")").text(desc);
+        }
 
+    } else { 
     //Add MGC B20180705 2018.07.09 Validar que los materiales no existan duplicados en la tabla
-    var matExist = valmaterial(val);
-
+    var matExist = valMaterial(val);
+   
     //Categoría
     var cat = getCategoria(val);
+
     tr.find("td:eq(" + (6 + index) + ")").text(cat.TXT50);
     //Descripción
     tr.find("td:eq(" + (7 + index) + ")").text(desc);
@@ -72,6 +113,7 @@ function selectMaterial(val, desc, tr) {
         tr.find('td').eq((5 + index)).addClass("errorMaterial");
     } else {
         tr.find('td').eq((5 + index)).removeClass("errorMaterial");
+    }
     }
 }
 

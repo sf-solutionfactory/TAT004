@@ -12,15 +12,17 @@ $(document).ready(function () {
     var elem = document.querySelector('.modal');
     var instance = M.Modal.init(elem, []);
     try {
+        var spras = sessionStorage.getItem("spras");
         var table = $('#table').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -42,15 +44,17 @@ $(document).ready(function () {
 
     }
     try {
+        var spras = sessionStorage.getItem("spras");
         var table2 = $('#table2').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -73,6 +77,7 @@ $(document).ready(function () {
 
     }
     try {
+        var spras = sessionStorage.getItem("spras");
         var table3 = $('#table3').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
@@ -82,7 +87,7 @@ $(document).ready(function () {
                 //info: "Página _PAGE_ de _PAGES_",
                 //infoEmpty: "No hay datos",
                 //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
-                "url": "../Scripts/lang/@Session["spras"].ToString()"+ ".json"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -96,6 +101,7 @@ $(document).ready(function () {
 
     }
     $('#formulario ').submit(function (e) {
+
         var value = $(document.activeElement).val();
         if ($(document.activeElement).val() == 'Cargar') {
             var concatValorS = 0;
@@ -187,6 +193,18 @@ $(document).ready(function () {
             document.getElementById("loader").style.display = "initial";
         }
     });
+    $('#formulario2').submit(function (e) {
+        if ($(document.activeElement).val() === 'Guardar SAP' && acept === false) {
+            $('#mensaje').text("¿Desea añadir el presupuesto o reemplazar el existente?");
+            $('#footer').html('<a id="remp" class="modal-action modal-close waves-effect waves-green btn-flat">Reemplazar</a>' +
+                ' <a id="agreg" class="modal-action modal-close waves-effect waves-red btn-flat">Agregar</a>');
+            $('#dialogo').trigger('click');
+            e.preventDefault();
+        } else if ($(document.activeElement).val() === 'Cancelar') {
+            document.getElementById("loader").style.display = "initial";
+        }
+    });
+
     $('select').select();
     $(".f > .select-wrapper > .select-dropdown").prepend(
         '<li style="display:none" class="toggle selectnone"><span><label></label>Select none</span></li>'

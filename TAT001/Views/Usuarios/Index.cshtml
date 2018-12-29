@@ -12,6 +12,7 @@
     <div class="col s12 right-align">
         <a class="btn-small" href="@Url.Action("Create")">Nuevo</a>
         @*<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Nuevo</a>*@
+        <a class="btn-small" href="@Url.Action("Carga")">Cargar Usuarios</a>
         <a class="btn-small" href="@Url.Action("Carga", "Flujos")">Cargar flujo</a>
     </div>
 </div>
@@ -35,7 +36,7 @@
         <script>
             var elem = document.querySelector('select');
             var options = [];
-            var instance = M.Select.init(elem, options);
+            var instance = M.FormSelect.init(elem, options);
         </script>
         <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
@@ -100,6 +101,7 @@
                                 </td>*@
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+
                                 @*@Html.ActionLink("Details", "Details", new { id = item.ID }) |*@
                                 @Html.ActionLink("Delete", "Delete", new { id = item.ID })
                             </td>

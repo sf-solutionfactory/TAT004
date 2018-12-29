@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -19,6 +19,7 @@ namespace TAT001.Controllers
     {
         private TAT001Entities db = new TAT001Entities();
 
+        // GET: Solicitudes
         [Authorize]
         public ActionResult Index(string id)
         {
@@ -76,83 +77,151 @@ namespace TAT001.Controllers
                 {
                     ViewBag.ERROR_FILES = "";
                 }
-            }
 
 
-            string us = "";
-            DateTime fecha = DateTime.Now.Date;
-            List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
+                string us = "";
+                DateTime fecha = DateTime.Now.Date;
+                List<TAT001.Entities.DELEGAR> del = db.DELEGARs.Where(a => a.USUARIOD_ID.Equals(User.Identity.Name) & a.FECHAI <= fecha & a.FECHAF >= fecha & a.ACTIVO == true).ToList();
 
-            if (del.Count > 0)
-            {
-                List<USUARIO> users = new List<USUARIO>();
-                foreach (DELEGAR de in del)
+                if (del.Count > 0)
                 {
-                    users.Add(de.USUARIO);
-                }
-                users.Add(ViewBag.usuario);
-                ViewBag.delegados = users.ToList();
+                    List<USUARIO> users = new List<USUARIO>();
+                    foreach (DELEGAR de in del)
+                    {
+                        users.Add(de.USUARIO);
+                    }
+                    users.Add(ViewBag.usuario);
+                    ViewBag.delegados = users.ToList();
 
-                if (id != null)
-                    us = id;
+                    if (id != null)
+                        us = id;
+                    else
+                        us = User.Identity.Name;
+                    ViewBag.usuariod = us;
+                }
                 else
                     us = User.Identity.Name;
-                ViewBag.usuariod = us;
-            }
-            else
-                us = User.Identity.Name;
+
+                List<CSP_DOCUMENTOSXUSER_Result> dOCUMENTOes = db.CSP_DOCUMENTOSXUSER(us, user.SPRAS_ID).ToList();
+
+                //dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
+                //dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
+                //ViewBag.Clientes = db.CLIENTEs.ToList();
+                //ViewBag.Cuentas = db.CUENTAs.ToList();
+                //ViewBag.DOCF = db.DOCUMENTOFs.ToList();
+                //jemo inicio 4/07/2018
+                ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
 
 
-            var dOCUMENTOes = db.DOCUMENTOes.Where(a => a.USUARIOC_ID.Equals(us) | a.USUARIOD_ID.Equals(us)).Include(d => d.TALL).Include(d => d.TSOL).Include(d => d.USUARIO).Include(d => d.CLIENTE).Include(d => d.PAI).Include(d => d.SOCIEDAD).ToList();
-            var dOCUMENTOVs = db.DOCUMENTOVs.Where(a => a.USUARIOA_ID.Equals(us)).ToList();
-            var tsol = db.TSOLs.ToList();
-            var tall = db.TALLs.ToList();
-            foreach (DOCUMENTOV v in dOCUMENTOVs)
-            {
-                DOCUMENTO d = new DOCUMENTO();
-                var ppd = d.GetType().GetProperties();
-                var ppv = v.GetType().GetProperties();
-                foreach (var pv in ppv)
+                List<Documento> listaDocs = new List<Documento>();
+                foreach (CSP_DOCUMENTOSXUSER_Result item in dOCUMENTOes)
                 {
-                    foreach (var pd in ppd)
+                    Documento ld = new Documento();
+                    ld.BUTTON = item.BUTTON;
+
+                    ld.NUM_DOC = item.NUM_DOC;
+                    ld.NUM_DOC_TEXT = item.NUM_DOC_TEXT;
+                    ld.SOCIEDAD_ID = item.SOCIEDAD_ID;
+                    ld.PAIS_ID = item.PAIS_ID;
+                    ld.FECHADD = item.FECHAD.Value.Day + "/" + item.FECHAD.Value.Month + "/" + item.FECHAD.Value.Year;
+                    ld.FECHAD = item.FECHAD.Value.Year + "/" + item.FECHAD.Value.Month + "/" + item.FECHAD.Value.Day;
+                    ld.HORAC = item.HORAC.Value.ToString().Split('.')[0];
+                    ld.PERIODO = item.PERIODO + "";
+
+                    if (item.ESTATUS == "R")
                     {
-                        if (pd.Name == pv.Name)
-                        {
-                            pd.SetValue(d, pv.GetValue(v));
-                            break;
-                        }
+                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) +
+                                        db.FLUJOes.Where(x => x.NUM_DOC == item.NUM_DOC & x.ESTATUS == "R").OrderByDescending(a => a.POS).FirstOrDefault().USUARIO.PUESTO_ID +
+                                        item.ESTATUSS.Substring(6, 1);
                     }
+                    else
+                    {
+                        item.ESTATUSS = item.ESTATUSS.Substring(0, 6) + " " + item.ESTATUSS.Substring(6, 1); ;
+                    }
+                    Estatus e = new Estatus();
+                    ld.ESTATUS = e.getText(item.ESTATUSS, ld.NUM_DOC);
+                    ld.ESTATUS_CLASS = e.getClass(item.ESTATUSS, ld.NUM_DOC);
+                    //ld.ESTATUS = e.getText(item.ESTATUSS);
+                    //ld.ESTATUS_CLASS = e.getClass(item.ESTATUSS);
+
+                    ld.PAYER_ID = item.PAYER_ID;
+
+                    ld.CLIENTE = item.NAME1;
+                    ld.CANAL = item.CANAL;
+                    ld.TSOL = item.TXT020;
+                    ld.TALL = item.TXT50;
+                    //foreach (CUENTA cuenta in db.CUENTAs.Where(x => x.SOCIEDAD_ID.Equals(item.SOCIEDAD_ID)).ToList())
+                    //{
+                    //    if (item.TALL != null)
+                    //    {
+                    //        if (cuenta.TALL_ID == item.TALL.ID)
+                    //        {
+                    //            ld.CUENTAS = cuenta.CARGO.ToString();
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+                    try
+                    {
+                        ld.CUENTAS = item.CARGO + "";
+                    }
+                    catch { }
+                    ld.CONCEPTO = item.CONCEPTO;
+                    ld.MONTO_DOC_ML = item.MONTO_DOC_MD + "";
+
+                    ld.FACTURA = item.FACTURA;
+                    ld.FACTURAK = item.FACTURAK;
+
+                    ld.USUARIOC_ID = item.USUARIOD_ID;
+
+                    if (item.DOCUMENTO_SAP != null)
+                    {
+                        if (item.PADRE)
+                        {
+                            ld.NUM_PRO = item.DOCUMENTO_SAP;
+                            ld.NUM_AP = "";
+                            ld.NUM_NC = "";
+                            ld.NUM_REV = "";
+                        }
+                        else if (item.REVERSO)
+                        {
+                            ld.NUM_REV = item.DOCUMENTO_SAP;
+                            ld.NUM_AP = "";
+                            ld.NUM_NC = "";
+                            ld.NUM_PRO = "";
+                        }
+                        else
+                        {
+                            ld.NUM_NC = item.DOCUMENTO_SAP;
+                            ld.NUM_AP = "";
+                            ld.NUM_PRO = "";
+                            ld.NUM_REV = "";
+                        }
+                        //<!--NUM_SAP-->
+                        ld.BLART = item.BLART;
+                        ld.NUM_PAYER = item.KUNNR;
+                        ld.NUM_CLIENTE = item.DESCR;
+                        ld.NUM_IMPORTE = item.IMPORTE + "";
+                        ld.NUM_CUENTA = item.CUENTA_C;
+                    }
+                    else
+                    {
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                        //<td></td>
+                    }
+
+                    listaDocs.Add(ld);
                 }
-                d.TSOL = tsol.Where(a => a.ID.Equals(d.TSOL_ID)).FirstOrDefault();
-                d.TALL = tall.Where(a => a.ID.Equals(d.TALL_ID)).FirstOrDefault();
-                //d.ESTADO = db.STATES.Where(a => a.ID.Equals(v.ESTADO)).FirstOrDefault().NAME;
-                //d.CIUDAD = db.CITIES.Where(a => a.ID.Equals(v.CIUDAD)).FirstOrDefault().NAME;
-                //dOCUMENTOes.Add(d);
-                d.FLUJOes = db.FLUJOes.Where(a => a.NUM_DOC.Equals(d.NUM_DOC)).ToList();
-                dOCUMENTOes.Add(d);
+                return View(listaDocs);
+
             }
-            dOCUMENTOes = dOCUMENTOes.Distinct(new DocumentoComparer()).ToList();
-            dOCUMENTOes = dOCUMENTOes.OrderByDescending(a => a.FECHAC).OrderByDescending(a => a.NUM_DOC).ToList();
-            ViewBag.Clientes = db.CLIENTEs.ToList();
-            ViewBag.Cuentas = db.CUENTAs.ToList();
-            ViewBag.DOCF = db.DOCUMENTOFs.ToList();
-            //jemo inicio 4/07/2018
-            ViewBag.imgnoticia = db.NOTICIAs.Where(x => x.FECHAI <= DateTime.Now && x.FECHAF >= DateTime.Now && x.ACTIVO == true).Select(x => x.PATH).FirstOrDefault();
-            //jemo inicio 4/07/2018
-
-            //List<DOCUMENTO> docs = new List<DOCUMENTO>();
-            //foreach(DOCUMENTO d in dOCUMENTOes)
-            //{
-            //    docs = d;
-            //}
-            //JsonResult cc = Json(dOCUMENTOes.ToList(), JsonRequestBehavior.AllowGet);
-            //string json = new JavaScriptSerializer().Serialize(cc.Data);
-            //ViewBag.documentos =  json;
-
-            ////Recurrente r = new Recurrente();
-            ////int ii = r.creaRecurrente("1000000491", "PR");
-            return View(dOCUMENTOes);
-
         }
         [HttpGet]
         public ActionResult SelPais(string pais, string returnUrl)
@@ -161,6 +230,11 @@ namespace TAT001.Controllers
 
             return Redirect(returnUrl);
             //return View();
+        }
+        [HttpGet]
+        public ActionResult About()
+        {
+            return View();
         }
 
         [Authorize]
@@ -188,12 +262,20 @@ namespace TAT001.Controllers
                 //        & C.ID == u & C.ACTIVO == true
                 //        select P;
 
-                //flujo2
-                var p = from P in db.PAIS.ToList()
-                        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
-                        on P.LAND equals C.PAIS_ID
+                ////flujo2
+                //var p = from P in db.PAIS.ToList()
+                //        join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == u & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                //        on P.LAND equals C.PAIS_ID
+                //        where P.ACTIVO == true
+                //        select P;
+                //flujo3
+                var p = (from P in db.PAIS.ToList()
+                        join C in db.CLIENTEs.Where(x => x.ACTIVO == true).ToList()
+                        on P.LAND equals C.LAND
+                        join U in db.USUARIOFs.Where(x => x.USUARIO_ID == u & x.ACTIVO == true)
+                        on new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR } equals new { U.VKORG, U.VTWEG, U.SPART, U.KUNNR }
                         where P.ACTIVO == true
-                        select P;
+                        select  P).DistinctBy(x=>x.LAND);
 
                 List<Delegados> delegados = new List<Delegados>();
                 DateTime fecha = DateTime.Now.Date;
@@ -206,11 +288,18 @@ namespace TAT001.Controllers
                     //          where P.ACTIVO == true
                     //          & C.ID == de.USUARIO_ID & C.ACTIVO == true
                     //          select P).ToList();
+                    //var pd = (from P in db.PAIS.ToList()
+                    //          join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == de.USUARIO_ID & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
+                    //          on P.LAND equals C.PAIS_ID
+                    //          where P.ACTIVO == true
+                    //          select P).ToList();
                     var pd = (from P in db.PAIS.ToList()
-                              join C in (db.DET_AGENTEC.Where(C => C.USUARIOC_ID == de.USUARIO_ID & C.ACTIVO == true & C.POS == 1).DistinctBy(a => a.PAIS_ID).ToList())
-                              on P.LAND equals C.PAIS_ID
+                              join C in db.CLIENTEs.Where(x => x.ACTIVO == true).ToList()
+                              on P.LAND equals C.LAND
+                              join U in db.USUARIOFs.Where(x => x.USUARIO_ID == de.USUARIO_ID & x.ACTIVO == true)
+                              on new { C.VKORG, C.VTWEG, C.SPART, C.KUNNR } equals new { U.VKORG, U.VTWEG, U.SPART, U.KUNNR }
                               where P.ACTIVO == true
-                              select P).ToList();
+                              select P).DistinctBy(x => x.LAND).ToList();
 
                     Delegados delegado = new Delegados();
                     delegado.usuario = de.USUARIO_ID;
@@ -223,6 +312,8 @@ namespace TAT001.Controllers
                     ViewBag.delegados = delegados;
 
                 ViewBag.returnUrl = returnUrl;
+
+
                 return View(p.ToList());
             }
             //return View();

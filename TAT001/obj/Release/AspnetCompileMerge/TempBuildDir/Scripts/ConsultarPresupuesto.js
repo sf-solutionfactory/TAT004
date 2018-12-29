@@ -1,4 +1,5 @@
 ﻿//$(document).ready(function () {
+var ban = true;
 function jsConsulta(idioma) {
     var arrFiltr = ['canalFltr', 'totCanFltr', 'bannerFltr', 'totBannerFltr', 'periodoFltr', 'VVX17Fltr', 'CSHDCFltr', 'RECUNFltr', 'DSTRBFltr', 'OTHTAFltr', 'ADVERFltr', 'CORPMFltr', 'POPFltr', 'PMVARFltr', 'CONPRFltr', 'RSRDVFltr', 'SPAFltr', 'FREEGFltr', 'ALLBFltr', 'ALLFFltr', 'PROCESOFltr', 'consumidoFltr', 'disponibleFltr'];
     var ids = ['id']
@@ -94,13 +95,18 @@ function jsConsulta(idioma) {
                         console.log(e);
                     }
                 }
-                $("select").select();
-                $(".f > .select-wrapper > .select-dropdown").prepend(
-                    '<li class="toggle selectnone"><span><label></label>Select none</span></li>'
-                );
-                $(".f > .select-wrapper > .select-dropdown").prepend(
-                    '<li class="toggle selectall"><span><label></label>Select all</span></li>'
-                );
+                $("[name=filtro]").select();
+
+                //if (ban) {
+                    $(".f > .select-wrapper > .select-dropdown").prepend(
+                        '<li class="toggle selectnone"><span><label></label>Ninguno</span></li>'
+                    );
+                    $(".f > .select-wrapper > .select-dropdown").prepend(
+                        '<li class="toggle selectall"><span><label></label>Todo</span></li>'
+                    );
+
+                    ban = !ban;
+                //}
                 $(".f > .select-wrapper > .select-dropdown .selectall").on(
                     "click",
                     function () {
@@ -336,6 +342,7 @@ function jsConsulta(idioma) {
     $(".f > .select-wrapper > .select-dropdown").prepend(
         '<li class="toggle selectall"><span><label></label>Select all</span></li>'
     );
+
     $(".f > .select-wrapper > .select-dropdown .selectall").on(
         "click",
         function () {
@@ -384,11 +391,69 @@ function jsConsulta(idioma) {
             //$('[name="filtro"]').trigger('change');
         }
     );
+    if ($(".g option:selected").length) {
+        $(".g > .select-wrapper > .select-dropdown").prepend(
+            '<li  class="toggle selectnone"><span><label></label>Ninguno</span></li>'
+        );
+        $(".g > .select-wrapper > .select-dropdown").prepend(
+            '<li style="display:none" class="toggle selectall"><span><label></label>Todos</span></li>'
+        );
+    } else {
+        $(".g > .select-wrapper > .select-dropdown").prepend(
+            '<li style="display:none" class="toggle selectnone"><span><label></label>Ninguno</span></li>'
+        );
+        $(".g > .select-wrapper > .select-dropdown").prepend(
+            '<li  class="toggle selectall"><span><label></label>Todos</span></li>'
+        );
+    }
+    
+    $(".g > .select-wrapper > .select-dropdown .selectall").on(
+        "click",
+        function () {
+            var id = '[name=' + $(this).parent().parent().parent().attr('name') + ']';
+            $(id + ' option:not(:disabled)')
+                .not(':selected')
+                .prop('selected', true);
+
+            $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:not(:checked)'
+            )
+                .not(':disabled')
+                .prop('checked', 'checked');
+            //$('.dropdown-content.multiple-select-dropdown input[type='checkbox']:not(:checked)').not(':disabled').trigger('click');
+            var values = $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:checked')
+                .not(':disabled')
+                .parent()
+                .map(function () {
+                    return $(this).text();
+                })
+                .get();
+            $(id + ' input.select-dropdown').val(values.join(', '));
+            $(id + '> .select-wrapper > .select-dropdown .toggle').toggle();
+        }
+    );
+    $(".g > .select-wrapper > .select-dropdown .selectnone").on(
+        "click",
+        function () {
+            var id = '[name=' + $(this).parent().parent().parent().attr('name') + ']';
+            $(id + ' option:selected')
+                .not(':disabled')
+                .prop('selected', false);
+            $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:checked')
+                .not(':disabled')
+                .prop('checked', '');
+            //$('.dropdown-content.multiple-select-dropdown input[type='checkbox']:checked').not(':disabled').trigger('click');
+            var values = $(id + ' .dropdown-content.multiple-select-dropdown input[type="checkbox"]:disabled')
+                .parent()
+                .text();
+            $(id + ' input.select-dropdown').val(values);
+            $(id + ' > .select-wrapper > .select-dropdown .toggle').toggle();
+        }
+    );
     $('th').css({
         'text-align': 'center',
     });
     //'width': '350px'});//porque no se deja de otra forma
-    $('td').css('text-align', 'center');
+    //$('td').css('text-align', 'center');
 
-//});
+    //});
 }

@@ -572,7 +572,8 @@
                                         htmlAttributes = new
                                         {
                                             @disabled = "disabled",
-                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; "
+                                            @style = "color: rgba(0, 0, 0, 1.0);background-color: transparent;border: none;border-bottom: 1px dotted rgba(0, 0, 0, 1.0);border-radius: 0;outline: none;height: 50px;width: 100%;font-size: 16px;margin: 0 0 8px 0;padding: 0; ",
+                                            @class = "precio"
                                         }
                                     })
                                     </div>
@@ -630,7 +631,7 @@
                                 {
                                     <tr style="border-bottom: 1px solid rgba(0, 0, 0, 0.12);">
                                         <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.USUARIOA_ID) - @Html.DisplayFor(modelItem => f.USUARIO.NOMBRE) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_P) @Html.DisplayFor(modelItem => f.USUARIO.APELLIDO_M)</td>
-                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.DESCCRIPCION)</td>
+                                        <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.WORKFP.ACCION.ACCIONTs.Where(a => a.SPRAS_ID == Session["spras"].ToString()).FirstOrDefault().TXT050)</td>
                                         <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.FECHAC)</td>
                                         <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.FECHAM)</td>
                                         <td style="padding: 15px 5px;display: table-cell;text-align: left;vertical-align: middle;border-radius: 2px;">@Html.DisplayFor(modelItem => f.ESTATUS)</td>
@@ -649,5 +650,4 @@
 <style type="text/css">
 </style>
 
-    </table>
-</div>
+<script src="~/Scripts/formatos.js"></script>

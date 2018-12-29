@@ -12,10 +12,31 @@
     <title>@ViewBag.Title - TAT 2.0</title>
     @Styles.Render("~/Content/materialize")
     @Scripts.Render("~/bundles/materialize")
+    <script>
+        function EnterKeyFilter() {
+            var enter = window.event.target.id;
+            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
+                if (window.event.keyCode == 13) {
+                    event.returnValue = false;
+                    event.cancel = true;
+                }
+            }
+        }
+    </script>
 </head>
-<body onkeydown="javascript:EnterKeyFilter();" style="background-color:#f4f4f4;">
+@{
+    string filter = "javascript:EnterKeyFilter()";
+    if (ViewBag.enter != null)
+    {
+        if (ViewBag.enter == true)
+        {
+            filter = "";
+        }
+    }
+}
+<body onkeydown="@filter" style="background-color:#f4f4f4;">
     <div style="width:100%;height:100%;z-index:999;display:none;position:fixed;padding:0;
-                margin:0;top:0;left:0;;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
+                margin:0;top:0;left:0;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
         <div style="padding-left:50%;padding-top:20%;">
             <div class="preloader-wrapper big active">
                 <div class="spinner-layer spinner-blue-only">
@@ -42,7 +63,7 @@
                         if (ViewBag.pais != ".png" & ViewBag.pais != null & ViewBag.pais != "")
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
@@ -50,7 +71,7 @@
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="button" id="imgPais" class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
@@ -76,7 +97,7 @@
             </div>
         </li>
         <li>
-            <a id="cerrar-menu" href="#!" data-target="slide-out" class="sidenav-close pink darken-1" onclick="cerrar();"><i class="material-icons right white-text" style="margin: 0; font-size: 1.3rem;">menu</i></a>
+            <a id="cerrar-menu" href="javascript:cerrar();" data-target="slide-out" class="sidenav-close pink darken-1" onclick=""><i class="material-icons right white-text" style="margin: 0; font-size: 1.3rem;">menu</i></a>
         </li>
         <li>
             <div class="user-view" style="padding: 0">
@@ -138,14 +159,38 @@
                                             {
                                                 if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
                                                 {
-                                                    <li class="active"><a href='@Url.Action(p.PAGINA_URL,c.URL)'>@p.TXT50</a></li>
-                                                }
-                                                else
-                                                {
-                                                    <li><a href="@Url.Action(p.PAGINA_URL,c.URL)">@p.TXT50</a></li>
-                                                }
-                                            }
+                                                    ////////DRS 26.09.18//////
+                                                    <li class="active">
+                                                        <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                                font-size: 11px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href='@Url.Action(p.PAGINA_URL,c.URL)'>@p.TXT50</a>
+                                            </li>
                                         }
+                                        else
+                                        {
+                                            ////////DRS 26.09.18//////
+                                            <li>
+                                                <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                                font-size: 11px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href="@Url.Action(p.PAGINA_URL,c.URL)">@p.TXT50</a>
+                                            </li>
+                                        }
+                                    }
+                                }
                                     </ul>
                                 </div>
                             </li>
@@ -156,28 +201,114 @@
                             <li class='bold'>
                                 <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
                                 <div class='collapsible-body'>
-                                    <ul>
+                                    <ul class="collapsible" data-collapsible="accordion">
                                         @foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
                                         {
                                             if (c.ID.Equals(p.CARPETA_ID))
                                             {
-                                                <li><a href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a></li>
-
-                                            }
+                                                ////////DRS 26.09.18//////
+                                                <li>
+                                                    <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                                font-size: 11px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a>
+                                            </li>
+                                            @*<li class="bold">
+                                                    <a class="collapsible-header">
+                                                        <span class="nav-text">Second level child</span>
+                                                        <i class="material-icons">keyboard_arrow_right</i>
+                                                    </a>
+                                                    <div class="collapsible-body" style="display: block;">
+                                                        <ul>
+                                                            <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                                            <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>*@
                                         }
+                                    }
                                     </ul>
                                 </div>
                             </li>
                         }
                     }
                 }
+
+
             </ul>
         </li>
+        @*<li class="no-padding">
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li class="bold">
+                        <a class="collapsible-header waves-effect waves-cyan">
+                            <i class="material-icons">photo_filter</i>
+                            <span class="nav-text">Menu Levels</span>
+                        </a>
+                        <div class="collapsible-body" style="display: block;">
+                            <ul class="collapsible" data-collapsible="accordion">
+                                <li>
+                                    <a href="ui-basic-buttons.html">
+                                        <i class="material-icons">keyboard_arrow_right</i>
+                                        <span>Second level</span>
+                                    </a>
+                                </li>
+                                <li class="bold">
+                                    <a class="collapsible-header waves-effect waves-cyan">
+                                        <i class="material-icons">keyboard_arrow_right</i>
+                                        <span class="nav-text">Second level child</span>
+                                    </a>
+                                    <div class="collapsible-body" style="display: block;">
+                                        <ul class="collapsible" data-collapsible="accordion">
+                                            <li>
+                                                <a href="ui-basic-buttons.html">
+                                                    <i class="material-icons">keyboard_arrow_right</i>
+                                                    <span>Third level</span>
+                                                </a>
+                                            </li>
+                                            <li class="bold">
+                                                <a class="collapsible-header waves-effect waves-cyan">
+                                                    <i class="material-icons">keyboard_arrow_right</i>
+                                                    <span class="nav-text">Third level child</span>
+                                                </a>
+                                                <div class="collapsible-body" style="display: block;">
+                                                    <ul class="collapsible" data-collapsible="accordion">
+                                                        <li>
+                                                            <a href="ui-basic-buttons.html">
+                                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                                <span>Forth level</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="ui-extended-buttons.html">
+                                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                                <span>Forth level</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>*@
     </ul>
+    <script>
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, []);</script>
     @*@RenderSection("noticia")
 
-    <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
-    </div>*@
+        <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
+        </div>*@
     @*<div id="container" class="container body-content">
         </div>*@
     <div class="row" style="margin-bottom:0;">
@@ -200,7 +331,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - TAT 2.0</p>
+            <p>&copy; @DateTime.Now.Year/09/05 - <a href="@Url.Action("About","Home")">TAT 2.0</a></p>
         </footer>
     </div>
     @using TAT001.Entities;
@@ -229,11 +360,14 @@
         {
             <script>
                 try {
-                    var elem = document.getElementById("@t.CAMPO_ID").innerHTML = "@t.TEXTOS";
+                    var elem = document.getElementById("@t.CAMPO_ID");
+                    if (elem.nodeName != 'INPUT' & elem.nodeName != 'SELECT' & elem.nodeName != 'TABLE' & elem.nodeName != 'TEXTAREA')
+                    elem.innerHTML = "@t.TEXTOS";
                 } catch (e) {
                     try {
                         var divs = document.getElementsByClassName("@t.CAMPO_ID");
                         [].slice.call(divs).forEach(function (div) {
+                            if (div.nodeName != 'INPUT' & div.nodeName != 'SELECT' & div.nodeName != 'TABLE' & div.nodeName != 'TEXTAREA')
                             div.innerHTML = "@t.TEXTOS";
                         });
                     }
@@ -247,16 +381,6 @@
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)*@
-    <script>
-        function EnterKeyFilter() {
-            var enter = window.event.target.id;
-            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
-                if (window.event.keyCode == 13) {
-                    event.returnValue = false;
-                    event.cancel = true;
-                }
-            }
-        }
-    </script>
+
 </body>
 </html>

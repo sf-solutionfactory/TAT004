@@ -362,6 +362,7 @@ namespace TAT001.Services
             //Obtener usuarioc
             dOCUMENTO.PUESTO_ID = u.PUESTO_ID;//RSG 02/05/2018
             dOCUMENTO.USUARIOC_ID = u.ID;
+            dOCUMENTO.USUARIOD_ID = u.ID;
 
             //Fechac
             dOCUMENTO.FECHAC = DateTime.Now;
@@ -434,7 +435,7 @@ namespace TAT001.Services
 
 
             DOCUMENTO referencia = db.DOCUMENTOes.Find(dOCUMENTO.DOCUMENTO_REF);
-            referencia.ESTATUS = "C";
+            referencia.ESTATUS = "R";
             db.Entry(referencia).State = EntityState.Modified;
             db.SaveChanges();
             //Guardar los documentos p para el documento guardado

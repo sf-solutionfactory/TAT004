@@ -93,7 +93,7 @@
         <script>
             var elem = document.querySelectorAll('select');
             var options = [];
-            var instance = M.Select.init(elem, options);
+            var instance = M.FormSelect.init(elem, options);
         </script>
         @*<div class="col l6 s12">
             <div class="card-panel">
@@ -227,18 +227,18 @@
             document.getElementById("txt_soc").value = "";
             document.getElementById("txt_pai").value = "";
             var elem2 = document.getElementById('txt_soc');
-            var instance2 = M.Select.init(elem2, []);
+            var instance2 = M.FormSelect.init(elem2, []);
             var elem2 = document.getElementById('txt_pai');
-            var instance2 = M.Select.init(elem2, []);
+            var instance2 = M.FormSelect.init(elem2, []);
         }
     };
     var instance = M.Modal.init(elem, options);
     var elem2 = document.getElementById('txt_rol');
-    var instance2 = M.Select.init(elem2, []);
+    var instance2 = M.FormSelect.init(elem2, []);
     var elem2 = document.getElementById('txt_soc');
-    var instance2 = M.Select.init(elem2, []);
+    var instance2 = M.FormSelect.init(elem2, []);
     var elem2 = document.getElementById('txt_pai');
-    var instance2 = M.Select.init(elem2, []);
+    var instance2 = M.FormSelect.init(elem2, []);
 
     function cambioRol(campo) {
         if (campo.value == "1") {
@@ -247,9 +247,9 @@
             document.getElementById("txt_soc").value = "";
             document.getElementById("txt_pai").value = "";
             var elem2 = document.getElementById('txt_soc');
-            var instance2 = M.Select.init(elem2, []);
+            var instance2 = M.FormSelect.init(elem2, []);
             var elem2 = document.getElementById('txt_pai');
-            var instance2 = M.Select.init(elem2, []);
+            var instance2 = M.FormSelect.init(elem2, []);
             $("#lbl_puestos").empty();
             document.getElementById("btn_submit").className = "modal-action modal-close btn-flat disabled";
         } else {

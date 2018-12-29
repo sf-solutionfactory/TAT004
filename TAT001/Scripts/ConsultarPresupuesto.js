@@ -1,4 +1,5 @@
 ﻿//$(document).ready(function () {
+var ban = true;
 function jsConsulta(idioma) {
     var arrFiltr = ['canalFltr', 'totCanFltr', 'bannerFltr', 'totBannerFltr', 'periodoFltr', 'VVX17Fltr', 'CSHDCFltr', 'RECUNFltr', 'DSTRBFltr', 'OTHTAFltr', 'ADVERFltr', 'CORPMFltr', 'POPFltr', 'PMVARFltr', 'CONPRFltr', 'RSRDVFltr', 'SPAFltr', 'FREEGFltr', 'ALLBFltr', 'ALLFFltr', 'PROCESOFltr', 'consumidoFltr', 'disponibleFltr'];
     var ids = ['id']
@@ -95,12 +96,17 @@ function jsConsulta(idioma) {
                     }
                 }
                 $("select").select();
-                $(".f > .select-wrapper > .select-dropdown").prepend(
-                    '<li class="toggle selectnone"><span><label></label>Select none</span></li>'
-                );
-                $(".f > .select-wrapper > .select-dropdown").prepend(
-                    '<li class="toggle selectall"><span><label></label>Select all</span></li>'
-                );
+
+                //if (ban) {
+                    $(".f > .select-wrapper > .select-dropdown").prepend(
+                        '<li class="toggle selectnone"><span><label></label>Select none</span></li>'
+                    );
+                    $(".f > .select-wrapper > .select-dropdown").prepend(
+                        '<li class="toggle selectall"><span><label></label>Select all</span></li>'
+                    );
+
+                    ban = !ban;
+                //}
                 $(".f > .select-wrapper > .select-dropdown .selectall").on(
                     "click",
                     function () {
@@ -336,6 +342,7 @@ function jsConsulta(idioma) {
     $(".f > .select-wrapper > .select-dropdown").prepend(
         '<li class="toggle selectall"><span><label></label>Select all</span></li>'
     );
+
     $(".f > .select-wrapper > .select-dropdown .selectall").on(
         "click",
         function () {
@@ -388,7 +395,7 @@ function jsConsulta(idioma) {
         'text-align': 'center',
     });
     //'width': '350px'});//porque no se deja de otra forma
-    $('td').css('text-align', 'center');
+    //$('td').css('text-align', 'center');
 
-//});
+    //});
 }

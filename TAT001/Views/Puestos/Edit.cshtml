@@ -1,5 +1,4 @@
 ﻿@model TAT001.Entities.PUESTO
-
 @{
     /**/
 
@@ -8,7 +7,11 @@
     ViewBag.carpeta_r = 500;
 }
 
-
+<div class="row">
+    <div class="col s12 right-align">
+        <a href="@Url.Action("Index", "Puestos")" class="btn-small"> Lista</a>
+    </div>
+</div>
 <div class="row">
     @using (Html.BeginForm())
     {
@@ -36,23 +39,18 @@
                     {
                         <div class=" input-field col s12">
                             @*@Html.TextBoxFor(modelItem => item.TXT50, new { @id = "A" + item.SPRAS_ID, name = "A" + item.SPRAS_ID })*@
-                            @Html.EditorFor(modelItem => item.TXT50, null, item.SPRAS_ID , new { htmlAttributes = new { @id = "A" + item.SPRAS_ID } })
+                            @Html.EditorFor(modelItem => item.TXT50, null, item.SPRAS_ID, new { htmlAttributes = new { @id = "A" + item.SPRAS_ID } })
                             <label for="@("A"+item.SPRAS_ID)">@item.SPRA.DESCRIPCION</label>
                         </div>
                     }
                     <div class="row right">
                         <div class="col s12">
-                            <input type="submit" value="Save" class="btn btn-default" />
+                            <input type="submit" value="Guardar" class="btn btn-default" />
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
     }
-
-</div>
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>

@@ -61,13 +61,13 @@
                 <div class="col l12 m12 s12">
                     <div class="input-field col l10 m10" style="margin-bottom:0;">
                         @Html.DropDownList("MATKL_ID", null, htmlAttributes: new { @id = "sel-mat" })
-                        @Html.LabelFor(model => model.CATEGORIA.DESCRIPCION, "MATKL_ID", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_grupoa" })
-                        @Html.ValidationMessageFor(model => model.CATEGORIA.DESCRIPCION, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.MATERIALGP.DESCRIPCION, "MATKL_ID", htmlAttributes: new { @class = "control-label col-md-2", @id = "lbl_grupoa" })
+                        @Html.ValidationMessageFor(model => model.MATERIALGP.DESCRIPCION, "", new { @class = "text-danger" })
                     </div>
                     <script>
                         var elem = document.getElementById('sel-mat');
                         var options = [];
-                        var instance = M.Select.init(elem, options);
+                        var instance = M.FormSelect.init(elem, options);
                     </script>
 
                     <div class="input-field col l10 m10" style="margin-bottom:0;">
@@ -78,7 +78,7 @@
                     <script>
                         var elem = document.getElementById('sel-meins');
                         var options = [];
-                        var instance = M.Select.init(elem, options);
+                        var instance = M.FormSelect.init(elem, options);
                     </script>
 
                     <div class="input-field col l10 m10" style="margin-bottom:0;">
@@ -89,7 +89,7 @@
                     <script>
                         var elem = document.getElementById('sel-zc');
                         var options = [];
-                        var instance = M.Select.init(elem, options);
+                        var instance = M.FormSelect.init(elem, options);
                     </script>
 
                     <div class="input-field col l10 m10" style="margin-bottom:0;">
@@ -100,7 +100,7 @@
                     <script>
                         var elem = document.getElementById('sel-zb');
                         var options = [];
-                        var instance = M.Select.init(elem, options);
+                        var instance = M.FormSelect.init(elem, options);
                     </script>
 
                     @*<div class="input-field col l10 m10" style="margin-bottom:0;">

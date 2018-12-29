@@ -2,13 +2,14 @@
 var monedafinanciera = true;
 var negdistribucion = true;
 var disdistribucion = true;
+var unica = false;
 var interval; //B20180625 MGC 2018.07.04
 var borradorinac = 300000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 5 minutos
 //var borradorinac = 60000; //B20180625 MGC 2018.07.04 Tiempo de espera de inactividad 1 minuto
 var proverror = "";//B20180625 MGC 2018.06.27
-
+var importe_fac = 0; // jemo 25-07-2018
 $(document).ready(function () {
-        $.ajax({
+    $.ajax({
         url: "../Listas/TipoRecurrencia",
         type: "POST",
         async: true,
@@ -80,6 +81,12 @@ $(document).ready(function () {
                 "name": 'POS',
                 "className": 'POS',
             },
+            //jemo 10-07-2018 inicio
+            {
+                "name": 'SOCIEDAD',
+                "className": 'SOCIEDAD'
+            },
+            //jemo 10-07-2018 fin
             {
                 "name": 'FACTURA',
                 "className": 'FACTURA'
@@ -88,6 +95,12 @@ $(document).ready(function () {
                 "name": 'FECHA',
                 "className": 'FECHA'
             },
+            //lej 25-07-2018 
+            {
+                "name": 'BILL_DOC',
+                "className": 'BILL_DOC'
+            },
+            //lej 25-07-2018
             {
                 "name": 'PROVEEDOR',
                 "className": 'PROVEEDOR'
@@ -125,13 +138,7 @@ $(document).ready(function () {
             {
                 "name": 'DESCRIPCION',
                 "className": 'DESCRIPCION'
-            },
-            //lej 25-07-2018 
-            {
-                "name": 'BILL_DOC',
-                "className": 'BILL_DOC'
-            },
-            //lej 25-07-2018 
+            }, 
             {
                 "name": 'IMPORTE_FAC',
                 "className": 'IMPORTE_FAC'
@@ -143,6 +150,7 @@ $(document).ready(function () {
             }
         ]
     });
+    selectTsol($("#tsol_id").val());//RSG 07.09.2018
 
     $('#matcat').click(function (e) {
 
@@ -619,20 +627,20 @@ $(document).ready(function () {
     $('#tabs').tabs();
 
     var elem = document.querySelectorAll('select');
-    var instance = M.Select.init(elem, []);
+    var instance = M.FormSelect.init(elem, []);
 
-    $('#tab_temp').on("click", function (e) {
+    $('#tab_tempp').on("click", function (e) {
         //$('#gall_id').change();
         evalInfoTab(false, e);
     });
 
-    $('#tab_soporte').on("click", function (e) {
+    $('#tab_soportee').on("click", function (e) {
 
         evalTempTab(false, e);
 
     });
 
-    $('#tab_dis').on("click", function (e) {
+    $('#tab_diss').on("click", function (e) {
         var sol = $("#tsol_id").val();
         var mostrar = isFactura(sol);
 
@@ -780,7 +788,7 @@ $(document).ready(function () {
             var num2 = $('#monto_doc_md').val();//RSG 12.06.2018
 
             asignarPresupuesto(kunnr);
-            asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
+            //asignarSolicitud(num, num2.replace("$", ""));//RSG 12.06.2018 //LEJ 09.07.18
 
         } else {
             M.toast({ html: 'Verificar valores en los campos de Distribución!' });
@@ -834,12 +842,12 @@ $(document).ready(function () {
             //var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
             var tc = 0;//LEJ 09.07.18
             if (_decimales === ',') {
-                tc = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
+                tc = parseFloat(tipo_cambio.replace(',', '.')).toFixed(5);
                 tipo_cambio = tipo_cambio.replace('.', '');
                 tipo_cambio = tipo_cambio.replace(',', '.');
             }//LEJ 09.07.18
             else if (_decimales === '.') {
-                tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);//LEJ 09.07.18
+                tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(5);//LEJ 09.07.18
             }
             //Validar el monto en tipo de cambio
             var is_num2 = $.isNumeric(tipo_cambio);
@@ -971,7 +979,7 @@ $(document).ready(function () {
             }
             //LEJ 09.07.18------------------------T
             var is_num = $.isNumeric(tipo_cambio);
-            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+            var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(5);
             //Validar el monto en tipo de cambio
             if (tc > 0 & is_num == true) {
                 //Validar el monto
@@ -1085,7 +1093,7 @@ $(document).ready(function () {
 
         //selectTcambio(MONEDA_ID, mt);
         var tipo_cambio = $('#tipo_cambio').val();
-        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(2);
+        var tc = parseFloat(tipo_cambio.replace(',', '')).toFixed(5);
         //Validar el monto en tipo de cambio
         var is_num2 = $.isNumeric(tipo_cambio);
         if (tc > 0 & is_num2 == true) {
@@ -1127,7 +1135,7 @@ $(document).ready(function () {
         var _miles = $("#miles").val(); //LEJ 09.07.18
         var _decimales = $("#dec").val(); //LEJ 09.07.18
         //M.toast({ html: "Guardando" })
-        //document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
+        document.getElementById("loader").style.display = "flex";//RSG 26.04.2018
         //sleep(5000);
         var msg = 'Verificar valores en los campos de ';
         var res = true;
@@ -1156,27 +1164,38 @@ $(document).ready(function () {
             msg += ' ,Financiera';
             res = FinancieraTab;
         }
-
+        //jemo inicio 24-07-2018
+        //validacion de importe de facturas contra monto de distribucion
+        var checkf = $('#check_factura').is(':checked');
+        if (checkf) {
+            var monto = parseFloat(toNum($('#monto_dis').val()));
+            if (importe_fac !== monto) {
+                msg += ', Informacion: Importet total de las facturas sea igual al monto en Distribucion';
+                res = false;
+            }
+        }
+        //jemo fin 24-07-2018
         msg += '!';
         if (res) {
             //loadFilesf();
             //LEJ 10.07.18--------------------------------------------------
             //Provisional
-            var tipo_cambio = $('#tipo_cambio').val().replace('$', '');
-            if (_decimales === '.') {
-                tipo_cambio = tipo_cambio.replace(',', '');
-            }
-            else if (_decimales === ',') {
-                var tc = tipo_cambio.replace('.', '');
-                tc = tc.replace(',', '.');
-                tipo_cambio = tc;
-            }
+            //var tipo_cambio = $('#tipo_cambio').val().replace('$', '');
+            //if (_decimales === '.') {
+            //    tipo_cambio = tipo_cambio.replace(',', '');
+            //}
+            //else if (_decimales === ',') {
+            //    var tc = tipo_cambio.replace('.', '');
+            //    tc = tc.replace(',', '.');
+            //    tipo_cambio = tc;
+            //}
+            var tipo_cambio = toNum($('#tipo_cambio').val());
             //LEJ 10.07.18--------------------------------------------------
             //Para que el controlador no tenga problema
             $('#tipo_cambio').val(tipo_cambio);
             ////var tipo_cambio = $('#tipo_cambio').val();
             //var iNum = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum = parseFloat(toNum(tipo_cambio).replace(',', ''));
 
             if (iNum > 0) {
                 //var num = "" + iNum;
@@ -1202,7 +1221,7 @@ $(document).ready(function () {
             $('#monto_doc_ml2').val(tipo_cambiod);
 
             //var iNum2 = parseFloat(tipo_cambio.replace(',', '.')).toFixed(2);
-            var iNum2 = parseFloat(tipo_cambio.replace(',', ''));
+            var iNum2 = parseFloat(toNum(tipo_cambio));
             //var iNum2 = parseFloat(tipo_cambio.replace('.', ','));
             if (iNum2 > 0) {
                 //var nums = "" + iNum2;
@@ -1230,8 +1249,8 @@ $(document).ready(function () {
             //objq
             $('#objPORC').val(toNum($('#objPORC').val()));//RSG 01.08.2018
 
-            $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
-            $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            //$('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+            //$('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
             //Guardar los valores de la tabla en el modelo para enviarlos al controlador
             copiarTableControl("");//Distribución //B20180625 MGC 2018.07.03
@@ -1474,7 +1493,7 @@ $(window).on('load', function () {
         $('#select_neg').val(sneg).change();
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         //$('#select_neg').formSelect();
     }
     if (sdis != "") {
@@ -1483,7 +1502,7 @@ $(window).on('load', function () {
         $('#select_dis').val(sdis).change();
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         //$('#select_dis').formSelect();
     }
 
@@ -1582,7 +1601,7 @@ $(window).on('load', function () {
         $('#monedadis_id').val(moneda_dis).change();
         var elemdpsn = document.querySelector('#monedadis_id');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
     }
 
     //B20180625 MGC 2018.06.28
@@ -1590,7 +1609,7 @@ $(window).on('load', function () {
         $('#moneda_id').change();
         var elemdpsn = document.querySelector('#moneda_id');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
     }
 
 
@@ -1617,15 +1636,15 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
 
     //MGC B20180611
@@ -1633,17 +1652,17 @@ $(window).on('load', function () {
         $('#select_neg').prop('disabled', 'disabled');
         var elemdpsn = document.querySelector('#select_neg');
         var optionsdpsn = [];
-        var instancessn = M.Select.init(elemdpsn, optionsdpsn);
+        var instancessn = M.FormSelect.init(elemdpsn, optionsdpsn);
         $('#select_dis').prop('disabled', 'disabled');
         var elemdpsd = document.querySelector('#select_dis');
         var optionsdpsd = [];
-        var instancessd = M.Select.init(elemdpsd, optionsdpsd);
+        var instancessd = M.FormSelect.init(elemdpsd, optionsdpsd);
         $('#select_categoria').prop('disabled', 'disabled');
         var elemdpc = document.querySelector('#select_categoria');
         var optionsdpc = [];
-        var instancesc = M.Select.init(elemdpc, optionsdpc);
+        var instancesc = M.FormSelect.init(elemdpc, optionsdpc);
     }
-    var mt = parseFloat(tipocambio.replace(',', '.')) //B20180625 MGC 2018.07.02
+    var mt = parseFloat(toNum(tipocambio)) //B20180625 MGC 2018.07.02
     if (mt > 0) { //B20180625 MGC 2018.07.02
         $('#tipo_cambio').val(mt); //B20180625 MGC 2018.07.02
     }
@@ -1654,6 +1673,7 @@ function _ff() {
     var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     var datei = $("#fechai_vig").val().split(" ")[0];
     var _anoi = datei.split('/')[2];
+
     $.ajax({
         type: "POST",
         url: 'getPeriodo',
@@ -1661,7 +1681,16 @@ function _ff() {
         data: { "fecha": datei },
         success: function (data) {
             var _xd = data;
-            $("#periodoi_id").val(parseInt(data));
+            var pp = parseInt(data);
+            if (pp != 0) {
+                $("#periodoi_id").val(pp);
+                document.getElementById("btn-peri").checked = true;
+                $("#btn-peri").trigger("change");
+                $("#anioi_id").val(_anoi);
+            } else {
+                document.getElementById("btn-date").checked = true;
+                $("#btn-date").trigger("change");
+            }
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -1677,7 +1706,16 @@ function _ff() {
         data: { "fecha": datef },
         success: function (data) {
             var _xd = data;
-            $("#periodof_id").val(parseInt(data));
+            var pp = parseInt(data);
+            if (pp != 0) {
+                $("#periodof_id").val(pp);
+                document.getElementById("btn-peri").checked = true;
+                $("#btn-peri").trigger("change");
+                $("#aniof_id").val(_anof);
+            } else {
+                document.getElementById("btn-date").checked = true;
+                $("#btn-date").trigger("change");
+            }
 
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
@@ -1685,8 +1723,6 @@ function _ff() {
         },
         async: true
     });
-    $("#anioi_id").val(_anoi);
-    $("#aniof_id").val(_anof);
 }
 //LEJ 30.07.2018--------------------------------------T
 
@@ -1752,8 +1788,8 @@ function guardarBorrador(asyncv) {
         $('#monto_doc_md').val(0);
     }
 
-    $('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
-    $('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
+    //$('#select_negi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18 // 07.09.2018
+    //$('#select_disi').prop('disabled', false); //B20180618 v1 MGC 2018.06.18
 
     //Guardar los valores de la tabla en el modelo para enviarlos al controlador
     copiarTableControl("X");//Distribución //B20180625 MGC 2018.07.03
@@ -1794,7 +1830,7 @@ function guardarBorrador(asyncv) {
         url: 'Borrador',
         dataType: "json",
         data: form.serialize() + "&notas_soporte = " + notas_soporte + "&unafact = " + unafact + "&select_neg = " + select_neg + "&select_dis = " + select_dis +
-            "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
+        "&select_negi = " + select_negi + "&select_disi = " + select_disi + "&bmonto_apoyo = " + bmonto_apoyo + "&monedadis = " + monedadis,
         //data: {
         //    object: form.serialize(), "notas_soporte": notas_soporte, "unafact": unafact, "select_neg": select_neg, "select_dis": select_dis,
         //    "select_negi": select_negi, "select_disi": select_disi, "bmonto_apoyo": bmonto_apoyo, "monedadis": monedadis},
@@ -2233,34 +2269,37 @@ function copiarTableVistaSop() {
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(0)").text(); //B20180625 MGC 2018.06.27
             //var factura = $(this).find("td.FACTURA").text();
-            var factura = $(this).find("td:eq(1) ").text(); //B20180625 MGC 2018.06.27
-            //var fecha = $(this).find("td.FECHA").text();
-            var fecha = $(this).find("td:eq(2) ").text(); //B20180625 MGC 2018.06.27
+            var factura = $(this).find("td:eq(2) ").text(); //B20180625 MGC 2018.06.27
 
+            var bukrs = $(this).find("td:eq(1)").text(); //B20180625 MGC 2018.06.27 jemo 06-08-2018
+            //var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td:eq(3) ").text(); //B20180625 MGC 2018.06.27
+            var bill_doc = $(this).find("td:eq(4)").text(); //B20180625 MGC 2018.06.27//jemo 18-07-2018
             var ffecha = fecha.split(' ');
 
             //var prov = $(this).find("td.PROVEEDOR").text();
-            var prov = $(this).find("td:eq(3) ").text(); //B20180625 MGC 2018.06.27
+            var prov = $(this).find("td:eq(5) ").text(); //B20180625 MGC 2018.06.27
             var prov_txt = "";
             //var control = $(this).find("td.CONTROL").text();
-            var control = $(this).find("td:eq(5) ").text(); //B20180625 MGC 2018.06.27
+            var control = $(this).find("td:eq(7) ").text(); //B20180625 MGC 2018.06.27
             // var autorizacion = $(this).find("td.AUTORIZACION").text();
-            var autorizacion = $(this).find("td:eq(6) ").text(); //B20180625 MGC 2018.06.27
+            var autorizacion = $(this).find("td:eq(8) ").text(); //B20180625 MGC 2018.06.27
             //var vencimiento = $(this).find("td.VENCIMIENTO").text();
-            var vencimiento = $(this).find("td:eq(7) ").text(); //B20180625 MGC 2018.06.27
+            var vencimiento = $(this).find("td:eq(9) ").text(); //B20180625 MGC 2018.06.27
 
             var vven = vencimiento.split(' ');
             //LEJ 25.07.18------------------I
             //var facturak = $(this).find("td.FACTURAK").text();
-            var facturak = $(this).find("td:eq(8)").text();
+            var facturak = $(this).find("td:eq(9)").text();
             //var ejerciciok = $(this).find("td.EJERCICIOK").text();
-            var ejerciciok = $(this).find("td:eq(9)").text();
+            var ejerciciok = $(this).find("td:eq(10)").text();
             //var bill_doc = $(this).find("td.BILL_DOC").text();
-            var pay = $(this).find("td:eq(10)").text();
-            var des = $(this).find("td:eq(11)").text();
-            var bill_doc = $(this).find("td:eq(12)").text();
+            var pay = $(this).find("td:eq(11)").text();
+            var des = $(this).find("td:eq(12)").text();
+            //var bill_doc = $(this).find("td:eq(12)").text();
             //var belnr = $(this).find("td.BELNR").text();
-            var imp_fact = $(this).find("td:eq(4)").text();//lej 03.08.2018
+            importe_fac = importe_fac + parseFloat(($(this).find("td:eq(13)")).text());
+            var imp_fact = $(this).find("td:eq(13)").text();//lej 03.08.2018
             if (_xdec == '.') {
                 var ifc = parseFloat(imp_fact).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 imp_fact = "$" + ifc;
@@ -2269,13 +2308,29 @@ function copiarTableVistaSop() {
                 ifc = ifc.replace('.', ',').toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                 imp_fact = "$" + ifc;
             }
-            var desc = $(this).find("td:eq(13)").text();//lej 03.08.2018
+            //var desc = $(this).find("td:eq(13)").text();//lej 03.08.2018
             var belnr = $(this).find("td:eq(14)").text();
             //LEJ 03.08.18---------------------T
             ////var proverror = "";//B20180625 MGC 2018.06.27
 
-            if ($("#check_factura").is(':checked')) {
+            if ($("#check_factura").is(':checked') === false) {
                 //LEJ 03.08.2018
+
+                factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura.trim() + "\">";
+                bukrs = "<input class=\"SOCIEDAD input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bukrs + "\">";
+                ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0].trim() + "\">";
+                prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov.trim() + "\">";
+                control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control.trim() + "\">";
+                autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion.trim() + "\">";
+                vven[0] = "<input class=\"VENCIMIENTO input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + vven[0].trim() + "\">";
+                facturak = "<input class=\"FACTURAK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + facturak.trim() + "\">";
+                ejerciciok = "<input class=\"EJERCICIOK input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ejerciciok.trim() + "\">";
+                pay = "<input class=\"PAYER input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + pay.trim() + "\">";//jemo 18-07-2018
+                des = "<input class=\"DESCRIPCION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + des.trim() + "\">";//jemo 18-07-2018
+                bill_doc = "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + bill_doc.trim() + "\">";
+                imp_fact = "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + imp_fact.trim() + "\">"//jemo 18-07-2018
+                belnr = "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + belnr.trim() + "\">"
+
             } else {
 
                 //B20180625 MGC 2018.06.27
@@ -2298,7 +2353,7 @@ function copiarTableVistaSop() {
 
             var t = $('#table_sop').DataTable();
             //addRowSopl(pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, bill_doc, belnr);
-            addRowSopl(t, pos, factura, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr, "");//lej 25.07.18
+            addRowSopl(t, pos, factura, bukrs, ffecha[0], prov, prov_txt, control, autorizacion, vven[0], facturak, ejerciciok, pay, des, bill_doc, imp_fact, belnr, "");//lej 25.07.18
 
             //Quitar el row
             $(this).remove();
@@ -2377,8 +2432,12 @@ function copiarTableControl(borrador) { //B20180625 MGC 2018.07.03
 
             item["NUM_DOC"] = 0;
             item["POS"] = i;
-            item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
-            item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            //item["VIGENCIA_DE"] = vigencia_de + " 12:00:00 p.m.";
+            //item["VIGENCIA_AL"] = vigencia_al + " 12:00:00 p.m.";
+            var horaServer = $("#horaServer").val();
+            item["VIGENCIA_DE"] = vigencia_de + " " + horaServer;
+            item["VIGENCIA_AL"] = vigencia_al + " " + horaServer;
+
             item["MATNR"] = matnr || "";
             item["MATKL"] = matkl;
             item["MATKL_ID"] = matkl_id;
@@ -2464,7 +2523,7 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
         var tsol_id = $('#tsol_id').val();
         var clase_doc = $('#check_factura').is(':checked');
         var data = configColumnasTablaSoporte(sociedad, pais, tsol_id, "X", clase_doc);
-
+        importe_fac = 0;
         $("#table_sop > tbody  > tr[role='row']").each(function () {
 
             //Tabla desde excel
@@ -2503,6 +2562,10 @@ function copiarSopTableControl(borrador) { //B20180625 MGC 2018.07.03
                                     } else {
                                         var valtd = $(this).find(rowcl).text();
                                     }
+                                    //jemo inicio 24-07-2018
+                                    if (i === 'IMPORTE_FAC') {
+                                        importe_fac = importe_fac + parseFloat(toNum(valtd)).toFixed(2);
+                                    }//jemo inicio 24-07-2018
                                     item[i] = valtd;
                                 }
 
@@ -2562,7 +2625,8 @@ function asignarPresupuesto(kunnr) {
 
     $.ajax({
         type: "POST",
-        url: 'getPresupuesto',
+        //url: 'getPresupuesto',
+        url: '../Listas/getPresupuesto',
         dataType: "json",
         data: { "kunnr": kunnr },
 
@@ -2587,52 +2651,60 @@ function asignarPresupuesto(kunnr) {
                 //LEJ 09.07.18------------------------------------------
                 var pcan = (data.P_CANAL / 1).toFixed(2);
                 var pban = (data.P_BANNER / 1).toFixed(2);
-                var pcc = (data.PC_C / 1).toFixed(2);
-                var pca = (data.PC_A / 1).toFixed(2);
-                var pcp = (data.PC_P / 1).toFixed(2);
-                var pct = (data.PC_T / 1).toFixed(2);
+                var pcc = (data.PC_C / 1).toFixed(2) * -1;
+                var pca = (data.PC_A / 1).toFixed(2) * -1;
+                var pcp = (data.PC_P / 1).toFixed(2) * -1;
+                var pct = (data.PC_T / 1).toFixed(2) * -1;
                 var consu = (data.CONSU / 1).toFixed(2);
                 var _xdec = $("#dec").val();
                 var _xm = $("#miles").val();
-                if (_xdec === '.') {
-                    $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
-                    $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")));
-                    $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                    $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                    $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                    $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                    var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
-                    if (_xcs.indexOf("-") >= 0) {
-                        var _dsARx = _xcs;
-                        _dsARx = _dsARx.replace('-', '(');
-                        _dsARx += ")";
-                        _xcs = _dsARx;
-                    }
-                    $('#consu').text('$' + _xcs);
-                } else
-                    if (_xdec === ',') {
-                        pcan = pcan.replace('.', ',');
-                        pban = pban.replace('.', ',');
-                        pcc = pcc.replace('.', ',');
-                        pca = pca.replace('.', ',');
-                        pcp = pcp.replace('.', ',');
-                        pct = pct.replace('.', ',');
-                        consu = consu.replace('.', ',');
-                        $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
-                        var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
-                        if (_xcs.indexOf("-") >= 0) {
-                            var _dsARx = _xcs;
-                            _dsARx = _dsARx.replace('-', '(');
-                            _dsARx += ")";
-                            _xcs = _dsARx;
-                        }
-                        $('#consu').text('$' + _xcs);
-                    }
+                //if (_xdec === '.') {
+                //    $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",")));
+                //    $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",")));
+                //    $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //    $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //    $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //    $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //    var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                //    if (_xcs.indexOf("-") >= 0) {
+                //        var _dsARx = _xcs;
+                //        _dsARx = _dsARx.replace('-', '(');
+                //        _dsARx += ")";
+                //        _xcs = _dsARx;
+                //    }
+                //    $('#consu').text('$' + _xcs);
+                //} else
+                //    if (_xdec === ',') {
+                //        pcan = pcan.replace('.', ',');
+                //        pban = pban.replace('.', ',');
+                //        pcc = pcc.replace('.', ',');
+                //        pca = pca.replace('.', ',');
+                //        pcp = pcp.replace('.', ',');
+                //        pct = pct.replace('.', ',');
+                //        consu = consu.replace('.', ',');
+                //        $('#p_canal').text('$' + (pcan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        $('#p_banner').text('$' + (pban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        $('#pc_c').text('$' + (pcc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        $('#pc_a').text('$' + (pca.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        $('#pc_p').text('$' + (pcp.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        $('#pc_t').text('$' + (pct.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm)));
+                //        var _xcs = (consu.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _xm));
+                //        if (_xcs.indexOf("-") >= 0) {
+                //            var _dsARx = _xcs;
+                //            _dsARx = _dsARx.replace('-', '(');
+                //            _dsARx += ")";
+                //            _xcs = _dsARx;
+                //        }
+                //        $('#consu').text('$' + _xcs);
+                //    }
+                $('#p_canal').text(toShowG(pcan.toString()));
+                $('#p_banner').text(toShowG(pban.toString()));
+                $('#pc_c').text(toShowG(pcc.toString()));
+                $('#pc_a').text(toShowG(pca.toString()));
+                $('#pc_p').text(toShowG(pcp.toString()));
+                $('#pc_t').text(toShowG(pct.toString()));
+
+                $('#consu').text(toShowG(consu.toString()));
             }
             //LEJ 09.07.18-----------------------------------------------
         },
@@ -2663,6 +2735,7 @@ $('body').on('focusout', '#monto_dis', function () {
             return false;
         }
     }
+    $('#monto_dis').val(toShow(toNum($('#monto_dis').val())));
     cambiaRec();//RSG 06.06.2018
 });
 
@@ -2685,12 +2758,16 @@ $('body').on('click', '.pc', function () {
     $(this).prop('disabled', true);
 });
 
-$('body').on('focusout', '.input_oper', function () {
+//B20180801 MGC Textos
+$('body').on('keydown', '.input_oper', function (e) {
     var t = $('#table_dis').DataTable();
     var tr = $(this).closest('tr'); //Obtener el row 
-
+    //alert("press");
     //Obtener el tipo de negociación
     var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
 
     //Solo a cantidades
     if ($(this).hasClass("numberd")) {
@@ -2699,8 +2776,46 @@ $('body').on('focusout', '.input_oper', function () {
             //Se dispara el evento desde el total
             if ($(this).hasClass("total")) {
                 var total_val = $(this).val().replace("$", "");
+                var key = e.which;
+                if (dis == "M" & key == 13) {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                    $(this).addClass("keyup");
+                }
+            }
+        }
+    }
+
+});
+
+$('body').on('focusout', '.input_oper', function () {
+    var t = $('#table_dis').DataTable();
+    var tr = $(this).closest('tr'); //Obtener el row 
+
+    //Obtener el tipo de negociación
+    var neg = $("#select_neg").val();
+
+    //Obtener el tipo de distribución
+    var dis = $("#select_dis").val();//B20180801 MGC Textos
+
+    //Solo a cantidades
+    if ($(this).hasClass("numberd")) {
+        //Total aplica nadamás para el monto                
+        if (neg == "M") {
+            //Se dispara el evento desde el total
+            if ($(this).hasClass("total")) {
+                var total_val = $(this).val().replace("$", "");
+                if (dis == "C") {
+                    updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                } else if (dis == "M") {
+                    if (!$(this).hasClass("keyup")) {
+                        updateTotalRow(t, tr, "", "", 0);//B20180801 MGC Textos
+                    } else {
+                        updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
+                        $(this).removeClass("keyup");
+                    }
+                }
                 //Agregar los valores a 0 y agregar el total
-                updateTotalRow(t, tr, "", "X", total_val);
+                //updateTotalRow(t, tr, "", "X", total_val); //B20180801 MGC Textos
             } else {
                 updateTotalRow(t, tr, "", "", 0);
             }
@@ -2790,6 +2905,7 @@ $('body').on('focusout', '.input_oper', function () {
     }
 
 });
+
 
 $('body').on('focusout', '.input_sop_f', function () {
     var t = $('#table_dis').DataTable();
@@ -3777,7 +3893,7 @@ function loadExcelSop(file) {
     var formData = new FormData();
 
     formData.append("FileUpload", file);
-    importe_fac = 0;
+    importe_fac = 0;//jemo 25-17-2018
     var table = $('#table_sop').DataTable();
     table.clear().draw();
     $.ajax({
@@ -3806,9 +3922,11 @@ function loadExcelSop(file) {
                     //lej 03.08.2018
                     var addedRow = table.row.add([
                         dataj.POS,
+                        dataj.SOCIEDAD,
                         dataj.FACTURA,
                         //jemo 10-17-2018 inicio
                         "",//"" + fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear(),
+                        dataj.BILL_DOC,
                         "",//dataj.PROVEEDOR,
                         "",//dataj.PROVEEDOR_TXT,
                         "",//dataj.CONTROL,
@@ -3820,9 +3938,8 @@ function loadExcelSop(file) {
                         //jemo 10-17-2018 inicio
                         dataj.PAYER,
                         dataj.DESCRIPCION,
-                        dataj.BILL_DOC,
                         _imp_fac,//lej 03.08.2018
-                        ""//dataj.BELNR
+                        dataj.BELNR
                         //jemo 10-17-2018 fin
                     ]).draw(false).node();
 
@@ -3923,6 +4040,7 @@ function addRowSop(t) {
         "1", //POS
         "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"FECHA input_sop_f fv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
+        "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PROVEEDOR input_sop_f input_proveedor prv\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "",
         "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
@@ -3932,21 +4050,22 @@ function addRowSop(t) {
         "<input class=\"EJERCICIOK input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
-        "<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",
         "<input class=\"BELNR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">",//LEJ 25.07.18
         "X"
     );
 }
 
-function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr, _x) {
+function addRowSopl(t, pos, fac, bukrs, fecha, prov, provt, control, aut, ven, fack, eje, pay, des, bill, impf, belnr, _x) {
     //var t = $('#table_sop').DataTable();
     //LEJ 25.07.18
     if (_x == "X") {
         t.row.add([
             pos, //POS
+            bukrs,
             fac,
             fecha,
+            bill,
             prov,
             provt,
             control,
@@ -3956,7 +4075,6 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
             eje,
             pay,
             des,
-            bill,
             impf,
             belnr
         ]).draw(false).node(); //B20180625 MGC 2018.06.27
@@ -3965,9 +4083,11 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
     else if (_x == "") {
         t.row.add([
             pos, //POS
+            bukrs,
             fac,
             // "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "FACTURA" + "\" name=\"\" value=\"" + fac.trim() + "\">",
             fecha,
+            bill,
             prov,
             //"<input class=\"PROVEEDOR input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PROVEEDOR" + "\" name=\"\" value=\"" + prov.trim() + "\">",
             provt,
@@ -3985,7 +4105,6 @@ function addRowSopl(t, pos, fac, fecha, prov, provt, control, aut, ven, fack, ej
             //"<input class=\"PAYER input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "PAYER" + "\" name=\"\" value=\"" + pay.trim() + "\">",
             des,
             //"<input class=\"DESCRIPCION input_sop_f prv\" maxlength=\"4\" style=\"font-size:12px;\" type=\"text\" id=\"" + "DESCRIPCION" + "\" name=\"\" value=\"" + des.trim() + "\">",
-            bill,
             //"<input class=\"BILL_DOC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "BILL_DOC" + "\" name=\"\" value=\"" + bill.trim() + "\">",
             impf,
             //"<input class=\"IMPORTE_FAC input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"" + "IMPORTE_FAC" + "\" name=\"\" value=\"" + impf.trim() + "\">",
@@ -5217,7 +5336,7 @@ function selectTall(valu) {
                     });
 
                     var elem = document.getElementById('tall_id');
-                    var instance = M.Select.init(elem, []);
+                    var instance = M.FormSelect.init(elem, []);
                     $("#tall_id").val(data[0].ID);
                 }
             },

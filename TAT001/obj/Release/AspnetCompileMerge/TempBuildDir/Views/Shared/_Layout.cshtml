@@ -9,11 +9,32 @@
     @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>*@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <title>@ViewBag.Title - TAT 2.0</title>
+    <title>@ViewBag.Title - ICON</title>
     @Styles.Render("~/Content/materialize")
     @Scripts.Render("~/bundles/materialize")
+    <script>
+        function EnterKeyFilter() {
+            var enter = window.event.target.id;
+            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
+                if (window.event.keyCode == 13) {
+                    event.returnValue = false;
+                    event.cancel = true;
+                }
+            }
+        }
+    </script>
 </head>
-<body onkeydown="javascript:EnterKeyFilter();" style="background-color:#f4f4f4;">
+@{
+    string filter = "javascript:EnterKeyFilter()";
+    if (ViewBag.enter != null)
+    {
+        if (ViewBag.enter == true)
+        {
+            filter = "";
+        }
+    }
+}
+<body onkeydown="@filter" style="background-color:#f4f4f4;">
     <div style="width:100%;height:100%;z-index:999;display:none;position:fixed;padding:0;
                 margin:0;top:0;left:0;;background-color:black;opacity:0.5;" id="loader" class="valign-wrapper">
         <div style="padding-left:50%;padding-top:20%;">
@@ -42,7 +63,7 @@
                         if (ViewBag.pais != ".png" & ViewBag.pais != null & ViewBag.pais != "")
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="image" id="imgPais" src="~/images/flags/4x3/@ViewBag.pais" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
@@ -50,7 +71,7 @@
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light dropdown-trigger" data-target="country-dropdown">
+                                <a href="@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})" class="waves-effect waves-block waves-light" data-target="country-dropdown">
                                     <input type="button" id="imgPais" class="black" style="width: 30px; height: 20px;" onclick="location.href='@Url.Action("Pais", "Home", new { returnUrl = ViewBag.returnUrl})';return false;" />
                                 </a>
                             </li>
@@ -76,7 +97,7 @@
             </div>
         </li>
         <li>
-            <a id="cerrar-menu" href="#!" data-target="slide-out" class="sidenav-close pink darken-1" onclick="cerrar();"><i class="material-icons right white-text" style="margin: 0; font-size: 1.3rem;">menu</i></a>
+            <a id="cerrar-menu" href="javascript:cerrar();" data-target="slide-out" class="sidenav-close pink darken-1" onclick=""><i class="material-icons right white-text" style="margin: 0; font-size: 1.3rem;">menu</i></a>
         </li>
         <li>
             <div class="user-view" style="padding: 0">
@@ -92,9 +113,9 @@
                         </td>
                         <td>
                             <div class="white-text">
-                                <a href='@Url.Action("Details", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text name' style='margin: 0'>@ViewBag.usuario.NOMBRE @ViewBag.usuario.APELLIDO_P @ViewBag.usuario.APELLIDO_M</span></a>
-                                <a href='@Url.Action("Edit", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.usuario.EMAIL</span></a>
-                                <a href='@Url.Action("Edit", "Usuarios", new { id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text email' style='margin: 0'>@ViewBag.rol</span></a>
+                                <a href='@Url.Action("Details", "Usuarios", new { usuario_id = ViewBag.usuario.ID})' style='padding: 0;'><span class='white-text name' style='margin: 0'>@ViewBag.usuario.NOMBRE @ViewBag.usuario.APELLIDO_P @ViewBag.usuario.APELLIDO_M</span></a>
+                                <a style='padding: 0;cursor: default;'><span class='white-text email' style='margin: 0'>@ViewBag.usuario.EMAIL</span></a>
+                                <a style='padding: 0;cursor: default;'><span class='white-text email' style='margin: 0'>@ViewBag.rol</span></a>
                             </div>
                         </td>
                     </tr>
@@ -104,79 +125,373 @@
         <li class='no-padding'>
             <ul class='collapsible collapsible-accordion'>
                 @foreach (TAT001.Entities.CARPETAV c in ViewBag.carpetas)
+            {
+                if (c.URL.Equals(""))
                 {
-                    if (c.URL.Equals(""))
+                    foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
                     {
-                        foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
+                        if (c.ID.Equals(p.CARPETA_ID))
                         {
-                            if (c.ID.Equals(p.CARPETA_ID))
+                            if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
                             {
-                                if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
-                                {
-                                    <li class='bold active'><a href='#'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
-                                }
-                                else
-                                {
-                                    string[] uu = p.PAGINA_URL.Split('/');
-                                    <li class='bold'><a href='@Url.Action(uu[1], uu[0])'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
+                                <li class='bold active'><a href='#'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
+                        }
+                        else
+                        {
+                            string[] uu = p.PAGINA_URL.Split('/');
+                            <li class='bold'><a href='@Url.Action(uu[1], uu[0])'><i class='material-icons'>@p.ICON</i>@p.TXT50</a></li>
                                 }
                             }
                         }
                     }
                     else
                     {
-                        if (ViewBag.carpeta_r.Equals(c.ID))
+                        @*if (ViewBag.carpeta_r.Equals(c.ID))
                         {
 
-                            <li class='bold active'>
-                                <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
-                                <div class='collapsible-body'>
-                                    <ul>
-                                        @foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
+                <li class='bold active'>
+                    <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
+                    <div class='collapsible-body'>
+                        <ul>
+                            @{bool submenu1 = true;
+                                foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
+                                {
+                                    if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID == 500)
+                                    {
+                                        if (c.ID.Equals(p.CARPETA_ID))
                                         {
-                                            if (c.ID.Equals(p.CARPETA_ID))
+                                            if (submenu1)
                                             {
-                                                if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
-                                                {
-                                                    <li class="active"><a href='@Url.Action(p.PAGINA_URL,c.URL)'>@p.TXT50</a></li>
-                                                }
-                                                else
-                                                {
-                                                    <li><a href="@Url.Action(p.PAGINA_URL,c.URL)">@p.TXT50</a></li>
+                                                <li>
+                                                    <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'></i>Mantenimiento Mayor</a>
+                                                    <div class='collapsible-body'>
+                                                        <ul class="collapsible" data-collapsible="accordion" id="mantomayor"></ul>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'></i>Mantenimiento Menor</a>
+                                                    <div class='collapsible-body'>
+                                                        <ul class="collapsible" data-collapsible="accordion"></ul>
+                                                    </div>
+                                                </li>
+                                                submenu1 = false;
+                                            }
+                                            if (p.PAGINA_ID == 530 || p.PAGINA_ID == 601 || p.PAGINA_ID == 631 || p.PAGINA_ID == 661)
+                                            {
+                                                <li class="mantomayor"><a class="classcatalogos" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a></li>
+                                                continue;
+                                            }
+                                            if (ViewBag.pagina_r.Equals(p.PAGINA_ID))
+                                            {
+                                                ////////DRS 26.09.18//////
+                                                <li class="active">
+                                                    <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                               font-size: 11px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href='@Url.Action(p.PAGINA_URL, c.URL)'>@p.TXT50</a>
+                                            </li>
+                                            }
+                                            else
+                                            {
+                                                ////////DRS 26.09.18//////
+                                            <li>
+                                                <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                                font-size: 11px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a>
+                                            </li>
                                                 }
                                             }
                                         }
-                                    </ul>
-                                </div>
-                            </li>
-                        }
-                        else
-                        {
+                                    }
+                                }
+                            </ul>
+                    </div>
+                </li>
+                        }*@
+                        //else
+                        //{
 
-                            <li class='bold'>
-                                <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
-                                <div class='collapsible-body'>
-                                    <ul>
-                                        @foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
-                                        {
-                                            if (c.ID.Equals(p.CARPETA_ID))
-                                            {
-                                                <li><a href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a></li>
+            <li class='bold'>
+                <a class='collapsible-header waves-effect waves-teal'><i class='material-icons'>@c.ICON</i>@c.TXT50</a>
+                <div class='collapsible-body'>
+                    <ul class="collapsible" data-collapsible="accordion">
+                        @{bool submenucatalogos = true, submenuayuda = true;
+                            foreach (TAT001.Entities.PAGINAV p in ViewBag.permisos)
+                            {
+                                if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID == 500 && submenucatalogos)
+                                {
+                                    var manttos = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Mantenimiento != null).Select(t => t.Mantenimiento).Distinct();
+                                    //var manttos = new TAT001Entities().Grupoes.Where(t=>t.SPRAS_ID==p.SPRAS_ID).ToList();
+                                    foreach (var manto in manttos.OrderBy(t => t.Value))
+                                    {
+                                        var mant = new TAT001Entities().Grupoes.Where(t => t.SPRAS_ID == p.SPRAS_ID && t.Grupo_ID == manto.Value).SingleOrDefault();
+                                        <li class="collection">
+                                            <a class='collapsible-header collection-item' href='#' data-target='@mant.Grupo_ID@mant.SPRAS_ID'>@mant.Descripcion<i class="material-icons right">details</i></a>
+                                            <div class='collapsible-body collapsible-body1'>
+                                                <ul id='@mant.Grupo_ID@mant.SPRAS_ID' class="collapsible" data-collapsible="accordion">
+                                                    @{ var grupos = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Mantenimiento == mant.Grupo_ID).Select(t => t.Grupo).Distinct();
+                                                        foreach (var g in grupos.OrderBy(t => t.Value))
+                                                        {
+                                                            var grupo = new TAT001Entities().GrupoCats.Where(t => t.SPRAS_ID == p.SPRAS_ID && t.Grupo_ID == g).SingleOrDefault();
+                                                            var paginasxgrupo = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Grupo == g).OrderBy(t=>t.Orden).ToList();
+                                                            <li class="collection">
+                                                                @if (paginasxgrupo.Count > 1)
+                                                                {
+                                                                    <a class='collapsible-header' href='#' data-target='@grupo.Grupo_ID@grupo.Descripcion.TrimEnd()'>@grupo.Descripcion<i class="material-icons right">arrow_drop_down</i></a>
+                                                                    <div class='collapsible-body'>
 
-                                            }
+                                                                        <ul id='@grupo.Grupo_ID@grupo.Descripcion.TrimEnd()' class="collapsible" data-collapsible="accordion">
+                                                                            @foreach (var pa in paginasxgrupo)
+                                                                            {
+                                                                                <li class="classcatalogos">
+                                                                                    <a href="@Url.Action(pa.PAGINA_URL, c.URL)">@pa.TXT50</a>
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="@Url.Action(paginasxgrupo.First().PAGINA_URL, c.URL)">@paginasxgrupo.First().TXT50</a>
+                                                                }
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        submenucatalogos = false;
+                                    }
+                                }
+                                if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID == 500 && p.Grupo == null && submenucatalogos == false)
+                                {
+                                    <li>
+                                        <a class="classcatalogos" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a>
+                                    </li>
+                                }
+                                if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID == 1200 && submenuayuda)
+                                {
+                                    //var manttos = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Mantenimiento == 5).Select(t => t.Mantenimiento).Distinct();
+                                    //var manttos = new TAT001Entities().Grupoes.Where(t=>t.SPRAS_ID==p.SPRAS_ID).ToList();
+                                    //foreach (var manto in manttos.OrderBy(t => t.Value))
+                                    //{
+                                        //var mant = new TAT001Entities().Grupoes.Where(t => t.SPRAS_ID == p.SPRAS_ID && t.Grupo_ID == manto.Value).SingleOrDefault();
+                                        //<li class="collection">
+                                            //<a class='collapsible-header collection-item' href='#' data-target='@mant.Grupo_ID@mant.SPRAS_ID'>@mant.Descripcion<i class="material-icons right">details</i></a>
+                                            //<div class='collapsible-body collapsible-body1'>
+                                                //<ul id='@mant.Grupo_ID@mant.SPRAS_ID' class="collapsible" data-collapsible="accordion">
+                                                     var grupos = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Grupo >= 20 && t.Grupo<25).Select(t => t.Grupo).Distinct();
+                                                        foreach (var g in grupos.OrderBy(t => t.Value))
+                                                        {
+                                                            var grupo = new TAT001Entities().GrupoCats.Where(t => t.SPRAS_ID == p.SPRAS_ID && t.Grupo_ID == g).SingleOrDefault();
+                                                            var paginasxgrupo = new List<PAGINAV>(ViewBag.permisos).Where(t => t.Grupo == g).ToList();
+                                                            <li class="collection">
+                                                                @if (paginasxgrupo.Count > 1)
+                                                                {
+                                                                    <a class='collapsible-header collection-item' href='#' data-target='@grupo.Grupo_ID@grupo.Descripcion.TrimEnd()'>@grupo.Descripcion<i class="material-icons right">arrow_drop_down</i></a>
+                                                                    <div class='collapsible-body'>
+
+                                                                        <ul id='@grupo.Grupo_ID@grupo.Descripcion.TrimEnd()' class="collapsible" data-collapsible="accordion">
+                                                                            @foreach (var pa in paginasxgrupo)
+                                                                            {
+                                                                                <li class="classcatalogos">
+                                                                                    <a href="@Url.Action(pa.PAGINA_URL, c.URL)">@pa.TXT50</a>
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="@Url.Action(paginasxgrupo.First().PAGINA_URL, c.URL)">@paginasxgrupo.First().TXT50</a>
+                                                                }
+                                                            </li>
+                                                        }
+                                                    
+                                                //</ul>
+                                            //</div>
+                                        //</li>
+                                        submenuayuda = false;
+                                    //}
+                                }
+                                if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID == 1200 && p.Grupo == null && submenuayuda == false)
+                                {
+                                    <li>
+                                        <a class="classcatalogos" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a>
+                                    </li>
+                                }
+                                else if (c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID != 500 && c.ID.Equals(p.CARPETA_ID) && p.CARPETA_ID != 1200)
+                                {
+                                    ////////DRS 26.09.18//////
+                                    <li>
+                                        <a style="color: rgba(0, 0, 0, 0.87);
+                                                font-family: Tahoma;
+                                                text-transform: uppercase;
+                                                display: block;
+                                                font-size: 10px;
+                                                font-weight: 500;
+                                                height: 48px;
+                                                line-height: 48px;
+                                                padding: 0 32px;
+                                                text-indent: 1cm;" href="@Url.Action(p.PAGINA_URL, c.URL)">@p.TXT50</a>
+                                            </li>
                                         }
-                                    </ul>
-                                </div>
-                            </li>
+                                        @*<li class="bold">
+                            <a class="collapsible-header">
+                                <span class="nav-text">Second level child</span>
+                                <i class="material-icons">keyboard_arrow_right</i>
+                            </a>
+                            <div class="collapsible-body" style="display: block;">
+                                <ul>
+                                    <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                    <li><a href="ui-basic-buttons.html"><i class="material-icons">keyboard_arrow_right</i><span>Third level</span></a></li>
+                                </ul>
+                            </div>
+                        </li>*@
+
+                                    }
                         }
-                    }
-                }
+                    </ul>
+                </div>
+            </li>
+    //}
+}
+}
+
+
             </ul>
         </li>
+        @*<li class="no-padding">
+            <ul class="collapsible" data-collapsible="accordion">
+                <li class="bold">
+                    <a class="collapsible-header waves-effect waves-cyan">
+                        <i class="material-icons">photo_filter</i>
+                        <span class="nav-text">Menu Levels</span>
+                    </a>
+                    <div class="collapsible-body" style="display: block;">
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <a href="ui-basic-buttons.html">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span>Second level</span>
+                                </a>
+                            </li>
+                            <li class="bold">
+                                <a class="collapsible-header waves-effect waves-cyan">
+                                    <i class="material-icons">keyboard_arrow_right</i>
+                                    <span class="nav-text">Second level child</span>
+                                </a>
+                                <div class="collapsible-body" style="display: block;">
+                                    <ul class="collapsible" data-collapsible="accordion">
+                                        <li>
+                                            <a href="ui-basic-buttons.html">
+                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                <span>Third level</span>
+                                            </a>
+                                        </li>
+                                        <li class="bold">
+                                            <a class="collapsible-header waves-effect waves-cyan">
+                                                <i class="material-icons">keyboard_arrow_right</i>
+                                                <span class="nav-text">Third level child</span>
+                                            </a>
+                                            <div class="collapsible-body" style="display: block;">
+                                                <ul class="collapsible" data-collapsible="accordion">
+                                                    <li>
+                                                        <a href="ui-basic-buttons.html">
+                                                            <i class="material-icons">keyboard_arrow_right</i>
+                                                            <span>Forth level</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="ui-extended-buttons.html">
+                                                            <i class="material-icons">keyboard_arrow_right</i>
+                                                            <span>Forth level</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>*@
     </ul>
-    <div id="container" class="container body-content">
-        @*@RenderSection("noticia")*@
-    </div>
+    <script>
+var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, []);
+
+        $(".dropdown-trigger").dropdown({ hover: false, coverTrigger: false, aligment: 'right' });
+        $(".dropdown-button").dropdown({ hover: true});
+
+    </script>
+    <style>
+        .classcatalogos {
+            color: rgba(0, 0, 0, 0.87);
+            font-family: Tahoma;
+            text-transform: uppercase;
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            height: 48px;
+            line-height: 48px;
+            padding: 0 32px;
+            text-indent: 1cm
+        }
+        .collection a {
+            text-transform: capitalize !important;
+        }
+        .classcatalogos a {
+            color: rgba(0, 0, 0, 0.87);
+            font-family: Tahoma;
+            text-transform: capitalize !important;
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            height: 48px;
+            line-height: 48px;
+            padding: 0 32px;
+            text-indent: 1cm
+        }
+        .collapsible-body1 {
+            display: none;
+            border-bottom: 1px solid #ddd;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 2rem;
+            background-color: #eceff1 !important;
+        }
+        .collapsible-body2 {
+            display: none;
+            border-bottom: 1px solid #ddd;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 2rem;
+            background-color: #ddd !important;
+        }
+    </style>
+    @*@RenderSection("noticia")
+
+        <div class="parallax" style="max-height:200px; background-attachment: fixed;    background-position: center;    background-repeat: no-repeat;    background-size: cover; background-image:url('../../images/6792532.jpg')">
+        </div>*@
+    @*<div id="container" class="container body-content">
+        </div>*@
     <div class="row" style="margin-bottom:0;">
         <div id="div-menu" class="col s1" style="width:320px;margin-top:8px;">
             <div id="btn-menu">
@@ -197,7 +512,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - TAT 2.0</p>
+            <p>&copy; @DateTime.Now.Year - @*<a href="@Url.Action("About","Home")">*@ICON@*</a>*@ 10.12.2018</p>
         </footer>
     </div>
     @using TAT001.Entities;
@@ -226,11 +541,14 @@
         {
             <script>
                 try {
-                    var elem = document.getElementById("@t.CAMPO_ID").innerHTML = "@t.TEXTOS";
+                    var elem = document.getElementById("@t.CAMPO_ID");
+                    if (elem.nodeName != 'INPUT' & elem.nodeName != 'SELECT' & elem.nodeName != 'TABLE' & elem.nodeName != 'TEXTAREA')
+                    elem.innerHTML = "@t.TEXTOS";
                 } catch (e) {
                     try {
                         var divs = document.getElementsByClassName("@t.CAMPO_ID");
                         [].slice.call(divs).forEach(function (div) {
+                            if (div.nodeName != 'INPUT' & div.nodeName != 'SELECT' & div.nodeName != 'TABLE' & div.nodeName != 'TEXTAREA')
                             div.innerHTML = "@t.TEXTOS";
                         });
                     }
@@ -244,16 +562,14 @@
     @*@Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)*@
-    <script>
-        function EnterKeyFilter() {
-            var enter = window.event.target.id;
-            if (event.target.className != 'materialize-textarea' & enter != 'monto_doc_md' & enter != 'tipo_cambio') {
-                if (window.event.keyCode == 13) {
-                    event.returnValue = false;
-                    event.cancel = true;
-                }
-            }
-        }
-    </script>
+    @*<script>
+        $(document).ready(function (e) {
+            $(".mantomayor").each(function (index) {
+                $("#mantomayor").append('<li>' + $(this).html()+'</li>');
+                $(this).remove();
+            });
+        });
+    </script>*@
+    
 </body>
 </html>

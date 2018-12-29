@@ -12,15 +12,17 @@ $(document).ready(function () {
     var elem = document.querySelector('.modal');
     var instance = M.Modal.init(elem, []);
     try {
+        var spras = sessionStorage.getItem("spras");
         var table = $('#table').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -42,15 +44,17 @@ $(document).ready(function () {
 
     }
     try {
+        var spras = sessionStorage.getItem("spras");
         var table2 = $('#table2').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
             language: {
-                lengthMenu: "Display _MENU_ records per page",
-                zeroRecords: "No se encontraron datos",
-                info: "Página _PAGE_ de _PAGES_",
-                infoEmpty: "No hay datos",
-                infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                //lengthMenu: "Display _MENU_ records per page",
+                //zeroRecords: "No se encontraron datos",
+                //info: "Página _PAGE_ de _PAGES_",
+                //infoEmpty: "No hay datos",
+                //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -73,6 +77,7 @@ $(document).ready(function () {
 
     }
     try {
+        var spras = sessionStorage.getItem("spras");
         var table3 = $('#table3').DataTable({
             //scrollY: "70vh",
             scrollX: "10vh",
@@ -82,7 +87,7 @@ $(document).ready(function () {
                 //info: "Página _PAGE_ de _PAGES_",
                 //infoEmpty: "No hay datos",
                 //infoFiltered: "(Filtrado de _MAX_ líneas totales)"
-                "url": "../Scripts/lang/@Session["spras"].ToString()"+ ".json"
+                "url": "../Scripts/lang/" + spras + ".json"
             },
             columnDefs: [
                 {
@@ -96,50 +101,51 @@ $(document).ready(function () {
 
     }
     $('#formulario ').submit(function (e) {
+
         var value = $(document.activeElement).val();
-        if ($(document.activeElement).val() == 'Cargar') {
+        if ($(document.activeElement).val() === 'Cargar') {
             var concatValorS = 0;
             var concatValorP = 0;
             var concatValorA = 0;
             var mostrar = false;
             var mostrarG = false;
-            if (acept == false) {
-                if ($('#CPT').val() != '') {
+            if (acept === false) {
+                if ($('#CPT').val() !== '') {
                     var totalsoccpt = $('[name="sociedadcpt"] option').length;
                     $('[name="sociedadcpt"] option').filter(':selected').each(function () {
-                        if ($(this).val() != "") {
+                        if ($(this).val() !== "") {
                             concatValorS++;
                         }
                     });
                     var totalpercpt = $('[name="periodocpt"] option').length;
                     $('[name="periodocpt"] option').filter(':selected').each(function () {
-                        if ($(this).val() != "") {
+                        if ($(this).val() !== "") {
                             concatValorP++;
                         }
                     });
                     var totalanicpt = $('[name="aniocpt"] option').length;
                     $('[name="aniocpt"] option').filter(':selected').each(function () {
-                        if ($(this).val() != "") {
+                        if ($(this).val() !== "") {
                             concatValorA++;
                         }
                     });
-                    if (concatValorS == 0 || concatValorP == 0 || concatValorA == 0) {
+                    if (concatValorS === 0 || concatValorP === 0 || concatValorA === 0) {
                         $('#mensaje').text("Seleccione una opcion en Sociedad, Año y Periodo para carga CPT");
                         $('#footer').html('<a class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>');
                         $('#dialogo').trigger('click');
                         e.preventDefault();
                         return;
                     }
-                    if (totalsoccpt == concatValorS && totalpercpt == concatValorP) {
+                    if (totalsoccpt === concatValorS && totalpercpt === concatValorP) {
                         $('#mensaje').text("Se cargaran todos los datos de las sociedaes y periodos seleccionados,\n ¿Desea continuar?");
                         mostrar = true;
                     }
                     else {
-                        if (totalsoccpt == concatValorS) {
+                        if (totalsoccpt === concatValorS) {
                             $('#mensaje').text("Se cargaran todos los datos de las sociedaes seleccionadas,\n ¿Desea continuar?");
                             mostrar = true;
                         }
-                        if (totalpercpt == concatValorP) {
+                        if (totalpercpt === concatValorP) {
                             $('#mensaje').text("Se cargaran todos los datos de los periodos seleccionados,\n ¿Desea continuar?");
                             mostrar = true;
                         }
@@ -152,18 +158,18 @@ $(document).ready(function () {
                     }
                 }
                 else {
-                    if ($('#SAP').val() != '') {
+                    if ($('#SAP').val() !== '') {
                         $('[name="sociedadsap"] option').filter(':selected').each(function () {
-                            if ($(this).val() != "") {
+                            if ($(this).val() !== "") {
                                 concatValorS++;
                             }
                         });
                         $('[name="periodosap"] option').filter(':selected').each(function () {
-                            if ($(this).val() != "") {
+                            if ($(this).val() !== "") {
                                 concatValorP++;
                             }
                         });
-                        if (concatValorS == 0 || concatValorP == 0) {
+                        if (concatValorS === 0 || concatValorP === 0) {
                             $('#mensaje').text("Seleccione una opcion en Sociedad y Presupuesto para carga SAP");
                             $('#footer').html('<a class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>');
                             $('#dialogo').trigger('click');
@@ -187,13 +193,34 @@ $(document).ready(function () {
             document.getElementById("loader").style.display = "initial";
         }
     });
+    $('#formulario2').submit(function (e) {
+        if ($(document.activeElement).val() === 'Guardar SAP' && acept === false) {
+            $('#mensaje').text("¿Desea añadir el presupuesto o reemplazar el existente?");
+            $('#footer').html('<a id="remp" class="modal-action modal-close waves-effect waves-green btn-flat">Reemplazar</a>' +
+                ' <a id="agreg" class="modal-action modal-close waves-effect waves-red btn-flat">Agregar</a>');
+            $('#dialogo').trigger('click');
+            e.preventDefault();
+        } else if ($(document.activeElement).val() === 'Cancelar') {
+            document.getElementById("loader").style.display = "initial";
+        }
+    });
+
     $('select').select();
-    $(".f > .select-wrapper > .select-dropdown").prepend(
-        '<li style="display:none" class="toggle selectnone"><span><label></label>Select none</span></li>'
-    );
-    $(".f > .select-wrapper > .select-dropdown").prepend(
-        '<li  class="toggle selectall"><span><label></label>Select all</span></li>'
-    );
+    if ($(".f option:selected").length) {
+        $(".f > .select-wrapper > .select-dropdown").prepend(
+            '<li  class="toggle selectnone"><span><label></label>Ninguno</span></li>'
+        );
+        $(".f > .select-wrapper > .select-dropdown").prepend(
+            '<li style="display:none" class="toggle selectall"><span><label></label>Todos</span></li>'
+        );
+    } else {
+        $(".f > .select-wrapper > .select-dropdown").prepend(
+            '<li style="display:none" class="toggle selectnone"><span><label></label>Ninguno</span></li>'
+        );
+        $(".f > .select-wrapper > .select-dropdown").prepend(
+            '<li  class="toggle selectall"><span><label></label>Todos</span></li>'
+        );
+    }
     $(".f > .select-wrapper > .select-dropdown .selectall").on(
         "click",
         function () {
@@ -236,4 +263,5 @@ $(document).ready(function () {
             $(id + ' > .select-wrapper > .select-dropdown .toggle').toggle();
         }
     );
+
 });

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -29,7 +29,7 @@ namespace TAT001.Controllers
             //ViewBag.miles = dOCUMENTOes.PAI.MILES;//LEJGG 090718
             //ViewBag.dec = dOCUMENTOes.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
-            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL) + " " + dOCUMENTO.MONEDA_ID;
             if (mail == null)
                 mail = true;
             //B20180803 MGC Correos............
@@ -60,7 +60,7 @@ namespace TAT001.Controllers
 
             cli = SelectCliente(dOCUMENTO.PAYER_ID);
 
-            ViewBag.kunnr = cli.KUNNR;
+            ViewBag.kunnr = cli.KUNNR + "-" + cli.NAME1;
             ViewBag.vtweg = cli.VTWEG;
 
             Services.FormatosC format = new FormatosC();
@@ -89,7 +89,7 @@ namespace TAT001.Controllers
             decimal pcc = 0;
             try
             {
-                pcc = Convert.ToDecimal(presu.PC_C) / 1;
+                pcc = Convert.ToDecimal(presu.PC_C) / 1 * -1;
             }
             catch (Exception)
             {
@@ -98,7 +98,7 @@ namespace TAT001.Controllers
             decimal pca = 0;
             try
             {
-                pca = Convert.ToDecimal(presu.PC_A) / 1;
+                pca = Convert.ToDecimal(presu.PC_A) / 1 * -1;
             }
             catch (Exception)
             {
@@ -107,7 +107,7 @@ namespace TAT001.Controllers
             decimal pcp = 0;
             try
             {
-                pcp = Convert.ToDecimal(presu.PC_P) / 1;
+                pcp = Convert.ToDecimal(presu.PC_P) / 1 * -1;
             }
             catch (Exception)
             {
@@ -116,7 +116,7 @@ namespace TAT001.Controllers
             decimal pct = 0;
             try
             {
-                pct = Convert.ToDecimal(presu.PC_T) / 1;
+                pct = Convert.ToDecimal(presu.PC_T) / 1 * -1;
             }
             catch (Exception)
             {
@@ -131,13 +131,34 @@ namespace TAT001.Controllers
             {
 
             }
-            ViewBag.pcan = format.toShow(pcanal, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.pban = format.toShow(pbanner, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.pcc = format.toShow(pcc, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.pca = format.toShow(pca, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.pcp = format.toShow(pcp, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.pct = format.toShow(pct, dOCUMENTO.PAI.DECIMAL);
-            ViewBag.consu = format.toShow(consu, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pcan = format.toShowG(pcanal, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pban = format.toShowG(pbanner, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pcc = format.toShowG(pcc, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pca = format.toShowG(pca, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pcp = format.toShowG(pcp, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.pct = format.toShowG(pct, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.consu = format.toShowG(consu, dOCUMENTO.PAI.DECIMAL);
+
+            SOLICITUD_MOD sol = new SOLICITUD_MOD();
+            if (dOCUMENTO.DOCUMENTO_REF == null)
+                sol = getSolicitud("0.00", dOCUMENTO.MONTO_DOC_MD + "", dOCUMENTO.PAI.DECIMAL);
+            else
+                sol = getSolicitud(dOCUMENTO.DOCUMENTO_REF+"", dOCUMENTO.MONTO_DOC_MD + "", dOCUMENTO.PAI.DECIMAL);
+
+            ViewBag.S_IMPA = sol.S_IMPA;
+            ViewBag.S_IMPB = sol.S_IMPB;
+            ViewBag.S_IMPC = sol.S_IMPC;
+            ViewBag.S_MONTOA = sol.S_MONTOA;
+            ViewBag.S_MONTOB = sol.S_MONTOB;
+            ViewBag.S_MONTOP = sol.S_MONTOP;
+            ViewBag.S_NUM = sol.S_NUM;
+            ViewBag.S_REMA = sol.S_REMA;
+            ViewBag.rema_color = "";
+            if(format.toNum(sol.S_REMA, dOCUMENTO.PAI.MILES, dOCUMENTO.PAI.DECIMAL) <0)
+                ViewBag.rema_color = "#F44336 !important";
+
+            ViewBag.S_RET = sol.S_RET;
+            ViewBag.S_TOTAL = sol.S_TOTAL;
 
             //B20180803 MGC Presupuesto............
 
@@ -164,7 +185,8 @@ namespace TAT001.Controllers
             //ViewBag.miles = dOCUMENTO.PAI.MILES;//LEJGG 090718
             //ViewBag.dec = dOCUMENTO.PAI.DECIMAL;//LEJGG 090718
             FormatosC fc = new FormatosC();
-            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            //ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL);
+            ViewBag.monto = fc.toShow((decimal)dOCUMENTO.MONTO_DOC_MD, dOCUMENTO.PAI.DECIMAL) + " " + dOCUMENTO.MONEDA_ID;
             if (mail == null)
                 mail = true;
             //B20180803 MGC Correos............
@@ -367,45 +389,133 @@ namespace TAT001.Controllers
         public PRESUPUESTO_MOD getPresupuesto(string kunnr)
         {
             PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
-            try
-            {
-                if (kunnr == null)
-                    kunnr = "";
+            Presupuesto pr = new Presupuesto();
+            pm = pr.getPresupuesto(kunnr);
+            //try
+            //{
+            //    if (kunnr == null)
+            //        kunnr = "";
 
-                //Obtener presupuesto
-                string mes = DateTime.Now.Month.ToString();
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
-                string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
-                if (presupuesto != null)
-                {
-                    if (String.IsNullOrEmpty(clien))
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[1].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                    else
-                    {
-                        pm.P_CANAL = presupuesto[0].VAL;
-                        pm.P_BANNER = presupuesto[0].VAL;
-                        pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
-                        pm.PC_A = presupuesto[8].VAL;
-                        pm.PC_P = presupuesto[9].VAL;
-                        pm.PC_T = presupuesto[10].VAL;
-                        pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
+            //    //Obtener presupuesto
+            //    string mes = DateTime.Now.Month.ToString();
+            //    var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: mes).Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+            //    string clien = db.CLIENTEs.Where(x => x.KUNNR == kunnr).Select(x => x.BANNERG).First();
+            //    if (presupuesto != null)
+            //    {
+            //        if (String.IsNullOrEmpty(clien))
+            //        {
+            //            pm.P_CANAL = presupuesto[0].VAL;
+            //            pm.P_BANNER = presupuesto[1].VAL;
+            //            pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+            //            pm.PC_A = presupuesto[8].VAL;
+            //            pm.PC_P = presupuesto[9].VAL;
+            //            pm.PC_T = presupuesto[10].VAL;
+            //            pm.CONSU = (float.Parse(presupuesto[1].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+            //        }
+            //        else
+            //        {
+            //            pm.P_CANAL = presupuesto[0].VAL;
+            //            pm.P_BANNER = presupuesto[0].VAL;
+            //            pm.PC_C = (float.Parse(presupuesto[4].VAL) + float.Parse(presupuesto[5].VAL) + float.Parse(presupuesto[6].VAL)).ToString();
+            //            pm.PC_A = presupuesto[8].VAL;
+            //            pm.PC_P = presupuesto[9].VAL;
+            //            pm.PC_T = presupuesto[10].VAL;
+            //            pm.CONSU = (float.Parse(presupuesto[0].VAL) - float.Parse(presupuesto[10].VAL)).ToString();
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
 
-            }
+            //}
 
             return pm;
+        }
+
+        public SOLICITUD_MOD getSolicitud(string num, string num2,  string d)//RSG 07.06.2018---------------------------------------------
+        {
+            TAT001.Models.SOLICITUD_MOD sm = new SOLICITUD_MOD();
+            Services.FormatosC format = new FormatosC();
+
+            //Obtener info solicitud
+            if (num == null | num == "" | num == "0.00")
+            {
+                sm.S_NUM = num = "";
+                sm.S_MONTOB = format.toShow(Convert.ToDecimal(num2), d);
+                sm.S_MONTOP = sm.S_MONTOB;
+                sm.S_MONTOA = "-";
+                sm.S_REMA = "-";
+                sm.S_IMPA = "-";
+                sm.S_IMPB = "-";
+                sm.S_IMPC = "-";
+                sm.S_RET = "-";
+                sm.S_TOTAL = format.toShow(Convert.ToDecimal(num2), d); ;
+            }
+            else
+            {
+                decimal hola = Convert.ToDecimal(num);
+                var rev = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).ToList();
+                ;
+
+                if (rev.Count() == 0)
+                {
+                    //CON UN RELACIONADO 
+                    var rev2 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    decimal? rem2 = (rev2.MONTO_DOC_MD - Convert.ToDecimal(num2));
+
+                    sm.S_MONTOB = format.toShow(Convert.ToDecimal(num2), d);
+                    sm.S_MONTOP = format.toShow(0,d);
+                    sm.S_MONTOA = "-";
+                    sm.S_REMA = format.toShow((decimal)rem2,d);
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = format.toShow(Convert.ToDecimal(num2), d); ;
+                }
+                else if (rev.Count() == 1)
+                {
+                    //CON DOS RELACIONADOS
+                    var rev3 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    var rev33 = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).FirstOrDefault();
+                    decimal? rem3 = ((rev3.MONTO_DOC_MD - rev33.MONTO_DOC_MD) - (Convert.ToDecimal(num2)));
+
+                    sm.S_MONTOB = format.toShow(Convert.ToDecimal(num2), d);
+                    sm.S_MONTOP = format.toShow((decimal)rev3.MONTO_DOC_MD, d);
+                    sm.S_MONTOA = format.toShow((decimal)rev33.MONTO_DOC_MD- Convert.ToDecimal(num2), d);
+                    sm.S_REMA = format.toShow((decimal)rem3 + Convert.ToDecimal(num2), d);
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = format.toShow(Convert.ToDecimal(num2), d); ;
+                }
+                else if (rev.Count() > 1)
+                {
+                    var rev4 = db.DOCUMENTOes.Where(x => x.NUM_DOC == hola).FirstOrDefault();
+                    var rev44 = db.DOCUMENTOes.Where(x => x.DOCUMENTO_REF == hola).Select(x => x.MONTO_DOC_MD);
+                    decimal sum = 0;
+
+                    foreach (var k in rev44)
+                    {
+                        sum = sum + k.Value;
+                    }
+                    decimal? rem4 = ((rev4.MONTO_DOC_MD - sum) - (Convert.ToDecimal(num2)));
+
+                    sm.S_MONTOB = format.toShow(Convert.ToDecimal(num2), d); 
+                    sm.S_MONTOP = format.toShow((decimal)rev4.MONTO_DOC_MD, d);
+                    sm.S_MONTOA = format.toShow(sum - Convert.ToDecimal(num2), d);
+                    sm.S_REMA = format.toShow((-sum + (decimal)rev4.MONTO_DOC_MD + Convert.ToDecimal(num2)) , d);
+                    sm.S_IMPA = "-";
+                    sm.S_IMPB = "-";
+                    sm.S_IMPC = "-";
+                    sm.S_RET = "-";
+                    sm.S_TOTAL = format.toShow(Convert.ToDecimal(num2), d); 
+                }
+            }
+
+            //JsonResult cc = Json(sm, JsonRequestBehavior.AllowGet);
+            return sm;
         }
     }
 }

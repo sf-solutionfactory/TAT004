@@ -3466,37 +3466,37 @@ namespace TAT001.Controllers
             return cc;
         }
 
-        [HttpPost]
-        public JsonResult getPresupuesto(string kunnr)
-        {
-            if (kunnr == null)
-                kunnr = "";
+        //[HttpPost]
+        //public JsonResult getPresupuesto(string kunnr)
+        //{
+        //    if (kunnr == null)
+        //        kunnr = "";
 
-            PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
+        //    PRESUPUESTO_MOD pm = new PRESUPUESTO_MOD();
 
-            //Obtener presupuesto
-            try
-            {
-                var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: "1").Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
+        //    //Obtener presupuesto
+        //    try
+        //    {
+        //        var presupuesto = db.CSP_PRESU_CLIENT(cLIENTE: kunnr, pERIODO: "1").Select(p => new { DESC = p.DESCRIPCION.ToString(), VAL = p.VALOR.ToString() }).ToList();
 
-                if (presupuesto != null)
-                {
-                    pm.P_CANAL = presupuesto[0].VAL;
-                    pm.P_BANNER = presupuesto[1].VAL;
-                    pm.PC_C = presupuesto[4].VAL;
-                    pm.PC_A = presupuesto[5].VAL;
-                    pm.PC_P = presupuesto[6].VAL;
-                    pm.PC_T = presupuesto[7].VAL;
-                }
-            }
-            catch (Exception e)
-            {
+        //        if (presupuesto != null)
+        //        {
+        //            pm.P_CANAL = presupuesto[0].VAL;
+        //            pm.P_BANNER = presupuesto[1].VAL;
+        //            pm.PC_C = presupuesto[4].VAL;
+        //            pm.PC_A = presupuesto[5].VAL;
+        //            pm.PC_P = presupuesto[6].VAL;
+        //            pm.PC_T = presupuesto[7].VAL;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
 
-            }
+        //    }
 
-            JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
-            return cc;
-        }
+        //    JsonResult cc = Json(pm, JsonRequestBehavior.AllowGet);
+        //    return cc;
+        //}
 
 
 

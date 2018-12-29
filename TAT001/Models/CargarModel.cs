@@ -178,149 +178,153 @@ namespace TAT001.Models
             }
             return pRESUPUESTOPS;
         }
-        public List<PRESUPSAPP> cargarPresupuestoSAP(HttpPostedFileBase file, string[] sociedad, string[] periodo, string[] anio, ref string mensaje)
+        public List<PRESUPSAPP> cargarPresupuestoSAP(HttpPostedFileBase[] file, string[] sociedad, string[] periodo, string[] anio, ref string mensaje)
         {
             TAT001Entities db = new TAT001Entities();
             List<PRESUPSAPP> pRESUPUESTOPS = new List<PRESUPSAPP>();
             PRESUPSAPP pRESUPUESTOP = new PRESUPSAPP();
             List<string[]> datosPresu = new List<string[]>();
-            StreamReader strem = new StreamReader(file.InputStream);
+            StreamReader strem;
             List<REGION> sociedades = db.REGIONs.Where(x => sociedad.Contains(x.SOCIEDAD)).ToList();
             string[] lines;
-            bool prilinea = true;
+            bool prilinea = false;
             int i = 1;
             try
             {
-                while (strem.Peek() > -1)
+                for (int j = 0; j < file.Length; j++)
                 {
-                    if (prilinea)
+                    strem = new StreamReader(file[j].InputStream);
+                    while (strem.Peek() > -1)
                     {
-                        prilinea = false;
-                        lines = strem.ReadLine().Split('|');
-                    }
-                    else
-                    {
-                        lines = strem.ReadLine().Split('|');
-
-                        pRESUPUESTOP.ANIO = Convert.ToInt32(lines[0]);
-                        pRESUPUESTOP.POS = i;
-                        pRESUPUESTOP.PERIOD = Convert.ToInt32(lines[1]);
-                        pRESUPUESTOP.TYPE = lines[2];
-                        pRESUPUESTOP.BUKRS = lines[3];
-                        pRESUPUESTOP.VKORG = lines[4];
-                        pRESUPUESTOP.VTWEG = lines[5];
-                        pRESUPUESTOP.SPART = lines[6];
-                        pRESUPUESTOP.VKBUR = lines[7];
-                        pRESUPUESTOP.VKGRP = lines[8];
-                        pRESUPUESTOP.BZIRK = lines[9];
-                        pRESUPUESTOP.MATNR = lines[10];
-                        pRESUPUESTOP.PRDHA = lines[11];
-                        pRESUPUESTOP.KUNNR = lines[12];
-                        pRESUPUESTOP.KUNNR_P = lines[14];
-                        pRESUPUESTOP.BANNER = lines[16];
-                        pRESUPUESTOP.BANNER_CALC = lines[17];
-                        pRESUPUESTOP.KUNNR_PAY = lines[18];
-                        pRESUPUESTOP.FECHAP = lines[20].Substring(4, 2) + "-" + lines[20].Substring(6, 2) + "-" + lines[20].Substring(0, 4);
-                        pRESUPUESTOP.UNAME = lines[21];
-                        pRESUPUESTOP.XBLNR = lines[22];
-
-                        //pRESUPUESTOP.RECSL = Convert.ToDecimal(lines[24]);
-                        //pRESUPUESTOP.INDLB = Convert.ToDecimal(lines[25]);
-                        //pRESUPUESTOP.FRGHT = Convert.ToDecimal(lines[26]);
-                        //pRESUPUESTOP.PURCH = Convert.ToDecimal(lines[27]);
-                        //pRESUPUESTOP.RAWMT = Convert.ToDecimal(lines[28]);
-                        //pRESUPUESTOP.PKGMT = Convert.ToDecimal(lines[29]);
-                        //pRESUPUESTOP.OVHDV = Convert.ToDecimal(lines[30]);
-                        //pRESUPUESTOP.OVHDF = Convert.ToDecimal(lines[31]);
-                        //pRESUPUESTOP.DIRLB = Convert.ToDecimal(lines[32]);
-                        pRESUPUESTOP.VVX17 = Convert.ToDecimal(lines[23]);
-                        pRESUPUESTOP.CSHDC = Convert.ToDecimal(lines[24]);
-                        pRESUPUESTOP.RECUN = Convert.ToDecimal(lines[25]);
-                        pRESUPUESTOP.DSTRB = Convert.ToDecimal(lines[26]);
-                        pRESUPUESTOP.OTHTA = Convert.ToDecimal(lines[27]);
-                        pRESUPUESTOP.ADVER = Convert.ToDecimal(lines[28]);
-                        pRESUPUESTOP.CORPM = Convert.ToDecimal(lines[29]);
-                        pRESUPUESTOP.POP = Convert.ToDecimal(lines[30]);
-                        pRESUPUESTOP.PMVAR = Convert.ToDecimal(lines[31]);
-                        pRESUPUESTOP.CONPR = Convert.ToDecimal(lines[32]);
-                        pRESUPUESTOP.RSRDV = Convert.ToDecimal(lines[33]);
-                        pRESUPUESTOP.SPA = Convert.ToDecimal(lines[34]);
-                        pRESUPUESTOP.FREEG = Convert.ToDecimal(lines[35]);
-                        pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[36]);
-                        //pRESUPUESTOP.PKGDS = Convert.ToDecimal(lines[38]);
-                        pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[37]);
-                        //pRESUPUESTOP.SLLBS = Convert.ToDecimal(lines[46]);
-                        //pRESUPUESTOP.SLCAS = Convert.ToDecimal(lines[47]);
-                        //pRESUPUESTOP.PRCAS = Convert.ToDecimal(lines[48]);
-                        //pRESUPUESTOP.NPCAS = Convert.ToDecimal(lines[49]); 
-                        //pRESUPUESTOP.ILVAR = Convert.ToDecimal(lines[51]);
-                        //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
-                        //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
-                        //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
-                        if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO.ToString(), pRESUPUESTOP.PERIOD.ToString(), sociedades, periodo, anio, false))
+                        if (prilinea)
                         {
-                            pRESUPUESTOPS.Add(new PRESUPSAPP
-                            {
-                                ANIO = pRESUPUESTOP.ANIO,
-                                POS = pRESUPUESTOP.POS,
-                                PERIOD = pRESUPUESTOP.PERIOD,
-                                TYPE = pRESUPUESTOP.TYPE,
-                                BUKRS = pRESUPUESTOP.BUKRS,
-                                VKORG = pRESUPUESTOP.VKORG,
-                                VTWEG = pRESUPUESTOP.VTWEG,
-                                SPART = pRESUPUESTOP.SPART,
-                                VKBUR = pRESUPUESTOP.VKBUR,
-                                VKGRP = pRESUPUESTOP.VKGRP,
-                                BZIRK = pRESUPUESTOP.BZIRK,
-                                MATNR = pRESUPUESTOP.MATNR,
-                                PRDHA = pRESUPUESTOP.PRDHA,
-                                KUNNR = pRESUPUESTOP.KUNNR,
-                                KUNNR_P = pRESUPUESTOP.KUNNR_P,
-                                BANNER = pRESUPUESTOP.BANNER,
-                                BANNER_CALC = pRESUPUESTOP.BANNER_CALC,
-                                KUNNR_PAY = pRESUPUESTOP.KUNNR_PAY,
-                                FECHAP = pRESUPUESTOP.FECHAP,
-                                UNAME = pRESUPUESTOP.UNAME,
-                                XBLNR = pRESUPUESTOP.XBLNR,
-                                GRSLS = pRESUPUESTOP.GRSLS,
-                                //RECSL = pRESUPUESTOP.RECSL,
-                                //INDLB = pRESUPUESTOP.INDLB,
-                                //FRGHT = pRESUPUESTOP.FRGHT,
-                                //PURCH = pRESUPUESTOP.PURCH,
-                                //RAWMT = pRESUPUESTOP.RAWMT,
-                                //PKGMT = pRESUPUESTOP.PKGMT,
-                                //OVHDV = pRESUPUESTOP.OVHDV,
-                                //OVHDF = pRESUPUESTOP.OVHDF,
-                                //DIRLB = pRESUPUESTOP.DIRLB,
-                                CSHDC = pRESUPUESTOP.CSHDC,
-                                RECUN = pRESUPUESTOP.RECUN,
-                                OTHTA = pRESUPUESTOP.OTHTA,
-                                SPA = pRESUPUESTOP.SPA,
-                                FREEG = pRESUPUESTOP.FREEG,
-                                //PKGDS = pRESUPUESTOP.PKGDS,
-                                CONPR = pRESUPUESTOP.CONPR,
-                                RSRDV = pRESUPUESTOP.RSRDV,
-                                CORPM = pRESUPUESTOP.CORPM,
-                                POP = pRESUPUESTOP.POP,
-                                PMVAR = pRESUPUESTOP.PMVAR,
-                                ADVER = pRESUPUESTOP.ADVER,
-                                NETLB = pRESUPUESTOP.NETLB,
-                                //SLLBS = pRESUPUESTOP.SLLBS,
-                                //SLCAS = pRESUPUESTOP.SLCAS,
-                                //PRCAS = pRESUPUESTOP.PRCAS,
-                                //NPCAS = pRESUPUESTOP.NPCAS,
-                                DSTRB = pRESUPUESTOP.DSTRB,
-                                //ILVAR = pRESUPUESTOP.ILVAR,
-                                //BILBK = pRESUPUESTOP.BILBK,
-                                //OVHVV = pRESUPUESTOP.OVHVV
-                                VVX17 = pRESUPUESTOP.VVX17,
-                                OHV = pRESUPUESTOP.OHV
-                            });
+                            prilinea = false;
+                            lines = strem.ReadLine().Split('|');
                         }
-                        //sw.WriteLine(pRESUPUESTOP.ID + "," + pRESUPUESTOP.ANIO + "," + pRESUPUESTOP.POS + "," + pRESUPUESTOP.MES + "," + pRESUPUESTOP.VERSION + "," + pRESUPUESTOP.PAIS + "," + pRESUPUESTOP.MONEDA + "," + pRESUPUESTOP.MATERIAL + "," + pRESUPUESTOP.BANNER + "," + pRESUPUESTOP.ADVER + "," + pRESUPUESTOP.CONPR + "," + pRESUPUESTOP.CSHDC + "," + pRESUPUESTOP.DIRLB + "," + pRESUPUESTOP.DSTRB + "," + pRESUPUESTOP.FREEG + "," + pRESUPUESTOP.GRSLS + "," + pRESUPUESTOP.NETLB + "," + pRESUPUESTOP.OVHDF + "," + pRESUPUESTOP.OVHDV + "," + pRESUPUESTOP.PKGMT + "," + pRESUPUESTOP.PMVAR + "," + pRESUPUESTOP.POP + "," + pRESUPUESTOP.PURCH + "," + pRESUPUESTOP.RAWMT + "," + pRESUPUESTOP.RECUN + "," + pRESUPUESTOP.RSRDV + "," + pRESUPUESTOP.TOTCS);
-                        i++;
+                        else
+                        {
+                            lines = strem.ReadLine().Split('|');
+
+                            pRESUPUESTOP.ANIO = Convert.ToInt32(lines[0]);
+                            pRESUPUESTOP.POS = i;
+                            pRESUPUESTOP.PERIOD = Convert.ToInt32(lines[1]);
+                            pRESUPUESTOP.TYPE = lines[2];
+                            pRESUPUESTOP.BUKRS = lines[3];
+                            pRESUPUESTOP.VKORG = lines[4];
+                            pRESUPUESTOP.VTWEG = lines[5];
+                            pRESUPUESTOP.SPART = lines[6];
+                            pRESUPUESTOP.VKBUR = lines[7];
+                            pRESUPUESTOP.VKGRP = lines[8];
+                            pRESUPUESTOP.BZIRK = lines[9];
+                            pRESUPUESTOP.MATNR = lines[10];
+                            pRESUPUESTOP.PRDHA = lines[11];
+                            pRESUPUESTOP.KUNNR = lines[12];
+                            pRESUPUESTOP.KUNNR_P = lines[14];
+                            pRESUPUESTOP.BANNER = lines[16];
+                            pRESUPUESTOP.BANNER_CALC = lines[17];
+                            pRESUPUESTOP.KUNNR_PAY = lines[18];
+                            pRESUPUESTOP.FECHAP = lines[20].Substring(4, 2) + "-" + lines[20].Substring(6, 2) + "-" + lines[20].Substring(0, 4);
+                            pRESUPUESTOP.UNAME = lines[21];
+                            pRESUPUESTOP.XBLNR = lines[22];
+
+                            //pRESUPUESTOP.RECSL = Convert.ToDecimal(lines[24]);
+                            //pRESUPUESTOP.INDLB = Convert.ToDecimal(lines[25]);
+                            //pRESUPUESTOP.FRGHT = Convert.ToDecimal(lines[26]);
+                            //pRESUPUESTOP.PURCH = Convert.ToDecimal(lines[27]);
+                            //pRESUPUESTOP.RAWMT = Convert.ToDecimal(lines[28]);
+                            //pRESUPUESTOP.PKGMT = Convert.ToDecimal(lines[29]);
+                            //pRESUPUESTOP.OVHDV = Convert.ToDecimal(lines[30]);
+                            //pRESUPUESTOP.OVHDF = Convert.ToDecimal(lines[31]);
+                            //pRESUPUESTOP.DIRLB = Convert.ToDecimal(lines[32]);
+                            pRESUPUESTOP.VVX17 = Convert.ToDecimal(lines[23]);
+                            pRESUPUESTOP.CSHDC = Convert.ToDecimal(lines[24]);
+                            pRESUPUESTOP.RECUN = Convert.ToDecimal(lines[25]);
+                            pRESUPUESTOP.DSTRB = Convert.ToDecimal(lines[26]);
+                            pRESUPUESTOP.OTHTA = Convert.ToDecimal(lines[27]);
+                            pRESUPUESTOP.ADVER = Convert.ToDecimal(lines[28]);
+                            pRESUPUESTOP.CORPM = Convert.ToDecimal(lines[29]);
+                            pRESUPUESTOP.POP = Convert.ToDecimal(lines[30]);
+                            pRESUPUESTOP.PMVAR = Convert.ToDecimal(lines[31]);
+                            pRESUPUESTOP.CONPR = Convert.ToDecimal(lines[32]);
+                            pRESUPUESTOP.RSRDV = Convert.ToDecimal(lines[33]);
+                            pRESUPUESTOP.SPA = Convert.ToDecimal(lines[34]);
+                            pRESUPUESTOP.FREEG = Convert.ToDecimal(lines[35]);
+                            pRESUPUESTOP.GRSLS = Convert.ToDecimal(lines[36]);
+                            //pRESUPUESTOP.PKGDS = Convert.ToDecimal(lines[38]);
+                            pRESUPUESTOP.NETLB = Convert.ToDecimal(lines[37]);
+                            //pRESUPUESTOP.SLLBS = Convert.ToDecimal(lines[46]);
+                            //pRESUPUESTOP.SLCAS = Convert.ToDecimal(lines[47]);
+                            //pRESUPUESTOP.PRCAS = Convert.ToDecimal(lines[48]);
+                            //pRESUPUESTOP.NPCAS = Convert.ToDecimal(lines[49]); 
+                            //pRESUPUESTOP.ILVAR = Convert.ToDecimal(lines[51]);
+                            //pRESUPUESTOP.BILBK = Convert.ToDecimal(lines[52]);
+                            //pRESUPUESTOP.OVHVV = Convert.ToDecimal(lines[53]);
+                            //pRESUPUESTOP.OHV = Convert.ToDecimal(lines[50]);
+                            if (filtrocarga(pRESUPUESTOP.BUKRS, pRESUPUESTOP.ANIO.ToString(), pRESUPUESTOP.PERIOD.ToString(), sociedades, periodo, anio, false))
+                            {
+                                pRESUPUESTOPS.Add(new PRESUPSAPP
+                                {
+                                    ANIO = pRESUPUESTOP.ANIO,
+                                    POS = pRESUPUESTOP.POS,
+                                    PERIOD = pRESUPUESTOP.PERIOD,
+                                    TYPE = pRESUPUESTOP.TYPE,
+                                    BUKRS = pRESUPUESTOP.BUKRS,
+                                    VKORG = pRESUPUESTOP.VKORG,
+                                    VTWEG = pRESUPUESTOP.VTWEG,
+                                    SPART = pRESUPUESTOP.SPART,
+                                    VKBUR = pRESUPUESTOP.VKBUR,
+                                    VKGRP = pRESUPUESTOP.VKGRP,
+                                    BZIRK = pRESUPUESTOP.BZIRK,
+                                    MATNR = pRESUPUESTOP.MATNR,
+                                    PRDHA = pRESUPUESTOP.PRDHA,
+                                    KUNNR = pRESUPUESTOP.KUNNR,
+                                    KUNNR_P = pRESUPUESTOP.KUNNR_P,
+                                    BANNER = pRESUPUESTOP.BANNER,
+                                    BANNER_CALC = pRESUPUESTOP.BANNER_CALC,
+                                    KUNNR_PAY = pRESUPUESTOP.KUNNR_PAY,
+                                    FECHAP = pRESUPUESTOP.FECHAP,
+                                    UNAME = pRESUPUESTOP.UNAME,
+                                    XBLNR = pRESUPUESTOP.XBLNR,
+                                    GRSLS = pRESUPUESTOP.GRSLS,
+                                    //RECSL = pRESUPUESTOP.RECSL,
+                                    //INDLB = pRESUPUESTOP.INDLB,
+                                    //FRGHT = pRESUPUESTOP.FRGHT,
+                                    //PURCH = pRESUPUESTOP.PURCH,
+                                    //RAWMT = pRESUPUESTOP.RAWMT,
+                                    //PKGMT = pRESUPUESTOP.PKGMT,
+                                    //OVHDV = pRESUPUESTOP.OVHDV,
+                                    //OVHDF = pRESUPUESTOP.OVHDF,
+                                    //DIRLB = pRESUPUESTOP.DIRLB,
+                                    CSHDC = pRESUPUESTOP.CSHDC,
+                                    RECUN = pRESUPUESTOP.RECUN,
+                                    OTHTA = pRESUPUESTOP.OTHTA,
+                                    SPA = pRESUPUESTOP.SPA,
+                                    FREEG = pRESUPUESTOP.FREEG,
+                                    //PKGDS = pRESUPUESTOP.PKGDS,
+                                    CONPR = pRESUPUESTOP.CONPR,
+                                    RSRDV = pRESUPUESTOP.RSRDV,
+                                    CORPM = pRESUPUESTOP.CORPM,
+                                    POP = pRESUPUESTOP.POP,
+                                    PMVAR = pRESUPUESTOP.PMVAR,
+                                    ADVER = pRESUPUESTOP.ADVER,
+                                    NETLB = pRESUPUESTOP.NETLB,
+                                    //SLLBS = pRESUPUESTOP.SLLBS,
+                                    //SLCAS = pRESUPUESTOP.SLCAS,
+                                    //PRCAS = pRESUPUESTOP.PRCAS,
+                                    //NPCAS = pRESUPUESTOP.NPCAS,
+                                    DSTRB = pRESUPUESTOP.DSTRB,
+                                    //ILVAR = pRESUPUESTOP.ILVAR,
+                                    //BILBK = pRESUPUESTOP.BILBK,
+                                    //OVHVV = pRESUPUESTOP.OVHVV
+                                    VVX17 = pRESUPUESTOP.VVX17,
+                                    OHV = pRESUPUESTOP.OHV
+                                });
+                            }
+                            //sw.WriteLine(pRESUPUESTOP.ID + "," + pRESUPUESTOP.ANIO + "," + pRESUPUESTOP.POS + "," + pRESUPUESTOP.MES + "," + pRESUPUESTOP.VERSION + "," + pRESUPUESTOP.PAIS + "," + pRESUPUESTOP.MONEDA + "," + pRESUPUESTOP.MATERIAL + "," + pRESUPUESTOP.BANNER + "," + pRESUPUESTOP.ADVER + "," + pRESUPUESTOP.CONPR + "," + pRESUPUESTOP.CSHDC + "," + pRESUPUESTOP.DIRLB + "," + pRESUPUESTOP.DSTRB + "," + pRESUPUESTOP.FREEG + "," + pRESUPUESTOP.GRSLS + "," + pRESUPUESTOP.NETLB + "," + pRESUPUESTOP.OVHDF + "," + pRESUPUESTOP.OVHDV + "," + pRESUPUESTOP.PKGMT + "," + pRESUPUESTOP.PMVAR + "," + pRESUPUESTOP.POP + "," + pRESUPUESTOP.PURCH + "," + pRESUPUESTOP.RAWMT + "," + pRESUPUESTOP.RECUN + "," + pRESUPUESTOP.RSRDV + "," + pRESUPUESTOP.TOTCS);
+                            i++;
+                        }
                     }
-                }
+                }                
                 if (pRESUPUESTOPS.Count == 0)
                 {
                     mensaje = mensajes(8);//"No se encontraron datos en el archivo SAP de acuerdo al filtro de datos";
@@ -333,11 +337,16 @@ namespace TAT001.Models
 
             return pRESUPUESTOPS;
         }
-        public string guardarPresupuesto(ref DatosPresupuesto presupuesto, string[] sociedadcpt, string[] periodocpt, string[] sociedadsap, string[] periodosap, string usuario)
+        public string guardarPresupuesto(ref DatosPresupuesto presupuesto, string[] sociedadcpt, string[] periodocpt, string[] sociedadsap, string[] periodosap, string usuario, string opciong)
         {
             TAT001Entities db = new TAT001Entities();
             string mensaje = "", soc = "", pre = "";
             int ide = 0;
+            string opc = "1";
+            if (opciong !="on")
+            {
+                opc = "2";
+            }            
             if (presupuesto.presupuestoCPT.Count > 0)
             {
                 soc = ""; pre = "";
@@ -370,7 +379,7 @@ namespace TAT001.Models
             {
                 soc = ""; pre = "";
                 sociedadPeriodo(sociedadsap, periodosap, false, ref soc, ref pre);
-                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO, soc, pre, usuario, "0", 2).ToList();
+                var id = db.CSP_PRESUPUESTO_ADD(presupuesto.presupuestoSAP[0].ANIO, soc, pre, usuario, opc, 2).ToList();//0 remplazar 1 añadir
                 if (id.Count > 0)
                 {
                     ide = Convert.ToInt32(id[0].ToString());

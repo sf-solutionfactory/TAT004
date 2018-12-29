@@ -6,7 +6,7 @@
     ViewBag.carpeta_r = 300;
 }
 <script type="text/javascript" src="~/Scripts/jquery-3.0.0.min.js"></script>
-<script type="text/javascript" src="~/Scripts/materialize.js"></script>
+<script type="text/javascript" src="~/Scripts/materialize2.js"></script>
 <script type="text/javascript" src="~/Scripts/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="~/Scripts/dataTables.fixedColumns.min.js"></script>
 <script type="text/javascript" src="~/Scripts/dataTables.material.min.js"></script>
@@ -181,7 +181,7 @@
             {
                 <div class="input-field col s2" id="selection">
                     <select name="periodoconsu">
-                        <option value="" disabled selected></option>
+                        <option value="" disabled selected>Todos</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
                         <option value="3">Marzo</option>
@@ -556,7 +556,7 @@
     </div>
 }
 <script>
-    var elem = document.querySelectorAll('#select');
+    var elem = document.querySelectorAll('select');
     var options = [];
     var instance = M.Select.init(elem, options);
 </script>

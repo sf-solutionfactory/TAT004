@@ -1,12 +1,16 @@
 ﻿@model TAT001.Entities.PUESTO
-
 @{
     //ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.pagina_r = 621;
     ViewBag.carpeta_r = 500;
 }
-
+<div class="row">
+    <div class="col s12 right-align">
+        <a href="@Url.Action("Edit", "Puestos", new { id = Model.ID })" class="btn-small"> Editar</a>
+        <a href="@Url.Action("Index", "Puestos")" class="btn-small"> Lista</a>
+    </div>
+</div>
 <div class="row">
     <div class="col s6">
         <div class="card-panel">
@@ -45,17 +49,13 @@
                     </thead>
                     @foreach (var item in Model.USUARIOs)
                     {
-                    <tr>
-                        <td> @Html.DisplayFor(modelItem => item.ID)</td>
-                        <td> @Html.DisplayFor(modelItem => item.NOMBRE) @Html.DisplayFor(modelItem => item.APELLIDO_P) @Html.DisplayFor(modelItem => item.APELLIDO_M)</td>
-                    </tr>
+                        <tr>
+                            <td> @Html.DisplayFor(modelItem => item.ID)</td>
+                            <td> @Html.DisplayFor(modelItem => item.NOMBRE) @Html.DisplayFor(modelItem => item.APELLIDO_P) @Html.DisplayFor(modelItem => item.APELLIDO_M)</td>
+                        </tr>
                     }
                 </table>
             </div>
         </div>
     </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

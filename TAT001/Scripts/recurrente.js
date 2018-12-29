@@ -18,19 +18,28 @@
                     .text(cat));
             }
             var elem = document.getElementById("select_categoria");
-            var instance = M.Select.init(elem, []);
-            //document.getElementById("loader").style.display = "none";
+            var instance = M.FormSelect.init(elem, []);
+            document.getElementById("loader").style.display = "none";
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
-            //document.getElementById("loader").style.display = "none";
+            document.getElementById("loader").style.display = "none";
         },
-        async: true
+        async: false
     });
 }
 
+function excedePresup() {
+    var pres = toNum(document.getElementById("consu").innerHTML);
+    var monto = toNum(document.getElementById("monto_doc_md").value);
+
+    if (parseFloat(monto) > parseFloat(pres)) {
+        document.getElementById("txtPres").value = 'X';
+    }
+}
+
 $(document).ready(function () {
-    $('#table_rec').DataTable({
+    var table = $('#table_rec').DataTable({
         "language": {
             "zerorecords": "no hay registros",
             "infoempty": "registros no disponibles",
@@ -43,16 +52,28 @@ $(document).ready(function () {
         "searching": false,
         "columns": [
             {
+                "name": 'ADD',
+                "className": 'ADD',
+            },
+            {
                 "name": 'POS',
                 "className": 'POS',
+            },
+            {
+                "name": 'PERIODO',
+                "className": 'PERIODO',
             },
             {
                 "name": 'TSOL',
                 "className": 'TSOL'
             },
             {
-                "name": 'FECHA',
-                "className": 'FECHA'
+                "name": 'NUM_DOC',
+                "className": 'NUM_DOC'
+            },
+            {
+                "name": 'FECHAV',
+                "className": 'FECHAV'
             },
             {
                 "name": 'MONTO',
@@ -61,14 +82,21 @@ $(document).ready(function () {
             {
                 "name": 'PORCENTAJE',
                 "className": 'PORCENTAJE'
+            },
+            {
+                "name": 'ESTATUS',
+                "className": 'ESTATUS'
             }
         ]
     });
+
     //LEJ 31.07.2018---------------------
     var _rec = $('#valRec').val();
-    if (_rec > 0 || _rec != '') {
-        $('#check_recurrente').prop('checked', true);
-        showPrTable();
+    if (_rec != undefined) {
+        if (_rec > 0 || _rec != '') {
+            $('#check_recurrente').prop('checked', true);
+            showPrTable();
+        }
     }
     if ($('#chk_ligada').is(":checked")) {
         $("#div_objq").removeClass("hide");
@@ -78,6 +106,80 @@ $(document).ready(function () {
         $("#txt_ligada").val("");
     }
     //LEJ 31.07.2018---------------------
+
+    var tableR = $('#table_rangos').DataTable({
+        "language": {
+            "zerorecords": "no hay registros",
+            "infoempty": "registros no disponibles",
+            "decimal": ".",
+            "thousands": ","
+        },
+        "paging": false,
+        ordering: false,
+        order: [[1, "desc"]],
+        "info": false,
+        "searching": false,
+        "columns": [
+            //{
+            //    "name": 'SEL',
+            //    "className": 'select_row',
+            //},
+            {
+                "name": 'POS',
+                "className": 'POS',
+            },
+            {
+                "name": 'LIN',
+                "className": 'LIN',
+            },
+            {
+                "name": 'OBJETIVO',
+                "className": 'OBJETIVO'
+            },
+            //{
+            //    "name": 'LIMITES',
+            //    "className": 'LIMITES'
+            //},
+            {
+                "name": 'PORCENTAJE',
+                "className": 'PORCENTAJE'
+            }
+        ]
+    });
+
+    $("#table_objQ").DataTable({
+        "paging": false,
+        "ordering": false,
+        "info": false,
+        searching: false
+    });
+
+    $('#table_rec tbody').on('click', 'tr', function () {
+        if ($(this).hasClass('selected') | listaRangos.length == 0) {
+            $(this).removeClass('selected');
+            $(".table_rangos").css("display", "none");
+            $("#btnRango").css("display", "none");
+            $("#btnDelRango").css("display", "none");
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            $(".table_rangos").css("display", "table");
+            $("#btnRango").css("display", "inline-block");
+            $("#btnDelRango").css("display", "inline-block");
+            var tableR = $('#table_rangos').DataTable();
+            showRangos(tableR, $(this));
+        }
+    });
+
+    //$('#table_rangos tbody').on('click', 'td.select_row', function () {
+    //    var tr = $(this).closest('tr');
+    //    var lin = tr.find('.LIN').text();
+    //    if (lin != "1") {
+    //        $(tr).toggleClass('selected');
+    //    }
+    //});
+    cambiaCheckRec();
 });
 //LEJ 31.07.2018---------------------
 function showPrTable() {
@@ -117,8 +219,13 @@ function fillTable(t, no, fecha, mt, porc) {
     ]).draw(false).node();
 }
 
+var listaRangos = [];//RSG 17.09.2018
+
 function cambiaRec() {
+    $("#tabs_rec").addClass("disabled");
     var campo = document.getElementById("check_recurrente");
+    listaRangos = [];//RSG 17.09.2018
+
     var radio = document.getElementById("btn-peri");
     var table = $('#table_rec').DataTable();
     table.clear().draw(true);
@@ -129,7 +236,7 @@ function cambiaRec() {
     var porc = document.getElementById("bmonto_apoyo").value;//RSG 09.07.2018
 
     if (radio != null) { //B20180625 MGC 2018.06.26 Marcaba error, por validación de null
-        if (radio.checked) {
+        if (radio.checked & !isRelacionada()) {
 
             var pe1 = document.getElementById("periodoi_id").value;
             var pe2 = document.getElementById("periodof_id").value;
@@ -144,7 +251,8 @@ function cambiaRec() {
         //var ej2 = document.getElementById("aniof_id").value;
     }
     if (campo.checked) {
-        if (montoo === "") {
+        $("#tabs_rec").removeClass("disabled");
+        if (montoo === "" | ligada()) {
             var dist = $('#table_dis').DataTable();
             var montooo = 0.00;
             $('#table_dis > tbody  > tr').each(function () {
@@ -155,7 +263,7 @@ function cambiaRec() {
             });
             montoo = montooo;
         }
-        if ((montoo > 0 & tipo == "PC") | ligada()) {
+        if ((montoo > 0 /*& tipo == "PC"*/) | ligada()) {
             //if (montoo > 0) { 
             $(".table_rec").css("display", "table");
             //Add row 
@@ -175,12 +283,17 @@ function cambiaRec() {
                     if (i === 1) {
                         ////if (tipo !== "P") {
                         if (tipoR !== "2") {
-                            if (tipo == "PC") {
+                            if (tipo == "MM" | tipo == "MC") {
                                 ////date = document.getElementById("fechai_vig").value;
                                 monto = montoo;
                                 //////addRowRec(table, i, date, monto, tipo);
                                 //////primerDiaT(table, i, datei, monto, tipo);
-                                primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                primerDiaT(table, i, (parseInt(pe1) + 1), ej1, monto, tipoR, meses);
+                            } else if (ligada() & (tipo == "PM" | tipo == "PC")) {
+                                monto = montoo;
+                                ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
+                                var o = { POS: i, LIN: 1, PERIODO: pe1, OBJ1: 0, OBJ2: 0, PORC: porc };
+                                listaRangos.push(o);
                             }
                         } else {
                             ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
@@ -190,18 +303,23 @@ function cambiaRec() {
                             monto = montoo;
                             //////addRowRec(table, i, date, monto, tipo);
                             ////ultimoDiaT(table, i, datei, monto, tipo);
-                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
+                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
                         }
                     }
                     else {
                         ////if (tipo !== "P") {
                         if (tipoR !== "2") {
-                            if (tipo == "PC") {
+                            if (tipo == "MM" | tipo == "MC") {
                                 //////var dates = new Date(datei[2], datei[1] - 2 + i, 1);
                                 //////date = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
                                 monto = montoo;
                                 //////primerDiaT(table, i, datei, monto, tipo);
-                                primerDiaT(table, i, pe1, ej1, monto, tipoR);
+                                primerDiaT(table, i, (parseInt(pe1) + 1), ej1, monto, tipoR, meses);
+                            } else if (ligada() & (tipo == "PM" | tipo == "PC")) {
+                                monto = montoo;
+                                ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
+                                var o = { POS: i, LIN: 1, PERIODO: pe1, OBJ1: 0, OBJ2: 0, PORC: porc };
+                                listaRangos.push(o);
                             }
                         } else {
                             ////var dates = new Date(datei[2], datei[1] - 1 + i, 1);
@@ -211,7 +329,7 @@ function cambiaRec() {
                             monto = montoo;
                             //////addRowRec(table, i, date, monto, tipo);
                             ////ultimoDiaT(table, i, datei, monto, tipo);
-                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc);
+                            ultimoDiaT(table, i, pe1, ej1, monto, tipoR, porc, meses);
                         }
                     }
                 }
@@ -229,33 +347,73 @@ function cambiaRec() {
 
 }
 
-function addRowRec(t, num, date, monto, tipo, porc) {
-    if (tipo !== "2") {
-        addRowRecl(
-            t,
-            num, //POS
-            document.getElementById("tsol_id").value,
-            date,
-            toShow(monto),
-            toShowPorc(0.00)
-            //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
-        );
+function cambiaCheckRec() {
+    var campo = document.getElementById("check_recurrente");
+    document.getElementById("btn-date").disabled = false;
+    document.getElementById("btn-peri").disabled = false;
+
+    if (campo.checked) {
+        document.getElementById("btn-peri").checked = true;
+        document.getElementById("btn-date").disabled = true;
+        document.getElementById("btn-peri").disabled = true;
+        $("#btn-peri").trigger("change");
     } else {
-        if (num !== 1) {
+        document.getElementById("btn-date").disabled = false;
+        document.getElementById("btn-peri").disabled = false;
+        $("#tabs_rec").addClass("disabled");
+    }
+}
+
+function addRowRec(t, num, date, monto, tipo, porc, periodo, meses) {
+    var el = document.getElementById("tsol_id");
+    var tsoll = el.options[el.selectedIndex].innerHTML;
+    if (tipo !== "2") {
+        if (!ligada()) {
             addRowRecl(
                 t,
-                num, //POS
-                document.getElementById("tsol_id").value,
+                //num, //POS
+                num + "/" + meses, //POS
+                //document.getElementById("tsol_id").value,
+                tsoll,
                 date,
-                "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
-                //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
-                toShowPorc(porc)
+                toShow(monto),
+                toShowPorc(0.00)
+                //"<input class=\"PORCENTAJE input_rec numberd input_dc \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"\">"
+                , periodo
             );
         } else {
             addRowRecl(
                 t,
-                num, //POS
-                document.getElementById("tsol_id").value,
+                num + "/" + meses, //POS
+                tsoll,
+                date,
+                //"<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
+                toShow(monto),
+                toShowPorc(porc)
+                , periodo
+            );
+        }
+    } else {
+        if (num !== 1) {
+            addRowRecl(
+                t,
+                //num, //POS
+                num + "/" + meses, //POS
+                //document.getElementById("tsol_id").value,
+                tsoll,
+                date,
+                "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
+                //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
+                toShowPorc(porc)
+                , periodo
+            );
+        } else {
+            addRowRecl(
+                t,
+                //num, //POS
+                num + "/" + meses, //POS
+                //document.getElementById("tsol_id").value,
+                tsoll,
                 date,
                 //monto,//RSG 09.07.2018
                 "<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"" + toShow(monto) + "\" onchange='updateObjQ()'>",
@@ -263,20 +421,25 @@ function addRowRec(t, num, date, monto, tipo, porc) {
                 //"<input class=\"MONTO input_rec numberd input_dc monto \" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + monto + "\">",
                 //"<input class=\"PORCENTAJE input_rec numberd input_dc\" style=\"font-size:12px;height:2rem;\" type=\"text\" id=\"\" name=\"\" value=\"\">"//RSG 09.07.2018
                 toShowPorc(porc)
+                , periodo
             );
         }
     }
 }
 
-function addRowRecl(t, pos, tsol, fecha, monto, porc) {
+function addRowRecl(t, pos, tsol, fecha, monto, porc, periodo) {
     //var t = $('#table_rec').DataTable();
 
     t.row.add([
+        "",
         pos
+        , periodo
         , tsol
-        , fecha
+        , "No generado"
+        , "<span style='display:none;'>"+fecha+"</span>"+"No generado"
         , monto
         , porc
+        , "Pendiente"
     ]).draw(false);
 }
 
@@ -306,9 +469,9 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
         $("#table_rec > tbody  > tr[role='row']").each(function () { //B20180625 MGC 2018.07.03
             poss++;
 
-            var pos = $(this).find("td.POS").text();
+            var pos = $(this).find("td.POS").text().split("/")[0];
             var tsol = $(this).find("td.TSOL").text();
-            var fecha = $(this).find("td.FECHA").text();
+            var fecha = $(this).find("td.FECHAV span").text();
             var monto = "";
             if (tipo === "P") {
                 if (ligada()) {
@@ -338,7 +501,10 @@ function enviaRec(borrador) { //B20180625 MGC 2018.07.03
             item["NUM_DOC"] = 0;
             item["POS"] = pos;
             item["TSOL"] = tsol;
-            item["FECHAF"] = fecha + " 12:00:00 p.m.";
+            //item["FECHAF"] = fecha + " 12:00:00 p.m.";
+            var horaServer = $("#horaServer").val();
+            item["FECHAF"] = fecha + " " + horaServer;
+
             item["MONTO_BASE"] = monto;
             item["PORC"] = porcentaje;
 
@@ -401,7 +567,7 @@ function copiarTableVistaRec() {
 
             //var pos = $(this).find("td.POS").text();
             var pos = $(this).find("td:eq(1)").text();
-            //var fecha = $(this).find("td.FECHA").text();
+            //var fecha = $(this).find("td.FECHAV").text();
             var fecha = $(this).find("td:eq(2)").text().trim();
 
             var ffecha = fecha.split(' ');
@@ -415,7 +581,7 @@ function copiarTableVistaRec() {
             //if ($("#check_factura").is(':checked')) {
 
             //    factura = "<input class=\"FACTURA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + factura + "\">";
-            //    ffecha[0] = "<input class=\"FECHA input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
+            //    ffecha[0] = "<input class=\"FECHAV input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + ffecha[0] + "\">";
             //    prov = "<input class=\"PROVEEDOR input_sop_f input_proveedor\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + prov + "\">";
             //    control = "<input class=\"CONTROL input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + control + "\">";
             //    autorizacion = "<input class=\"AUTORIZACION input_sop_f\" style=\"font-size:12px;\" type=\"text\" id=\"\" name=\"\" value=\"" + autorizacion + "\">";
@@ -459,14 +625,14 @@ function copiarTableVistaRec() {
 }
 
 //function primerDiaT(t, num, date, monto, tipo) {
-function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
+function primerDiaT(t, num, periodo, ejercicio, monto, tipo, meses) {
     document.getElementById("loader").style.display = "initial";
 
 
     $.ajax({
         type: "POST",
         //url: '../Listas/getPrimerDia',
-        url: '../Listas/getPrimerViernes',
+        url: '../Listas/getPrimerLunes',
         dataType: "json",
         data: { ejercicio: ejercicio, periodo: (periodo - 1 + num) },
         success: function (data) {
@@ -475,7 +641,7 @@ function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo, "");
+            addRowRec(t, num, datee, monto, tipo, "", "P" + (periodo - 2 + num) + "-" + ejercicio, meses);
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -486,7 +652,7 @@ function primerDiaT(t, num, periodo, ejercicio, monto, tipo) {
 }
 
 //function ultimoDiaT(t, num, date, monto, tipo) {
-function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
+function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc, meses) {
     document.getElementById("loader").style.display = "initial";
 
 
@@ -495,7 +661,7 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
         url: '../Listas/getUltimoDia',
         //url: '../Listas/getPrimerLunes',
         dataType: "json",
-        data: { ejercicio: ejercicio, periodo: (periodo - 1  + num) },
+        data: { ejercicio: ejercicio, periodo: (periodo - 1 + num) },
         //data: { ejercicio: ejercicio, periodo: (periodo - 1 + 1 + num) },
         success: function (data) {
             document.getElementById("loader").style.display = "none";
@@ -503,7 +669,7 @@ function ultimoDiaT(t, num, periodo, ejercicio, monto, tipo, porc) {
             var dates = new Date(dd[2], dd[1] - 1, dd[0]);
             datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
-            addRowRec(t, num, datee, monto, tipo, porc);
+            addRowRec(t, num, datee, monto, tipo, porc, "P" + (periodo - 1 + num) + "-" + ejercicio, meses);
         },
         error: function (xhr, httpStatusMessage, customErrorMessage) {
             M.toast({ html: httpStatusMessage });
@@ -532,8 +698,8 @@ function setDates(tipo) {
             success: function (data) {
                 document.getElementById("loader").style.display = "none";
                 var dd = data.split('/');
-                var dates = new Date(dd[2], dd[1], dd[0]);
-                datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+                var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+                datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
                 document.getElementById('fechai_vig').value = datee;
             },
@@ -551,8 +717,8 @@ function setDates(tipo) {
             success: function (data) {
                 document.getElementById("loader").style.display = "none";
                 var dd = data.split('/');
-                var dates = new Date(dd[2], dd[1], dd[0]);
-                datee = dates.getDate() + "/" + (dates.getMonth()) + "/" + dates.getFullYear();
+                var dates = new Date(dd[2], dd[1] - 1, dd[0]);
+                datee = dates.getDate() + "/" + (dates.getMonth() + 1) + "/" + dates.getFullYear();
 
                 document.getElementById('fechaf_vig').value = datee;
             },
@@ -573,6 +739,7 @@ function setDates(tipo) {
         //document.getElementById('fechaf_vig').value = fechaf;
     }
     pickerFecha2(".format_date");
+    cambiaRec();
 }
 
 //Evaluar la extensión y tamaño del archivo a cargar
@@ -616,132 +783,15 @@ function changeFile(campo) {
     }
 }
 
-function toNum(string) {
-    if (!$.isNumeric(string)) {
-        if (string !== "" && string != undefined) {
-            var _miles = $("#miles").val();
-            var _decimales = $("#dec").val();
-            string = string.replace('$', '');
-            string = string.replace('%', '');
-            //string = string.replace(_miles, '');
-            if (_miles === '.')
-                _miles = '\\.';
-            string = string.replace(new RegExp(_miles, 'g'), '');
-            string = string.replace(_decimales, '.');
-        } else {
-            string = "0.00";
-        }
-    }
-    return string;
-}
-function toShow(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = ("$" + parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = ("$" + _xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowPorc(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowPorc5(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(5);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(5).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ",") + '%');
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(5);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, ".") + '%');
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
-function toShowNum(string) {
-    string = toNum(string);
-    var _miles = $("#miles").val();
-    var _decimales = $("#dec").val();
-    var xx = parseFloat(string).toFixed(2);
-    xx = xx.replace('.', _decimales);
-    //string = xx.toString().replace(/\B(?=(\d{3})+(?!\d))/g, _miles) + '%';
-    if (string != '') {
-        if (_decimales === '.') {
-            //Hace la conversion a 2 decimales
-            var _xv = xx.replace(',', '');
-            xx = _xv;
-            string = (parseFloat(xx).toFixed(2).toString().replace(/\B(?=(?=\d*\.)(\d{3})+(?!\d))/g, ","));
-        } else if (_decimales === ',') {
-            var _xv = xx.replace('.', '');
-            xx = _xv.replace(',', '.');
-            var _xpf = parseFloat(xx.replace(',', '.')).toFixed(2);
-            _xpf = _xpf.replace('.', ',');
-            string = (_xpf.toString().replace(/\B(?=(?=\d*\,)(\d{3})+(?!\d))/g, "."));
-        }
-    }
-    else {
-        $(this).val("$ 0" + _decimales + "00");
-    }
-    return string;
-}
-
 function ligada() {
     return ($("#chk_ligada").is(":checked"));
 }
+
+function isObjetivoQ() {
+    return ($("#check_objetivoq").is(":checked"));
+}
+
+function isRecurrente() {
+    return ($("#check_recurrente").is(":checked"));
+}
+

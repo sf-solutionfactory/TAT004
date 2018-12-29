@@ -27,6 +27,18 @@
             $('#footer').on('click', '#cance', function () {
                 hilo = false;
             });
+            $('#footer').on('click', '#remp', function () {
+                acept = true;
+                $('#opciong').prop('checked', true);
+                document.getElementById('loader').style.display = 'initial'
+                $('#Button3 ').trigger('click');
+            });
+            $('#footer').on('click', '#agreg', function () {
+                acept = true;
+                $('#opciong').prop('checked', false);
+                document.getElementById('loader').style.display = 'initial'
+                $('#Button3 ').trigger('click');
+            });
             //$('#chksociedad').on('click', function () {
             //    if ($(this).is(':checked')) {
             //        // Hacer algo si el checkbox ha sido seleccionado
@@ -57,6 +69,9 @@
             //    var elem = document.getElementsByName("periodocpt")
             //    instance = M.Select.init(elem, []);
             //});
+
+            $('.modal').modal();
+            sessionStorage.setItem("spras", "@Session["spras"].ToString()");
         });
 
         function filterGlobal2() {
@@ -80,6 +95,10 @@
         </div>
     </div>
     <style>
+        .dropdown-content li {
+            min-height: 40px !important;
+            height: 40px;
+        }
         .dataTables_length {
             display: none;
         }
@@ -100,6 +119,7 @@
     </div>
 
     string[] defaul = new string[1];
+    string defaul2 = "";
     System.Globalization.TextInfo myTI = new System.Globalization.CultureInfo("en-US", false).TextInfo;
     System.Globalization.DateTimeFormatInfo formatoFecha = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat;
     DateTime anio = DateTime.Today; int j = 0;
@@ -127,22 +147,13 @@
                                 { }
                                 @try
                                 {
-                                    j = 0;
-                                    if (defaul == null)
-                                    {
-                                        defaul = new string[1];
-                                    }
                                     for (int i = 0; i < Model.sociedad.Count; i++)
                                     {
-                                        if (ViewBag.sociedadcpt != null)
+                                        if (defaul != null)
                                         {
-                                            if (defaul[j] == Model.sociedad[i].BUKRS)
+                                            if (defaul.Contains(Model.sociedad[i].BUKRS))
                                             {
                                                 <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
-                                                if (j < (defaul.Length - 1))
-                                                {
-                                                    j++;
-                                                }
                                             }
                                             else
                                             {
@@ -160,7 +171,7 @@
                                     <option value="" disabled></option>
                                 }
                             </select>
-                            <label>Sociedad</label>
+                            <label>Co. Code</label>
                         </div>
                         <div class="input-field col s3">
                             <select name="aniocpt">
@@ -275,17 +286,15 @@
                                 }
                                 @try
                                 {
-                                    j = 0;
                                     if (defaul == null)
                                     {
-                                        defaul = new string[1];
-                                        @*<option value="" disabled selected></option>*@
+                                        <option value="" disabled selected></option>
                                     }
                                     for (int i = 0; i < Model.sociedad.Count; i++)
                                     {
-                                        if (defaul[0] == "")
+                                        if (defaul != null)
                                         {
-                                            if (i == 0)
+                                            if (defaul.Contains(Model.sociedad[i].BUKRS))
                                             {
                                                 <option selected value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
                                             }
@@ -296,18 +305,7 @@
                                         }
                                         else
                                         {
-                                            if (defaul[j] == Model.sociedad[i].BUKRS)
-                                            {
-                                                <option value="@Model.sociedad[i].BUKRS" selected="selected">@Model.sociedad[i].BUKRS</option>
-                                                if (j < (defaul.Length - 1))
-                                                {
-                                                    j++;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
-                                            }
+                                            <option value="@Model.sociedad[i].BUKRS">@Model.sociedad[i].BUKRS</option>
                                         }
 
                                     }
@@ -317,7 +315,7 @@
                                     <option value="" disabled></option>
                                 }
                             </select>
-                            <label>Sociedad</label>
+                            <label>Co. Code</label>
                         </div>
 
                         <div class="input-field col s3">
@@ -399,7 +397,7 @@
                             <div class="file-field input-field">
                                 <div class="btn btn blue-grey">
                                     <span>Seleccionar archivo SAP</span>
-                                    <input id="SAP" type="file" name="fileSAP" accept=".csv,.txt">
+                                    <input id="SAP" type="file" name="fileSAP" multiple accept=".csv,.txt">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -420,10 +418,10 @@
             M.toast({ html: 'Carga preliminar efectuada, revisar y guardar', classes: 'green' });
         </script>
         <div class="row">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Carga", "Presupuesto", FormMethod.Post, new { enctype = "multipart/form-data", id = "formulario2" }))
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
+                    <input id="Button3" class="btn-small blue-grey" type="submit" value="Guardar CPT" name="guardar" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -433,6 +431,7 @@
                         }*@
                     <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
                 </div>
+                <input id="opciong" type="checkbox" hidden name="opciong" />
             }
             <div class="row" style="margin-bottom:0;">
                 <div class="input-field col s3 m3 l3">
@@ -449,10 +448,11 @@
                     <label for="global_filter">Buscar</label>
                 </div>
             </div>
+
             <script>
                 var elem = document.querySelector('#selecc');
                 var options = [];
-                var instance = M.Select.init(elem, options);
+                var instance = M.FormSelect.init(elem, options);
             </script>
             <table id="table" class="table mdl-data-table table-striped">
                 <thead>
@@ -545,13 +545,15 @@ catch (Exception)
             <thead>
                 <tr>
                     <th>Banners sin asignar</th>
+                    <th>Co. Code</th>
                 </tr>
             </thead>
             <tbody>
                 @for (int i = 0; i < Model.bannerscanal.Count; i++)
                 {
                     <tr>
-                        <td>@Model.bannerscanal[i]</td>
+                        <td>@Model.bannerscanal[i].BANNER</td>
+                        <td>@Model.bannerscanal[i].SOCIEDAD</td>
                     </tr>
                 }
             </tbody>
@@ -563,10 +565,10 @@ catch (Exception)
     if (Model.presupuestoSAP.Count > 0)
     {
         <div class="row">
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Carga", "Presupuesto", FormMethod.Post, new { enctype = "multipart/form-data", id = "formulario2" }))
             {
                 <div class="col s12 right-align">
-                    <input id="Button1" class="btn-small blue-grey" type="submit" value="Guardar" name="guardar" onclick="document.getElementById('loader').style.display ='initial'" />
+                    <input id="Button3" class="btn-small blue-grey" type="submit" value="Guardar SAP" name="guardar" />
                     @*if (Model != null)
                         {
                         for (var i = 0; i < Model.Count; i++)
@@ -576,6 +578,7 @@ catch (Exception)
                         }*@
                     <input id="Button1" class="btn-small blue-grey" type="submit" value="Cancelar" name="cancelar" />
                 </div>
+                <input id="opciong" type="checkbox" hidden name="opciong" />
             }
             <div class="row" style="margin-bottom:0;">
                 <div class="input-field col s3 m3 l3">
@@ -595,7 +598,7 @@ catch (Exception)
             <script>
                 var elem = document.querySelector('#selecc2');
                 var options = [];
-                var instance = M.Select.init(elem, options);
+                var instance = M.FormSelect.init(elem, options);
             </script>
             <table id="table2" class="table mdl-data-table table-striped">
                 <thead>
@@ -603,7 +606,7 @@ catch (Exception)
                         <th>Año</th>
                         <th>Periodo</th>
                         <th>Record Type</th>
-                        <th>Sociedad</th>
+                        <th>Co. Code</th>
                         <th>Organización de ventas</th>
                         <th>Canal de distribución</th>
                         <th>Sector</th>
@@ -712,7 +715,7 @@ catch (Exception)
 <script>
     var elem = document.querySelectorAll('select');
     var options = [];
-    var instance = M.Select.init(elem, options);
+    var instance = M.FormSelect.init(elem, options);
 </script>
 @*<div class="center-align"><h5>@ViewBag.MensajeS</h5> </div>
     <div class="center-align"><h5>@ViewBag.MensajeG</h5> </div>*@

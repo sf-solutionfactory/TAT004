@@ -17,6 +17,7 @@ namespace TAT001.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public USUARIO()
         {
+            this.CALENDARIO_EX = new HashSet<CALENDARIO_EX>();
             this.CARTAs = new HashSet<CARTA>();
             this.DELEGARs = new HashSet<DELEGAR>();
             this.DELEGARs1 = new HashSet<DELEGAR>();
@@ -32,6 +33,7 @@ namespace TAT001.Entities
             this.NOTICIAs = new HashSet<NOTICIA>();
             this.PRESUPSAPHs = new HashSet<PRESUPSAPH>();
             this.PRESUPUESTOHs = new HashSet<PRESUPUESTOH>();
+            this.USUARIOFs = new HashSet<USUARIOF>();
             this.GAUTORIZACIONs = new HashSet<GAUTORIZACION>();
         }
     
@@ -48,6 +50,8 @@ namespace TAT001.Entities
         public string BACKUP_ID { get; set; }
         public string BUNIT { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CALENDARIO_EX> CALENDARIO_EX { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CARTA> CARTAs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -81,6 +85,8 @@ namespace TAT001.Entities
         public virtual PUESTO PUESTO { get; set; }
         public virtual SOCIEDAD SOCIEDAD { get; set; }
         public virtual SPRA SPRA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<USUARIOF> USUARIOFs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GAUTORIZACION> GAUTORIZACIONs { get; set; }
     }

@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
 <script src="~/Scripts/edit.js"></script>
+<script src="~/Scripts/formatos.js"></script>
 <script src="~/Scripts/soporte.js"></script><!--RSG 23.05.2018-->
 <script src="~/Scripts/recurrente.js"></script><!--RSG 27.05.2018-->
 <script src="~/Scripts/analisis.js"></script><!--RSG 13.06.2018-->
@@ -38,6 +39,11 @@
 <input id="miles" name="miles" type="hidden" value="@ViewBag.miles">
 <input id="dec" name="dec" type="hidden" value="@ViewBag.dec">
 <input id="mult" name="mult" type="hidden" value="@_df.D.DOCUMENTOF.Count">@*LEJ 03-08-18*@
+<input id="horaServer" type="hidden" value="@ViewBag.horaServer">
+<span class="span_fileload" style="display:none;"></span>
+<span class="lbl_cabono" style="display:none;"></span>
+<span class="lbl_ccargo" style="display:none;"></span>
+<span class="lbl_cclear" style="display:none;"></span>
 @* ------------------------------------------------------------------------LEJ 09-07-18 *@
 <div class="row" style="margin-bottom:0">
     @{TAT001.Entities.USUARIO us = ViewBag.usuario;
@@ -67,10 +73,10 @@
                 <input type="text" id="txt_status" value="Nuevo" disabled="disabled" />
                 <label for="txt_status" id="lbl_status">Estatus</label>
             </div>
-            @if (ViewBag.relacionadan != "")
+            @if (ViewBag.relacionadan != "" & Model.DOCUMENTO_REF != null)
             {
                 <div class="input-field col s4">
-                    <input type="text" id="txt_rel" name="txt_rel" value="" disabled="disabled" />
+                    <input type="text" id="txt_rel" name="txt_rel" value="@Model.DOCUMENTO_REF" disabled="disabled" />
                     @*<input type="text" id="txt_rel" name="txt_rel" value="@ViewBag.relacionadan" disabled="disabled" />*@
                     <label for="txt_rel" id="lbl_rel">Relacionada</label>
                 </div>
@@ -78,6 +84,7 @@
         </div>
     }
     <style>
+
         .div_left {
             float: left;
         }
@@ -142,10 +149,18 @@
     </style>
     <div class="div_right">
         <a href="@Url.Action("Index", "Home" )" class="btn btn-small">Cancelar</a>
-        @*@if (ViewBag.reversan != "X")
-            {*@
-        <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
-        @*}*@
+        @if (Model.TSOL.REVERSO)
+        {
+            ViewBag.reversan = "X";
+        }
+        else
+        {
+            ViewBag.reversan = "";
+        }
+        @if (ViewBag.reversan != "X" | ViewBag.reversan == "X")
+        {
+            <a id="btn_guardarh" class="btn btn-small disabled">Guardar</a>
+        }
     </div>
     <div class="div_bottom">
         <hr class="hr_bw" />
@@ -275,7 +290,7 @@
                                             </div>
                                         </div>
                                         <div class="input-field col-md-2">
-                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="validate" disabled="disabled" />
+                                            <input value="@pais.LANDX" id="pais_txt" type="text" class="" disabled="disabled" />
                                             <label for="pais_txt">Subregión</label>
                                         </div>
                                     </div>
@@ -287,7 +302,14 @@
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control " } })
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control " } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.ESTADO, new { htmlAttributes = new { @id = "state_id", @class = "form-control ", @disabled = "disabled" } })
+                                    }
                                     @Html.LabelFor(model => model.ESTADO, "Estado", htmlAttributes: new { @for = "state_id" })
                                 </div>
                                 <link href="~/Content/autocomplete.css" rel="stylesheet" />
@@ -296,9 +318,7 @@
                                 <script>
                             var auto = $.noConflict(true);
                             auto(document).ready(function () {
-                                /**/
                                 var pais = '@ViewBag.pais';
-                            /**/
                             auto("#state_id").autocomplete({
                                 source: function (request, response) {
                                     auto.ajax({
@@ -326,37 +346,44 @@
                                 </script>
                                 <script src="~/Scripts/createa.js"></script>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control " } })
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control " } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.CIUDAD, new { htmlAttributes = new { @id = "city_id", @class = "form-control ", @disabled = "disabled" } })
+                                    }
                                     @Html.LabelFor(model => model.CIUDAD, "Ciudad", htmlAttributes: new { @for = "city_id" })
                                 </div>
                                 <script>
-                                    auto(document).ready(function () {
-                                        auto("#city_id").autocomplete({
-                                            source: function (request, response) {
-                                                var estado = $("#state_id").val();
-                                                auto.ajax({
-                                                    url: "../Listas/Ciudades",
-                                                    type: "GET",
-                                                    dataType: "json",
-                                                    data: { estado: estado, Prefix: request.term },
-                                                    success: function (data) {
-                                                        response(auto.map(data, function (item) {
-                                                            return { label: item.NAME, value: item.NAME };
-                                                        }))
-                                                    }
-                                                })
-                                            },
-                                            messages: {
-                                                noResults: '',
-                                                results: function (resultsCount) { }
-                                            },
-                                            change: function (e, ui) {
-                                                if (!(ui.item)) {
+                                                                        auto(document).ready(function () {
+                                                                            auto("#city_id").autocomplete({
+                                                                                source: function (request, response) {
+                                                                                    var estado = $("#state_id").val();
+                                                                                    auto.ajax({
+                                                                                        url: "../Listas/Ciudades",
+                                                                                        type: "GET",
+                                                                                        dataType: "json",
+                                                                                        data: { estado: estado, Prefix: request.term },
+                                                                                        success: function (data) {
+                                                                                            response(auto.map(data, function (item) {
+                                                                                                return { label: item.NAME, value: item.NAME };
+                                                                                            }))
+                                                                                        }
+                                                                                    })
+                                                                                },
+                                                                                messages: {
+                                                                                    noResults: '',
+                                                                                    results: function (resultsCount) { }
+                                                                                },
+                                                                                change: function (e, ui) {
+                                                                                    if (!(ui.item)) {
 
-                                                }
-                                            }
-                                        });
-                                    })
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                        })
                                 </script>
                             </div>
                         </div>
@@ -367,64 +394,78 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">date_range</i>
                                     @Html.HiddenFor(model => model.FECHAD, new { htmlAttributes = new { @class = "form-control datepicker", onkeyup = "borrar(this);" } })
-                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.FECHAD" id="fechad" type="text" class="" disabled="disabled" />
                                     <label for="fechad">Fecha</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.PERIODO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PERIODO" id="periodo" type="text" class="" disabled="disabled" />
                                     <label for="periodo">Periodo</label>
                                 </div>
                                 <script>
-                                    var elemdp = document.querySelector('#fechad');
-                                    var optionsdp = {
-                                        format: 'dd/mm/yyyy',
-                                        onClose: function (e) {
-                                            var date = $('#fechad').val();
-                                            var periodo = date.split("/");
+                                                                        var elemdp = document.querySelector('#fechad');
+                                                                        var optionsdp = {
+                                                                            format: 'dd/mm/yyyy',
+                                                                            onClose: function (e) {
+                                                                                var date = $('#fechad').val();
+                                                                                var periodo = date.split("/");
 
-                                            $('#periodo').val(periodo[1]);
-                                        },
-                                        i18n: {
-                                            clear: 'Limpiar',
-                                            today: 'Hoy',
-                                            done: 'Seleccionar',
-                                            previousMonth: '‹',
-                                            nextMonth: '›',
-                                            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                            weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                            weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                        }
-                                    };
-                                    var instancedp = M.Datepicker.init(elemdp, optionsdp);
+                                                                                $('#periodo').val(periodo[1]);
+                                                                            },
+                                                                            i18n: {
+                                                                                clear: 'Limpiar',
+                                                                                today: 'Hoy',
+                                                                                done: 'Seleccionar',
+                                                                                previousMonth: '‹',
+                                                                                nextMonth: '›',
+                                                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                                                            }
+                                                                        };
+                                                                        var instancedp = M.Datepicker.init(elemdp, optionsdp);
 
                                 </script>
                                 <div class="input-field col s6">
                                     @Html.HiddenFor(model => model.EJERCICIO, new { htmlAttributes = new { @class = "form-control" } })
-                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.EJERCICIO" id="ejercicio" type="text" class="" disabled="disabled" />
                                     <label for="ejercicio">Ejercicio</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " } })
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control " } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.CONCEPTO, new { htmlAttributes = new { @id = "concepto", @class = "form-control ", @disabled = "disabled" } })
+                                    }
                                     <label for="concepto">Concepto*</label>
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea ", @id = "notas_txt", onkeyup = "maxchar();" })
+                                    @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea ", @id = "notas_txt", onkeyup = "maxchar();" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextAreaFor(model => model.NOTAS, new { @class = "materialize-textarea ", @id = "notas_txt", onkeyup = "maxchar();", @disabled = "disabled" })
+                                    }
                                     @Html.LabelFor(model => model.NOTAS, "Mecánica de negociación", htmlAttributes: new { @class = "active", @for = "notas_txt" })
                                 </div>
                                 <script>
-                                    function maxchar(w) {
-                                        var maxLength = 255;
-                                        var text = $('#notas_txt').val();
-                                        var textLength = text.length;
-                                        if (textLength > (maxLength)) {
-                                            $('#notas_txt').val(text.substring(0, ((maxLength))));
-                                            var msg = 'Número máximo para la negociación es ' + maxLength;
-                                            M.toast({ html: msg });
-                                        }
-                                    }
+                                                                        function maxchar(w) {
+                                                                            var maxLength = 255;
+                                                                            var text = $('#notas_txt').val();
+                                                                            var textLength = text.length;
+                                                                            if (textLength > (maxLength)) {
+                                                                                $('#notas_txt').val(text.substring(0, ((maxLength))));
+                                                                                var msg = 'Número máximo para la negociación es ' + maxLength;
+                                                                                M.toast({ html: msg });
+                                                                            }
+                                                                        }
                                 </script>
                             </div>
                         </div>
@@ -439,39 +480,39 @@
                                     @Html.LabelFor(model => model.PAYER_ID, "Cliente", htmlAttributes: new { @for = "payer_id" })
                                 </div>
                                 <script>
-                                    auto(document).ready(function () {
-                                        auto("#payer_id").autocomplete({
-                                            source: function (request, response) {
-                                                auto.ajax({
-                                                    url: "../Listas/Clientes",
-                                                    type: "GET",
-                                                    dataType: "json",
-                                                    data: { Prefix: request.term },
-                                                    success: function (data) {
-                                                        response(auto.map(data, function (item) {
-                                                            return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
-                                                        }))
-                                                    }
-                                                })
-                                            },
-                                            messages: {
-                                                noResults: '',
-                                                results: function (resultsCount) { }
-                                            },
-                                            change: function (e, ui) {
-                                                if (!(ui.item)) {
-                                                    e.target.value = "";
-                                                }
-                                            },
+                                                                        auto(document).ready(function () {
+                                                                            auto("#payer_id").autocomplete({
+                                                                                source: function (request, response) {
+                                                                                    auto.ajax({
+                                                                                        url: "../Listas/Clientes",
+                                                                                        type: "GET",
+                                                                                        dataType: "json",
+                                                                                        data: { Prefix: request.term },
+                                                                                        success: function (data) {
+                                                                                            response(auto.map(data, function (item) {
+                                                                                                return { label: item.KUNNR + " - " + item.NAME1, value: item.KUNNR };
+                                                                                            }))
+                                                                                        }
+                                                                                    })
+                                                                                },
+                                                                                messages: {
+                                                                                    noResults: '',
+                                                                                    results: function (resultsCount) { }
+                                                                                },
+                                                                                change: function (e, ui) {
+                                                                                    if (!(ui.item)) {
+                                                                                        e.target.value = "";
+                                                                                    }
+                                                                                },
 
-                                            select: function (event, ui) {
+                                                                                select: function (event, ui) {
 
-                                                var label = ui.item.label;
-                                                var value = ui.item.value;
-                                                selectCliente(value);
-                                            }
-                                        });
-                                    })
+                                                                                    var label = ui.item.label;
+                                                                                    var value = ui.item.value;
+                                                                                    selectCliente(value);
+                                                                                }
+                                                                            });
+                                                                        })
                                 </script>
                                 <input type="hidden" id="txt_vkorg" />
                                 <input type="hidden" id="txt_vtweg" />
@@ -481,7 +522,7 @@
                                     <label for="cli_name">Nombre</label>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.PARVW" id="parvw" type="text" class="" disabled="disabled" />
                                     <label for="parvw">Tipo de cliente</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -491,7 +532,7 @@
                                     </div>
                                 </div>
                                 <div class="input-field  col s12">
-                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="validate" disabled="disabled" />
+                                    <input value="@ViewBag.STCD1" id="stcd1" type="text" class="" disabled="disabled" />
                                     <label for="stcd1">Tax ID</label>
                                 </div>
                                 <div class="input-field col s12">
@@ -501,11 +542,24 @@
                                     </div>
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " } })
+                                    @if (!Model.TSOL.REVERSO)
+                                    {
+                                        @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control " } })
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.PAYER_NOMBRE, new { htmlAttributes = new { @id = "payer_nombre", @class = "form-control ", @disabled = "disabled" } })
+                                    }
                                     @Html.LabelFor(model => model.PAYER_NOMBRE, "Nombre del contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_nombre" })
                                 </div>
                                 <div class="input-field col s12">
-                                    @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = "validate ", @type = "email" } })
+                                    @if (!Model.TSOL.REVERSO)
+                                    {
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email" } })}
+                                    else
+                                    {
+                                        @Html.EditorFor(model => model.PAYER_EMAIL, new { htmlAttributes = new { @id = "payer_email", @class = " ", @type = "email", @disabled = "disabled" } })
+                                    }
                                     @Html.LabelFor(model => model.PAYER_EMAIL, "Email de contacto", htmlAttributes: new { @class = "control-label col-md-2", @for = "payer_email" })
                                 </div>
                             </div>
@@ -516,7 +570,7 @@
                             <h5>Vigencia</h5>
                             <div class="row" style="margin-bottom:0">
                                 <!--RSG 22.05.2018-->
-                                @if (ViewBag.relacionada == "" | ViewBag.relacionada != "")
+                                @if (!Model.TSOL.REVERSO & Model.DOCUMENTO_REF == null)
                                 {
                                     <div class="col s12">
                                         <label class="col s6">
@@ -529,31 +583,31 @@
                                         </label>
                                     </div>
                                     <script>
-                                        function cambiaTemp(id) {
-                                            var tipo = id.split('-')[1];
-                                            if (tipo == "date") {
-                                                document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
-                                                document.getElementById("anioi_id").setAttribute("disabled", "disabled");
-                                                document.getElementById("periodof_id").setAttribute("disabled", "disabled");
-                                                document.getElementById("aniof_id").setAttribute("disabled", "disabled");
+                                                                                function cambiaTemp(id) {
+                                                                                    var tipo = id.split('-')[1];
+                                                                                    if (tipo == "date") {
+                                                                                        document.getElementById("periodoi_id").setAttribute("disabled", "disabled");
+                                                                                        document.getElementById("anioi_id").setAttribute("disabled", "disabled");
+                                                                                        document.getElementById("periodof_id").setAttribute("disabled", "disabled");
+                                                                                        document.getElementById("aniof_id").setAttribute("disabled", "disabled");
 
-                                                document.getElementById("fechai_vig2").removeAttribute("disabled");
-                                                document.getElementById("fechaf_vig2").removeAttribute("disabled");
-                                            } else {
-                                                document.getElementById("periodoi_id").removeAttribute("disabled");
-                                                document.getElementById("anioi_id").removeAttribute("disabled");
-                                                document.getElementById("periodof_id").removeAttribute("disabled");
-                                                document.getElementById("aniof_id").removeAttribute("disabled");
+                                                                                        document.getElementById("fechai_vig2").removeAttribute("disabled");
+                                                                                        document.getElementById("fechaf_vig2").removeAttribute("disabled");
+                                                                                    } else {
+                                                                                        document.getElementById("periodoi_id").removeAttribute("disabled");
+                                                                                        document.getElementById("anioi_id").removeAttribute("disabled");
+                                                                                        document.getElementById("periodof_id").removeAttribute("disabled");
+                                                                                        document.getElementById("aniof_id").removeAttribute("disabled");
 
-                                                document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
-                                                document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
+                                                                                        document.getElementById("fechai_vig2").setAttribute("disabled", "disabled");
+                                                                                        document.getElementById("fechaf_vig2").setAttribute("disabled", "disabled");
 
-                                            }
-                                            setDates(tipo);
-                                            var elem = document.querySelectorAll('select');
-                                            var instance = M.Select.init(elem, []);
-                                            pickerFecha2(".format_date");
-                                        }
+                                                                                    }
+                                                                                    setDates(tipo);
+                                                                                    var elem = document.querySelectorAll('select');
+                                                                                    var instance = M.FormSelect.init(elem, []);
+                                                                                    pickerFecha2(".format_date");
+                                                                                }
                                     </script>
                                     <div class="col s6">
                                         <div class="input-field col s12">
@@ -572,20 +626,20 @@
                                         </div>
                                     </div>
                                     <script>
-                                        asignaFechasInit();
-                                        function asignaFechasInit() {
-                                            var datei = document.getElementById("fechai_vig").value.split(" ")[0];
-                                            var datef = document.getElementById("fechaf_vig").value.split(" ")[0];
-                                            //var datei = document.getElementById("fechai_vig").value;
-                                            //var datef = document.getElementById("fechaf_vig").value;
+                                                                                asignaFechasInit();
+                                                                                function asignaFechasInit() {
+                                                                                    var datei = document.getElementById("fechai_vig").value.split(" ")[0];
+                                                                                    var datef = document.getElementById("fechaf_vig").value.split(" ")[0];
+                                                                                    //var datei = document.getElementById("fechai_vig").value;
+                                                                                    //var datef = document.getElementById("fechaf_vig").value;
 
-                                            if (datei != "") {
-                                                document.getElementById("fechai_vig2").value = datei;
-                                            }
-                                            if (datef != "") {
-                                                document.getElementById("fechaf_vig2").value = datef;
-                                            }
-                                        }
+                                                                                    if (datei != "") {
+                                                                                        document.getElementById("fechai_vig2").value = datei;
+                                                                                    }
+                                                                                    if (datef != "") {
+                                                                                        document.getElementById("fechaf_vig2").value = datef;
+                                                                                    }
+                                                                                }
                                     </script>
                                     <div class="col s6">
                                         <div class="col s12">
@@ -607,61 +661,61 @@
                                         </div>
                                     </div>
                                     <script>
-                                        var datei = document.getElementById("fechai_vig").value;
-                                        var datef = document.getElementById("fechaf_vig").value;
-                                        var elemth = document.querySelector('#fechai_vig2');
-                                        var optionsth = {
-                                            defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
-                                            format: 'dd/mm/yyyy',
-                                            i18n: {
-                                                clear: 'Limpiar',
-                                                today: 'Hoy',
-                                                done: 'Seleccionar',
-                                                previousMonth: '‹',
-                                                nextMonth: '›',
-                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                            }
-                                        };
-                                        var instanceth = M.Datepicker.init(elemth, optionsth);
+                                                                                var datei = document.getElementById("fechai_vig").value;
+                                                                                var datef = document.getElementById("fechaf_vig").value;
+                                                                                var elemth = document.querySelector('#fechai_vig2');
+                                                                                var optionsth = {
+                                                                                    defaultDate: new Date(datei.split('/')[2], datei.split('/')[1] - 1, datei.split('/')[0]),
+                                                                                    format: 'dd/mm/yyyy',
+                                                                                    i18n: {
+                                                                                        clear: 'Limpiar',
+                                                                                        today: 'Hoy',
+                                                                                        done: 'Seleccionar',
+                                                                                        previousMonth: '‹',
+                                                                                        nextMonth: '›',
+                                                                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                                                                    }
+                                                                                };
+                                                                                var instanceth = M.Datepicker.init(elemth, optionsth);
 
-                                        var elemtd = document.querySelector('#fechaf_vig2');
-                                        var optionstd = {
-                                            defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
-                                            format: 'dd/mm/yyyy',
-                                            onClose: function (e) {
-                                                var datei = $('#fechai_vig2').val();
-                                                var datef = $('#fechaf_vig2').val();
-                                                var res = validar_fechas(datei, datef);
+                                                                                var elemtd = document.querySelector('#fechaf_vig2');
+                                                                                var optionstd = {
+                                                                                    defaultDate: new Date(datef.split('/')[2], datef.split('/')[1] - 1, datef.split('/')[0]),
+                                                                                    format: 'dd/mm/yyyy',
+                                                                                    onClose: function (e) {
+                                                                                        var datei = $('#fechai_vig2').val();
+                                                                                        var datef = $('#fechaf_vig2').val();
+                                                                                        var res = validar_fechas(datei, datef);
 
-                                                if (!res) {
-                                                    $('#fechaf_vig2').val("");
-                                                    M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
-                                                }
-                                            },
-                                            i18n: {
-                                                clear: 'Limpiar',
-                                                today: 'Hoy',
-                                                done: 'Seleccionar',
-                                                previousMonth: '‹',
-                                                nextMonth: '›',
-                                                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                                                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                                                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-                                                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                                                weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-                                            }
-                                        };
-                                        var instancetd = M.Datepicker.init(elemtd, optionstd);
+                                                                                        if (!res) {
+                                                                                            $('#fechaf_vig2').val("");
+                                                                                            M.toast({ html: 'Las fechas no tienen un secuencia correcta' });
+                                                                                        }
+                                                                                    },
+                                                                                    i18n: {
+                                                                                        clear: 'Limpiar',
+                                                                                        today: 'Hoy',
+                                                                                        done: 'Seleccionar',
+                                                                                        previousMonth: '‹',
+                                                                                        nextMonth: '›',
+                                                                                        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                                                                                        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                                                                                        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                                                                                        weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                                                                                        weekdaysAbbrev: ['D', 'L', 'M', 'X', 'J', 'V', 'S']
+                                                                                    }
+                                                                                };
+                                                                                var instancetd = M.Datepicker.init(elemtd, optionstd);
 
-                                        function borrar(field) {
-                                            field.value = "";
-                                        }
-                                        //LEJ 30.07.2018
-                                        _ff();
+                                                                                function borrar(field) {
+                                                                                    field.value = "";
+                                                                                }
+                                                                                //LEJ 30.07.2018
+                                                                                _ff();
                                     </script>
                                 }
                                 else
@@ -683,7 +737,7 @@
                         </div>
                         <div id="div_picker2"></div><!--RSG 27.05.2017-->
                     </div>
-                    <div id="ref_soporte" style="display:none" class="col s12">
+                    <div id="ref_soporte" style="display:table" class="col s12">
                         @*LEJ 26.07.18----I*@
                         <div class="card-panel">
                             <h5>Referencia de Facturas</h5>
@@ -702,7 +756,7 @@
                                         <input type="file" class="file_sop" id="file_sop">
                                     </div>
                                     <div class="file-path-wrapper">
-                                        <input class="file-path validate file_sop" type="text">
+                                        <input class="file-path  file_sop" type="text">
                                     </div>
                                 </div>
                                 <div class="table_sop" id="" style="display:none">
@@ -715,8 +769,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>Pos</th>
+                                                    <th>Sociedad</th>
                                                     <th>Factura</th>
                                                     <th>Fecha Factura</th>
+                                                    <th>Bill Doc</th>
                                                     <th>Proveedor</th>
                                                     <th>Proveedor Desc</th>
                                                     <th>Control</th>
@@ -726,7 +782,6 @@
                                                     <th>Ejercicio k</th>
                                                     <th>Payer</th>@*@18-07-2018 jemo *@
                                                     <th>Descripcion</th>@*@18-07-2018 jemo *@
-                                                    <th>Bill Doc</th>
                                                     <th>Importe Factura</th>@*@18-07-2018 jemo *@
                                                     <th>Belnr</th>
                                                 </tr>
@@ -743,15 +798,20 @@
                                                             @_df.D.DOCUMENTOF[i].POS
                                                         </td>
                                                         <td>
+                                                            @_df.D.DOCUMENTOF[i].SOCIEDAD
+                                                        </td>
+                                                        <td>
                                                             @_df.D.DOCUMENTOF[i].FACTURA
                                                         </td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].FECHA
                                                         </td>
                                                         <td>
+                                                            @_df.D.DOCUMENTOF[i].BILL_DOC
+                                                        </td>
+                                                        <td>
                                                             @_df.D.DOCUMENTOF[i].PROVEEDOR
                                                         </td>
-                                                        <td> @_df.D.DOCUMENTOF[i].IMPORTE_FAC</td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].CONTROL
                                                         </td>
@@ -774,10 +834,7 @@
                                                             @_df.D.DOCUMENTOF[i].DESCRIPCION@*//B20180625 JEMO 2018.06.27*@
                                                         </td>
                                                         <td>
-                                                            @_df.D.DOCUMENTOF[i].BILL_DOC@*
-                                                                </td>
-                                                                <td>
-                                                                    @Html.EditorFor(m => m.DOCUMENTOF[i].IMPORTE_FAC)@*//B20180625 JEMO 2018.06.27*@
+                                                            @_df.D.DOCUMENTOF[i].IMPORTE_FAC
                                                         </td>
                                                         <td>
                                                             @_df.D.DOCUMENTOF[i].BELNR
@@ -820,11 +877,13 @@
                             <table class="table_rec display" id="table_rec" cellspacing="0" style="width:100%;display:none">
                                 <thead>
                                     <tr>
-                                        <th>NO</th>
-                                        <th>TSOL</th>
-                                        <th>FECHA</th>
-                                        <th width="150px">Monto</th>@*LEJ 06.08.2018*@
-                                        <th>Porcentaje</th>
+                                        <th id=""></th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rnumero">NO</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rperiodo">Periodo</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rtiposol">Solicitud</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rfecha">FECHA</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rmonto">Monto</th>@*B20180801 MGC Textos*@
+                                        <th id="thead_rporc">Porcentaje</th>@*B20180801 MGC Textos*@
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -902,47 +961,47 @@
                                     <span id="span_objq">Objetivo Q</span> @*B20180801 MGC Textos*@
                                 </label>
                                 <script>
-                                    function objetivoQ(ban) {
-                                        if (ban) {
-                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                            if (lengthT > 0) {
-                                                document.getElementById('table_objQ').classList.remove("hide");
-                                                var total = 0;
-                                                var porc = 0;
-                                                var fecha = "";
-                                                var tsol = "";
-                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                                    //porc = toNum($(this).find("td.PORCENTAJE").text());
-                                                    fecha = ($(this).find("td.FECHA").text());
-                                                    tsol = $(this).find("td.TSOL").text();
-                                                });
-                                                document.getElementById("obqTSOL").innerText = tsol;
-                                                document.getElementById("obqFECHA").innerText = fecha;
-                                                document.getElementById("obqMONTO").innerText = toShow(total);
-                                                //document.getElementById("obqPORC").innerText = toShowPorc(porc);
-                                            }
-                                        }
-                                        else {
-                                            document.getElementById('table_objQ').classList.add("hide");
-                                        }
-                                    }
-                                    function updateObjQ() {
-                                        var lengthT = $("table#table_rec tbody tr[role='row']").length;
-                                        if (lengthT > 0) {
-                                            var total = 0;
-                                            $("#table_rec > tbody  > tr[role='row']").each(function () {
-                                                total += parseFloat(toNum($(this).find("td.MONTO input").val()));
-                                            });
-                                            document.getElementById("obqMONTO").innerText = toShow(total);
-                                        }
+                                                                        function objetivoQ(ban) {
+                                                                            if (ban) {
+                                                                                var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                                                                if (lengthT > 0) {
+                                                                                    document.getElementById('table_objQ').classList.remove("hide");
+                                                                                    var total = 0;
+                                                                                    var porc = 0;
+                                                                                    var fecha = "";
+                                                                                    var tsol = "";
+                                                                                    $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                                                        total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                                                        //porc = toNum($(this).find("td.PORCENTAJE").text());
+                                                                                        fecha = ($(this).find("td.FECHA").text());
+                                                                                        tsol = $(this).find("td.TSOL").text();
+                                                                                    });
+                                                                                    document.getElementById("obqTSOL").innerText = tsol;
+                                                                                    document.getElementById("obqFECHA").innerText = fecha;
+                                                                                    document.getElementById("obqMONTO").innerText = toShow(total);
+                                                                                    //document.getElementById("obqPORC").innerText = toShowPorc(porc);
+                                                                                }
+                                                                            }
+                                                                            else {
+                                                                                document.getElementById('table_objQ').classList.add("hide");
+                                                                            }
+                                                                        }
+                                                                        function updateObjQ() {
+                                                                            var lengthT = $("table#table_rec tbody tr[role='row']").length;
+                                                                            if (lengthT > 0) {
+                                                                                var total = 0;
+                                                                                $("#table_rec > tbody  > tr[role='row']").each(function () {
+                                                                                    total += parseFloat(toNum($(this).find("td.MONTO input").val()));
+                                                                                });
+                                                                                document.getElementById("obqMONTO").innerText = toShow(total);
+                                                                            }
 
-                                    }
+                                                                        }
                                 </script>
                                 @if (Model.OBJETIVOQ == true)
                                 {
                                     <script>
-                                        document.getElementById("check_objetivoq").checked = true;
+                                                                                document.getElementById("check_objetivoq").checked = true;
 
                                     </script>
                                 }
@@ -1015,7 +1074,8 @@
                             </div>
                         }
                         <input type="hidden" id="txt_sop_borr" name="txt_sop_borr" />
-                        @{
+                        @if (!Model.TSOL.REVERSO)
+                        {
                             List<TAT001.Entities.DOCUMENTOA> archivo = ViewBag.files as List<TAT001.Entities.DOCUMENTOA>;
                             if (ViewBag.relacionadan != "" && archivo.Count >= 0)
                             {
@@ -1043,7 +1103,7 @@
                                                                     <input type="hidden" id="desc-@i" value="@archivo[i].PATH" />
                                                                     <a id="lbl_cargara-@i" name="archivo" class="btn-small" style="float:left;" @*type="submit"*@ value="@archivo[i].PATH" onclick="descargar(this.id)">DESCARGAR</a>
                                                                     <div class="file-path-wrapper">
-                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1075,7 +1135,7 @@
                                                                     }
                                                                 </div>
                                                                 <div class="file-path-wrapper">
-                                                                    <input class="file-path validate" type="text">
+                                                                    <input class="file-path " type="text">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1105,7 +1165,7 @@
                                                                 }
                                                             </div>
                                                             <div class="file-path-wrapper">
-                                                                <input class="file-path validate" type="text">
+                                                                <input class="file-path " type="text">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1163,14 +1223,14 @@
                                                 <input class="file_soporte" name="files_soporte" id="file_rev" type="file">
                                             </div>
                                             <div class="file-path-wrapper">
-                                                <input class="file-path validate" type="text">
+                                                <input class="file-path " type="text">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="input-field col s12">
                                         <i class="material-icons prefix">date_range</i>
                                         @Html.Hidden("FECHAD_REV")
-                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="validate" disabled="disabled" />
+                                        <input value="@ViewBag.FECHAD_REV" id="fechad" type="text" class="" disabled="disabled" />
                                         <label for="fechad">Fecha</label>
                                     </div>
                                     <div class="row">
@@ -1180,16 +1240,16 @@
                                         </div>
                                     </div>
                                     <script>
-                                        function maxchar_notas() {
-                                            var maxLength = 500;
-                                            var text = $('#notas_soporte').val();
-                                            var textLength = text.length;
-                                            if (textLength > (maxLength)) {
-                                                $('#notas_soporte').val(text.substring(0, ((maxLength))));
-                                                var msg = 'Número máximo para la nota es ' + maxLength;
-                                                M.toast({ html: msg });
-                                            }
-                                        }
+                                                                                function maxchar_notas() {
+                                                                                    var maxLength = 500;
+                                                                                    var text = $('#notas_soporte').val();
+                                                                                    var textLength = text.length;
+                                                                                    if (textLength > (maxLength)) {
+                                                                                        $('#notas_soporte').val(text.substring(0, ((maxLength))));
+                                                                                        var msg = 'Número máximo para la nota es ' + maxLength;
+                                                                                        M.toast({ html: msg });
+                                                                                    }
+                                                                                }
                                     </script>
                                     <div class="form-group col s12">
                                         @Html.Label("TREVERSA", "Tipo de reverso", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -1215,50 +1275,87 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="col s12">
                                     <label>
-                                        @if (_ligada == true)//LEJ 23.07.2018
+                                        @if (Model.DOCUMENTO_REF == null)
                                         {
-                                            <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            if (_ligada == true)//LEJ 23.07.2018
+                                            {
+                                                <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            }
                                         }
                                         else
                                         {
-                                            <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" />
+                                            if (_ligada == true)//LEJ 23.07.2018
+                                            {
+                                                <input checked type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" disabled="disabled" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" name="chk_ligada" id="chk_ligada" onchange="cambiaLigada(this);" disabled="disabled" />
+                                            }
                                         }
                                         <span>Solicitud ligada a facturación </span>
                                     </label>
-                                    <script>
-                                        function cambiaLigada(campo) {
-                                            if (campo.checked) {
-                                                $("#select_neg").val("P");
-                                                $("#select_dis").val("C");
-                                                $("#select_negi").val("P");
-                                                $("#select_disi").val("C");
-                                                $("#select_neg").prop("disabled", "disabled");
-                                                $("#select_dis").prop("disabled", "disabled");
-                                                $("#select_neg").change();
-                                                $("#select_dis").change();
-                                                $("#div_objq").removeClass("hide");
-                                                $("#txt_ligada").val("X");
-                                            } else {
-                                                $("#select_neg").prop("disabled", false);
-                                                $("#select_dis").prop("disabled", false);
-                                                $("#select_neg").change();
-                                                $("#select_dis").change();
-                                                $("#div_objq").addClass("hide");
-                                                $("#txt_ligada").val("");
-                                            }
 
-                                            var elem = document.getElementById('select_neg');
-                                            var instance = M.Select.init(elem, []);
-                                            elem = document.getElementById('select_dis');
-                                            instance = M.Select.init(elem, []);
-                                        }
-                                    </script>
+
+                                    @if (Model.DOCUMENTO_REF == null)
+                                    {
+                                        <script>
+                                                                                        function cambiaLigada(campo) {
+                                                                                            if (campo.checked) {
+                                                                                                $("#select_neg").val("P");
+                                                                                                $("#select_dis").val("C");
+                                                                                                $("#select_negi").val("P");
+                                                                                                $("#select_disi").val("C");
+                                                                                                $("#select_neg").prop("disabled", "disabled");
+                                                                                                $("#select_dis").prop("disabled", "disabled");
+                                                                                                $("#select_neg").change();
+                                                                                                $("#select_dis").change();
+                                                                                                $("#div_objq").removeClass("hide");
+                                                                                                $("#txt_ligada").val("X");
+                                                                                            } else {
+                                                                                                $("#select_neg").prop("disabled", false);
+                                                                                                $("#select_dis").prop("disabled", false);
+                                                                                                $("#select_neg").change();
+                                                                                                $("#select_dis").change();
+                                                                                                $("#div_objq").addClass("hide");
+                                                                                                $("#txt_ligada").val("");
+                                                                                            }
+                                                                                        }
+                                                                                        var elem = document.getElementById('select_neg');
+                                                                                        var instance = M.FormSelect.init(elem, []);
+                                                                                        elem = document.getElementById('select_dis');
+                                                                                        instance = M.FormSelect.init(elem, []);
+                                        </script>
+                                    }
+                                    else
+                                    {
+                                        <script>
+                                                                                        function cambiaLigada(campo) {
+                                                                                            if (campo.checked) {
+                                                                                                $("#select_neg").val("P");
+                                                                                                $("#select_dis").val("C");
+                                                                                                $("#select_negi").val("P");
+                                                                                                $("#select_disi").val("C");
+                                                                                                $("#div_objq").removeClass("hide");
+                                                                                                $("#txt_ligada").val("X");
+                                                                                            } else {
+                                                                                                $("#div_objq").addClass("hide");
+                                                                                                $("#txt_ligada").val("");
+                                                                                            }
+                                                                                        }
+                                        </script>
+                                    }
                                 </div>
                                 @*<input type="button" id="matcat" value="Get materiales cat" />*@
                                 <input type="text" id="select_negi" name="select_negi" value="@ViewBag.SEL_NEG" disabled="disabled" hidden />
                                 <input type="text" id="select_disi" name="select_disi" value="@ViewBag.SEL_DIS" disabled="disabled" hidden />
+
                                 <div class="input-field col s6">
-                                    <select id="select_neg" name="select_neg" onchange="selectDis(this.value)">
+                                    <select id="select_neg" name="select_neg" onchange="selectDis(this.value)" disabled>
                                         <option value="M">Monto</option>
                                         <option value="P">Porcentaje</option>
                                     </select>
@@ -1277,13 +1374,19 @@
                                         @Html.DropDownList("CATEGORIA_ID", null, htmlAttributes: new { @id = "select_categoria", @class = "form-control" })
                                     </div>
                                 </div>
-                                @*<div id="div_categoria2" class="form-group col s6 div_categoria" style="display:none"></div>*@
-                                @*<div id="div_categoria2" class="form-group col s6" style="display:none">
-                                        @Html.LabelFor(model => model.TSOL_ID, "Base para distribución por SKU", htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.DropDownList("BASE_ID", null, htmlAttributes: new { @id = "select_base", @class = "form-control" })
-                                        </div>
-                                    </div>*@
+                                @if (Model.DOCUMENTO_REF != null)
+                                {
+                                    <script>
+                                                                                $("#select_neg").prop("disabled", "disabled");
+                                                                                $("#select_dis").prop("disabled", "disabled");
+                                                                                //$("#select_dis").change();
+
+                                                                                var elem = document.getElementById('select_neg');
+                                                                                var instance = M.FormSelect.init(elem, []);
+                                                                                elem = document.getElementById('select_dis');
+                                                                                instance = M.FormSelect.init(elem, []);
+                                    </script>
+                                }
                             </div>
                         </div>
                     </div>
@@ -1292,14 +1395,21 @@
                             <h5>Monto Base</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class="validate @ViewBag.reversa" />
+                                    <input value="@ViewBag.MONTO_DIS" id="monto_dis" type="text" class=" @ViewBag.reversa" />
                                     <label for="monto_dis">Monto</label>
                                 </div>
                                 <div class="input-field col s6">
                                     @*<div class="form-group">*@
                                     @*<div class="col-md-10">*@
                                     <input type="text" id="moneda_dis" name="monedadis" value="@ViewBag.moneda_dis" disabled="disabled" hidden /> @*//B20180625 MGC 2018.06.28*@
-                                    @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    @if (Model.DOCUMENTO_REF == null)
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList("MONEDA", null, htmlAttributes: new { @id = "monedadis_id", @class = "form-control", @disabled = "disabled" })
+                                    }
                                     @Html.LabelFor(model => model.MONEDA_ID, "Moneda", htmlAttributes: new { @for = "monedadis_id" })
                                     @*</div>
                                         </div>*@
@@ -1312,7 +1422,7 @@
                             <h5>Base para aplicar %</h5>
                             <div class="row" style="margin-bottom:0">
                                 <div class="input-field col s6">
-                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="validate" name="bmonto_apoyo" />
+                                    <input value="@ViewBag.BMONTO_APOYO" id="bmonto_apoyo" type="text" class="" name="bmonto_apoyo" />
                                     <label for="bmonto_apoyo">% Apoyo</label>
                                 </div>
                             </div>
@@ -1321,9 +1431,9 @@
                     <div class="col s12">
                         <div class="card-panel">
                             <h5>Mecánica de Negociación</h5>
-                            <div class="row" style="margin-bottom:0;">
+                            <div class="row" style="margin-bottom:0;overflow-x:auto;">
                                 @*@if (ViewBag.relacionadan == "")*@
-                                @if (ViewBag.relacionadan != "")
+                                @if (ViewBag.relacionadan != "" & ViewBag.reversan != "X" & (Model.DOCUMENTO_REF == null | Model.TSOL.ADICIONA))
                                 {
                                     <div class="file-field input-field" id="cargar_excel" style="display:none">
                                         <div class="btn">
@@ -1331,7 +1441,7 @@
                                             <input id="file_dis" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text">
+                                            <input class="file-path " type="text">
                                         </div>
                                     </div>
                                     <div id="div_btns_row" style="display:none">
@@ -1459,7 +1569,7 @@
                             <div class="row" style="margin-bottom:0">
                                 <div class="row">
                                     <div class="input-field col s6">
-                                        <input value="" id="monto_doc_md" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="monto_doc_md" type="text" class="" disabled="disabled" />
                                         <label for="monto_doc_md">Monto</label>
                                         @Html.HiddenFor(model => model.MONTO_DOC_MD)
                                     </div>
@@ -1479,11 +1589,16 @@
                                     <div class="form-group input-field col s6">
                                         @Html.LabelFor(model => model.TIPO_CAMBIO, "Tipo de cambio", htmlAttributes: new { @class = "control-label active" })
                                         <div class="col-md-10">
-                                            @Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada, @Value = ViewBag.tcambio } })
+                                            @*@Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada, @Value = ViewBag.tcambio } })*@
+                                            @*@Html.EditorFor(model => model.TIPO_CAMBIO, new { htmlAttributes = new { @id = "tipo_cambio", @class = "form-control " + @ViewBag.relacionada } })*@
+                                            <input type="text" disabled="disabled" id="tipo_cambio" value="@Model.TIPO_CAMBIO" />
                                         </div>
                                     </div>
+                                    <script>
+                                                                                var aa = $("#tipo_cambio").val();
+                                    </script>
                                     <div class=" input-field col s6">
-                                        <input value="" id="montos_doc_ml2" type="text" class="validate" disabled="disabled" />
+                                        <input value="" id="montos_doc_ml2" type="text" class="" disabled="disabled" />
                                         <label for="montos_doc_ml2">Monto en USD</label>
                                     </div>
                                     <div class="form-group">
@@ -1502,78 +1617,91 @@
                             </div>
                         </div>
                         <div class="card-panel">
-                            <h5>Análisis Presupuesto<p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p></h5>
+                            <h5 id="head_analisispre">Análisis Presupuesto</h5>@*B20180801 MGC Textos*@
+                            <p style="font-size:15px">Última fecha de carga @ViewBag.ultMod</p>
                             <div class="row" style="margin-bottom:0">
-                                <table class="tg">
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto canal</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_vtweg"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_canal"></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="tg-yw4l">
-                                            <label>Presupuesto cliente</label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_kunnr"></label>
-                                        </td>
-                                        <td class="tg-yw4l">
-                                            <label id="p_banner"></label>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocanal">Presupuesto canal</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <dic class="col s6">
+                                                <b id="p_vtweg"></b>
+                                            </dic>
+                                            <div class="col s3 right-align">
+                                                <b id="p_canal"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0">
+                                            <div class="col s3">
+                                                <div id="lbl_presupuestocliente">Presupuesto cliente</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6">
+                                                <b id="p_kunnr"></b>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <b id="p_banner"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="card-panel">
-                                <div class="row" style="margin-bottom:0">
-                                    <table class="tg">
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Registrado en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_c"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Por registrar en SAP</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_a"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>En proceso TAT</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_p"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Consumido</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="pc_t"></label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tg-yw4l" colspan="2">
-                                                <label>Presupuesto disponible</label>
-                                            </td>
-                                            <td class="tg-yw4l">
-                                                <label id="consu"></label>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
+                            <div class="row" style="margin-bottom:0">
+                                <ul class="collection">
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsap">Registrado en SAP</div>
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_c"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_regsapp">Por registrar en SAP</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <div id="pc_a"></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_procesotat">En proceso TAT</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s3 right-align">
+                                                <u id="pc_p"></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_consumido">Consumido</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <u><b id="pc_t"></b></u>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="collection-item">
+                                        <div class="row" style="margin-bottom:0;">
+                                            <div class="col s6">
+                                                <div id="lbl_presudisponible">Presupuesto disponible</div>@*B20180801 MGC Textos*@
+                                            </div>
+                                            <div class="col s6 right-align">
+                                                <b id="consu"></b>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -1664,70 +1792,7 @@
                         }
                                 </script>
                             </div>
-                            @*<div class="card-panel">
-                                    <h5>Análisis Solicitud</h5>
-                                    <div class="row" style="margin-bottom:0">
-                                        <div class="col s12">
-                                            <ul class="collection">
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Importe solicitud
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis1">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto provisión original
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis2">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto aplicado
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis3">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a4">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Remanente/Exceso
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis4">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li class="collection-item" id="a5">
-                                                    <div class="row" style="margin-bottom:0;padding-bottom:0;">
-                                                        <div class="col s6">
-                                                            Monto total
-                                                        </div>
-                                                        <div class="col s6 right-align">
-                                                            <span id="analisis5">-</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>*@
-                            <div class="card-panel">
+                            <div class="card-panel" style="display:none;">
                                 <h5>Análisis Solicitud</h5>
                                 <div class="row" style="margin-bottom:0">
                                     <div class="col s12">
@@ -1992,7 +2057,7 @@
                                     <input type="hidden" id="desc-@i" value="@archivos[i].PATH" />
                                     <button id="lbl_cargar-@i" name="archivo" class="btn-small" style="float:left;" type="submit" value="@archivos[i].PATH">DESCARGAR</button>
                                     <div class="file-path-wrapper">
-                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path validate">
+                                        <input disabled value="@nombrefile[nombrefile.Length - 1]" id="disabled" type="text" class="file-path ">
                                     </div>
                                 </div>
                             </div>
@@ -2011,6 +2076,11 @@
         </div>
     }
 }
-@*<script>
-        selectTsol($('#tsol_id').val());//LEJ 24.07.18
-    </script>*@
+
+<div id="validaciones">
+    <script>
+            var lista1 = [];
+            var lista = @Html.Raw(ViewBag.listaValid);
+    </script>
+    <script src="~/Scripts/warning.js"></script>
+</div>
